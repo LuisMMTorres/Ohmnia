@@ -286,6 +286,24 @@ class Svg:
             self.text(x + 16, y + 11, part, "start", "pn")
         return (gx, y + 8), (x + 8, y - 26), (x + 8, y + 26)
 
+    def opamp(
+        self, x: float, y: float, label: str, part: str = "", flip: bool = False
+    ) -> tuple[tuple[float, float], tuple[float, float], tuple[float, float]]:
+        """Op-amp triangle, inputs at the left (x), output at x + 60, centre at y.
+
+        Returns (inverting input, non-inverting input, output). ``flip`` puts the
+        non-inverting input on top.
+        """
+        self.parts.append(f'<path d="M{x},{y - 30} L{x},{y + 30} L{x + 60},{y} Z"/>')
+        top, bot = (y - 15, y + 15)
+        inv, non = ((x, bot), (x, top)) if flip else ((x, top), (x, bot))
+        self.text(x + 4, inv[1] + 4, "−")
+        self.text(x + 4, non[1] + 4, "+")
+        self.text(x + 22, y - 30, label)
+        if part:
+            self.text(x + 22, y + 40, part, "start", "pn")
+        return inv, non, (x + 60, y)
+
     def ground(self, x: float, y: float) -> None:
         self.line(x, y, x, y + 6)
         self.line(x - 10, y + 6, x + 10, y + 6)
