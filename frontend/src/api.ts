@@ -368,6 +368,48 @@ export interface PnOut {
   warnings: string[];
 }
 
+export interface OpampBenchIn {
+  model: {
+    A0: number;
+    GBW: Quantity;
+    SR: Quantity;
+    Vos: Quantity;
+    Ib: Quantity;
+    Ios: Quantity;
+    Rin: Quantity;
+    CMRR_db: number;
+    PSRR_db: number;
+    drop: Quantity;
+  };
+  VS: Quantity;
+  component_id: string | null;
+}
+
+export interface BenchTestOut {
+  id: string;
+  name: string;
+  measured: Quantity;
+  expected: Quantity;
+  error_pct: number;
+  tolerance_pct: number;
+  ok: boolean;
+  method: string;
+}
+
+export interface OpampBenchOut {
+  tests: BenchTestOut[];
+  bode_f: Vector;
+  bode_mag_db: Vector;
+  bode_phase: Vector;
+  step_t: Vector;
+  step_in: Vector;
+  step_out: Vector;
+  steps: CalcStep[];
+  model: Record<string, Quantity | string>;
+  netlists: Record<string, string>;
+  warnings: string[];
+}
+
 export const bench = {
   diode: (body: DiodeBenchIn) =>
     request<DiodeBenchOut>("/devices/diode/iv", { method: "POST", body: JSON.stringify(body) }),
@@ -381,6 +423,11 @@ export const bench = {
     request<PnOut>("/devices/pn", { method: "POST", body: JSON.stringify(body) }),
   thyristor: (body: ThyristorBenchIn) =>
     request<WaveOut>("/devices/thyristor/waveform", {
+      method: "POST",
+      body: JSON.stringify(body),
+    }),
+  opamp: (body: OpampBenchIn) =>
+    request<OpampBenchOut>("/devices/opamp/bench", {
       method: "POST",
       body: JSON.stringify(body),
     }),

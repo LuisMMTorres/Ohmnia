@@ -4,6 +4,7 @@ import { CalcSteps } from "../components/CalcSteps";
 import { fitScale } from "../components/benchScale";
 import { OutsidePoints } from "../components/OutsidePoints";
 import { SignalPlot, Trace } from "../components/SignalPlot";
+import { OpampBench } from "./OpampBench";
 import { PnBench } from "./PnBench";
 import { ThyristorBench } from "./ThyristorBench";
 import { BjtBench, MosfetBench } from "./TransistorBench";
@@ -13,7 +14,7 @@ export function num(text: string): number {
   return Number(text.replace(",", "."));
 }
 
-type Device = "pn" | "diodo" | "zener" | "tbj" | "mosfet" | "tiristor";
+type Device = "pn" | "diodo" | "zener" | "tbj" | "mosfet" | "tiristor" | "ampop";
 
 export function BenchPage() {
   const [device, setDevice] = useState<Device>("diodo");
@@ -27,6 +28,7 @@ export function BenchPage() {
           ["tbj", "TBJ"],
           ["mosfet", "MOSFET"],
           ["tiristor", "SCR e TRIAC"],
+          ["ampop", "Ampop"],
         ] as const
       ).map(([id, label]) => (
         <button
@@ -44,6 +46,7 @@ export function BenchPage() {
   if (device === "tbj") return <BjtBench selector={selector} />;
   if (device === "mosfet") return <MosfetBench selector={selector} />;
   if (device === "tiristor") return <ThyristorBench selector={selector} />;
+  if (device === "ampop") return <OpampBench selector={selector} />;
   return <DiodeBench selector={selector} />;
 }
 

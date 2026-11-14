@@ -1,7 +1,8 @@
-"""Device bench endpoints (BD-PN, BD-DIODO, BD-ZENER, BD-TBJ, BD-FET, BD-TIR)."""
+"""Device bench endpoints (BD-PN, BD-DIODO, BD-ZENER, BD-TBJ, BD-FET, BD-TIR, BD/BV-AMPOP)."""
 
 from __future__ import annotations
 
+import math
 import uuid
 from collections.abc import Mapping
 from typing import Literal
@@ -13,10 +14,12 @@ from pydantic import BaseModel, Field
 
 from circuitos.components.models import ComponentRecord, Parameter
 from circuitos.components.repository import ComponentRepository
-from circuitos.core.calc import BibRef, CalcStep, record
+from circuitos.core.calc import BibRef, CalcLog, CalcStep, record
 from circuitos.core.errors import CircuitosError
 from circuitos.core.units import Q_, QuantityModel, VectorModel, parse_unit
+from circuitos.design.opamp import OpAmp, opamp_model
 from circuitos.devices import bjt, diode, mosfet, pn, thyristor, zener
+from circuitos.devices.opamp_bench import run_bench
 
 router = APIRouter(prefix="/api/v1/devices")
 
@@ -973,5 +976,129 @@ def pn_bench(body: PnBenchIn) -> PnOut:
         current=VectorModel.from_pint(pn.current(j, Q_(v_fwd, "V"), T), "A"),
         steps=steps,
         spice_model=pn.spice(j, T),
+        warnings=warnings,
+    )
+
+
+# ---------------------------------------------------------------- BD-AMPOP and BV-AMPOP
+
+
+class OpampModelIn(BaseModel):
+    A0: float = Field(default=2e5, gt=10, le=1e9)
+    GBW: QuantityModel = QuantityModel(value=1, unit="MHz")
+    SR: QuantityModel = QuantityModel(value=0.5, unit="V/us")
+    Vos: QuantityModel = QuantityModel(value=1, unit="mV")
+    Ib: QuantityModel = QuantityModel(value=80, unit="nA")
+    Ios: QuantityModel = QuantityModel(value=20, unit="nA")
+    Rin: QuantityModel = QuantityModel(value=2, unit="Mohm")
+    CMRR_db: float = Field(default=90, gt=20, le=200)
+    PSRR_db: float = Field(default=96, gt=20, le=200)
+    drop: QuantityModel = QuantityModel(value=2, unit="V")  # output swing below each rail
+
+
+class OpampBenchIn(BaseModel):
+    model: OpampModelIn = OpampModelIn()
+    VS: QuantityModel = QuantityModel(value=15, unit="V")  # ± supplies
+    component_id: uuid.UUID | None = None
+
+
+class BenchTestOut(BaseModel):
+    id: str
+    name: str
+    measured: QuantityModel
+    expected: QuantityModel
+    error_pct: float
+    tolerance_pct: float
+    ok: bool
+    method: str
+
+
+class OpampBenchOut(BaseModel):
+    tests: list[BenchTestOut]
+    bode_f: VectorModel
+    bode_mag_db: VectorModel
+    bode_phase: VectorModel
+    step_t: VectorModel
+    step_in: VectorModel
+    step_out: VectorModel
+    steps: list[CalcStep]
+    model: dict[str, QuantityModel | str]
+    netlists: dict[str, str]
+    warnings: list[str]
+
+
+@router.post("/opamp/bench")
+def opamp_bench_run(request: Request, body: OpampBenchIn) -> OpampBenchOut:
+    vs = body.VS.to_pint().m_as("V")
+    warnings: list[str] = []
+    steps: list[CalcStep] = []
+    try:
+        if body.component_id is not None:
+            rec = _record_for(request, body.component_id, "opamp")
+            log = CalcLog()
+            u, w = opamp_model(rec, vs, -vs, log, "U1")
+            warnings += w + _unreviewed(list(rec.parameters.values()))
+            steps += list(log)
+        else:
+            m = body.model
+            drop = m.drop.to_pint().m_as("V")
+            u = OpAmp(
+                A0=m.A0,
+                GBW=m.GBW.to_pint().m_as("Hz"),
+                Rin=m.Rin.to_pint().m_as("ohm"),
+                Vos=m.Vos.to_pint().m_as("V"),
+                Ib=m.Ib.to_pint().m_as("A"),
+                Ios=m.Ios.to_pint().m_as("A"),
+                SR=m.SR.to_pint().m_as("V/s"),
+                v_hi=vs - drop,
+                v_lo=-vs + drop,
+                CMRR=10 ** (m.CMRR_db / 20),
+                PSRR=10 ** (m.PSRR_db / 20),
+                VS_nom=vs,
+            )
+        result = run_bench(u, vs)
+    except (CircuitosError, ValueError) as exc:
+        raise HTTPException(422, str(exc)) from exc
+    tests = [
+        BenchTestOut(
+            id=t.id,
+            name=t.name,
+            measured=QuantityModel.from_pint(t.measured),
+            expected=QuantityModel.from_pint(t.expected),
+            error_pct=t.error_pct,
+            tolerance_pct=t.tolerance_pct,
+            ok=t.ok,
+            method=t.method,
+        )
+        for t in result.tests
+    ]
+    for t in result.tests:
+        if not t.ok:
+            warnings.append(
+                f"{t.id}: o ensaio não recuperou o parâmetro do modelo ({t.error_pct:.2f} %)."
+            )
+    model: dict[str, QuantityModel | str] = {
+        "name": u.name,
+        "A0": QuantityModel(value=u.A0, unit=""),
+        "GBW": QuantityModel(value=u.GBW / 1e6, unit="MHz"),
+        "fb": QuantityModel(value=u.fb, unit="Hz"),
+        "SR": QuantityModel(value=u.SR / 1e6 if math.isfinite(u.SR) else 0.0, unit="V/us"),
+        "Vos": QuantityModel(value=u.Vos * 1e3, unit="mV"),
+        "Ib": QuantityModel(value=u.Ib * 1e9, unit="nA"),
+        "Ios": QuantityModel(value=u.Ios * 1e9, unit="nA"),
+        "v_hi": QuantityModel(value=u.v_hi, unit="V"),
+        "v_lo": QuantityModel(value=u.v_lo, unit="V"),
+    }
+    return OpampBenchOut(
+        tests=tests,
+        bode_f=VectorModel(values=result.bode_f.tolist(), unit="Hz"),
+        bode_mag_db=VectorModel(values=(20 * np.log10(result.bode_mag)).tolist(), unit="dB"),
+        bode_phase=VectorModel(values=result.bode_phase.tolist(), unit="deg"),
+        step_t=VectorModel(values=(result.step_t * 1e6).tolist(), unit="us"),
+        step_in=VectorModel(values=result.step_in.tolist(), unit="V"),
+        step_out=VectorModel(values=result.step_out.tolist(), unit="V"),
+        steps=steps + result.steps,
+        model=model,
+        netlists=result.netlists,
         warnings=warnings,
     )

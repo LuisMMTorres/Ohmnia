@@ -47,6 +47,9 @@ class OpAmp:
     v_hi: float = math.inf  # V, output swing limits
     v_lo: float = -math.inf
     name: str = "ideal"
+    CMRR: float = math.inf  # V/V; input-referred error v_cm/CMRR, v_cm = (v+ + v−)/2
+    PSRR: float = math.inf  # V/V; input-referred error ΔV_S/PSRR (ΔV_S per rail, symmetric)
+    VS_nom: float = 15.0  # V per rail where the datasheet VOS holds (PSRR reference)
 
     @property
     def fb(self) -> float:
@@ -61,15 +64,45 @@ class OpAmp:
     def a(self, f: float) -> complex:
         return self.A0 / (1 + 1j * f / self.fb)
 
-    def add(self, c: Circuit, p: str, inp: str, inn: str, out: str) -> None:
-        """Linear macromodel into the MNA circuit (element names prefixed with ``p``)."""
+    def _input_chain(
+        self, c: Circuit, p: str, inp: str, inn: str, sup: tuple[str, str] | None
+    ) -> str:
+        """VOS, common-mode and supply errors in series with the + input; returns the node."""
+        with_cm = math.isfinite(self.CMRR)
+        with_ps = sup is not None and math.isfinite(self.PSRR)
+        node = f"{p}x"
+        a = f"{p}x1" if (with_cm or with_ps) else node
+        c.V(f"{p}os", a, inp, self.Vos)
+        if with_cm:
+            b = f"{p}x3" if with_ps else node
+            c.E(f"{p}ca", f"{p}x2", a, inp, "0", 1 / (2 * self.CMRR))
+            c.E(f"{p}cb", b, f"{p}x2", inn, "0", 1 / (2 * self.CMRR))
+            a = b
+        if with_ps:
+            assert sup is not None
+            c.E(f"{p}ps", f"{p}x4", a, sup[0], sup[1], 1 / (2 * self.PSRR))
+            c.V(f"{p}pn", node, f"{p}x4", -self.VS_nom / self.PSRR)
+        return node
+
+    def add(
+        self,
+        c: Circuit,
+        p: str,
+        inp: str,
+        inn: str,
+        out: str,
+        sup: tuple[str, str] | None = None,
+    ) -> None:
+        """Linear macromodel into the MNA circuit (element names prefixed with ``p``).
+
+        ``sup`` = (V+ node, V− node) adds the supply error (PSRR) for the bench tests.
+        """
         if math.isfinite(self.Rin):
             c.R(f"{p}in", inp, inn, self.Rin)
         if self.Ib or self.Ios:
             c.I(f"{p}bp", inp, "0", self.Ib + self.Ios / 2)
             c.I(f"{p}bn", inn, "0", self.Ib - self.Ios / 2)
-        x = f"{p}x"
-        c.V(f"{p}os", x, inp, self.Vos)
+        x = self._input_chain(c, p, inp, inn, sup)
         n1 = f"{p}n1"
         c.G(f"{p}1", "0", n1, x, inn, self.A0 / self.r_pole)
         c.R(f"{p}1", n1, "0", self.r_pole)
@@ -92,8 +125,16 @@ class OpAmp:
                 f"I{p}bn {inn} 0 DC {self.Ib - self.Ios / 2:.9g}",
             ]
         x, n1 = f"{p}x", f"{p}n1"
+        if math.isfinite(self.CMRR):
+            k = 1 / (2 * self.CMRR)
+            lines += [
+                f"V{p}os {p}x1 {inp} DC {self.Vos:.9g}",
+                f"E{p}ca {p}x2 {p}x1 {inp} 0 {k:.9g}",
+                f"E{p}cb {x} {p}x2 {inn} 0 {k:.9g}",
+            ]
+        else:
+            lines.append(f"V{p}os {x} {inp} DC {self.Vos:.9g}")
         lines += [
-            f"V{p}os {x} {inp} DC {self.Vos:.9g}",
             f"B{p}1 0 {n1} I=max(min({gm:.9g}*(v({x})-v({inn})),{il:.9g}),{-il:.9g})",
             f"R{p}1 {n1} 0 {self.r_pole:.9g}",
             f"C{p}1 {n1} 0 {C_POLE:.9g}",
@@ -107,6 +148,19 @@ class OpAmp:
 def _typ(rec: ComponentRecord, key: str, unit: str) -> float | None:
     q = quantity(rec, key, ("typ", "max", "min"))
     return None if q is None else float(q.m_as(unit))
+
+
+def db_ratio(rec: ComponentRecord, key: str) -> float:
+    """A ratio stored in dB (CMRR, PSRR) as V/V, typical value; inf when absent.
+
+    The catalogue keeps the dB number as written in the datasheet (pint's dB is a power ratio,
+    so it is read as a plain number here): ratio = 10^(dB/20).
+    """
+    p = rec.parameters.get(key)
+    if p is None or not p.has_value:
+        return math.inf
+    db = p.typ if p.typ is not None else p.min
+    return math.inf if db is None else 10 ** (db / 20)
 
 
 def gbw_of(rec: ComponentRecord) -> float:
@@ -168,6 +222,8 @@ def opamp_model(
     vos = (_typ(rec, "Vos", "V") or 0.0) if with_errors else 0.0
     ib = (_typ(rec, "Ib", "A") or 0.0) if with_errors else 0.0
     ios = (_typ(rec, "Ios", "A") or 0.0) if with_errors else 0.0
+    cmrr = db_ratio(rec, "CMRR") if with_errors else math.inf
+    psrr = db_ratio(rec, "PSRR") if with_errors else math.inf
     # output swing: from-rail drops when given; else the ±15 V test swing as headroom
     vom = quantity(rec, "Vom", ("typ", "min"))
     drop_hi = _typ(rec, "VOH_drop", "V")
@@ -194,6 +250,9 @@ def opamp_model(
         v_hi=v_pos - drop_hi,
         v_lo=v_neg + drop_lo,
         name=rec.part_number,
+        CMRR=cmrr,
+        PSRR=psrr,
+        VS_nom=(v_pos - v_neg) / 2,
     )
     inputs: dict[str, pint.Quantity] = {
         "A_0": Q_(a0, ""),
@@ -202,6 +261,8 @@ def opamp_model(
         "V_{OS}": Q_(vos, "V").to("mV"),
         "I_B": Q_(ib, "A").to("nA"),
     }
+    if math.isfinite(cmrr):
+        inputs["CMRR"] = Q_(cmrr, "")
     log.add(
         record(
             f"fb_{designator}",
