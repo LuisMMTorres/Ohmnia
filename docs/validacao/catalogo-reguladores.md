@@ -1,4 +1,4 @@
-# Catálogo: reguladores lineares (Fase 4)
+# Catálogo: reguladores lineares e LDO (Fase 4)
 
 Data: 2026-11-14. Status: valores transcritos como `extraido`, aguardando a sua conferência (D7).
 
@@ -13,6 +13,10 @@ para o teste DS-*, que procura cada número na página citada do PDF.
 | `regulator/onsemi-mc7905c-mc7915c.yaml` | MC7905CT, MC7912CT, MC7915CT | onsemi MC7900/D, [PDF](https://www.onsemi.com/pdf/datasheet/mc7900-d.pdf) | Rev. 21, out. 2021 | a2462056… |
 | `regulator/onsemi-lm317.yaml` | LM317T | onsemi LM317/D, [PDF](https://www.onsemi.com/pdf/datasheet/lm317-d.pdf) | Rev. 18 | 19ef73a1… |
 | `regulator/onsemi-lm337.yaml` | LM337T | onsemi LM337/D, [PDF](https://www.onsemi.com/pdf/datasheet/lm337-d.pdf) | Rev. 11, out. 2021 | 75dba59d… |
+| `regulator/onsemi-ncp1117.yaml` (LDO) | NCP1117DT33G, NCP1117DT50G | onsemi NCP1117/D, [PDF](https://www.onsemi.com/pdf/datasheet/ncp1117-d.pdf) | Rev. 31, ago. 2021 | e2b4731d… |
+| `regulator/onsemi-ncp1117-adj.yaml` (LDO) | NCP1117DTAG | onsemi NCP1117/D | Rev. 31, ago. 2021 | e2b4731d… |
+| `regulator/onsemi-lm2931-5.yaml` (LDO) | LM2931T-5.0G | onsemi LM2931/D, [PDF](https://www.onsemi.com/pdf/datasheet/lm2931-d.pdf) | Rev. 30, jan. 2024 | a9a86896… |
+| `regulator/onsemi-lm2931ac.yaml` (LDO) | LM2931ACD2TR4G | onsemi LM2931/D | Rev. 30, jan. 2024 | a9a86896… |
 
 Parâmetros transcritos (quando o datasheet traz): VO e faixa, Vref, IAdj, VI máx., VI−VO máx. e mín.,
 VI mínima de regulação, queda (dropout), IQ, IO máx., corrente de pico e de curto, carga mínima,
@@ -29,6 +33,21 @@ regulação de linha e de carga, rejeição de ondulação, RθJA, RθJC, TJ má
   módulo usa como limite de queda (não é o dropout medido do fabricante).
 - **78xx/79xx:** o projeto usa `VI_reg_min` transcrito (entrada mínima da linha de regulação), não
   uma queda derivada.
+
+### LDO (acréscimo desta entrega)
+
+- **Marcação LDO:** os quatro arquivos têm `tags: [ldo]`, porque o fabricante classifica as peças
+  como "low dropout". A opção "Baixa queda (LDO)" do DM-LIN escolhe só entre elas; sem a opção,
+  só entre as não-LDO.
+- **Fonte Symbol:** o texto do PDF da onsemi mostra "m" no lugar de "µ" (mmhos, mF, mA). Nos
+  valores afetados (Cin/Co da aplicação, IAdj do LM2931AC = 0,2 µA) o arquivo traz uma nota;
+  confira a unidade no PDF.
+- **Novos parâmetros opcionais** do esquema `regulator.positive`: `Cin_app` e `Co_app`
+  (capacitores da aplicação típica). O LM2931 pede Co = 100 µF com ESR baixa por estabilidade
+  (p. 8); o NCP1117, 10 µF.
+- **LM2931, IO máx.:** 100 mA vem do título do datasheet ("100 mA"), não de uma tabela.
+- **LM2931AC sem IL,mín.:** o projeto usa R1 com 100·IAdj (critério de projeto, com aviso).
+- **Queda do NCP1117:** 1,07 V típico / 1,2 V máx. a 800 mA; a do LM2931, 0,16/0,6 V a 100 mA.
 
 ## Testes
 

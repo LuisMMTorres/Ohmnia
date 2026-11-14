@@ -62,3 +62,16 @@ corrente da fórmula fechada, então o resolvedor tem de reproduzir o número de
 
 Exemplos parecidos no Boylestad & Nashelsky, 11ª ed. (confira o número na sua edição): cap. 4 para
 P8–P10, cap. 7 para P11, cap. 5 e 9 para P12, cap. 2 para P13–P14 e multiplicadores.
+
+## Fase 4, acréscimo: casos P16–P19 (`tests/golden/test_gt_fase4b.py`)
+
+| Caso | Circuito | Grandeza | Valor |
+|---|---|---|---|
+| P16 | JFET, autopolarização: IDSS = 8 mA, VP = 4 V, RS = 1 kΩ, RD = 3,3 kΩ, VDD = 20 V | ID / VGS / VDS | 2 mA / −2 V / 11,4 V |
+| P17 | JFET com divisor: VDD = 16 V, R1 = 2,1 MΩ, R2 = 270 kΩ, RD = 2,4 kΩ, RS = 1,5 kΩ, IDSS = 8 mA, VP = 4 V | VG / VGS / ID | 1,823 V / ≈ −1,80 V / ≈ 2,42 mA |
+| P18 | Darlington com β1 = β2 = 30 | βD = β1β2 + β1 + β2 | 960 |
+| P19 | Classe D, ±24 V, RL = 8 Ω, fc = 25 kHz (Butterworth) | L / C / fundamental na carga | 72,03 µH / 0,5627 µF / m·V·\|H(jω)\| |
+
+Exemplos parecidos no Boylestad & Nashelsky, 11ª ed.: cap. 7 (polarização de FET) para P16–P17 e
+cap. 12 (amplificadores de potência) para P18–P19. Confira o número na sua edição.
+
