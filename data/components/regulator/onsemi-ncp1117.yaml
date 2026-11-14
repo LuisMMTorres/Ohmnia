@@ -5,6 +5,8 @@ schema_version: '1.0'
 manufacturer: onsemi
 package: DPAK, case 369A (sufixo DT)
 lifecycle: ativo
+tags:
+- ldo  # o fabricante classifica a peça como "low dropout"
 notes:
 - Regulador de baixa queda (LDO de 1 A, queda ≈ 1,1 V).
 - 'Cápsula SMD: o ''dissipador'' é a área de cobre da placa; RθJA vale para a ilha mínima.'

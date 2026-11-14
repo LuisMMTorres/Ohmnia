@@ -5,6 +5,8 @@ schema_version: '1.0'
 manufacturer: onsemi
 package: D2PAK, case 936 (sufixo D2T)
 lifecycle: ativo
+tags:
+- ldo  # o fabricante classifica a peça como "low dropout"
 notes:
 - Regulador LDO ajustável de 100 mA. Vout = Vref(1 + R2/R1) + IAdj·R2 (Figure 18).
 datasheets:

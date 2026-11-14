@@ -5,6 +5,8 @@ schema_version: '1.0'
 manufacturer: onsemi
 package: DPAK, case 369A (sufixo DT)
 lifecycle: ativo
+tags:
+- ldo  # o fabricante classifica a peça como "low dropout"
 notes:
 - Regulador ajustável de baixa queda (LDO de 1 A). Vout = Vref(1 + R2/R1) + IAdj·R2.
 datasheets:

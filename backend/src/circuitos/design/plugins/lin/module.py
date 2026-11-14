@@ -53,6 +53,7 @@ LM317_REF = BibRef(book="onsemi LM317/D", edition="Rev. 18", chapter="Figure 1, 
 
 class LinSpec(BaseModel):
     kind: Kind = "fixo"
+    ldo: bool = False  # low-dropout parts (NCP1117, LM2931) instead of 78xx/LM317
     polarity: Polarity = "positiva"
     Vo: QuantityModel = QuantityModel(value=5, unit="V")  # magnitude of each output
     Io: QuantityModel = QuantityModel(value=0.5, unit="A")  # maximum load current per output
@@ -81,10 +82,13 @@ LABELS = {
     "I_R1": "Corrente em R1",
     "PD": "Potência no regulador (pior caso)",
     "Iin": "Corrente média de entrada",
+    "Cin": "Capacitor de entrada (aplicação do datasheet)",
+    "Co": "Capacitor de saída (aplicação do datasheet)",
     "eff": "Rendimento (entrada máxima)",
 }
 SPEC_LABELS = {
     "kind": "Regulador",
+    "ldo": "Baixa queda (LDO)",
     "polarity": "Polaridade",
     "Vo": "Tensão de saída (módulo)",
     "Io": "Corrente máxima por saída",
@@ -105,8 +109,25 @@ ENUM_LABELS = {
 }
 
 
+def is_ldo(rec: ComponentRecord) -> bool:
+    """Low-dropout regulator, as the manufacturer classifies it (tag ``ldo`` in the catalogue)."""
+    return "ldo" in rec.tags
+
+
+def app_ref(rec: ComponentRecord | None) -> BibRef:
+    """The datasheet of the selected part (typical application), else the LM317 one."""
+    if rec is None or not rec.datasheets:
+        return LM317_REF
+    ds = rec.datasheets[0]
+    return BibRef(
+        book=f"{ds.manufacturer} {ds.document_number or rec.part_number}",
+        edition=ds.revision or "",
+        chapter="aplicação típica",
+    )
+
+
 def caps(kind: Kind, negative: bool) -> tuple[str, str, str]:
-    """(Cin, Co, source) of the datasheet standard application."""
+    """(Cin, Co, source) of the datasheet standard application (78xx/79xx, LM317/337)."""
     if kind == "ajustavel":
         return "0,1 µF", "1 µF", "LM317/D e LM337/D, Figure 1 (aplicação padrão)"
     if negative:
@@ -188,6 +209,8 @@ class LinModule:
 
     def accepts(self, spec: BaseModel, role: Role, rec: ComponentRecord) -> bool:
         s = _spec(spec)
+        if is_ldo(rec) != s.ldo:
+            return False
         if s.kind == "ajustavel":
             return "Vref" in rec.parameters and "VO" not in rec.parameters
         vo = _num(rec, "VO", "V", ("typ",))
@@ -285,7 +308,7 @@ class LinModule:
                         )
                 else:
                     vo, vo_lo, vo_hi, iq, need = vo_t, vo_t, vo_t, 0.0, 0.0
-                req_txt = "queda (dropout) típica do datasheet a 1 A"
+                req_txt = "queda (dropout) típica do datasheet, na corrente de ensaio dele"
                 summary[f"Vo{sfx}"] = Q_(vo, "V")
             else:
                 if rec is not None:
@@ -295,6 +318,22 @@ class LinModule:
                     iadj = _num(rec, "IAdj", "A", ("typ", "max")) or 0.0
                     iadj_max = _num(rec, "IAdj", "A", ("max", "typ")) or 0.0
                     ilmin = _num(rec, "IL_min", "A", ("max", "typ")) or 0.0
+                    if ilmin <= 0:
+                        # Design criterion (not from the datasheet): with no minimum load
+                        # current given, R1 carries 100·IAdj so IAdj shifts VO by ≈ 1 %.
+                        ilmin = 100 * iadj_max
+                        if ilmin <= 0:
+                            raise ValueError(
+                                f"{rec.part_number}: o datasheet não traz IL,min nem IAdj"
+                            )
+                        warnings.append(
+                            DesignWarning(
+                                code="criterio",
+                                message=f"{designator}: o datasheet não dá corrente mínima "
+                                "de carga; R1 foi escolhido para conduzir 100·IAdj "
+                                "(critério de projeto, erro de ≈ 1 % devido a IAdj).",
+                            )
+                        )
                     need = _num(rec, "VIO_min", "V", ("min",)) or 0.0
                 else:
                     vref = vref_lo = vref_hi = 1.25
@@ -320,7 +359,7 @@ class LinModule:
                         assumptions=[
                             "a corrente de R1 mantém o CI regulando mesmo sem carga externa"
                         ],
-                        reference=LM317_REF,
+                        reference=app_ref(rec),
                     )
                 )
                 r1 = commercial(
@@ -338,7 +377,7 @@ class LinModule:
                             "V_{ref}": Q_(vref, "V"),
                             "I_{Adj}": Q_(iadj, "A").to("uA"),
                         },
-                        reference=LM317_REF,
+                        reference=app_ref(rec),
                     )
                 )
                 if r2_calc.magnitude <= 0:
@@ -358,7 +397,7 @@ class LinModule:
                             "R_2": Q_(r2, "ohm"),
                             "I_{Adj}": Q_(iadj, "A").to("uA"),
                         },
-                        reference=LM317_REF,
+                        reference=app_ref(rec),
                     )
                 ).m_as("V")
                 vo_lo = vref_lo * (1 + r2 / r1)
@@ -446,6 +485,11 @@ class LinModule:
                 ),
             ]
             losses[designator] = pd.to("W")
+            if rec is not None:
+                for key in ("Cin", "Co"):
+                    c = quantity(rec, f"{key}_app", ("typ", "min"))
+                    if c is not None:
+                        summary[f"{key}{sfx}"] = c.to("uF")
         period = 1 / s.f_ripple.to_pint().m_as("Hz")
         th = [2 * math.pi * k / 720 for k in range(720)]
         vin_wave = [vin_min + rip / 2 * math.sin(t) for t in th]
@@ -536,6 +580,18 @@ class LinModule:
         )
 
     # ------------------------------------------------------------------ outputs
+    @staticmethod
+    def _caps(s: LinSpec, result: DesignResult, sfx: str, negative: bool) -> tuple[str, str, str]:
+        cin, co, src = caps(s.kind, negative)
+        sm = result.summary
+        if f"Cin{sfx}" in sm or f"Co{sfx}" in sm:
+            src = "datasheet do regulador escolhido, aplicação típica"
+            if f"Cin{sfx}" in sm:
+                cin = format_eng(sm[f"Cin{sfx}"].to_pint())
+            if f"Co{sfx}" in sm:
+                co = format_eng(sm[f"Co{sfx}"].to_pint())
+        return cin, co, src
+
     def schematic(self, spec: BaseModel, result: DesignResult, title: str) -> str:
         s = _spec(spec)
         parts = {c.designator: c.part_number for c in result.selection}
@@ -550,7 +606,7 @@ class LinModule:
             sign = "−" if neg else "+"
             svg.terminal(30, y, f"{sign}VI", "start")
             svg.wire((34, y), (190, y))
-            cin, co, _src = caps(s.kind, neg)
+            cin, co, _src = self._caps(s, result, sfx, neg)
             svg.cap_v(110, y, y + 90, "Cin", cin, plus_bottom=neg)
             svg.box(190, y - 22, 90, 44, designator, parts.get(designator, ""))
             svg.wire((280, y), (470, y))
@@ -586,7 +642,7 @@ class LinModule:
                     )
                     if r
                 ]
-            cin, co, src = caps(s.kind, cat.endswith("negative"))
+            cin, co, src = self._caps(s, result, sfx, cat.endswith("negative"))
             rows += [
                 passive(f"C{2 * n - 1}", "Capacitor de entrada junto ao regulador", cin, src),
                 passive(f"C{2 * n}", "Capacitor de saída", co, src),

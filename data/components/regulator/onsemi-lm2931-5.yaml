@@ -5,6 +5,8 @@ schema_version: '1.0'
 manufacturer: onsemi
 package: TO-220, case 221A (sufixo T)
 lifecycle: ativo
+tags:
+- ldo  # o fabricante classifica a peça como "low dropout"
 notes:
 - Regulador LDO de 100 mA (queda típica 0,16 V a 100 mA). Exige capacitor de saída para estabilidade.
 datasheets:
