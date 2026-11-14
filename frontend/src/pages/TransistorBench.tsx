@@ -1,6 +1,8 @@
 import { type ReactNode, useEffect, useMemo, useState } from "react";
 import { bench, catalog, ComponentSummary, CurvesOut, Quantity } from "../api";
 import { CalcSteps } from "../components/CalcSteps";
+import { fitScale } from "../components/benchScale";
+import { OutsidePoints } from "../components/OutsidePoints";
 import { SignalPlot, Trace } from "../components/SignalPlot";
 import { formatRaw } from "../format";
 import { num } from "./BenchPage";
@@ -40,20 +42,27 @@ function CurvesLayout(props: {
   yUnit: string;
 }) {
   const { result } = props;
-  const traces: Trace[] = useMemo(() => {
-    if (!result) return [];
+  const { traces, scale } = useMemo(() => {
+    if (!result) return { traces: [] as Trace[], scale: null };
     const curves = Object.entries(result.curves).map(([label, vec]) => ({
       name: label,
       unit: props.yUnit,
       values: vec.values,
     }));
-    const markers = result.markers.map((m) => ({
+    const xMax = result.x.values[result.x.values.length - 1] ?? 0;
+    const scale = fitScale(
+      curves.map((c) => c.values),
+      result.markers,
+      xMax,
+      false,
+    );
+    const markers = scale.inside.map((m) => ({
       name: m.label,
       unit: props.yUnit,
       points: true,
       values: result.x.values.map((v) => (Math.abs(v - m.v.value) < 1e-12 ? m.i.value : null)),
     }));
-    return [...curves, ...markers];
+    return { traces: [...curves, ...markers] as Trace[], scale };
   }, [result, props.yUnit]);
   const fitSteps = result?.steps.filter((s) => s.id.endsWith("_fit")) ?? [];
   const otherSteps = result?.steps.filter((s) => !s.id.endsWith("_fit")) ?? [];
@@ -104,7 +113,9 @@ function CurvesLayout(props: {
               xLabel={props.xLabel}
               traces={traces}
               height={420}
+              yRange={scale?.range}
             />
+            <OutsidePoints items={scale?.outside ?? []} />
             {[...props.fitWarnings, ...result.warnings]
               .filter((w, i, all) => all.indexOf(w) === i)
               .map((w) => (

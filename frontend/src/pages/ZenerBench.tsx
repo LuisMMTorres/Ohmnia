@@ -1,6 +1,8 @@
 import { type ReactNode, useEffect, useMemo, useState } from "react";
 import { bench, CalcStep, catalog, ComponentSummary, ZenerBenchIn, ZenerBenchOut } from "../api";
 import { CalcSteps } from "../components/CalcSteps";
+import { fitScale } from "../components/benchScale";
+import { OutsidePoints } from "../components/OutsidePoints";
 import { SignalPlot, Trace } from "../components/SignalPlot";
 import { formatRaw } from "../format";
 import { num } from "./BenchPage";
@@ -101,21 +103,28 @@ export function ZenerBench({ selector }: { selector: ReactNode }) {
       .catch((e: Error) => setError(e.message));
   };
 
-  const traces: Trace[] = useMemo(() => {
-    if (!result) return [];
+  const { traces, scale } = useMemo(() => {
+    if (!result) return { traces: [] as Trace[], scale: null };
     const clean = (values: number[]) => values.map((v) => (logScale && !(v > 0) ? null : v));
     const curves = Object.entries(result.curves).map(([label, vec]) => ({
       name: `Modelo, ${label}`,
       unit: "A",
       values: clean(vec.values),
     }));
-    const markers = result.markers.map((m) => ({
+    const xMax = result.v.values[result.v.values.length - 1] ?? 0;
+    const scale = fitScale(
+      curves.map((c) => c.values),
+      result.markers,
+      xMax,
+      logScale,
+    );
+    const markers = scale.inside.map((m) => ({
       name: m.label,
       unit: "A",
       points: true,
       values: result.v.values.map((v) => (Math.abs(v - m.v.value) < 1e-12 ? m.i.value : null)),
     }));
-    return [...curves, ...markers];
+    return { traces: [...curves, ...markers] as Trace[], scale };
   }, [result, logScale]);
 
   const warnings = [...fitWarnings, ...(result?.warnings ?? [])].filter(
@@ -212,7 +221,9 @@ export function ZenerBench({ selector }: { selector: ReactNode }) {
               yLog={logScale}
               traces={traces}
               height={420}
+              yRange={scale?.range}
             />
+            <OutsidePoints items={scale?.outside ?? []} />
             {warnings.map((w) => (
               <p key={w} className="small note">
                 {w}

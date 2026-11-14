@@ -19,6 +19,8 @@ interface Props {
   yLog?: boolean;
   traces: Trace[];
   height?: number;
+  /** Fixed range of the (first) vertical scale; default: automatic. */
+  yRange?: [number, number];
 }
 
 // Categorical palette with good contrast on light and dark backgrounds.
@@ -37,6 +39,7 @@ export function SignalPlot({
   yLog = false,
   traces,
   height = 360,
+  yRange,
 }: Props) {
   const container = useRef<HTMLDivElement>(null);
 
@@ -49,7 +52,13 @@ export function SignalPlot({
       height,
       scales: {
         ...Object.fromEntries(
-          [...new Set(traces.map((t) => t.unit || "1"))].map((u) => [u, { distr: yLog ? 3 : 1 }]),
+          [...new Set(traces.map((t) => t.unit || "1"))].map((u, i) => [
+            u,
+            {
+              distr: yLog ? 3 : 1,
+              ...(i === 0 && yRange ? { range: () => yRange as uPlot.Range.MinMax } : {}),
+            },
+          ]),
         ),
         x: {
           time: false,
@@ -103,7 +112,8 @@ export function SignalPlot({
       observer.disconnect();
       plot.destroy();
     };
-  }, [x, xUnit, xLabel, xLog, yLog, traces, height]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [x, xUnit, xLabel, xLog, yLog, traces, height, yRange?.[0], yRange?.[1]]);
 
   return <div ref={container} className="signal-plot" />;
 }
