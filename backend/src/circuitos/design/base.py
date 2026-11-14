@@ -151,6 +151,7 @@ Metric = Literal[
     "thd",
     "freq",
     "duty",
+    "t_high",
     "x_rise",
     "x_fall",
     "ac_mag",
@@ -166,8 +167,9 @@ class SimCheck(BaseModel):
     current in ``probe`` and, for ``pf``, the voltage in ``voltage``. Both remove the mean of
     the current first (the primary of a transformer never carries DC).
 
-    ``freq`` and ``duty`` use the crossings of ``probe`` through the middle of its range over
-    the whole window (several periods for an oscillator); ``x_rise``/``x_fall`` return the value
+    ``freq``, ``duty`` and ``t_high`` (mean time above the middle) use the crossings of
+    ``probe`` through the middle of its range over the whole window (several periods for an
+    oscillator); ``x_rise``/``x_fall`` return the value
     of ``voltage`` at the first rising/falling crossing of ``probe`` (a comparator threshold).
 
     AC metrics use the ``.ac`` sweep (input source with ``AC 1``): ``ac_mag`` is |probe| at

@@ -91,7 +91,7 @@ def crossings(t: FloatArray, x: FloatArray, rising: bool) -> FloatArray:
 
 def measure(check: SimCheck, ss: SteadyState) -> float:
     t, x = ss.t_raw, ss.raw[check.probe]
-    if check.metric in ("freq", "duty"):
+    if check.metric in ("freq", "duty", "t_high"):
         up = crossings(t, x, True)
         if up.size < 2:
             raise ValueError(f"{check.quantity}: menos de dois ciclos na janela simulada")
@@ -101,7 +101,8 @@ def measure(check: SimCheck, ss: SteadyState) -> float:
         mid = (float(np.max(x)) + float(np.min(x))) / 2
         ts = np.concatenate([[up[0]], t[sel], [up[-1]]])
         hs = np.concatenate([[1.0], (x[sel] > mid).astype(np.float64), [1.0]])
-        return float(np.trapezoid(hs, ts) / (up[-1] - up[0]))
+        duty = float(np.trapezoid(hs, ts) / (up[-1] - up[0]))
+        return duty if check.metric == "duty" else duty * (up[-1] - up[0]) / (up.size - 1)
     if check.metric in ("x_rise", "x_fall"):
         assert check.voltage is not None
         tc = crossings(t, x, check.metric == "x_rise")

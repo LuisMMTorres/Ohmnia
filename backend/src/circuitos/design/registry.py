@@ -11,6 +11,7 @@ from circuitos.design.plugins.forma import FormaModule
 from circuitos.design.plugins.lin import LinModule
 from circuitos.design.plugins.opa import OpaModule
 from circuitos.design.plugins.opnl import OpnlModule
+from circuitos.design.plugins.osc import OscModule
 from circuitos.design.plugins.pa import PaModule
 from circuitos.design.plugins.pad import PadModule
 from circuitos.design.plugins.ret1 import Ret1Module
@@ -37,6 +38,7 @@ MODULES: dict[str, TopologyModule] = {
         OpaModule(),
         FilModule(),
         OpnlModule(),
+        OscModule(),
     )
 }
 

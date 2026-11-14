@@ -30,6 +30,9 @@ REF = SEDRA.model_copy(update={"chapter": "2 (Operational amplifiers)"})
 TI_BW = BibRef(book="Texas Instruments LM741 (SNOSC25D)", edition="Rev. D", chapter="6.6, nota 2")
 C_POLE = 1e-9  # F, pole capacitor of the macromodel; R = 1/(2π fb C), gm = A0/R
 CLAMP_G = 1e3  # S, conductance of the output-swing clamp beyond the limits
+# the stiff clamp locks the trapezoidal rule at the saturation corners (the output stays
+# saturated after the input reverses); Gear integration has no such ringing
+TRAN_OPTIONS = ".options method=gear"
 
 
 @dataclass(frozen=True)
@@ -95,7 +98,7 @@ class OpAmp:
             f"R{p}1 {n1} 0 {self.r_pole:.9g}",
             f"C{p}1 {n1} 0 {C_POLE:.9g}",
             # stiff clamp of the internal node at the output swing (overshoot il/CLAMP_G)
-            f"B{p}c {n1} 0 I={CLAMP_G:.9g}*(max(v({n1})-{hi:.9g},0)+min(v({n1})-{lo:.9g},0))",
+            f"B{p}c {n1} 0 I={CLAMP_G:.9g}*(max(v({n1})-({hi:.9g}),0)+min(v({n1})-({lo:.9g}),0))",
             f"E{p}o {out} 0 {n1} 0 1",
         ]
         return lines

@@ -51,7 +51,7 @@ from circuitos.design.base import (
 from circuitos.design.devmodels import VT_300K, ZenerPwl, bjt_model, quantity, zener_pwl
 from circuitos.design.engine import Analysis, Device
 from circuitos.design.opamp import REF as OPA_REF
-from circuitos.design.opamp import OpAmp, opamp_model
+from circuitos.design.opamp import TRAN_OPTIONS, OpAmp, opamp_model
 from circuitos.design.plugins.zen.module import vz_of
 from circuitos.reports.common import BomRow, LabItem, passive
 from circuitos.reports.schematic import value_sheet
@@ -880,7 +880,7 @@ class OpnlModule:
             period *= 2
         return Circuit(
             title=f"{self.id}: {ENUM_LABELS[c]}",
-            netlist="\n".join(lines),
+            netlist="\n".join([TRAN_OPTIONS, *lines]),
             tran_stop=QuantityModel(value=n_per * period, unit="s"),
             tran_step=QuantityModel(value=period / NPTS, unit="s"),
             period=QuantityModel(value=period, unit="s"),

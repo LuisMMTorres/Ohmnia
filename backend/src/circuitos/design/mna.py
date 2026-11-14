@@ -13,6 +13,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 
 import numpy as np
+import scipy.linalg as sla
 from numpy.typing import NDArray
 
 ComplexArray = NDArray[np.complex128]
@@ -69,7 +70,9 @@ class Circuit:
                     out.append(n)
         return out
 
-    def _solve(self, s: complex, dc: bool) -> tuple[dict[str, complex], dict[str, complex]]:
+    def _system(
+        self, s: complex, dc: bool
+    ) -> tuple[NDArray[np.complex128], NDArray[np.complex128], list[str], dict[str, int]]:
         nodes = self._nodes()
         idx = {n: i for i, n in enumerate(nodes)}
         branches = [e for e in self.elements if e.kind in ("V", "E") or (e.kind == "L")]
@@ -115,6 +118,11 @@ class Circuit:
                             A[k, idx[c]] -= cs * e.value
                 elif not dc:  # inductor: v = sL·i
                     A[k, k] -= s * e.value
+        return A, z, nodes, bidx
+
+    def _solve(self, s: complex, dc: bool) -> tuple[dict[str, complex], dict[str, complex]]:
+        A, z, nodes, bidx = self._system(s, dc)
+        idx = {n: i for i, n in enumerate(nodes)}
         x = np.linalg.solve(A, z)
         volts = {n: complex(x[i]) for n, i in idx.items()}
         volts["0"] = 0j
@@ -137,6 +145,14 @@ class Circuit:
             for o in outputs:
                 out[o][k] = v[o]
         return out
+
+    def poles(self) -> NDArray[np.complex128]:
+        """Natural frequencies (rad/s): finite s with det(G + sC) = 0 (generalized eigenvalues)."""
+        g, _, _, _ = self._system(0j, dc=False)
+        a1, _, _, _ = self._system(1 + 0j, dc=False)
+        cm = a1 - g
+        lam = sla.eigvals(g, -cm)
+        return np.asarray(lam[np.isfinite(lam)], dtype=np.complex128)
 
     def netlist(self) -> list[str]:
         """The same circuit as SPICE element lines."""
