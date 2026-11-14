@@ -75,9 +75,15 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 - 🔶 `GT-RET-P1..P7`: casos propostos (D6), aguardando conferência do usuário
 - ✅ [validacao/retificadores.md](validacao/retificadores.md)
 
-## Fase 4 — Fontes reguladas e amplificadores ⏳
+## Fase 4 — Fontes reguladas e amplificadores 👀
 
-- ⏳ `DM-ZEN`, `DM-LIN`, `DM-BIAS`, `DM-SSA`, `DM-DIFF`, `DM-PA`, `DM-CHAVE`, `DM-FORMA`
+- ✅ `DM-ZEN`, `DM-LIN`, `DM-BIAS`, `DM-SSA`, `DM-DIFF`, `DM-PA`, `DM-CHAVE`, `DM-FORMA`
+- ✅ Modelos de dispositivo comuns ao cálculo e ao ngspice (Ebers-Moll, MOSFET quadrático, Zener linear por partes); ponto Q exato; resposta em frequência nodal exata, conferida com `.ac`
+- ✅ Catálogo de reguladores (MC78xx, MC79xx, LM317, LM337) com esquemas `regulator.*`
+- ✅ Aba **Projeto**: diagrama de Bode (cálculo × `.ac`), eixo de tempo por módulo, campos por variante
+- ✅ `AS-*` da Fase 4 (32 casos, maior erro 0,60 % nas grandezas exatas)
+- 🔶 `GT-P8..P15`: casos propostos, aguardando conferência do usuário
+- ✅ [validacao/fontes-amplificadores.md](validacao/fontes-amplificadores.md), [validacao/catalogo-reguladores.md](validacao/catalogo-reguladores.md)
 
 ## Fase 5 — Ampops, filtros e instrumentação ⏳
 

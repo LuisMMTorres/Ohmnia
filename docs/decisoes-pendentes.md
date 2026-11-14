@@ -41,6 +41,7 @@ Pergunta: segue alguma referência formal de derating (norma ou manual de empres
 ## D6. Casos de referência (golden tests) — **EM CONFERÊNCIA (2026-11-14)**
 
 - O usuário pediu que eu sugerisse os exemplos. Sete casos propostos em [validacao/casos-referencia-propostos.md](validacao/casos-referencia-propostos.md), já como teste `GT-RET-P1..P7`. Aguardam conferência dos números ou a indicação do exemplo equivalente do livro.
+- Fase 4: mais oito casos (P8–P15, polarização, pequenos sinais, ceifadores, grampeador e multiplicador), teste `GT-P8..P15`, mesma situação.
 
 ## D7. Revisão dos componentes do banco inicial — **ADOTADA A RECOMENDAÇÃO (2026-11-14), sem objeção do usuário:** eu cadastro como `extraido` com página; o usuário libera (`revisado`) pela tela de revisão, por amostragem.
 

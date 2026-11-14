@@ -43,3 +43,22 @@ edição): Hart, cap. 3, retificadores de meia onda (P1, P3) e filtro capacitivo
 ponte controlada e trifásica (P4, P6); Mohan, cap. 6, efeito de Ls (P7); Rashid, capítulo de
 retificadores controlados, ponte semicontrolada (P5); Barbi, *Eletrônica de Potência*, para os
 mesmos casos em português.
+
+## Fase 4: casos P8–P15 (`tests/golden/test_gt_fase4.py`)
+
+VBE = 0,7 V e VF = 0,7 V; o modelo exponencial do transistor recebe IS tal que VBE = 0,7 V na
+corrente da fórmula fechada, então o resolvedor tem de reproduzir o número de livro.
+
+| Caso | Circuito | Grandeza | Valor |
+|---|---|---|---|
+| P8 | Polarização fixa: VCC = 12 V, RB = 240 kΩ, RC = 2,2 kΩ, β = 50 | IB / IC / VCE | 47,08 µA / 2,354 mA / 6,82 V |
+| P9 | Divisor (exata): VCC = 22 V, R1 = 39 kΩ, R2 = 3,9 kΩ, RC = 10 kΩ, RE = 1,5 kΩ, β = 100 | IC / VCE | 0,838 mA / 12,35 V |
+| P10 | Realimentação de coletor: VCC = 10 V, RF = 250 kΩ, RC = 4,7 kΩ, RE = 1,2 kΩ, β = 90 | IC / VCE | 1,064 mA / 3,66 V |
+| P11 | E-MOSFET com divisor: VG = 4 V, RS = 1 kΩ, RD = 2 kΩ, VDD = 16 V, VT = 2 V, k = 0,3 mA/V² | ID | 0,594 mA |
+| P12 | EC com RE desviado: gm = 40 mS, rπ = 2,5 kΩ, RB = 10 kΩ, RC = 4,7 kΩ, RL = 10 kΩ, Rs = 600 Ω, Cin = 1 µF | Avs / fL | −gm(RC∥RL)·Ri/(Rs+Ri) / 61,2 Hz |
+| P13 | Ceifadores: Vm = 10 V, VB = 3 V, R = 1 kΩ, RL = 100 kΩ | paralelo / série / duplo | 3,7 V e −9,90 V / 6,3 V / ±3,7 V |
+| P14 | Grampeador positivo: Vm = 10 V, VB = 3 V, C = 10 µF, RL = 100 kΩ, 1 kHz | VC / mín. / máx. | 12,3 V / 2,3 V / ≈ 22,29 V |
+| P15 | Cockcroft-Walton, 3 estágios: Vm = 100 V, 60 Hz, RL = 1 MΩ | Vo sem carga / ΔV | 595,8 V / 22·Io/(fC) |
+
+Exemplos parecidos no Boylestad & Nashelsky, 11ª ed. (confira o número na sua edição): cap. 4 para
+P8–P10, cap. 7 para P11, cap. 5 e 9 para P12, cap. 2 para P13–P14 e multiplicadores.
