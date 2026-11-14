@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from circuitos.design.engine import TopologyModule
 from circuitos.design.plugins.bias import BiasModule
+from circuitos.design.plugins.chave import ChaveModule
 from circuitos.design.plugins.diff import DiffModule
 from circuitos.design.plugins.lin import LinModule
 from circuitos.design.plugins.pa import PaModule
@@ -25,6 +26,7 @@ MODULES: dict[str, TopologyModule] = {
         SsaModule(),
         DiffModule(),
         PaModule(),
+        ChaveModule(),
     )
 }
 
