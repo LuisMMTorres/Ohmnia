@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import math
 from collections.abc import Mapping
+from dataclasses import replace
 from typing import Literal
 
 import pint
@@ -31,15 +32,19 @@ from circuitos.design.devmodels import (
     Bjt,
     bjt_model,
     hfe_entries,
+    jfet_model,
     mos_model,
     quantity,
 )
 from circuitos.design.engine import Analysis, Device
-from circuitos.design.qpoint import bjt_q, mos_q, thevenin
+from circuitos.design.fet import power_stress, vgs_for
+from circuitos.design.qpoint import bjt_q, jfet_q, mos_q, thevenin
 from circuitos.reports.common import BomRow, LabItem, resistor_row
 from circuitos.reports.schematic import Svg
 
-Config = Literal["fixa", "emissor", "divisor", "coletor", "mos_divisor"]
+Config = Literal[
+    "fixa", "emissor", "divisor", "coletor", "mos_divisor", "jfet_auto", "jfet_divisor"
+]
 REF_BJT = BOYLESTAD.model_copy(update={"chapter": "4 (DC biasing — BJTs)"})
 REF_FET = BOYLESTAD.model_copy(update={"chapter": "7 (FET biasing)"})
 
@@ -92,7 +97,7 @@ SPEC_LABELS = {
     "VCE": "VCE/VDS desejada",
     "kE": "VE/VS como fração de VCC",
     "divider_k": "Critério do divisor (β·RE ≥ k·R2)",
-    "R_gate": "R1 + R2 do divisor da porta",
+    "R_gate": "Resistência da porta (R1 + R2 do divisor, ou RG)",
     "VBE": "VBE na corrente de ensaio (premissa)",
     "beta_ideal": "β de projeto (passo ideal)",
     "res_series": "Série de resistores",
@@ -103,6 +108,8 @@ ENUM_LABELS = {
     "divisor": "TBJ, divisor de tensão",
     "coletor": "TBJ, realimentação do coletor",
     "mos_divisor": "MOSFET de enriquecimento, divisor de tensão",
+    "jfet_auto": "JFET canal N, autopolarização (RS)",
+    "jfet_divisor": "JFET canal N, divisor de tensão",
 }
 
 
@@ -148,13 +155,20 @@ class BiasModule:
     def _mos(self, s: BiasSpec) -> bool:
         return s.config == "mos_divisor"
 
+    def _jfet(self, s: BiasSpec) -> bool:
+        return s.config.startswith("jfet")
+
     def roles(self, spec: BaseModel) -> list[Role]:
         s = _spec(spec)
         if self._mos(s):
             return [Role(designator="Q1", category="mosfet.n", description="MOSFET canal N")]
+        if self._jfet(s):
+            return [Role(designator="Q1", category="jfet.n", description="JFET canal N")]
         return [Role(designator="Q1", category="bjt.npn", description="Transistor NPN")]
 
     def required_ratings(self, role: Role) -> list[str]:
+        if role.category.startswith("jfet"):
+            return ["VDS", "Ptot"]
         return ["VDS"] if role.category.startswith("mosfet") else ["VCEO", "IC"]
 
     def ambient(self, spec: BaseModel) -> pint.Quantity:
@@ -164,6 +178,10 @@ class BiasModule:
         return Q_(0.5, "K/W")
 
     def accepts(self, spec: BaseModel, role: Role, rec: ComponentRecord) -> bool:
+        if role.category.startswith("jfet"):
+            idss = quantity(rec, "IDSS", ("typ", "max"))
+            need = _spec(spec).IC.to_pint().m_as("A")
+            return idss is not None and float(idss.m_as("A")) > need and "yfs" in rec.parameters
         if role.category.startswith("mosfet"):
             vth = rec.parameters.get("VGS(th)")
             rds = rec.parameters.get("RDS(on)")
@@ -180,6 +198,8 @@ class BiasModule:
         s = _spec(spec)
         if self._mos(s):
             return self._analyse_mos(s, devices)
+        if self._jfet(s):
+            return self._analyse_jfet(s, devices)
         log = CalcLog()
         warnings: list[DesignWarning] = []
         vcc = s.VCC.to_pint().m_as("V")
@@ -579,6 +599,167 @@ class BiasModule:
             convergence_keys=("ID_q", "VDS_q"),
         )
 
+    def _analyse_jfet(self, s: BiasSpec, devices: Mapping[str, Device]) -> Analysis:
+        log = CalcLog()
+        warnings: list[DesignWarning] = []
+        vdd = s.VCC.to_pint().m_as("V")
+        idq = s.IC.to_pint().m_as("A")
+        vds = s.VCE.to_pint().m_as("V")
+        rec = devices["Q1"].record
+        m, w = jfet_model(rec, log, "Q1")
+        warnings += [DesignWarning(code="modelo", message=x) for x in w]
+        vgs = vgs_for(m, idq, log)
+        idss_min = quantity(rec, "IDSS", ("min",)) if rec is not None else None
+        if idss_min is not None and float(idss_min.m_as("A")) <= idq:
+            warnings.append(
+                DesignWarning(
+                    code="dispersao",
+                    message=f"A corrente pedida passa do IDSS mínimo do datasheet "
+                    f"({float(idss_min.m_as('mA')):.3g} mA): com uma peça do limite inferior o "
+                    "ponto Q não é alcançado. Meça o IDSS da peça antes de montar.",
+                )
+            )
+        r: dict[str, float] = {}
+        if s.config == "jfet_auto":
+            rs_calc = log.add(
+                record(
+                    "RS_calc",
+                    "Resistor de fonte da autopolarização",
+                    r"R_S = -\frac{V_{GS}}{I_D}",
+                    output=Q_(-vgs / idq, "ohm"),
+                    inputs={"V_{GS}": Q_(vgs, "V"), "I_D": s.IC.to_pint()},
+                    reference=REF_FET,
+                )
+            )
+            r["RS"] = commercial(log, "RS", "RS comercial", rs_calc, s.res_series, "nearest").m_as(
+                "ohm"
+            )
+            r["RG"] = s.R_gate.to_pint().m_as("ohm")
+            vg = 0.0
+        else:
+            vs = s.kE * vdd
+            rs_calc = log.add(
+                record(
+                    "RS_calc",
+                    "Resistor de fonte pelo critério VS = kE·VDD",
+                    r"R_S = \frac{k_E V_{DD}}{I_D}",
+                    output=Q_(vs / idq, "ohm"),
+                    inputs={"k_E": Q_(s.kE, ""), "V_{DD}": s.VCC.to_pint(), "I_D": s.IC.to_pint()},
+                    reference=REF_FET,
+                )
+            )
+            r["RS"] = commercial(log, "RS", "RS comercial", rs_calc, s.res_series, "nearest").m_as(
+                "ohm"
+            )
+            vg_t = vgs + idq * r["RS"]
+            if vg_t <= 0:
+                raise ValueError("Com este kE a porta ficaria negativa: aumente kE")
+            rg = s.R_gate.to_pint().m_as("ohm")
+            r2_calc = log.add(
+                record(
+                    "R2_calc",
+                    "R2 do divisor da porta (corrente de porta nula)",
+                    r"R_2 = (R_1 + R_2)\,\frac{V_G}{V_{DD}},\; V_G = V_{GS} + I_D R_S",
+                    output=Q_(rg * vg_t / vdd, "ohm"),
+                    inputs={"R_1 + R_2": Q_(rg, "ohm"), "V_G": Q_(vg_t, "V")},
+                    reference=REF_FET,
+                )
+            )
+            r["R2"] = commercial(log, "R2", "R2 comercial", r2_calc, s.res_series, "nearest").m_as(
+                "ohm"
+            )
+            r1_calc = log.add(
+                record(
+                    "R1_calc",
+                    "R1 do divisor da porta",
+                    r"R_1 = R_2\,\frac{V_{DD} - V_G}{V_G}",
+                    output=Q_(r["R2"] * (vdd - vg_t) / vg_t, "ohm"),
+                    inputs={"R_2": Q_(r["R2"], "ohm"), "V_G": Q_(vg_t, "V")},
+                    reference=REF_FET,
+                )
+            )
+            r["R1"] = commercial(log, "R1", "R1 comercial", r1_calc, s.res_series, "nearest").m_as(
+                "ohm"
+            )
+            vg = vdd * r["R2"] / (r["R1"] + r["R2"])
+        rd_calc = log.add(
+            record(
+                "RD_calc",
+                "Resistor de dreno pela VDS desejada",
+                r"R_D = \frac{V_{DD} - V_{DS} - I_D R_S}{I_D}",
+                output=Q_((vdd - vds - idq * r["RS"]) / idq, "ohm"),
+                inputs={
+                    "V_{DD}": s.VCC.to_pint(),
+                    "V_{DS}": s.VCE.to_pint(),
+                    "I_D": s.IC.to_pint(),
+                },
+                reference=REF_FET,
+            )
+        )
+        if rd_calc.magnitude <= 0:
+            raise ValueError("VDS + VS não cabe em VDD")
+        r["RD"] = commercial(log, "RD", "RD comercial", rd_calc, s.res_series, "nearest").m_as(
+            "ohm"
+        )
+        qp = jfet_q(m, vdd, vg, r["RD"], r["RS"])
+        log.add(
+            record(
+                "ID_q",
+                "Corrente de dreno com os resistores comerciais",
+                r"V_G = V_{GS} + I_D R_S,\quad I_D = I_{DSS}\left(1 - \frac{V_{GS}}{V_{GS(off)}}"
+                r"\right)^2",
+                output=Q_(qp.ID, "A").to("mA"),
+                inputs={"V_G": Q_(vg, "V"), "R_S": Q_(r["RS"], "ohm")},
+                assumptions=[
+                    "saturação; λ = 0; corrente de porta nula",
+                    "mesmas equações do simulador",
+                ],
+                reference=REF_FET,
+            )
+        )
+        if qp.VDS < qp.VGS + m.VP:
+            warnings.append(
+                DesignWarning(
+                    code="ohmica",
+                    message="O JFET saiu da saturação (VDS < VGS − VGS(off)); revise RD.",
+                )
+            )
+        # the spread of IDSS and VGS(off) moves the Q-point: show the bounds of the datasheet
+        summary: dict[str, pint.Quantity] = {
+            "ID_q": Q_(qp.ID, "A").to("mA"),
+            "VGS_q": Q_(qp.VGS, "V"),
+            "VDS_q": Q_(qp.VDS, "V"),
+            "VG_q": Q_(qp.VG, "V"),
+            "VS_q": Q_(qp.VS, "V"),
+            "VD_q": Q_(qp.VD, "V"),
+            "IC_q": Q_(qp.ID, "A").to("mA"),
+            "VCE_q": Q_(qp.VDS, "V"),
+            "VB_q": Q_(qp.VG, "V"),
+            "VE_q": Q_(qp.VS, "V"),
+            "IDSS_model": Q_(m.IDSS, "A").to("mA"),
+            "VP_model": Q_(m.VP, "V"),
+        } | {k: Q_(v, "ohm") for k, v in r.items()}
+        p_q = qp.VDS * qp.ID
+        summary["P_Q"] = Q_(p_q, "W").to("mW")
+        stresses = [
+            Stress(
+                designator="Q1",
+                key="VDS",
+                label="Tensão dreno-fonte (corte)",
+                value=QuantityModel(value=vdd, unit="V"),
+                calc_step_id="ID_q",
+            ),
+            power_stress(rec, p_q, s.TA.to_pint(), log, "Q1", "P_eq"),
+        ]
+        return Analysis(
+            log=log,
+            stresses=stresses,
+            summary=summary,
+            losses={},
+            warnings=warnings,
+            convergence_keys=("ID_q", "VDS_q"),
+        )
+
     # ------------------------------------------------------------------ circuit
     def build_circuit(
         self, spec: BaseModel, devices: Mapping[str, Device], summary: Mapping[str, QuantityModel]
@@ -592,7 +773,26 @@ class BiasModule:
             if k in summary
         }
         lines = [f"VCC vcc 0 DC {vcc:.9g}"]
-        if self._mos(s):
+        if self._jfet(s):
+            mj, _ = jfet_model(devices["Q1"].record, log, "Q1")
+            mj = replace(mj, CGS=0.0, CGD=0.0)  # DC check: no charging transient
+            lines += [
+                mj.spice("JQ"),
+                f"RD vcc dd {R['RD']:.9g}",
+                "VSC dd d 0",
+                "J1 d g s JQ",
+                f"RS s 0 {R['RS']:.9g}",
+            ]
+            if "RG" in summary:
+                lines.append(f"RG g 0 {summary['RG'].to_pint().m_as('ohm'):.9g}")
+            else:
+                lines += [f"R1 vcc g {R['R1']:.9g}", f"R2 g 0 {R['R2']:.9g}"]
+            checks = [
+                dc_check("Corrente de dreno", "ID_q", "i(vsc)"),
+                dc_check("VDS", "VDS_q", "v(d)-v(s)"),
+                dc_check("Tensão de fonte", "VS_q", "v(s)"),
+            ]
+        elif self._mos(s):
             m, _ = mos_model(devices["Q1"].record, log, "Q1")
             lines += [
                 m.spice("MQ"),
@@ -648,10 +848,12 @@ class BiasModule:
         x = 260
         svg.wire((60, top), (400, top))
         svg.terminal(400, top, f"VCC = {s.VCC.value:g} V")
-        mos = self._mos(s)
+        mos = self._mos(s) or self._jfet(s)
         rtop = "RD" if mos else "RC"
         svg.resistor_v(x + 8, top, 120, rtop, val(rtop))
-        if mos:
+        if self._jfet(s):
+            b, c, e = svg.njfet(x, 160, "Q1", part)
+        elif mos:
             b, c, e = svg.nmos(x, 160, "Q1", part)
         else:
             b, c, e = svg.bjt(x, 160, "Q1", part)
@@ -661,7 +863,10 @@ class BiasModule:
             svg.resistor_v(e[0], e[1], bot, rbot, val(rbot))
         else:
             svg.wire(e, (e[0], bot))
-        if s.config in ("divisor", "mos_divisor"):
+        if s.config == "jfet_auto":
+            svg.resistor_v(120, 160, bot, "RG", val("RG"))
+            svg.wire((120, 160), b)
+        elif s.config in ("divisor", "mos_divisor", "jfet_divisor"):
             svg.resistor_v(120, top, 160, "R1", val("R1"))
             svg.resistor_v(120, 160, bot, "R2", val("R2"))
             svg.wire((120, 160), b)
@@ -678,5 +883,7 @@ class BiasModule:
         return svg.render(title)
 
     def bom_extra(self, spec: BaseModel, result: DesignResult) -> list[BomRow]:
-        rows = [resistor_row(result, k, k) for k in ("R1", "R2", "RB", "RC", "RD", "RE", "RS")]
+        rows = [
+            resistor_row(result, k, k) for k in ("R1", "R2", "RB", "RC", "RD", "RE", "RS", "RG")
+        ]
         return [r for r in rows if r]

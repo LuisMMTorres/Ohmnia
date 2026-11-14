@@ -19,6 +19,7 @@ import math
 from dataclasses import dataclass
 
 import pint
+from scipy.optimize import brentq
 
 from circuitos.components.models import ComponentRecord, Parameter
 from circuitos.core.calc import BibRef, CalcLog, record
@@ -68,6 +69,18 @@ class Bjt:
 
     def ic(self, vbe: float, vt: float = VT_300K) -> float:
         return self.IS * (math.exp(vbe / vt) - 1.0)
+
+    def ie(self, vbe: float, vt: float = VT_300K) -> float:
+        """Emitter current in forward-active operation (VBC ≪ 0)."""
+        return self.IS * math.expm1(min(vbe / vt, 200.0)) * (1 + 1 / self.BF)
+
+    def em(self, vbe: float, vbc: float, vt: float = VT_300K) -> tuple[float, float]:
+        """(IB, IC) of the full Ebers-Moll transport model with BR = 1 (as in SPICE, BR=1)."""
+        ebe = math.expm1(min(vbe / vt, 200.0))
+        ebc = math.expm1(min(vbc / vt, 200.0))
+        ib = self.IS / self.BF * ebe + self.IS * ebc
+        ic = self.IS * (ebe - ebc) - self.IS * ebc
+        return ib, ic
 
     def spice(self, name: str) -> str:
         kind = "PNP" if self.pnp else "NPN"
@@ -206,6 +219,256 @@ def bjt_model(
         )
     )
     return Bjt(IS=is_, BF=bf, pnp=pnp), warnings
+
+
+# ------------------------------------------------------------------------------ Darlington
+
+
+@dataclass(frozen=True)
+class Darlington:
+    """Monolithic Darlington as two Ebers-Moll transistors: Q1 drives the base of Q2.
+
+    The internal base-emitter shunt resistors of power Darlingtons are not modelled (their
+    values are only in the datasheet drawing, without tolerance); they matter at low current.
+    """
+
+    q1: Bjt
+    q2: Bjt
+
+    @property
+    def pnp(self) -> bool:
+        return self.q1.pnp
+
+    @property
+    def BF(self) -> float:
+        """Composite forward gain IC/IB = β1β2 + β1 + β2."""
+        b1, b2 = self.q1.BF, self.q2.BF
+        return b1 * b2 + b1 + b2
+
+    def split(self, vbe: float) -> float:
+        """VBE of Q2 for a composite |VBE| in forward-active operation (IE1 = IB2)."""
+
+        def f(v2: float) -> float:
+            ib2 = self.q2.IS * math.expm1(min(v2 / VT_300K, 200)) / self.q2.BF
+            return self.q1.ie(vbe - v2) - ib2
+
+        return float(brentq(f, vbe / 2 - 1.0, vbe / 2 + 1.0, xtol=1e-15, rtol=1e-14))
+
+    def ic(self, vbe: float) -> float:
+        v2 = self.split(vbe)
+        return self.q1.ic(vbe - v2) + self.q2.ic(v2)
+
+    def ie(self, vbe: float) -> float:
+        return self.q2.ie(self.split(vbe))
+
+    def vbe(self, ic: float) -> float:
+        return float(brentq(lambda v: self.ic(v) - ic, 0.0, 4.0, xtol=1e-15, rtol=1e-14))
+
+    def subckt(self, name: str) -> str:
+        """SPICE subcircuit ``name c b e`` with the two transistor models."""
+        return "\n".join(
+            [
+                self.q1.spice(f"{name}_Q1M"),
+                self.q2.spice(f"{name}_Q2M"),
+                f".subckt {name} c b e",
+                f"Q1 c b m {name}_Q1M",
+                f"Q2 c m e {name}_Q2M",
+                ".ends",
+            ]
+        )
+
+
+def is_darlington(rec: ComponentRecord) -> bool:
+    """A part whose minimum hFE is in the thousands is a Darlington (two junctions)."""
+    return any((p.min or 0) >= 500 for _, p in hfe_entries(rec))
+
+
+def darlington_model(
+    rec: ComponentRecord | None,
+    ic_op: float,
+    vbe_assumed: pint.Quantity,
+    beta_ideal: float,
+    log: CalcLog,
+    designator: str,
+) -> tuple[Darlington, list[str]]:
+    """Two equal-β transistors whose composite gain is the datasheet hFE near ``ic_op``.
+
+    β of each transistor from hFE = β² + 2β (β1 = β2 = β). IS of each makes its VBE equal to
+    ``vbe_assumed`` (per junction) at the hFE test current, so the composite VBE there is
+    2·vbe_assumed; the datasheet VBE(on) (a maximum at high current) is logged for comparison.
+    """
+    warnings: list[str] = []
+    v0 = vbe_assumed.m_as("V")
+    pnp = rec is not None and rec.category.startswith("bjt.pnp")
+    if rec is None:
+        hfe, ic_t, how = beta_ideal, max(ic_op, 1e-6), "premissa de projeto (sem componente)"
+        inputs: dict[str, pint.Quantity] = {}
+    else:
+        entries = [(i, p) for i, p in hfe_entries(rec) if i is not None] or hfe_entries(rec)
+        ic_k, p = min(entries, key=lambda e: abs(math.log((e[0] or ic_op) / max(ic_op, 1e-9))))
+        ic_t = float(ic_k or ic_op)
+        if p.typ is not None:
+            hfe, how = float(p.typ), "hFE típico do datasheet"
+        elif p.min is not None and p.max is not None:
+            hfe, how = math.sqrt(p.min * p.max), "média geométrica de hFE mín. e máx."
+        else:
+            hfe, how = value(p, ("min", "max")), "único limite de hFE do datasheet (mínimo)"
+            warnings.append(
+                f"{designator}: o datasheet só dá hFE mínimo ({hfe:g}); o modelo usa esse valor "
+                "(ganho real maior: corrente de base sobra)."
+            )
+        inputs = {"h_{FE}": Q_(hfe, ""), "I_{C,ensaio}": Q_(ic_t, "A")}
+    beta = math.sqrt(hfe + 1.0) - 1.0
+    log.add(
+        record(
+            f"BF_{designator}",
+            f"Ganho de cada transistor do Darlington {designator}"
+            + (f" ({rec.part_number})" if rec else ""),
+            r"h_{FE} = \beta_1\beta_2 + \beta_1 + \beta_2,\; \beta_1 = \beta_2 "
+            r"\Rightarrow \beta = \sqrt{h_{FE} + 1} - 1",
+            output=Q_(beta, ""),
+            inputs=inputs,
+            assumptions=[how, "os dois transistores com o mesmo β"],
+            reference=BOYLESTAD.model_copy(update={"chapter": "5 (Darlington connection)"}),
+        )
+    )
+    ib1 = ic_t / hfe
+    ic1 = beta * ib1
+    ic2 = beta * (beta + 1) * ib1
+    e = math.expm1(v0 / VT_300K)
+    q1 = Bjt(IS=ic1 / e, BF=beta, pnp=pnp)
+    q2 = Bjt(IS=ic2 / e, BF=beta, pnp=pnp)
+    vbe_on = rec.parameters.get("VBE(on)") if rec else None
+    log.add(
+        record(
+            f"IS_{designator}",
+            f"Correntes de saturação do Darlington {designator} (Q2, saída)",
+            r"I_{S2} = \frac{\beta(\beta+1)\,I_{C,ensaio}/h_{FE}}{e^{V_{BE}/V_T} - 1},\;"
+            r"I_{S1} = I_{S2}/(\beta + 1)",
+            output=Q_(q2.IS, "A"),
+            inputs={"V_{BE}": vbe_assumed.to("V"), "I_{C,ensaio}": Q_(ic_t, "A")}
+            | (
+                {"V_{BE(on),ds}": Q_(value(vbe_on, ("max", "typ")), parse_unit(vbe_on.unit))}
+                if vbe_on is not None and vbe_on.has_value
+                else {}
+            ),
+            assumptions=[
+                "V_BE de cada junção na corrente de ensaio é premissa do projeto; V_BE do "
+                "conjunto = 2 V_BE",
+                "resistores internos de base-emissor não modelados",
+            ],
+            reference=SEDRA,
+        )
+    )
+    return Darlington(q1, q2), warnings
+
+
+# ------------------------------------------------------------------------------------ JFET
+
+
+@dataclass(frozen=True)
+class Jfet:
+    """N-channel JFET, Shockley's equation (SPICE NJF level 1 with λ = 0)."""
+
+    IDSS: float  # A
+    VP: float  # V, magnitude of the pinch-off voltage (VGS(off) = −VP)
+    CGS: float = 0.0  # F, constant
+    CGD: float = 0.0  # F, constant
+
+    @property
+    def BETA(self) -> float:
+        return self.IDSS / self.VP**2
+
+    def id_sat(self, vgs: float) -> float:
+        """ID = IDSS(1 − VGS/VGS(off))², zero below cut-off."""
+        return 0.0 if vgs <= -self.VP else self.IDSS * (1 + vgs / self.VP) ** 2
+
+    def gm(self, vgs: float) -> float:
+        return 0.0 if vgs <= -self.VP else 2 * self.IDSS / self.VP * (1 + vgs / self.VP)
+
+    def spice(self, name: str) -> str:
+        # PB very large: constant junction capacitances, as in the analysis
+        caps = f" CGS={self.CGS:.6g} CGD={self.CGD:.6g} PB=1e6" if self.CGS or self.CGD else ""
+        return f".model {name} NJF(VTO={-self.VP:.6g} BETA={self.BETA:.6g} LAMBDA=0{caps})"
+
+
+def jfet_model(
+    rec: ComponentRecord | None,
+    log: CalcLog,
+    designator: str,
+    idss_ideal: float = 4e-3,
+    vp_ideal: float = 2.0,
+) -> tuple[Jfet, list[str]]:
+    """IDSS typical (else geometric mean of the range); VP from the transconductance at VGS = 0.
+
+    gm0 = 2·IDSS/|VP| (Boylestad, 11th ed., ch. 8, FET small-signal analysis), so |VP| =
+    2·IDSS/|yfs| with yfs typical (else the geometric mean); the result is checked against the
+    VGS(off) range of the datasheet.
+    """
+    warnings: list[str] = []
+    if rec is None:
+        log.add(
+            record(
+                f"VP_{designator}",
+                f"JFET {designator}: premissas do passo ideal",
+                r"I_{DSS},\ |V_P| \text{ de projeto}",
+                output=Q_(vp_ideal, "V"),
+                inputs={"I_{DSS}": Q_(idss_ideal, "A").to("mA")},
+            )
+        )
+        return Jfet(idss_ideal, vp_ideal), warnings
+
+    def central(key: str, unit: str) -> tuple[float, str]:
+        p = rec.parameters.get(key)
+        if p is None or not p.has_value:
+            raise ValueError(f"{rec.part_number}: datasheet sem {key}")
+        u = parse_unit(p.unit)
+        if p.typ is not None:
+            return Q_(p.typ, u).m_as(unit), "típico"
+        if p.min is not None and p.max is not None:
+            return Q_(math.sqrt(p.min * p.max), u).m_as(unit), "média geométrica de mín. e máx."
+        return Q_(value(p, ("min", "max")), u).m_as(unit), "único limite"
+
+    idss, how_i = central("IDSS", "A")
+    gm0, how_g = central("yfs", "S")
+    vp = 2 * idss / gm0
+    log.add(
+        record(
+            f"IDSS_{designator}",
+            f"IDSS do modelo de {designator} ({rec.part_number})",
+            r"I_{DSS} = I_{DSS,ds}",
+            output=Q_(idss, "A").to("mA"),
+            assumptions=[how_i],
+            reference=BOYLESTAD.model_copy(update={"chapter": "6 (Shockley's equation)"}),
+        )
+    )
+    log.add(
+        record(
+            f"VP_{designator}",
+            f"Tensão de estrangulamento do modelo de {designator}",
+            r"|V_P| = \frac{2 I_{DSS}}{g_{m0}},\; g_{m0} = |y_{fs}|",
+            output=Q_(vp, "V"),
+            inputs={"I_{DSS}": Q_(idss, "A").to("mA"), "g_{m0}": Q_(gm0, "S").to("mS")},
+            assumptions=[f"|yfs| {how_g}", "lei quadrática de Shockley (a mesma do SPICE)"],
+            reference=BOYLESTAD.model_copy(update={"chapter": "8 (FET amplifiers: gm0)"}),
+        )
+    )
+    off = rec.parameters.get("VGS(off)")
+    if off is not None and off.has_value:
+        u = parse_unit(off.unit)
+        lo = Q_(off.min, u).m_as("V") if off.min is not None else 0.0
+        hi = Q_(off.max, u).m_as("V") if off.max is not None else math.inf
+        if not lo <= vp <= hi:
+            warnings.append(
+                f"{designator}: |VP| = {vp:.3g} V do modelo fica fora da faixa de VGS(off) do "
+                f"datasheet ({lo:g} a {hi:g} V)."
+            )
+    cgs = cgd = 0.0
+    ciss, crss = rec.parameters.get("Ciss"), rec.parameters.get("Crss")
+    if ciss is not None and crss is not None and ciss.has_value and crss.has_value:
+        cgd = Q_(value(crss), parse_unit(crss.unit)).m_as("F")
+        cgs = Q_(value(ciss), parse_unit(ciss.unit)).m_as("F") - cgd
+    return Jfet(idss, vp, cgs, cgd), warnings
 
 
 # ---------------------------------------------------------------------------------- Zener

@@ -269,6 +269,23 @@ class Svg:
             self.text(x + 16, y + 11, part, "start", "pn")
         return (gx, y), (x + 8, y - 26), (x + 8, y + 26)
 
+    def njfet(
+        self, x: float, y: float, label: str, part: str = ""
+    ) -> tuple[tuple[float, float], tuple[float, float], tuple[float, float]]:
+        """N-channel JFET, gate at the left (arrow pointing into the channel); (G, D, S)."""
+        gx = x - 22
+        self.line(gx, y + 8, x - 2, y + 8)
+        self.parts.append(f'<path d="M{x - 8},{y + 4} L{x - 2},{y + 8} L{x - 8},{y + 12} Z"/>')
+        self.line(x - 2, y - 14, x - 2, y + 14)
+        self.line(x - 2, y - 10, x + 8, y - 10)
+        self.line(x + 8, y - 10, x + 8, y - 26)
+        self.line(x - 2, y + 10, x + 8, y + 10)
+        self.line(x + 8, y + 10, x + 8, y + 26)
+        self.text(x + 16, y - 2, label)
+        if part:
+            self.text(x + 16, y + 11, part, "start", "pn")
+        return (gx, y + 8), (x + 8, y - 26), (x + 8, y + 26)
+
     def ground(self, x: float, y: float) -> None:
         self.line(x, y, x, y + 6)
         self.line(x - 10, y + 6, x + 10, y + 6)

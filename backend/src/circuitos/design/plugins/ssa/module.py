@@ -42,20 +42,23 @@ from circuitos.design.devmodels import (
     SEDRA,
     VT_300K,
     Bjt,
+    Jfet,
     Mos,
     bjt_model,
     hfe_entries,
+    jfet_model,
     mos_model,
     quantity,
     with_capacitances,
 )
 from circuitos.design.engine import Analysis, Device
-from circuitos.design.qpoint import bjt_q, mos_q, parallel, thevenin
+from circuitos.design.fet import power_stress, vgs_for
+from circuitos.design.qpoint import bjt_q, jfet_q, mos_q, parallel, thevenin
 from circuitos.design.smallsignal import Network, corner, log_grid
 from circuitos.reports.common import BomRow, LabItem, capacitor_row, resistor_row
 from circuitos.reports.schematic import Svg
 
-Config = Literal["EC", "CC", "BC", "FC"]
+Config = Literal["EC", "CC", "BC", "FC", "FCJ"]
 REF = BOYLESTAD.model_copy(update={"chapter": "5 (BJT AC analysis)"})
 REF_F = BOYLESTAD.model_copy(update={"chapter": "9 (BJT and JFET frequency response)"})
 REF_FET = BOYLESTAD.model_copy(update={"chapter": "8 (FET amplifiers)"})
@@ -132,6 +135,7 @@ ENUM_LABELS = {
     "CC": "coletor comum (seguidor de emissor)",
     "BC": "base comum",
     "FC": "fonte comum (MOSFET)",
+    "FCJ": "fonte comum (JFET)",
 }
 
 
@@ -179,9 +183,13 @@ class SsaModule:
         s = _spec(spec)
         if s.config == "FC":
             return [Role(designator="Q1", category="mosfet.n", description="MOSFET canal N")]
+        if s.config == "FCJ":
+            return [Role(designator="Q1", category="jfet.n", description="JFET canal N")]
         return [Role(designator="Q1", category="bjt.npn", description="Transistor NPN")]
 
     def required_ratings(self, role: Role) -> list[str]:
+        if role.category.startswith("jfet"):
+            return ["VDS", "Ptot"]
         return ["VDS"] if role.category.startswith("mosfet") else ["VCEO", "IC"]
 
     def ambient(self, spec: BaseModel) -> pint.Quantity:
@@ -191,6 +199,10 @@ class SsaModule:
         return Q_(0.5, "K/W")
 
     def accepts(self, spec: BaseModel, role: Role, rec: ComponentRecord) -> bool:
+        if role.category.startswith("jfet"):
+            idss = quantity(rec, "IDSS", ("typ", "max"))
+            need = _spec(spec).IC.to_pint().m_as("A")
+            return idss is not None and float(idss.m_as("A")) > need and "yfs" in rec.parameters
         if role.category.startswith("mosfet"):
             vth = rec.parameters.get("VGS(th)")
             rds = rec.parameters.get("RDS(on)")
@@ -212,13 +224,21 @@ class SsaModule:
         rsig = s.Rs.to_pint().m_as("ohm")
         fl = s.f_L.to_pint().m_as("Hz")
         rec = devices["Q1"].record
-        fet = s.config == "FC"
+        fet = s.config in ("FC", "FCJ")
+        jf = s.config == "FCJ"
         r: dict[str, float] = {}
         net = Network()
         net.R("sig", "b0", rsig)
         # ---------------------------------------------------------------- bias
         ve = s.kE * vcc
-        if fet:
+        if jf:
+            m_j, w = jfet_model(rec, log, "Q1")
+            warnings += [DesignWarning(code="modelo", message=x) for x in w]
+            vgs = vgs_for(m_j, ic, log)
+            gm = m_j.gm(vgs)
+            re_tot = ve / ic
+            rc_calc = (vcc - ve) / 2 / ic
+        elif fet:
             m_f, w = mos_model(rec, log, "Q1")
             warnings += [DesignWarning(code="modelo", message=x) for x in w]
             vgs = m_f.VT + math.sqrt(2 * ic / m_f.KP)
@@ -272,7 +292,7 @@ class SsaModule:
                 "ohm"
             )
         # split RE for the gain target (EC/FC)
-        if s.config in ("EC", "FC") and s.Av > 0:
+        if s.config in ("EC", "FC", "FCJ") and s.Av > 0:
             rload = parallel(r["RC"], rl)
             if fet:
                 re1_calc = (gm * rload / s.Av - 1) / gm
@@ -315,11 +335,13 @@ class SsaModule:
                         f"({gm * rload:.3g}); o projeto usa RE todo desviado.",
                     )
                 )
-        re1 = r.get("RE1", 0.0 if s.config in ("EC", "FC") else re_c)
+        re1 = r.get("RE1", 0.0 if s.config in ("EC", "FC", "FCJ") else re_c)
         re_dc = r.get("RE", 0.0) + r.get("RE1", 0.0) + r.get("RE2", 0.0)
         # divider
         if fet:
             vg = vgs + ic * re_dc
+            if vg <= 0:
+                raise ValueError("A porta ficaria negativa com este kE: aumente kE")
             r2 = commercial(
                 log, "R2", "R2 da porta", Q_(1e6 * vg / vcc, "ohm"), s.res_series, "nearest"
             ).m_as("ohm")
@@ -353,7 +375,31 @@ class SsaModule:
         vth, rth = thevenin(vcc, r1, r2)
         # ---------------------------------------------------------------- Q-point
         summary: dict[str, pint.Quantity] = {}
-        if fet:
+        if jf:
+            qj = jfet_q(m_j, vcc, vth, r.get("RC", 0.0), re_dc)
+            icq, vceq = qj.ID, qj.VDS
+            gm = m_j.gm(qj.VGS)
+            log.add(
+                record(
+                    "gm",
+                    "Transcondutância no ponto Q",
+                    r"g_m = g_{m0}\left(1 - \frac{V_{GS}}{V_{GS(off)}}\right),\;"
+                    r"g_{m0} = \frac{2 I_{DSS}}{|V_P|}",
+                    output=Q_(gm, "S").to("mS"),
+                    inputs={
+                        "V_{GS}": Q_(qj.VGS, "V"),
+                        "I_{DSS}": Q_(m_j.IDSS, "A").to("mA"),
+                        "|V_P|": Q_(m_j.VP, "V"),
+                    },
+                    reference=REF_FET,
+                )
+            )
+            m_ss: Bjt | Mos | Jfet = m_j
+            rpi = math.inf
+            cpi, cmu = m_j.CGS, m_j.CGD
+            summary["C_pi"] = Q_(cpi, "F").to("pF")
+            summary["C_mu"] = Q_(cmu, "F").to("pF")
+        elif fet:
             qf = mos_q(m_f, vcc, vth, r.get("RC", 0.0), re_dc)
             icq, vceq = qf.ID, qf.VDS
             gm = math.sqrt(2 * m_f.KP * icq)
@@ -367,7 +413,7 @@ class SsaModule:
                     reference=REF_FET,
                 )
             )
-            m_ss: Bjt | Mos = m_f
+            m_ss = m_f
             rpi = math.inf
             cpi = cmu = 0.0
         else:
@@ -404,7 +450,9 @@ class SsaModule:
             summary["re"] = Q_(1 / gm, "ohm")
             summary["C_pi"] = Q_(cpi, "F").to("pF")
             summary["C_mu"] = Q_(cmu, "F").to("pF")
-        if fet:
+        if jf:
+            vb_q, ve_q, vc_q = qj.VG, qj.VS, qj.VD
+        elif fet:
             vb_q, ve_q, vc_q = qf.VG, qf.VS, qf.VD
         else:
             vb_q, ve_q, vc_q = q.VB, q.VE, q.VC
@@ -492,7 +540,7 @@ class SsaModule:
             r_in_seen = rsig + zin
         cin_req = 1 / (w_l / 10 * r_in_seen)
         cout_req = 1 / (w_l / 10 * r_out_seen)
-        dom_ce = s.config in ("EC", "FC") and re_dc - re1 > 0
+        dom_ce = s.config in ("EC", "FC", "FCJ") and re_dc - re1 > 0
         if dom_ce:
             # resistance seen by CE: RE2 ∥ (RE1 + (r_π + R_s∥R_B)/(β+1))  (BJT) or 1/gm (FET)
             rth_b = parallel(rsig, rb)
@@ -540,7 +588,7 @@ class SsaModule:
         h = net.solve(f, "sig", ["out"])["out"]
         mag = np.abs(h)
         f_l = corner(f, mag, "fl")
-        f_h = corner(f, mag, "fh") if not fet and cpi + cmu > 0 else None
+        f_h = corner(f, mag, "fh") if cpi + cmu > 0 else None
         fsig = s.f_sig.to_pint().m_as("Hz")
         h_sig = complex(net.solve(np.array([fsig]), "sig", ["out"])["out"][0])
         log.add(
@@ -597,7 +645,7 @@ class SsaModule:
             | {k: Q_(v, "ohm") for k, v in r.items()}
             | {k: Q_(v, "F").to("uF") for k, v in caps.items()}
         )
-        if s.config in ("EC", "FC") and s.Av > 0 and abs(abs(av) / s.Av - 1) > 0.2:
+        if s.config in ("EC", "FC", "FCJ") and s.Av > 0 and abs(abs(av) / s.Av - 1) > 0.2:
             warnings.append(
                 DesignWarning(
                     code="ganho",
@@ -638,6 +686,8 @@ class SsaModule:
                 calc_step_id="gm",
             ),
         ]
+        if jf:  # a JFET datasheet has no ID rating: check the dissipation instead
+            stresses[1] = power_stress(rec, p_q, s.TA.to_pint(), log, "Q1", "P_eq")
         return Analysis(
             log=log,
             stresses=stresses,
@@ -689,7 +739,7 @@ class SsaModule:
             n.C("s1", "b", cin)
             n.R("b", "0", rb)
             re1 = r.get("RE1", 0.0)
-            re2 = r.get("RE2", r.get("RE", 0.0) if s.config in ("EC", "FC") else 0.0)
+            re2 = r.get("RE2", r.get("RE", 0.0) if s.config in ("EC", "FC", "FCJ") else 0.0)
             if s.config == "CC":
                 n.R("e", "0", r["RE"])
             elif re1 > 0 and re2 <= 0:  # RE fully unbypassed: no CE
@@ -701,10 +751,9 @@ class SsaModule:
             else:
                 n.R("e", "0", re2)
                 n.C("e", "0", caps.get("CE", 0.0))
-        if not fet:
-            n.R("b", "e", rpi)
-            n.C("b", "e", cpi)
-            n.C("b", "c", cmu)
+        n.R("b", "e", rpi)  # skipped when infinite (FET)
+        n.C("b", "e", cpi)
+        n.C("b", "c", cmu)
         n.gm("c", "e", gm, "b", "e")
         if s.config == "CC":
             n.R("c", "0", 1e-3)  # collector at AC ground
@@ -724,7 +773,7 @@ class SsaModule:
         rec = devices["Q1"].record
         vcc = s.VCC.to_pint().m_as("V")
         ic = s.IC.to_pint().m_as("A")
-        fet = s.config == "FC"
+        fet = s.config in ("FC", "FCJ")
         R = {
             k: summary[k].to_pint().m_as("ohm")
             for k in ("R1", "R2", "RC", "RE", "RE1", "RE2")
@@ -738,7 +787,11 @@ class SsaModule:
             f"VS sig 0 DC 0 AC 1 SIN(0 {vs:.9g} {fsig:.9g})",
             f"RSIG sig s1 {s.Rs.to_pint().m_as('ohm'):.9g}",
         ]
-        if fet:
+        if s.config == "FCJ":
+            m_j, _ = jfet_model(rec, log, "Q1")
+            lines.append(m_j.spice("JQ"))
+            dev = "J1 cq b e JQ"
+        elif fet:
             m_f, _ = mos_model(rec, log, "Q1")
             lines.append(m_f.spice("MQ"))
             dev = "M1 cq b e e MQ"
@@ -855,7 +908,7 @@ class SsaModule:
         svg.terminal(560, top, f"VCC = {s.VCC.value:g} V")
         svg.ac_source(40, 150, bot, "vs", f"Rs = {format_eng(s.Rs.to_pint())}")
         svg.wire((40, 150), (40, 130), (70, 130))
-        fet = s.config == "FC"
+        fet = s.config in ("FC", "FCJ")
         if s.config == "BC":
             b, c, e = svg.bjt(x, 150, "Q1", part)
             svg.cap_h(70, 160, 130, "Cin", v("Cin"))
@@ -868,7 +921,12 @@ class SsaModule:
             svg.cap_v(120, 150, bot, "CB", v("CB"))
             svg.wire((120, 150), (170, 150))
         else:
-            b, c, e = svg.nmos(x, 150, "Q1", part) if fet else svg.bjt(x, 150, "Q1", part)
+            if s.config == "FCJ":
+                b, c, e = svg.njfet(x, 150, "Q1", part)
+            elif fet:
+                b, c, e = svg.nmos(x, 150, "Q1", part)
+            else:
+                b, c, e = svg.bjt(x, 150, "Q1", part)
             svg.cap_h(70, 170, 130, "Cin", v("Cin"))
             svg.wire((170, 130), (230, 130), (230, 150), b)
             svg.resistor_v(230, top, 130, "R1", v("R1"))

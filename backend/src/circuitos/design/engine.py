@@ -301,8 +301,9 @@ def run(
                 warnings.append(
                     DesignWarning(
                         code="sem_dados_termicos",
-                        message=f"{role.designator}: o datasheet de {part.part_number} não tem "
-                        "Rθja nem Tj máx.; a temperatura de junção não foi calculada.",
+                        message=f"{role.designator}: o datasheet de {part.part_number} não traz "
+                        "Rθja ou Tj máx.; a temperatura de junção não foi calculada (a "
+                        "dissipação é conferida nas margens, quando há Ptot).",
                     )
                 )
 

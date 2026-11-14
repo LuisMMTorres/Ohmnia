@@ -13,7 +13,7 @@ from dataclasses import dataclass
 
 from scipy.optimize import brentq
 
-from .devmodels import Bjt, Mos
+from .devmodels import Bjt, Jfet, Mos
 
 
 @dataclass(frozen=True)
@@ -100,3 +100,37 @@ def thevenin(vcc: float, r1: float, r2: float) -> tuple[float, float]:
 def parallel(*rs: float) -> float:
     g = sum(1 / r for r in rs if math.isfinite(r) and r > 0)
     return 1 / g if g > 0 else math.inf
+
+
+@dataclass(frozen=True)
+class JfetQ:
+    ID: float
+    VGS: float
+    VG: float
+    VS: float
+    VD: float
+    gate_forward: bool = False  # the network would forward-bias the gate (VGS clamped at 0)
+
+    @property
+    def VDS(self) -> float:
+        return self.VD - self.VS
+
+
+def jfet_q(m: Jfet, vdd: float, vg: float, rd: float, rs: float) -> JfetQ:
+    """Saturation Q-point of an N-JFET: gate at vg (no gate current), RD to vdd, RS to ground.
+
+    Solves VG = VGS + ID(VGS)·RS with Shockley's equation, the graphical/quadratic solution of
+    Boylestad & Nashelsky, 11th ed., ch. 7 (FET biasing) done numerically.
+    """
+
+    def residual(vgs: float) -> float:
+        return vg - vgs - m.id_sat(vgs) * rs
+
+    if residual(0.0) >= 0:  # even IDSS cannot make VS reach VG: gate would conduct
+        i = m.IDSS
+        return JfetQ(i, 0.0, vg, i * rs, vdd - i * rd, gate_forward=residual(0.0) > 1e-12)
+    if residual(-m.VP) <= 0:
+        return JfetQ(0.0, -m.VP, vg, 0.0, vdd)
+    vgs = brentq(residual, -m.VP, 0.0, xtol=1e-15, rtol=1e-14)
+    i = m.id_sat(vgs)
+    return JfetQ(ID=i, VGS=vgs, VG=vg, VS=i * rs, VD=vdd - i * rd)
