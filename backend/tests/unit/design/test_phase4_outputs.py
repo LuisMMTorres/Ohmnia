@@ -41,6 +41,24 @@ VARIANTS = [
     ("DM-SSA", {"config": "FC", "IC": {"value": 10, "unit": "mA"}}),
     ("DM-DIFF", {"tail": "espelho"}),
     *[("DM-PA", {"cls": c}) for c in ("A", "B")],
+    ("DM-PA", {"darlington": True}),
+    ("DM-PAD", {}),
+    *[
+        ("DM-BIAS", {"config": c, "IC": {"value": 1, "unit": "mA"}})
+        for c in ("jfet_auto", "jfet_divisor")
+    ],
+    ("DM-SSA", {"config": "FCJ", "IC": {"value": 1, "unit": "mA"}}),
+    ("DM-CHAVE", {"device": "darlington"}),
+    (
+        "DM-LIN",
+        {
+            "ldo": True,
+            "kind": "ajustavel",
+            "Vo": {"value": 3.3, "unit": "V"},
+            "Io": {"value": 50, "unit": "mA"},
+            "Vin": {"value": 6, "unit": "V"},
+        },
+    ),
     ("DM-CHAVE", {"load": "resistiva"}),
     (
         "DM-CHAVE",

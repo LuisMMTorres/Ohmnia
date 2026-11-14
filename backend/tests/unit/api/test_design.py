@@ -98,7 +98,17 @@ def test_report_html_without_simulation(client):
     assert "Conferência com a simulação" not in html
 
 
-PHASE4 = ["DM-ZEN", "DM-LIN", "DM-BIAS", "DM-SSA", "DM-DIFF", "DM-PA", "DM-CHAVE", "DM-FORMA"]
+PHASE4 = [
+    "DM-ZEN",
+    "DM-LIN",
+    "DM-BIAS",
+    "DM-SSA",
+    "DM-DIFF",
+    "DM-PA",
+    "DM-PAD",
+    "DM-CHAVE",
+    "DM-FORMA",
+]
 
 
 def test_modules_list_phase4_with_labels(client):
