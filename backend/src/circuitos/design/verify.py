@@ -213,13 +213,25 @@ def compare_full(
         f = np.real(plot[plot.scale].data).astype(np.float64)
         exprs = {c.probe for c in ac_checks} | set(circuit.bode_probes.values())
         ac = AcResponse(f=f, mag={e: ac_vector(plot, e) for e in exprs})
+    # |H| at a given frequency: one exact ``.ac lin 1 f f`` point instead of interpolating
+    # the logarithmic sweep (steep skirts and notches interpolate badly)
+    point: dict[tuple[str, float], float] = {}
+    for check in ac_checks:
+        if check.metric == "ac_mag" and check.freq is not None:
+            key = (check.probe, check.freq)
+            if key not in point:
+                f0 = f"{check.freq:.12g}"
+                cards = f"* {circuit.title}\n{circuit.netlist}\n.ac lin 1 {f0} {f0}"
+                point[key] = float(ac_vector(backend.run(cards).plot("ac"), check.probe)[0])
     out: list[SimComparison] = []
     for check in circuit.checks:
         analytic = summary[check.summary_key]
         a = analytic.to_pint()
         if check.metric.startswith("ac_"):
             assert ac is not None, "verificação AC sem varredura .ac no circuito"
-            sim = measure_ac(check, ac)
+            sim = point.get((check.probe, check.freq)) if check.freq else None
+            if sim is None:
+                sim = measure_ac(check, ac)
         else:
             assert ss is not None, "verificação no tempo sem transitória no circuito"
             sim = measure(check, ss)
