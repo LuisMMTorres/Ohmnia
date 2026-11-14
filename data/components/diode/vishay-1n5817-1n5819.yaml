@@ -1,0 +1,67 @@
+# Fonte: Vishay, documento 88525, revisão 01-Jul-2020. Valores transcritos do datasheet.
+# A dV/dt máxima (10 000 V/µs, pág. 1) ainda não tem campo no esquema e não foi cadastrada.
+family: 1N5817–1N5819
+category: diode.schottky
+schema_version: "1.0"
+manufacturer: Vishay General Semiconductor
+package: DO-41 (DO-204AL)
+lifecycle: ativo
+datasheets:
+  - id: vishay-88525
+    manufacturer: Vishay
+    document_number: "88525"
+    revision: 01-Jul-2020
+    url: https://www.vishay.com/docs/88525/1n5817.pdf
+    sha256: 4465c825da3be36cc8a180c252d5d80e7651d9dc237cd3d09822a759f39c970b
+review: {status: rascunho, created_by: "Claude (transcrição assistida)"}
+parameters:
+  IF(AV):
+    {max: 1.0, unit: A, status: extraido, conditions: {TL: 90 degC},
+     note: "Terminais de 0,375 in (9,5 mm)",
+     source: {page: 1, location: "Maximum ratings — maximum average forward rectified current"}}
+  IFSM:
+    {max: 25, unit: A, status: extraido, conditions: {t_pulse: 8.3 ms},
+     note: "Meia senoide única de 8,3 ms sobreposta à carga nominal",
+     source: {page: 1, location: "Maximum ratings — peak forward surge current"}}
+  Tj_max:
+    {max: 125, unit: degC, status: extraido,
+     source: {page: 1, location: "Maximum ratings — operating junction and storage temperature range"}}
+  Tj_min:
+    {min: -65, unit: degC, status: extraido,
+     source: {page: 1, location: "Maximum ratings — operating junction and storage temperature range"}}
+  Rth_ja:
+    {typ: 50, unit: K/W, status: extraido,
+     note: "Placa vertical, terminais de 0,375 in (9,5 mm), ilhas de cobre de 38 mm × 38 mm",
+     source: {page: 2, location: "Thermal characteristics — RθJA"}}
+  Rth_jl:
+    {typ: 15, unit: K/W, status: extraido,
+     note: "Placa vertical, terminais de 0,375 in (9,5 mm), ilhas de cobre de 38 mm × 38 mm",
+     source: {page: 2, location: "Thermal characteristics — RθJL"}}
+per_part:
+  VRRM: {unit: V, status: extraido, source: {page: 1, location: "Maximum ratings — VRRM"}}
+  VRMS: {unit: V, status: extraido, source: {page: 1, location: "Maximum ratings — VRMS"}}
+  VDC: {unit: V, status: extraido, source: {page: 1, location: "Maximum ratings — VDC"}}
+  VRSM: {unit: V, status: extraido, source: {page: 1, location: "Maximum ratings — VRSM"}}
+  VF:
+    {unit: V, status: extraido, conditions: {IF: 1.0 A, TA: 25 degC},
+     note: "Teste pulsado: 300 µs, ciclo de trabalho de 1 %",
+     source: {page: 1, location: "Electrical characteristics — maximum instantaneous forward voltage"}}
+  VF@3.1A:
+    {unit: V, status: extraido, conditions: {IF: 3.1 A, TA: 25 degC},
+     note: "Teste pulsado: 300 µs, ciclo de trabalho de 1 %",
+     source: {page: 1, location: "Electrical characteristics — maximum instantaneous forward voltage"}}
+  IR:
+    {max: 1.0, unit: mA, status: extraido, conditions: {VR: "=VDC", TA: 25 degC},
+     note: "Corrente reversa média máxima; teste pulsado",
+     source: {page: 1, location: "Electrical characteristics — maximum average reverse current at rated DC blocking voltage"}}
+  IR@100C:
+    {max: 10, unit: mA, status: extraido, conditions: {VR: "=VDC", TA: 100 degC},
+     note: "Corrente reversa média máxima; teste pulsado",
+     source: {page: 1, location: "Electrical characteristics — maximum average reverse current at rated DC blocking voltage"}}
+  Cj:
+    {unit: pF, status: extraido, conditions: {VR: 4.0 V, f: 1 MHz},
+     source: {page: 1, location: "Electrical characteristics — typical junction capacitance"}}
+parts:
+  1N5817: {VRRM: 20, VRMS: 14, VDC: 20, VRSM: 24, VF: 0.450, VF@3.1A: 0.750, IR: {}, IR@100C: {}, Cj: {typ: 125}}
+  1N5818: {VRRM: 30, VRMS: 21, VDC: 30, VRSM: 36, VF: 0.550, VF@3.1A: 0.875, IR: {}, IR@100C: {}, Cj: {typ: 110}}
+  1N5819: {VRRM: 40, VRMS: 28, VDC: 40, VRSM: 48, VF: 0.600, VF@3.1A: 0.900, IR: {}, IR@100C: {}, Cj: {typ: 110}}

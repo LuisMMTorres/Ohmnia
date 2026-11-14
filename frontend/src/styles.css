@@ -201,3 +201,140 @@ th {
   color: var(--muted);
   font-weight: 600;
 }
+/* Page layouts */
+main.single {
+  grid-template-columns: 1fr;
+}
+main.review {
+  grid-template-columns: minmax(420px, 1fr) minmax(420px, 1fr);
+  align-items: start;
+}
+main.review > .panel:last-child {
+  position: sticky;
+  top: 8px;
+}
+@media (max-width: 1000px) {
+  main.review {
+    grid-template-columns: 1fr;
+  }
+  main.review > .panel:last-child {
+    position: static;
+  }
+}
+input[type="text"],
+input[type="number"],
+input:not([type]) {
+  font: inherit;
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  max-width: 100%;
+}
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+label.inline {
+  flex-direction: row;
+  align-items: center;
+}
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: flex-end;
+}
+.filters .grow {
+  flex: 1 1 320px;
+}
+.filters .grow input {
+  width: 100%;
+}
+table.clickable tbody tr {
+  cursor: pointer;
+}
+table.clickable tbody tr:hover,
+tr.active {
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+}
+.params {
+  font-size: 13px;
+}
+.params td {
+  vertical-align: top;
+}
+.params td:first-child {
+  min-width: 150px;
+}
+.req {
+  color: var(--error-text);
+  margin-left: 2px;
+}
+.note {
+  font-style: italic;
+}
+td.actions {
+  white-space: nowrap;
+}
+td.actions button {
+  padding: 3px 8px;
+  margin: 0 4px 4px 0;
+  font-size: 12px;
+}
+.release {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+}
+.sheet img.page,
+img.page {
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--border);
+  background: #fff;
+}
+.badge {
+  display: inline-block;
+  padding: 1px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  white-space: nowrap;
+}
+.badge.liberado,
+.badge.revisado {
+  color: #1b7a3a;
+  border-color: #1b7a3a;
+}
+.badge.em_revisao,
+.badge.extraido {
+  color: #8a5a00;
+  border-color: #c08a1e;
+}
+.badge.rejeitado,
+.badge.a_verificar {
+  color: var(--error-text);
+  border-color: var(--error-text);
+}
+.calc-steps li {
+  margin-bottom: 14px;
+}
+.calc-input {
+  display: inline-block;
+  margin-right: 16px;
+}
+.results {
+  min-width: 0;
+}
+.params td:nth-child(2),
+.params td:nth-child(3),
+.params td:nth-child(4) {
+  white-space: nowrap;
+}

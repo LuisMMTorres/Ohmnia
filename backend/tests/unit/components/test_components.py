@@ -39,7 +39,7 @@ def p(symbol, unit, status="revisado", conditions=None, **values):
 def full_record(**overrides):
     params = {
         "VRRM": p("VRRM", "V", max=100),
-        "IF(AV)": p("IF(AV)", "A", max=1, conditions={"T_ref": {"value": 75, "unit": "degC"}}),
+        "IF(AV)": p("IF(AV)", "A", max=1, conditions={"TA": {"value": 75, "unit": "degC"}}),
         "IFSM": p("IFSM", "A", max=10, conditions={"t_pulse": {"value": 8.3, "unit": "ms"}}),
         "VF": p(
             "VF",
@@ -165,3 +165,16 @@ def test_unexpected_parameter_reported():
     params["hFE"] = p("hFE", "", typ=100)
     rec = rec.model_copy(update={"parameters": params})
     assert any("não previsto" in x for x in validate_against_schema(rec))
+
+
+def test_same_symbol_at_other_conditions():
+    rec = full_record()
+    params = dict(rec.parameters)
+    params["IR@125C"] = p(
+        "IR",
+        "uA",
+        max=50,
+        conditions={"VR": {"value": 100, "unit": "V"}, "TA": {"value": 125, "unit": "degC"}},
+    )
+    rec = rec.model_copy(update={"parameters": params})
+    assert validate_against_schema(rec) == []

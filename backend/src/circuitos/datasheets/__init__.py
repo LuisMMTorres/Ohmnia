@@ -1,1 +1,1 @@
-"""Reservado para fases posteriores (ver docs/roadmap.md)."""
+"""Datasheet archive, text extraction and (later) LLM-assisted mapping and curve digitising."""

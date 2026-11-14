@@ -5,8 +5,8 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 | Fase | Entrega | Status |
 |---|---|---|
 | 0 | Descoberta e planejamento | ✅ |
-| 1 | Fundação | 👀 |
-| 2 | Banco de componentes e bancada de dispositivos | ⏳ |
+| 1 | Fundação | ✅ |
+| 2 | Banco de componentes e bancada de dispositivos | 🔄 |
 | 3 | Retificadores (vertical completa, define o padrão) | ⏳ |
 | 4 | Fontes reguladas e amplificadores | ⏳ |
 | 5 | Ampops, filtros e instrumentação | ⏳ |
@@ -27,7 +27,7 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 - ✅ `docs/decisoes-pendentes.md`
 - ✅ Aprovação do usuário de escopo e arquitetura (2026-11-14)
 
-## Fase 1 — Fundação 👀
+## Fase 1 — Fundação ✅
 
 - ✅ Monorepo `backend/`, `frontend/`, `docs/`, `data/`, `scripts/`
 - ✅ Script de verificação local `scripts/check.sh` (D1): ruff, mypy, import-linter, pytest com cobertura, Prettier, tsc, ESLint, Vitest, build
@@ -41,14 +41,17 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 - ✅ API REST e WebSocket (`/api/v1`)
 - ✅ Visualizador de sinais mínimo (uPlot): transitória, CA (módulo/fase) e tabela de ponto de operação
 - ✅ `AS-SMOKE-01`: circuitos RC, analítico × ngspice
-- 👀 Revisão do usuário ([validacao/fundacao.md](validacao/fundacao.md))
+- ✅ Revisão do usuário ([validacao/fundacao.md](validacao/fundacao.md)), aprovada em 2026-11-14
 
-## Fase 2 — Banco de componentes e bancada ⏳
+## Fase 2 — Banco de componentes e bancada 🔄
 
-- ⏳ CRUD, busca facetada, fluxo de revisão (rascunho → em revisão → liberado)
-- ⏳ Catálogo inicial a partir de datasheets oficiais: diodos, Zener, pontes, TBJ, MOSFET, SCR/TRIAC/DIAC (cada parâmetro com página)
+- ✅ Banco SQLite, importação de YAML, busca facetada, fluxo de revisão (rascunho → em revisão → liberado)
+- ✅ Armazenamento de datasheets por SHA-256, download sob demanda, páginas renderizadas
+- ✅ Diodos: 28 componentes (retificadores, rápidos, Schottky, sinal), cada valor conferido na página citada (`docs/validacao/catalogo-diodos.md`)
+- ⏳ Catálogo: Zener, pontes, TBJ, MOSFET, SCR/TRIAC/DIAC
 - ⏳ Dissipadores e núcleos (catálogo a definir)
-- ⏳ Bancadas `BD-PN`, `BD-DIODO`, `BD-ZENER`, `BD-TBJ`, `BD-FET`, `BD-TIR`
+- ✅ Bancada `BD-DIODO` (curva I×V com temperatura, `AS-DIODO-01`)
+- ⏳ Bancadas `BD-PN`, `BD-ZENER`, `BD-TBJ`, `BD-FET`, `BD-TIR`
 - ⏳ Sobreposição de curvas digitalizadas do datasheet; testes `DS-*`
 - ⏳ `docs/validacao/bancada.md`
 

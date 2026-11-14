@@ -1,4 +1,10 @@
+import os
+import tempfile
+
 import pytest
+
+# Never touch the user's real catalogue/datasheet folder from tests.
+os.environ.setdefault("CIRCUITOS_DATA_DIR", tempfile.mkdtemp(prefix="circuitos-test-"))
 
 from circuitos.simulation.backend import BatchNgspiceBackend, SharedNgspiceBackend
 

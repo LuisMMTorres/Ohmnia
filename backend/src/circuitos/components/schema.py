@@ -31,6 +31,7 @@ class ParameterSpec(BaseModel):
 
 class CategorySchema(BaseModel):
     category: str
+    extends: str | None = None
     schema_version: str
     description: str = ""
     required: list[str]
@@ -51,7 +52,19 @@ def load_schema(category: str) -> CategorySchema:
     path = SCHEMA_DIR / f"{category}.yaml"
     if not path.exists():
         raise DataIntegrityError(f"Categoria sem esquema: {category}")
-    return CategorySchema.model_validate(yaml.safe_load(path.read_text(encoding="utf-8")))
+    data = yaml.safe_load(path.read_text(encoding="utf-8"))
+    parent_name = data.get("extends")
+    if parent_name:
+        # A child category inherits the parent's parameter definitions; it may redefine
+        # ``required`` and add parameters. Parameters not required become optional.
+        parent = load_schema(parent_name)
+        params = {k: v.model_dump() for k, v in parent.parameters.items()}
+        params.update(data.get("parameters") or {})
+        data["parameters"] = params
+        data.setdefault("required", parent.required)
+        listed = set(data["required"])
+        data["optional"] = [k for k in params if k not in listed]
+    return CategorySchema.model_validate(data)
 
 
 def available_categories() -> list[str]:
@@ -67,7 +80,7 @@ def validate_against_schema(record: ComponentRecord) -> list[str]:
             f"versão do esquema {record.schema_version} difere da atual {schema.schema_version}"
         )
     for key, param in record.parameters.items():
-        spec = schema.parameters.get(key)
+        spec = schema.parameters.get(param.symbol)
         if spec is None:
             problems.append(f"{key}: parâmetro não previsto na categoria {record.category}")
             continue
@@ -78,8 +91,11 @@ def validate_against_schema(record: ComponentRecord) -> list[str]:
             problems.append(f"{key}: unidade {param.unit} incompatível com {spec.unit}")
         if param.has_value:
             for cond in spec.conditions_required:
-                if cond not in param.conditions:
-                    problems.append(f"{key}: falta a condição de teste {cond}")
+                # "Tj|TA": either condition satisfies the requirement (datasheets often state
+                # ambient temperature for pulsed measurements).
+                options = cond.split("|")
+                if not any(o in param.conditions for o in options):
+                    problems.append(f"{key}: falta a condição de teste {' ou '.join(options)}")
     return problems
 
 

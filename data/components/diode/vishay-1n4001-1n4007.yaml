@@ -1,0 +1,81 @@
+# Fonte: Vishay, documento 88503, revisão 29-Apr-2020. Valores transcritos do datasheet.
+family: 1N4001–1N4007
+category: diode.rectifier
+schema_version: "1.0"
+manufacturer: Vishay General Semiconductor
+package: DO-41 (DO-204AL)
+lifecycle: ativo
+datasheets:
+  - id: vishay-88503
+    manufacturer: Vishay
+    document_number: "88503"
+    revision: 29-Apr-2020
+    url: https://www.vishay.com/docs/88503/1n4001.pdf
+    sha256: 56a77c6615c90c11993d37d94e67f335cf3a2d1fe00f25d2a1a4833834356d07
+review: {status: rascunho, created_by: "Claude (transcrição assistida)"}
+parameters:
+  IF(AV):
+    {max: 1.0, unit: A, status: extraido, conditions: {TA: 75 degC},
+     note: "Terminais de 0,375 in (9,5 mm)",
+     source: {page: 1, location: "Maximum ratings — maximum average forward rectified current"}}
+  IFSM:
+    {max: 30, unit: A, status: extraido, conditions: {t_pulse: 8.3 ms},
+     note: "Meia senoide única de 8,3 ms sobreposta à carga nominal",
+     source: {page: 1, location: "Maximum ratings — peak forward surge current"}}
+  IFSM@1ms:
+    {max: 45, unit: A, status: extraido, conditions: {t_pulse: 1 ms, TA: 25 degC},
+     note: "Pulso retangular não repetitivo (fig. 3)",
+     source: {page: 1, location: "Maximum ratings — non-repetitive peak forward surge current, square waveform"}}
+  IFSM@2ms:
+    {max: 35, unit: A, status: extraido, conditions: {t_pulse: 2 ms, TA: 25 degC},
+     note: "Pulso retangular não repetitivo",
+     source: {page: 1, location: "Maximum ratings — non-repetitive peak forward surge current, square waveform"}}
+  IFSM@5ms:
+    {max: 30, unit: A, status: extraido, conditions: {t_pulse: 5 ms, TA: 25 degC},
+     note: "Pulso retangular não repetitivo",
+     source: {page: 1, location: "Maximum ratings — non-repetitive peak forward surge current, square waveform"}}
+  IR(AV):
+    {max: 30, unit: uA, status: extraido, conditions: {TL: 75 degC},
+     source: {page: 1, location: "Maximum ratings — maximum full load reverse current, full cycle average"}}
+  I2t:
+    {max: 3.7, unit: A**2*s, status: extraido, conditions: {t_pulse: 8.3 ms},
+     note: "t < 8,3 ms; nota (1) do datasheet: para uso em ponte retificadora",
+     source: {page: 1, location: "Maximum ratings — rating for fusing"}}
+  Tj_max:
+    {max: 150, unit: degC, status: extraido,
+     source: {page: 1, location: "Maximum ratings — operating junction and storage temperature range"}}
+  Tj_min:
+    {min: -50, unit: degC, status: extraido,
+     source: {page: 1, location: "Maximum ratings — operating junction and storage temperature range"}}
+  VF:
+    {max: 1.1, unit: V, status: extraido, conditions: {IF: 1.0 A, TA: 25 degC},
+     source: {page: 2, location: "Electrical characteristics — maximum instantaneous forward voltage"}}
+  Cj:
+    {typ: 15, unit: pF, status: extraido, conditions: {VR: 4.0 V, f: 1 MHz},
+     source: {page: 2, location: "Electrical characteristics — typical junction capacitance"}}
+  Rth_ja:
+    {typ: 50, unit: K/W, status: extraido,
+     note: "Terminais de 0,375 in (9,5 mm), montado em placa",
+     source: {page: 2, location: "Thermal characteristics — RθJA"}}
+  Rth_jl:
+    {typ: 25, unit: K/W, status: extraido,
+     note: "Terminais de 0,375 in (9,5 mm), montado em placa",
+     source: {page: 2, location: "Thermal characteristics — RθJL"}}
+per_part:
+  VRRM: {unit: V, status: extraido, source: {page: 1, location: "Maximum ratings — VRRM"}}
+  VRMS: {unit: V, status: extraido, source: {page: 1, location: "Maximum ratings — VRMS"}}
+  VDC: {unit: V, status: extraido, source: {page: 1, location: "Maximum ratings — VDC"}}
+  IR:
+    {max: 5.0, unit: uA, status: extraido, conditions: {VR: "=VDC", TA: 25 degC},
+     source: {page: 2, location: "Electrical characteristics — maximum DC reverse current at rated DC blocking voltage"}}
+  IR@125C:
+    {max: 50, unit: uA, status: extraido, conditions: {VR: "=VDC", TA: 125 degC},
+     source: {page: 2, location: "Electrical characteristics — maximum DC reverse current at rated DC blocking voltage"}}
+parts:
+  1N4001: {VRRM: 50, VRMS: 35, VDC: 50, IR: {}, IR@125C: {}}
+  1N4002: {VRRM: 100, VRMS: 70, VDC: 100, IR: {}, IR@125C: {}}
+  1N4003: {VRRM: 200, VRMS: 140, VDC: 200, IR: {}, IR@125C: {}}
+  1N4004: {VRRM: 400, VRMS: 280, VDC: 400, IR: {}, IR@125C: {}}
+  1N4005: {VRRM: 600, VRMS: 420, VDC: 600, IR: {}, IR@125C: {}}
+  1N4006: {VRRM: 800, VRMS: 560, VDC: 800, IR: {}, IR@125C: {}}
+  1N4007: {VRRM: 1000, VRMS: 700, VDC: 1000, IR: {}, IR@125C: {}}

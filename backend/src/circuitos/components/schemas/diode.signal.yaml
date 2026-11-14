@@ -1,0 +1,5 @@
+category: diode.signal
+extends: diode.rectifier
+schema_version: "1.0"
+description: Diodo de sinal (chaveamento rápido de baixa corrente)
+required: [VRRM, IF(AV), IFSM, VF, IR, trr, Tj_max]

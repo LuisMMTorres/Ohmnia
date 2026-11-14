@@ -70,6 +70,8 @@ def test_naming_helpers():
     assert canonical_name("V1#branch", "current") == "i(v1)"
     assert canonical_name("out", "voltage") == "v(out)"
     assert canonical_name("v(out)", "voltage") == "v(out)"
+    assert canonical_name("i(i-sweep)", "current") == "i-sweep"
+    assert canonical_name("v-sweep", "voltage") == "v-sweep"
     assert unit_for("", "i(r1)") == "A" and unit_for("", "v(x)") == "V"
     assert unit_for("", "@q1[ic]") == ""
     assert kind_for("dc1") == "dc" and kind_for("sens") == "other"
