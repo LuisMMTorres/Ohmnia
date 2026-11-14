@@ -1,0 +1,47 @@
+category: bjt.npn
+schema_version: "1.0"
+description: Transistor bipolar NPN
+required: [VCEO, IC, Ptot, hFE, VCE(sat), Tj_max]
+optional: []
+parameters:
+  VCEO:      {unit: V, kind: max_rating, description: Tensão coletor-emissor máxima (base aberta)}
+  VCBO:      {unit: V, kind: max_rating, description: Tensão coletor-base máxima (emissor aberto)}
+  VEBO:      {unit: V, kind: max_rating, description: Tensão emissor-base máxima (coletor aberto)}
+  IC:        {unit: A, kind: max_rating, description: Corrente de coletor contínua}
+  ICM:       {unit: A, kind: max_rating, description: Corrente de coletor de pico}
+  IB:        {unit: A, kind: max_rating, description: Corrente de base contínua}
+  IBM:       {unit: A, kind: max_rating, description: Corrente de base de pico}
+  Ptot:      {unit: W, kind: max_rating, description: Dissipação total, conditions_required: [TA|TC]}
+  Ptot_derating: {unit: W/K, kind: thermal, description: Redução da dissipação acima de 25 °C}
+  E_ind:     {unit: J, kind: max_rating, description: Energia de carga indutiva não grampeada}
+  Tj_max:    {unit: degC, kind: max_rating, description: Temperatura máxima de junção}
+  Tj_min:    {unit: degC, kind: max_rating, description: Temperatura mínima de operação da junção}
+  Tstg_max:  {unit: degC, kind: max_rating, description: Temperatura máxima de armazenamento}
+  Rth_ja:    {unit: K/W, kind: thermal, description: Resistência térmica junção-ambiente}
+  Rth_jc:    {unit: K/W, kind: thermal, description: Resistência térmica junção-cápsula}
+  V(BR)CEO:  {unit: V, kind: characteristic, description: Tensão de ruptura coletor-emissor, conditions_required: [IC]}
+  VCEO(sus): {unit: V, kind: characteristic, description: Tensão coletor-emissor de sustentação, conditions_required: [IC]}
+  V(BR)CBO:  {unit: V, kind: characteristic, description: Tensão de ruptura coletor-base, conditions_required: [IC]}
+  V(BR)EBO:  {unit: V, kind: characteristic, description: Tensão de ruptura emissor-base, conditions_required: [IE]}
+  ICBO:      {unit: A, kind: characteristic, description: Corrente de corte do coletor (emissor aberto), conditions_required: [VCB]}
+  ICEO:      {unit: A, kind: characteristic, description: Corrente de corte do coletor (base aberta), conditions_required: [VCE]}
+  ICES:      {unit: A, kind: characteristic, description: Corrente de corte do coletor (base em curto com o emissor), conditions_required: [VCE]}
+  ICEX:      {unit: A, kind: characteristic, description: Corrente de corte do coletor (junção base-emissor reversa), conditions_required: [VCE]}
+  IBL:       {unit: A, kind: characteristic, description: Corrente de corte da base, conditions_required: [VCE]}
+  IEBO:      {unit: A, kind: characteristic, description: Corrente de corte do emissor, conditions_required: [VEB]}
+  IBEX:      {unit: A, kind: characteristic, description: Corrente de corte da base, conditions_required: [VCE]}
+  hFE:       {unit: dimensionless, kind: characteristic, description: Ganho de corrente CC, conditions_required: [IC, VCE]}
+  VCE(sat):  {unit: V, kind: characteristic, description: Tensão de saturação coletor-emissor, conditions_required: [IC, IB]}
+  VBE(sat):  {unit: V, kind: characteristic, description: Tensão de saturação base-emissor, conditions_required: [IC, IB]}
+  VBE(on):   {unit: V, kind: characteristic, description: Tensão base-emissor em condução, conditions_required: [IC, VCE]}
+  fT:        {unit: Hz, kind: characteristic, description: Produto ganho-largura de banda, conditions_required: [IC, VCE]}
+  hfe:       {unit: dimensionless, kind: characteristic, description: Ganho de corrente de pequenos sinais, conditions_required: [IC, VCE]}
+  hie:       {unit: ohm, kind: characteristic, description: Impedância de entrada (parâmetro h), conditions_required: [IC, VCE]}
+  hoe:       {unit: S, kind: characteristic, description: Admitância de saída (parâmetro h), conditions_required: [IC, VCE]}
+  Cobo:      {unit: F, kind: characteristic, description: Capacitância de saída, conditions_required: [VCB]}
+  Cibo:      {unit: F, kind: characteristic, description: Capacitância de entrada, conditions_required: [VEB]}
+  NF:        {unit: dimensionless, kind: characteristic, description: Figura de ruído (em dB)}
+  td:        {unit: s, kind: characteristic, description: Tempo de atraso, conditions_required: [IC]}
+  tr:        {unit: s, kind: characteristic, description: Tempo de subida, conditions_required: [IC]}
+  ts:        {unit: s, kind: characteristic, description: Tempo de armazenamento, conditions_required: [IC]}
+  tf:        {unit: s, kind: characteristic, description: Tempo de descida, conditions_required: [IC]}

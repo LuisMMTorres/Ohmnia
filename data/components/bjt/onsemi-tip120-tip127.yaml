@@ -1,0 +1,532 @@
+# Fonte: onsemi, TIP120/D, Rev. 10, June 2024.
+family: TIP120–TIP127
+category: bjt.npn
+schema_version: '1.0'
+manufacturer: onsemi
+package: TO-220AB, case 221A
+lifecycle: ativo
+datasheets:
+- id: onsemi-tip120
+  manufacturer: onsemi
+  document_number: TIP120/D
+  revision: Rev. 10, June 2024
+  url: https://www.onsemi.com/pdf/datasheet/tip120-d.pdf
+  sha256: 924e152035f0f7505d0f31b68650d7a55b33470d72141adcc128acd239ab4a9b
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VEBO:
+    max: 5.0
+    unit: V
+    status: extraido
+    source:
+      page: 2
+      location: Maximum ratings — emitter-base voltage
+  IC:
+    max: 5.0
+    unit: A
+    status: extraido
+    source:
+      page: 2
+      location: Maximum ratings — collector current continuous
+  ICM:
+    max: 8.0
+    unit: A
+    status: extraido
+    source:
+      page: 2
+      location: Maximum ratings — collector current peak
+  IB:
+    max: 120
+    unit: mA
+    status: extraido
+    source:
+      page: 2
+      location: Maximum ratings — base current
+  Ptot:
+    max: 65
+    unit: W
+    conditions:
+      TC: 25 degC
+    status: extraido
+    source:
+      page: 2
+      location: Maximum ratings — total power dissipation @ TC = 25 °C
+  Ptot_derating:
+    max: 0.52
+    unit: W/K
+    status: extraido
+    source:
+      page: 2
+      location: Maximum ratings — derate above 25 °C (TC)
+  Ptot@TA:
+    max: 2.0
+    unit: W
+    conditions:
+      TA: 25 degC
+    status: extraido
+    source:
+      page: 2
+      location: Maximum ratings — total power dissipation @ TA = 25 °C
+  Ptot_derating@TA:
+    max: 0.016
+    unit: W/K
+    status: extraido
+    source:
+      page: 2
+      location: Maximum ratings — derate above 25 °C (TA)
+  E_ind:
+    max: 50
+    unit: mJ
+    note: 'Nota 1: IC = 1 A, L = 100 mH, P.R.F. = 10 Hz, VCC = 20 V, RBE = 100 Ω'
+    status: extraido
+    source:
+      page: 2
+      location: Maximum ratings — unclamped inductive load energy (note 1)
+  Tj_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 2
+      location: Maximum ratings — operating and storage junction temperature range
+  Tj_min:
+    min: -65
+    unit: degC
+    status: extraido
+    source:
+      page: 2
+      location: Maximum ratings — operating and storage junction temperature range
+  Tstg_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 2
+      location: Maximum ratings — operating and storage junction temperature range
+  Rth_jc:
+    max: 1.92
+    unit: K/W
+    status: extraido
+    source:
+      page: 2
+      location: Thermal characteristics — RθJC
+  Rth_ja:
+    max: 62.5
+    unit: K/W
+    status: extraido
+    source:
+      page: 2
+      location: Thermal characteristics — RθJA
+  IEBO:
+    max: 2.0
+    unit: mA
+    conditions:
+      VEB: 5.0 V
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics (TC = 25 °C) — emitter cutoff current
+  hFE:
+    min: 1000
+    unit: dimensionless
+    conditions:
+      IC: 0.5 A
+      VCE: 3.0 V
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics (TC = 25 °C) — DC current gain (note 2)
+  hFE@3A:
+    min: 1000
+    unit: dimensionless
+    conditions:
+      IC: 3.0 A
+      VCE: 3.0 V
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics (TC = 25 °C) — DC current gain (note 2)
+  VCE(sat):
+    max: 2.0
+    unit: V
+    conditions:
+      IC: 3.0 A
+      IB: 12 mA
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics (TC = 25 °C) — collector-emitter saturation voltage
+  VCE(sat)@5A:
+    max: 4.0
+    unit: V
+    conditions:
+      IC: 5.0 A
+      IB: 20 mA
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics (TC = 25 °C) — collector-emitter saturation voltage
+  VBE(on):
+    max: 2.5
+    unit: V
+    conditions:
+      IC: 3.0 A
+      VCE: 3.0 V
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics (TC = 25 °C) — base-emitter on voltage
+  hfe:
+    min: 4.0
+    unit: dimensionless
+    conditions:
+      IC: 3.0 A
+      VCE: 4.0 V
+      f: 1.0 MHz
+    status: extraido
+    source:
+      page: 2
+      location: Dynamic characteristics — small-signal current gain
+per_part: {}
+parts:
+  TIP120:
+    VCEO:
+      max: 60
+      unit: V
+      status: extraido
+      source:
+        page: 2
+        location: Maximum ratings — collector-emitter voltage, TIP120/TIP125
+    VCBO:
+      max: 60
+      unit: V
+      status: extraido
+      source:
+        page: 2
+        location: Maximum ratings — collector-base voltage, TIP120/TIP125
+    VCEO(sus):
+      min: 60
+      unit: V
+      conditions:
+        IC: 100 mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics (TC = 25 °C) — collector-emitter sustaining voltage, TIP120/TIP125
+    ICEO:
+      max: 0.5
+      unit: mA
+      conditions:
+        VCE: 30 V
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics (TC = 25 °C) — collector cutoff current ICEO, TIP120/TIP125
+    ICBO:
+      max: 0.2
+      unit: mA
+      conditions:
+        VCB: 60 V
+        TC: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics (TC = 25 °C) — collector cutoff current ICBO, TIP120/TIP125
+    Cobo:
+      max: 200
+      unit: pF
+      conditions:
+        VCB: 10 V
+        f: 0.1 MHz
+      status: extraido
+      source:
+        page: 2
+        location: Dynamic characteristics — output capacitance
+    category: bjt.npn
+    notes:
+    - Darlington monolítico com resistores de shunt base-emissor.
+  TIP125:
+    VCEO:
+      max: 60
+      unit: V
+      status: extraido
+      source:
+        page: 2
+        location: Maximum ratings — collector-emitter voltage, TIP120/TIP125
+    VCBO:
+      max: 60
+      unit: V
+      status: extraido
+      source:
+        page: 2
+        location: Maximum ratings — collector-base voltage, TIP120/TIP125
+    VCEO(sus):
+      min: 60
+      unit: V
+      conditions:
+        IC: 100 mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics (TC = 25 °C) — collector-emitter sustaining voltage, TIP120/TIP125
+    ICEO:
+      max: 0.5
+      unit: mA
+      conditions:
+        VCE: 30 V
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics (TC = 25 °C) — collector cutoff current ICEO, TIP120/TIP125
+    ICBO:
+      max: 0.2
+      unit: mA
+      conditions:
+        VCB: 60 V
+        TC: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics (TC = 25 °C) — collector cutoff current ICBO, TIP120/TIP125
+    Cobo:
+      max: 300
+      unit: pF
+      conditions:
+        VCB: 10 V
+        f: 0.1 MHz
+      status: extraido
+      source:
+        page: 2
+        location: Dynamic characteristics — output capacitance
+    category: bjt.pnp
+    notes:
+    - Darlington monolítico com resistores de shunt base-emissor.
+    - 'PNP: tensões e correntes em módulo (o datasheet usa sinal negativo).'
+  TIP121:
+    VCEO:
+      max: 80
+      unit: V
+      status: extraido
+      source:
+        page: 2
+        location: Maximum ratings — collector-emitter voltage, TIP121/TIP126
+    VCBO:
+      max: 80
+      unit: V
+      status: extraido
+      source:
+        page: 2
+        location: Maximum ratings — collector-base voltage, TIP121/TIP126
+    VCEO(sus):
+      min: 80
+      unit: V
+      conditions:
+        IC: 100 mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics (TC = 25 °C) — collector-emitter sustaining voltage, TIP121/TIP126
+    ICEO:
+      max: 0.5
+      unit: mA
+      conditions:
+        VCE: 40 V
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics (TC = 25 °C) — collector cutoff current ICEO, TIP121/TIP126
+    ICBO:
+      max: 0.2
+      unit: mA
+      conditions:
+        VCB: 80 V
+        TC: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics (TC = 25 °C) — collector cutoff current ICBO, TIP121/TIP126
+    Cobo:
+      max: 200
+      unit: pF
+      conditions:
+        VCB: 10 V
+        f: 0.1 MHz
+      status: extraido
+      source:
+        page: 2
+        location: Dynamic characteristics — output capacitance
+    category: bjt.npn
+    notes:
+    - Darlington monolítico com resistores de shunt base-emissor.
+  TIP126:
+    VCEO:
+      max: 80
+      unit: V
+      status: extraido
+      source:
+        page: 2
+        location: Maximum ratings — collector-emitter voltage, TIP121/TIP126
+    VCBO:
+      max: 80
+      unit: V
+      status: extraido
+      source:
+        page: 2
+        location: Maximum ratings — collector-base voltage, TIP121/TIP126
+    VCEO(sus):
+      min: 80
+      unit: V
+      conditions:
+        IC: 100 mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics (TC = 25 °C) — collector-emitter sustaining voltage, TIP121/TIP126
+    ICEO:
+      max: 0.5
+      unit: mA
+      conditions:
+        VCE: 40 V
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics (TC = 25 °C) — collector cutoff current ICEO, TIP121/TIP126
+    ICBO:
+      max: 0.2
+      unit: mA
+      conditions:
+        VCB: 80 V
+        TC: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics (TC = 25 °C) — collector cutoff current ICBO, TIP121/TIP126
+    Cobo:
+      max: 300
+      unit: pF
+      conditions:
+        VCB: 10 V
+        f: 0.1 MHz
+      status: extraido
+      source:
+        page: 2
+        location: Dynamic characteristics — output capacitance
+    category: bjt.pnp
+    notes:
+    - Darlington monolítico com resistores de shunt base-emissor.
+    - 'PNP: tensões e correntes em módulo (o datasheet usa sinal negativo).'
+  TIP122:
+    VCEO:
+      max: 100
+      unit: V
+      status: extraido
+      source:
+        page: 2
+        location: Maximum ratings — collector-emitter voltage, TIP122/TIP127
+    VCBO:
+      max: 100
+      unit: V
+      status: extraido
+      source:
+        page: 2
+        location: Maximum ratings — collector-base voltage, TIP122/TIP127
+    VCEO(sus):
+      min: 100
+      unit: V
+      conditions:
+        IC: 100 mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics (TC = 25 °C) — collector-emitter sustaining voltage, TIP122/TIP127
+    ICEO:
+      max: 0.5
+      unit: mA
+      conditions:
+        VCE: 50 V
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics (TC = 25 °C) — collector cutoff current ICEO, TIP122/TIP127
+    ICBO:
+      max: 0.2
+      unit: mA
+      conditions:
+        VCB: 100 V
+        TC: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics (TC = 25 °C) — collector cutoff current ICBO, TIP122/TIP127
+    Cobo:
+      max: 200
+      unit: pF
+      conditions:
+        VCB: 10 V
+        f: 0.1 MHz
+      status: extraido
+      source:
+        page: 2
+        location: Dynamic characteristics — output capacitance
+    category: bjt.npn
+    notes:
+    - Darlington monolítico com resistores de shunt base-emissor.
+  TIP127:
+    VCEO:
+      max: 100
+      unit: V
+      status: extraido
+      source:
+        page: 2
+        location: Maximum ratings — collector-emitter voltage, TIP122/TIP127
+    VCBO:
+      max: 100
+      unit: V
+      status: extraido
+      source:
+        page: 2
+        location: Maximum ratings — collector-base voltage, TIP122/TIP127
+    VCEO(sus):
+      min: 100
+      unit: V
+      conditions:
+        IC: 100 mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics (TC = 25 °C) — collector-emitter sustaining voltage, TIP122/TIP127
+    ICEO:
+      max: 0.5
+      unit: mA
+      conditions:
+        VCE: 50 V
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics (TC = 25 °C) — collector cutoff current ICEO, TIP122/TIP127
+    ICBO:
+      max: 0.2
+      unit: mA
+      conditions:
+        VCB: 100 V
+        TC: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics (TC = 25 °C) — collector cutoff current ICBO, TIP122/TIP127
+    Cobo:
+      max: 300
+      unit: pF
+      conditions:
+        VCB: 10 V
+        f: 0.1 MHz
+      status: extraido
+      source:
+        page: 2
+        location: Dynamic characteristics — output capacitance
+    category: bjt.pnp
+    notes:
+    - Darlington monolítico com resistores de shunt base-emissor.
+    - 'PNP: tensões e correntes em módulo (o datasheet usa sinal negativo).'

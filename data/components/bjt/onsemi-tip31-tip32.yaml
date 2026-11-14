@@ -1,0 +1,560 @@
+# Fonte: onsemi, TIP31A/D, Rev. 17, June 2024.
+family: TIP31/TIP32
+category: bjt.npn
+schema_version: '1.0'
+manufacturer: onsemi
+package: TO-220, case 221A
+lifecycle: ativo
+datasheets:
+- id: onsemi-tip31a
+  manufacturer: onsemi
+  document_number: TIP31A/D
+  revision: Rev. 17, June 2024
+  url: https://www.onsemi.com/pdf/datasheet/tip31a-d.pdf
+  sha256: 4bbbba488ff4979bb0ed1ed34fa7f20fb5cfa41673e043af49e550e19d785ae5
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VEBO:
+    max: 5.0
+    unit: V
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — emitter-base voltage
+  IC:
+    max: 3.0
+    unit: A
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — collector current continuous
+  ICM:
+    max: 5.0
+    unit: A
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — collector current peak
+  IB:
+    max: 1.0
+    unit: A
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — base current
+  Ptot:
+    max: 40
+    unit: W
+    conditions:
+      TC: 25 degC
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — total power dissipation @ TC = 25 °C
+  Ptot_derating:
+    max: 0.32
+    unit: W/K
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — derate above 25 °C (TC)
+  Ptot@TA:
+    max: 2.0
+    unit: W
+    conditions:
+      TA: 25 degC
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — total power dissipation @ TA = 25 °C
+  Ptot_derating@TA:
+    max: 0.016
+    unit: W/K
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — derate above 25 °C (TA)
+  E_ind:
+    max: 32
+    unit: mJ
+    note: 'Nota 1: IC = 1,8 A, L = 20 mH, P.R.F. = 10 Hz, VCC = 10 V, RBE = 100 Ω'
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — unclamped inductive load energy (note 1)
+  Tj_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — operating and storage junction temperature range
+  Tj_min:
+    min: -65
+    unit: degC
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — operating and storage junction temperature range
+  Tstg_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — operating and storage junction temperature range
+  Rth_ja:
+    max: 62.5
+    unit: K/W
+    status: extraido
+    source:
+      page: 1
+      location: Thermal characteristics — RθJA
+  Rth_jc:
+    max: 3.125
+    unit: K/W
+    status: extraido
+    source:
+      page: 1
+      location: Thermal characteristics — RθJC
+  IEBO:
+    max: 1.0
+    unit: mA
+    conditions:
+      VEB: 5.0 V
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics (TC = 25 °C) — emitter cutoff current
+  hFE@1A:
+    min: 25
+    unit: dimensionless
+    conditions:
+      IC: 1.0 A
+      VCE: 4.0 V
+    note: 'Teste pulsado: 300 µs, ciclo ≤ 2 %'
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics (TC = 25 °C) — DC current gain
+  hFE:
+    min: 10
+    max: 50
+    unit: dimensionless
+    conditions:
+      IC: 3.0 A
+      VCE: 4.0 V
+    note: 'Teste pulsado: 300 µs, ciclo ≤ 2 %'
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics (TC = 25 °C) — DC current gain
+  VCE(sat):
+    max: 1.2
+    unit: V
+    conditions:
+      IC: 3.0 A
+      IB: 375 mA
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics (TC = 25 °C) — collector-emitter saturation voltage
+  VBE(on):
+    max: 1.8
+    unit: V
+    conditions:
+      IC: 3.0 A
+      VCE: 4.0 V
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics (TC = 25 °C) — base-emitter on voltage
+  fT:
+    min: 3.0
+    unit: MHz
+    conditions:
+      IC: 500 mA
+      VCE: 10 V
+      f: 1.0 MHz
+    status: extraido
+    source:
+      page: 2
+      location: Dynamic characteristics — current-gain-bandwidth product
+  hfe:
+    min: 20
+    unit: dimensionless
+    conditions:
+      IC: 0.5 A
+      VCE: 10 V
+      f: 1.0 kHz
+    status: extraido
+    source:
+      page: 2
+      location: Dynamic characteristics — small-signal current gain
+per_part: {}
+parts:
+  TIP31G:
+    VCEO:
+      max: 40
+      unit: V
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — collector-emitter voltage, TIP31G/TIP32G
+    VCBO:
+      max: 40
+      unit: V
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — collector-base voltage (VCB), TIP31G/TIP32G
+    VCEO(sus):
+      min: 40
+      unit: V
+      conditions:
+        IC: 30 mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics (TC = 25 °C) — collector-emitter sustaining voltage (note 2), TIP31G/TIP32G
+    ICEO:
+      max: 0.3
+      unit: mA
+      conditions:
+        VCE: 30 V
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics (TC = 25 °C) — collector cutoff current ICEO, TIP31G/TIP32G
+    ICES:
+      max: 200
+      unit: uA
+      conditions:
+        VCE: 40 V
+        TC: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics (TC = 25 °C) — collector cutoff current ICES, TIP31G/TIP32G
+    category: bjt.npn
+    lifecycle: nrnd
+    notes:
+    - 'DISCONTINUED na página 6 do datasheet: não recomendado para novos projetos.'
+  TIP32G:
+    VCEO:
+      max: 40
+      unit: V
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — collector-emitter voltage, TIP31G/TIP32G
+    VCBO:
+      max: 40
+      unit: V
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — collector-base voltage (VCB), TIP31G/TIP32G
+    VCEO(sus):
+      min: 40
+      unit: V
+      conditions:
+        IC: 30 mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics (TC = 25 °C) — collector-emitter sustaining voltage (note 2), TIP31G/TIP32G
+    ICEO:
+      max: 0.3
+      unit: mA
+      conditions:
+        VCE: 30 V
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics (TC = 25 °C) — collector cutoff current ICEO, TIP31G/TIP32G
+    ICES:
+      max: 200
+      unit: uA
+      conditions:
+        VCE: 40 V
+        TC: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics (TC = 25 °C) — collector cutoff current ICES, TIP31G/TIP32G
+    category: bjt.pnp
+    notes:
+    - 'PNP: tensões e correntes em módulo (o datasheet usa sinal negativo).'
+  TIP31AG:
+    VCEO:
+      max: 60
+      unit: V
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — collector-emitter voltage, TIP31AG/TIP32AG
+    VCBO:
+      max: 60
+      unit: V
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — collector-base voltage (VCB), TIP31AG/TIP32AG
+    VCEO(sus):
+      min: 60
+      unit: V
+      conditions:
+        IC: 30 mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics (TC = 25 °C) — collector-emitter sustaining voltage (note 2), TIP31AG/TIP32AG
+    ICEO:
+      max: 0.3
+      unit: mA
+      conditions:
+        VCE: 30 V
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics (TC = 25 °C) — collector cutoff current ICEO, TIP31AG/TIP32AG
+    ICES:
+      max: 200
+      unit: uA
+      conditions:
+        VCE: 60 V
+        TC: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics (TC = 25 °C) — collector cutoff current ICES, TIP31AG/TIP32AG
+    category: bjt.npn
+  TIP32AG:
+    VCEO:
+      max: 60
+      unit: V
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — collector-emitter voltage, TIP31AG/TIP32AG
+    VCBO:
+      max: 60
+      unit: V
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — collector-base voltage (VCB), TIP31AG/TIP32AG
+    VCEO(sus):
+      min: 60
+      unit: V
+      conditions:
+        IC: 30 mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics (TC = 25 °C) — collector-emitter sustaining voltage (note 2), TIP31AG/TIP32AG
+    ICEO:
+      max: 0.3
+      unit: mA
+      conditions:
+        VCE: 30 V
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics (TC = 25 °C) — collector cutoff current ICEO, TIP31AG/TIP32AG
+    ICES:
+      max: 200
+      unit: uA
+      conditions:
+        VCE: 60 V
+        TC: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics (TC = 25 °C) — collector cutoff current ICES, TIP31AG/TIP32AG
+    category: bjt.pnp
+    notes:
+    - 'PNP: tensões e correntes em módulo (o datasheet usa sinal negativo).'
+  TIP31BG:
+    VCEO:
+      max: 80
+      unit: V
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — collector-emitter voltage, TIP31BG/TIP32BG
+    VCBO:
+      max: 80
+      unit: V
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — collector-base voltage (VCB), TIP31BG/TIP32BG
+    VCEO(sus):
+      min: 80
+      unit: V
+      conditions:
+        IC: 30 mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics (TC = 25 °C) — collector-emitter sustaining voltage (note 2), TIP31BG/TIP32BG
+    ICEO:
+      max: 0.3
+      unit: mA
+      conditions:
+        VCE: 60 V
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics (TC = 25 °C) — collector cutoff current ICEO, TIP31BG/TIP32BG
+    ICES:
+      max: 200
+      unit: uA
+      conditions:
+        VCE: 80 V
+        TC: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics (TC = 25 °C) — collector cutoff current ICES, TIP31BG/TIP32BG
+    category: bjt.npn
+  TIP32BG:
+    VCEO:
+      max: 80
+      unit: V
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — collector-emitter voltage, TIP31BG/TIP32BG
+    VCBO:
+      max: 80
+      unit: V
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — collector-base voltage (VCB), TIP31BG/TIP32BG
+    VCEO(sus):
+      min: 80
+      unit: V
+      conditions:
+        IC: 30 mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics (TC = 25 °C) — collector-emitter sustaining voltage (note 2), TIP31BG/TIP32BG
+    ICEO:
+      max: 0.3
+      unit: mA
+      conditions:
+        VCE: 60 V
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics (TC = 25 °C) — collector cutoff current ICEO, TIP31BG/TIP32BG
+    ICES:
+      max: 200
+      unit: uA
+      conditions:
+        VCE: 80 V
+        TC: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics (TC = 25 °C) — collector cutoff current ICES, TIP31BG/TIP32BG
+    category: bjt.pnp
+    notes:
+    - 'PNP: tensões e correntes em módulo (o datasheet usa sinal negativo).'
+  TIP31CG:
+    VCEO:
+      max: 100
+      unit: V
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — collector-emitter voltage, TIP31CG/TIP32CG
+    VCBO:
+      max: 100
+      unit: V
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — collector-base voltage (VCB), TIP31CG/TIP32CG
+    VCEO(sus):
+      min: 100
+      unit: V
+      conditions:
+        IC: 30 mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics (TC = 25 °C) — collector-emitter sustaining voltage (note 2), TIP31CG/TIP32CG
+    ICEO:
+      max: 0.3
+      unit: mA
+      conditions:
+        VCE: 60 V
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics (TC = 25 °C) — collector cutoff current ICEO, TIP31CG/TIP32CG
+    ICES:
+      max: 200
+      unit: uA
+      conditions:
+        VCE: 100 V
+        TC: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics (TC = 25 °C) — collector cutoff current ICES, TIP31CG/TIP32CG
+    category: bjt.npn
+  TIP32CG:
+    VCEO:
+      max: 100
+      unit: V
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — collector-emitter voltage, TIP31CG/TIP32CG
+    VCBO:
+      max: 100
+      unit: V
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — collector-base voltage (VCB), TIP31CG/TIP32CG
+    VCEO(sus):
+      min: 100
+      unit: V
+      conditions:
+        IC: 30 mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics (TC = 25 °C) — collector-emitter sustaining voltage (note 2), TIP31CG/TIP32CG
+    ICEO:
+      max: 0.3
+      unit: mA
+      conditions:
+        VCE: 60 V
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics (TC = 25 °C) — collector cutoff current ICEO, TIP31CG/TIP32CG
+    ICES:
+      max: 200
+      unit: uA
+      conditions:
+        VCE: 100 V
+        TC: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics (TC = 25 °C) — collector cutoff current ICES, TIP31CG/TIP32CG
+    category: bjt.pnp
+    notes:
+    - 'PNP: tensões e correntes em módulo (o datasheet usa sinal negativo).'

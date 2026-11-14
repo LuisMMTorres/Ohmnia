@@ -1,0 +1,758 @@
+# Fonte: onsemi, BC556B/D, Rev. 3, March 2007.
+family: BC556B–BC558B
+category: bjt.pnp
+schema_version: '1.0'
+manufacturer: onsemi
+package: TO-92
+lifecycle: desconhecido
+notes:
+- 'PNP: tensões e correntes em módulo (o datasheet usa sinal negativo).'
+- Datasheet de 2007 (Rev. 3); situação de fabricação não informada no documento.
+datasheets:
+- id: onsemi-bc556b
+  manufacturer: onsemi
+  document_number: BC556B/D
+  revision: Rev. 3, March 2007
+  url: https://www.onsemi.com/pdf/datasheet/bc556b-d.pdf
+  sha256: 510125440f474b6d20d1641954b6f0b7095071553db3ca945145a4d72483471e
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VEBO:
+    max: 5.0
+    unit: V
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — emitter-base voltage
+  IC:
+    max: 100
+    unit: mA
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — collector current continuous
+  ICM:
+    max: 200
+    unit: mA
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — collector current peak
+  IBM:
+    max: 200
+    unit: mA
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — base current peak
+  Ptot:
+    max: 625
+    unit: mW
+    conditions:
+      TA: 25 degC
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — total device dissipation @ TA = 25 °C
+  Ptot_derating:
+    max: 5.0
+    unit: mW/K
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — derate above 25 °C (TA)
+  Ptot@TC:
+    max: 1.5
+    unit: W
+    conditions:
+      TC: 25 degC
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — total device dissipation @ TC = 25 °C
+  Ptot_derating@TC:
+    max: 12
+    unit: mW/K
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — derate above 25 °C (TC)
+  Tj_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — operating and storage junction temperature range
+  Tj_min:
+    min: -55
+    unit: degC
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — operating and storage junction temperature range
+  Tstg_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — operating and storage junction temperature range
+  Rth_ja:
+    max: 200
+    unit: K/W
+    status: extraido
+    source:
+      page: 1
+      location: Thermal characteristics — RθJA
+  Rth_jc:
+    max: 83.3
+    unit: K/W
+    status: extraido
+    source:
+      page: 1
+      location: Thermal characteristics — RθJC
+  VCE(sat):
+    typ: 0.075
+    max: 0.3
+    unit: V
+    conditions:
+      IC: 10 mA
+      IB: 0.5 mA
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — collector-emitter saturation voltage
+  VCE(sat)@100mA:
+    typ: 0.25
+    max: 0.65
+    unit: V
+    conditions:
+      IC: 100 mA
+      IB: 5.0 mA
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — collector-emitter saturation voltage
+  VBE(sat):
+    typ: 0.7
+    unit: V
+    conditions:
+      IC: 10 mA
+      IB: 0.5 mA
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — base-emitter saturation voltage
+  VBE(sat)@100mA:
+    typ: 1.0
+    unit: V
+    conditions:
+      IC: 100 mA
+      IB: 5.0 mA
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — base-emitter saturation voltage
+  VBE(on):
+    min: 0.55
+    typ: 0.62
+    max: 0.7
+    unit: V
+    conditions:
+      IC: 2.0 mA
+      VCE: 5.0 V
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — base-emitter on voltage
+  VBE(on)@10mA:
+    typ: 0.7
+    max: 0.82
+    unit: V
+    conditions:
+      IC: 10 mA
+      VCE: 5.0 V
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — base-emitter on voltage
+  Cobo:
+    typ: 3.0
+    max: 6.0
+    unit: pF
+    conditions:
+      VCB: 10 V
+      f: 1.0 MHz
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — output capacitance
+  NF:
+    typ: 2.0
+    max: 10
+    unit: dB
+    conditions:
+      IC: 0.2 mA
+      VCE: 5.0 V
+      RS: 2.0 kohm
+      f: 1.0 kHz
+    note: Δf = 200 Hz
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — noise figure
+  ICES@125C:
+    max: 4.0
+    unit: uA
+    conditions:
+      VCE: 20 V
+      TA: 125 degC
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — collector-emitter leakage current, VCES = 20 V, TA = 125 °C
+per_part: {}
+parts:
+  BC556B:
+    VCEO:
+      max: 65
+      unit: V
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — collector-emitter voltage, BC556
+    VCBO:
+      max: 80
+      unit: V
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — collector-base voltage, BC556
+    V(BR)CEO:
+      min: 65
+      unit: V
+      conditions:
+        IC: 2.0 mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — collector-emitter breakdown voltage, BC556
+    V(BR)CBO:
+      min: 80
+      unit: V
+      conditions:
+        IC: 100 uA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — collector-base breakdown voltage, BC556
+    V(BR)EBO:
+      min: 5.0
+      unit: V
+      conditions:
+        IE: 100 uA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — emitter-base breakdown voltage, BC556
+    ICES:
+      typ: 2.0
+      max: 100
+      unit: nA
+      conditions:
+        VCE: 40 V
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — collector-emitter leakage current, BC556
+    hFE:
+      min: 180
+      typ: 290
+      max: 460
+      unit: dimensionless
+      conditions:
+        IC: 2.0 mA
+        VCE: 5.0 V
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — DC current gain, IC = 2.0 mA, série B
+    hFE@10uA:
+      typ: 150
+      unit: dimensionless
+      conditions:
+        IC: 10 uA
+        VCE: 5.0 V
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — DC current gain, IC = 10 µA, série B
+    hFE@100mA:
+      typ: 180
+      unit: dimensionless
+      conditions:
+        IC: 100 mA
+        VCE: 5.0 V
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — DC current gain, IC = 100 mA, série B
+    fT:
+      typ: 280
+      unit: MHz
+      conditions:
+        IC: 10 mA
+        VCE: 5.0 V
+        f: 100 MHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — current-gain-bandwidth product, BC556
+    hfe:
+      min: 240
+      max: 500
+      unit: dimensionless
+      conditions:
+        IC: 2.0 mA
+        VCE: 5.0 V
+        f: 1.0 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — small-signal current gain, série B
+  BC557A:
+    VCEO:
+      max: 45
+      unit: V
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — collector-emitter voltage, BC557
+    VCBO:
+      max: 50
+      unit: V
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — collector-base voltage, BC557
+    V(BR)CEO:
+      min: 45
+      unit: V
+      conditions:
+        IC: 2.0 mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — collector-emitter breakdown voltage, BC557
+    V(BR)CBO:
+      min: 50
+      unit: V
+      conditions:
+        IC: 100 uA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — collector-base breakdown voltage, BC557
+    V(BR)EBO:
+      min: 5.0
+      unit: V
+      conditions:
+        IE: 100 uA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — emitter-base breakdown voltage, BC557
+    ICES:
+      typ: 2.0
+      max: 100
+      unit: nA
+      conditions:
+        VCE: 20 V
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — collector-emitter leakage current, BC557
+    hFE:
+      min: 120
+      typ: 170
+      max: 220
+      unit: dimensionless
+      conditions:
+        IC: 2.0 mA
+        VCE: 5.0 V
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — DC current gain, IC = 2.0 mA, série A
+    hFE@10uA:
+      typ: 90
+      unit: dimensionless
+      conditions:
+        IC: 10 uA
+        VCE: 5.0 V
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — DC current gain, IC = 10 µA, série A
+    hFE@100mA:
+      typ: 120
+      unit: dimensionless
+      conditions:
+        IC: 100 mA
+        VCE: 5.0 V
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — DC current gain, IC = 100 mA, série A
+    fT:
+      typ: 320
+      unit: MHz
+      conditions:
+        IC: 10 mA
+        VCE: 5.0 V
+        f: 100 MHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — current-gain-bandwidth product, BC557
+    hfe:
+      min: 125
+      max: 260
+      unit: dimensionless
+      conditions:
+        IC: 2.0 mA
+        VCE: 5.0 V
+        f: 1.0 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — small-signal current gain, série A
+  BC557B:
+    VCEO:
+      max: 45
+      unit: V
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — collector-emitter voltage, BC557
+    VCBO:
+      max: 50
+      unit: V
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — collector-base voltage, BC557
+    V(BR)CEO:
+      min: 45
+      unit: V
+      conditions:
+        IC: 2.0 mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — collector-emitter breakdown voltage, BC557
+    V(BR)CBO:
+      min: 50
+      unit: V
+      conditions:
+        IC: 100 uA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — collector-base breakdown voltage, BC557
+    V(BR)EBO:
+      min: 5.0
+      unit: V
+      conditions:
+        IE: 100 uA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — emitter-base breakdown voltage, BC557
+    ICES:
+      typ: 2.0
+      max: 100
+      unit: nA
+      conditions:
+        VCE: 20 V
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — collector-emitter leakage current, BC557
+    hFE:
+      min: 180
+      typ: 290
+      max: 460
+      unit: dimensionless
+      conditions:
+        IC: 2.0 mA
+        VCE: 5.0 V
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — DC current gain, IC = 2.0 mA, série B
+    hFE@10uA:
+      typ: 150
+      unit: dimensionless
+      conditions:
+        IC: 10 uA
+        VCE: 5.0 V
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — DC current gain, IC = 10 µA, série B
+    hFE@100mA:
+      typ: 180
+      unit: dimensionless
+      conditions:
+        IC: 100 mA
+        VCE: 5.0 V
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — DC current gain, IC = 100 mA, série B
+    fT:
+      typ: 320
+      unit: MHz
+      conditions:
+        IC: 10 mA
+        VCE: 5.0 V
+        f: 100 MHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — current-gain-bandwidth product, BC557
+    hfe:
+      min: 240
+      max: 500
+      unit: dimensionless
+      conditions:
+        IC: 2.0 mA
+        VCE: 5.0 V
+        f: 1.0 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — small-signal current gain, série B
+  BC557C:
+    VCEO:
+      max: 45
+      unit: V
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — collector-emitter voltage, BC557
+    VCBO:
+      max: 50
+      unit: V
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — collector-base voltage, BC557
+    V(BR)CEO:
+      min: 45
+      unit: V
+      conditions:
+        IC: 2.0 mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — collector-emitter breakdown voltage, BC557
+    V(BR)CBO:
+      min: 50
+      unit: V
+      conditions:
+        IC: 100 uA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — collector-base breakdown voltage, BC557
+    V(BR)EBO:
+      min: 5.0
+      unit: V
+      conditions:
+        IE: 100 uA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — emitter-base breakdown voltage, BC557
+    ICES:
+      typ: 2.0
+      max: 100
+      unit: nA
+      conditions:
+        VCE: 20 V
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — collector-emitter leakage current, BC557
+    hFE:
+      min: 420
+      typ: 500
+      max: 800
+      unit: dimensionless
+      conditions:
+        IC: 2.0 mA
+        VCE: 5.0 V
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — DC current gain, IC = 2.0 mA, série C
+    hFE@10uA:
+      typ: 270
+      unit: dimensionless
+      conditions:
+        IC: 10 uA
+        VCE: 5.0 V
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — DC current gain, IC = 10 µA, série C
+    hFE@100mA:
+      typ: 300
+      unit: dimensionless
+      conditions:
+        IC: 100 mA
+        VCE: 5.0 V
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — DC current gain, IC = 100 mA, série C
+    fT:
+      typ: 320
+      unit: MHz
+      conditions:
+        IC: 10 mA
+        VCE: 5.0 V
+        f: 100 MHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — current-gain-bandwidth product, BC557
+    hfe:
+      min: 450
+      max: 900
+      unit: dimensionless
+      conditions:
+        IC: 2.0 mA
+        VCE: 5.0 V
+        f: 1.0 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — small-signal current gain, série C
+  BC558B:
+    VCEO:
+      max: 30
+      unit: V
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — collector-emitter voltage, BC558
+    VCBO:
+      max: 30
+      unit: V
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — collector-base voltage, BC558
+    V(BR)CEO:
+      min: 30
+      unit: V
+      conditions:
+        IC: 2.0 mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — collector-emitter breakdown voltage, BC558
+    V(BR)CBO:
+      min: 30
+      unit: V
+      conditions:
+        IC: 100 uA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — collector-base breakdown voltage, BC558
+    V(BR)EBO:
+      min: 5.0
+      unit: V
+      conditions:
+        IE: 100 uA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — emitter-base breakdown voltage, BC558
+    ICES:
+      typ: 2.0
+      max: 100
+      unit: nA
+      conditions:
+        VCE: 20 V
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — collector-emitter leakage current, BC558
+    hFE:
+      min: 180
+      typ: 290
+      max: 460
+      unit: dimensionless
+      conditions:
+        IC: 2.0 mA
+        VCE: 5.0 V
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — DC current gain, IC = 2.0 mA, série B
+    hFE@10uA:
+      typ: 150
+      unit: dimensionless
+      conditions:
+        IC: 10 uA
+        VCE: 5.0 V
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — DC current gain, IC = 10 µA, série B
+    hFE@100mA:
+      typ: 180
+      unit: dimensionless
+      conditions:
+        IC: 100 mA
+        VCE: 5.0 V
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — DC current gain, IC = 100 mA, série B
+    fT:
+      typ: 360
+      unit: MHz
+      conditions:
+        IC: 10 mA
+        VCE: 5.0 V
+        f: 100 MHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — current-gain-bandwidth product, BC558
+    hfe:
+      min: 240
+      max: 500
+      unit: dimensionless
+      conditions:
+        IC: 2.0 mA
+        VCE: 5.0 V
+        f: 1.0 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — small-signal current gain, série B

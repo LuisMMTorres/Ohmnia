@@ -304,7 +304,7 @@ def load_records_file(path: Path) -> list[ComponentRecord]:
         params = copy.deepcopy(shared)
         overrides = dict(overrides or {})
         # Record-level fields a single part may override (e.g. one part discontinued).
-        meta = {k: overrides.pop(k) for k in ("lifecycle", "notes") if k in overrides}
+        meta = {k: overrides.pop(k) for k in ("lifecycle", "notes", "category") if k in overrides}
         for key, values in overrides.items():
             base = copy.deepcopy(per_part.get(key, params.get(key, {})))
             if not isinstance(values, dict):

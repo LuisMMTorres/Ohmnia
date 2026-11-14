@@ -1,0 +1,266 @@
+# Fonte: onsemi, BD135/D, Rev. 18, June 2024.
+family: BD135–BD139
+category: bjt.npn
+schema_version: '1.0'
+manufacturer: onsemi
+package: TO-225, case 77-09
+lifecycle: ativo
+notes:
+- 'Complementares: BD136, BD138, BD140 (não incluídos).'
+- Código de pedido com sufixo G (sem chumbo).
+datasheets:
+- id: onsemi-bd135
+  manufacturer: onsemi
+  document_number: BD135/D
+  revision: Rev. 18, June 2024
+  url: https://www.onsemi.com/pdf/datasheet/bd135-d.pdf
+  sha256: 56aec9df37d0d37d3950186143490ee16673023703f1cfd704e232017f2da9f5
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VEBO:
+    max: 5.0
+    unit: V
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — emitter-base voltage
+  IC:
+    max: 1.5
+    unit: A
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — collector current
+  IB:
+    max: 0.5
+    unit: A
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — base current
+  Ptot@TA:
+    max: 1.25
+    unit: W
+    conditions:
+      TA: 25 degC
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — total device dissipation @ TA = 25 °C
+  Ptot_derating@TA:
+    max: 10
+    unit: mW/K
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — derate above 25 °C (TA)
+  Ptot:
+    max: 12.5
+    unit: W
+    conditions:
+      TC: 25 degC
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — total device dissipation @ TC = 25 °C
+  Ptot_derating:
+    max: 100
+    unit: mW/K
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — derate above 25 °C (TC)
+  Tj_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — operating and storage junction temperature range
+  Tj_min:
+    min: -55
+    unit: degC
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — operating and storage junction temperature range
+  Tstg_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — operating and storage junction temperature range
+  Rth_jc:
+    max: 10
+    unit: K/W
+    status: extraido
+    source:
+      page: 1
+      location: Thermal characteristics — RθJC
+  Rth_ja:
+    max: 100
+    unit: K/W
+    status: extraido
+    source:
+      page: 1
+      location: Thermal characteristics — RθJA
+  ICBO:
+    max: 0.1
+    unit: uA
+    conditions:
+      VCB: 30 V
+      TC: 25 degC
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics (TC = 25 °C) — collector cutoff current
+  ICBO@125C:
+    max: 10
+    unit: uA
+    conditions:
+      VCB: 30 V
+      TC: 125 degC
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics (TC = 25 °C) — collector cutoff current, TC = 125 °C
+  IEBO:
+    max: 10
+    unit: uA
+    conditions:
+      VEB: 5.0 V
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics (TC = 25 °C) — emitter cutoff current
+  hFE@5mA:
+    min: 25
+    unit: dimensionless
+    conditions:
+      IC: 0.005 A
+      VCE: 2 V
+    note: 'Teste pulsado: 300 µs, ciclo ≤ 2 %'
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics (TC = 25 °C) — DC current gain
+  hFE:
+    min: 40
+    max: 250
+    unit: dimensionless
+    conditions:
+      IC: 0.15 A
+      VCE: 2 V
+    note: 'Teste pulsado: 300 µs, ciclo ≤ 2 %'
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics (TC = 25 °C) — DC current gain
+  hFE@0.5A:
+    min: 25
+    unit: dimensionless
+    conditions:
+      IC: 0.5 A
+      VCE: 2 V
+    note: 'Teste pulsado: 300 µs, ciclo ≤ 2 %'
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics (TC = 25 °C) — DC current gain
+  VCE(sat):
+    max: 0.5
+    unit: V
+    conditions:
+      IC: 0.5 A
+      IB: 0.05 A
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics (TC = 25 °C) — collector-emitter saturation voltage
+  VBE(on):
+    max: 1
+    unit: V
+    conditions:
+      IC: 0.5 A
+      VCE: 2.0 V
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics (TC = 25 °C) — base-emitter on voltage
+per_part: {}
+parts:
+  BD135:
+    VCEO:
+      max: 45
+      unit: V
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — collector-emitter voltage, BD135G
+    VCBO:
+      max: 45
+      unit: V
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — collector-base voltage, BD135G
+    VCEO(sus):
+      min: 45
+      unit: V
+      conditions:
+        IC: 0.03 A
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics (TC = 25 °C) — collector-emitter sustaining voltage, BD135G
+  BD137:
+    VCEO:
+      max: 60
+      unit: V
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — collector-emitter voltage, BD137G
+    VCBO:
+      max: 60
+      unit: V
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — collector-base voltage, BD137G
+    VCEO(sus):
+      min: 60
+      unit: V
+      conditions:
+        IC: 0.03 A
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics (TC = 25 °C) — collector-emitter sustaining voltage, BD137G
+  BD139:
+    VCEO:
+      max: 80
+      unit: V
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — collector-emitter voltage, BD139G
+    VCBO:
+      max: 100
+      unit: V
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — collector-base voltage, BD139G
+    VCEO(sus):
+      min: 80
+      unit: V
+      conditions:
+        IC: 0.03 A
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics (TC = 25 °C) — collector-emitter sustaining voltage, BD139G

@@ -86,8 +86,11 @@ class ComponentSummary(BaseModel):
 _HIGHLIGHT_DIODE = ["VRRM", "IF(AV)", "IFSM", "VF", "trr"]
 _HIGHLIGHT = {
     "diode.zener": ["VZ", "IZT", "ZZT", "IR", "Ptot"],
+    "bjt.npn": ["VCEO", "IC", "Ptot", "hFE", "fT"],
+    "bjt.pnp": ["VCEO", "IC", "Ptot", "hFE", "fT"],
+    "mosfet.n": ["VDS", "ID", "RDS(on)", "VGS(th)", "Qg"],
 }
-_UNIT_TEXT = {"degC": "°C", "uA": "µA", "ohm": "Ω", "percent": "%"}
+_UNIT_TEXT = {"degC": "°C", "uA": "µA", "ohm": "Ω", "percent": "%", "dimensionless": ""}
 
 
 def _fmt(record: ComponentRecord, key: str) -> str | None:
@@ -98,7 +101,7 @@ def _fmt(record: ComponentRecord, key: str) -> str | None:
     order = ("typ", "max", "min") if param.typ is not None else ("max", "min")
     value = next(v for k in order if (v := getattr(param, k)) is not None)
     unit = _UNIT_TEXT.get(param.unit, param.unit)
-    return f"{value:g} {unit}".replace(".", ",")
+    return f"{value:g} {unit}".strip().replace(".", ",")
 
 
 def summarise(record: ComponentRecord) -> ComponentSummary:

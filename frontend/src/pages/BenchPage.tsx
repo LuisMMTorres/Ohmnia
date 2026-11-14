@@ -2,13 +2,14 @@ import { type ReactNode, useEffect, useMemo, useState } from "react";
 import { bench, catalog, ComponentSummary, DiodeBenchOut } from "../api";
 import { CalcSteps } from "../components/CalcSteps";
 import { SignalPlot, Trace } from "../components/SignalPlot";
+import { BjtBench, MosfetBench } from "./TransistorBench";
 import { ZenerBench } from "./ZenerBench";
 
 export function num(text: string): number {
   return Number(text.replace(",", "."));
 }
 
-type Device = "diodo" | "zener";
+type Device = "diodo" | "zener" | "tbj" | "mosfet";
 
 export function BenchPage() {
   const [device, setDevice] = useState<Device>("diodo");
@@ -18,6 +19,8 @@ export function BenchPage() {
         [
           ["diodo", "Diodo de junção"],
           ["zener", "Diodo Zener"],
+          ["tbj", "TBJ"],
+          ["mosfet", "MOSFET"],
         ] as const
       ).map(([id, label]) => (
         <button
@@ -30,11 +33,10 @@ export function BenchPage() {
       ))}
     </div>
   );
-  return device === "diodo" ? (
-    <DiodeBench selector={selector} />
-  ) : (
-    <ZenerBench selector={selector} />
-  );
+  if (device === "zener") return <ZenerBench selector={selector} />;
+  if (device === "tbj") return <BjtBench selector={selector} />;
+  if (device === "mosfet") return <MosfetBench selector={selector} />;
+  return <DiodeBench selector={selector} />;
 }
 
 function DiodeBench({ selector }: { selector: ReactNode }) {
