@@ -59,7 +59,7 @@ def bjt_q(
         return vth - ib * rth - vbe - ie * re
 
     top = vth if not collector_feedback else vcc
-    vbe = brentq(residual, 0.0, max(top, 0.1), xtol=1e-15, rtol=1e-14)
+    vbe = brentq(residual, 0.0, min(max(top, 0.1), 1.5), xtol=1e-15, rtol=1e-14)
     ib, ic, ie = currents(vbe)
     ve = ie * re
     vc = vcc - ((ic + ib) * rc if collector_feedback else ic * rc)
