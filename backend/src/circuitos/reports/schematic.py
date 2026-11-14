@@ -308,7 +308,7 @@ def three_phase(
             svg.wire((x0 + 110, y), (x, y))
             svg.dot(x, y)
             n += 1
-            svg.device_up(x, y, y_top, kind, f"{prefix}{n}", part if n == 1 else "")
+            svg.device_up(x, y, y_top, kind, f"{prefix}{n}", "")
             if pulses != 3:
                 n += 1
                 svg.device_up(x, bot, y, kind, f"{prefix}{n}", "")
@@ -322,6 +322,8 @@ def three_phase(
             bridge2_top = x0 + 330 + 160
             svg.wire((x_out, top), (x_out, top - 14), (x0 + 690, top - 14))
             svg.wire((x_out, bot), (x_out + 15, bot), (x_out + 15, top), (bridge2_top, top))
+    if part:  # legs are too close for a label on each device
+        svg.text(10, 308, f"{designator}: {part}")
     if pulses == 3:
         svg.text(10, 290, "neutro do secundário → retorno da carga", "start")
         svg.wire((x_out, bot), (x_out - 150, bot))

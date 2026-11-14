@@ -7,7 +7,7 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 | 0 | Descoberta e planejamento | ✅ |
 | 1 | Fundação | ✅ |
 | 2 | Banco de componentes e bancada de dispositivos | ✅ |
-| 3 | Retificadores (vertical completa, define o padrão) | 🔄 |
+| 3 | Retificadores (vertical completa, define o padrão) | 👀 |
 | 4 | Fontes reguladas e amplificadores | ⏳ |
 | 5 | Ampops, filtros e instrumentação | ⏳ |
 | 6 | Eletrônica de potência chaveada | ⏳ |
@@ -61,13 +61,17 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 - ➡️ Digitalização de curvas das figuras do datasheet passa para `SV-PDF` (Fase 8)
 - ✅ [validacao/bancada.md](validacao/bancada.md)
 
-## Fase 3 — Retificadores 🔄
+## Fase 3 — Retificadores 👀
 
-- ⏳ `DM-RET1`, `DM-RETC1`, `DM-RET3`, filtros C/LC/π, transformador
-- ⏳ `selection/` com derating configurável; `thermal/` estacionário e seleção de dissipador
-- ⏳ Painel de limites com controles deslizantes
-- ⏳ Esquemático por gabarito, BOM, relatório, roteiro de prática
-- ⏳ `GT-RET*`, `AS-RET*`, `PT-RET*`; `docs/validacao/retificadores.md`
+- ✅ `DM-RET1` (meia onda, derivação central, ponte; sem filtro, C, LC, π), `DM-RETC1` (meia onda controlada com e sem roda livre, ponte total e semicontrolada, carga R-L-E), `DM-RET3` (3, 6 e 12 pulsos, comutação por Ls); transformador ideal com relação de espiras e VA
+- ✅ `selection/` com derating configurável (critérios didático e industrial), travamento manual de componente, nova seleção sobre a envoltória dos esforços ideal e real
+- ✅ `thermal/` estacionário: Tj sem dissipador e Rθsa máxima exigida
+- 🔶 Escolha de dissipador do catálogo: aguarda D8 (só a Rθsa exigida é informada)
+- ✅ Aba **Projeto**: formulário gerado do esquema, controles deslizantes que refazem o projeto (painel de limites), margens, térmico, formas de onda do cálculo × ngspice
+- ✅ Esquemático por gabarito (SVG), lista de materiais (CSV), relatório HTML com memória de cálculo (KaTeX embutido, funciona sem internet) e roteiro de prática
+- ✅ `AS-RET-01..03` (25 casos, maior erro 0,29 %), `GT-RET*` por fórmulas fechadas, `PT-RET-FP`
+- 🔶 `GT-RET*` com exemplos resolvidos de livro: aguarda D6
+- ✅ [validacao/retificadores.md](validacao/retificadores.md)
 
 ## Fase 4 — Fontes reguladas e amplificadores ⏳
 
