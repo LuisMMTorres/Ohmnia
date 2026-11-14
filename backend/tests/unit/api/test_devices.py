@@ -115,3 +115,67 @@ def test_transistor_bench_rejects_wrong_category(client):
         ).status_code
         == 422
     )
+
+
+def test_thyristor_bench_default_scr(client):
+    body = client.post("/api/v1/devices/thyristor/waveform", json={}).json()
+    assert set(body["traces"]) == {
+        "Tensão da fonte",
+        "Tensão na carga",
+        "Tensão no tiristor",
+        "Corrente",
+        "Corrente de porta",
+    }
+    ids = [s["id"] for s in body["steps"]]
+    assert ids == ["gate_Q1", "i_latch", "theta_off", "Vavg_ideal", "Vrms_ideal"]
+    ideal = body["steps"][3]["output"]["value"]
+    assert body["summary"]["Vavg"]["value"] == pytest.approx(ideal, rel=0.03)
+    assert [e["kind"] for e in body["events"]] == ["on", "off", "on", "off"]
+    assert body["spice_model"].startswith(".subckt")
+
+
+def test_thyristor_bench_fit_scr(client):
+    comp = find(client, "thyristor.scr", "2N5060")
+    body = client.post(
+        "/api/v1/devices/thyristor/waveform", json={"component_id": comp["id"], "fit": True}
+    ).json()
+    ids = [s["id"] for s in body["steps"]]
+    assert ids[:3] == ["IGT", "IH", "rT_fit"]
+    assert body["model"]["IGT_Q1"]["value"] == pytest.approx(0.2)
+    assert body["model"]["IH"]["value"] == pytest.approx(5.0)
+    assert any("IL" in w for w in body["warnings"])
+
+
+def test_thyristor_bench_fit_triac_quadrants(client):
+    comp = find(client, "thyristor.triac", "MAC218A6FP")
+    body = client.post(
+        "/api/v1/devices/thyristor/waveform",
+        json={
+            "component_id": comp["id"],
+            "fit": True,
+            "model": {"kind": "triac"},
+            "drive": {"IG": {"value": 60, "unit": "mA"}, "gate_mode": "positivo"},
+        },
+    ).json()
+    assert body["model"]["IGT_Q4"]["value"] == pytest.approx(75)
+    # 60 mA fires Q1 (50 mA) but not Q4 (75 mA): one turn-on per period
+    assert sum(1 for e in body["events"] if e["kind"] == "on") == 2
+    assert any("Q4" in w for w in body["warnings"])
+
+
+def test_thyristor_bench_rejects_bad_input(client):
+    url = "/api/v1/devices/thyristor/waveform"
+    assert (
+        client.post(url, json={"drive": {"alpha": {"value": 200, "unit": "deg"}}}).status_code
+        == 422
+    )
+    comp = find(client, "bjt.npn", "2N3904")
+    assert client.post(url, json={"component_id": comp["id"]}).status_code == 422
+
+
+def test_thyristor_bench_no_fire_warning(client):
+    body = client.post(
+        "/api/v1/devices/thyristor/waveform", json={"drive": {"IG": {"value": 1, "unit": "mA"}}}
+    ).json()
+    assert body["events"] == []
+    assert any("não conduziu" in w for w in body["warnings"])

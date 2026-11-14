@@ -138,7 +138,7 @@ function CurvesLayout(props: {
   );
 }
 
-function useComponents(category: string) {
+export function useComponents(category: string) {
   const [items, setItems] = useState<ComponentSummary[]>([]);
   useEffect(() => {
     catalog

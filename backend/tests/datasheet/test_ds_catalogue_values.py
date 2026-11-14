@@ -17,7 +17,8 @@ from circuitos.datasheets.store import DatasheetStore
 CATALOG = Path(__file__).parents[3] / "data" / "components"
 pytestmark = pytest.mark.datasheet
 
-_NUMBER = re.compile(r"[-−–]?\d+(?:[.,]\d+)?")
+# ".66" (no leading zero) is common in older US tables
+_NUMBER = re.compile(r"[-−–]?(?:\d+(?:[.,]\d+)?|\.\d+)")
 
 
 def _numbers(text: str) -> set[float]:

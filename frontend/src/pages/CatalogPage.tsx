@@ -12,6 +12,9 @@ const CATEGORY_LABEL: Record<string, string> = {
   "bjt.npn": "Transistor bipolar NPN",
   "bjt.pnp": "Transistor bipolar PNP",
   "mosfet.n": "MOSFET canal N",
+  "thyristor.scr": "SCR",
+  "thyristor.triac": "TRIAC",
+  "thyristor.diac": "DIAC",
 };
 
 export const REVIEW_LABEL: Record<string, string> = {

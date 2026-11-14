@@ -1,0 +1,262 @@
+# Fonte: onsemi, MCR265/D, Rev. 3, August 2006.
+family: MCR265
+category: thyristor.scr
+schema_version: '1.0'
+manufacturer: onsemi
+package: TO-220AB, case 221A
+datasheets:
+- id: onsemi-mcr265
+  manufacturer: onsemi
+  document_number: MCR265/D
+  revision: Rev. 3, August 2006
+  url: https://www.onsemi.com/download/data-sheet/pdf/mcr265-d.pdf
+  sha256: d50f2870a844d02fe8fed310ebfa293109b5c0263c8a283ea5f74ac9b0080297
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  IT(RMS):
+    max: 55
+    unit: A
+    conditions:
+      TC: 70 degC
+    status: extraido
+    source:
+      page: 2
+      location: Maximum ratings — on-state RMS current, 180°
+  IT(AV):
+    max: 35
+    unit: A
+    conditions:
+      TC: 70 degC
+    status: extraido
+    source:
+      page: 2
+      location: Maximum ratings — average on-state current, 180°
+  ITSM:
+    max: 550
+    unit: A
+    conditions:
+      t_pulse: 8.3 ms
+      Tj: 70 degC
+    note: Meio ciclo de senoide em 60 Hz
+    status: extraido
+    source:
+      page: 2
+      location: Maximum ratings — peak non-repetitive surge current, 1/2 cycle 60 Hz
+  PGM:
+    max: 20
+    unit: W
+    status: extraido
+    source:
+      page: 2
+      location: Maximum ratings — forward peak gate power (pulse ≤ 1 µs)
+  PG(AV):
+    max: 0.5
+    unit: W
+    status: extraido
+    source:
+      page: 2
+      location: Maximum ratings — forward average gate power
+  IGM:
+    max: 2.0
+    unit: A
+    status: extraido
+    source:
+      page: 2
+      location: Maximum ratings — forward peak gate current (pulse ≤ 1 µs)
+  Tj_max:
+    max: 125
+    unit: degC
+    status: extraido
+    source:
+      page: 2
+      location: Maximum ratings — operating junction temperature range
+  Tj_min:
+    min: -40
+    unit: degC
+    status: extraido
+    source:
+      page: 2
+      location: Maximum ratings — operating junction temperature range
+  Tstg_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 2
+      location: Maximum ratings — storage temperature range
+  Rth_jc:
+    max: 0.9
+    unit: K/W
+    status: extraido
+    source:
+      page: 3
+      location: Thermal characteristics — RθJC
+  Rth_ja:
+    max: 60
+    unit: K/W
+    status: extraido
+    source:
+      page: 3
+      location: Thermal characteristics — RθJA
+  IDRM:
+    max: 10
+    unit: uA
+    conditions:
+      Tj: 25 degC
+    status: extraido
+    source:
+      page: 3
+      location: Electrical characteristics — peak repetitive blocking current, TJ = 25 °C
+  IDRM@125C:
+    max: 2.0
+    unit: mA
+    conditions:
+      Tj: 125 degC
+    status: extraido
+    source:
+      page: 3
+      location: Electrical characteristics — peak repetitive blocking current, TJ = 125 °C
+  VTM:
+    typ: 1.5
+    max: 1.9
+    unit: V
+    conditions:
+      ITM: 110 A
+    note: Pulso ≤ 300 µs, ciclo ≤ 2 %
+    status: extraido
+    source:
+      page: 3
+      location: Electrical characteristics — peak forward on-state voltage
+  IGT:
+    typ: 20
+    max: 50
+    unit: mA
+    conditions:
+      VD: 12 V
+      RL: 100 ohm
+      TC: 25 degC
+    status: extraido
+    source:
+      page: 3
+      location: Electrical characteristics — gate trigger current, TC = 25 °C
+  IGT@-40C:
+    typ: 40
+    max: 90
+    unit: mA
+    conditions:
+      VD: 12 V
+      RL: 100 ohm
+      TC: -40 degC
+    note: Linha de −40 °C lida pela ordem dos números na tabela (típ. 40, máx. 90). Conferir na página.
+    status: extraido
+    source:
+      page: 3
+      location: Electrical characteristics — gate trigger current, TC = −40 °C
+  VGT:
+    typ: 1.0
+    max: 1.5
+    unit: V
+    conditions:
+      VD: 12 V
+      RL: 100 ohm
+    status: extraido
+    source:
+      page: 3
+      location: Electrical characteristics — gate trigger voltage
+  VGD:
+    min: 0.2
+    unit: V
+    conditions:
+      Tj: 125 degC
+    status: extraido
+    source:
+      page: 3
+      location: Electrical characteristics — gate non-trigger voltage
+  IH:
+    typ: 30
+    max: 75
+    unit: mA
+    note: VAK = 12 V, corrente inicial 200 mA
+    status: extraido
+    source:
+      page: 3
+      location: Electrical characteristics — holding current, gate open
+  tgt:
+    typ: 1.5
+    unit: us
+    note: ITM = 55 A, IGT = 200 mA
+    status: extraido
+    source:
+      page: 3
+      location: Electrical characteristics — turn-on time
+  dv/dt:
+    typ: 50
+    unit: V/us
+    status: extraido
+    source:
+      page: 3
+      location: Electrical characteristics — critical rate of rise of off-state voltage
+per_part: {}
+parts:
+  MCR265-4:
+    VDRM:
+      max: 200
+      unit: V
+      status: extraido
+      source:
+        page: 2
+        location: Maximum ratings — peak repetitive off-state voltage, MCR265-4
+    VRRM:
+      max: 200
+      unit: V
+      status: extraido
+      source:
+        page: 2
+        location: Maximum ratings — peak repetitive off-state voltage, MCR265-4
+  MCR265-6:
+    VDRM:
+      max: 400
+      unit: V
+      status: extraido
+      source:
+        page: 2
+        location: Maximum ratings — peak repetitive off-state voltage, MCR265-6
+    VRRM:
+      max: 400
+      unit: V
+      status: extraido
+      source:
+        page: 2
+        location: Maximum ratings — peak repetitive off-state voltage, MCR265-6
+  MCR265-8:
+    VDRM:
+      max: 600
+      unit: V
+      status: extraido
+      source:
+        page: 2
+        location: Maximum ratings — peak repetitive off-state voltage, MCR265-8
+    VRRM:
+      max: 600
+      unit: V
+      status: extraido
+      source:
+        page: 2
+        location: Maximum ratings — peak repetitive off-state voltage, MCR265-8
+  MCR265-10:
+    VDRM:
+      max: 800
+      unit: V
+      status: extraido
+      source:
+        page: 2
+        location: Maximum ratings — peak repetitive off-state voltage, MCR265-10
+    VRRM:
+      max: 800
+      unit: V
+      status: extraido
+      source:
+        page: 2
+        location: Maximum ratings — peak repetitive off-state voltage, MCR265-10

@@ -1,0 +1,37 @@
+category: thyristor.scr
+schema_version: "1.0"
+description: Tiristor SCR (retificador controlado de silício)
+required: [VDRM, IT(RMS), ITSM, IGT, IH, VTM, Tj_max]
+optional: []
+parameters:
+  VDRM:     {unit: V, kind: max_rating, description: Tensão de bloqueio direta repetitiva de pico}
+  VRRM:     {unit: V, kind: max_rating, description: Tensão de bloqueio reversa repetitiva de pico}
+  IT(RMS):  {unit: A, kind: max_rating, description: Corrente eficaz em condução, conditions_required: [TC|TA]}
+  IT(AV):   {unit: A, kind: max_rating, description: Corrente média em condução (180°), conditions_required: [TC|TA]}
+  ITSM:     {unit: A, kind: max_rating, description: Corrente de surto não repetitiva, conditions_required: [t_pulse]}
+  I2t:      {unit: A**2*s, kind: max_rating, description: Integral de fusão, conditions_required: [t_pulse]}
+  di/dt:    {unit: A/us, kind: max_rating, description: Taxa crítica de crescimento da corrente em condução}
+  PGM:      {unit: W, kind: max_rating, description: Potência de porta de pico}
+  PG(AV):   {unit: W, kind: max_rating, description: Potência de porta média}
+  IGM:      {unit: A, kind: max_rating, description: Corrente de porta de pico}
+  VGM:      {unit: V, kind: max_rating, description: Tensão de porta de pico}
+  VRGM:     {unit: V, kind: max_rating, description: Tensão reversa de porta de pico}
+  V(ISO):   {unit: V, kind: max_rating, description: Tensão de isolação eficaz (encapsulamento isolado)}
+  Tj_max:   {unit: degC, kind: max_rating, description: Temperatura máxima de junção}
+  Tj_min:   {unit: degC, kind: max_rating, description: Temperatura mínima de operação da junção}
+  Tstg_max: {unit: degC, kind: max_rating, description: Temperatura máxima de armazenamento}
+  Rth_jc:   {unit: K/W, kind: thermal, description: Resistência térmica junção-cápsula}
+  Rth_cs:   {unit: K/W, kind: thermal, description: Resistência térmica cápsula-dissipador}
+  Rth_ja:   {unit: K/W, kind: thermal, description: Resistência térmica junção-ambiente}
+  IDRM:     {unit: A, kind: characteristic, description: Corrente de fuga em bloqueio (direta e reversa), conditions_required: [Tj|TC]}
+  VTM:      {unit: V, kind: characteristic, description: Tensão de pico em condução, conditions_required: [ITM]}
+  IGT:      {unit: A, kind: characteristic, description: Corrente de disparo da porta, conditions_required: [VD]}
+  VGT:      {unit: V, kind: characteristic, description: Tensão de disparo da porta, conditions_required: [VD]}
+  VGD:      {unit: V, kind: characteristic, description: Tensão de porta que garantidamente não dispara}
+  IH:       {unit: A, kind: characteristic, description: Corrente de manutenção (porta aberta)}
+  IL:       {unit: A, kind: characteristic, description: Corrente de travamento (latching)}
+  tgt:      {unit: s, kind: characteristic, description: Tempo de entrada em condução (disparo pela porta)}
+  td:       {unit: s, kind: characteristic, description: Tempo de atraso no disparo}
+  tr:       {unit: s, kind: characteristic, description: Tempo de subida no disparo}
+  tq:       {unit: s, kind: characteristic, description: Tempo de desligamento por comutação}
+  dv/dt:    {unit: V/us, kind: characteristic, description: Taxa crítica de crescimento da tensão em bloqueio}

@@ -1,0 +1,14 @@
+category: thyristor.diac
+schema_version: "1.0"
+description: DIAC (diodo de disparo bidirecional)
+required: [VBO, dV, IBO, Tj_max]
+optional: []
+parameters:
+  VBO:      {unit: V, kind: characteristic, description: Tensão de ruptura (disparo)}
+  dVBO:     {unit: V, kind: characteristic, description: Assimetria da tensão de disparo |VBO+| − |VBO−|}
+  dV:       {unit: V, kind: characteristic, description: Retrocesso de tensão após o disparo (fold-back), conditions_required: [IF]}
+  IBO:      {unit: A, kind: characteristic, description: Corrente no ponto de disparo}
+  IB:       {unit: A, kind: characteristic, description: Corrente de fuga abaixo do disparo}
+  ITRM:     {unit: A, kind: max_rating, description: Corrente de pico repetitiva}
+  Ptot:     {unit: W, kind: max_rating, description: Dissipação total}
+  Tj_max:   {unit: degC, kind: max_rating, description: Temperatura máxima de junção}

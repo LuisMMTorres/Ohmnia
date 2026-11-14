@@ -1,0 +1,350 @@
+# Fonte: onsemi, 2N5060/D, Rev. 11, October 2024.
+family: 2N5060
+category: thyristor.scr
+schema_version: '1.0'
+manufacturer: onsemi
+package: TO-92, case 29
+notes:
+- 'SCR de porta sensível: as medidas de IDRM e IH incluem RGK = 1 kΩ entre porta e cátodo.'
+datasheets:
+- id: onsemi-2n5060
+  manufacturer: onsemi
+  document_number: 2N5060/D
+  revision: Rev. 11, October 2024
+  url: https://www.onsemi.com/download/data-sheet/pdf/2n5060-d.pdf
+  sha256: aa08d0bb0910514617d83acfa5dcf6ebc4a6d15f28ac8d83c89dd84b2a44fa91
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  IT(RMS):
+    max: 0.8
+    unit: A
+    conditions:
+      TC: 80 degC
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — on-state current RMS, 180°
+  IT(AV):
+    max: 0.51
+    unit: A
+    conditions:
+      TC: 67 degC
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — average on-state current, 180°, TC = 67 °C
+  IT(AV)@102C:
+    max: 0.255
+    unit: A
+    conditions:
+      TC: 102 degC
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — average on-state current, 180°, TC = 102 °C
+  ITSM:
+    max: 10
+    unit: A
+    conditions:
+      t_pulse: 8.3 ms
+      TA: 25 degC
+    note: Meio ciclo de senoide em 60 Hz
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — peak non-repetitive surge current, 1/2 cycle 60 Hz
+  I2t:
+    max: 0.4
+    unit: A**2*s
+    conditions:
+      t_pulse: 8.3 ms
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — circuit fusing considerations
+  PGM:
+    max: 0.1
+    unit: W
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — forward peak gate power (pulse ≤ 1 µs)
+  PG(AV):
+    max: 0.01
+    unit: W
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — forward average gate power
+  IGM:
+    max: 1.0
+    unit: A
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — forward peak gate current (pulse ≤ 1 µs)
+  VRGM:
+    max: 5.0
+    unit: V
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — reverse peak gate voltage (pulse ≤ 1 µs)
+  Tj_max:
+    max: 110
+    unit: degC
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — operating junction temperature range
+  Tj_min:
+    min: -40
+    unit: degC
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — operating junction temperature range
+  Tstg_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — storage temperature range
+  Rth_jc:
+    max: 75
+    unit: K/W
+    status: extraido
+    source:
+      page: 2
+      location: 'Thermal characteristics — RθJC (nota 2: face plana sobre dissipador)'
+  Rth_ja:
+    max: 200
+    unit: K/W
+    status: extraido
+    source:
+      page: 2
+      location: Thermal characteristics — RθJA
+  IDRM:
+    max: 10
+    unit: uA
+    conditions:
+      TC: 25 degC
+    note: Medido com RGK = 1 kΩ (nota 3)
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — peak repetitive blocking current, TC = 25 °C
+  IDRM@110C:
+    max: 50
+    unit: uA
+    conditions:
+      TC: 110 degC
+    note: Medido com RGK = 1 kΩ (nota 3)
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — peak repetitive blocking current, TC = 110 °C
+  VTM:
+    max: 1.7
+    unit: V
+    conditions:
+      ITM: 1.2 A
+      TA: 25 degC
+    note: Pulso ≤ 1 ms, ciclo ≤ 1 %
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — peak forward on-state voltage
+  IGT:
+    max: 200
+    unit: uA
+    conditions:
+      VD: 7 V
+      RL: 100 ohm
+      TC: 25 degC
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — gate trigger current, TC = 25 °C
+  IGT@-40C:
+    max: 350
+    unit: uA
+    conditions:
+      VD: 7 V
+      RL: 100 ohm
+      TC: -40 degC
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — gate trigger current, TC = −40 °C
+  VGT:
+    max: 0.8
+    unit: V
+    conditions:
+      VD: 7 V
+      RL: 100 ohm
+      TC: 25 degC
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — gate trigger voltage, TC = 25 °C
+  VGT@-40C:
+    max: 1.2
+    unit: V
+    conditions:
+      VD: 7 V
+      RL: 100 ohm
+      TC: -40 degC
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — gate trigger voltage, TC = −40 °C
+  VGD:
+    min: 0.1
+    unit: V
+    conditions:
+      TC: 110 degC
+    note: VAK = VDRM nominal, RL = 100 Ω
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — gate non-trigger voltage
+  IH:
+    max: 5.0
+    unit: mA
+    conditions:
+      TC: 25 degC
+    note: VAK = 7 V, corrente inicial 20 mA, RGK = 1 kΩ incluído
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — holding current, TC = 25 °C
+  IH@-40C:
+    max: 10
+    unit: mA
+    conditions:
+      TC: -40 degC
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — holding current, TC = −40 °C
+  td:
+    typ: 3.0
+    unit: us
+    note: IGT = 1 mA, VD = VDRM nominal, IT = 1 A, di/dt = 6 A/µs
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — turn-on delay time
+  tr:
+    typ: 0.2
+    unit: us
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — turn-on rise time
+  dv/dt:
+    typ: 30
+    unit: V/us
+    note: Exponencial, RGK = 1 kΩ
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — critical rate of rise of off-state voltage
+per_part: {}
+parts:
+  2N5060:
+    VDRM:
+      max: 30
+      unit: V
+      note: RGK = 1 kΩ
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — peak repetitive off-state voltage, 2N5060
+    VRRM:
+      max: 30
+      unit: V
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — peak repetitive off-state voltage, 2N5060
+    tq:
+      typ: 10
+      unit: us
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — turn-off time, 2N5060
+  2N5061:
+    VDRM:
+      max: 60
+      unit: V
+      note: RGK = 1 kΩ
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — peak repetitive off-state voltage, 2N5061
+    VRRM:
+      max: 60
+      unit: V
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — peak repetitive off-state voltage, 2N5061
+    tq:
+      typ: 10
+      unit: us
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — turn-off time, 2N5061
+  2N5062:
+    VDRM:
+      max: 100
+      unit: V
+      note: RGK = 1 kΩ
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — peak repetitive off-state voltage, 2N5062
+    VRRM:
+      max: 100
+      unit: V
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — peak repetitive off-state voltage, 2N5062
+    tq:
+      typ: 30
+      unit: us
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — turn-off time, 2N5062
+  2N5064:
+    VDRM:
+      max: 200
+      unit: V
+      note: RGK = 1 kΩ
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — peak repetitive off-state voltage, 2N5064
+    VRRM:
+      max: 200
+      unit: V
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — peak repetitive off-state voltage, 2N5064
+    tq:
+      typ: 30
+      unit: us
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — turn-off time, 2N5064

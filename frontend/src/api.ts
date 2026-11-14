@@ -307,6 +307,38 @@ export interface MosfetBenchIn {
   fit?: boolean;
 }
 
+export interface ThyristorBenchIn {
+  model: {
+    kind: "scr" | "triac";
+    VT0: Quantity;
+    rT: Quantity;
+    IGT: Quantity[];
+    IH: Quantity;
+    IL: Quantity;
+  };
+  drive: {
+    Vm: Quantity;
+    f: Quantity;
+    R: Quantity;
+    alpha: Quantity;
+    IG: Quantity;
+    tw: Quantity;
+    gate_mode: "positivo" | "negativo" | "acompanha";
+  };
+  component_id?: string | null;
+  fit?: boolean;
+}
+export interface WaveOut {
+  t: Vector;
+  traces: Record<string, Vector>;
+  events: { kind: string; t_ms: number }[];
+  summary: { Vavg: Quantity; Vrms: Quantity; conduction: Quantity };
+  steps: CalcStep[];
+  model: Record<string, Quantity | string>;
+  spice_model: string;
+  warnings: string[];
+}
+
 export const bench = {
   diode: (body: DiodeBenchIn) =>
     request<DiodeBenchOut>("/devices/diode/iv", { method: "POST", body: JSON.stringify(body) }),
@@ -316,4 +348,9 @@ export const bench = {
     request<CurvesOut>("/devices/bjt/output", { method: "POST", body: JSON.stringify(body) }),
   mosfet: (body: MosfetBenchIn) =>
     request<CurvesOut>("/devices/mosfet/output", { method: "POST", body: JSON.stringify(body) }),
+  thyristor: (body: ThyristorBenchIn) =>
+    request<WaveOut>("/devices/thyristor/waveform", {
+      method: "POST",
+      body: JSON.stringify(body),
+    }),
 };

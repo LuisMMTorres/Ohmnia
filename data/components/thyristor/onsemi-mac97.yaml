@@ -1,0 +1,309 @@
+# Fonte: onsemi, MAC97/D, Rev. 10, August 2013.
+family: MAC97
+category: thyristor.triac
+schema_version: '1.0'
+manufacturer: onsemi
+package: TO-92 (TO-226), case 029
+notes:
+- 'Quadrantes: Q1 = MT2(+), G(+); Q2 = MT2(+), G(−); Q3 = MT2(−), G(−); Q4 = MT2(−), G(+).'
+datasheets:
+- id: onsemi-mac97
+  manufacturer: onsemi
+  document_number: MAC97/D
+  revision: Rev. 10, August 2013
+  url: https://www.onsemi.com/download/data-sheet/pdf/mac97-d.pdf
+  sha256: f8ca324875dcd3ffb4b6e03db0e17ca2574db396ee399ae0cfdb897f3d83bbc7
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  IT(RMS):
+    max: 0.6
+    unit: A
+    conditions:
+      TC: 50 degC
+    note: A tabela dá 0,6 A; o quadro da primeira página anuncia 0,8 A. Registrado o valor da tabela.
+    status: extraido
+    source:
+      page: 2
+      location: Maximum ratings — on-state RMS current, full cycle
+  ITSM:
+    max: 8.0
+    unit: A
+    conditions:
+      t_pulse: 16.7 ms
+      TC: 110 degC
+    note: Um ciclo completo de 60 Hz
+    status: extraido
+    source:
+      page: 2
+      location: Maximum ratings — peak non-repetitive surge current, one full cycle 60 Hz
+  I2t:
+    max: 0.26
+    unit: A**2*s
+    conditions:
+      t_pulse: 8.3 ms
+    status: extraido
+    source:
+      page: 2
+      location: Maximum ratings — circuit fusing considerations
+  VGM:
+    max: 5.0
+    unit: V
+    status: extraido
+    source:
+      page: 2
+      location: Maximum ratings — peak gate voltage (t ≤ 2 µs)
+  PGM:
+    max: 5.0
+    unit: W
+    status: extraido
+    source:
+      page: 2
+      location: Maximum ratings — peak gate power (t ≤ 2 µs)
+  PG(AV):
+    max: 0.1
+    unit: W
+    status: extraido
+    source:
+      page: 2
+      location: Maximum ratings — average gate power
+  IGM:
+    max: 1.0
+    unit: A
+    status: extraido
+    source:
+      page: 2
+      location: Maximum ratings — peak gate current (t ≤ 2 µs)
+  Tj_max:
+    max: 110
+    unit: degC
+    status: extraido
+    source:
+      page: 2
+      location: Maximum ratings — operating junction temperature range
+  Tj_min:
+    min: -40
+    unit: degC
+    status: extraido
+    source:
+      page: 2
+      location: Maximum ratings — operating junction temperature range
+  Tstg_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 2
+      location: Maximum ratings — storage temperature range
+  Rth_jc:
+    max: 75
+    unit: K/W
+    status: extraido
+    source:
+      page: 3
+      location: Thermal characteristics — RθJC
+  Rth_ja:
+    max: 200
+    unit: K/W
+    status: extraido
+    source:
+      page: 3
+      location: Thermal characteristics — RθJA
+  IDRM:
+    max: 10
+    unit: uA
+    conditions:
+      Tj: 25 degC
+    status: extraido
+    source:
+      page: 3
+      location: Electrical characteristics — peak repetitive blocking current, TJ = 25 °C
+  IDRM@110C:
+    max: 100
+    unit: uA
+    conditions:
+      Tj: 110 degC
+    status: extraido
+    source:
+      page: 3
+      location: Electrical characteristics — peak repetitive blocking current, TJ = 110 °C
+  VTM:
+    max: 1.9
+    unit: V
+    conditions:
+      ITM: 0.85 A
+    note: Pulso ≤ 2 ms, ciclo ≤ 2 %
+    status: extraido
+    source:
+      page: 3
+      location: Electrical characteristics — peak on-state voltage
+  IGT@Q1:
+    max: 5.0
+    unit: mA
+    conditions: &id001
+      VD: 12 V
+      RL: 100 ohm
+    note: 'Quadrante 1: MT2(+), G(+)'
+    status: extraido
+    source:
+      page: 3
+      location: Electrical characteristics — gate trigger current, MT2(+), G(+)
+  IGT@Q2:
+    max: 5.0
+    unit: mA
+    conditions: *id001
+    note: 'Quadrante 2: MT2(+), G(−)'
+    status: extraido
+    source:
+      page: 3
+      location: Electrical characteristics — gate trigger current, MT2(+), G(−)
+  IGT@Q3:
+    max: 5.0
+    unit: mA
+    conditions: *id001
+    note: 'Quadrante 3: MT2(−), G(−)'
+    status: extraido
+    source:
+      page: 3
+      location: Electrical characteristics — gate trigger current, MT2(−), G(−)
+  IGT@Q4:
+    max: 7.0
+    unit: mA
+    conditions: *id001
+    note: 'Quadrante 4: MT2(−), G(+)'
+    status: extraido
+    source:
+      page: 3
+      location: Electrical characteristics — gate trigger current, MT2(−), G(+)
+  VGT@Q1:
+    typ: 0.66
+    max: 2.0
+    unit: V
+    conditions: &id002
+      VD: 12 V
+      RL: 100 ohm
+    note: 'Quadrante 1: MT2(+), G(+)'
+    status: extraido
+    source:
+      page: 3
+      location: Electrical characteristics — gate trigger voltage, MT2(+), G(+)
+  VGT@Q2:
+    typ: 0.77
+    max: 2.0
+    unit: V
+    conditions: *id002
+    note: 'Quadrante 2: MT2(+), G(−)'
+    status: extraido
+    source:
+      page: 3
+      location: Electrical characteristics — gate trigger voltage, MT2(+), G(−)
+  VGT@Q3:
+    typ: 0.84
+    max: 2.0
+    unit: V
+    conditions: *id002
+    note: 'Quadrante 3: MT2(−), G(−)'
+    status: extraido
+    source:
+      page: 3
+      location: Electrical characteristics — gate trigger voltage, MT2(−), G(−)
+  VGT@Q4:
+    typ: 0.88
+    max: 2.5
+    unit: V
+    conditions: *id002
+    note: 'Quadrante 4: MT2(−), G(+)'
+    status: extraido
+    source:
+      page: 3
+      location: Electrical characteristics — gate trigger voltage, MT2(−), G(+)
+  VGD:
+    min: 0.1
+    unit: V
+    conditions:
+      Tj: 110 degC
+    status: extraido
+    source:
+      page: 3
+      location: Electrical characteristics — gate non-trigger voltage, all quadrants
+  IH:
+    typ: 1.5
+    max: 10
+    unit: mA
+    note: VD = 12 V, corrente inicial 200 mA
+    status: extraido
+    source:
+      page: 3
+      location: Electrical characteristics — holding current, gate open
+  tgt:
+    typ: 2.0
+    unit: us
+    note: ITM = 1 A, IG = 25 mA
+    status: extraido
+    source:
+      page: 3
+      location: Electrical characteristics — turn-on time
+  dv/dt(c):
+    typ: 5.0
+    unit: V/us
+    note: ITM = 0,84 A, di/dt de comutação 0,3 A/ms, TC = 50 °C
+    status: extraido
+    source:
+      page: 3
+      location: Electrical characteristics — critical rate of rise of commutation voltage
+  dv/dt:
+    typ: 25
+    unit: V/us
+    note: TC = 110 °C, exponencial
+    status: extraido
+    source:
+      page: 3
+      location: Electrical characteristics — critical rate of rise of off-state voltage
+per_part: {}
+parts:
+  MAC97A4:
+    VDRM:
+      max: 200
+      unit: V
+      status: extraido
+      source:
+        page: 2
+        location: Maximum ratings — peak repetitive off-state voltage, MAC97A4
+    VRRM:
+      max: 200
+      unit: V
+      status: extraido
+      source:
+        page: 2
+        location: Maximum ratings — peak repetitive off-state voltage, MAC97A4
+  MAC97A6:
+    VDRM:
+      max: 400
+      unit: V
+      status: extraido
+      source:
+        page: 2
+        location: Maximum ratings — peak repetitive off-state voltage, MAC97A6
+    VRRM:
+      max: 400
+      unit: V
+      status: extraido
+      source:
+        page: 2
+        location: Maximum ratings — peak repetitive off-state voltage, MAC97A6
+  MAC97A8:
+    VDRM:
+      max: 600
+      unit: V
+      status: extraido
+      source:
+        page: 2
+        location: Maximum ratings — peak repetitive off-state voltage, MAC97A8
+    VRRM:
+      max: 600
+      unit: V
+      status: extraido
+      source:
+        page: 2
+        location: Maximum ratings — peak repetitive off-state voltage, MAC97A8

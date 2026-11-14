@@ -1,0 +1,7 @@
+category: thyristor.triac
+extends: thyristor.scr
+schema_version: "1.0"
+description: TRIAC (tiristor bidirecional); IGT e VGT por quadrante (MT2 e G em relação a MT1)
+required: [VDRM, IT(RMS), ITSM, IGT, IH, VTM, Tj_max]
+parameters:
+  dv/dt(c): {unit: V/us, kind: characteristic, description: Taxa crítica de crescimento da tensão de comutação}

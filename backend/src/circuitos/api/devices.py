@@ -1,9 +1,10 @@
-"""Device bench endpoints (BD-DIODO, BD-ZENER, BD-TBJ, BD-FET)."""
+"""Device bench endpoints (BD-DIODO, BD-ZENER, BD-TBJ, BD-FET, BD-TIR)."""
 
 from __future__ import annotations
 
 import uuid
 from collections.abc import Mapping
+from typing import Literal
 
 import numpy as np
 import pint
@@ -15,7 +16,7 @@ from circuitos.components.repository import ComponentRepository
 from circuitos.core.calc import BibRef, CalcStep, record
 from circuitos.core.errors import CircuitosError
 from circuitos.core.units import Q_, QuantityModel, VectorModel, parse_unit
-from circuitos.devices import bjt, diode, mosfet, zener
+from circuitos.devices import bjt, diode, mosfet, thyristor, zener
 
 router = APIRouter(prefix="/api/v1/devices")
 
@@ -627,6 +628,252 @@ def mosfet_output(request: Request, body: MosfetBenchIn) -> CurvesOut:
             "VTO": QuantityModel(value=model.VTO.m_as("V"), unit="V"),
             "KP": QuantityModel(value=model.KP.m_as("A/V**2"), unit="A/V**2"),
             "LAMBDA": QuantityModel(value=model.LAMBDA.m_as("1/V"), unit="1/V"),
+        },
+        spice_model=model.spice(),
+        warnings=warnings,
+    )
+
+
+# ---------------------------------------------------------------- BD-TIR
+
+
+class ThyristorModelIn(BaseModel):
+    kind: Literal["scr", "triac"] = "scr"
+    VT0: QuantityModel = QuantityModel(value=1.0, unit="V")
+    rT: QuantityModel = QuantityModel(value=50, unit="mohm")
+    IGT: list[QuantityModel] = Field(
+        default_factory=lambda: [QuantityModel(value=v, unit="mA") for v in (5, 5, 5, 7)],
+        min_length=4,
+        max_length=4,
+    )
+    IH: QuantityModel = QuantityModel(value=5, unit="mA")
+    IL: QuantityModel = QuantityModel(value=10, unit="mA")
+
+
+class ThyristorDriveIn(BaseModel):
+    Vm: QuantityModel = QuantityModel(value=179.6, unit="V")
+    f: QuantityModel = QuantityModel(value=60, unit="Hz")
+    R: QuantityModel = QuantityModel(value=100, unit="ohm")
+    alpha: QuantityModel = QuantityModel(value=60, unit="deg")
+    IG: QuantityModel = QuantityModel(value=20, unit="mA")
+    tw: QuantityModel = QuantityModel(value=100, unit="us")
+    gate_mode: Literal["positivo", "negativo", "acompanha"] = "positivo"
+
+
+class ThyristorBenchIn(BaseModel):
+    model: ThyristorModelIn = ThyristorModelIn()
+    drive: ThyristorDriveIn = ThyristorDriveIn()
+    periods: int = Field(default=2, ge=1, le=6)
+    component_id: uuid.UUID | None = None
+    fit: bool = False
+
+
+class WaveOut(BaseModel):
+    t: VectorModel
+    traces: dict[str, VectorModel]
+    events: list[dict[str, str | float]]
+    summary: dict[str, QuantityModel]
+    steps: list[CalcStep]
+    model: dict[str, QuantityModel | str]
+    spice_model: str
+    warnings: list[str]
+
+
+def _pick(p: Parameter, name: str) -> tuple[pint.Quantity, str, list[str]]:
+    """Typical value if the datasheet gives one, else the limit (with a warning)."""
+    if p.typ is not None:
+        return Q_(p.typ, parse_unit(p.unit)), f"{name} típico", []
+    limit = p.max if p.max is not None else p.min
+    if limit is None:
+        raise HTTPException(422, f"{name} sem valor")
+    what = "máximo" if p.max is not None else "mínimo"
+    return (
+        Q_(limit, parse_unit(p.unit)),
+        f"{name} {what}",
+        [f"{name}: o datasheet só dá o valor {what}."],
+    )
+
+
+def _fit_thyristor(
+    record: ComponentRecord, base: thyristor.ThyristorModel
+) -> tuple[thyristor.ThyristorModel, list[CalcStep], list[str]]:
+    params = record.parameters
+    kind: thyristor.Kind = "triac" if record.category.endswith("triac") else "scr"
+    steps: list[CalcStep] = []
+    warnings: list[str] = []
+    used: list[Parameter | None] = []
+    igt: list[pint.Quantity] = []
+    keys = [f"IGT@{q}" for q in thyristor.QUADRANTS] if kind == "triac" else ["IGT"] * 4
+    for quadrant, key in zip(thyristor.QUADRANTS, keys, strict=True):
+        p = params.get(key)
+        if p is None or not p.has_value:
+            raise HTTPException(422, f"O componente não tem {key}")
+        value, how, warn = _pick(p, "IGT")
+        igt.append(value.to("mA"))
+        if kind == "triac" or quadrant == "Q1":
+            used.append(p)
+            warnings += [w for w in warn if w not in warnings]
+            steps.append(
+                record_step(
+                    f"IGT_{quadrant}" if kind == "triac" else "IGT",
+                    "Corrente de disparo da porta"
+                    + (f" no quadrante {quadrant}" if kind == "triac" else ""),
+                    r"I_{GT} = I_{GT,ds}",
+                    value.to("mA"),
+                    {k: c.to_pint() for k, c in p.conditions.items()},
+                    [how, "o valor máximo garante o disparo de qualquer unidade do lote"],
+                    thyristor.TIR_REF,
+                )
+            )
+    if kind == "scr":
+        igt = [igt[0], Q_(1e6, "A"), Q_(1e6, "A"), Q_(1e6, "A")]  # SCR fires only in Q1
+    p_ih = params.get("IH")
+    if p_ih is None or not p_ih.has_value:
+        raise HTTPException(422, "O componente não tem IH")
+    ih, how, warn = _pick(p_ih, "IH")
+    warnings += warn
+    used.append(p_ih)
+    steps.append(
+        record_step(
+            "IH",
+            "Corrente de manutenção",
+            r"I_H = I_{H,ds}",
+            ih.to("mA"),
+            {k: c.to_pint() for k, c in p_ih.conditions.items()},
+            [how, "porta aberta"],
+            thyristor.TIR_REF,
+        )
+    )
+    p_il = params.get("IL")
+    if p_il is not None and p_il.has_value:
+        il, _, warn = _pick(p_il, "IL")
+        warnings += warn
+        used.append(p_il)
+    else:
+        il = max(base.IL, ih)
+        warnings.append(
+            "O datasheet não informa a corrente de travamento IL; a bancada usa IL = "
+            f"{formatq(il)}, o maior entre o valor da bancada e IH (num tiristor real IL > IH). "
+            "Hipótese didática, ajustável."
+        )
+    if il < ih:
+        warnings.append("IL ficou menor que IH; num tiristor real IL é maior que IH.")
+    rt = base.rT
+    p_vtm = params.get("VTM")
+    if p_vtm is not None and p_vtm.has_value and "ITM" in p_vtm.conditions:
+        vtm, _, warn = _pick(p_vtm, "VTM")
+        warnings += warn
+        used.append(p_vtm)
+        try:
+            fit = thyristor.on_state_fit(vtm, p_vtm.conditions["ITM"].to_pint(), base.VT0)
+        except ValueError as exc:
+            raise HTTPException(422, str(exc)) from exc
+        rt = fit.value
+        steps.append(fit.step)
+    model = thyristor.ThyristorModel(
+        kind=kind, VT0=base.VT0, rT=rt, IGT=(igt[0], igt[1], igt[2], igt[3]), IH=ih, IL=il
+    )
+    return model, steps, warnings + _unreviewed(used)
+
+
+@router.post("/thyristor/waveform")
+def thyristor_waveform(request: Request, body: ThyristorBenchIn) -> WaveOut:
+    try:
+        igt = [g.to_pint() for g in body.model.IGT]
+        model = thyristor.ThyristorModel(
+            kind=body.model.kind,
+            VT0=body.model.VT0.to_pint(),
+            rT=body.model.rT.to_pint(),
+            IGT=(igt[0], igt[1], igt[2], igt[3]),
+            IH=body.model.IH.to_pint(),
+            IL=body.model.IL.to_pint(),
+        )
+        d = body.drive
+        drive = thyristor.Drive(
+            Vm=d.Vm.to_pint(),
+            f=d.f.to_pint(),
+            R=d.R.to_pint(),
+            alpha=d.alpha.to_pint(),
+            IG=d.IG.to_pint(),
+            tw=d.tw.to_pint(),
+            gate_mode=d.gate_mode,
+        )
+    except (CircuitosError, ValueError) as exc:
+        raise HTTPException(422, str(exc)) from exc
+    steps: list[CalcStep] = []
+    warnings: list[str] = []
+    if body.component_id is not None:
+        record = _record_for(request, body.component_id, "thyristor")
+        if record.category == "thyristor.diac":
+            raise HTTPException(422, "A bancada de SCR/TRIAC não usa DIAC")
+        if body.fit:
+            model, steps, warnings = _fit_thyristor(record, model)
+    w = thyristor.simulate(model, drive, periods=body.periods, points_per_period=2400)
+    avg, rms = thyristor.last_period_metrics(w, drive)
+    # gate check: which quadrants does this drive use?
+    s1, s2 = drive.pulse_signs(model.kind)
+    quads = []
+    if s1:
+        quads.append("Q1" if s1 > 0 else "Q2")
+    if s2:
+        quads.append("Q3" if s2 < 0 else "Q4")
+    for quadrant in quads:
+        igt_q = model.IGT[thyristor.QUADRANTS.index(quadrant)]
+        steps.append(
+            record_step(
+                f"gate_{quadrant}",
+                f"Margem de disparo pela porta ({quadrant})",
+                r"m_G = \frac{I_G}{I_{GT}}",
+                Q_(drive.IG.m_as("A") / igt_q.m_as("A"), "dimensionless"),
+                {"I_G": drive.IG.to("mA"), "I_{GT}": igt_q.to("mA")},
+                ["dispara se m_G ≥ 1"],
+                thyristor.TIR_REF,
+            )
+        )
+        if igt_q > drive.IG:
+            warnings.append(
+                f"IG = {formatq(drive.IG)} é menor que IGT de {quadrant} ({formatq(igt_q)}): "
+                "sem disparo nesse semiciclo."
+            )
+    steps.append(thyristor.latch_current(model, drive).step)
+    try:
+        steps.append(thyristor.turn_off_angle(model, drive).step)
+    except ValueError as exc:
+        warnings.append(str(exc))
+    steps += [s.step for s in thyristor.ideal_load_voltage(model.kind, drive)]
+    if not w.on.any():
+        warnings.append("O tiristor não conduziu: confira IG, IGT, α e a largura do pulso.")
+    elif not any(k == "on" for k, t in w.events if t >= w.t[-1] - 1 / drive.f.m_as("Hz")):
+        warnings.append("O tiristor não disparou no último período.")
+    t_ms = w.t * 1e3
+    conducting = float(np.mean(w.on[w.t >= w.t[-1] - 1 / drive.f.m_as("Hz")]) * 360)
+    return WaveOut(
+        t=VectorModel(values=t_ms.tolist(), unit="ms"),
+        traces={
+            "Tensão da fonte": VectorModel(values=w.vs.tolist(), unit="V"),
+            "Tensão na carga": VectorModel(values=w.v_load.tolist(), unit="V"),
+            "Tensão no tiristor": VectorModel(values=w.v_t.tolist(), unit="V"),
+            "Corrente": VectorModel(values=w.i.tolist(), unit="A"),
+            "Corrente de porta": VectorModel(values=w.ig.tolist(), unit="A"),
+        },
+        events=[{"kind": k, "t_ms": t * 1e3} for k, t in w.events],
+        summary={
+            "Vavg": QuantityModel(value=avg, unit="V"),
+            "Vrms": QuantityModel(value=rms, unit="V"),
+            "conduction": QuantityModel(value=conducting, unit="deg"),
+        },
+        steps=steps,
+        model={
+            "kind": model.kind,
+            "VT0": QuantityModel(value=model.VT0.m_as("V"), unit="V"),
+            "rT": QuantityModel(value=model.rT.m_as("mohm"), unit="mohm"),
+            **{
+                f"IGT_{q}": QuantityModel(value=g.m_as("mA"), unit="mA")
+                for q, g in zip(thyristor.QUADRANTS, model.IGT, strict=True)
+                if g.m_as("A") < 1e5
+            },
+            "IH": QuantityModel(value=model.IH.m_as("mA"), unit="mA"),
+            "IL": QuantityModel(value=model.IL.m_as("mA"), unit="mA"),
         },
         spice_model=model.spice(),
         warnings=warnings,

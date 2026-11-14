@@ -89,8 +89,11 @@ _HIGHLIGHT = {
     "bjt.npn": ["VCEO", "IC", "Ptot", "hFE", "fT"],
     "bjt.pnp": ["VCEO", "IC", "Ptot", "hFE", "fT"],
     "mosfet.n": ["VDS", "ID", "RDS(on)", "VGS(th)", "Qg"],
+    "thyristor.scr": ["VDRM", "IT(RMS)", "ITSM", "IGT", "IH"],
+    "thyristor.triac": ["VDRM", "IT(RMS)", "ITSM", "IGT@Q1", "IH"],
+    "thyristor.diac": ["VBO", "dV", "IBO", "Ptot"],
 }
-_UNIT_TEXT = {"degC": "°C", "uA": "µA", "ohm": "Ω", "percent": "%", "dimensionless": ""}
+_UNIT_TEXT = {"degC": "°C", "uA": "µA", "us": "µs", "ohm": "Ω", "percent": "%", "dimensionless": ""}
 
 
 def _fmt(record: ComponentRecord, key: str) -> str | None:
