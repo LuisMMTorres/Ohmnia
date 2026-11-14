@@ -597,6 +597,15 @@ class SsaModule:
             | {k: Q_(v, "ohm") for k, v in r.items()}
             | {k: Q_(v, "F").to("uF") for k, v in caps.items()}
         )
+        if s.config in ("EC", "FC") and s.Av > 0 and abs(abs(av) / s.Av - 1) > 0.2:
+            warnings.append(
+                DesignWarning(
+                    code="ganho",
+                    message=f"|Av| obtido ({abs(av):.3g}) difere mais de 20 % do desejado "
+                    f"({s.Av:g}): RE da polarização (kE) ou gm do dispositivo real limitam o "
+                    "ajuste.",
+                )
+            )
         if vo_pk > swing:
             warnings.append(
                 DesignWarning(
@@ -683,6 +692,8 @@ class SsaModule:
             re2 = r.get("RE2", r.get("RE", 0.0) if s.config in ("EC", "FC") else 0.0)
             if s.config == "CC":
                 n.R("e", "0", r["RE"])
+            elif re1 > 0 and re2 <= 0:  # RE fully unbypassed: no CE
+                n.R("e", "0", re1)
             elif re1 > 0:
                 n.R("e", "e2", re1)
                 n.R("e2", "0", re2)

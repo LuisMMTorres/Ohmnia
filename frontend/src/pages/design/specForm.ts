@@ -82,11 +82,73 @@ export function visible(moduleId: string, key: string, spec: Record<string, unkn
     if (key === "freewheel") return spec.topology === "meia_onda";
     return true;
   }
+  if (moduleId === "DM-ZEN") {
+    if (key === "VBE" || key === "beta_ideal" || key === "Rth_cs")
+      return spec.variant === "transistor";
+    return true;
+  }
+  if (moduleId === "DM-LIN") {
+    if (key === "res_series") return spec.kind === "ajustavel";
+    if (key === "vo_window_pct") return spec.kind !== "ajustavel";
+    return true;
+  }
+  if (moduleId === "DM-BIAS") {
+    const mos = spec.config === "mos_divisor";
+    if (key === "R_gate") return mos;
+    if (key === "divider_k") return spec.config === "divisor";
+    if (key === "VBE" || key === "beta_ideal") return !mos;
+    if (key === "kE") return spec.config !== "fixa";
+    return true;
+  }
+  if (moduleId === "DM-SSA") {
+    if (key === "Av") return spec.config === "EC" || spec.config === "FC" || !spec.config;
+    if (key === "VBE" || key === "beta_ideal") return spec.config !== "FC";
+    return true;
+  }
+  if (moduleId === "DM-PA") {
+    if (key === "IQ") return spec.cls === "AB" || !spec.cls;
+    return true;
+  }
+  if (moduleId === "DM-CHAVE") {
+    const bjt = spec.device !== "mosfet";
+    if (key === "overdrive" || key === "VBE" || key === "beta_ideal") return bjt;
+    return true;
+  }
+  if (moduleId === "DM-FORMA") {
+    const k = (spec.kind as string | undefined) ?? "ceifador_paralelo";
+    if (key === "stages" || key === "ripple_pct" || key === "cap_series")
+      return k === "multiplicador";
+    if (key === "VB") return k !== "multiplicador";
+    if (key === "R") return k === "ceifador_paralelo" || k === "ceifador_duplo";
+    if (key === "C") return k === "grampeador";
+    return true;
+  }
   if (moduleId === "DM-RET3") {
     if (key === "alpha_nom") return spec.controlled === true;
     return true;
   }
   return true;
+}
+
+const SECONDS: Record<string, number> = { s: 1, ms: 1e-3, us: 1e-6, µs: 1e-6, ns: 1e-9 };
+
+/** Span of the analytic traces in seconds: trace_period, else one period of spec.f. */
+export function tracePeriod(
+  period: { value: number; unit: string } | null | undefined,
+  f: { value: number; unit: string } | undefined,
+): number {
+  if (period && SECONDS[period.unit] !== undefined) return period.value * SECONDS[period.unit]!;
+  const hz = f ? f.value * ({ Hz: 1, kHz: 1e3, MHz: 1e6 }[f.unit] ?? 1) : 60;
+  return 1 / hz;
+}
+
+/** Simulated |H| resampled on the analytic frequency grid (interpolated in log f). */
+export function resampleLog(fSim: number[], values: number[], fOut: number[]): number[] {
+  return resample(
+    fSim.map((v) => Math.log10(v)),
+    values,
+    fOut.map((v) => Math.log10(v)),
+  );
 }
 
 /** Simulated trace resampled on the analytic time grid (both span one period from 0). */

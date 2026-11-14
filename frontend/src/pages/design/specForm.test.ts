@@ -1,6 +1,14 @@
 import { describe, expect, it } from "vitest";
 import type { JsonSchema } from "../../api";
-import { fieldsFromSchema, resample, sliderRange, sliderStep, visible } from "./specForm";
+import {
+  fieldsFromSchema,
+  resample,
+  resampleLog,
+  sliderRange,
+  sliderStep,
+  tracePeriod,
+  visible,
+} from "./specForm";
 
 const SCHEMA: JsonSchema = {
   $defs: { QuantityModel: { type: "object" } },
@@ -59,5 +67,31 @@ describe("visible", () => {
 describe("resample", () => {
   it("interpolates linearly onto the output grid", () => {
     expect(resample([0, 1, 2], [0, 10, 20], [0, 0.5, 1.5, 2])).toEqual([0, 5, 15, 20]);
+  });
+});
+
+describe("tracePeriod", () => {
+  it("uses trace_period when given", () => {
+    expect(tracePeriod({ value: 2, unit: "ms" }, { value: 60, unit: "Hz" })).toBeCloseTo(2e-3);
+  });
+  it("falls back to one period of spec.f", () => {
+    expect(tracePeriod(null, { value: 1, unit: "kHz" })).toBeCloseTo(1e-3);
+    expect(tracePeriod(undefined, undefined)).toBeCloseTo(1 / 60);
+  });
+});
+
+describe("resampleLog", () => {
+  it("interpolates in log frequency", () => {
+    expect(resampleLog([10, 1000], [0, 2], [100])[0]).toBeCloseTo(1);
+  });
+});
+
+describe("visible (Phase 4)", () => {
+  it("hides fields that do not apply", () => {
+    expect(visible("DM-FORMA", "stages", { kind: "grampeador" })).toBe(false);
+    expect(visible("DM-FORMA", "C", { kind: "grampeador" })).toBe(true);
+    expect(visible("DM-BIAS", "R_gate", { config: "divisor" })).toBe(false);
+    expect(visible("DM-CHAVE", "overdrive", { device: "mosfet" })).toBe(false);
+    expect(visible("DM-ZEN", "beta_ideal", { variant: "transistor" })).toBe(true);
   });
 });

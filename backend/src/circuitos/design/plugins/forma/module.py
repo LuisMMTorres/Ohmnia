@@ -573,55 +573,87 @@ class FormaModule:
     # ------------------------------------------------------------------ outputs
     def schematic(self, spec: BaseModel, result: DesignResult, title: str) -> str:
         s = _spec(spec)
-        sm = result.summary
         part = next((c.part_number for c in result.selection), "")
+        if s.kind == "multiplicador":
+            return self._schematic_cw(s, result, title, part)
         svg = Svg(560, 300)
         svg.title(title)
-        top, bot = 80, 240
-        svg.ac_source(60, top, bot, "vin", f"{s.Vm.value:g} V pico")
+        top, bot, xs, xl = 80, 240, 90, 440
+        svg.ac_source(xs, top, bot, "vin", f"{s.Vm.value:g} V pico")
         vb = f"{s.VB.value:g} V"
         if s.kind in ("ceifador_paralelo", "ceifador_duplo"):
-            svg.resistor_h(60, 200, top, "R", format_eng(s.R.to_pint()))
-            svg.wire((200, top), (420, top))
-            svg.diode_v(250, top, 165, "D1", part, up=False)
-            svg.battery_v(250, 165, bot, "VB", vb)
+            svg.resistor_h(xs, 220, top, "R", format_eng(s.R.to_pint()))
+            svg.wire((220, top), (xl, top))
+            svg.diode_v(270, top, 165, "D1", part, up=False)
+            svg.battery_v(270, 165, bot, "VB", vb)
+            svg.dot(270, top)
             if s.kind == "ceifador_duplo":
-                svg.diode_v(330, top, 165, "D2", "", up=True)
-                svg.battery_v(330, 165, bot, "VB", vb)
-                svg.dot(330, top)
-            svg.dot(250, top)
-            svg.resistor_v(420, top, bot, "RL", format_eng(s.RL.to_pint()))
+                svg.diode_v(360, top, 165, "D2", "", up=True)
+                svg.battery_v(360, 165, bot, "VB", vb, flip=True)
+                svg.dot(360, top)
         elif s.kind == "ceifador_serie":
-            svg.battery_v(130, top - 40, top, "VB", vb)
-            svg.wire((60, top), (60, top - 40), (130, top - 40))
-            svg.parts.append("")
-            svg.device_right(130, 300, top, "diode", "D1", part)
-            svg.wire((300, top), (420, top))
-            svg.resistor_v(420, top, bot, "RL", format_eng(s.RL.to_pint()))
-        elif s.kind == "grampeador":
-            svg.cap_h(60, 200, top, "C", format_eng(s.C.to_pint()))
-            svg.wire((200, top), (420, top))
-            svg.diode_v(260, top, 165, "D1", part, up=True)
-            svg.battery_v(260, 165, bot, "VB", vb)
-            svg.dot(260, top)
-            svg.resistor_v(420, top, bot, "RL", format_eng(s.RL.to_pint()))
-        else:
-            n = s.stages
-            c = format_eng(sm["C_stage"].to_pint()) if "C_stage" in sm else ""
-            svg.text(
-                140,
-                130,
-                f"Cockcroft-Walton, {n} estágio(s): {2 * n} diodos ({part}) e "
-                f"{2 * n} capacitores de {c}",
-            )
-            svg.box(140, 150, 240, 60, f"multiplicador ×{2 * n}", part)
-            svg.wire((60, top), (100, top), (100, 180), (140, 180))
-            svg.wire((380, 180), (420, 180), (420, top))
-            svg.resistor_v(460, top, bot, "RL", format_eng(s.RL.to_pint()))
-            svg.wire((420, top), (460, top))
+            svg.wire((xs, top), (xs, top - 30), (150, top - 30))
+            svg.battery_v(150, top - 30, top, "VB", vb)
+            svg.device_right(150, 320, top, "diode", "D1", part)
+            svg.wire((320, top), (xl, top))
+        else:  # grampeador
+            svg.cap_h(xs, 220, top, "C", format_eng(s.C.to_pint()))
+            svg.wire((220, top), (xl, top))
+            svg.diode_v(280, top, 165, "D1", part, up=True)
+            svg.battery_v(280, 165, bot, "VB", vb)
+            svg.dot(280, top)
+        svg.resistor_v(xl, top, bot, "RL", format_eng(s.RL.to_pint()))
+        svg.dot(xl, top)
+        svg.wire((xl, top), (500, top))
         svg.terminal(500, top, "vo")
-        svg.wire((60, bot), (460, bot))
-        svg.ground(60, bot)
+        svg.wire((xs, bot), (xl, bot))
+        svg.ground(xs, bot)
+        return svg.render(title)
+
+    def _schematic_cw(self, s: FormaSpec, result: DesignResult, title: str, part: str) -> str:
+        """Cockcroft-Walton ladder: top rail p (push capacitors), lower rail q (smoothing)."""
+        n = s.stages
+        c = format_eng(result.summary["C_stage"].to_pint()) if "C_stage" in result.summary else ""
+        step, xs = 180, 90
+        width = xs + 60 + n * step + 120
+        svg = Svg(width, 330)
+        svg.title(title)
+        top, low, gnd = 90, 210, 280
+        svg.ac_source(xs, top, low, "vin", f"{s.Vm.value:g} V pico")
+        svg.ground(xs, low)
+        x = xs + 60
+        svg.wire((xs, top), (x - 50, top))
+        svg.wire((xs, low), (x, low))
+        prev_top = x - 50
+        for k in range(1, n + 1):
+            xp, xq = x + (k - 1) * step, x + (k - 1) * step + step / 2
+            svg.cap_h(prev_top, xp, top, f"C{2 * k - 1}", c)
+            svg.wire((xp, top), (xq, top))
+            svg.diode_v(xp, top, low, f"D{2 * k - 1}", part if k == 1 else "", up=True)
+            svg.cap_h(xp, xq, low, f"C{2 * k}", c)
+            svg.diode_v(xq, top, low, f"D{2 * k}", "", up=False)
+            svg.dot(xp, top)
+            svg.dot(xq, top)
+            svg.dot(xp, low)
+            svg.dot(xq, low)
+            nxt = xq + step / 2
+            if k < n:
+                svg.wire((xq, low), (nxt, low))
+                prev_top = xq
+            else:
+                svg.wire((xq, low), (xq + 80, low))
+        xr = x + (n - 1) * step + step / 2 + 80
+        svg.resistor_v(xr, low, gnd, "RL", format_eng(s.RL.to_pint()))
+        svg.ground(xr, gnd)
+        svg.dot(xr, low)
+        svg.wire((xr, low), (xr + 30, low))
+        svg.terminal(xr + 30, low, "vo")
+        svg.text(
+            xs - 40,
+            318,
+            f"Multiplicador de Cockcroft-Walton, {n} estágio(s): saída ≈ "
+            f"{2 * n}·(Vm − VF) sem carga.",
+        )
         return svg.render(title)
 
     def bom_extra(self, spec: BaseModel, result: DesignResult) -> list[BomRow]:

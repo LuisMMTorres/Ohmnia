@@ -133,12 +133,16 @@ class Svg:
         if value:
             self.text(x + 12, ym + 11, value, "start", "pn")
 
-    def battery_v(self, x: float, y1: float, y2: float, label: str, value: str = "") -> None:
+    def battery_v(
+        self, x: float, y1: float, y2: float, label: str, value: str = "", flip: bool = False
+    ) -> None:
+        """Battery between y1 (top) and y2; the long (+) plate on top unless ``flip``."""
         ym = (y1 + y2) / 2
         self.line(x, y1, x, ym - 4)
         self.line(x, ym + 4, x, y2)
-        self.line(x - 12, ym - 4, x + 12, ym - 4)
-        self.line(x - 6, ym + 4, x + 6, ym + 4)
+        long_y, short_y = (ym + 4, ym - 4) if flip else (ym - 4, ym + 4)
+        self.line(x - 12, long_y, x + 12, long_y)
+        self.line(x - 6, short_y, x + 6, short_y)
         self.text(x + 16, ym, label + (f" = {value}" if value else ""))
 
     def source(self, x: float, y: float, label: str) -> None:

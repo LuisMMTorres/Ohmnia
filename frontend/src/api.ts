@@ -482,6 +482,11 @@ export interface DesignResult {
   converged: boolean;
   warnings: DesignWarning[];
   traces: Record<string, Vector>;
+  /** Time span of the traces; null: one period of spec.f. */
+  trace_period?: Quantity | null;
+  /** Frequency response: log-spaced frequencies (Hz) and |H| per label. */
+  bode_f?: Vector | null;
+  bode?: Record<string, Vector>;
 }
 export interface CandidateOut {
   id: string;
@@ -499,6 +504,8 @@ export interface SimulateOut {
   t_ms: number[];
   traces: Record<string, Vector>;
   ok: boolean;
+  bode_f?: number[];
+  bode?: Record<string, Vector>;
 }
 
 async function postBlob(path: string, body: unknown): Promise<Blob> {

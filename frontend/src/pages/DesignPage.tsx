@@ -17,8 +17,10 @@ import {
   fieldsFromSchema,
   isQuantity,
   resample,
+  resampleLog,
   sliderRange,
   sliderStep,
+  tracePeriod,
   visible,
 } from "./design/specForm";
 
@@ -496,12 +498,12 @@ function Waves({
   onSimulate: () => void;
   frequency: Quantity | undefined;
 }) {
-  const f = frequency?.value ?? 60;
+  const period = tracePeriod(out.result.trace_period, frequency);
   const groups = useMemo(() => {
     const entries = Object.entries(out.result.traces);
     return entries.map(([label, tr]) => {
       const n = tr.values.length;
-      const x = Array.from({ length: n }, (_, k) => k / n / f);
+      const x = Array.from({ length: n }, (_, k) => (k / n) * period);
       const traces: Trace[] = [{ name: `${label} (cálculo)`, unit: tr.unit, values: tr.values }];
       const s = sim?.traces[label];
       if (sim && s) {
@@ -518,7 +520,25 @@ function Waves({
       }
       return { label, x, traces };
     });
-  }, [out, sim, f]);
+  }, [out, sim, period]);
+  const bode = useMemo(() => {
+    const f = out.result.bode_f?.values;
+    if (!f || f.length === 0) return null;
+    const traces: Trace[] = [];
+    for (const [label, tr] of Object.entries(out.result.bode ?? {})) {
+      traces.push({ name: `${label} (cálculo)`, unit: tr.unit, values: tr.values });
+      const s = sim?.bode?.[label];
+      if (sim?.bode_f && sim.bode_f.length > 1 && s) {
+        traces.push({
+          name: `${label} (ngspice .ac)`,
+          unit: tr.unit,
+          dash: [6, 4],
+          values: resampleLog(sim.bode_f, s.values, f),
+        });
+      }
+    }
+    return { f, traces };
+  }, [out, sim]);
 
   return (
     <>
@@ -561,6 +581,26 @@ function Waves({
             ))}
           </tbody>
         </table>
+      )}
+      {groups.length === 0 && !bode && (
+        <p className="muted">
+          Este circuito é de corrente contínua: não há forma de onda a mostrar. A simulação confere
+          os valores do ponto de operação na tabela acima.
+        </p>
+      )}
+      {bode && (
+        <div>
+          <h3 className="plot-title">Resposta em frequência (|H|)</h3>
+          <SignalPlot
+            x={bode.f}
+            xUnit="Hz"
+            xLabel="f"
+            xLog
+            yLog
+            traces={bode.traces}
+            height={260}
+          />
+        </div>
       )}
       {groups.map((g) => (
         <div key={g.label}>
