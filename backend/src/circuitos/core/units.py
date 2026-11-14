@@ -12,7 +12,7 @@ import functools
 import inspect
 import math
 from collections.abc import Callable, Mapping, Sequence
-from typing import Any, TypeVar, cast
+from typing import Any
 
 import numpy as np
 import pint
@@ -24,8 +24,6 @@ ureg = pint.UnitRegistry(autoconvert_offset_to_baseunit=True)
 ureg.define("var = volt * ampere = VAr")  # reactive power, same dimension as VA and W
 Q_ = ureg.Quantity
 Quantity = pint.Quantity
-
-F = TypeVar("F", bound=Callable[..., Any])
 
 
 def parse_unit(unit: str) -> pint.Unit:
@@ -70,7 +68,7 @@ def require(value: object, dimension: str, name: str = "valor") -> pint.Quantity
 
 def magnitudes(
     inputs: Mapping[str, str], output: str | Sequence[str] | None = None
-) -> Callable[[F], F]:
+) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
     """Unit-safe boundary for numeric kernels.
 
     Arguments listed in ``inputs`` must be quantities; they are converted to the given unit and
@@ -78,7 +76,9 @@ def magnitudes(
     ``output`` unit(s).
     """
 
-    def decorator(func: F) -> F:
+    # The decorated function takes quantities where the kernel takes floats, so its static
+    # signature cannot be preserved; callers get ``Callable[..., Any]``.
+    def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
         sig = inspect.signature(func)
         unknown = set(inputs) - set(sig.parameters)
         if unknown:
@@ -101,7 +101,7 @@ def magnitudes(
                 raise TypeError(f"{func.__name__} deve retornar {len(output)} valores")
             return tuple(Q_(r, parse_unit(u)) for r, u in zip(result, output, strict=True))
 
-        return cast(F, wrapper)
+        return wrapper
 
     return decorator
 

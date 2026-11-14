@@ -43,7 +43,7 @@ Pergunta: segue alguma referência formal de derating (norma ou manual de empres
 - Tenho as referências por capítulo, mas não os livros. **Pedido:** indicar exemplos resolvidos preferidos (livro, edição, número do exemplo) para cada disciplina, ou enviar fotos/PDFs das páginas. Começo pelos de retificadores (Fase 3).
 - Sem isso, proponho os casos e o usuário confere os números com o livro antes de o teste entrar.
 
-## D7. Revisão dos componentes do banco inicial
+## D7. Revisão dos componentes do banco inicial — **ADOTADA A RECOMENDAÇÃO (2026-11-14), sem objeção do usuário:** eu cadastro como `extraido` com página; o usuário libera (`revisado`) pela tela de revisão, por amostragem.
 
 - Eu baixo os datasheets oficiais e preencho os YAML com página de cada valor, status `extraido`.
 - **Pergunta:** quem libera (`revisado`)? Recomendação: o usuário revisa por amostragem um lote por categoria na Fase 2, e o restante fica liberado após conferência dupla automática (dois datasheets/fabricantes concordando, quando houver segunda fonte).

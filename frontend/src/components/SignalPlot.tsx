@@ -6,7 +6,9 @@ import { formatEng } from "../format";
 export interface Trace {
   name: string;
   unit: string;
-  values: number[];
+  values: (number | null)[];
+  /** Draw markers only (e.g. datasheet points), no line. */
+  points?: boolean;
 }
 
 interface Props {
@@ -14,6 +16,7 @@ interface Props {
   xUnit: string;
   xLabel: string;
   xLog?: boolean;
+  yLog?: boolean;
   traces: Trace[];
   height?: number;
 }
@@ -26,7 +29,15 @@ function isDecade(v: number): boolean {
 
 const COLORS = ["#2a7de1", "#e5533d", "#2fa36b", "#9b59d0", "#d99a00", "#1fa3b5", "#c2417e"];
 
-export function SignalPlot({ x, xUnit, xLabel, xLog = false, traces, height = 360 }: Props) {
+export function SignalPlot({
+  x,
+  xUnit,
+  xLabel,
+  xLog = false,
+  yLog = false,
+  traces,
+  height = 360,
+}: Props) {
   const container = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -37,6 +48,9 @@ export function SignalPlot({ x, xUnit, xLabel, xLog = false, traces, height = 36
       width: el.clientWidth,
       height,
       scales: {
+        ...Object.fromEntries(
+          [...new Set(traces.map((t) => t.unit || "1"))].map((u) => [u, { distr: yLog ? 3 : 1 }]),
+        ),
         x: {
           time: false,
           distr: xLog ? 3 : 1,
@@ -59,7 +73,8 @@ export function SignalPlot({ x, xUnit, xLabel, xLog = false, traces, height = 36
           size: 70,
           stroke: "currentColor",
           grid: { show: i === 0, stroke: "rgba(128,128,128,0.2)" },
-          values: (_u: uPlot, splits: number[]) => splits.map((v) => formatEng(v, unit, 3)),
+          values: (_u: uPlot, splits: number[]) =>
+            splits.map((v) => (v == null || (yLog && !isDecade(v)) ? "" : formatEng(v, unit, 3))),
         })),
       ],
       series: [
@@ -68,13 +83,19 @@ export function SignalPlot({ x, xUnit, xLabel, xLog = false, traces, height = 36
           label: t.name,
           scale: t.unit || "1",
           stroke: COLORS[i % COLORS.length],
-          width: 1.5,
+          width: t.points ? 0 : 1.5,
+          ...(t.points
+            ? {
+                paths: () => null,
+                points: { show: true, size: 9, fill: COLORS[i % COLORS.length] },
+              }
+            : {}),
           value: (_u: uPlot, v: number | null) => (v == null ? "—" : formatEng(v, t.unit, 4)),
         })),
       ],
       cursor: { drag: { x: true, y: false } },
     };
-    const data: uPlot.AlignedData = [x, ...traces.map((t) => t.values)];
+    const data = [x, ...traces.map((t) => t.values)] as uPlot.AlignedData;
     const plot = new uPlot(opts, data, el);
     const observer = new ResizeObserver(() => plot.setSize({ width: el.clientWidth, height }));
     observer.observe(el);
@@ -82,7 +103,7 @@ export function SignalPlot({ x, xUnit, xLabel, xLog = false, traces, height = 36
       observer.disconnect();
       plot.destroy();
     };
-  }, [x, xUnit, xLabel, xLog, traces, height]);
+  }, [x, xUnit, xLabel, xLog, yLog, traces, height]);
 
   return <div ref={container} className="signal-plot" />;
 }

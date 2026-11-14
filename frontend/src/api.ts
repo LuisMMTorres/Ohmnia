@@ -129,3 +129,139 @@ export function watchJob(id: string, onUpdate: (job: Job) => void): () => void {
     ws.close();
   };
 }
+
+// ------------------------------------------------------------------ catalogue -----------
+
+export type ParamStatus = "a_verificar" | "extraido" | "revisado";
+
+export interface SourceRef {
+  datasheet_id: string;
+  page: number | null;
+  location: string | null;
+  excerpt: string | null;
+}
+export interface Parameter {
+  symbol: string;
+  min: number | null;
+  typ: number | null;
+  max: number | null;
+  unit: string;
+  conditions: Record<string, Quantity>;
+  source: SourceRef | null;
+  status: ParamStatus;
+  note: string | null;
+}
+export interface DatasheetRef {
+  id: string;
+  manufacturer: string;
+  document_number: string | null;
+  revision: string | null;
+  url: string | null;
+  sha256: string | null;
+}
+export interface ComponentRecord {
+  id: string;
+  category: string;
+  manufacturer: string;
+  part_number: string;
+  family: string | null;
+  package: string | null;
+  lifecycle: string;
+  parameters: Record<string, Parameter>;
+  datasheets: DatasheetRef[];
+  review: { status: string; reviewed_by: string | null; reviewed_at: string | null };
+  notes: string[];
+}
+export interface ParameterSpec {
+  unit: string;
+  kind: "max_rating" | "characteristic" | "thermal";
+  description: string;
+}
+export interface ComponentDetail {
+  record: ComponentRecord;
+  schema_: {
+    category: string;
+    description: string;
+    required: string[];
+    parameters: Record<string, ParameterSpec>;
+  };
+  release_blockers: string[];
+}
+export interface ComponentSummary {
+  id: string;
+  category: string;
+  manufacturer: string;
+  part_number: string;
+  family: string | null;
+  package: string | null;
+  review_status: string;
+  parameters_reviewed: number;
+  parameters_total: number;
+  highlights: Record<string, string>;
+}
+
+export const catalog = {
+  list: (params: { category?: string; q?: string; status?: string; filters?: string[] }) => {
+    const search = new URLSearchParams();
+    if (params.category) search.set("category", params.category);
+    if (params.q) search.set("q", params.q);
+    if (params.status) search.set("status", params.status);
+    for (const f of params.filters ?? []) search.append("filter", f);
+    return request<ComponentSummary[]>(`/components?${search}`);
+  },
+  stats: () => request<Record<string, number>>("/components/stats"),
+  get: (id: string) => request<ComponentDetail>(`/components/${id}`),
+  review: (id: string, key: string, status: ParamStatus, note?: string) =>
+    request<ComponentDetail>(`/components/${id}/parameters/${encodeURIComponent(key)}/review`, {
+      method: "POST",
+      body: JSON.stringify({ status, note }),
+    }),
+  release: (id: string, reviewer: string) =>
+    request<ComponentDetail>(`/components/${id}/release`, {
+      method: "POST",
+      body: JSON.stringify({ reviewer }),
+    }),
+  yamlUrl: (id: string) => `${BASE}/components/${id}/yaml`,
+  pageUrl: (sha: string, page: number) => `${BASE}/datasheets/${sha}/pages/${page}.png`,
+  pdfUrl: (sha: string) => `${BASE}/datasheets/${sha}/pdf`,
+  datasheet: (sha: string) => request<{ sha256: string; pages: number }>(`/datasheets/${sha}`),
+};
+
+// --------------------------------------------------------------------- bench ------------
+
+export interface DiodeBenchIn {
+  model: { Is: Quantity; n: number; Rs: Quantity };
+  temperatures: Quantity[];
+  v_min: Quantity;
+  v_max: Quantity;
+  points?: number;
+  component_id?: string | null;
+}
+export interface CalcStep {
+  id: string;
+  description: string;
+  latex: string;
+  inputs: Record<string, Quantity>;
+  output: Quantity;
+  assumptions: string[];
+}
+export interface DiodeBenchOut {
+  v: Vector;
+  curves: Record<string, Vector>;
+  markers: {
+    key: string;
+    label: string;
+    v: Quantity;
+    i: Quantity;
+    temperature: Quantity | null;
+    reviewed: boolean;
+  }[];
+  steps: CalcStep[];
+  spice_model: string;
+  warnings: string[];
+}
+
+export const bench = {
+  diode: (body: DiodeBenchIn) =>
+    request<DiodeBenchOut>("/devices/diode/iv", { method: "POST", body: JSON.stringify(body) }),
+};

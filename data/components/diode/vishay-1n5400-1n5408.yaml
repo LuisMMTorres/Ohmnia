@@ -1,0 +1,63 @@
+# Fonte: Vishay, documento 88516, revisão 19-Dec-2025. Valores transcritos do datasheet.
+family: 1N5400–1N5408
+category: diode.rectifier
+schema_version: "1.0"
+manufacturer: Vishay General Semiconductor
+package: DO-201AD
+lifecycle: ativo
+datasheets:
+  - id: vishay-88516
+    manufacturer: Vishay
+    document_number: "88516"
+    revision: 19-Dec-2025
+    url: https://www.vishay.com/docs/88516/1n5400.pdf
+    sha256: 98702135fe01fa7a238afc5752bdb1c749f4e85ac88891baea245d79b6d1f1b2
+review: {status: rascunho, created_by: "Claude (transcrição assistida)"}
+parameters:
+  IF(AV):
+    {max: 3.0, unit: A, status: extraido, conditions: {TL: 105 degC},
+     note: "Terminais de 0,5 in (12,5 mm)",
+     source: {page: 1, location: "Maximum ratings — maximum average forward rectified current"}}
+  IFSM:
+    {max: 200, unit: A, status: extraido, conditions: {t_pulse: 8.3 ms},
+     note: "Meia senoide única de 8,3 ms sobreposta à carga nominal",
+     source: {page: 1, location: "Maximum ratings — peak forward surge current"}}
+  IR(AV):
+    {max: 500, unit: uA, status: extraido, conditions: {TL: 105 degC},
+     source: {page: 1, location: "Maximum ratings — maximum full load reverse current, full cycle average"}}
+  Tj_max:
+    {max: 150, unit: degC, status: extraido,
+     source: {page: 1, location: "Maximum ratings — operating junction and storage temperature range"}}
+  Tj_min:
+    {min: -50, unit: degC, status: extraido,
+     source: {page: 1, location: "Maximum ratings — operating junction and storage temperature range"}}
+  VF:
+    {max: 1.2, unit: V, status: extraido, conditions: {IF: 3.0 A, TA: 25 degC},
+     source: {page: 2, location: "Electrical characteristics — maximum instantaneous forward voltage"}}
+  Cj:
+    {typ: 30, unit: pF, status: extraido, conditions: {VR: 4.0 V, f: 1 MHz},
+     source: {page: 2, location: "Electrical characteristics — typical junction capacitance"}}
+  Rth_ja:
+    {typ: 20, unit: K/W, status: extraido,
+     note: "Terminais de 0,375 in (9,5 mm), placa com dissipadores de cobre de 20 mm × 20 mm",
+     source: {page: 2, location: "Thermal characteristics — RθJA"}}
+per_part:
+  VRRM: {unit: V, status: extraido, source: {page: 1, location: "Maximum ratings — VRRM"}}
+  VRMS: {unit: V, status: extraido, source: {page: 1, location: "Maximum ratings — VRMS"}}
+  VDC: {unit: V, status: extraido, source: {page: 1, location: "Maximum ratings — VDC"}}
+  IR:
+    {max: 5.0, unit: uA, status: extraido, conditions: {VR: "=VDC", TA: 25 degC},
+     source: {page: 2, location: "Electrical characteristics — maximum DC reverse current at rated DC blocking voltage"}}
+  IR@150C:
+    {max: 500, unit: uA, status: extraido, conditions: {VR: "=VDC", TA: 150 degC},
+     source: {page: 2, location: "Electrical characteristics — maximum DC reverse current at rated DC blocking voltage"}}
+parts:
+  1N5400: {VRRM: 50, VRMS: 35, VDC: 50, IR: {}, IR@150C: {}}
+  1N5401: {VRRM: 100, VRMS: 70, VDC: 100, IR: {}, IR@150C: {}}
+  1N5402: {VRRM: 200, VRMS: 140, VDC: 200, IR: {}, IR@150C: {}}
+  1N5403: {VRRM: 300, VRMS: 210, VDC: 300, IR: {}, IR@150C: {}}
+  1N5404: {VRRM: 400, VRMS: 280, VDC: 400, IR: {}, IR@150C: {}}
+  1N5405: {VRRM: 500, VRMS: 350, VDC: 500, IR: {}, IR@150C: {}}
+  1N5406: {VRRM: 600, VRMS: 420, VDC: 600, IR: {}, IR@150C: {}}
+  1N5407: {VRRM: 800, VRMS: 560, VDC: 800, IR: {}, IR@150C: {}}
+  1N5408: {VRRM: 1000, VRMS: 700, VDC: 1000, IR: {}, IR@150C: {}}

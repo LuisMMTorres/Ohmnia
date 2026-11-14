@@ -15,8 +15,27 @@ const PREFIXES: Record<number, string> = {
 
 const PREFIXABLE = new Set(["V", "A", "W", "VA", "var", "Ω", "S", "F", "H", "Hz", "s", "J", "C"]);
 
+const UNIT_SYMBOLS: Record<string, string> = {
+  ohm: "Ω",
+  degC: "°C",
+  degree_Celsius: "°C",
+  uA: "µA",
+  us: "µs",
+  uF: "µF",
+  "K/W": "K/W",
+  "A**2*s": "A²s",
+  "A/us": "A/µs",
+};
+
 export function unitSymbol(unit: string): string {
-  return unit === "ohm" ? "Ω" : unit;
+  return UNIT_SYMBOLS[unit] ?? unit;
+}
+
+/** Datasheet value as written (no prefix rescaling): "1,1 V", "5 µA", "150 °C". */
+export function formatRaw(value: number | null, unit: string): string {
+  if (value == null) return "—";
+  const sym = unitSymbol(unit);
+  return `${Number(value.toPrecision(6))}`.replace(".", ",") + (sym ? ` ${sym}` : "");
 }
 
 export function formatEng(value: number, unit: string, digits = 3): string {

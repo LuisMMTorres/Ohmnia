@@ -1,0 +1,76 @@
+# Fonte: onsemi, MUR420/D, Rev. 17 (October, 2025). Valores transcritos do datasheet.
+# Os valores da família MUR4xx mudam por grupo (MUR405–420 e MUR440–460); só o MUR460 foi
+# cadastrado. Coluna conferida na imagem da página 2.
+family: MUR405–MUR460
+category: diode.fast
+schema_version: "1.0"
+manufacturer: onsemi
+part_number: MUR460
+package: Axial lead, case 267
+lifecycle: ativo
+datasheets:
+  - id: onsemi-mur420-d
+    manufacturer: onsemi
+    document_number: MUR420/D
+    revision: Rev. 17, October 2025
+    url: https://www.onsemi.com/pdf/datasheet/mur420-d.pdf
+    sha256: 86aeaae811c2b9d086875607f0e45ae6291853f2a070afba2eecfc42a32965f8
+review: {status: rascunho, created_by: "Claude (transcrição assistida)"}
+parameters:
+  VRRM:
+    {max: 600, unit: V, status: extraido, note: "Também VRWM e VR (bloqueio CC)",
+     source: {page: 2, location: "Maximum ratings — peak repetitive reverse voltage"}}
+  VDC:
+    {max: 600, unit: V, status: extraido,
+     source: {page: 2, location: "Maximum ratings — DC blocking voltage"}}
+  IF(AV):
+    {max: 4.0, unit: A, status: extraido, conditions: {TA: 40 degC},
+     note: "Onda quadrada; método de montagem nº 3 (nota 3 do datasheet)",
+     source: {page: 2, location: "Maximum ratings — average rectified forward current"}}
+  IFSM:
+    {max: 110, unit: A, status: extraido, conditions: {t_pulse: 8.3 ms},
+     note: "O datasheet diz 'meia onda, monofásica, 60 Hz' sob carga nominal; t_pulse = 8,3 ms é o meio ciclo de 60 Hz (inferido, não escrito)",
+     source: {page: 2, location: "Maximum ratings — nonrepetitive peak surge current"}}
+  Tj_max:
+    {max: 175, unit: degC, status: extraido,
+     source: {page: 2, location: "Maximum ratings — operating junction temperature & storage temperature"}}
+  Tj_min:
+    {min: -65, unit: degC, status: extraido,
+     source: {page: 2, location: "Maximum ratings — operating junction temperature & storage temperature"}}
+  Psi_jc:
+    {max: 6.6, unit: K/W, status: extraido,
+     note: "ΨθJC; RθJA depende da montagem (nota 3 do datasheet)",
+     source: {page: 2, location: "Thermal characteristics — junction-to-case body"}}
+  VF:
+    {max: 1.25, unit: V, status: extraido, conditions: {IF: 3.0 A, Tj: 25 degC},
+     note: "Teste pulsado: 300 µs, ciclo ≤ 2 %",
+     source: {page: 2, location: "Electrical characteristics — maximum instantaneous forward voltage"}}
+  VF@150C:
+    {max: 1.05, unit: V, status: extraido, conditions: {IF: 3.0 A, Tj: 150 degC},
+     note: "Teste pulsado: 300 µs, ciclo ≤ 2 %",
+     source: {page: 2, location: "Electrical characteristics — maximum instantaneous forward voltage"}}
+  VF@4A:
+    {max: 1.28, unit: V, status: extraido, conditions: {IF: 4.0 A, Tj: 25 degC},
+     note: "Teste pulsado: 300 µs, ciclo ≤ 2 %",
+     source: {page: 2, location: "Electrical characteristics — maximum instantaneous forward voltage"}}
+  IR:
+    {max: 10, unit: uA, status: extraido, conditions: {VR: 600 V, Tj: 25 degC},
+     note: "Na tensão CC nominal; teste pulsado",
+     source: {page: 2, location: "Electrical characteristics — maximum instantaneous reverse current"}}
+  IR@150C:
+    {max: 250, unit: uA, status: extraido, conditions: {VR: 600 V, Tj: 150 degC},
+     note: "Na tensão CC nominal; teste pulsado",
+     source: {page: 2, location: "Electrical characteristics — maximum instantaneous reverse current"}}
+  trr:
+    {max: 75, unit: ns, status: extraido, conditions: {IF: 1.0 A, di_dt: 50 A/us},
+     source: {page: 2, location: "Electrical characteristics — maximum reverse recovery time"}}
+  trr@0.5A:
+    {max: 50, unit: ns, status: extraido, conditions: {IF: 0.5 A, IR: 1.0 A, Irec: 0.25 A},
+     source: {page: 2, location: "Electrical characteristics — maximum reverse recovery time"}}
+  tfr:
+    {max: 50, unit: ns, status: extraido, conditions: {IF: 1.0 A, di_dt: 100 A/us},
+     note: "Recuperação até 1,0 V",
+     source: {page: 2, location: "Electrical characteristics — maximum forward recovery time"}}
+  IRM:
+    {typ: 1.7, unit: A, status: extraido, conditions: {IF: 1.0 A, di_dt: 50 A/us},
+     source: {page: 2, location: "Electrical characteristics — typical peak reverse recovery current"}}

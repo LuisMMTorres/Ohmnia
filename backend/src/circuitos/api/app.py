@@ -15,6 +15,9 @@ from fastapi.staticfiles import StaticFiles
 from numpy.typing import NDArray
 
 from circuitos import __version__
+from circuitos.api.catalog import open_repository
+from circuitos.api.catalog import router as catalog_router
+from circuitos.api.devices import router as devices_router
 from circuitos.api.schemas import (
     JobErrorOut,
     JobOut,
@@ -26,11 +29,10 @@ from circuitos.api.schemas import (
     SnapOut,
     VectorInfo,
 )
-from circuitos.components import available_categories, load_schema
-from circuitos.components.schema import CategorySchema
 from circuitos.core import eseries
 from circuitos.core.errors import CircuitosError
 from circuitos.core.units import Q_, QuantityModel, VectorModel, format_eng, parse_unit
+from circuitos.datasheets.store import DatasheetStore
 from circuitos.simulation.backend import BatchNgspiceBackend, SharedNgspiceBackend
 from circuitos.simulation.jobs import Job, JobQueue
 from circuitos.simulation.post import measures
@@ -43,11 +45,15 @@ API = "/api/v1"
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     app.state.jobs = JobQueue(max_workers=int(os.environ.get("CIRCUITOS_SIM_WORKERS", "2")))
+    app.state.components = open_repository()
+    app.state.datasheets = DatasheetStore()
     yield
     app.state.jobs.shutdown()
 
 
 app = FastAPI(title="Sistema de Projeto de Circuitos", version=__version__, lifespan=lifespan)
+app.include_router(catalog_router)
+app.include_router(devices_router)
 
 
 def _jobs() -> JobQueue:
@@ -137,19 +143,6 @@ def snap_value(body: SnapIn) -> SnapOut:
         formatted=format_eng(result),
         tolerance=eseries.TOLERANCE[body.series],
     )
-
-
-@app.get(f"{API}/components/categories")
-def categories() -> list[str]:
-    return available_categories()
-
-
-@app.get(f"{API}/components/schemas/{{category}}")
-def category_schema(category: str) -> CategorySchema:
-    try:
-        return load_schema(category)
-    except CircuitosError as exc:
-        raise HTTPException(404, str(exc)) from exc
 
 
 @app.post(f"{API}/simulations", status_code=202)

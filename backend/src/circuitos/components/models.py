@@ -105,12 +105,16 @@ class ComponentRecord(BaseModel):
     datasheets: list[DatasheetRef] = Field(default_factory=list)
     review: ReviewState = Field(default_factory=ReviewState)
     tags: list[str] = Field(default_factory=list)
+    family: str | None = None  # e.g. "1N4001–1N4007": parts sharing one datasheet
+    notes: list[str] = Field(default_factory=list)
+    catalog_revision: int = 1  # bump in the YAML to replace the record on the next import
 
     @model_validator(mode="after")
     def _sources_point_to_known_datasheets(self) -> ComponentRecord:
         known = {d.id for d in self.datasheets}
         for key, param in self.parameters.items():
-            if param.symbol != key:
+            # "IR" or "IR@125C": extra entries of the same symbol at other test conditions.
+            if key.split("@", 1)[0] != param.symbol:
                 raise ValueError(f"Chave {key!r} difere do símbolo {param.symbol!r}")
             if param.source is not None and param.source.datasheet_id not in known:
                 raise ValueError(

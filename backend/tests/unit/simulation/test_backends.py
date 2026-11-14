@@ -86,3 +86,10 @@ def test_make_backend_preferences(monkeypatch):
 def test_shared_missing_library():
     with pytest.raises(SimulatorUnavailableError):
         SharedNgspiceBackend(library="/nao/existe/libngspice.so")
+
+
+def test_dc_sweep_scale_is_the_same_in_both_backends(shared):
+    net = "t\nI1 0 a DC 1m\nR1 a 0 1k\n.dc I1 0 1m 0.5m\n"
+    a, b = shared.run(net).plot("dc"), BatchNgspiceBackend().run(net).plot("dc")
+    assert a.scale == b.scale == "i-sweep"
+    np.testing.assert_allclose(a["v(a)"].data, b["v(a)"].data)

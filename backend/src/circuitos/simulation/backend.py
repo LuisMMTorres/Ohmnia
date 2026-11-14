@@ -257,7 +257,9 @@ class SharedNgspiceBackend(SimulatorBackend):
                 continue
             type_name = _SV_TYPES.get(info.v_type, "")
             name = canonical_name(vec_name, type_name)
-            if type_name in ("time", "frequency") and plot.scale is None:
+            if plot.scale is None and (
+                type_name in ("time", "frequency") or name.endswith("-sweep")
+            ):
                 plot.scale = name
                 data = data.real if np.iscomplexobj(data) else data
             plot.vectors[name] = Vector(name, unit_for(type_name, name), data)

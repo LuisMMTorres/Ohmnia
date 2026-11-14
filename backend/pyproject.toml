@@ -12,6 +12,7 @@ dependencies = [
     "numpy>=2.0",
     "scipy>=1.13",
     "pyyaml>=6.0",
+    "pymupdf>=1.24",
 ]
 
 [dependency-groups]
@@ -53,7 +54,10 @@ ignore_missing_imports = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-markers = ["ngspice: requires the ngspice shared library or executable"]
+markers = [
+    "ngspice: requires the ngspice shared library or executable",
+    "datasheet: downloads manufacturer datasheets (network)",
+]
 addopts = "-q"
 
 [tool.coverage.run]
@@ -92,3 +96,7 @@ forbidden_modules = [
     "circuitos.design",
     "circuitos.api",
 ]
+
+[[tool.mypy.overrides]]
+module = ["circuitos.datasheets.*"]
+disallow_untyped_calls = false

@@ -46,3 +46,24 @@ scripts/check.sh frontend   # só interface
 | `CIRCUITOS_NGSPICE_EXE` | Caminho do executável do ngspice (modo batch) |
 | `CIRCUITOS_SIM_WORKERS` | Simulações simultâneas (padrão 2) |
 | `CIRCUITOS_FRONTEND_DIST` | Pasta da interface compilada (padrão `frontend/dist`) |
+| `CIRCUITOS_DATA_DIR` | Pasta de dados local (padrão `~/.circuitos`): banco `catalog.db` e datasheets baixados |
+| `CIRCUITOS_DB_URL` | URL SQLAlchemy do banco de componentes (padrão `sqlite:///<DATA_DIR>/catalog.db`) |
+| `CIRCUITOS_CATALOG_DIR` | Pasta dos YAML importados na partida (padrão `data/components`) |
+
+## Banco de componentes
+
+Os componentes ficam em `data/components/<categoria>/*.yaml`, transcritos dos datasheets
+oficiais com fabricante, documento, revisão e página de cada valor. Na partida, o servidor
+importa esses arquivos para o banco local. Os PDFs não são versionados: o sistema guarda a URL
+e o SHA-256 e baixa o arquivo do site do fabricante na primeira vez que a página é aberta.
+
+Fluxo de revisão, na tela **Componentes**:
+
+1. Abra um componente. Clicar num parâmetro mostra a página citada do datasheet ao lado.
+2. Compare valor e condições de teste e marque **Confere** ou **Não confere**.
+3. Com os parâmetros obrigatórios conferidos, informe seu nome e clique em
+   **Liberar para seleção automática**. Só componentes liberados entram na seleção.
+4. **Baixar YAML revisado** exporta o arquivo com as marcações, para guardar no repositório.
+
+Testes que conferem cada valor na página citada (precisam de acesso aos sites dos fabricantes):
+`cd backend && uv run pytest -m datasheet`.

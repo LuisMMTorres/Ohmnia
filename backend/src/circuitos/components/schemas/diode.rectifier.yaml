@@ -1,22 +1,32 @@
 category: diode.rectifier
 schema_version: "1.0"
-description: Diodo retificador de junção (uso geral, rápido, ultrarrápido)
+description: Diodo retificador de junção de uso geral
 required: [VRRM, IF(AV), IFSM, VF, IR, Tj_max]
-optional: [VRSM, VR_DC, I2t, trr, Qrr, Cj, Rth_ja, Rth_jl, Rth_jc, Tstg_max]
+optional: [VRSM, VRMS, VDC, IR(AV), IFRM, IF, I2t, Ptot, V(BR), trr, tfr, Qrr, IRM, Cj, Rth_ja, Rth_jl, Rth_jc, Psi_jc, Tj_min, Tstg_max]
 parameters:
   VRRM:     {unit: V, kind: max_rating, description: Tensão reversa repetitiva de pico}
   VRSM:     {unit: V, kind: max_rating, description: Tensão reversa não repetitiva de pico}
-  VR_DC:    {unit: V, kind: max_rating, description: Tensão reversa contínua}
-  IF(AV):   {unit: A, kind: max_rating, description: Corrente direta média, conditions_required: [T_ref]}
+  VRMS:     {unit: V, kind: max_rating, description: Tensão reversa eficaz máxima}
+  VDC:      {unit: V, kind: max_rating, description: Tensão reversa contínua máxima (bloqueio CC)}
+  IF(AV):   {unit: A, kind: max_rating, description: Corrente direta média retificada, conditions_required: [TA|TL|TC|VR]}
+  IF:       {unit: A, kind: max_rating, description: Corrente direta contínua}
+  IFRM:     {unit: A, kind: max_rating, description: Corrente direta repetitiva de pico}
   IFSM:     {unit: A, kind: max_rating, description: Corrente de surto não repetitiva, conditions_required: [t_pulse]}
+  IR(AV):   {unit: A, kind: max_rating, description: Corrente reversa média a plena carga}
   I2t:      {unit: A**2*s, kind: max_rating, description: Integral de fusão, conditions_required: [t_pulse]}
-  VF:       {unit: V, kind: characteristic, description: Tensão direta, conditions_required: [IF, Tj]}
-  IR:       {unit: A, kind: characteristic, description: Corrente reversa, conditions_required: [VR, Tj]}
-  trr:      {unit: s, kind: characteristic, description: Tempo de recuperação reversa, conditions_required: [IF, Tj]}
-  Qrr:      {unit: C, kind: characteristic, description: Carga de recuperação reversa, conditions_required: [IF, Tj]}
+  Ptot:     {unit: W, kind: max_rating, description: Dissipação total}
+  VF:       {unit: V, kind: characteristic, description: Tensão direta, conditions_required: [IF, Tj|TA]}
+  IR:       {unit: A, kind: characteristic, description: Corrente reversa, conditions_required: [VR, Tj|TA]}
+  V(BR):    {unit: V, kind: characteristic, description: Tensão de ruptura, conditions_required: [IR]}
+  trr:      {unit: s, kind: characteristic, description: Tempo de recuperação reversa, conditions_required: [IF]}
+  tfr:      {unit: s, kind: characteristic, description: Tempo de recuperação direta, conditions_required: [IF]}
+  Qrr:      {unit: C, kind: characteristic, description: Carga de recuperação reversa, conditions_required: [IF]}
+  IRM:      {unit: A, kind: characteristic, description: Corrente de pico de recuperação reversa, conditions_required: [IF]}
   Cj:       {unit: F, kind: characteristic, description: Capacitância de junção, conditions_required: [VR]}
   Tj_max:   {unit: degC, kind: max_rating, description: Temperatura máxima de junção}
+  Tj_min:   {unit: degC, kind: max_rating, description: Temperatura mínima de operação da junção}
   Tstg_max: {unit: degC, kind: max_rating, description: Temperatura máxima de armazenamento}
   Rth_ja:   {unit: K/W, kind: thermal, description: Resistência térmica junção-ambiente}
   Rth_jl:   {unit: K/W, kind: thermal, description: Resistência térmica junção-terminal}
   Rth_jc:   {unit: K/W, kind: thermal, description: Resistência térmica junção-cápsula}
+  Psi_jc:   {unit: K/W, kind: thermal, description: Parâmetro de caracterização térmica Ψjc (não é resistência térmica pura)}

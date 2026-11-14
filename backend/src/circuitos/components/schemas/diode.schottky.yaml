@@ -1,0 +1,5 @@
+category: diode.schottky
+extends: diode.rectifier
+schema_version: "1.0"
+description: Diodo Schottky
+required: [VRRM, IF(AV), IFSM, VF, IR, Tj_max]

@@ -1,0 +1,66 @@
+# Fonte: Vishay, documento 88755, revisão 06-Apr-2020. Valores transcritos do datasheet.
+# VF e trr mudam entre UF4001–UF4004 e UF4005–UF4007 (células mescladas da tabela, conferidas
+# na imagem da página 2).
+family: UF4001–UF4007
+category: diode.fast
+schema_version: "1.0"
+manufacturer: Vishay General Semiconductor
+package: DO-41 (DO-204AL)
+lifecycle: ativo
+datasheets:
+  - id: vishay-88755
+    manufacturer: Vishay
+    document_number: "88755"
+    revision: 06-Apr-2020
+    url: https://www.vishay.com/docs/88755/uf4001.pdf
+    sha256: eb199ce364ed2793454b4e91e1af50ef12be2889a096ce32420fa21faf8e358c
+review: {status: rascunho, created_by: "Claude (transcrição assistida)"}
+parameters:
+  IF(AV):
+    {max: 1.0, unit: A, status: extraido, conditions: {TA: 55 degC},
+     note: "Terminais de 0,375 in (9,5 mm)",
+     source: {page: 1, location: "Maximum ratings — maximum average forward rectified current"}}
+  IFSM:
+    {max: 30, unit: A, status: extraido, conditions: {t_pulse: 8.3 ms},
+     note: "Meia senoide única de 8,3 ms sobreposta à carga nominal",
+     source: {page: 1, location: "Maximum ratings — peak forward surge current"}}
+  Tj_max:
+    {max: 150, unit: degC, status: extraido,
+     source: {page: 1, location: "Maximum ratings — operating junction and storage temperature range"}}
+  Tj_min:
+    {min: -55, unit: degC, status: extraido,
+     source: {page: 1, location: "Maximum ratings — operating junction and storage temperature range"}}
+  Cj:
+    {typ: 17, unit: pF, status: extraido, conditions: {VR: 4.0 V, f: 1 MHz},
+     source: {page: 2, location: "Electrical characteristics — typical junction capacitance"}}
+  Rth_ja:
+    {typ: 60, unit: K/W, status: extraido, note: "Terminais de 0,375 in (9,5 mm)",
+     source: {page: 2, location: "Thermal characteristics — RθJA"}}
+  Rth_jl:
+    {typ: 15, unit: K/W, status: extraido, note: "Terminais de 0,375 in (9,5 mm)",
+     source: {page: 2, location: "Thermal characteristics — RθJL"}}
+per_part:
+  VRRM: {unit: V, status: extraido, source: {page: 1, location: "Maximum ratings — VRRM"}}
+  VRMS: {unit: V, status: extraido, source: {page: 1, location: "Maximum ratings — VRMS"}}
+  VDC: {unit: V, status: extraido, source: {page: 1, location: "Maximum ratings — VDC"}}
+  VF:
+    {unit: V, status: extraido, conditions: {IF: 1.0 A, TA: 25 degC},
+     note: "Teste pulsado: 300 µs, ciclo de trabalho de 1 %",
+     source: {page: 2, location: "Electrical characteristics — maximum instantaneous forward voltage"}}
+  IR:
+    {max: 10, unit: uA, status: extraido, conditions: {VR: "=VDC", TA: 25 degC},
+     source: {page: 2, location: "Electrical characteristics — maximum DC reverse current at rated DC blocking voltage"}}
+  IR@100C:
+    {max: 50, unit: uA, status: extraido, conditions: {VR: "=VDC", TA: 100 degC},
+     source: {page: 2, location: "Electrical characteristics — maximum DC reverse current at rated DC blocking voltage"}}
+  trr:
+    {unit: ns, status: extraido, conditions: {IF: 0.5 A, IR: 1.0 A, Irr: 0.25 A},
+     source: {page: 2, location: "Electrical characteristics — maximum reverse recovery time"}}
+parts:
+  UF4001: {VRRM: 50, VRMS: 35, VDC: 50, VF: 1.0, IR: {}, IR@100C: {}, trr: 50}
+  UF4002: {VRRM: 100, VRMS: 70, VDC: 100, VF: 1.0, IR: {}, IR@100C: {}, trr: 50}
+  UF4003: {VRRM: 200, VRMS: 140, VDC: 200, VF: 1.0, IR: {}, IR@100C: {}, trr: 50}
+  UF4004: {VRRM: 400, VRMS: 280, VDC: 400, VF: 1.0, IR: {}, IR@100C: {}, trr: 50}
+  UF4005: {VRRM: 600, VRMS: 420, VDC: 600, VF: 1.7, IR: {}, IR@100C: {}, trr: 75}
+  UF4006: {VRRM: 800, VRMS: 560, VDC: 800, VF: 1.7, IR: {}, IR@100C: {}, trr: 75}
+  UF4007: {VRRM: 1000, VRMS: 700, VDC: 1000, VF: 1.7, IR: {}, IR@100C: {}, trr: 75}

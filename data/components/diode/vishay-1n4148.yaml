@@ -1,0 +1,78 @@
+# Fonte: Vishay, documento 81857, Rev. 1.6, 07-Nov-2024. Valores transcritos do datasheet.
+category: diode.signal
+schema_version: "1.0"
+manufacturer: Vishay Semiconductors
+part_number: 1N4148
+package: DO-35 (DO-204AH)
+lifecycle: ativo
+datasheets:
+  - id: vishay-81857
+    manufacturer: Vishay
+    document_number: "81857"
+    revision: Rev. 1.6, 07-Nov-2024
+    url: https://www.vishay.com/docs/81857/1n4148.pdf
+    sha256: aefe85400a427ed886a4e1c88205ceabb9f9b38044b29c6acee4bb00146a44b7
+review: {status: rascunho, created_by: "Claude (transcrição assistida)"}
+parameters:
+  VRRM:
+    {max: 100, unit: V, status: extraido,
+     source: {page: 1, location: "Absolute maximum ratings — repetitive peak reverse voltage"}}
+  VDC:
+    {max: 75, unit: V, status: extraido, note: "O datasheet chama de 'reverse voltage' (VR)",
+     source: {page: 1, location: "Absolute maximum ratings — reverse voltage"}}
+  IFSM:
+    {max: 2, unit: A, status: extraido, conditions: {t_pulse: 1 us},
+     source: {page: 1, location: "Absolute maximum ratings — peak forward surge current"}}
+  IFRM:
+    {max: 500, unit: mA, status: extraido,
+     source: {page: 1, location: "Absolute maximum ratings — repetitive peak forward current"}}
+  IF:
+    {max: 300, unit: mA, status: extraido,
+     source: {page: 1, location: "Absolute maximum ratings — forward continuous current"}}
+  IF(AV):
+    {max: 150, unit: mA, status: extraido, conditions: {VR: 0 V},
+     source: {page: 1, location: "Absolute maximum ratings — average forward current"}}
+  Ptot:
+    {max: 440, unit: mW, status: extraido, conditions: {l_lead: 4 mm, TL: 45 degC},
+     source: {page: 1, location: "Absolute maximum ratings — power dissipation"}}
+  Ptot@25C:
+    {max: 500, unit: mW, status: extraido, conditions: {l_lead: 4 mm, TL: 25 degC},
+     note: "TL ≤ 25 °C",
+     source: {page: 1, location: "Absolute maximum ratings — power dissipation"}}
+  Rth_ja:
+    {max: 350, unit: K/W, status: extraido, conditions: {l_lead: 4 mm},
+     note: "TL constante; a tabela dá um único valor, cadastrado como máximo",
+     source: {page: 1, location: "Thermal characteristics — thermal resistance junction to ambient air"}}
+  Tj_max:
+    {max: 175, unit: degC, status: extraido,
+     source: {page: 1, location: "Thermal characteristics — junction temperature"}}
+  Tstg_max:
+    {max: 150, unit: degC, status: extraido,
+     source: {page: 1, location: "Thermal characteristics — storage temperature range"}}
+  VF:
+    {max: 1, unit: V, status: extraido, conditions: {IF: 10 mA, TA: 25 degC},
+     source: {page: 2, location: "Electrical characteristics — forward voltage"}}
+  IR:
+    {max: 25, unit: nA, status: extraido, conditions: {VR: 20 V, TA: 25 degC},
+     source: {page: 2, location: "Electrical characteristics — reverse current"}}
+  IR@150C:
+    {max: 50, unit: uA, status: extraido, conditions: {VR: 20 V, Tj: 150 degC},
+     source: {page: 2, location: "Electrical characteristics — reverse current"}}
+  IR@75V:
+    {max: 5, unit: uA, status: extraido, conditions: {VR: 75 V, TA: 25 degC},
+     source: {page: 2, location: "Electrical characteristics — reverse current"}}
+  V(BR):
+    {min: 100, unit: V, status: extraido, conditions: {IR: 100 uA, t_pulse: 0.3 ms},
+     note: "tp/T = 0,01",
+     source: {page: 2, location: "Electrical characteristics — breakdown voltage"}}
+  Cj:
+    {max: 4, unit: pF, status: extraido, conditions: {VR: 0 V, f: 1 MHz},
+     note: "No datasheet: diode capacitance CD, com VHF = 50 mV",
+     source: {page: 2, location: "Electrical characteristics — diode capacitance"}}
+  trr:
+    {max: 8, unit: ns, status: extraido, conditions: {IF: 10 mA, IR: 10 mA, iR: 1 mA},
+     source: {page: 2, location: "Electrical characteristics — reverse recovery time"}}
+  trr@6V:
+    {max: 4, unit: ns, status: extraido, conditions: {IF: 10 mA, VR: 6 V, RL: 100 ohm},
+     note: "iR = 0,1 × IR",
+     source: {page: 2, location: "Electrical characteristics — reverse recovery time"}}

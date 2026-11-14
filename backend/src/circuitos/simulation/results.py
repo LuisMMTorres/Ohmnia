@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass, field
 from typing import Any, Literal
 
@@ -43,6 +44,11 @@ def unit_for(type_name: str, vector_name: str) -> str:
 def canonical_name(vector_name: str, type_name: str) -> str:
     """Same vector names for every backend: ``v(node)`` and ``i(device)``."""
     name = vector_name.lower()
+    sweep = re.fullmatch(r"[iv]\((.+-sweep)\)", name)
+    if sweep:  # DC sweep scale: rawfile writes "i(i-sweep)", the shared library "i-sweep"
+        return sweep.group(1)
+    if name.endswith("-sweep"):
+        return name
     if name.endswith("#branch"):
         return f"i({name[: -len('#branch')]})"
     if type_name.lower() == "voltage" and not name.startswith(("v(", "vd(")):
