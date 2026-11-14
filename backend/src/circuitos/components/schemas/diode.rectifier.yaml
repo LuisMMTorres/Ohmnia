@@ -1,0 +1,22 @@
+category: diode.rectifier
+schema_version: "1.0"
+description: Diodo retificador de junção (uso geral, rápido, ultrarrápido)
+required: [VRRM, IF(AV), IFSM, VF, IR, Tj_max]
+optional: [VRSM, VR_DC, I2t, trr, Qrr, Cj, Rth_ja, Rth_jl, Rth_jc, Tstg_max]
+parameters:
+  VRRM:     {unit: V, kind: max_rating, description: Tensão reversa repetitiva de pico}
+  VRSM:     {unit: V, kind: max_rating, description: Tensão reversa não repetitiva de pico}
+  VR_DC:    {unit: V, kind: max_rating, description: Tensão reversa contínua}
+  IF(AV):   {unit: A, kind: max_rating, description: Corrente direta média, conditions_required: [T_ref]}
+  IFSM:     {unit: A, kind: max_rating, description: Corrente de surto não repetitiva, conditions_required: [t_pulse]}
+  I2t:      {unit: A**2*s, kind: max_rating, description: Integral de fusão, conditions_required: [t_pulse]}
+  VF:       {unit: V, kind: characteristic, description: Tensão direta, conditions_required: [IF, Tj]}
+  IR:       {unit: A, kind: characteristic, description: Corrente reversa, conditions_required: [VR, Tj]}
+  trr:      {unit: s, kind: characteristic, description: Tempo de recuperação reversa, conditions_required: [IF, Tj]}
+  Qrr:      {unit: C, kind: characteristic, description: Carga de recuperação reversa, conditions_required: [IF, Tj]}
+  Cj:       {unit: F, kind: characteristic, description: Capacitância de junção, conditions_required: [VR]}
+  Tj_max:   {unit: degC, kind: max_rating, description: Temperatura máxima de junção}
+  Tstg_max: {unit: degC, kind: max_rating, description: Temperatura máxima de armazenamento}
+  Rth_ja:   {unit: K/W, kind: thermal, description: Resistência térmica junção-ambiente}
+  Rth_jl:   {unit: K/W, kind: thermal, description: Resistência térmica junção-terminal}
+  Rth_jc:   {unit: K/W, kind: thermal, description: Resistência térmica junção-cápsula}
