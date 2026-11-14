@@ -229,3 +229,84 @@ def zener_pwl(rec: ComponentRecord, log: CalcLog, designator: str) -> tuple[Zene
         )
     )
     return pwl, warnings
+
+
+# ---------------------------------------------------------------------------------- MOSFET
+
+
+@dataclass(frozen=True)
+class Mos:
+    """Square-law N-MOSFET (SPICE level 1, W = L, λ = 0 in the designs)."""
+
+    VT: float  # V
+    KP: float  # A/V²
+
+    def id_sat(self, vgs: float) -> float:
+        return 0.0 if vgs <= self.VT else self.KP / 2 * (vgs - self.VT) ** 2
+
+    def spice(self, name: str) -> str:
+        return f".model {name} NMOS(LEVEL=1 VTO={self.VT:.6g} KP={self.KP:.6g} LAMBDA=0)"
+
+
+def mos_model(
+    rec: ComponentRecord | None,
+    log: CalcLog,
+    designator: str,
+    vt_ideal: float = 3.0,
+    kp_ideal: float = 1.0,
+) -> tuple[Mos, list[str]]:
+    """VT = middle of the VGS(th) range; KP from RDS(on) in deep triode (as on the FET bench)."""
+    warnings: list[str] = []
+    if rec is None:
+        log.add(
+            record(
+                f"VT_{designator}",
+                f"Limiar de {designator}: premissa do passo ideal",
+                r"V_T = V_{T,projeto}",
+                output=Q_(vt_ideal, "V"),
+            )
+        )
+        return Mos(vt_ideal, kp_ideal), warnings
+    vth = rec.parameters.get("VGS(th)")
+    rds = rec.parameters.get("RDS(on)")
+    if vth is None or vth.min is None or vth.max is None:
+        raise ValueError(f"{rec.part_number}: datasheet sem VGS(th) mín. e máx.")
+    if rds is None or rds.max is None or "VGS" not in rds.conditions:
+        raise ValueError(f"{rec.part_number}: datasheet sem RDS(on) com VGS de ensaio")
+    vt = Q_((vth.min + vth.max) / 2, parse_unit(vth.unit)).m_as("V")
+    log.add(
+        record(
+            f"VT_{designator}",
+            f"Tensão de limiar do modelo de {designator} ({rec.part_number})",
+            r"V_T = \frac{V_{GS(th),min} + V_{GS(th),max}}{2}",
+            output=Q_(vt, "V"),
+            inputs={
+                "V_{GS(th),min}": Q_(vth.min, parse_unit(vth.unit)),
+                "V_{GS(th),max}": Q_(vth.max, parse_unit(vth.unit)),
+            },
+            assumptions=["ponto médio da faixa do datasheet (não há valor típico)"],
+            reference=SEDRA,
+        )
+    )
+    r_on = Q_(rds.max, parse_unit(rds.unit)).m_as("ohm")
+    vgs = rds.conditions["VGS"].to_pint().m_as("V")
+    kp = 1 / (r_on * (vgs - vt))
+    log.add(
+        record(
+            f"KP_{designator}",
+            f"Transcondutância do modelo de {designator} a partir de RDS(on)",
+            r"K_P = \frac{1}{R_{DS(on)}\,(V_{GS} - V_T)}",
+            output=Q_(kp, "A/V**2"),
+            inputs={"R_{DS(on)}": Q_(r_on, "ohm"), "V_{GS}": Q_(vgs, "V"), "V_T": Q_(vt, "V")},
+            assumptions=[
+                "modelo quadrático (nível 1), triodo profundo no ensaio de RDS(on)",
+                "RDS(on) máximo do datasheet: KP conservador",
+            ],
+            reference=SEDRA,
+        )
+    )
+    warnings.append(
+        f"{designator}: o modelo quadrático de um MOSFET de potência é didático; a corrente "
+        "real em VGS próximo do limiar pode diferir bastante."
+    )
+    return Mos(vt, kp), warnings
