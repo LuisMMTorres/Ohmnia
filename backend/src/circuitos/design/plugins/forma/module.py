@@ -624,7 +624,7 @@ class FormaModule:
         x = xs + 60
         svg.wire((xs, top), (x - 50, top))
         svg.wire((xs, low), (x, low))
-        prev_top = x - 50
+        prev_top: float = x - 50
         for k in range(1, n + 1):
             xp, xq = x + (k - 1) * step, x + (k - 1) * step + step / 2
             svg.cap_h(prev_top, xp, top, f"C{2 * k - 1}", c)

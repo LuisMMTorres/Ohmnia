@@ -38,10 +38,10 @@ def test_p8_fixed_bias():
     ib = (12 - VBE) / 240e3
     ic = 50 * ib
     q = bjt_q(bjt_for(ic, 50), 12, 12, 240e3, 2.2e3, 0.0)
-    assert q.IB == pytest.approx(47.083e-6, rel=1e-4)
-    assert q.IC == pytest.approx(ic, rel=REL)
-    assert q.VCE == pytest.approx(12 - ic * 2.2e3, rel=REL)
-    assert q.VCE == pytest.approx(6.82, abs=0.01)
+    assert pytest.approx(47.083e-6, rel=1e-4) == q.IB
+    assert pytest.approx(ic, rel=REL) == q.IC
+    assert pytest.approx(12 - ic * 2.2e3, rel=REL) == q.VCE
+    assert pytest.approx(6.82, abs=0.01) == q.VCE
 
 
 def test_p9_divider_bias_exact():
@@ -52,10 +52,10 @@ def test_p9_divider_bias_exact():
     ib = (vth - VBE) / (rth + 101 * 1.5e3)
     ic = 100 * ib
     q = bjt_q(bjt_for(ic, 100), 22, vth, rth, 10e3, 1.5e3)
-    assert q.IC == pytest.approx(ic, rel=REL)
-    assert q.IC == pytest.approx(0.838e-3, rel=1e-3)
-    assert q.VCE == pytest.approx(22 - ic * 10e3 - 101 * ib * 1.5e3, rel=REL)
-    assert q.VCE == pytest.approx(12.35, abs=0.01)
+    assert pytest.approx(ic, rel=REL) == q.IC
+    assert pytest.approx(0.838e-3, rel=1e-3) == q.IC
+    assert pytest.approx(22 - ic * 10e3 - 101 * ib * 1.5e3, rel=REL) == q.VCE
+    assert pytest.approx(12.35, abs=0.01) == q.VCE
 
 
 def test_p10_collector_feedback():
@@ -64,10 +64,10 @@ def test_p10_collector_feedback():
     ib = (10 - VBE) / (250e3 + 91 * (4.7e3 + 1.2e3))
     ic = 90 * ib
     q = bjt_q(bjt_for(ic, 90), 10, 0.0, 250e3, 4.7e3, 1.2e3, collector_feedback=True)
-    assert q.IC == pytest.approx(ic, rel=REL)
-    assert q.IC == pytest.approx(1.064e-3, rel=1e-3)
-    assert q.VCE == pytest.approx(10 - 91 * ib * (4.7e3 + 1.2e3), rel=REL)
-    assert q.VCE == pytest.approx(3.66, abs=0.01)
+    assert pytest.approx(ic, rel=REL) == q.IC
+    assert pytest.approx(1.064e-3, rel=1e-3) == q.IC
+    assert pytest.approx(10 - 91 * ib * (4.7e3 + 1.2e3), rel=REL) == q.VCE
+    assert pytest.approx(3.66, abs=0.01) == q.VCE
 
 
 def test_p11_mosfet_divider():
@@ -78,10 +78,10 @@ def test_p11_mosfet_divider():
     a, b, c = k * rs**2, -(2 * k * rs * (vg - vt) + 1), k * (vg - vt) ** 2
     i_d = (-b - math.sqrt(b * b - 4 * a * c)) / (2 * a)  # root with VGS > VT
     q = mos_q(Mos(VT=vt, KP=2 * k), 16, vg, 2e3, rs)
-    assert q.ID == pytest.approx(i_d, rel=REL)
-    assert q.VGS > vt
-    assert q.ID == pytest.approx(0.594e-3, rel=1e-3)
-    assert q.VDS == pytest.approx(16 - i_d * 3e3, rel=REL)
+    assert pytest.approx(i_d, rel=REL) == q.ID
+    assert vt < q.VGS
+    assert pytest.approx(0.594e-3, rel=1e-3) == q.ID
+    assert pytest.approx(16 - i_d * 3e3, rel=REL) == q.VDS
 
 
 def test_p12_common_emitter_midband_and_corner():
@@ -120,7 +120,8 @@ def _forma(**kw: object) -> dict[str, float]:
 
 def test_p13_clippers():
     """Ceifador paralelo: Vm = 10 V, VB = 3 V, VF = 0,7 V, R = 1 kΩ, RL = 100 kΩ → saída
-    máxima 3,7 V, mínima −10·100/101 = −9,90 V. Série: máximo Vm − VB − VF = 6,3 V. Duplo: ±3,7 V."""
+    máxima 3,7 V, mínima −10·100/101 = −9,90 V. Série: máximo Vm − VB − VF = 6,3 V.
+    Duplo: ±3,7 V."""
     p = _forma(kind="ceifador_paralelo")
     assert p["Vo_max"] == pytest.approx(3.7, rel=1e-9)
     assert p["Vo_min"] == pytest.approx(-10 * 100 / 101, rel=1e-6)
@@ -156,7 +157,7 @@ def test_p15_cockcroft_walton():
     assert m["Vo_noload"] == pytest.approx(595.8, rel=1e-9)
     c = m["C_stage"] * 1e-6
     io = m["Vo_avg"] / 1e6
-    assert 2 * 27 / 3 + 9 / 2 - 3 / 6 == pytest.approx(22.0)
+    assert pytest.approx(22.0) == 2 * 27 / 3 + 9 / 2 - 3 / 6
     assert m["dV"] == pytest.approx(22.0 * io / (60 * c), rel=1e-9)
     assert m["ripple"] == pytest.approx(6 * io / (60 * c), rel=1e-9)
     assert m["Vo_avg"] == pytest.approx(595.8 - m["dV"], rel=1e-9)
