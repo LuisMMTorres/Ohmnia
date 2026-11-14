@@ -3,11 +3,12 @@
 Every module computes with the same device equations the simulator uses (Ebers-Moll BJT with
 IS and BF from the chosen part, Darlington as two Ebers-Moll transistors, Shockley JFET (NJF),
 LEVEL 1 MOSFET, piecewise-linear Zener, constant-drop diode, behavioural regulator, class D
-switches as RON/ROFF switches driven by the same comparator), so the tolerance of each check only covers numerics, stated in the
-module's ``SimCheck.justification``. Small-signal gains and corner frequencies come from the
-exact nodal solution of the hybrid-π network, compared with ``.ac``. Measured on 2026-11-14:
-worst error 0,7 % on exact checks; the voltage-multiplier ripple (linear-discharge formula)
-up to 12 % against a 25 % tolerance. Table in docs/validacao/fontes-amplificadores.md.
+switches as RON/ROFF switches driven by the same comparator), so the tolerance of each check
+only covers numerics, stated in the module's ``SimCheck.justification``. Small-signal gains and
+corner frequencies come from the exact nodal solution of the hybrid-π network, compared with
+``.ac``. Measured on 2026-11-14: worst error 0,6 % on exact checks; the voltage-multiplier
+ripple (linear-discharge formula) up to 6,1 % against a 25 % tolerance. Table in
+docs/validacao/fontes-amplificadores.md.
 """
 
 import pytest
