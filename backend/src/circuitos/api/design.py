@@ -28,6 +28,9 @@ class ModuleInfo(BaseModel):
     family: str
     defaults: dict[str, Any]
     json_schema: dict[str, Any]
+    spec_labels: dict[str, str]  # field → label in Portuguese
+    enum_labels: dict[str, str]  # enum value → label
+    summary_labels: dict[str, str]  # summary key → label
 
 
 class DesignIn(BaseModel):
@@ -74,6 +77,9 @@ def modules() -> list[ModuleInfo]:
                 family=m.family,
                 defaults=schema().model_dump(),
                 json_schema=schema.model_json_schema(),
+                spec_labels=report.SPEC_LABELS,
+                enum_labels=report.ENUM_LABELS,
+                summary_labels={k: v for k, v in report.LABELS.items() if k not in report.HIDDEN},
             )
         )
     return out

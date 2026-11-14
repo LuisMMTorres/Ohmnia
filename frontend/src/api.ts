@@ -385,3 +385,144 @@ export const bench = {
       body: JSON.stringify(body),
     }),
 };
+
+// ------------------------------------------------------------------ design ---------------
+
+export interface DesignModuleInfo {
+  id: string;
+  title: string;
+  family: string;
+  defaults: Record<string, unknown>;
+  json_schema: JsonSchema;
+  spec_labels: Record<string, string>;
+  enum_labels: Record<string, string>;
+  summary_labels: Record<string, string>;
+}
+export interface JsonSchema {
+  type?: string;
+  properties?: Record<string, JsonSchema>;
+  $ref?: string;
+  $defs?: Record<string, JsonSchema>;
+  enum?: (string | number)[];
+  const?: string | number;
+  anyOf?: JsonSchema[];
+  default?: unknown;
+  minimum?: number;
+  maximum?: number;
+  exclusiveMinimum?: number;
+  exclusiveMaximum?: number;
+  title?: string;
+  description?: string;
+}
+export type Policy = "didatico" | "industrial";
+export interface DesignIn {
+  spec: Record<string, unknown>;
+  policy: Policy;
+  locks: Record<string, string>;
+}
+export interface Role {
+  designator: string;
+  category: string;
+  description: string;
+  count: number;
+}
+export interface Choice {
+  designator: string;
+  component_id: string;
+  part_number: string;
+  manufacturer: string;
+  locked: boolean;
+  released: boolean;
+}
+export type MarginStatus = "ok" | "atencao" | "violado";
+export interface MarginCheck {
+  designator: string;
+  parameter: string;
+  stress: Quantity;
+  rating: Quantity;
+  required_factor: number;
+  margin_pct: number;
+  status: MarginStatus;
+  note: string | null;
+}
+export interface ThermalResult {
+  designator: string;
+  power: Quantity;
+  Tj: Quantity;
+  Tj_max: Quantity;
+  path: string;
+  required_Rsa: Quantity | null;
+  status: MarginStatus;
+}
+export interface DesignWarning {
+  code: string;
+  message: string;
+}
+export interface SimComparison {
+  quantity: string;
+  analytic: Quantity;
+  simulated: Quantity;
+  error_pct: number;
+  tolerance_pct: number;
+  ok: boolean;
+}
+export interface DesignResult {
+  module_id: string;
+  steps: CalcStep[];
+  roles: Role[];
+  selection: Choice[];
+  margins: MarginCheck[];
+  thermal: ThermalResult[];
+  summary: Record<string, Quantity>;
+  iterations: number;
+  converged: boolean;
+  warnings: DesignWarning[];
+  traces: Record<string, Vector>;
+}
+export interface CandidateOut {
+  id: string;
+  part_number: string;
+  manufacturer: string;
+  released: boolean;
+}
+export interface DesignOut {
+  result: DesignResult;
+  netlist: string;
+  options: Record<string, CandidateOut[]>;
+}
+export interface SimulateOut {
+  comparisons: SimComparison[];
+  t_ms: number[];
+  traces: Record<string, Vector>;
+  ok: boolean;
+}
+
+async function postBlob(path: string, body: unknown): Promise<Blob> {
+  const response = await fetch(`${BASE}${path}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  if (!response.ok) {
+    let detail = response.statusText;
+    try {
+      detail = (await response.json()).detail ?? detail;
+    } catch {
+      /* body was not JSON */
+    }
+    throw new Error(String(detail));
+  }
+  return response.blob();
+}
+
+export const design = {
+  modules: () => request<DesignModuleInfo[]>("/design/modules"),
+  run: (id: string, body: DesignIn) =>
+    request<DesignOut>(`/design/${id}`, { method: "POST", body: JSON.stringify(body) }),
+  simulate: (id: string, body: DesignIn) =>
+    request<SimulateOut>(`/design/${id}/simulate`, { method: "POST", body: JSON.stringify(body) }),
+  schematic: (id: string, body: DesignIn) => postBlob(`/design/${id}/schematic.svg`, body),
+  bom: (id: string, body: DesignIn) => postBlob(`/design/${id}/bom.csv`, body),
+  report: (id: string, body: DesignIn, simulate: boolean) =>
+    postBlob(`/design/${id}/report.html?simulate=${simulate}`, body),
+};

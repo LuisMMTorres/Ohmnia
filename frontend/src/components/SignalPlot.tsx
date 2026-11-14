@@ -9,6 +9,8 @@ export interface Trace {
   values: (number | null)[];
   /** Draw markers only (e.g. datasheet points), no line. */
   points?: boolean;
+  /** Dash pattern of the line, in pixels (e.g. [6, 4]). */
+  dash?: number[];
 }
 
 interface Props {
@@ -93,6 +95,7 @@ export function SignalPlot({
           scale: t.unit || "1",
           stroke: COLORS[i % COLORS.length],
           width: t.points ? 0 : 1.5,
+          ...(t.dash ? { dash: t.dash } : {}),
           ...(t.points
             ? {
                 paths: () => null,

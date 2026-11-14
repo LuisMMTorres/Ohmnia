@@ -39,6 +39,8 @@ const UNIT_SYMBOLS: Record<string, string> = {
   um: "µm",
   deg: "°",
   mohm: "mΩ",
+  "A*V": "VA",
+  "V*A": "VA",
 };
 
 const SUPERSCRIPT: Record<string, string> = {
@@ -75,8 +77,23 @@ export function formatRaw(value: number | null, unit: string): string {
   return `${Number(value.toPrecision(6))}`.replace(".", ",") + (sym ? ` ${sym}` : "");
 }
 
+const PREFIX_FACTOR: Record<string, number> = {
+  p: 1e-12,
+  n: 1e-9,
+  µ: 1e-6,
+  m: 1e-3,
+  k: 1e3,
+  M: 1e6,
+};
+
 export function formatEng(value: number, unit: string, digits = 3): string {
-  const sym = unitSymbol(unit);
+  let sym = unitSymbol(unit);
+  // A prefixed unit ("µF", "mH", "kΩ") is brought to its base so the prefix is chosen again.
+  const factor = PREFIX_FACTOR[sym.charAt(0)];
+  if (factor !== undefined && PREFIXABLE.has(sym.slice(1))) {
+    value *= factor;
+    sym = sym.slice(1);
+  }
   const suffix = sym ? ` ${sym}` : "";
   if (!Number.isFinite(value)) return `${value}${suffix}`;
   if (value === 0 || !PREFIXABLE.has(sym)) {

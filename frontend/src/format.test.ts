@@ -18,3 +18,12 @@ describe("formatEng", () => {
     expect(formatEng(value, unit)).toBe(expected);
   });
 });
+
+describe("formatEng with prefixed units", () => {
+  it("re-chooses the prefix of an already prefixed unit", () => {
+    expect(formatEng(15000, "uF")).toBe("15 mF");
+    expect(formatEng(0.5, "mH")).toBe("500 µH");
+    expect(formatEng(35.2, "A*V")).toBe("35,2 VA");
+    expect(formatEng(30, "deg")).toBe("30 °");
+  });
+});

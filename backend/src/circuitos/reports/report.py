@@ -119,6 +119,20 @@ SPEC_LABELS: dict[str, str] = {
     "Ls": "Indutância da fonte por fase",
 }
 
+ENUM_LABELS: dict[str, str] = {
+    "meia_onda": "meia onda",
+    "center_tap": "onda completa com derivação central",
+    "ponte": "onda completa em ponte",
+    "semicontrolada": "ponte semicontrolada",
+    "nenhum": "sem filtro",
+    "C": "capacitivo (C)",
+    "LC": "indutivo-capacitivo (LC)",
+    "pi": "π (C-L-C)",
+    "E3": "E3",
+    "E6": "E6",
+    "E12": "E12",
+}
+
 QUESTIONS: dict[str, list[str]] = {
     "DM-RET1": [
         "Por que a corrente no diodo com filtro capacitivo é um pulso estreito e alto? Relacione "
@@ -170,7 +184,7 @@ def _spec_rows(spec: BaseModel) -> list[tuple[str, str]]:
         elif isinstance(value, float):
             text = f"{value:g}".replace(".", ",")
         else:
-            text = str(value).replace("_", " ")
+            text = ENUM_LABELS.get(str(value), str(value).replace("_", " "))
         rows.append((label, text))
     return rows
 

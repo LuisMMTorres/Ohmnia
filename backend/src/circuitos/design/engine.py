@@ -22,7 +22,7 @@ from pydantic import BaseModel
 from circuitos.components.models import ComponentRecord, Parameter
 from circuitos.core.calc import CalcLog, CalcStep, record
 from circuitos.core.errors import CircuitosError
-from circuitos.core.units import Q_, QuantityModel, parse_unit
+from circuitos.core.units import Q_, QuantityModel, format_eng, parse_unit
 from circuitos.selection.derating import DeratingPolicy
 from circuitos.selection.select import check, rank
 from circuitos.thermal.steady import junction_temperature, required_heatsink
@@ -250,7 +250,7 @@ def run(
                 if thermal_result.status != "ok":
                     rsa = thermal_result.required_Rsa
                     hint = (
-                        f"use dissipador com Rθsa ≤ {rsa.value:.3g} K/W"
+                        f"use dissipador com Rθsa ≤ {format_eng(rsa.to_pint())}"
                         if rsa is not None and rsa.value > 0
                         else "nenhum dissipador resolve: escolha um componente maior ou "
                         "divida a corrente"

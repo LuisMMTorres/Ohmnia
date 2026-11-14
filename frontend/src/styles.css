@@ -223,7 +223,8 @@ main.review > .panel:last-child {
 }
 input[type="text"],
 input[type="number"],
-input:not([type]) {
+input:not([type]),
+input[type="number"] {
   font: inherit;
   padding: 6px 8px;
   border-radius: 6px;
@@ -345,4 +346,64 @@ img.page {
 .panel p {
   text-align: justify;
   hyphens: auto;
+}
+/* Design page */
+.design-head {
+  margin-bottom: 8px;
+}
+.grow {
+  flex: 1;
+}
+td.num {
+  text-align: right;
+  white-space: nowrap;
+}
+.status-ok {
+  color: #1f8a4c;
+}
+.status-atencao {
+  color: #b7791f;
+}
+.status-violado {
+  color: var(--error-text);
+  font-weight: 600;
+}
+ul.warnings {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0 12px;
+}
+ul.warnings li {
+  border-left: 3px solid #d99a00;
+  background: color-mix(in srgb, #d99a00 10%, transparent);
+  padding: 6px 10px;
+  margin-bottom: 6px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+.spec-num {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.spec-num input[type="number"] {
+  width: 110px;
+}
+.spec-num input[type="range"] {
+  flex: 1;
+  min-width: 120px;
+}
+.schematic {
+  overflow-x: auto;
+  background: #ffffff;
+  border-radius: 6px;
+  padding: 8px;
+}
+.schematic svg {
+  max-width: 100%;
+  height: auto;
+}
+.plot-title {
+  font-size: 14px;
+  margin: 16px 0 4px;
 }

@@ -10,7 +10,7 @@ import pint
 from pydantic import BaseModel, Field, model_validator
 
 from circuitos.core.calc import BibRef, CalcLog, record
-from circuitos.core.units import Q_, QuantityModel
+from circuitos.core.units import Q_, QuantityModel, format_eng
 from circuitos.design.base import Circuit, DesignWarning, Role, SimCheck, Stress, make_trace
 from circuitos.design.engine import Analysis, Device
 from circuitos.design.plugins.retc1.module import diode_model, scr_model
@@ -377,7 +377,8 @@ class Ret3Module:
                 DesignWarning(
                     code="cc_no_transformador",
                     message=f"3 pulsos: cada fase do secundário conduz corrente média de "
-                    f"{Io / 3:.3g} A; use primário em Δ ou secundário em zigue-zague para não "
+                    f"{format_eng(Q_(Io / 3, 'A'))}; use primário em Δ ou secundário em "
+                    "zigue-zague para não "
                     "saturar o núcleo.",
                 )
             )
@@ -385,7 +386,8 @@ class Ret3Module:
             warnings.append(
                 DesignWarning(
                     code="comutacao_longa",
-                    message=f"μ = {math.degrees(mu):.1f}°: a comutação ocupa boa parte do pulso; "
+                    message=f"μ = {f'{math.degrees(mu):.1f}'.replace('.', ',')}°: a comutação "
+                    "ocupa boa parte do pulso; "
                     "o modelo continua válido, mas confira a queda e os entalhes na rede.",
                 )
             )

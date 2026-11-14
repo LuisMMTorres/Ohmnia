@@ -13,7 +13,7 @@ from scipy.optimize import brentq
 
 from circuitos.core.calc import BibRef, CalcLog, record
 from circuitos.core.eseries import snap
-from circuitos.core.units import Q_, QuantityModel
+from circuitos.core.units import Q_, QuantityModel, format_eng
 from circuitos.design.base import Circuit, DesignWarning, Role, SimCheck, Stress, make_trace
 from circuitos.design.engine import Analysis, Device
 
@@ -582,7 +582,8 @@ class Ret1Module:
                 DesignWarning(
                     code="cc_no_transformador",
                     message="Meia onda: o secundário conduz corrente média de "
-                    f"{m.mean(waves.i_sec):.3g} A, que magnetiza o núcleo do transformador. "
+                    f"{format_eng(Q_(m.mean(waves.i_sec), 'A'))}, que magnetiza o núcleo do "
+                    "transformador. "
                     "Prefira onda completa acima de poucos watts.",
                 )
             )
