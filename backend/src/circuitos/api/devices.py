@@ -1,4 +1,4 @@
-"""Device bench endpoints (BD-DIODO, BD-ZENER, BD-TBJ, BD-FET, BD-TIR)."""
+"""Device bench endpoints (BD-PN, BD-DIODO, BD-ZENER, BD-TBJ, BD-FET, BD-TIR)."""
 
 from __future__ import annotations
 
@@ -16,7 +16,7 @@ from circuitos.components.repository import ComponentRepository
 from circuitos.core.calc import BibRef, CalcStep, record
 from circuitos.core.errors import CircuitosError
 from circuitos.core.units import Q_, QuantityModel, VectorModel, parse_unit
-from circuitos.devices import bjt, diode, mosfet, thyristor, zener
+from circuitos.devices import bjt, diode, mosfet, pn, thyristor, zener
 
 router = APIRouter(prefix="/api/v1/devices")
 
@@ -876,5 +876,102 @@ def thyristor_waveform(request: Request, body: ThyristorBenchIn) -> WaveOut:
             "IL": QuantityModel(value=model.IL.m_as("mA"), unit="mA"),
         },
         spice_model=model.spice(),
+        warnings=warnings,
+    )
+
+
+# ---------------------------------------------------------------- BD-PN
+
+
+class PnBenchIn(BaseModel):
+    NA: QuantityModel = QuantityModel(value=1e17, unit="1/cm**3")
+    ND: QuantityModel = QuantityModel(value=1e16, unit="1/cm**3")
+    area: QuantityModel = QuantityModel(value=1e-4, unit="cm**2")
+    Dn: QuantityModel = QuantityModel(value=30, unit="cm**2/s")
+    Dp: QuantityModel = QuantityModel(value=10, unit="cm**2/s")
+    Ln: QuantityModel = QuantityModel(value=10, unit="um")
+    Lp: QuantityModel = QuantityModel(value=20, unit="um")
+    B: QuantityModel = QuantityModel(value=7.3e15, unit="1/cm**3/K**1.5")
+    Eg: QuantityModel = QuantityModel(value=1.12, unit="eV")
+    eps_r: float = Field(default=11.7, gt=1, le=100)
+    T: QuantityModel = QuantityModel(value=300, unit="K")
+    vr: QuantityModel = QuantityModel(value=5, unit="V")
+    vr_max: QuantityModel = QuantityModel(value=20, unit="V")
+    points: int = Field(default=200, ge=20, le=2000)
+
+
+class PnOut(BaseModel):
+    vr: VectorModel
+    depletion: dict[str, VectorModel]
+    field: VectorModel
+    capacitance: VectorModel
+    temperature: VectorModel
+    ni: VectorModel
+    v: VectorModel
+    current: VectorModel
+    steps: list[CalcStep]
+    spice_model: str
+    warnings: list[str]
+
+
+@router.post("/pn")
+def pn_bench(body: PnBenchIn) -> PnOut:
+    try:
+        mat = pn.Material(B=body.B.to_pint(), Eg=body.Eg.to_pint(), eps_r=body.eps_r)
+        j = pn.Junction(
+            NA=body.NA.to_pint(),
+            ND=body.ND.to_pint(),
+            area=body.area.to_pint(),
+            Dn=body.Dn.to_pint(),
+            Dp=body.Dp.to_pint(),
+            Ln=body.Ln.to_pint(),
+            Lp=body.Lp.to_pint(),
+            material=mat,
+        )
+        T = body.T.to_pint()
+        vr = body.vr.to_pint()
+        vmax = body.vr_max.to_pint().m_as("V")
+        if vmax <= 0:
+            raise ValueError("vr_max deve ser positivo")
+        steps = [
+            pn.intrinsic_concentration(mat, T).step,
+            pn.built_in_voltage(j, T).step,
+            *[s.step for s in pn.depletion_steps(j, vr, T)],
+            pn.saturation_current_step(j, T).step,
+        ]
+    except (CircuitosError, ValueError) as exc:
+        raise HTTPException(422, str(exc)) from exc
+    warnings: list[str] = []
+    ratio = j.NA.m_as("1/cm**3") / j.ND.m_as("1/cm**3")
+    if ratio >= 10 or ratio <= 0.1:
+        side = "n" if ratio >= 10 else "p"
+        warnings.append(
+            f"Junção assimétrica: a depleção avança quase toda no lado {side}, o menos dopado."
+        )
+    if max(j.NA.m_as("1/cm**3"), j.ND.m_as("1/cm**3")) > 1e19:
+        warnings.append(
+            "Dopagem acima de 10¹⁹ cm⁻³: o silício fica degenerado e o modelo perde validade."
+        )
+    grid = np.linspace(0, vmax, body.points)
+    gq = Q_(grid, "V")
+    w, xn, xp = pn.depletion_width(j, gq, T)
+    temps = np.linspace(200, 500, 151)
+    vt = pn.thermal_voltage_si(T)
+    v_fwd = np.linspace(0, 40 * vt, body.points)
+    return PnOut(
+        vr=VectorModel(values=grid.tolist(), unit="V"),
+        depletion={
+            "W": VectorModel.from_pint(w, "um"),
+            "xn (lado n)": VectorModel.from_pint(xn, "um"),
+            "xp (lado p)": VectorModel.from_pint(xp, "um"),
+        },
+        field=VectorModel.from_pint(pn.peak_field(j, gq, T), "kV/cm"),
+        capacitance=VectorModel.from_pint(pn.capacitance(j, gq, T), "pF"),
+        temperature=VectorModel(values=temps.tolist(), unit="K"),
+        ni=VectorModel(values=(pn.ni_m3(mat, temps) * 1e-6).tolist(), unit="1/cm**3"),
+        v=VectorModel(values=v_fwd.tolist(), unit="V"),
+        current=VectorModel.from_pint(pn.current(j, Q_(v_fwd, "V"), T), "A"),
+        steps=steps,
+        spice_model=pn.spice(j, T),
         warnings=warnings,
     )

@@ -339,6 +339,35 @@ export interface WaveOut {
   warnings: string[];
 }
 
+export interface PnBenchIn {
+  NA: Quantity;
+  ND: Quantity;
+  area: Quantity;
+  Dn: Quantity;
+  Dp: Quantity;
+  Ln: Quantity;
+  Lp: Quantity;
+  B: Quantity;
+  Eg: Quantity;
+  eps_r: number;
+  T: Quantity;
+  vr: Quantity;
+  vr_max: Quantity;
+}
+export interface PnOut {
+  vr: Vector;
+  depletion: Record<string, Vector>;
+  field: Vector;
+  capacitance: Vector;
+  temperature: Vector;
+  ni: Vector;
+  v: Vector;
+  current: Vector;
+  steps: CalcStep[];
+  spice_model: string;
+  warnings: string[];
+}
+
 export const bench = {
   diode: (body: DiodeBenchIn) =>
     request<DiodeBenchOut>("/devices/diode/iv", { method: "POST", body: JSON.stringify(body) }),
@@ -348,6 +377,8 @@ export const bench = {
     request<CurvesOut>("/devices/bjt/output", { method: "POST", body: JSON.stringify(body) }),
   mosfet: (body: MosfetBenchIn) =>
     request<CurvesOut>("/devices/mosfet/output", { method: "POST", body: JSON.stringify(body) }),
+  pn: (body: PnBenchIn) =>
+    request<PnOut>("/devices/pn", { method: "POST", body: JSON.stringify(body) }),
   thyristor: (body: ThyristorBenchIn) =>
     request<WaveOut>("/devices/thyristor/waveform", {
       method: "POST",

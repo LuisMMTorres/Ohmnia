@@ -4,6 +4,7 @@ import { CalcSteps } from "../components/CalcSteps";
 import { fitScale } from "../components/benchScale";
 import { OutsidePoints } from "../components/OutsidePoints";
 import { SignalPlot, Trace } from "../components/SignalPlot";
+import { PnBench } from "./PnBench";
 import { ThyristorBench } from "./ThyristorBench";
 import { BjtBench, MosfetBench } from "./TransistorBench";
 import { ZenerBench } from "./ZenerBench";
@@ -12,7 +13,7 @@ export function num(text: string): number {
   return Number(text.replace(",", "."));
 }
 
-type Device = "diodo" | "zener" | "tbj" | "mosfet" | "tiristor";
+type Device = "pn" | "diodo" | "zener" | "tbj" | "mosfet" | "tiristor";
 
 export function BenchPage() {
   const [device, setDevice] = useState<Device>("diodo");
@@ -20,6 +21,7 @@ export function BenchPage() {
     <div className="tabs">
       {(
         [
+          ["pn", "Junção PN"],
           ["diodo", "Diodo de junção"],
           ["zener", "Diodo Zener"],
           ["tbj", "TBJ"],
@@ -37,6 +39,7 @@ export function BenchPage() {
       ))}
     </div>
   );
+  if (device === "pn") return <PnBench selector={selector} />;
   if (device === "zener") return <ZenerBench selector={selector} />;
   if (device === "tbj") return <BjtBench selector={selector} />;
   if (device === "mosfet") return <MosfetBench selector={selector} />;

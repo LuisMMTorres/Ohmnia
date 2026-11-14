@@ -179,3 +179,21 @@ def test_thyristor_bench_no_fire_warning(client):
     ).json()
     assert body["events"] == []
     assert any("não conduziu" in w for w in body["warnings"])
+
+
+def test_pn_bench_default(client):
+    body = client.post("/api/v1/devices/pn", json={}).json()
+    assert [s["id"] for s in body["steps"]] == ["ni", "V0", "W", "xn", "Emax", "Cj", "IS"]
+    assert set(body["depletion"]) == {"W", "xn (lado n)", "xp (lado p)"}
+    assert body["capacitance"]["unit"] == "pF"
+    assert len(body["ni"]["values"]) == len(body["temperature"]["values"])
+    assert any("assimétrica" in w for w in body["warnings"])
+    assert body["spice_model"].startswith(".model DPN")
+
+
+def test_pn_bench_rejects_bad_input(client):
+    url = "/api/v1/devices/pn"
+    assert client.post(url, json={"NA": {"value": -1, "unit": "1/cm**3"}}).status_code == 422
+    assert client.post(url, json={"vr_max": {"value": 0, "unit": "V"}}).status_code == 422
+    body = client.post(url, json={"NA": {"value": 1e20, "unit": "1/cm**3"}}).json()
+    assert any("degenerado" in w for w in body["warnings"])
