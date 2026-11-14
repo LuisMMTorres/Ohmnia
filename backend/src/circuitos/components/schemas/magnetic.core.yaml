@@ -1,0 +1,20 @@
+category: magnetic.core
+schema_version: "1.0"
+description: Núcleo magnético (ferrite, pó de ferro, lâminas); dados efetivos do conjunto
+required: [Ae, le, Ve, AL, Bsat]
+optional: []
+parameters:
+  Ae:     {unit: mm**2, kind: geometry, description: Área efetiva da seção}
+  Amin:   {unit: mm**2, kind: geometry, description: Área mínima da seção}
+  le:     {unit: mm, kind: geometry, description: Comprimento efetivo do caminho magnético}
+  Ve:     {unit: mm**3, kind: geometry, description: Volume efetivo}
+  Aw:     {unit: mm**2, kind: geometry, description: Área da janela do carretel}
+  lw:     {unit: mm, kind: geometry, description: Comprimento médio de uma espira}
+  mass:   {unit: g, kind: geometry, description: Massa do conjunto}
+  AL:     {unit: nH, kind: characteristic, description: Indutância por espira ao quadrado (nH/esp²), conditions_required: [gap]}
+  mu_e:   {unit: dimensionless, kind: characteristic, description: Permeabilidade efetiva}
+  mu_i:   {unit: dimensionless, kind: characteristic, description: Permeabilidade inicial do material}
+  Bsat:   {unit: mT, kind: characteristic, description: Densidade de fluxo de saturação, conditions_required: [T]}
+  Pv:     {unit: kW/m**3, kind: characteristic, description: Perdas volumétricas no núcleo, conditions_required: [f, B, T]}
+  Tc:     {unit: degC, kind: characteristic, description: Temperatura de Curie do material}
+  Rth:    {unit: K/W, kind: thermal, description: Resistência térmica do conjunto montado}

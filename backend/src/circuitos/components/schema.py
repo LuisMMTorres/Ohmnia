@@ -24,7 +24,7 @@ SCHEMA_DIR = Path(__file__).parent / "schemas"
 
 class ParameterSpec(BaseModel):
     unit: str
-    kind: Literal["max_rating", "characteristic", "thermal"]
+    kind: Literal["max_rating", "characteristic", "thermal", "geometry"]
     description: str = ""
     conditions_required: list[str] = Field(default_factory=list)
 

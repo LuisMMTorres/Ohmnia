@@ -15,6 +15,8 @@ const CATEGORY_LABEL: Record<string, string> = {
   "thyristor.scr": "SCR",
   "thyristor.triac": "TRIAC",
   "thyristor.diac": "DIAC",
+  "heatsink.extrusion": "Dissipador (perfil)",
+  "magnetic.core": "Núcleo magnético",
 };
 
 export const REVIEW_LABEL: Record<string, string> = {

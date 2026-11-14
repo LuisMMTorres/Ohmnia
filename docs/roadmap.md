@@ -1,12 +1,12 @@
 # Roadmap
 
-Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usuário · ⏳ não iniciado
+Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usuário · ⏳ não iniciado · 🔶 parcial, bloqueado por decisão ou acesso · ➡️ movido para outra fase
 
 | Fase | Entrega | Status |
 |---|---|---|
 | 0 | Descoberta e planejamento | ✅ |
 | 1 | Fundação | ✅ |
-| 2 | Banco de componentes e bancada de dispositivos | 🔄 |
+| 2 | Banco de componentes e bancada de dispositivos | 👀 |
 | 3 | Retificadores (vertical completa, define o padrão) | ⏳ |
 | 4 | Fontes reguladas e amplificadores | ⏳ |
 | 5 | Ampops, filtros e instrumentação | ⏳ |
@@ -43,21 +43,23 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 - ✅ `AS-SMOKE-01`: circuitos RC, analítico × ngspice
 - ✅ Revisão do usuário ([validacao/fundacao.md](validacao/fundacao.md)), aprovada em 2026-11-14
 
-## Fase 2 — Banco de componentes e bancada 🔄
+## Fase 2 — Banco de componentes e bancada 👀
 
 - ✅ Banco SQLite, importação de YAML, busca facetada, fluxo de revisão (rascunho → em revisão → liberado)
 - ✅ Armazenamento de datasheets por SHA-256, download sob demanda, páginas renderizadas
 - ✅ Diodos: 28 componentes (retificadores, rápidos, Schottky, sinal), cada valor conferido na página citada (`docs/validacao/catalogo-diodos.md`)
 - ✅ Zener e pontes monofásicas: 107 componentes (`docs/validacao/catalogo-zener-pontes.md`)
 - ✅ Transistores: 31 TBJ e 2 MOSFET (`docs/validacao/catalogo-transistores.md`)
-- ⏳ Catálogo: SCR/TRIAC/DIAC
-- ⏳ Dissipadores e núcleos (catálogo a definir)
+- ✅ Tiristores: 8 SCR e 6 TRIAC onsemi (`docs/validacao/catalogo-tiristores.md`); esquema de DIAC pronto, sem datasheet acessível
+- 🔶 Dissipadores e núcleos: esquemas `heatsink.extrusion` e `magnetic.core` prontos; dados aguardam a decisão D8 e acesso aos sites dos fabricantes
 - ✅ Bancada `BD-DIODO` (curva I×V com temperatura, `AS-DIODO-01`)
 - ✅ Bancada `BD-ZENER` (curva reversa, ajuste ao datasheet, `AS-ZENER-01`)
 - ✅ Bancadas `BD-TBJ` e `BD-FET` (curvas de saída, ajuste ao datasheet, `AS-TBJ-01`, `AS-FET-01`)
-- ⏳ Bancadas `BD-PN`, `BD-TIR`
-- ⏳ Sobreposição de curvas digitalizadas do datasheet; testes `DS-*`
-- ⏳ `docs/validacao/bancada.md`
+- ✅ Bancada `BD-PN` (ni(T), depleção, campo, Cj, IS; `AS-PN-01`, `GT-PN-02`, `PT-PN-MONOT`)
+- ✅ Bancada `BD-TIR` (SCR e TRIAC, quadrantes, IL e IH; `AS-TIR-01`, `AS-TIR-02`)
+- ✅ Pontos tabelados do datasheet sobrepostos às curvas; teste `DS-CATALOGO` confere cada valor na página citada
+- ➡️ Digitalização de curvas das figuras do datasheet passa para `SV-PDF` (Fase 8)
+- ✅ [validacao/bancada.md](validacao/bancada.md)
 
 ## Fase 3 — Retificadores ⏳
 

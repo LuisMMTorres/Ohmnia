@@ -1,0 +1,14 @@
+category: heatsink.extrusion
+schema_version: "1.0"
+description: Dissipador de perfil extrudado (alumínio)
+required: [Rth_sa, length]
+optional: []
+parameters:
+  Rth_sa:    {unit: K/W, kind: thermal, description: Resistência térmica dissipador-ambiente em convecção natural, conditions_required: [length]}
+  Rth_sa_forced: {unit: K/W, kind: thermal, description: Resistência térmica dissipador-ambiente com ventilação forçada, conditions_required: [length, airflow]}
+  dT_ref:    {unit: K, kind: thermal, description: Elevação de temperatura em que Rth_sa foi medida}
+  length:    {unit: mm, kind: geometry, description: Comprimento do perfil (corte)}
+  width:     {unit: mm, kind: geometry, description: Largura do perfil}
+  height:    {unit: mm, kind: geometry, description: Altura do perfil (aletas)}
+  mass_per_length: {unit: kg/m, kind: geometry, description: Massa por metro de perfil}
+  perimeter: {unit: mm, kind: geometry, description: Perímetro do perfil (área de troca por comprimento)}
