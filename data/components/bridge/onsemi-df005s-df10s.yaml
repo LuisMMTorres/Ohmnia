@@ -1,0 +1,205 @@
+# Fonte: onsemi, documento DF10S/D, Rev. 3, March 2025.
+# Valores transcritos das tabelas do datasheet; conferir na tela de revisão.
+family: DF005S–DF10S
+category: bridge.single_phase
+schema_version: '1.0'
+manufacturer: onsemi
+package: SDIP (PDIP-4 GW), case 709AE
+lifecycle: ativo
+datasheets:
+- id: onsemi-df10s
+  manufacturer: onsemi
+  document_number: DF10S/D
+  revision: Rev. 3, March 2025
+  url: https://www.onsemi.com/pdf/datasheet/df10s-d.pdf
+  sha256: 4a36d9fa0bf5bb168ac6dd5ba824485a7f3ff25df569e2adad0488f463cef604
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  IF(AV):
+    max: 1.5
+    unit: A
+    conditions:
+      TA: 40 degC
+    status: extraido
+    source:
+      page: 2
+      location: Absolute maximum ratings — average rectified forward current at TA = 40 °C
+  IFSM:
+    max: 50
+    unit: A
+    conditions:
+      t_pulse: 8.3 ms
+    status: extraido
+    source:
+      page: 2
+      location: Absolute maximum ratings — non-repetitive peak forward surge current, 8.3 ms single half-sine wave
+  Tj_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 2
+      location: Absolute maximum ratings — operating junction temperature
+  Tj_min:
+    min: -55
+    unit: degC
+    status: extraido
+    source:
+      page: 2
+      location: Absolute maximum ratings — operating junction temperature
+  Tstg_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 2
+      location: Absolute maximum ratings — storage temperature range
+  Ptot:
+    max: 3.1
+    unit: W
+    status: extraido
+    source:
+      page: 2
+      location: Thermal characteristics — power dissipation
+  Rth_ja:
+    typ: 62
+    unit: K/W
+    note: Medição com um diodo; placa com ilhas de 13 mm x 13 mm, cobre 2 oz (nota 1). A tabela não indica típico ou máximo.
+    status: extraido
+    source:
+      page: 2
+      location: Thermal characteristics — RθJA single-die measurement (note 1)
+  Rth_ja_multi:
+    typ: 50
+    unit: K/W
+    note: 'Dois diodos conduzindo; placa FR4 76,2 x 114,3 mm com ilhas máximas (nota 2). Com ilhas mínimas: 105 °C/W.'
+    status: extraido
+    source:
+      page: 2
+      location: Thermal characteristics — RθJA multi-die measurement, maximum land pattern (note 2)
+  Psi_jc:
+    typ: 27
+    unit: K/W
+    note: 'Datasheet: ψJL, junção–terminal (parâmetro de caracterização, não resistência térmica)'
+    status: extraido
+    source:
+      page: 2
+      location: Thermal characteristics — ψJL junction to lead (note 2)
+  VF:
+    max: 1.1
+    unit: V
+    conditions:
+      IF: 1.5 A
+      TA: 25 degC
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — forward voltage, per element
+  I2t:
+    max: 10
+    unit: A**2*s
+    conditions:
+      t_pulse: 8.35 ms
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — rating for fusing (t < 8.35 ms)
+  Cj:
+    typ: 25
+    unit: pF
+    conditions:
+      VR: 4.0 V
+      f: 1.0 MHz
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — typical capacitance, per leg
+per_part:
+  VRRM:
+    unit: V
+    status: extraido
+    source:
+      page: 2
+      location: Absolute maximum ratings — VRRM
+  VRMS:
+    unit: V
+    status: extraido
+    source:
+      page: 2
+      location: Absolute maximum ratings — VRMS
+  VDC:
+    unit: V
+    status: extraido
+    source:
+      page: 2
+      location: Absolute maximum ratings — VDC
+  IR:
+    max: 5.0
+    unit: uA
+    conditions:
+      VR: =VDC
+      TA: 25 degC
+    note: Por diodo, na tensão de bloqueio CC nominal
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — reverse current, per element at rated VR
+  IR@125C:
+    max: 500
+    unit: uA
+    conditions:
+      VR: =VDC
+      TA: 125 degC
+    note: Por diodo, na tensão de bloqueio CC nominal
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — reverse current, per element at rated VR
+parts:
+  DF005S:
+    VRRM: 50
+    VRMS: 35
+    VDC: 50
+    IR: {}
+    IR@125C: {}
+    lifecycle: nrnd
+    notes:
+    - 'DISCONTINUED na página 4 do datasheet: não recomendado para novos projetos.'
+  DF01S:
+    VRRM: 100
+    VRMS: 70
+    VDC: 100
+    IR: {}
+    IR@125C: {}
+  DF02S:
+    VRRM: 200
+    VRMS: 140
+    VDC: 200
+    IR: {}
+    IR@125C: {}
+  DF04S:
+    VRRM: 400
+    VRMS: 280
+    VDC: 400
+    IR: {}
+    IR@125C: {}
+  DF06S:
+    VRRM: 600
+    VRMS: 420
+    VDC: 600
+    IR: {}
+    IR@125C: {}
+  DF08S:
+    VRRM: 800
+    VRMS: 560
+    VDC: 800
+    IR: {}
+    IR@125C: {}
+  DF10S:
+    VRRM: 1000
+    VRMS: 700
+    VDC: 1000
+    IR: {}
+    IR@125C: {}

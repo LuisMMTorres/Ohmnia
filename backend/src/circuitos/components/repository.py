@@ -302,12 +302,17 @@ def load_records_file(path: Path) -> list[ComponentRecord]:
     records = []
     for part_number, overrides in parts.items():
         params = copy.deepcopy(shared)
-        for key, values in (overrides or {}).items():
+        overrides = dict(overrides or {})
+        # Record-level fields a single part may override (e.g. one part discontinued).
+        meta = {k: overrides.pop(k) for k in ("lifecycle", "notes") if k in overrides}
+        for key, values in overrides.items():
             base = copy.deepcopy(per_part.get(key, params.get(key, {})))
             if not isinstance(values, dict):
                 values = {"max": values}
             params[key] = base | values
-        record_data = copy.deepcopy(data) | {"part_number": str(part_number), "parameters": params}
+        record_data = (
+            copy.deepcopy(data) | meta | {"part_number": str(part_number), "parameters": params}
+        )
         records.append(_record_from_dict(record_data, path.name))
     return records
 

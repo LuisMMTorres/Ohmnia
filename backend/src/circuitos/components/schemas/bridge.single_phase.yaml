@@ -1,0 +1,9 @@
+category: bridge.single_phase
+extends: diode.rectifier
+schema_version: "1.0"
+description: Ponte retificadora monofásica (valores de VF, IR e Cj por diodo; IF(AV) na saída)
+required: [VRRM, IF(AV), IFSM, VF, IR, Tj_max]
+optional: [VISO, Rth_ja_multi]
+parameters:
+  VISO:         {unit: V, kind: max_rating, description: Tensão de isolação eficaz entre cápsula e terminais}
+  Rth_ja_multi: {unit: K/W, kind: thermal, description: Resistência térmica junção-ambiente com mais de um diodo conduzindo}

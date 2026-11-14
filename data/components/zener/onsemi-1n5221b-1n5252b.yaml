@@ -1,0 +1,2151 @@
+# Fonte: onsemi, documento 1N5221B/D, Rev. 5, November 2023.
+# Gerado a partir do texto das tabelas do datasheet; conferir na tela de revisão.
+family: 1N5221B–1N5252B
+category: diode.zener
+schema_version: '1.0'
+manufacturer: onsemi
+package: Axial lead, case 017AG
+lifecycle: ativo
+notes:
+- O datasheet não inclui o 1N5224B.
+datasheets:
+- id: onsemi-1n5221b
+  manufacturer: onsemi
+  document_number: 1N5221B/D
+  revision: Rev. 5, November 2023
+  url: https://www.onsemi.com/pdf/datasheet/1n5221b-d.pdf
+  sha256: dfa1d644c700205380cc210b3684523e7323d7bb2b644b0ea384d3cdfc0bebbd
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  Ptot:
+    max: 500
+    unit: mW
+    conditions:
+      TA: 25 degC
+    note: Válido até 50 °C; reduzir 4,0 mW/°C acima de 50 °C
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings — power dissipation
+  Ptot_derating:
+    max: 4.0
+    unit: mW/K
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings — derate above 50 °C
+  Tj_max:
+    max: 200
+    unit: degC
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings — operating junction temperature range
+  Tj_min:
+    min: -65
+    unit: degC
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings — operating junction temperature range
+  Tstg_max:
+    max: 200
+    unit: degC
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings — storage temperature range
+  VF:
+    max: 1.2
+    unit: V
+    conditions:
+      IF: 200 mA
+      TA: 25 degC
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — VF forward voltage
+per_part: {}
+parts:
+  1N5221B:
+    VZ:
+      min: 2.28
+      typ: 2.4
+      max: 2.52
+      unit: V
+      conditions:
+        IZ: 20 mA
+        TL: 30 degC
+      note: 'Nota 2: junção em equilíbrio térmico, terminal a 30 °C ± 1 °C, 3/8 in'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — VZ (V) @ IZ (min./typ./max.)
+    IZT:
+      typ: 20.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZ (mA), test current of VZ and ZZ
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZK (mA)
+    ZZT:
+      max: 30.0
+      unit: ohm
+      conditions:
+        IZ: 20 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZ (Ω) @ IZ
+    ZZK:
+      max: 1200.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZK (Ω) @ IZK
+    IR:
+      max: 100.0
+      unit: uA
+      conditions:
+        VR: 1.0 V
+        TA: 25 degC
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IR (µA) @ VR (V)
+    TC_VZ:
+      unit: percent/K
+      typ: -0.085
+      note: A tabela não indica se é típico; registrado como típico
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — TC (%/°C)
+  1N5222B:
+    VZ:
+      min: 2.375
+      typ: 2.5
+      max: 2.625
+      unit: V
+      conditions:
+        IZ: 20 mA
+        TL: 30 degC
+      note: 'Nota 2: junção em equilíbrio térmico, terminal a 30 °C ± 1 °C, 3/8 in'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — VZ (V) @ IZ (min./typ./max.)
+    IZT:
+      typ: 20.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZ (mA), test current of VZ and ZZ
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZK (mA)
+    ZZT:
+      max: 30.0
+      unit: ohm
+      conditions:
+        IZ: 20 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZ (Ω) @ IZ
+    ZZK:
+      max: 1250.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZK (Ω) @ IZK
+    IR:
+      max: 100.0
+      unit: uA
+      conditions:
+        VR: 1.0 V
+        TA: 25 degC
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IR (µA) @ VR (V)
+    TC_VZ:
+      unit: percent/K
+      typ: -0.085
+      note: A tabela não indica se é típico; registrado como típico
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — TC (%/°C)
+  1N5223B:
+    VZ:
+      min: 2.565
+      typ: 2.7
+      max: 2.835
+      unit: V
+      conditions:
+        IZ: 20 mA
+        TL: 30 degC
+      note: 'Nota 2: junção em equilíbrio térmico, terminal a 30 °C ± 1 °C, 3/8 in'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — VZ (V) @ IZ (min./typ./max.)
+    IZT:
+      typ: 20.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZ (mA), test current of VZ and ZZ
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZK (mA)
+    ZZT:
+      max: 30.0
+      unit: ohm
+      conditions:
+        IZ: 20 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZ (Ω) @ IZ
+    ZZK:
+      max: 1300.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZK (Ω) @ IZK
+    IR:
+      max: 75.0
+      unit: uA
+      conditions:
+        VR: 1.0 V
+        TA: 25 degC
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IR (µA) @ VR (V)
+    TC_VZ:
+      unit: percent/K
+      typ: -0.08
+      note: A tabela não indica se é típico; registrado como típico
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — TC (%/°C)
+  1N5225B:
+    VZ:
+      min: 2.85
+      typ: 3.0
+      max: 3.15
+      unit: V
+      conditions:
+        IZ: 20 mA
+        TL: 30 degC
+      note: 'Nota 2: junção em equilíbrio térmico, terminal a 30 °C ± 1 °C, 3/8 in'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — VZ (V) @ IZ (min./typ./max.)
+    IZT:
+      typ: 20.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZ (mA), test current of VZ and ZZ
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZK (mA)
+    ZZT:
+      max: 29.0
+      unit: ohm
+      conditions:
+        IZ: 20 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZ (Ω) @ IZ
+    ZZK:
+      max: 1600.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZK (Ω) @ IZK
+    IR:
+      max: 50.0
+      unit: uA
+      conditions:
+        VR: 1.0 V
+        TA: 25 degC
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IR (µA) @ VR (V)
+    TC_VZ:
+      unit: percent/K
+      typ: -0.075
+      note: A tabela não indica se é típico; registrado como típico
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — TC (%/°C)
+  1N5226B:
+    VZ:
+      min: 3.135
+      typ: 3.3
+      max: 3.465
+      unit: V
+      conditions:
+        IZ: 20 mA
+        TL: 30 degC
+      note: 'Nota 2: junção em equilíbrio térmico, terminal a 30 °C ± 1 °C, 3/8 in'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — VZ (V) @ IZ (min./typ./max.)
+    IZT:
+      typ: 20.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZ (mA), test current of VZ and ZZ
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZK (mA)
+    ZZT:
+      max: 28.0
+      unit: ohm
+      conditions:
+        IZ: 20 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZ (Ω) @ IZ
+    ZZK:
+      max: 1600.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZK (Ω) @ IZK
+    IR:
+      max: 25.0
+      unit: uA
+      conditions:
+        VR: 1.0 V
+        TA: 25 degC
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IR (µA) @ VR (V)
+    TC_VZ:
+      unit: percent/K
+      typ: -0.07
+      note: A tabela não indica se é típico; registrado como típico
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — TC (%/°C)
+  1N5227B:
+    VZ:
+      min: 3.42
+      typ: 3.6
+      max: 3.78
+      unit: V
+      conditions:
+        IZ: 20 mA
+        TL: 30 degC
+      note: 'Nota 2: junção em equilíbrio térmico, terminal a 30 °C ± 1 °C, 3/8 in'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — VZ (V) @ IZ (min./typ./max.)
+    IZT:
+      typ: 20.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZ (mA), test current of VZ and ZZ
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZK (mA)
+    ZZT:
+      max: 24.0
+      unit: ohm
+      conditions:
+        IZ: 20 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZ (Ω) @ IZ
+    ZZK:
+      max: 1700.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZK (Ω) @ IZK
+    IR:
+      max: 15.0
+      unit: uA
+      conditions:
+        VR: 1.0 V
+        TA: 25 degC
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IR (µA) @ VR (V)
+    TC_VZ:
+      unit: percent/K
+      typ: -0.065
+      note: A tabela não indica se é típico; registrado como típico
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — TC (%/°C)
+  1N5228B:
+    VZ:
+      min: 3.705
+      typ: 3.9
+      max: 4.095
+      unit: V
+      conditions:
+        IZ: 20 mA
+        TL: 30 degC
+      note: 'Nota 2: junção em equilíbrio térmico, terminal a 30 °C ± 1 °C, 3/8 in'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — VZ (V) @ IZ (min./typ./max.)
+    IZT:
+      typ: 20.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZ (mA), test current of VZ and ZZ
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZK (mA)
+    ZZT:
+      max: 23.0
+      unit: ohm
+      conditions:
+        IZ: 20 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZ (Ω) @ IZ
+    ZZK:
+      max: 1900.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZK (Ω) @ IZK
+    IR:
+      max: 10.0
+      unit: uA
+      conditions:
+        VR: 1.0 V
+        TA: 25 degC
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IR (µA) @ VR (V)
+    TC_VZ:
+      unit: percent/K
+      typ: -0.06
+      note: A tabela não indica se é típico; registrado como típico
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — TC (%/°C)
+  1N5229B:
+    VZ:
+      min: 4.085
+      typ: 4.3
+      max: 4.515
+      unit: V
+      conditions:
+        IZ: 20 mA
+        TL: 30 degC
+      note: 'Nota 2: junção em equilíbrio térmico, terminal a 30 °C ± 1 °C, 3/8 in'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — VZ (V) @ IZ (min./typ./max.)
+    IZT:
+      typ: 20.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZ (mA), test current of VZ and ZZ
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZK (mA)
+    ZZT:
+      max: 22.0
+      unit: ohm
+      conditions:
+        IZ: 20 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZ (Ω) @ IZ
+    ZZK:
+      max: 2000.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZK (Ω) @ IZK
+    IR:
+      max: 5.0
+      unit: uA
+      conditions:
+        VR: 1.0 V
+        TA: 25 degC
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IR (µA) @ VR (V)
+    TC_VZ:
+      unit: percent/K
+      min: -0.055
+      max: 0.055
+      note: Datasheet indica ± (sinal depende da amostra)
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — TC (%/°C)
+  1N5230B:
+    VZ:
+      min: 4.465
+      typ: 4.7
+      max: 4.935
+      unit: V
+      conditions:
+        IZ: 20 mA
+        TL: 30 degC
+      note: 'Nota 2: junção em equilíbrio térmico, terminal a 30 °C ± 1 °C, 3/8 in'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — VZ (V) @ IZ (min./typ./max.)
+    IZT:
+      typ: 20.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZ (mA), test current of VZ and ZZ
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZK (mA)
+    ZZT:
+      max: 19.0
+      unit: ohm
+      conditions:
+        IZ: 20 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZ (Ω) @ IZ
+    ZZK:
+      max: 1900.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZK (Ω) @ IZK
+    IR:
+      max: 5.0
+      unit: uA
+      conditions:
+        VR: 2.0 V
+        TA: 25 degC
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IR (µA) @ VR (V)
+    TC_VZ:
+      unit: percent/K
+      min: -0.03
+      max: 0.03
+      note: Datasheet indica ± (sinal depende da amostra)
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — TC (%/°C)
+  1N5231B:
+    VZ:
+      min: 4.845
+      typ: 5.1
+      max: 5.355
+      unit: V
+      conditions:
+        IZ: 20 mA
+        TL: 30 degC
+      note: 'Nota 2: junção em equilíbrio térmico, terminal a 30 °C ± 1 °C, 3/8 in'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — VZ (V) @ IZ (min./typ./max.)
+    IZT:
+      typ: 20.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZ (mA), test current of VZ and ZZ
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZK (mA)
+    ZZT:
+      max: 17.0
+      unit: ohm
+      conditions:
+        IZ: 20 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZ (Ω) @ IZ
+    ZZK:
+      max: 1600.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZK (Ω) @ IZK
+    IR:
+      max: 5.0
+      unit: uA
+      conditions:
+        VR: 2.0 V
+        TA: 25 degC
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IR (µA) @ VR (V)
+    TC_VZ:
+      unit: percent/K
+      min: -0.03
+      max: 0.03
+      note: Datasheet indica ± (sinal depende da amostra)
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — TC (%/°C)
+  1N5232B:
+    VZ:
+      min: 5.32
+      typ: 5.6
+      max: 5.88
+      unit: V
+      conditions:
+        IZ: 20 mA
+        TL: 30 degC
+      note: 'Nota 2: junção em equilíbrio térmico, terminal a 30 °C ± 1 °C, 3/8 in'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — VZ (V) @ IZ (min./typ./max.)
+    IZT:
+      typ: 20.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZ (mA), test current of VZ and ZZ
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZK (mA)
+    ZZT:
+      max: 11.0
+      unit: ohm
+      conditions:
+        IZ: 20 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZ (Ω) @ IZ
+    ZZK:
+      max: 1600.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZK (Ω) @ IZK
+    IR:
+      max: 5.0
+      unit: uA
+      conditions:
+        VR: 3.0 V
+        TA: 25 degC
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IR (µA) @ VR (V)
+    TC_VZ:
+      unit: percent/K
+      typ: 0.038
+      note: A tabela não indica se é típico; registrado como típico
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — TC (%/°C)
+  1N5233B:
+    VZ:
+      min: 5.7
+      typ: 6.0
+      max: 6.3
+      unit: V
+      conditions:
+        IZ: 20 mA
+        TL: 30 degC
+      note: 'Nota 2: junção em equilíbrio térmico, terminal a 30 °C ± 1 °C, 3/8 in'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — VZ (V) @ IZ (min./typ./max.)
+    IZT:
+      typ: 20.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZ (mA), test current of VZ and ZZ
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZK (mA)
+    ZZT:
+      max: 7.0
+      unit: ohm
+      conditions:
+        IZ: 20 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZ (Ω) @ IZ
+    ZZK:
+      max: 1600.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZK (Ω) @ IZK
+    IR:
+      max: 5.0
+      unit: uA
+      conditions:
+        VR: 3.5 V
+        TA: 25 degC
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IR (µA) @ VR (V)
+    TC_VZ:
+      unit: percent/K
+      typ: 0.038
+      note: A tabela não indica se é típico; registrado como típico
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — TC (%/°C)
+  1N5234B:
+    VZ:
+      min: 5.89
+      typ: 6.2
+      max: 6.51
+      unit: V
+      conditions:
+        IZ: 20 mA
+        TL: 30 degC
+      note: 'Nota 2: junção em equilíbrio térmico, terminal a 30 °C ± 1 °C, 3/8 in'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — VZ (V) @ IZ (min./typ./max.)
+    IZT:
+      typ: 20.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZ (mA), test current of VZ and ZZ
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZK (mA)
+    ZZT:
+      max: 7.0
+      unit: ohm
+      conditions:
+        IZ: 20 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZ (Ω) @ IZ
+    ZZK:
+      max: 1000.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZK (Ω) @ IZK
+    IR:
+      max: 5.0
+      unit: uA
+      conditions:
+        VR: 4.0 V
+        TA: 25 degC
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IR (µA) @ VR (V)
+    TC_VZ:
+      unit: percent/K
+      typ: 0.045
+      note: A tabela não indica se é típico; registrado como típico
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — TC (%/°C)
+  1N5235B:
+    VZ:
+      min: 6.46
+      typ: 6.8
+      max: 7.14
+      unit: V
+      conditions:
+        IZ: 20 mA
+        TL: 30 degC
+      note: 'Nota 2: junção em equilíbrio térmico, terminal a 30 °C ± 1 °C, 3/8 in'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — VZ (V) @ IZ (min./typ./max.)
+    IZT:
+      typ: 20.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZ (mA), test current of VZ and ZZ
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZK (mA)
+    ZZT:
+      max: 5.0
+      unit: ohm
+      conditions:
+        IZ: 20 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZ (Ω) @ IZ
+    ZZK:
+      max: 750.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZK (Ω) @ IZK
+    IR:
+      max: 3.0
+      unit: uA
+      conditions:
+        VR: 5.0 V
+        TA: 25 degC
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IR (µA) @ VR (V)
+    TC_VZ:
+      unit: percent/K
+      typ: 0.05
+      note: A tabela não indica se é típico; registrado como típico
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — TC (%/°C)
+  1N5236B:
+    VZ:
+      min: 7.125
+      typ: 7.5
+      max: 7.875
+      unit: V
+      conditions:
+        IZ: 20 mA
+        TL: 30 degC
+      note: 'Nota 2: junção em equilíbrio térmico, terminal a 30 °C ± 1 °C, 3/8 in'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — VZ (V) @ IZ (min./typ./max.)
+    IZT:
+      typ: 20.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZ (mA), test current of VZ and ZZ
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZK (mA)
+    ZZT:
+      max: 6.0
+      unit: ohm
+      conditions:
+        IZ: 20 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZ (Ω) @ IZ
+    ZZK:
+      max: 500.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZK (Ω) @ IZK
+    IR:
+      max: 3.0
+      unit: uA
+      conditions:
+        VR: 6.0 V
+        TA: 25 degC
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IR (µA) @ VR (V)
+    TC_VZ:
+      unit: percent/K
+      typ: 0.058
+      note: A tabela não indica se é típico; registrado como típico
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — TC (%/°C)
+  1N5237B:
+    VZ:
+      min: 7.79
+      typ: 8.2
+      max: 8.61
+      unit: V
+      conditions:
+        IZ: 20 mA
+        TL: 30 degC
+      note: 'Nota 2: junção em equilíbrio térmico, terminal a 30 °C ± 1 °C, 3/8 in'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — VZ (V) @ IZ (min./typ./max.)
+    IZT:
+      typ: 20.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZ (mA), test current of VZ and ZZ
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZK (mA)
+    ZZT:
+      max: 8.0
+      unit: ohm
+      conditions:
+        IZ: 20 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZ (Ω) @ IZ
+    ZZK:
+      max: 500.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZK (Ω) @ IZK
+    IR:
+      max: 3.0
+      unit: uA
+      conditions:
+        VR: 6.5 V
+        TA: 25 degC
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IR (µA) @ VR (V)
+    TC_VZ:
+      unit: percent/K
+      typ: 0.062
+      note: A tabela não indica se é típico; registrado como típico
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — TC (%/°C)
+  1N5238B:
+    VZ:
+      min: 8.265
+      typ: 8.7
+      max: 9.135
+      unit: V
+      conditions:
+        IZ: 20 mA
+        TL: 30 degC
+      note: 'Nota 2: junção em equilíbrio térmico, terminal a 30 °C ± 1 °C, 3/8 in'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — VZ (V) @ IZ (min./typ./max.)
+    IZT:
+      typ: 20.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZ (mA), test current of VZ and ZZ
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZK (mA)
+    ZZT:
+      max: 8.0
+      unit: ohm
+      conditions:
+        IZ: 20 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZ (Ω) @ IZ
+    ZZK:
+      max: 600.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZK (Ω) @ IZK
+    IR:
+      max: 3.0
+      unit: uA
+      conditions:
+        VR: 6.5 V
+        TA: 25 degC
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IR (µA) @ VR (V)
+    TC_VZ:
+      unit: percent/K
+      typ: 0.065
+      note: A tabela não indica se é típico; registrado como típico
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — TC (%/°C)
+  1N5239B:
+    VZ:
+      min: 8.645
+      typ: 9.1
+      max: 9.555
+      unit: V
+      conditions:
+        IZ: 20 mA
+        TL: 30 degC
+      note: 'Nota 2: junção em equilíbrio térmico, terminal a 30 °C ± 1 °C, 3/8 in'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — VZ (V) @ IZ (min./typ./max.)
+    IZT:
+      typ: 20.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZ (mA), test current of VZ and ZZ
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZK (mA)
+    ZZT:
+      max: 10.0
+      unit: ohm
+      conditions:
+        IZ: 20 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZ (Ω) @ IZ
+    ZZK:
+      max: 600.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZK (Ω) @ IZK
+    IR:
+      max: 3.0
+      unit: uA
+      conditions:
+        VR: 7.0 V
+        TA: 25 degC
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IR (µA) @ VR (V)
+    TC_VZ:
+      unit: percent/K
+      typ: 0.068
+      note: A tabela não indica se é típico; registrado como típico
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — TC (%/°C)
+  1N5240B:
+    VZ:
+      min: 9.5
+      typ: 10.0
+      max: 10.5
+      unit: V
+      conditions:
+        IZ: 20 mA
+        TL: 30 degC
+      note: 'Nota 2: junção em equilíbrio térmico, terminal a 30 °C ± 1 °C, 3/8 in'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — VZ (V) @ IZ (min./typ./max.)
+    IZT:
+      typ: 20.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZ (mA), test current of VZ and ZZ
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZK (mA)
+    ZZT:
+      max: 17.0
+      unit: ohm
+      conditions:
+        IZ: 20 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZ (Ω) @ IZ
+    ZZK:
+      max: 600.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZK (Ω) @ IZK
+    IR:
+      max: 3.0
+      unit: uA
+      conditions:
+        VR: 8.0 V
+        TA: 25 degC
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IR (µA) @ VR (V)
+    TC_VZ:
+      unit: percent/K
+      typ: 0.075
+      note: A tabela não indica se é típico; registrado como típico
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — TC (%/°C)
+  1N5241B:
+    VZ:
+      min: 10.45
+      typ: 11.0
+      max: 11.55
+      unit: V
+      conditions:
+        IZ: 20 mA
+        TL: 30 degC
+      note: 'Nota 2: junção em equilíbrio térmico, terminal a 30 °C ± 1 °C, 3/8 in'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — VZ (V) @ IZ (min./typ./max.)
+    IZT:
+      typ: 20.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZ (mA), test current of VZ and ZZ
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZK (mA)
+    ZZT:
+      max: 22.0
+      unit: ohm
+      conditions:
+        IZ: 20 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZ (Ω) @ IZ
+    ZZK:
+      max: 600.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZK (Ω) @ IZK
+    IR:
+      max: 2.0
+      unit: uA
+      conditions:
+        VR: 8.4 V
+        TA: 25 degC
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IR (µA) @ VR (V)
+    TC_VZ:
+      unit: percent/K
+      typ: 0.076
+      note: A tabela não indica se é típico; registrado como típico
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — TC (%/°C)
+  1N5242B:
+    VZ:
+      min: 11.4
+      typ: 12.0
+      max: 12.6
+      unit: V
+      conditions:
+        IZ: 20 mA
+        TL: 30 degC
+      note: 'Nota 2: junção em equilíbrio térmico, terminal a 30 °C ± 1 °C, 3/8 in'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — VZ (V) @ IZ (min./typ./max.)
+    IZT:
+      typ: 20.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZ (mA), test current of VZ and ZZ
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZK (mA)
+    ZZT:
+      max: 30.0
+      unit: ohm
+      conditions:
+        IZ: 20 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZ (Ω) @ IZ
+    ZZK:
+      max: 600.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZK (Ω) @ IZK
+    IR:
+      max: 1.0
+      unit: uA
+      conditions:
+        VR: 9.1 V
+        TA: 25 degC
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IR (µA) @ VR (V)
+    TC_VZ:
+      unit: percent/K
+      typ: 0.077
+      note: A tabela não indica se é típico; registrado como típico
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — TC (%/°C)
+  1N5243B:
+    VZ:
+      min: 12.35
+      typ: 13.0
+      max: 13.65
+      unit: V
+      conditions:
+        IZ: 9.5 mA
+        TL: 30 degC
+      note: 'Nota 2: junção em equilíbrio térmico, terminal a 30 °C ± 1 °C, 3/8 in'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — VZ (V) @ IZ (min./typ./max.)
+    IZT:
+      typ: 9.5
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZ (mA), test current of VZ and ZZ
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZK (mA)
+    ZZT:
+      max: 13.0
+      unit: ohm
+      conditions:
+        IZ: 9.5 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZ (Ω) @ IZ
+    ZZK:
+      max: 600.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZK (Ω) @ IZK
+    IR:
+      max: 0.5
+      unit: uA
+      conditions:
+        VR: 9.9 V
+        TA: 25 degC
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IR (µA) @ VR (V)
+    TC_VZ:
+      unit: percent/K
+      typ: 0.079
+      note: A tabela não indica se é típico; registrado como típico
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — TC (%/°C)
+  1N5244B:
+    VZ:
+      min: 13.3
+      typ: 14.0
+      max: 14.7
+      unit: V
+      conditions:
+        IZ: 9.0 mA
+        TL: 30 degC
+      note: 'Nota 2: junção em equilíbrio térmico, terminal a 30 °C ± 1 °C, 3/8 in'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — VZ (V) @ IZ (min./typ./max.)
+    IZT:
+      typ: 9.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZ (mA), test current of VZ and ZZ
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZK (mA)
+    ZZT:
+      max: 15.0
+      unit: ohm
+      conditions:
+        IZ: 9.0 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZ (Ω) @ IZ
+    ZZK:
+      max: 600.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZK (Ω) @ IZK
+    IR:
+      max: 0.1
+      unit: uA
+      conditions:
+        VR: 10.0 V
+        TA: 25 degC
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IR (µA) @ VR (V)
+    TC_VZ:
+      unit: percent/K
+      typ: 0.08
+      note: A tabela não indica se é típico; registrado como típico
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — TC (%/°C)
+  1N5245B:
+    VZ:
+      min: 14.25
+      typ: 15.0
+      max: 15.75
+      unit: V
+      conditions:
+        IZ: 8.5 mA
+        TL: 30 degC
+      note: 'Nota 2: junção em equilíbrio térmico, terminal a 30 °C ± 1 °C, 3/8 in'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — VZ (V) @ IZ (min./typ./max.)
+    IZT:
+      typ: 8.5
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZ (mA), test current of VZ and ZZ
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZK (mA)
+    ZZT:
+      max: 16.0
+      unit: ohm
+      conditions:
+        IZ: 8.5 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZ (Ω) @ IZ
+    ZZK:
+      max: 600.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZK (Ω) @ IZK
+    IR:
+      max: 0.1
+      unit: uA
+      conditions:
+        VR: 11.0 V
+        TA: 25 degC
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IR (µA) @ VR (V)
+    TC_VZ:
+      unit: percent/K
+      typ: 0.082
+      note: A tabela não indica se é típico; registrado como típico
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — TC (%/°C)
+  1N5246B:
+    VZ:
+      min: 15.2
+      typ: 16.0
+      max: 16.8
+      unit: V
+      conditions:
+        IZ: 7.8 mA
+        TL: 30 degC
+      note: 'Nota 2: junção em equilíbrio térmico, terminal a 30 °C ± 1 °C, 3/8 in'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — VZ (V) @ IZ (min./typ./max.)
+    IZT:
+      typ: 7.8
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZ (mA), test current of VZ and ZZ
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZK (mA)
+    ZZT:
+      max: 17.0
+      unit: ohm
+      conditions:
+        IZ: 7.8 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZ (Ω) @ IZ
+    ZZK:
+      max: 600.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZK (Ω) @ IZK
+    IR:
+      max: 0.1
+      unit: uA
+      conditions:
+        VR: 12.0 V
+        TA: 25 degC
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IR (µA) @ VR (V)
+    TC_VZ:
+      unit: percent/K
+      typ: 0.083
+      note: A tabela não indica se é típico; registrado como típico
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — TC (%/°C)
+  1N5247B:
+    VZ:
+      min: 16.15
+      typ: 17.0
+      max: 17.85
+      unit: V
+      conditions:
+        IZ: 7.4 mA
+        TL: 30 degC
+      note: 'Nota 2: junção em equilíbrio térmico, terminal a 30 °C ± 1 °C, 3/8 in'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — VZ (V) @ IZ (min./typ./max.)
+    IZT:
+      typ: 7.4
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZ (mA), test current of VZ and ZZ
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZK (mA)
+    ZZT:
+      max: 19.0
+      unit: ohm
+      conditions:
+        IZ: 7.4 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZ (Ω) @ IZ
+    ZZK:
+      max: 600.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZK (Ω) @ IZK
+    IR:
+      max: 0.1
+      unit: uA
+      conditions:
+        VR: 13.0 V
+        TA: 25 degC
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IR (µA) @ VR (V)
+    TC_VZ:
+      unit: percent/K
+      typ: 0.084
+      note: A tabela não indica se é típico; registrado como típico
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — TC (%/°C)
+  1N5248B:
+    VZ:
+      min: 17.1
+      typ: 18.0
+      max: 18.9
+      unit: V
+      conditions:
+        IZ: 7.0 mA
+        TL: 30 degC
+      note: 'Nota 2: junção em equilíbrio térmico, terminal a 30 °C ± 1 °C, 3/8 in'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — VZ (V) @ IZ (min./typ./max.)
+    IZT:
+      typ: 7.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZ (mA), test current of VZ and ZZ
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZK (mA)
+    ZZT:
+      max: 21.0
+      unit: ohm
+      conditions:
+        IZ: 7.0 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZ (Ω) @ IZ
+    ZZK:
+      max: 600.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZK (Ω) @ IZK
+    IR:
+      max: 0.1
+      unit: uA
+      conditions:
+        VR: 14.0 V
+        TA: 25 degC
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IR (µA) @ VR (V)
+    TC_VZ:
+      unit: percent/K
+      typ: 0.085
+      note: A tabela não indica se é típico; registrado como típico
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — TC (%/°C)
+  1N5249B:
+    VZ:
+      min: 18.05
+      typ: 19.0
+      max: 19.95
+      unit: V
+      conditions:
+        IZ: 6.6 mA
+        TL: 30 degC
+      note: 'Nota 2: junção em equilíbrio térmico, terminal a 30 °C ± 1 °C, 3/8 in'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — VZ (V) @ IZ (min./typ./max.)
+    IZT:
+      typ: 6.6
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZ (mA), test current of VZ and ZZ
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZK (mA)
+    ZZT:
+      max: 23.0
+      unit: ohm
+      conditions:
+        IZ: 6.6 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZ (Ω) @ IZ
+    ZZK:
+      max: 600.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZK (Ω) @ IZK
+    IR:
+      max: 0.1
+      unit: uA
+      conditions:
+        VR: 14.0 V
+        TA: 25 degC
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IR (µA) @ VR (V)
+    TC_VZ:
+      unit: percent/K
+      typ: 0.085
+      note: A tabela não indica se é típico; registrado como típico
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — TC (%/°C)
+  1N5250B:
+    VZ:
+      min: 19.0
+      typ: 20.0
+      max: 21.0
+      unit: V
+      conditions:
+        IZ: 6.2 mA
+        TL: 30 degC
+      note: 'Nota 2: junção em equilíbrio térmico, terminal a 30 °C ± 1 °C, 3/8 in'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — VZ (V) @ IZ (min./typ./max.)
+    IZT:
+      typ: 6.2
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZ (mA), test current of VZ and ZZ
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZK (mA)
+    ZZT:
+      max: 25.0
+      unit: ohm
+      conditions:
+        IZ: 6.2 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZ (Ω) @ IZ
+    ZZK:
+      max: 600.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZK (Ω) @ IZK
+    IR:
+      max: 0.1
+      unit: uA
+      conditions:
+        VR: 15.0 V
+        TA: 25 degC
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IR (µA) @ VR (V)
+    TC_VZ:
+      unit: percent/K
+      typ: 0.086
+      note: A tabela não indica se é típico; registrado como típico
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — TC (%/°C)
+  1N5251B:
+    VZ:
+      min: 20.9
+      typ: 22.0
+      max: 23.1
+      unit: V
+      conditions:
+        IZ: 5.6 mA
+        TL: 30 degC
+      note: 'Nota 2: junção em equilíbrio térmico, terminal a 30 °C ± 1 °C, 3/8 in'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — VZ (V) @ IZ (min./typ./max.)
+    IZT:
+      typ: 5.6
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZ (mA), test current of VZ and ZZ
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZK (mA)
+    ZZT:
+      max: 29.0
+      unit: ohm
+      conditions:
+        IZ: 5.6 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZ (Ω) @ IZ
+    ZZK:
+      max: 600.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZK (Ω) @ IZK
+    IR:
+      max: 0.1
+      unit: uA
+      conditions:
+        VR: 17.0 V
+        TA: 25 degC
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IR (µA) @ VR (V)
+    TC_VZ:
+      unit: percent/K
+      typ: 0.087
+      note: A tabela não indica se é típico; registrado como típico
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — TC (%/°C)
+  1N5252B:
+    VZ:
+      min: 22.8
+      typ: 24.0
+      max: 25.2
+      unit: V
+      conditions:
+        IZ: 5.2 mA
+        TL: 30 degC
+      note: 'Nota 2: junção em equilíbrio térmico, terminal a 30 °C ± 1 °C, 3/8 in'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — VZ (V) @ IZ (min./typ./max.)
+    IZT:
+      typ: 5.2
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZ (mA), test current of VZ and ZZ
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IZK (mA)
+    ZZT:
+      max: 33.0
+      unit: ohm
+      conditions:
+        IZ: 5.2 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZ (Ω) @ IZ
+    ZZK:
+      max: 600.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — ZZK (Ω) @ IZK
+    IR:
+      max: 0.1
+      unit: uA
+      conditions:
+        VR: 18.0 V
+        TA: 25 degC
+      note: A tabela não indica se é valor típico ou máximo; registrado como máximo. Conferir.
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — IR (µA) @ VR (V)
+    TC_VZ:
+      unit: percent/K
+      typ: 0.088
+      note: A tabela não indica se é típico; registrado como típico
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — TC (%/°C)

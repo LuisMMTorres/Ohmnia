@@ -1,0 +1,1632 @@
+# Fonte: Vishay, documento 88612, revisão 30-Nov-2021.
+# Valores transcritos das tabelas do datasheet; conferir na tela de revisão.
+family: GBPC12–GBPC35
+category: bridge.single_phase
+schema_version: '1.0'
+manufacturer: Vishay General Semiconductor
+package: GBPC (terminais faston) / GBPC-W (fios, sufixo W)
+lifecycle: ativo
+datasheets:
+- id: vishay-88612
+  manufacturer: Vishay
+  document_number: '88612'
+  revision: 30-Nov-2021
+  url: https://www.vishay.com/docs/88612/gbpc12.pdf
+  sha256: 8e12d7b746d40937fd0f5fd8fef34b56a4f77aabed68eed1ae02a55c4f31c969
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VISO:
+    max: 2500
+    unit: V
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — RMS isolation voltage from case to leads
+  Tj_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — operating junction storage temperature range
+  Tj_min:
+    min: -55
+    unit: degC
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — operating junction storage temperature range
+  Cj:
+    typ: 160
+    unit: pF
+    conditions:
+      VR: 4 V
+      f: 1 MHz
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — typical junction capacitance per diode
+per_part:
+  VRRM:
+    unit: V
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — VRRM
+  VRMS:
+    unit: V
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — VRMS
+  VDC:
+    unit: V
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — VDC
+  IR:
+    max: 5.0
+    unit: uA
+    conditions:
+      VR: =VDC
+      TA: 25 degC
+    note: Por diodo, na tensão de bloqueio CC nominal
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — maximum reverse DC current at rated DC blocking voltage per diode
+  IR@125C:
+    max: 500
+    unit: uA
+    conditions:
+      VR: =VDC
+      TA: 125 degC
+    note: Por diodo, na tensão de bloqueio CC nominal
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — maximum reverse DC current at rated DC blocking voltage per diode
+parts:
+  GBPC12005:
+    VRRM: 50
+    VRMS: 35
+    VDC: 50
+    IR: {}
+    IR@125C: {}
+    IF(AV):
+      max: 12
+      unit: A
+      conditions:
+        TC: 50 degC
+      note: Com dissipador. A tabela não dá a temperatura; TC = 50 °C lido na fig. 1 (página 3), onde a corrente nominal é
+        constante até 50 °C. Conferir.
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — maximum average forward rectified output current, GBPC12
+    IFSM:
+      max: 200
+      unit: A
+      conditions:
+        t_pulse: 8.3 ms
+      note: A tabela não informa a duração. A fig. 4 (página 3) diz '0.5 ms Single Sine-Wave', o que parece erro do datasheet;
+        8,3 ms (meio ciclo de 60 Hz) é suposição. Conferir.
+      status: a_verificar
+      source:
+        page: 1
+        location: Maximum ratings — peak forward surge current single sine-wave superimposed on rated load, GBPC12
+    I2t:
+      max: 160
+      unit: A**2*s
+      conditions:
+        t_pulse: 8.3 ms
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — rating for fusing (1 ms < t < 8.3 ms), GBPC12
+    VF:
+      max: 1.1
+      unit: V
+      conditions:
+        IF: 6.0 A
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — maximum instantaneous forward drop per diode, GBPC12
+    Rth_jc:
+      typ: 1.9
+      unit: K/W
+      note: 'Nota (1): com dissipador'
+      status: extraido
+      source:
+        page: 2
+        location: Thermal characteristics — typical thermal resistance RθJC (1), GBPC12
+  GBPC1201:
+    VRRM: 100
+    VRMS: 70
+    VDC: 100
+    IR: {}
+    IR@125C: {}
+    IF(AV):
+      max: 12
+      unit: A
+      conditions:
+        TC: 50 degC
+      note: Com dissipador. A tabela não dá a temperatura; TC = 50 °C lido na fig. 1 (página 3), onde a corrente nominal é
+        constante até 50 °C. Conferir.
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — maximum average forward rectified output current, GBPC12
+    IFSM:
+      max: 200
+      unit: A
+      conditions:
+        t_pulse: 8.3 ms
+      note: A tabela não informa a duração. A fig. 4 (página 3) diz '0.5 ms Single Sine-Wave', o que parece erro do datasheet;
+        8,3 ms (meio ciclo de 60 Hz) é suposição. Conferir.
+      status: a_verificar
+      source:
+        page: 1
+        location: Maximum ratings — peak forward surge current single sine-wave superimposed on rated load, GBPC12
+    I2t:
+      max: 160
+      unit: A**2*s
+      conditions:
+        t_pulse: 8.3 ms
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — rating for fusing (1 ms < t < 8.3 ms), GBPC12
+    VF:
+      max: 1.1
+      unit: V
+      conditions:
+        IF: 6.0 A
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — maximum instantaneous forward drop per diode, GBPC12
+    Rth_jc:
+      typ: 1.9
+      unit: K/W
+      note: 'Nota (1): com dissipador'
+      status: extraido
+      source:
+        page: 2
+        location: Thermal characteristics — typical thermal resistance RθJC (1), GBPC12
+  GBPC1202:
+    VRRM: 200
+    VRMS: 140
+    VDC: 200
+    IR: {}
+    IR@125C: {}
+    IF(AV):
+      max: 12
+      unit: A
+      conditions:
+        TC: 50 degC
+      note: Com dissipador. A tabela não dá a temperatura; TC = 50 °C lido na fig. 1 (página 3), onde a corrente nominal é
+        constante até 50 °C. Conferir.
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — maximum average forward rectified output current, GBPC12
+    IFSM:
+      max: 200
+      unit: A
+      conditions:
+        t_pulse: 8.3 ms
+      note: A tabela não informa a duração. A fig. 4 (página 3) diz '0.5 ms Single Sine-Wave', o que parece erro do datasheet;
+        8,3 ms (meio ciclo de 60 Hz) é suposição. Conferir.
+      status: a_verificar
+      source:
+        page: 1
+        location: Maximum ratings — peak forward surge current single sine-wave superimposed on rated load, GBPC12
+    I2t:
+      max: 160
+      unit: A**2*s
+      conditions:
+        t_pulse: 8.3 ms
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — rating for fusing (1 ms < t < 8.3 ms), GBPC12
+    VF:
+      max: 1.1
+      unit: V
+      conditions:
+        IF: 6.0 A
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — maximum instantaneous forward drop per diode, GBPC12
+    Rth_jc:
+      typ: 1.9
+      unit: K/W
+      note: 'Nota (1): com dissipador'
+      status: extraido
+      source:
+        page: 2
+        location: Thermal characteristics — typical thermal resistance RθJC (1), GBPC12
+  GBPC1204:
+    VRRM: 400
+    VRMS: 280
+    VDC: 400
+    IR: {}
+    IR@125C: {}
+    IF(AV):
+      max: 12
+      unit: A
+      conditions:
+        TC: 50 degC
+      note: Com dissipador. A tabela não dá a temperatura; TC = 50 °C lido na fig. 1 (página 3), onde a corrente nominal é
+        constante até 50 °C. Conferir.
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — maximum average forward rectified output current, GBPC12
+    IFSM:
+      max: 200
+      unit: A
+      conditions:
+        t_pulse: 8.3 ms
+      note: A tabela não informa a duração. A fig. 4 (página 3) diz '0.5 ms Single Sine-Wave', o que parece erro do datasheet;
+        8,3 ms (meio ciclo de 60 Hz) é suposição. Conferir.
+      status: a_verificar
+      source:
+        page: 1
+        location: Maximum ratings — peak forward surge current single sine-wave superimposed on rated load, GBPC12
+    I2t:
+      max: 160
+      unit: A**2*s
+      conditions:
+        t_pulse: 8.3 ms
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — rating for fusing (1 ms < t < 8.3 ms), GBPC12
+    VF:
+      max: 1.1
+      unit: V
+      conditions:
+        IF: 6.0 A
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — maximum instantaneous forward drop per diode, GBPC12
+    Rth_jc:
+      typ: 1.9
+      unit: K/W
+      note: 'Nota (1): com dissipador'
+      status: extraido
+      source:
+        page: 2
+        location: Thermal characteristics — typical thermal resistance RθJC (1), GBPC12
+  GBPC1206:
+    VRRM: 600
+    VRMS: 420
+    VDC: 600
+    IR: {}
+    IR@125C: {}
+    IF(AV):
+      max: 12
+      unit: A
+      conditions:
+        TC: 50 degC
+      note: Com dissipador. A tabela não dá a temperatura; TC = 50 °C lido na fig. 1 (página 3), onde a corrente nominal é
+        constante até 50 °C. Conferir.
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — maximum average forward rectified output current, GBPC12
+    IFSM:
+      max: 200
+      unit: A
+      conditions:
+        t_pulse: 8.3 ms
+      note: A tabela não informa a duração. A fig. 4 (página 3) diz '0.5 ms Single Sine-Wave', o que parece erro do datasheet;
+        8,3 ms (meio ciclo de 60 Hz) é suposição. Conferir.
+      status: a_verificar
+      source:
+        page: 1
+        location: Maximum ratings — peak forward surge current single sine-wave superimposed on rated load, GBPC12
+    I2t:
+      max: 160
+      unit: A**2*s
+      conditions:
+        t_pulse: 8.3 ms
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — rating for fusing (1 ms < t < 8.3 ms), GBPC12
+    VF:
+      max: 1.1
+      unit: V
+      conditions:
+        IF: 6.0 A
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — maximum instantaneous forward drop per diode, GBPC12
+    Rth_jc:
+      typ: 1.9
+      unit: K/W
+      note: 'Nota (1): com dissipador'
+      status: extraido
+      source:
+        page: 2
+        location: Thermal characteristics — typical thermal resistance RθJC (1), GBPC12
+  GBPC1208:
+    VRRM: 800
+    VRMS: 560
+    VDC: 800
+    IR: {}
+    IR@125C: {}
+    IF(AV):
+      max: 12
+      unit: A
+      conditions:
+        TC: 50 degC
+      note: Com dissipador. A tabela não dá a temperatura; TC = 50 °C lido na fig. 1 (página 3), onde a corrente nominal é
+        constante até 50 °C. Conferir.
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — maximum average forward rectified output current, GBPC12
+    IFSM:
+      max: 200
+      unit: A
+      conditions:
+        t_pulse: 8.3 ms
+      note: A tabela não informa a duração. A fig. 4 (página 3) diz '0.5 ms Single Sine-Wave', o que parece erro do datasheet;
+        8,3 ms (meio ciclo de 60 Hz) é suposição. Conferir.
+      status: a_verificar
+      source:
+        page: 1
+        location: Maximum ratings — peak forward surge current single sine-wave superimposed on rated load, GBPC12
+    I2t:
+      max: 160
+      unit: A**2*s
+      conditions:
+        t_pulse: 8.3 ms
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — rating for fusing (1 ms < t < 8.3 ms), GBPC12
+    VF:
+      max: 1.1
+      unit: V
+      conditions:
+        IF: 6.0 A
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — maximum instantaneous forward drop per diode, GBPC12
+    Rth_jc:
+      typ: 1.9
+      unit: K/W
+      note: 'Nota (1): com dissipador'
+      status: extraido
+      source:
+        page: 2
+        location: Thermal characteristics — typical thermal resistance RθJC (1), GBPC12
+  GBPC1210:
+    VRRM: 1000
+    VRMS: 700
+    VDC: 1000
+    IR: {}
+    IR@125C: {}
+    IF(AV):
+      max: 12
+      unit: A
+      conditions:
+        TC: 50 degC
+      note: Com dissipador. A tabela não dá a temperatura; TC = 50 °C lido na fig. 1 (página 3), onde a corrente nominal é
+        constante até 50 °C. Conferir.
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — maximum average forward rectified output current, GBPC12
+    IFSM:
+      max: 200
+      unit: A
+      conditions:
+        t_pulse: 8.3 ms
+      note: A tabela não informa a duração. A fig. 4 (página 3) diz '0.5 ms Single Sine-Wave', o que parece erro do datasheet;
+        8,3 ms (meio ciclo de 60 Hz) é suposição. Conferir.
+      status: a_verificar
+      source:
+        page: 1
+        location: Maximum ratings — peak forward surge current single sine-wave superimposed on rated load, GBPC12
+    I2t:
+      max: 160
+      unit: A**2*s
+      conditions:
+        t_pulse: 8.3 ms
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — rating for fusing (1 ms < t < 8.3 ms), GBPC12
+    VF:
+      max: 1.1
+      unit: V
+      conditions:
+        IF: 6.0 A
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — maximum instantaneous forward drop per diode, GBPC12
+    Rth_jc:
+      typ: 1.9
+      unit: K/W
+      note: 'Nota (1): com dissipador'
+      status: extraido
+      source:
+        page: 2
+        location: Thermal characteristics — typical thermal resistance RθJC (1), GBPC12
+  GBPC15005:
+    VRRM: 50
+    VRMS: 35
+    VDC: 50
+    IR: {}
+    IR@125C: {}
+    IF(AV):
+      max: 15
+      unit: A
+      conditions:
+        TC: 50 degC
+      note: Com dissipador. A tabela não dá a temperatura; TC = 50 °C lido na fig. 1 (página 3), onde a corrente nominal é
+        constante até 50 °C. Conferir.
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — maximum average forward rectified output current, GBPC15
+    IFSM:
+      max: 300
+      unit: A
+      conditions:
+        t_pulse: 8.3 ms
+      note: A tabela não informa a duração. A fig. 4 (página 3) diz '0.5 ms Single Sine-Wave', o que parece erro do datasheet;
+        8,3 ms (meio ciclo de 60 Hz) é suposição. Conferir.
+      status: a_verificar
+      source:
+        page: 1
+        location: Maximum ratings — peak forward surge current single sine-wave superimposed on rated load, GBPC15
+    I2t:
+      max: 375
+      unit: A**2*s
+      conditions:
+        t_pulse: 8.3 ms
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — rating for fusing (1 ms < t < 8.3 ms), GBPC15
+    VF:
+      max: 1.1
+      unit: V
+      conditions:
+        IF: 7.5 A
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — maximum instantaneous forward drop per diode, GBPC15
+    Rth_jc:
+      typ: 1.9
+      unit: K/W
+      note: 'Nota (1): com dissipador'
+      status: extraido
+      source:
+        page: 2
+        location: Thermal characteristics — typical thermal resistance RθJC (1), GBPC15
+  GBPC1501:
+    VRRM: 100
+    VRMS: 70
+    VDC: 100
+    IR: {}
+    IR@125C: {}
+    IF(AV):
+      max: 15
+      unit: A
+      conditions:
+        TC: 50 degC
+      note: Com dissipador. A tabela não dá a temperatura; TC = 50 °C lido na fig. 1 (página 3), onde a corrente nominal é
+        constante até 50 °C. Conferir.
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — maximum average forward rectified output current, GBPC15
+    IFSM:
+      max: 300
+      unit: A
+      conditions:
+        t_pulse: 8.3 ms
+      note: A tabela não informa a duração. A fig. 4 (página 3) diz '0.5 ms Single Sine-Wave', o que parece erro do datasheet;
+        8,3 ms (meio ciclo de 60 Hz) é suposição. Conferir.
+      status: a_verificar
+      source:
+        page: 1
+        location: Maximum ratings — peak forward surge current single sine-wave superimposed on rated load, GBPC15
+    I2t:
+      max: 375
+      unit: A**2*s
+      conditions:
+        t_pulse: 8.3 ms
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — rating for fusing (1 ms < t < 8.3 ms), GBPC15
+    VF:
+      max: 1.1
+      unit: V
+      conditions:
+        IF: 7.5 A
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — maximum instantaneous forward drop per diode, GBPC15
+    Rth_jc:
+      typ: 1.9
+      unit: K/W
+      note: 'Nota (1): com dissipador'
+      status: extraido
+      source:
+        page: 2
+        location: Thermal characteristics — typical thermal resistance RθJC (1), GBPC15
+  GBPC1502:
+    VRRM: 200
+    VRMS: 140
+    VDC: 200
+    IR: {}
+    IR@125C: {}
+    IF(AV):
+      max: 15
+      unit: A
+      conditions:
+        TC: 50 degC
+      note: Com dissipador. A tabela não dá a temperatura; TC = 50 °C lido na fig. 1 (página 3), onde a corrente nominal é
+        constante até 50 °C. Conferir.
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — maximum average forward rectified output current, GBPC15
+    IFSM:
+      max: 300
+      unit: A
+      conditions:
+        t_pulse: 8.3 ms
+      note: A tabela não informa a duração. A fig. 4 (página 3) diz '0.5 ms Single Sine-Wave', o que parece erro do datasheet;
+        8,3 ms (meio ciclo de 60 Hz) é suposição. Conferir.
+      status: a_verificar
+      source:
+        page: 1
+        location: Maximum ratings — peak forward surge current single sine-wave superimposed on rated load, GBPC15
+    I2t:
+      max: 375
+      unit: A**2*s
+      conditions:
+        t_pulse: 8.3 ms
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — rating for fusing (1 ms < t < 8.3 ms), GBPC15
+    VF:
+      max: 1.1
+      unit: V
+      conditions:
+        IF: 7.5 A
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — maximum instantaneous forward drop per diode, GBPC15
+    Rth_jc:
+      typ: 1.9
+      unit: K/W
+      note: 'Nota (1): com dissipador'
+      status: extraido
+      source:
+        page: 2
+        location: Thermal characteristics — typical thermal resistance RθJC (1), GBPC15
+  GBPC1504:
+    VRRM: 400
+    VRMS: 280
+    VDC: 400
+    IR: {}
+    IR@125C: {}
+    IF(AV):
+      max: 15
+      unit: A
+      conditions:
+        TC: 50 degC
+      note: Com dissipador. A tabela não dá a temperatura; TC = 50 °C lido na fig. 1 (página 3), onde a corrente nominal é
+        constante até 50 °C. Conferir.
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — maximum average forward rectified output current, GBPC15
+    IFSM:
+      max: 300
+      unit: A
+      conditions:
+        t_pulse: 8.3 ms
+      note: A tabela não informa a duração. A fig. 4 (página 3) diz '0.5 ms Single Sine-Wave', o que parece erro do datasheet;
+        8,3 ms (meio ciclo de 60 Hz) é suposição. Conferir.
+      status: a_verificar
+      source:
+        page: 1
+        location: Maximum ratings — peak forward surge current single sine-wave superimposed on rated load, GBPC15
+    I2t:
+      max: 375
+      unit: A**2*s
+      conditions:
+        t_pulse: 8.3 ms
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — rating for fusing (1 ms < t < 8.3 ms), GBPC15
+    VF:
+      max: 1.1
+      unit: V
+      conditions:
+        IF: 7.5 A
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — maximum instantaneous forward drop per diode, GBPC15
+    Rth_jc:
+      typ: 1.9
+      unit: K/W
+      note: 'Nota (1): com dissipador'
+      status: extraido
+      source:
+        page: 2
+        location: Thermal characteristics — typical thermal resistance RθJC (1), GBPC15
+  GBPC1506:
+    VRRM: 600
+    VRMS: 420
+    VDC: 600
+    IR: {}
+    IR@125C: {}
+    IF(AV):
+      max: 15
+      unit: A
+      conditions:
+        TC: 50 degC
+      note: Com dissipador. A tabela não dá a temperatura; TC = 50 °C lido na fig. 1 (página 3), onde a corrente nominal é
+        constante até 50 °C. Conferir.
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — maximum average forward rectified output current, GBPC15
+    IFSM:
+      max: 300
+      unit: A
+      conditions:
+        t_pulse: 8.3 ms
+      note: A tabela não informa a duração. A fig. 4 (página 3) diz '0.5 ms Single Sine-Wave', o que parece erro do datasheet;
+        8,3 ms (meio ciclo de 60 Hz) é suposição. Conferir.
+      status: a_verificar
+      source:
+        page: 1
+        location: Maximum ratings — peak forward surge current single sine-wave superimposed on rated load, GBPC15
+    I2t:
+      max: 375
+      unit: A**2*s
+      conditions:
+        t_pulse: 8.3 ms
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — rating for fusing (1 ms < t < 8.3 ms), GBPC15
+    VF:
+      max: 1.1
+      unit: V
+      conditions:
+        IF: 7.5 A
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — maximum instantaneous forward drop per diode, GBPC15
+    Rth_jc:
+      typ: 1.9
+      unit: K/W
+      note: 'Nota (1): com dissipador'
+      status: extraido
+      source:
+        page: 2
+        location: Thermal characteristics — typical thermal resistance RθJC (1), GBPC15
+  GBPC1508:
+    VRRM: 800
+    VRMS: 560
+    VDC: 800
+    IR: {}
+    IR@125C: {}
+    IF(AV):
+      max: 15
+      unit: A
+      conditions:
+        TC: 50 degC
+      note: Com dissipador. A tabela não dá a temperatura; TC = 50 °C lido na fig. 1 (página 3), onde a corrente nominal é
+        constante até 50 °C. Conferir.
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — maximum average forward rectified output current, GBPC15
+    IFSM:
+      max: 300
+      unit: A
+      conditions:
+        t_pulse: 8.3 ms
+      note: A tabela não informa a duração. A fig. 4 (página 3) diz '0.5 ms Single Sine-Wave', o que parece erro do datasheet;
+        8,3 ms (meio ciclo de 60 Hz) é suposição. Conferir.
+      status: a_verificar
+      source:
+        page: 1
+        location: Maximum ratings — peak forward surge current single sine-wave superimposed on rated load, GBPC15
+    I2t:
+      max: 375
+      unit: A**2*s
+      conditions:
+        t_pulse: 8.3 ms
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — rating for fusing (1 ms < t < 8.3 ms), GBPC15
+    VF:
+      max: 1.1
+      unit: V
+      conditions:
+        IF: 7.5 A
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — maximum instantaneous forward drop per diode, GBPC15
+    Rth_jc:
+      typ: 1.9
+      unit: K/W
+      note: 'Nota (1): com dissipador'
+      status: extraido
+      source:
+        page: 2
+        location: Thermal characteristics — typical thermal resistance RθJC (1), GBPC15
+  GBPC1510:
+    VRRM: 1000
+    VRMS: 700
+    VDC: 1000
+    IR: {}
+    IR@125C: {}
+    IF(AV):
+      max: 15
+      unit: A
+      conditions:
+        TC: 50 degC
+      note: Com dissipador. A tabela não dá a temperatura; TC = 50 °C lido na fig. 1 (página 3), onde a corrente nominal é
+        constante até 50 °C. Conferir.
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — maximum average forward rectified output current, GBPC15
+    IFSM:
+      max: 300
+      unit: A
+      conditions:
+        t_pulse: 8.3 ms
+      note: A tabela não informa a duração. A fig. 4 (página 3) diz '0.5 ms Single Sine-Wave', o que parece erro do datasheet;
+        8,3 ms (meio ciclo de 60 Hz) é suposição. Conferir.
+      status: a_verificar
+      source:
+        page: 1
+        location: Maximum ratings — peak forward surge current single sine-wave superimposed on rated load, GBPC15
+    I2t:
+      max: 375
+      unit: A**2*s
+      conditions:
+        t_pulse: 8.3 ms
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — rating for fusing (1 ms < t < 8.3 ms), GBPC15
+    VF:
+      max: 1.1
+      unit: V
+      conditions:
+        IF: 7.5 A
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — maximum instantaneous forward drop per diode, GBPC15
+    Rth_jc:
+      typ: 1.9
+      unit: K/W
+      note: 'Nota (1): com dissipador'
+      status: extraido
+      source:
+        page: 2
+        location: Thermal characteristics — typical thermal resistance RθJC (1), GBPC15
+  GBPC25005:
+    VRRM: 50
+    VRMS: 35
+    VDC: 50
+    IR: {}
+    IR@125C: {}
+    IF(AV):
+      max: 25
+      unit: A
+      conditions:
+        TC: 50 degC
+      note: Com dissipador. A tabela não dá a temperatura; TC = 50 °C lido na fig. 1 (página 3), onde a corrente nominal é
+        constante até 50 °C. Conferir.
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — maximum average forward rectified output current, GBPC25
+    IFSM:
+      max: 300
+      unit: A
+      conditions:
+        t_pulse: 8.3 ms
+      note: A tabela não informa a duração. A fig. 4 (página 3) diz '0.5 ms Single Sine-Wave', o que parece erro do datasheet;
+        8,3 ms (meio ciclo de 60 Hz) é suposição. Conferir.
+      status: a_verificar
+      source:
+        page: 1
+        location: Maximum ratings — peak forward surge current single sine-wave superimposed on rated load, GBPC25
+    I2t:
+      max: 375
+      unit: A**2*s
+      conditions:
+        t_pulse: 8.3 ms
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — rating for fusing (1 ms < t < 8.3 ms), GBPC25
+    VF:
+      max: 1.1
+      unit: V
+      conditions:
+        IF: 12.5 A
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — maximum instantaneous forward drop per diode, GBPC25
+    Rth_jc:
+      typ: 1.9
+      unit: K/W
+      note: 'Nota (1): com dissipador'
+      status: extraido
+      source:
+        page: 2
+        location: Thermal characteristics — typical thermal resistance RθJC (1), GBPC25
+  GBPC2501:
+    VRRM: 100
+    VRMS: 70
+    VDC: 100
+    IR: {}
+    IR@125C: {}
+    IF(AV):
+      max: 25
+      unit: A
+      conditions:
+        TC: 50 degC
+      note: Com dissipador. A tabela não dá a temperatura; TC = 50 °C lido na fig. 1 (página 3), onde a corrente nominal é
+        constante até 50 °C. Conferir.
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — maximum average forward rectified output current, GBPC25
+    IFSM:
+      max: 300
+      unit: A
+      conditions:
+        t_pulse: 8.3 ms
+      note: A tabela não informa a duração. A fig. 4 (página 3) diz '0.5 ms Single Sine-Wave', o que parece erro do datasheet;
+        8,3 ms (meio ciclo de 60 Hz) é suposição. Conferir.
+      status: a_verificar
+      source:
+        page: 1
+        location: Maximum ratings — peak forward surge current single sine-wave superimposed on rated load, GBPC25
+    I2t:
+      max: 375
+      unit: A**2*s
+      conditions:
+        t_pulse: 8.3 ms
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — rating for fusing (1 ms < t < 8.3 ms), GBPC25
+    VF:
+      max: 1.1
+      unit: V
+      conditions:
+        IF: 12.5 A
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — maximum instantaneous forward drop per diode, GBPC25
+    Rth_jc:
+      typ: 1.9
+      unit: K/W
+      note: 'Nota (1): com dissipador'
+      status: extraido
+      source:
+        page: 2
+        location: Thermal characteristics — typical thermal resistance RθJC (1), GBPC25
+  GBPC2502:
+    VRRM: 200
+    VRMS: 140
+    VDC: 200
+    IR: {}
+    IR@125C: {}
+    IF(AV):
+      max: 25
+      unit: A
+      conditions:
+        TC: 50 degC
+      note: Com dissipador. A tabela não dá a temperatura; TC = 50 °C lido na fig. 1 (página 3), onde a corrente nominal é
+        constante até 50 °C. Conferir.
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — maximum average forward rectified output current, GBPC25
+    IFSM:
+      max: 300
+      unit: A
+      conditions:
+        t_pulse: 8.3 ms
+      note: A tabela não informa a duração. A fig. 4 (página 3) diz '0.5 ms Single Sine-Wave', o que parece erro do datasheet;
+        8,3 ms (meio ciclo de 60 Hz) é suposição. Conferir.
+      status: a_verificar
+      source:
+        page: 1
+        location: Maximum ratings — peak forward surge current single sine-wave superimposed on rated load, GBPC25
+    I2t:
+      max: 375
+      unit: A**2*s
+      conditions:
+        t_pulse: 8.3 ms
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — rating for fusing (1 ms < t < 8.3 ms), GBPC25
+    VF:
+      max: 1.1
+      unit: V
+      conditions:
+        IF: 12.5 A
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — maximum instantaneous forward drop per diode, GBPC25
+    Rth_jc:
+      typ: 1.9
+      unit: K/W
+      note: 'Nota (1): com dissipador'
+      status: extraido
+      source:
+        page: 2
+        location: Thermal characteristics — typical thermal resistance RθJC (1), GBPC25
+  GBPC2504:
+    VRRM: 400
+    VRMS: 280
+    VDC: 400
+    IR: {}
+    IR@125C: {}
+    IF(AV):
+      max: 25
+      unit: A
+      conditions:
+        TC: 50 degC
+      note: Com dissipador. A tabela não dá a temperatura; TC = 50 °C lido na fig. 1 (página 3), onde a corrente nominal é
+        constante até 50 °C. Conferir.
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — maximum average forward rectified output current, GBPC25
+    IFSM:
+      max: 300
+      unit: A
+      conditions:
+        t_pulse: 8.3 ms
+      note: A tabela não informa a duração. A fig. 4 (página 3) diz '0.5 ms Single Sine-Wave', o que parece erro do datasheet;
+        8,3 ms (meio ciclo de 60 Hz) é suposição. Conferir.
+      status: a_verificar
+      source:
+        page: 1
+        location: Maximum ratings — peak forward surge current single sine-wave superimposed on rated load, GBPC25
+    I2t:
+      max: 375
+      unit: A**2*s
+      conditions:
+        t_pulse: 8.3 ms
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — rating for fusing (1 ms < t < 8.3 ms), GBPC25
+    VF:
+      max: 1.1
+      unit: V
+      conditions:
+        IF: 12.5 A
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — maximum instantaneous forward drop per diode, GBPC25
+    Rth_jc:
+      typ: 1.9
+      unit: K/W
+      note: 'Nota (1): com dissipador'
+      status: extraido
+      source:
+        page: 2
+        location: Thermal characteristics — typical thermal resistance RθJC (1), GBPC25
+  GBPC2506:
+    VRRM: 600
+    VRMS: 420
+    VDC: 600
+    IR: {}
+    IR@125C: {}
+    IF(AV):
+      max: 25
+      unit: A
+      conditions:
+        TC: 50 degC
+      note: Com dissipador. A tabela não dá a temperatura; TC = 50 °C lido na fig. 1 (página 3), onde a corrente nominal é
+        constante até 50 °C. Conferir.
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — maximum average forward rectified output current, GBPC25
+    IFSM:
+      max: 300
+      unit: A
+      conditions:
+        t_pulse: 8.3 ms
+      note: A tabela não informa a duração. A fig. 4 (página 3) diz '0.5 ms Single Sine-Wave', o que parece erro do datasheet;
+        8,3 ms (meio ciclo de 60 Hz) é suposição. Conferir.
+      status: a_verificar
+      source:
+        page: 1
+        location: Maximum ratings — peak forward surge current single sine-wave superimposed on rated load, GBPC25
+    I2t:
+      max: 375
+      unit: A**2*s
+      conditions:
+        t_pulse: 8.3 ms
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — rating for fusing (1 ms < t < 8.3 ms), GBPC25
+    VF:
+      max: 1.1
+      unit: V
+      conditions:
+        IF: 12.5 A
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — maximum instantaneous forward drop per diode, GBPC25
+    Rth_jc:
+      typ: 1.9
+      unit: K/W
+      note: 'Nota (1): com dissipador'
+      status: extraido
+      source:
+        page: 2
+        location: Thermal characteristics — typical thermal resistance RθJC (1), GBPC25
+  GBPC2508:
+    VRRM: 800
+    VRMS: 560
+    VDC: 800
+    IR: {}
+    IR@125C: {}
+    IF(AV):
+      max: 25
+      unit: A
+      conditions:
+        TC: 50 degC
+      note: Com dissipador. A tabela não dá a temperatura; TC = 50 °C lido na fig. 1 (página 3), onde a corrente nominal é
+        constante até 50 °C. Conferir.
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — maximum average forward rectified output current, GBPC25
+    IFSM:
+      max: 300
+      unit: A
+      conditions:
+        t_pulse: 8.3 ms
+      note: A tabela não informa a duração. A fig. 4 (página 3) diz '0.5 ms Single Sine-Wave', o que parece erro do datasheet;
+        8,3 ms (meio ciclo de 60 Hz) é suposição. Conferir.
+      status: a_verificar
+      source:
+        page: 1
+        location: Maximum ratings — peak forward surge current single sine-wave superimposed on rated load, GBPC25
+    I2t:
+      max: 375
+      unit: A**2*s
+      conditions:
+        t_pulse: 8.3 ms
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — rating for fusing (1 ms < t < 8.3 ms), GBPC25
+    VF:
+      max: 1.1
+      unit: V
+      conditions:
+        IF: 12.5 A
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — maximum instantaneous forward drop per diode, GBPC25
+    Rth_jc:
+      typ: 1.9
+      unit: K/W
+      note: 'Nota (1): com dissipador'
+      status: extraido
+      source:
+        page: 2
+        location: Thermal characteristics — typical thermal resistance RθJC (1), GBPC25
+  GBPC2510:
+    VRRM: 1000
+    VRMS: 700
+    VDC: 1000
+    IR: {}
+    IR@125C: {}
+    IF(AV):
+      max: 25
+      unit: A
+      conditions:
+        TC: 50 degC
+      note: Com dissipador. A tabela não dá a temperatura; TC = 50 °C lido na fig. 1 (página 3), onde a corrente nominal é
+        constante até 50 °C. Conferir.
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — maximum average forward rectified output current, GBPC25
+    IFSM:
+      max: 300
+      unit: A
+      conditions:
+        t_pulse: 8.3 ms
+      note: A tabela não informa a duração. A fig. 4 (página 3) diz '0.5 ms Single Sine-Wave', o que parece erro do datasheet;
+        8,3 ms (meio ciclo de 60 Hz) é suposição. Conferir.
+      status: a_verificar
+      source:
+        page: 1
+        location: Maximum ratings — peak forward surge current single sine-wave superimposed on rated load, GBPC25
+    I2t:
+      max: 375
+      unit: A**2*s
+      conditions:
+        t_pulse: 8.3 ms
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — rating for fusing (1 ms < t < 8.3 ms), GBPC25
+    VF:
+      max: 1.1
+      unit: V
+      conditions:
+        IF: 12.5 A
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — maximum instantaneous forward drop per diode, GBPC25
+    Rth_jc:
+      typ: 1.9
+      unit: K/W
+      note: 'Nota (1): com dissipador'
+      status: extraido
+      source:
+        page: 2
+        location: Thermal characteristics — typical thermal resistance RθJC (1), GBPC25
+  GBPC35005:
+    VRRM: 50
+    VRMS: 35
+    VDC: 50
+    IR: {}
+    IR@125C: {}
+    IF(AV):
+      max: 35
+      unit: A
+      conditions:
+        TC: 50 degC
+      note: Com dissipador. A tabela não dá a temperatura; TC = 50 °C lido na fig. 1 (página 3), onde a corrente nominal é
+        constante até 50 °C. Conferir.
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — maximum average forward rectified output current, GBPC35
+    IFSM:
+      max: 400
+      unit: A
+      conditions:
+        t_pulse: 8.3 ms
+      note: A tabela não informa a duração. A fig. 4 (página 3) diz '0.5 ms Single Sine-Wave', o que parece erro do datasheet;
+        8,3 ms (meio ciclo de 60 Hz) é suposição. Conferir.
+      status: a_verificar
+      source:
+        page: 1
+        location: Maximum ratings — peak forward surge current single sine-wave superimposed on rated load, GBPC35
+    I2t:
+      max: 660
+      unit: A**2*s
+      conditions:
+        t_pulse: 8.3 ms
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — rating for fusing (1 ms < t < 8.3 ms), GBPC35
+    VF:
+      max: 1.1
+      unit: V
+      conditions:
+        IF: 17.5 A
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — maximum instantaneous forward drop per diode, GBPC35
+    Rth_jc:
+      typ: 1.4
+      unit: K/W
+      note: 'Nota (1): com dissipador'
+      status: extraido
+      source:
+        page: 2
+        location: Thermal characteristics — typical thermal resistance RθJC (1), GBPC35
+  GBPC3501:
+    VRRM: 100
+    VRMS: 70
+    VDC: 100
+    IR: {}
+    IR@125C: {}
+    IF(AV):
+      max: 35
+      unit: A
+      conditions:
+        TC: 50 degC
+      note: Com dissipador. A tabela não dá a temperatura; TC = 50 °C lido na fig. 1 (página 3), onde a corrente nominal é
+        constante até 50 °C. Conferir.
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — maximum average forward rectified output current, GBPC35
+    IFSM:
+      max: 400
+      unit: A
+      conditions:
+        t_pulse: 8.3 ms
+      note: A tabela não informa a duração. A fig. 4 (página 3) diz '0.5 ms Single Sine-Wave', o que parece erro do datasheet;
+        8,3 ms (meio ciclo de 60 Hz) é suposição. Conferir.
+      status: a_verificar
+      source:
+        page: 1
+        location: Maximum ratings — peak forward surge current single sine-wave superimposed on rated load, GBPC35
+    I2t:
+      max: 660
+      unit: A**2*s
+      conditions:
+        t_pulse: 8.3 ms
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — rating for fusing (1 ms < t < 8.3 ms), GBPC35
+    VF:
+      max: 1.1
+      unit: V
+      conditions:
+        IF: 17.5 A
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — maximum instantaneous forward drop per diode, GBPC35
+    Rth_jc:
+      typ: 1.4
+      unit: K/W
+      note: 'Nota (1): com dissipador'
+      status: extraido
+      source:
+        page: 2
+        location: Thermal characteristics — typical thermal resistance RθJC (1), GBPC35
+  GBPC3502:
+    VRRM: 200
+    VRMS: 140
+    VDC: 200
+    IR: {}
+    IR@125C: {}
+    IF(AV):
+      max: 35
+      unit: A
+      conditions:
+        TC: 50 degC
+      note: Com dissipador. A tabela não dá a temperatura; TC = 50 °C lido na fig. 1 (página 3), onde a corrente nominal é
+        constante até 50 °C. Conferir.
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — maximum average forward rectified output current, GBPC35
+    IFSM:
+      max: 400
+      unit: A
+      conditions:
+        t_pulse: 8.3 ms
+      note: A tabela não informa a duração. A fig. 4 (página 3) diz '0.5 ms Single Sine-Wave', o que parece erro do datasheet;
+        8,3 ms (meio ciclo de 60 Hz) é suposição. Conferir.
+      status: a_verificar
+      source:
+        page: 1
+        location: Maximum ratings — peak forward surge current single sine-wave superimposed on rated load, GBPC35
+    I2t:
+      max: 660
+      unit: A**2*s
+      conditions:
+        t_pulse: 8.3 ms
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — rating for fusing (1 ms < t < 8.3 ms), GBPC35
+    VF:
+      max: 1.1
+      unit: V
+      conditions:
+        IF: 17.5 A
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — maximum instantaneous forward drop per diode, GBPC35
+    Rth_jc:
+      typ: 1.4
+      unit: K/W
+      note: 'Nota (1): com dissipador'
+      status: extraido
+      source:
+        page: 2
+        location: Thermal characteristics — typical thermal resistance RθJC (1), GBPC35
+  GBPC3504:
+    VRRM: 400
+    VRMS: 280
+    VDC: 400
+    IR: {}
+    IR@125C: {}
+    IF(AV):
+      max: 35
+      unit: A
+      conditions:
+        TC: 50 degC
+      note: Com dissipador. A tabela não dá a temperatura; TC = 50 °C lido na fig. 1 (página 3), onde a corrente nominal é
+        constante até 50 °C. Conferir.
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — maximum average forward rectified output current, GBPC35
+    IFSM:
+      max: 400
+      unit: A
+      conditions:
+        t_pulse: 8.3 ms
+      note: A tabela não informa a duração. A fig. 4 (página 3) diz '0.5 ms Single Sine-Wave', o que parece erro do datasheet;
+        8,3 ms (meio ciclo de 60 Hz) é suposição. Conferir.
+      status: a_verificar
+      source:
+        page: 1
+        location: Maximum ratings — peak forward surge current single sine-wave superimposed on rated load, GBPC35
+    I2t:
+      max: 660
+      unit: A**2*s
+      conditions:
+        t_pulse: 8.3 ms
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — rating for fusing (1 ms < t < 8.3 ms), GBPC35
+    VF:
+      max: 1.1
+      unit: V
+      conditions:
+        IF: 17.5 A
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — maximum instantaneous forward drop per diode, GBPC35
+    Rth_jc:
+      typ: 1.4
+      unit: K/W
+      note: 'Nota (1): com dissipador'
+      status: extraido
+      source:
+        page: 2
+        location: Thermal characteristics — typical thermal resistance RθJC (1), GBPC35
+  GBPC3506:
+    VRRM: 600
+    VRMS: 420
+    VDC: 600
+    IR: {}
+    IR@125C: {}
+    IF(AV):
+      max: 35
+      unit: A
+      conditions:
+        TC: 50 degC
+      note: Com dissipador. A tabela não dá a temperatura; TC = 50 °C lido na fig. 1 (página 3), onde a corrente nominal é
+        constante até 50 °C. Conferir.
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — maximum average forward rectified output current, GBPC35
+    IFSM:
+      max: 400
+      unit: A
+      conditions:
+        t_pulse: 8.3 ms
+      note: A tabela não informa a duração. A fig. 4 (página 3) diz '0.5 ms Single Sine-Wave', o que parece erro do datasheet;
+        8,3 ms (meio ciclo de 60 Hz) é suposição. Conferir.
+      status: a_verificar
+      source:
+        page: 1
+        location: Maximum ratings — peak forward surge current single sine-wave superimposed on rated load, GBPC35
+    I2t:
+      max: 660
+      unit: A**2*s
+      conditions:
+        t_pulse: 8.3 ms
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — rating for fusing (1 ms < t < 8.3 ms), GBPC35
+    VF:
+      max: 1.1
+      unit: V
+      conditions:
+        IF: 17.5 A
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — maximum instantaneous forward drop per diode, GBPC35
+    Rth_jc:
+      typ: 1.4
+      unit: K/W
+      note: 'Nota (1): com dissipador'
+      status: extraido
+      source:
+        page: 2
+        location: Thermal characteristics — typical thermal resistance RθJC (1), GBPC35
+  GBPC3508:
+    VRRM: 800
+    VRMS: 560
+    VDC: 800
+    IR: {}
+    IR@125C: {}
+    IF(AV):
+      max: 35
+      unit: A
+      conditions:
+        TC: 50 degC
+      note: Com dissipador. A tabela não dá a temperatura; TC = 50 °C lido na fig. 1 (página 3), onde a corrente nominal é
+        constante até 50 °C. Conferir.
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — maximum average forward rectified output current, GBPC35
+    IFSM:
+      max: 400
+      unit: A
+      conditions:
+        t_pulse: 8.3 ms
+      note: A tabela não informa a duração. A fig. 4 (página 3) diz '0.5 ms Single Sine-Wave', o que parece erro do datasheet;
+        8,3 ms (meio ciclo de 60 Hz) é suposição. Conferir.
+      status: a_verificar
+      source:
+        page: 1
+        location: Maximum ratings — peak forward surge current single sine-wave superimposed on rated load, GBPC35
+    I2t:
+      max: 660
+      unit: A**2*s
+      conditions:
+        t_pulse: 8.3 ms
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — rating for fusing (1 ms < t < 8.3 ms), GBPC35
+    VF:
+      max: 1.1
+      unit: V
+      conditions:
+        IF: 17.5 A
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — maximum instantaneous forward drop per diode, GBPC35
+    Rth_jc:
+      typ: 1.4
+      unit: K/W
+      note: 'Nota (1): com dissipador'
+      status: extraido
+      source:
+        page: 2
+        location: Thermal characteristics — typical thermal resistance RθJC (1), GBPC35
+  GBPC3510:
+    VRRM: 1000
+    VRMS: 700
+    VDC: 1000
+    IR: {}
+    IR@125C: {}
+    IF(AV):
+      max: 35
+      unit: A
+      conditions:
+        TC: 50 degC
+      note: Com dissipador. A tabela não dá a temperatura; TC = 50 °C lido na fig. 1 (página 3), onde a corrente nominal é
+        constante até 50 °C. Conferir.
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — maximum average forward rectified output current, GBPC35
+    IFSM:
+      max: 400
+      unit: A
+      conditions:
+        t_pulse: 8.3 ms
+      note: A tabela não informa a duração. A fig. 4 (página 3) diz '0.5 ms Single Sine-Wave', o que parece erro do datasheet;
+        8,3 ms (meio ciclo de 60 Hz) é suposição. Conferir.
+      status: a_verificar
+      source:
+        page: 1
+        location: Maximum ratings — peak forward surge current single sine-wave superimposed on rated load, GBPC35
+    I2t:
+      max: 660
+      unit: A**2*s
+      conditions:
+        t_pulse: 8.3 ms
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — rating for fusing (1 ms < t < 8.3 ms), GBPC35
+    VF:
+      max: 1.1
+      unit: V
+      conditions:
+        IF: 17.5 A
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — maximum instantaneous forward drop per diode, GBPC35
+    Rth_jc:
+      typ: 1.4
+      unit: K/W
+      note: 'Nota (1): com dissipador'
+      status: extraido
+      source:
+        page: 2
+        location: Thermal characteristics — typical thermal resistance RθJC (1), GBPC35

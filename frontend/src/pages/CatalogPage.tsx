@@ -7,6 +7,8 @@ const CATEGORY_LABEL: Record<string, string> = {
   "diode.fast": "Diodo rápido/ultrarrápido",
   "diode.schottky": "Diodo Schottky",
   "diode.signal": "Diodo de sinal",
+  "diode.zener": "Diodo Zener",
+  "bridge.single_phase": "Ponte retificadora monofásica",
 };
 
 export const REVIEW_LABEL: Record<string, string> = {
@@ -23,6 +25,8 @@ export function CatalogPage() {
   const [status, setStatus] = useState("");
   const [filterText, setFilterText] = useState("");
   const [items, setItems] = useState<ComponentSummary[]>([]);
+  // Columns: union of the highlighted parameters of the listed components, in server order.
+  const columns = [...new Set(items.flatMap((c) => Object.keys(c.highlights)))];
   const [error, setError] = useState<string | null>(null);
   const [selected, setSelected] = useState<string | null>(null);
 
@@ -114,11 +118,9 @@ export function CatalogPage() {
               <th>Componente</th>
               <th>Fabricante</th>
               <th>Categoria</th>
-              <th>VRRM</th>
-              <th>IF(AV)</th>
-              <th>IFSM</th>
-              <th>VF</th>
-              <th>trr</th>
+              {columns.map((k) => (
+                <th key={k}>{k}</th>
+              ))}
               <th>Revisão</th>
             </tr>
           </thead>
@@ -136,11 +138,9 @@ export function CatalogPage() {
                 </td>
                 <td>{c.manufacturer}</td>
                 <td>{CATEGORY_LABEL[c.category] ?? c.category}</td>
-                <td>{c.highlights["VRRM"] ?? "—"}</td>
-                <td>{c.highlights["IF(AV)"] ?? "—"}</td>
-                <td>{c.highlights["IFSM"] ?? "—"}</td>
-                <td>{c.highlights["VF"] ?? "—"}</td>
-                <td>{c.highlights["trr"] ?? "—"}</td>
+                {columns.map((k) => (
+                  <td key={k}>{c.highlights[k] ?? "—"}</td>
+                ))}
                 <td>
                   <span className={`badge ${c.review_status}`}>
                     {REVIEW_LABEL[c.review_status] ?? c.review_status}

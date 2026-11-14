@@ -23,6 +23,9 @@ _NUMBER = re.compile(r"[-−–]?\d+(?:[.,]\d+)?")
 def _numbers(text: str) -> set[float]:
     out = set()
     for token in _NUMBER.findall(text.replace(" ", "").replace("10 000", "10000")):
+        if re.fullmatch(r"[-−–]?\d{1,3},\d{3}", token):
+            # "1,200" in US tables is a thousands separator
+            out.add(round(abs(float(token.replace(",", "").lstrip("-−–"))), 6))
         token = token.replace(",", ".").replace("−", "-").replace("–", "-")
         try:
             out.add(round(float(token), 6))

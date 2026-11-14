@@ -1,0 +1,23 @@
+category: diode.zener
+schema_version: "1.0"
+description: Diodo Zener (regulador de tensão)
+required: [VZ, IZT, ZZT, IR, Ptot, Tj_max]
+optional: [VZ_tol, IZK, ZZK, IZM, IZSM, Ptot_derating, TC_VZ, VF, Rth_ja, Tj_min, Tstg_max]
+parameters:
+  VZ:            {unit: V, kind: characteristic, description: Tensão Zener na corrente de teste, conditions_required: [IZ]}
+  VZ_tol:        {unit: percent, kind: characteristic, description: Tolerância da tensão Zener}
+  IZT:           {unit: A, kind: characteristic, description: Corrente de teste da tensão Zener}
+  IZK:           {unit: A, kind: characteristic, description: Corrente de joelho (teste de ZZK)}
+  ZZT:           {unit: ohm, kind: characteristic, description: Impedância dinâmica na corrente de teste, conditions_required: [IZ]}
+  ZZK:           {unit: ohm, kind: characteristic, description: Impedância dinâmica no joelho, conditions_required: [IZ]}
+  IR:            {unit: A, kind: characteristic, description: Corrente reversa de fuga abaixo da tensão Zener, conditions_required: [VR]}
+  IZM:           {unit: A, kind: max_rating, description: Corrente Zener máxima (regulação contínua)}
+  IZSM:          {unit: A, kind: max_rating, description: Corrente Zener de surto não repetitiva, conditions_required: [t_pulse]}
+  Ptot:          {unit: W, kind: max_rating, description: Dissipação de potência}
+  Ptot_derating: {unit: W/K, kind: thermal, description: Redução da dissipação acima da temperatura de referência}
+  TC_VZ:         {unit: percent/K, kind: characteristic, description: Coeficiente de temperatura da tensão Zener}
+  VF:            {unit: V, kind: characteristic, description: Tensão direta, conditions_required: [IF]}
+  Rth_ja:        {unit: K/W, kind: thermal, description: Resistência térmica junção-ambiente}
+  Tj_max:        {unit: degC, kind: max_rating, description: Temperatura máxima de junção}
+  Tj_min:        {unit: degC, kind: max_rating, description: Temperatura mínima de operação da junção}
+  Tstg_max:      {unit: degC, kind: max_rating, description: Temperatura máxima de armazenamento}
