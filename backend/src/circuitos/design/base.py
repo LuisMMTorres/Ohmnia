@@ -1,0 +1,166 @@
+"""Common types of design modules (docs/arquitetura.md, section 4; docs/modelo-de-dados.md, 3.1).
+
+A design module (``DM-RET1``, ``DM-RETC1``...) turns a specification into:
+
+1. ideal stresses on each component role (step 1);
+2. a selection of real components from the catalogue, with derating margins (``selection/``);
+3. a recomputation with the parameters of the selected parts, iterated until it converges
+   (step 2), plus junction temperatures (``thermal/``);
+4. a circuit for the simulator, used to check the analytic result.
+
+Every number of the result comes from a :class:`CalcStep` of the calculation log.
+"""
+
+from __future__ import annotations
+
+from collections.abc import Callable, Mapping
+from typing import Literal, Protocol
+from uuid import UUID
+
+import pint
+from pydantic import BaseModel, Field
+
+from circuitos.core.calc import CalcStep
+from circuitos.core.units import QuantityModel
+
+MarginStatus = Literal["ok", "atencao", "violado"]
+
+
+class Stress(BaseModel):
+    """A stress on one component role: the value the rating must withstand."""
+
+    designator: str  # "D1-D4"
+    key: str  # rating it is checked against: "VRRM", "IF(AV)", "IFSM", "Tj"...
+    label: str  # "Tensão reversa de pico"
+    value: QuantityModel
+    calc_step_id: str
+
+
+class Role(BaseModel):
+    """A component position of the circuit that is filled from the catalogue."""
+
+    designator: str
+    category: str  # catalogue category prefix: "diode.rectifier", "thyristor.scr"...
+    description: str
+    count: int = 1
+
+
+class StressReport(BaseModel):
+    roles: list[Role]
+    stresses: list[Stress]
+    steps: list[CalcStep]
+
+
+class MarginCheck(BaseModel):
+    designator: str
+    parameter: str
+    stress: QuantityModel
+    rating: QuantityModel
+    required_factor: float
+    margin_pct: float  # (rating / stress − 1)·100
+    status: MarginStatus
+    note: str | None = None
+
+
+class ThermalResult(BaseModel):
+    designator: str
+    power: QuantityModel
+    Tj: QuantityModel
+    Tj_max: QuantityModel
+    path: str  # "sem dissipador (Rθja)", "com dissipador"
+    required_Rsa: QuantityModel | None = None  # heatsink needed to keep the Tj margin
+    status: MarginStatus
+
+
+class Choice(BaseModel):
+    """Component chosen for a role (automatic or locked by the user)."""
+
+    designator: str
+    component_id: UUID
+    part_number: str
+    manufacturer: str
+    locked: bool
+    released: bool  # False only for a component the user locked before review
+
+
+class SimComparison(BaseModel):
+    quantity: str
+    analytic: QuantityModel
+    simulated: QuantityModel
+    error_pct: float
+    tolerance_pct: float
+    ok: bool
+
+
+class DesignWarning(BaseModel):
+    code: str
+    message: str
+
+
+class DesignResult(BaseModel):
+    module_id: str
+    steps: list[CalcStep]
+    stresses: list[Stress]
+    roles: list[Role]
+    selection: list[Choice]
+    candidates: dict[str, list[str]] = Field(default_factory=dict)  # designator → part numbers
+    margins: list[MarginCheck]
+    thermal: list[ThermalResult]
+    summary: dict[str, QuantityModel]  # headline results for the UI
+    iterations: int
+    converged: bool
+    warnings: list[DesignWarning]
+    sim_check: list[SimComparison] | None = None
+
+
+Metric = Literal["avg", "rms", "pp", "max", "pf", "thd"]
+
+
+class SimCheck(BaseModel):
+    """One analytic result compared with the same quantity measured in the simulation.
+
+    ``probe`` is a sum of vectors (``"v(p)-v(n)"``, ``"i(vsd1)"``); ``pf`` and ``thd`` use the
+    current in ``probe`` and, for ``pf``, the voltage in ``voltage``. Both remove the mean of
+    the current first (the primary of a transformer never carries DC).
+    """
+
+    quantity: str  # label shown to the user
+    summary_key: str  # key of DesignResult.summary with the analytic value
+    metric: Metric
+    probe: str
+    voltage: str | None = None
+    tolerance_pct: float
+    justification: str = ""  # why this tolerance (model approximation)
+
+
+class Circuit(BaseModel):
+    """Netlist for the simulator plus what to measure and how to compare."""
+
+    title: str
+    netlist: str  # without analysis cards
+    tran_stop: QuantityModel
+    tran_step: QuantityModel
+    period: QuantityModel  # steady-state window length
+    probes: dict[str, str]  # label → vector sum to plot, e.g. "Tensão na carga": "v(out)"
+    checks: list[SimCheck] = Field(default_factory=list)
+
+
+class DesignModule(Protocol):
+    id: str
+    family: str
+    title: str
+    spec_schema: type[BaseModel]
+
+    def design(self, spec: BaseModel, ctx: DesignContext) -> DesignResult: ...
+
+    def build_circuit(self, spec: BaseModel, result: DesignResult) -> Circuit: ...
+
+
+class DesignContext(Protocol):
+    """What a module needs from the outside world (catalogue, policy, user locks)."""
+
+    def candidates(self, category: str) -> list[object]: ...
+
+
+QuantityMap = Mapping[str, pint.Quantity]
+Factory = Callable[[], DesignModule]

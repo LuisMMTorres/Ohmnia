@@ -1,3 +1,4 @@
+import contextlib
 import os
 import tempfile
 
@@ -16,3 +17,26 @@ def pytest_collection_modifyitems(config, items):
     for item in items:
         if "ngspice" in item.keywords:
             item.add_marker(skip)
+
+
+@pytest.fixture(scope="session")
+def reviewed_catalogue():
+    """Repository with the real catalogue, every extracted value marked as reviewed and released.
+
+    Only for tests of the design flow: it simulates the user's review (rule 5 still applies,
+    the records go through the normal release path). The values are the datasheet ones.
+    """
+    from pathlib import Path
+
+    from circuitos.components.repository import ComponentRepository
+
+    repo = ComponentRepository()
+    repo.import_directory(Path(__file__).resolve().parents[2] / "data" / "components")
+    for record in repo.search():
+        for key, param in record.parameters.items():
+            if param.status == "extraido":
+                repo.set_parameter_status(record.id, key, "revisado")
+        # missing required values stay unreleased, as in real use
+        with contextlib.suppress(Exception):
+            repo.release(record.id, "teste")
+    return repo

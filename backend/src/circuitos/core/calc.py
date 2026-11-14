@@ -92,6 +92,11 @@ class CalcLog:
         self._steps[calculated.step.id] = calculated.step
         return calculated.value
 
+    def add_step(self, step: CalcStep) -> None:
+        if step.id in self._steps:
+            raise ValueError(f"Passo de cálculo duplicado: {step.id}")
+        self._steps[step.id] = step
+
     def __iter__(self) -> Iterator[CalcStep]:
         return iter(self._steps.values())
 

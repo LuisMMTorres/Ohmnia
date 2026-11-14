@@ -6,8 +6,8 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 |---|---|---|
 | 0 | Descoberta e planejamento | ✅ |
 | 1 | Fundação | ✅ |
-| 2 | Banco de componentes e bancada de dispositivos | 👀 |
-| 3 | Retificadores (vertical completa, define o padrão) | ⏳ |
+| 2 | Banco de componentes e bancada de dispositivos | ✅ |
+| 3 | Retificadores (vertical completa, define o padrão) | 🔄 |
 | 4 | Fontes reguladas e amplificadores | ⏳ |
 | 5 | Ampops, filtros e instrumentação | ⏳ |
 | 6 | Eletrônica de potência chaveada | ⏳ |
@@ -43,7 +43,7 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 - ✅ `AS-SMOKE-01`: circuitos RC, analítico × ngspice
 - ✅ Revisão do usuário ([validacao/fundacao.md](validacao/fundacao.md)), aprovada em 2026-11-14
 
-## Fase 2 — Banco de componentes e bancada 👀
+## Fase 2 — Banco de componentes e bancada ✅ (aprovada em 2026-11-14)
 
 - ✅ Banco SQLite, importação de YAML, busca facetada, fluxo de revisão (rascunho → em revisão → liberado)
 - ✅ Armazenamento de datasheets por SHA-256, download sob demanda, páginas renderizadas
@@ -61,7 +61,7 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 - ➡️ Digitalização de curvas das figuras do datasheet passa para `SV-PDF` (Fase 8)
 - ✅ [validacao/bancada.md](validacao/bancada.md)
 
-## Fase 3 — Retificadores ⏳
+## Fase 3 — Retificadores 🔄
 
 - ⏳ `DM-RET1`, `DM-RETC1`, `DM-RET3`, filtros C/LC/π, transformador
 - ⏳ `selection/` com derating configurável; `thermal/` estacionário e seleção de dissipador
