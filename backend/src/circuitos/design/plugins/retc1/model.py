@@ -217,8 +217,7 @@ def solve(
             fired=False,
             beta=None,
             notes=[
-                "O tiristor não dispara: durante o pulso de porta a fonte não supera E e as "
-                "quedas."
+                "O tiristor não dispara: durante o pulso de porta a fonte não supera E e as quedas."
             ],
         )
     first = base[0]

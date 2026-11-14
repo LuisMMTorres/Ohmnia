@@ -23,18 +23,19 @@ from .base import Circuit, SimCheck, SimComparison
 FloatArray = NDArray[np.float64]
 N_SAMPLES = 4096
 
-_TERM = re.compile(r"([+-]?)\s*([vi]\([^()]+\))")
+_TERM = re.compile(r"([+-]?)((?:\d+(?:\.\d*)?(?:e[+-]?\d+)?\*)?)([vi]\([^()]+\))")
 
 
 def vector_sum(plot: Plot, expression: str) -> FloatArray:
-    """Evaluate ``"v(a)-v(b)+i(vx)"`` on the vectors of a plot."""
+    """Evaluate a weighted sum such as ``"v(a)-v(b)+0.57735*i(vx)"`` on a plot's vectors."""
     expr = expression.replace(" ", "").lower()
     terms = _TERM.findall(expr)
-    if not terms or "".join(s + t for s, t in terms) != expr.lstrip("+"):
+    if not terms or "".join(s + c + t for s, c, t in terms) != expr.lstrip("+"):
         raise ValueError(f"Expressão de medida inválida: {expression!r}")
     total: FloatArray | None = None
-    for sign, name in terms:
-        data = np.real(plot[name].data).astype(np.float64)
+    for sign, coef, name in terms:
+        k = float(coef[:-1]) if coef else 1.0
+        data = k * np.real(plot[name].data).astype(np.float64)
         data = -data if sign == "-" else data
         total = data if total is None else total + data
     assert total is not None
