@@ -1,0 +1,299 @@
+# Fonte: onsemi, MC7900/D, Rev. 21, October 2021.
+family: MC7905C, MC7912C, MC7915C
+category: regulator.negative
+schema_version: '1.0'
+manufacturer: onsemi
+package: TO-220, case 221A (sufixo T)
+lifecycle: ativo
+notes:
+- Tensões e correntes em módulo (o datasheet usa sinal negativo).
+- Grau C (TJ = 0 a 125 °C). Código de pedido com sufixo G (sem chumbo).
+datasheets:
+- id: onsemi-mc7900
+  manufacturer: onsemi
+  document_number: MC7900/D
+  revision: Rev. 21, October 2021
+  url: https://www.onsemi.com/pdf/datasheet/mc7900-d.pdf
+  sha256: a24620561147cc1a44d923cf79fc1907c0b692216260d3d230b85c81e3b2c94b
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  Rth_ja:
+    max: 65
+    unit: K/W
+    status: extraido
+    source:
+      page: 2
+      location: Maximum ratings — RθJA, case 221A
+  Rth_jc:
+    max: 5.0
+    unit: K/W
+    status: extraido
+    source:
+      page: 2
+      location: Maximum ratings — RθJC, case 221A
+  Tj_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 2
+      location: Maximum ratings — junction temperature
+  Tstg_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 2
+      location: Maximum ratings — storage temperature range
+  VI_max:
+    max: 35
+    unit: V
+    note: o datasheet dá −35 V
+    status: extraido
+    source:
+      page: 2
+      location: Maximum ratings — input voltage (−5,0 V ≥ VO ≥ −18 V), em módulo
+per_part: {}
+parts:
+  MC7905CT:
+    VO:
+      min: 4.8
+      typ: 5.0
+      max: 5.2
+      unit: V
+      conditions:
+        TJ: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Output voltage (TJ = 25 °C), em módulo
+    VO_band:
+      min: 4.75
+      max: 5.25
+      unit: V
+      status: extraido
+      source:
+        page: 2
+        location: Output voltage, −7,0 V ≥ VI ≥ −20 V, 5,0 mA ≤ IO ≤ 1,0 A, P ≤ 15 W, em módulo
+    Regline:
+      typ: 35
+      max: 100
+      unit: mV
+      note: especificada com TJ constante
+      status: extraido
+      source:
+        page: 2
+        location: Line regulation (TJ = 25 °C, IO = 500 mA), −7,0 V ≥ VI ≥ −25 V
+    Regload:
+      typ: 11
+      max: 100
+      unit: mV
+      status: extraido
+      source:
+        page: 2
+        location: Load regulation, 5,0 mA ≤ IO ≤ 1,5 A (TJ = 25 °C)
+    IQ:
+      typ: 4.3
+      max: 8.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Input bias current (TJ = 25 °C)
+    Vdo:
+      typ: 1.3
+      unit: V
+      conditions:
+        IO: 1 A
+        TJ: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Dropout voltage (IO = 1,0 A, TJ = 25 °C)
+    RR:
+      typ: 70
+      unit: dB
+      conditions:
+        f: 120 Hz
+        IO: 20 mA
+      status: extraido
+      source:
+        page: 2
+        location: Ripple rejection (IO = 20 mA, f = 120 Hz)
+    IO_max:
+      max: 1.5
+      unit: A
+      note: maior corrente das condições de ensaio da tabela; não é limite absoluto
+      status: extraido
+      source:
+        page: 2
+        location: Load regulation test range, 5,0 mA ≤ IO ≤ 1,5 A
+    VI_reg_min:
+      min: 7.0
+      unit: V
+      status: extraido
+      source:
+        page: 2
+        location: Output voltage band — lowest |VI| of the specified range, em módulo
+  MC7912CT:
+    VO:
+      min: 11.5
+      typ: 12
+      max: 12.5
+      unit: V
+      conditions:
+        TJ: 25 degC
+      status: extraido
+      source:
+        page: 5
+        location: Output voltage (TJ = 25 °C), em módulo
+    VO_band:
+      min: 11.4
+      max: 12.6
+      unit: V
+      status: extraido
+      source:
+        page: 5
+        location: Output voltage, −14,5 V ≥ VI ≥ −27 V, 5,0 mA ≤ IO ≤ 1,0 A, P ≤ 15 W, em módulo
+    Regline:
+      typ: 55
+      max: 240
+      unit: mV
+      note: especificada com TJ constante
+      status: extraido
+      source:
+        page: 5
+        location: Line regulation (TJ = 25 °C, IO = 500 mA), −14,5 V ≥ VI ≥ −30 V
+    Regload:
+      typ: 46
+      max: 240
+      unit: mV
+      status: extraido
+      source:
+        page: 5
+        location: Load regulation, 5,0 mA ≤ IO ≤ 1,5 A (TJ = 25 °C)
+    IQ:
+      typ: 4.4
+      max: 8.0
+      unit: mA
+      status: extraido
+      source:
+        page: 5
+        location: Input bias current (TJ = 25 °C)
+    Vdo:
+      typ: 1.3
+      unit: V
+      conditions:
+        IO: 1 A
+        TJ: 25 degC
+      status: extraido
+      source:
+        page: 5
+        location: Dropout voltage (IO = 1,0 A, TJ = 25 °C)
+    RR:
+      typ: 61
+      unit: dB
+      conditions:
+        f: 120 Hz
+        IO: 20 mA
+      status: extraido
+      source:
+        page: 5
+        location: Ripple rejection (IO = 20 mA, f = 120 Hz)
+    IO_max:
+      max: 1.5
+      unit: A
+      note: maior corrente das condições de ensaio da tabela; não é limite absoluto
+      status: extraido
+      source:
+        page: 5
+        location: Load regulation test range, 5,0 mA ≤ IO ≤ 1,5 A
+    VI_reg_min:
+      min: 14.5
+      unit: V
+      status: extraido
+      source:
+        page: 5
+        location: Output voltage band — lowest |VI| of the specified range, em módulo
+  MC7915CT:
+    VO:
+      min: 14.4
+      typ: 15
+      max: 15.6
+      unit: V
+      conditions:
+        TJ: 25 degC
+      status: extraido
+      source:
+        page: 6
+        location: Output voltage (TJ = 25 °C), em módulo
+    VO_band:
+      min: 14.25
+      max: 15.75
+      unit: V
+      status: extraido
+      source:
+        page: 6
+        location: Output voltage, −17,5 V ≥ VI ≥ −30 V, 5,0 mA ≤ IO ≤ 1,0 A, P ≤ 15 W, em módulo
+    Regline:
+      typ: 57
+      max: 300
+      unit: mV
+      note: especificada com TJ constante
+      status: extraido
+      source:
+        page: 6
+        location: Line regulation (TJ = 25 °C, IO = 500 mA), −17,5 V ≥ VI ≥ −30 V
+    Regload:
+      typ: 68
+      max: 300
+      unit: mV
+      status: extraido
+      source:
+        page: 6
+        location: Load regulation, 5,0 mA ≤ IO ≤ 1,5 A (TJ = 25 °C)
+    IQ:
+      typ: 4.4
+      max: 8.0
+      unit: mA
+      status: extraido
+      source:
+        page: 6
+        location: Input bias current (TJ = 25 °C)
+    Vdo:
+      typ: 1.3
+      unit: V
+      conditions:
+        IO: 1 A
+        TJ: 25 degC
+      status: extraido
+      source:
+        page: 6
+        location: Dropout voltage (IO = 1,0 A, TJ = 25 °C)
+    RR:
+      typ: 60
+      unit: dB
+      conditions:
+        f: 120 Hz
+        IO: 20 mA
+      status: extraido
+      source:
+        page: 6
+        location: Ripple rejection (IO = 20 mA, f = 120 Hz)
+    IO_max:
+      max: 1.5
+      unit: A
+      note: maior corrente das condições de ensaio da tabela; não é limite absoluto
+      status: extraido
+      source:
+        page: 6
+        location: Load regulation test range, 5,0 mA ≤ IO ≤ 1,5 A
+    VI_reg_min:
+      min: 17.5
+      unit: V
+      status: extraido
+      source:
+        page: 6
+        location: Output voltage band — lowest |VI| of the specified range, em módulo

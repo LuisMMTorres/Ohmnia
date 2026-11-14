@@ -1,0 +1,7 @@
+category: regulator.negative
+extends: regulator.positive
+schema_version: "1.0"
+description: Regulador linear de tensão negativa de três terminais (tensões e correntes em módulo)
+required: [Tj_max, Rth_ja, Rth_jc]
+optional: []
+parameters: {}

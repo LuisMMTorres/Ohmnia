@@ -1,0 +1,322 @@
+# Fonte: onsemi, MC7800/D, Rev. 29, November 2021.
+family: MC7805C, MC7812C, MC7815C
+category: regulator.positive
+schema_version: '1.0'
+manufacturer: onsemi
+package: TO-220, case 221AB (sufixo T)
+lifecycle: ativo
+notes:
+- Grau C (TJ = 0 a 125 °C). Outras tensões da série não incluídas.
+- 'Código de pedido com sufixo G (sem chumbo): MC7805CTG etc.'
+datasheets:
+- id: onsemi-mc7800
+  manufacturer: onsemi
+  document_number: MC7800/D
+  revision: Rev. 29, November 2021
+  url: https://www.onsemi.com/pdf/datasheet/mc7800-d.pdf
+  sha256: 0d716b89ee95cd63bb3a6279596d88c0900414f0e827cfe4a087dbe54e674fed
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  Rth_ja:
+    max: 65
+    unit: K/W
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — RθJA, case 221A (TO-220)
+  Rth_jc:
+    max: 5.0
+    unit: K/W
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — RθJC, case 221A (TO-220)
+  Tj_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — operating junction temperature
+  Tstg_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — storage temperature range
+  VI_max:
+    max: 35
+    unit: V
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — input voltage (5,0 − 18 V)
+per_part: {}
+parts:
+  MC7805CT:
+    VO:
+      min: 4.8
+      typ: 5.0
+      max: 5.2
+      unit: V
+      conditions:
+        TJ: 25 degC
+      status: extraido
+      source:
+        page: 3
+        location: Output voltage (TJ = 25 °C), MC78xxC
+    VO_band:
+      min: 4.75
+      typ: 5.0
+      max: 5.25
+      unit: V
+      status: extraido
+      source:
+        page: 3
+        location: Output voltage, 5,0 mA ≤ IO ≤ 1,0 A, PD ≤ 15 W, 7,0 V ≤ Vin ≤ 20 V, MC78xxC
+    Regline:
+      typ: 0.5
+      max: 20
+      unit: mV
+      note: especificada com TJ constante
+      status: extraido
+      source:
+        page: 3
+        location: Line regulation, 7,5 V ≤ Vin ≤ 20 V, 1,0 A, MC78xxC (max.)
+    Regload:
+      typ: 1.3
+      max: 25
+      unit: mV
+      status: extraido
+      source:
+        page: 3
+        location: Load regulation, 5,0 mA ≤ IO ≤ 1,5 A, MC78xxC
+    IQ:
+      typ: 3.2
+      max: 6.5
+      unit: mA
+      status: extraido
+      source:
+        page: 3
+        location: Quiescent current IB, MC78xxC
+    Vdo:
+      typ: 2.0
+      unit: V
+      conditions:
+        IO: 1 A
+        TJ: 25 degC
+      status: extraido
+      source:
+        page: 3
+        location: Dropout voltage (IO = 1,0 A, TJ = 25 °C)
+    Ipk:
+      typ: 2.2
+      unit: A
+      status: extraido
+      source:
+        page: 3
+        location: Peak output current (TJ = 25 °C)
+    RR:
+      min: 62
+      typ: 83
+      unit: dB
+      conditions:
+        f: 120 Hz
+      status: extraido
+      source:
+        page: 3
+        location: Ripple rejection, 8,0 V ≤ Vin ≤ 18 V, MC78xxC
+    IO_max:
+      max: 1.5
+      unit: A
+      note: maior corrente das condições de ensaio da tabela; não é limite absoluto (Ipk típica 2,2 A)
+      status: extraido
+      source:
+        page: 3
+        location: Load regulation test range, 5,0 mA ≤ IO ≤ 1,5 A
+    VI_reg_min:
+      min: 7.0
+      unit: V
+      status: extraido
+      source:
+        page: 3
+        location: Output voltage band — lowest Vin of the specified range
+  MC7812CT:
+    VO:
+      min: 11.5
+      typ: 12
+      max: 12.5
+      unit: V
+      conditions:
+        TJ: 25 degC
+      status: extraido
+      source:
+        page: 9
+        location: Output voltage (TJ = 25 °C), MC78xxC
+    VO_band:
+      min: 11.4
+      typ: 12
+      max: 12.6
+      unit: V
+      status: extraido
+      source:
+        page: 9
+        location: Output voltage, 5,0 mA ≤ IO ≤ 1,0 A, PD ≤ 15 W, 14,5 V ≤ Vin ≤ 27 V, MC78xxC
+    Regline:
+      typ: 3.8
+      max: 24
+      unit: mV
+      note: especificada com TJ constante
+      status: extraido
+      source:
+        page: 9
+        location: Line regulation, 14,5 V ≤ Vin ≤ 30 V, MC78xxC (max.)
+    Regload:
+      typ: 8.1
+      max: 60
+      unit: mV
+      status: extraido
+      source:
+        page: 9
+        location: Load regulation, 5,0 mA ≤ IO ≤ 1,5 A, MC78xxC
+    IQ:
+      typ: 3.4
+      max: 6.5
+      unit: mA
+      status: extraido
+      source:
+        page: 9
+        location: Quiescent current IB, MC78xxC
+    Vdo:
+      typ: 2.0
+      unit: V
+      conditions:
+        IO: 1 A
+        TJ: 25 degC
+      status: extraido
+      source:
+        page: 9
+        location: Dropout voltage (IO = 1,0 A, TJ = 25 °C)
+    Ipk:
+      typ: 2.2
+      unit: A
+      status: extraido
+      source:
+        page: 9
+        location: Peak output current (TJ = 25 °C)
+    RR:
+      min: 55
+      typ: 60
+      unit: dB
+      conditions:
+        f: 120 Hz
+      status: extraido
+      source:
+        page: 9
+        location: Ripple rejection, 15 V ≤ Vin ≤ 25 V, MC78xxC
+    IO_max:
+      max: 1.5
+      unit: A
+      note: maior corrente das condições de ensaio da tabela; não é limite absoluto (Ipk típica 2,2 A)
+      status: extraido
+      source:
+        page: 9
+        location: Load regulation test range, 5,0 mA ≤ IO ≤ 1,5 A
+    VI_reg_min:
+      min: 14.5
+      unit: V
+      status: extraido
+      source:
+        page: 9
+        location: Output voltage band — lowest Vin of the specified range
+  MC7815CT:
+    VO:
+      min: 14.4
+      typ: 15
+      max: 15.6
+      unit: V
+      conditions:
+        TJ: 25 degC
+      status: extraido
+      source:
+        page: 11
+        location: Output voltage (TJ = 25 °C), MC78xxC
+    VO_band:
+      min: 14.25
+      typ: 15
+      max: 15.75
+      unit: V
+      status: extraido
+      source:
+        page: 11
+        location: Output voltage, 5,0 mA ≤ IO ≤ 1,0 A, PD ≤ 15 W, 17,5 V ≤ Vin ≤ 30 V, MC78xxC
+    Regline:
+      typ: 8.5
+      max: 30
+      unit: mV
+      note: especificada com TJ constante
+      status: extraido
+      source:
+        page: 11
+        location: Line regulation, 17,9 V ≤ Vin ≤ 30 V, MC78xxC (max.)
+    Regload:
+      typ: 1.8
+      max: 55
+      unit: mV
+      status: extraido
+      source:
+        page: 11
+        location: Load regulation, 5,0 mA ≤ IO ≤ 1,5 A, MC78xxC
+    IQ:
+      typ: 3.5
+      max: 6.5
+      unit: mA
+      status: extraido
+      source:
+        page: 11
+        location: Quiescent current IB, MC78xxC
+    Vdo:
+      typ: 2.0
+      unit: V
+      conditions:
+        IO: 1 A
+        TJ: 25 degC
+      status: extraido
+      source:
+        page: 11
+        location: Dropout voltage (IO = 1,0 A, TJ = 25 °C)
+    Ipk:
+      typ: 2.2
+      unit: A
+      status: extraido
+      source:
+        page: 11
+        location: Peak output current (TJ = 25 °C)
+    RR:
+      min: 54
+      typ: 58
+      unit: dB
+      conditions:
+        f: 120 Hz
+      status: extraido
+      source:
+        page: 11
+        location: Ripple rejection, 18,5 V ≤ Vin ≤ 28,5 V, MC78xxC
+    IO_max:
+      max: 1.5
+      unit: A
+      note: maior corrente das condições de ensaio da tabela; não é limite absoluto (Ipk típica 2,2 A)
+      status: extraido
+      source:
+        page: 11
+        location: Load regulation test range, 5,0 mA ≤ IO ≤ 1,5 A
+    VI_reg_min:
+      min: 17.5
+      unit: V
+      status: extraido
+      source:
+        page: 11
+        location: Output voltage band — lowest Vin of the specified range

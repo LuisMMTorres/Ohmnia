@@ -15,8 +15,9 @@ from circuitos.core.errors import CircuitosError
 from circuitos.design import registry
 from circuitos.design.base import Circuit, DesignResult, SimComparison
 from circuitos.design.engine import Device, TopologyModule, run
-from circuitos.design.verify import compare, netlist_with_analysis
-from circuitos.reports import rectifiers, report
+from circuitos.design.verify import compare_full, netlist_with_analysis
+from circuitos.reports import outputs, report
+from circuitos.reports.common import bom_csv
 from circuitos.selection.derating import DeratingPolicy
 
 router = APIRouter(prefix="/api/v1/design")
@@ -63,6 +64,8 @@ class SimulateOut(BaseModel):
     t_ms: list[float]  # one period, from 0
     traces: dict[str, SimTrace]  # same labels as DesignResult.traces
     ok: bool
+    bode_f: list[float] = Field(default_factory=list)  # Hz
+    bode: dict[str, SimTrace] = Field(default_factory=dict)  # |H|, same labels as result.bode
 
 
 @router.get("/modules")
@@ -77,9 +80,11 @@ def modules() -> list[ModuleInfo]:
                 family=m.family,
                 defaults=schema().model_dump(),
                 json_schema=schema.model_json_schema(),
-                spec_labels=report.SPEC_LABELS,
-                enum_labels=report.ENUM_LABELS,
-                summary_labels={k: v for k, v in report.LABELS.items() if k not in report.HIDDEN},
+                spec_labels=outputs.spec_labels(m),
+                enum_labels=outputs.enum_labels(m),
+                summary_labels={
+                    k: v for k, v in outputs.labels(m).items() if k not in report.HIDDEN
+                },
             )
         )
     return out
@@ -145,25 +150,39 @@ def design(request: Request, module_id: str, body: DesignIn) -> DesignOut:
 
 def _simulate(circuit: Circuit, result: DesignResult) -> SimulateOut:
     try:
-        comparisons, ss = compare(circuit, result.summary)
+        comparisons, ss, ac = compare_full(circuit, result.summary)
     except CircuitosError as exc:
         raise HTTPException(422, f"Simulação falhou: {exc}") from exc
-    n = 720
-    idx = np.linspace(0, ss.t.size, n, endpoint=False).astype(int)
-    t0 = ss.t[0]
     units = {k: v.unit for k, v in result.traces.items()}
-    traces = {
-        label: SimTrace(
-            unit=units.get(label, "V" if expr.startswith("v") else "A"),
-            values=[float(v) for v in ss.traces[expr][idx]],
-        )
-        for label, expr in circuit.probes.items()
-    }
+    traces: dict[str, SimTrace] = {}
+    t_ms: list[float] = []
+    if ss is not None:
+        n = 720
+        idx = np.linspace(0, ss.t.size, n, endpoint=False).astype(int)
+        t0 = ss.t[0]
+        traces = {
+            label: SimTrace(
+                unit=units.get(label, "V" if expr.startswith("v") else "A"),
+                values=[float(v) for v in ss.traces[expr][idx]],
+            )
+            for label, expr in circuit.probes.items()
+        }
+        t_ms = [float((ss.t[i] - t0) * 1e3) for i in idx]
+    bode_f: list[float] = []
+    bode: dict[str, SimTrace] = {}
+    if ac is not None:
+        bode_f = [float(v) for v in ac.f]
+        bode = {
+            label: SimTrace(unit="", values=[float(v) for v in ac.mag[expr]])
+            for label, expr in circuit.bode_probes.items()
+        }
     return SimulateOut(
         comparisons=comparisons,
-        t_ms=[float((ss.t[i] - t0) * 1e3) for i in idx],
+        t_ms=t_ms,
         traces=traces,
         ok=all(c.ok for c in comparisons),
+        bode_f=bode_f,
+        bode=bode,
     )
 
 
@@ -175,15 +194,15 @@ def simulate(request: Request, module_id: str, body: DesignIn) -> SimulateOut:
 
 @router.post("/{module_id}/schematic.svg")
 def schematic(request: Request, module_id: str, body: DesignIn) -> Response:
-    _, spec, result, _, circuit = _design(request, module_id, body)
-    svg = rectifiers.schematic_svg(spec, result, circuit.title)
+    module, spec, result, _, circuit = _design(request, module_id, body)
+    svg = outputs.schematic_svg(module, spec, result, circuit.title)
     return Response(svg, media_type="image/svg+xml")
 
 
 @router.post("/{module_id}/bom.csv")
 def bom(request: Request, module_id: str, body: DesignIn) -> Response:
-    _, spec, result, _, _ = _design(request, module_id, body)
-    text = rectifiers.bom_csv(rectifiers.bom(spec, result))
+    module, spec, result, _, _ = _design(request, module_id, body)
+    text = bom_csv(outputs.bom(module, spec, result))
     return Response(
         "﻿" + text,  # BOM so spreadsheet programs read the accents
         media_type="text/csv; charset=utf-8",
@@ -197,7 +216,7 @@ def report_html(
 ) -> HTMLResponse:
     module, spec, result, _, circuit = _design(request, module_id, body)
     sim = _simulate(circuit, result).comparisons if simulate else None
-    html = report.render(module.id, module.title, spec, result, body.policy, sim)
+    html = report.render(module, spec, result, body.policy, sim)
     return HTMLResponse(
         html, headers={"Content-Disposition": f'inline; filename="{module_id}-relatorio.html"'}
     )

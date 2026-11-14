@@ -74,7 +74,13 @@ document.addEventListener("DOMContentLoaded", function () {
 </div>{% endfor %}
 
 <h2>{{ 8 if sim else 7 }}. Roteiro de prática</h2>
-<h3>Objetivo</h3>
+{% if practice %}<h3>Objetivo</h3>
+<p>{{ practice.objective }}</p>
+<h3>Segurança</h3><ul>{% for s in safety %}<li>{{ s }}</li>{% endfor %}</ul>
+<h3>Material</h3><p>{{ practice.material }}</p>
+<h3>Procedimento</h3>
+<ol>{% for p in practice.procedure %}<li>{{ p }}</li>{% endfor %}</ol>
+{% else %}<h3>Objetivo</h3>
 <p>Montar o {{ title_lower }}, medir as grandezas da tabela abaixo e comparar com o cálculo e a simulação, discutindo as diferenças (queda real dos dispositivos, resistência do transformador, tolerância dos componentes).</p>
 <h3>Segurança</h3><ul>{% for s in safety %}<li>{{ s }}</li>{% endfor %}</ul>
 <h3>Material</h3><p>Componentes da lista de materiais (seção 5), osciloscópio com ponteira diferencial, multímetro true RMS, alicate amperímetro{% if module_id != "DM-RET1" %}, circuito de disparo dos tiristores sincronizado com a rede{% endif %}.</p>
@@ -86,6 +92,7 @@ document.addEventListener("DOMContentLoaded", function () {
  <li>Meça as grandezas da tabela e registre as formas de onda da tensão na carga e da corrente de entrada.</li>
  <li>Calcule o erro de cada medida em relação ao valor calculado e justifique.</li>
 </ol>
+{% endif %}
 <table><tr><th>Grandeza</th><th>Instrumento</th><th>Calculado</th><th>Simulado</th><th>Medido</th></tr>
 {% for item in lab %}<tr><td>{{ item.quantity }}</td><td>{{ item.instrument }}</td><td class="n">{{ item.calc }}</td><td class="n">{{ item.sim }}</td><td></td></tr>{% endfor %}
 </table>

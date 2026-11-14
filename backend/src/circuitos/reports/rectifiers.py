@@ -2,20 +2,19 @@
 
 from __future__ import annotations
 
-import csv
-import io
 from collections.abc import Mapping
-from dataclasses import dataclass
 
 from pydantic import BaseModel
 
-from circuitos.core.units import Q_, format_eng
 from circuitos.design.base import DesignResult
 from circuitos.design.plugins.ret1 import Ret1Spec
 from circuitos.design.plugins.ret3 import Ret3Spec
 from circuitos.design.plugins.retc1 import Retc1Spec
 
 from . import schematic
+from .common import BomRow, LabItem, bom_csv, eng, role_rows
+
+__all__ = ["LAB", "SAFETY", "BomRow", "bom", "bom_csv", "schematic_svg"]
 
 
 def _summary(result: DesignResult, spec: BaseModel) -> dict[str, tuple[float, str]]:
@@ -84,71 +83,12 @@ def schematic_svg(spec: BaseModel, result: DesignResult, title: str) -> str:
     raise TypeError("Sem esquemático para esta especificação")
 
 
-@dataclass
-class BomRow:
-    designator: str
-    quantity: int
-    description: str
-    part_number: str
-    manufacturer: str
-    value: str
-    note: str
-
-
-def _eng(v: float, unit: str) -> str:
-    try:
-        return format_eng(Q_(v, unit.replace("µ", "u").replace("VA", "V*A")))
-    except Exception:  # units pint does not parse as written: plain text
-        return f"{v:.3g} {unit}".replace(".", ",")
+_eng = eng
 
 
 def bom(spec: BaseModel, result: DesignResult) -> list[BomRow]:
-    rows: list[BomRow] = []
-    chosen = {c.designator: c for c in result.selection}
-    for role in result.roles:
-        c = chosen.get(role.designator)
-        rows.append(
-            BomRow(
-                designator=role.designator,
-                quantity=role.count,
-                description=role.description,
-                part_number=c.part_number if c else "(sem candidato liberado)",
-                manufacturer=c.manufacturer if c else "",
-                value="",
-                note=("travado à mão" if c and c.locked else "seleção automática")
-                + ("" if not c or c.released else "; NÃO REVISADO"),
-            )
-        )
+    rows = role_rows(result)
     s = result.summary
-    th = {t.designator: t for t in result.thermal}
-    for role in result.roles:
-        t = th.get(role.designator)
-        if t and t.heatsink is not None:
-            rows.append(
-                BomRow(
-                    designator=f"HS ({role.designator})",
-                    quantity=role.count,
-                    description="Dissipador, perfil extrudado, 101,6 mm (um por dispositivo)",
-                    part_number=t.heatsink,
-                    manufacturer=t.heatsink_manufacturer or "",
-                    value=f"Rθsa ≈ {_eng(t.heatsink_Rsa.value, 'K/W')}" if t.heatsink_Rsa else "",
-                    note=f"exigido Rθsa ≤ {_eng(t.required_Rsa.value, 'K/W')}"
-                    if t.required_Rsa
-                    else "",
-                )
-            )
-        elif t and t.required_Rsa is not None and t.status != "ok":
-            rows.append(
-                BomRow(
-                    designator=f"HS ({role.designator})",
-                    quantity=role.count,
-                    description="Dissipador",
-                    part_number="(a escolher)",
-                    manufacturer="",
-                    value=f"Rθsa ≤ {_eng(t.required_Rsa.value, 'K/W')}",
-                    note="nenhum dissipador liberado do catálogo atende",
-                )
-            )
     vc = s.get("VC_max")
     if "C" in s:
         rows.append(
@@ -206,32 +146,6 @@ def bom(spec: BaseModel, result: DesignResult) -> list[BomRow]:
             BomRow("TR1", 1, desc, "(a especificar)", "", val, f"S ≥ {_eng(va.value, 'VA')}")
         )
     return rows
-
-
-def bom_csv(rows: list[BomRow]) -> str:
-    buf = io.StringIO()
-    w = csv.writer(buf, delimiter=";")
-    w.writerow(["Designador", "Qtd", "Descrição", "Código", "Fabricante", "Valor", "Observação"])
-    for r in rows:
-        w.writerow(
-            [
-                r.designator,
-                r.quantity,
-                r.description,
-                r.part_number,
-                r.manufacturer,
-                r.value,
-                r.note,
-            ]
-        )
-    return buf.getvalue()
-
-
-@dataclass
-class LabItem:
-    quantity: str
-    instrument: str
-    summary_key: str
 
 
 LAB: Mapping[str, list[LabItem]] = {

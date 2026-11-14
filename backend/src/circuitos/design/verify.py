@@ -100,38 +100,126 @@ def measure(check: SimCheck, ss: SteadyState) -> float:
     return _avg(t, v * ac) / s if s > 0 else 0.0
 
 
-def netlist_with_analysis(circuit: Circuit) -> str:
-    """Transient from the analytic initial state; only the last two periods are saved."""
-    step = circuit.tran_step.to_pint().m_as("s")
-    stop = circuit.tran_stop.to_pint().m_as("s")
-    start = max(stop - 2 * circuit.period.to_pint().m_as("s"), 0.0)
-    return "\n".join(
-        [
-            f"* {circuit.title}",
-            circuit.netlist,
-            f".tran {step:.6g} {stop:.6g} {start:.6g} {step:.6g} uic",
-        ]
-    )
+def netlist_with_analysis(circuit: Circuit, kind: str = "all") -> str:
+    """Netlist with its analysis cards.
+
+    Transient from the analytic initial state (only the last two periods are saved) and/or an
+    ``.ac`` sweep. ``kind`` selects "tran", "ac" or "all" (both, for the downloaded netlist).
+    """
+    cards = []
+    if kind in ("tran", "all") and circuit.tran_stop is not None:
+        assert circuit.tran_step is not None and circuit.period is not None
+        step = circuit.tran_step.to_pint().m_as("s")
+        stop = circuit.tran_stop.to_pint().m_as("s")
+        start = max(stop - 2 * circuit.period.to_pint().m_as("s"), 0.0)
+        cards.append(f".tran {step:.6g} {stop:.6g} {start:.6g} {step:.6g} uic")
+    if kind in ("ac", "all") and circuit.ac_start is not None:
+        assert circuit.ac_stop is not None
+        f1 = circuit.ac_start.to_pint().m_as("Hz")
+        f2 = circuit.ac_stop.to_pint().m_as("Hz")
+        cards.append(f".ac dec {circuit.ac_points_per_decade} {f1:.6g} {f2:.6g}")
+    return "\n".join([f"* {circuit.title}", circuit.netlist, *cards])
+
+
+@dataclass
+class AcResponse:
+    f: FloatArray
+    mag: dict[str, FloatArray]  # expression → |value|
+
+
+def ac_vector(plot: Plot, expression: str) -> FloatArray:
+    """|expression| of complex AC vectors (weighted sums as in :func:`vector_sum`)."""
+    expr = expression.replace(" ", "").lower()
+    terms = _TERM.findall(expr)
+    if not terms or "".join(s + c + t for s, c, t in terms) != expr.lstrip("+"):
+        raise ValueError(f"Expressão de medida inválida: {expression!r}")
+    total: NDArray[np.complex128] | None = None
+    for sign, coef, name in terms:
+        k = float(coef[:-1]) if coef else 1.0
+        cdata = np.asarray(plot[name].data, dtype=np.complex128) * complex(k)
+        if sign == "-":
+            cdata = -cdata
+        total = cdata if total is None else total + cdata
+    assert total is not None
+    return np.asarray(np.abs(total), dtype=np.float64)
+
+
+def _corner(f: FloatArray, mag: FloatArray, side: str) -> float:
+    """Frequency where |H| crosses max/√2 below (side "fl") or above ("fh") the maximum."""
+    k = int(np.argmax(mag))
+    level = mag[k] / np.sqrt(2)
+    lf, lm = np.log10(f), mag
+    if side == "fl":
+        idx = np.nonzero(lm[: k + 1] < level)[0]
+        if idx.size == 0:
+            return float(f[0])
+        i = int(idx[-1])
+        j = i + 1
+    else:
+        idx = np.nonzero(lm[k:] < level)[0]
+        if idx.size == 0:
+            return float(f[-1])
+        j = k + int(idx[0])
+        i = j - 1
+    # interpolate in log f, dB
+    d0, d1 = 20 * np.log10(lm[i]), 20 * np.log10(lm[j])
+    dl = 20 * np.log10(level)
+    x = lf[i] + (dl - d0) * (lf[j] - lf[i]) / (d1 - d0)
+    return float(10**x)
+
+
+def measure_ac(check: SimCheck, ac: AcResponse) -> float:
+    mag = ac.mag[check.probe]
+    if check.metric == "ac_mag":
+        assert check.freq is not None
+        return float(np.interp(np.log10(check.freq), np.log10(ac.f), mag))
+    return _corner(ac.f, mag, "fl" if check.metric == "ac_fl" else "fh")
 
 
 def compare(
     circuit: Circuit,
     summary: Mapping[str, QuantityModel],
     backend: SimulatorBackend | None = None,
-) -> tuple[list[SimComparison], SteadyState]:
+) -> tuple[list[SimComparison], SteadyState | None]:
+    comparisons, ss, _ = compare_full(circuit, summary, backend)
+    return comparisons, ss
+
+
+def compare_full(
+    circuit: Circuit,
+    summary: Mapping[str, QuantityModel],
+    backend: SimulatorBackend | None = None,
+) -> tuple[list[SimComparison], SteadyState | None, AcResponse | None]:
     backend = backend or make_backend()
-    plot = backend.run(netlist_with_analysis(circuit)).plot("tran")
-    expressions = sorted(
-        {c.probe for c in circuit.checks}
-        | {c.voltage for c in circuit.checks if c.voltage}
-        | set(circuit.probes.values())
-    )
-    ss = last_period(plot, circuit.period.to_pint().m_as("s"), expressions)
+    tran_checks = [c for c in circuit.checks if not c.metric.startswith("ac_")]
+    ac_checks = [c for c in circuit.checks if c.metric.startswith("ac_")]
+    ss: SteadyState | None = None
+    ac: AcResponse | None = None
+    if circuit.tran_stop is not None:
+        assert circuit.period is not None
+        plot = backend.run(netlist_with_analysis(circuit, "tran")).plot("tran")
+        expressions = sorted(
+            {c.probe for c in tran_checks}
+            | {c.voltage for c in tran_checks if c.voltage}
+            | set(circuit.probes.values())
+        )
+        ss = last_period(plot, circuit.period.to_pint().m_as("s"), expressions)
+    if circuit.ac_start is not None:
+        plot = backend.run(netlist_with_analysis(circuit, "ac")).plot("ac")
+        assert plot.scale is not None
+        f = np.real(plot[plot.scale].data).astype(np.float64)
+        exprs = {c.probe for c in ac_checks} | set(circuit.bode_probes.values())
+        ac = AcResponse(f=f, mag={e: ac_vector(plot, e) for e in exprs})
     out: list[SimComparison] = []
     for check in circuit.checks:
         analytic = summary[check.summary_key]
         a = analytic.to_pint()
-        sim = measure(check, ss)
+        if check.metric.startswith("ac_"):
+            assert ac is not None, "verificação AC sem varredura .ac no circuito"
+            sim = measure_ac(check, ac)
+        else:
+            assert ss is not None, "verificação no tempo sem transitória no circuito"
+            sim = measure(check, ss)
         a_val = float(a.magnitude)
         err = abs(sim - a_val) / abs(a_val) * 100 if a_val != 0 else abs(sim) * 100
         out.append(
@@ -144,4 +232,4 @@ def compare(
                 ok=err <= check.tolerance_pct,
             )
         )
-    return out, ss
+    return out, ss, ac

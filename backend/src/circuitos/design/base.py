@@ -134,9 +134,14 @@ class DesignResult(BaseModel):
     warnings: list[DesignWarning]
     sim_check: list[SimComparison] | None = None
     traces: dict[str, Trace] = Field(default_factory=dict)  # label = Circuit.probes label
+    # Time span of the traces (one source/signal period); None: one period of spec.f.
+    trace_period: QuantityModel | None = None
+    # Frequency response: frequencies (Hz, log spaced) and |H| per label (Circuit.bode_probes).
+    bode_f: Trace | None = None
+    bode: dict[str, Trace] = Field(default_factory=dict)
 
 
-Metric = Literal["avg", "rms", "pp", "max", "pf", "thd"]
+Metric = Literal["avg", "rms", "pp", "max", "pf", "thd", "ac_mag", "ac_fl", "ac_fh"]
 
 
 class SimCheck(BaseModel):
@@ -145,6 +150,10 @@ class SimCheck(BaseModel):
     ``probe`` is a sum of vectors (``"v(p)-v(n)"``, ``"i(vsd1)"``); ``pf`` and ``thd`` use the
     current in ``probe`` and, for ``pf``, the voltage in ``voltage``. Both remove the mean of
     the current first (the primary of a transformer never carries DC).
+
+    AC metrics use the ``.ac`` sweep (input source with ``AC 1``): ``ac_mag`` is |probe| at
+    ``freq``; ``ac_fl`` and ``ac_fh`` are the frequencies where |probe| falls 3 dB below its
+    maximum, below and above it.
     """
 
     quantity: str  # label shown to the user
@@ -152,6 +161,7 @@ class SimCheck(BaseModel):
     metric: Metric
     probe: str
     voltage: str | None = None
+    freq: float | None = None  # Hz, for ac_mag
     tolerance_pct: float
     justification: str = ""  # why this tolerance (model approximation)
 
@@ -161,11 +171,15 @@ class Circuit(BaseModel):
 
     title: str
     netlist: str  # without analysis cards
-    tran_stop: QuantityModel
-    tran_step: QuantityModel
-    period: QuantityModel  # steady-state window length
-    probes: dict[str, str]  # label → vector sum to plot, e.g. "Tensão na carga": "v(out)"
+    tran_stop: QuantityModel | None = None  # None: no transient run
+    tran_step: QuantityModel | None = None
+    period: QuantityModel | None = None  # steady-state window length
+    probes: dict[str, str] = Field(default_factory=dict)  # label → vector sum to plot
     checks: list[SimCheck] = Field(default_factory=list)
+    ac_start: QuantityModel | None = None  # None: no .ac run
+    ac_stop: QuantityModel | None = None
+    ac_points_per_decade: int = 40
+    bode_probes: dict[str, str] = Field(default_factory=dict)  # label → node/expression
 
 
 class DesignModule(Protocol):

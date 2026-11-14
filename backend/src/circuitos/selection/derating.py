@@ -20,19 +20,23 @@ LABEL = "critério de projeto, não normativo"
 
 # Rating key → factor, per category family (the part of the category before the first dot).
 _DIDATICO: dict[str, dict[str, float]] = {
-    "diode": {"VRRM": 1.5, "IF(AV)": 1.2, "IFSM": 1.0},
+    "diode": {"VRRM": 1.5, "IF(AV)": 1.2, "IFSM": 1.0, "Ptot": 1.5, "IZM": 1.2},
+    "bjt": {"VCEO": 1.3, "IC": 1.2},
+    "regulator": {"VI_max": 1.1, "VIO_max": 1.1, "IO_max": 1.2},
     "bridge": {"VRRM": 1.5, "IF(AV)": 1.2, "IFSM": 1.0},
     "thyristor": {"VDRM": 1.5, "VRRM": 1.5, "IT(AV)": 1.2, "IT(RMS)": 1.2, "ITSM": 1.0},
-    "mosfet": {"VDS": 1.3},
+    "mosfet": {"VDS": 1.3, "ID": 1.2},
     "capacitor": {"V_rated": 1.2, "I_ripple": 1.0},
     "resistor": {"P_rated": 1.5},
     "inductor": {"Isat": 1.2},
 }
 _INDUSTRIAL: dict[str, dict[str, float]] = {
-    "diode": {"VRRM": 2.0, "IF(AV)": 1.5, "IFSM": 1.0},
+    "diode": {"VRRM": 2.0, "IF(AV)": 1.5, "IFSM": 1.0, "Ptot": 2.0, "IZM": 1.5},
+    "bjt": {"VCEO": 1.5, "IC": 1.5},
+    "regulator": {"VI_max": 1.2, "VIO_max": 1.2, "IO_max": 1.5},
     "bridge": {"VRRM": 2.0, "IF(AV)": 1.5, "IFSM": 1.0},
     "thyristor": {"VDRM": 2.0, "VRRM": 2.0, "IT(AV)": 1.5, "IT(RMS)": 1.5, "ITSM": 1.0},
-    "mosfet": {"VDS": 1.5},
+    "mosfet": {"VDS": 1.5, "ID": 1.5},
     "capacitor": {"V_rated": 1.5, "I_ripple": 1.3},
     "resistor": {"P_rated": 2.0},
     "inductor": {"Isat": 1.3},

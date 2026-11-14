@@ -1,0 +1,231 @@
+"""Device models for the design modules, built from catalogue records.
+
+The catalogue holds datasheet values; the design modules need model parameters. Each helper
+logs how a model parameter came from the datasheet (or from a stated design assumption when the
+datasheet has no such value), so the calculation record shows it.
+
+* BJT: Ebers-Moll transport model with BF from hFE and IS from a forward base-emitter voltage
+  assumption at the hFE test current (datasheets of small-signal parts rarely give VBE(on)).
+  The same model goes to SPICE (``BjtModel.spice``), so the analytic Q-point and the
+  simulation solve the same equations.
+* Zener: piecewise-linear model VZ = VZ0 + rz·IZ with rz = ZZT and VZ0 = VZ − IZT·ZZT, the
+  textbook equivalent circuit (Boylestad, *Electronic Devices and Circuit Theory*, ch. 2, Zener
+  diodes; Malvino, *Electronic Principles*, Zener chapter: second approximation).
+"""
+
+from __future__ import annotations
+
+import math
+from dataclasses import dataclass
+
+import pint
+
+from circuitos.components.models import ComponentRecord, Parameter
+from circuitos.core.calc import BibRef, CalcLog, record
+from circuitos.core.units import Q_, parse_unit
+
+BOYLESTAD = BibRef(
+    book="Boylestad & Nashelsky, Electronic Devices and Circuit Theory", edition="11th"
+)
+SEDRA = BibRef(book="Sedra & Smith, Microelectronic Circuits", edition="7th")
+VT_300K = 0.025852  # kT/q at 300 K, V (27 °C, the SPICE nominal temperature)
+
+
+def value(p: Parameter, prefer: tuple[str, ...] = ("typ", "max", "min")) -> float:
+    for attr in prefer:
+        v = getattr(p, attr)
+        if v is not None:
+            return float(v)
+    raise ValueError(f"{p.symbol} sem valor")
+
+
+def quantity(
+    rec: ComponentRecord, key: str, prefer: tuple[str, ...] = ("typ", "max", "min")
+) -> pint.Quantity | None:
+    p = rec.parameters.get(key)
+    if p is None or not p.has_value:
+        return None
+    return Q_(value(p, prefer), parse_unit(p.unit))
+
+
+# ------------------------------------------------------------------------------------ BJT
+
+
+@dataclass(frozen=True)
+class Bjt:
+    """Transport model used by the designs (NPN or PNP, magnitudes)."""
+
+    IS: float  # A
+    BF: float
+    pnp: bool = False
+    VAF: float | None = None  # V; None: no Early effect (the designs neglect it)
+
+    def vbe(self, ic: float, vt: float = VT_300K) -> float:
+        """|VBE| for a collector current |IC| in forward-active operation."""
+        return vt * math.log(ic / self.IS + 1.0)
+
+    def ic(self, vbe: float, vt: float = VT_300K) -> float:
+        return self.IS * (math.exp(vbe / vt) - 1.0)
+
+    def spice(self, name: str) -> str:
+        kind = "PNP" if self.pnp else "NPN"
+        vaf = f" VAF={self.VAF:.6g}" if self.VAF else ""
+        return f".model {name} {kind}(IS={self.IS:.6g} BF={self.BF:.6g} BR=1{vaf})"
+
+
+def hfe_entries(rec: ComponentRecord) -> list[tuple[float | None, Parameter]]:
+    """hFE parameters of a record with their test collector current (A)."""
+    out = []
+    for p in rec.parameters.values():
+        if p.symbol != "hFE" or not p.has_value:
+            continue
+        ic = p.conditions.get("IC")
+        out.append((ic.to_pint().m_as("A") if ic is not None else None, p))
+    return out
+
+
+def bjt_model(
+    rec: ComponentRecord | None,
+    ic_op: float,
+    vbe_assumed: pint.Quantity,
+    beta_ideal: float,
+    log: CalcLog,
+    designator: str,
+) -> tuple[Bjt, list[str]]:
+    """Model of a chosen transistor near the operating current ``ic_op`` (A).
+
+    Without a record (ideal pass) BF is the design value ``beta_ideal``. With a record, BF is
+    the hFE entry tested nearest (log scale) to ``ic_op``: typical value, else the geometric
+    mean of minimum and maximum, else the only limit given. IS makes |VBE| = ``vbe_assumed`` at
+    that test current.
+    """
+    warnings: list[str] = []
+    vbe0 = vbe_assumed.m_as("V")
+    pnp = rec is not None and rec.category.startswith("bjt.pnp")
+    if rec is None:
+        bf, ic_t = beta_ideal, max(ic_op, 1e-6)
+        how = "premissa de projeto (sem componente escolhido)"
+        inputs: dict[str, pint.Quantity] = {}
+        latex = r"\beta_F = \beta_{projeto}"
+    else:
+        entries = hfe_entries(rec)
+        if not entries:
+            raise ValueError(f"{rec.part_number}: datasheet sem hFE")
+        known = [(ic, p) for ic, p in entries if ic is not None]
+        if known and ic_op > 0:
+            ic_k, p = min(known, key=lambda e: abs(math.log((e[0] or 1.0) / ic_op)))
+            ic_t = float(ic_k or ic_op)
+        else:
+            ic_0, p = entries[0]
+            ic_t = float(ic_0 or max(ic_op, 1e-6))
+        if p.typ is not None:
+            bf, how, latex = float(p.typ), "hFE típico do datasheet", r"\beta_F = h_{FE,typ}"
+        elif p.min is not None and p.max is not None:
+            bf = math.sqrt(p.min * p.max)
+            how, latex = (
+                "média geométrica de hFE mín. e máx.",
+                r"\beta_F = \sqrt{h_{FE,min}\,h_{FE,max}}",
+            )
+        else:
+            bf = value(p, ("min", "max"))
+            how, latex = "único limite de hFE do datasheet", r"\beta_F = h_{FE,lim}"
+            warnings.append(f"{designator}: o datasheet só dá um limite de hFE; BF = {bf:g}.")
+        inputs = {
+            k: Q_(v, "")
+            for k, v in (("h_{FE,min}", p.min), ("h_{FE,typ}", p.typ), ("h_{FE,max}", p.max))
+            if v is not None
+        }
+        inputs["I_{C,ensaio}"] = Q_(ic_t, "A").to("mA")
+    log.add(
+        record(
+            f"BF_{designator}",
+            f"Ganho de corrente do modelo de {designator}"
+            + (f" ({rec.part_number})" if rec else ""),
+            latex,
+            output=Q_(bf, ""),
+            inputs=inputs,
+            assumptions=[how, "β constante na faixa de corrente do projeto"],
+            reference=BOYLESTAD,
+        )
+    )
+    is_ = ic_t / (math.exp(vbe0 / VT_300K) - 1.0)
+    log.add(
+        record(
+            f"IS_{designator}",
+            f"Corrente de saturação do modelo de {designator}",
+            r"I_S = \frac{I_{C,ensaio}}{e^{V_{BE}/V_T} - 1}",
+            output=Q_(is_, "A"),
+            inputs={
+                "I_{C,ensaio}": Q_(ic_t, "A").to("mA"),
+                "V_{BE}": vbe_assumed.to("V"),
+                "V_T": Q_(VT_300K, "V"),
+            },
+            assumptions=[
+                "V_BE na corrente de ensaio do hFE é premissa do projeto (o datasheet não dá "
+                "V_BE(on) nessa corrente)",
+                "T = 27 °C, temperatura nominal do SPICE",
+            ],
+            reference=SEDRA,
+        )
+    )
+    return Bjt(IS=is_, BF=bf, pnp=pnp), warnings
+
+
+# ---------------------------------------------------------------------------------- Zener
+
+
+@dataclass(frozen=True)
+class ZenerPwl:
+    VZ: float  # V at IZT
+    IZT: float  # A
+    rz: float  # ohm
+    IZK: float | None  # A
+
+    @property
+    def VZ0(self) -> float:
+        return self.VZ - self.IZT * self.rz
+
+    def spice_subckt(self, name: str = "ZPWL") -> str:
+        """Same piecewise-linear model for the simulator (cathode first: current k → a)."""
+        return "\n".join(
+            [
+                f".subckt {name} k a",
+                f"BZ k a I = (v(k,a) > {self.VZ0:.9g}) ? (v(k,a) - {self.VZ0:.9g}) / "
+                f"{self.rz:.9g} : v(k,a) * 1n",
+                ".ends",
+            ]
+        )
+
+
+def zener_pwl(rec: ComponentRecord, log: CalcLog, designator: str) -> tuple[ZenerPwl, list[str]]:
+    warnings: list[str] = []
+    vz_p = rec.parameters.get("VZ")
+    zzt_p = rec.parameters.get("ZZT")
+    izt_p = rec.parameters.get("IZT")
+    if vz_p is None or not vz_p.has_value or zzt_p is None or not zzt_p.has_value:
+        raise ValueError(f"{rec.part_number}: datasheet sem VZ ou ZZT")
+    vz = Q_(value(vz_p), parse_unit(vz_p.unit)).m_as("V")
+    if izt_p is not None and izt_p.has_value:
+        izt = Q_(value(izt_p), parse_unit(izt_p.unit)).m_as("A")
+    else:
+        izt = vz_p.conditions["IZ"].to_pint().m_as("A")
+    rz = Q_(value(zzt_p, ("typ", "max")), parse_unit(zzt_p.unit)).m_as("ohm")
+    if zzt_p.typ is None:
+        warnings.append(f"{designator}: ZZT do datasheet é máximo; o modelo usa esse valor.")
+    izk_q = quantity(rec, "IZK")
+    pwl = ZenerPwl(vz, izt, rz, izk_q.m_as("A") if izk_q is not None else None)
+    log.add(
+        record(
+            f"VZ0_{designator}",
+            f"Modelo linear por partes de {designator} ({rec.part_number})",
+            r"V_Z = V_{Z0} + r_z I_Z;\quad r_z = Z_{ZT},\; V_{Z0} = V_Z - I_{ZT} Z_{ZT}",
+            output=Q_(pwl.VZ0, "V"),
+            inputs={"V_Z": Q_(vz, "V"), "I_{ZT}": Q_(izt, "A").to("mA"), "Z_{ZT}": Q_(rz, "ohm")},
+            assumptions=[
+                "segunda aproximação do Zener (fonte V_Z0 em série com r_z)",
+                "Z_ZT do datasheet medida em pequenos sinais a 1 kHz, usada como inclinação CC",
+            ],
+            reference=BOYLESTAD,
+        )
+    )
+    return pwl, warnings

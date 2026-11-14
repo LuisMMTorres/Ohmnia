@@ -7,6 +7,7 @@ import datetime as dt
 import functools
 import re
 from pathlib import Path
+from typing import Any
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from pydantic import BaseModel
@@ -14,7 +15,7 @@ from pydantic import BaseModel
 from circuitos.core.units import QuantityModel, format_eng
 from circuitos.design.base import DesignResult, SimComparison
 
-from . import rectifiers
+from . import outputs
 
 _ENV = Environment(
     loader=FileSystemLoader(Path(__file__).parent / "templates"),
@@ -45,93 +46,9 @@ def katex_assets() -> dict[str, str]:
     }
 
 
-LABELS: dict[str, str] = {
-    "Vo": "Tensão média na carga",
-    "Vo_rms": "Tensão eficaz na carga",
-    "dVo": "Ondulação de pico a pico",
-    "Io": "Corrente média na carga",
-    "Io_rms": "Corrente eficaz na carga",
-    "dIo": "Ondulação da corrente de carga",
-    "Vm": "Tensão de pico do secundário",
-    "Vsec": "Tensão eficaz do secundário",
-    "Vll_m": "Tensão de linha de pico do secundário",
-    "Vll_sec": "Tensão de linha eficaz do secundário",
-    "N": "Relação de espiras",
-    "VA_sec": "Potência aparente do secundário",
-    "VA_pri": "Potência aparente do primário",
-    "PF": "Fator de potência",
-    "DPF": "Fator de deslocamento",
-    "THD_i": "THD da corrente de entrada",
-    "ID_avg": "Corrente média por diodo",
-    "ID_rms": "Corrente eficaz por diodo",
-    "ID_pk": "Corrente de pico por diodo",
-    "PIV": "Tensão reversa de pico por diodo",
-    "C": "Capacitor de filtro",
-    "C2": "Segundo capacitor (π)",
-    "L": "Indutor de filtro",
-    "IC_rms": "Corrente eficaz no capacitor",
-    "VC_max": "Tensão máxima no capacitor",
-    "dV_C1": "Ondulação em C1",
-    "IT_avg": "Corrente média por tiristor",
-    "IT_rms": "Corrente eficaz por tiristor",
-    "IT_pk": "Corrente de pico por tiristor",
-    "VDRM": "Tensão direta de bloqueio",
-    "VRRM": "Tensão reversa de bloqueio",
-    "alpha": "Ângulo de disparo nominal",
-    "alpha_min": "α mínimo (rede baixa)",
-    "alpha_max": "α máximo (rede alta)",
-    "beta": "Ângulo de extinção",
-    "mu": "Ângulo de comutação μ",
-    "dV_mu": "Queda por comutação",
-    "I_dev_avg": "Corrente média por dispositivo",
-    "I_dev_rms": "Corrente eficaz por dispositivo",
-    "V_block": "Tensão de bloqueio por dispositivo",
-    "I_line": "Corrente de linha eficaz",
-    "I_pri_ref": "Corrente do primário (referida ao secundário Y)",
-    "Isec": "Corrente eficaz do secundário",
-    "P_out": "Potência na carga",
-    "eff": "Rendimento (diodos)",
-    "R_load": "Resistência equivalente da carga",
-    "Vo_ideal": "Tensão média com dispositivos ideais",
-}
-HIDDEN = {"continuous", "Isec_ac"}
+from .labels import ENUM_LABELS, HIDDEN, LABELS, SPEC_LABELS  # noqa: E402
 
-SPEC_LABELS: dict[str, str] = {
-    "topology": "Topologia",
-    "filter": "Filtro",
-    "Vin": "Tensão do primário",
-    "f": "Frequência",
-    "Vo": "Tensão média desejada",
-    "Io": "Corrente na carga",
-    "ripple_pct": "Ondulação desejada (%)",
-    "L_factor": "Fator do indutor (× Lcrit)",
-    "cap_series": "Série de capacitores",
-    "TA": "Temperatura ambiente",
-    "Rth_cs": "Rθ cápsula-dissipador (premissa)",
-    "freewheel": "Diodo de roda livre",
-    "R": "Resistência da carga",
-    "L": "Indutância da carga",
-    "E": "Força contraeletromotriz",
-    "alpha_nom": "Ângulo de disparo nominal",
-    "vin_tol_pct": "Variação da rede (± %)",
-    "pulses": "Número de pulsos",
-    "controlled": "Controlado",
-    "Ls": "Indutância da fonte por fase",
-}
-
-ENUM_LABELS: dict[str, str] = {
-    "meia_onda": "meia onda",
-    "center_tap": "onda completa com derivação central",
-    "ponte": "onda completa em ponte",
-    "semicontrolada": "ponte semicontrolada",
-    "nenhum": "sem filtro",
-    "C": "capacitivo (C)",
-    "LC": "indutivo-capacitivo (LC)",
-    "pi": "π (C-L-C)",
-    "E3": "E3",
-    "E6": "E6",
-    "E12": "E12",
-}
+__all__ = ["ENUM_LABELS", "HIDDEN", "LABELS", "SPEC_LABELS", "katex_assets", "render"]
 
 QUESTIONS: dict[str, list[str]] = {
     "DM-RET1": [
@@ -173,10 +90,12 @@ def _fmt(q: QuantityModel | None) -> str:
         return f"{q.value:.3g} {q.unit}".replace(".", ",")
 
 
-def _spec_rows(spec: BaseModel) -> list[tuple[str, str]]:
+def _spec_rows(
+    spec: BaseModel, spec_labels: dict[str, str], enum_labels: dict[str, str]
+) -> list[tuple[str, str]]:
     rows = []
     for key, value in spec.model_dump().items():
-        label = SPEC_LABELS.get(key, key)
+        label = spec_labels.get(key, key)
         if isinstance(value, dict) and "value" in value:
             text = _fmt(QuantityModel(**value))
         elif isinstance(value, bool):
@@ -184,19 +103,20 @@ def _spec_rows(spec: BaseModel) -> list[tuple[str, str]]:
         elif isinstance(value, float):
             text = f"{value:g}".replace(".", ",")
         else:
-            text = ENUM_LABELS.get(str(value), str(value).replace("_", " "))
+            text = enum_labels.get(str(value), str(value).replace("_", " "))
         rows.append((label, text))
     return rows
 
 
 def render(
-    module_id: str,
-    title: str,
+    module: Any,
     spec: BaseModel,
     result: DesignResult,
     policy: str,
     sim: list[SimComparison] | None = None,
 ) -> str:
+    module_id, title = module.id, module.title
+    labels = outputs.labels(module)
     sim_by_key: dict[str, QuantityModel] = {}
     if sim:
         for c in sim:
@@ -210,11 +130,11 @@ def render(
             "calc": _fmt(result.summary.get(item.summary_key)),
             "sim": _fmt(sim_by_key.get(item.summary_key)),
         }
-        for item in rectifiers.LAB.get(module_id, [])
+        for item in outputs.lab(module)
         if item.summary_key in result.summary
     ]
     summary_rows = [
-        (LABELS.get(k, k), _fmt(q)) for k, q in result.summary.items() if k not in HIDDEN
+        (labels.get(k, k), _fmt(q)) for k, q in result.summary.items() if k not in HIDDEN
     ]
     alpha = result.summary.get("alpha")
     return _ENV.get_template("report.html.j2").render(
@@ -223,20 +143,21 @@ def render(
         module_id=module_id,
         generated=dt.datetime.now().strftime("%d/%m/%Y %H:%M"),
         policy=policy,
-        spec_rows=_spec_rows(spec),
-        schematic=rectifiers.schematic_svg(spec, result, title),
+        spec_rows=_spec_rows(spec, outputs.spec_labels(module), outputs.enum_labels(module)),
+        schematic=outputs.schematic_svg(module, spec, result, title),
         summary_rows=summary_rows,
         summary_keys=set(result.summary),
         warnings=result.warnings,
         selection=result.selection,
         margins=result.margins,
         thermal=result.thermal,
-        bom=rectifiers.bom(spec, result),
+        bom=outputs.bom(module, spec, result),
         sim=sim,
         steps=result.steps,
         lab=lab,
-        safety=rectifiers.SAFETY,
-        questions=QUESTIONS.get(module_id, []),
+        safety=outputs.safety(module),
+        practice=getattr(module, "practice", None),
+        questions=QUESTIONS.get(module_id) or outputs.questions(module),
         alpha=_fmt(alpha),
         status={"ok": "ok", "atencao": "atenção", "violado": "violado"},
         fmt=_fmt,

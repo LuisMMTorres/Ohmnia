@@ -62,6 +62,9 @@ class Analysis:
     warnings: list[DesignWarning] = field(default_factory=list)
     convergence_keys: Sequence[str] = ()
     traces: dict[str, Trace] = field(default_factory=dict)
+    trace_period: pint.Quantity | None = None
+    bode_f: Trace | None = None
+    bode: dict[str, Trace] = field(default_factory=dict)
 
 
 class TopologyModule(Protocol):
@@ -188,12 +191,19 @@ def run(
         for role in roles:
             if role.designator in locks:
                 continue
+            accepts = getattr(module, "accepts", None)
+            pool = [
+                r for r in catalogue(role.category) if accepts is None or accepts(spec, role, r)
+            ]
             ranked = rank(
-                catalogue(role.category),
+                pool,
                 basis[role.designator],
                 policy,
                 module.required_ratings(role),
             )
+            prefer = getattr(module, "preference", None)
+            if prefer is not None:
+                ranked.sort(key=lambda r: (prefer(spec, role, r.record), r.score))
             candidates[role.designator] = [r.record.part_number for r in ranked[:10]]
             if ranked:
                 chosen[role.designator] = ranked[0].record
@@ -311,6 +321,13 @@ def run(
             converged=True,
             warnings=warnings + analysis.warnings,
             traces=analysis.traces,
+            trace_period=(
+                QuantityModel.from_pint(analysis.trace_period.to("s"))
+                if analysis.trace_period is not None
+                else None
+            ),
+            bode_f=analysis.bode_f,
+            bode=analysis.bode,
         ),
         devices,
     )

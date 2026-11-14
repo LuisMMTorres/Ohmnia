@@ -1,0 +1,29 @@
+category: regulator.positive
+schema_version: "1.0"
+description: Regulador linear de tensão positiva de três terminais (fixo ou ajustável)
+required: [Tj_max, Rth_ja, Rth_jc]
+optional: [VI_reg_min, VO, VO_band, Vref, IAdj, VI_max, VIO_max, VIO_min, Vdo, IQ, IO_max, Ipk, ISC, IL_min, Regline, Regline_pct, Regload, Regload_pct, RR, Tstg_max]
+parameters:
+  VO:          {unit: V, kind: characteristic, description: Tensão de saída nominal (regulador fixo), conditions_required: [TJ]}
+  VO_band:     {unit: V, kind: characteristic, description: Faixa da tensão de saída com variação de linha e carga (regulador fixo)}
+  Vref:        {unit: V, kind: characteristic, description: Tensão de referência entre saída e ajuste (regulador ajustável)}
+  IAdj:        {unit: A, kind: characteristic, description: Corrente no terminal de ajuste}
+  VI_max:      {unit: V, kind: max_rating, description: Tensão de entrada máxima}
+  VIO_max:     {unit: V, kind: max_rating, description: Diferença entrada-saída máxima}
+  VI_reg_min:  {unit: V, kind: characteristic, description: Menor tensão de entrada da faixa em que VO_band é especificada (regulador fixo)}
+  VIO_min:     {unit: V, kind: characteristic, description: Menor diferença entrada-saída da faixa especificada de regulação}
+  Vdo:         {unit: V, kind: characteristic, description: Tensão de queda (dropout), conditions_required: [IO]}
+  IQ:          {unit: A, kind: characteristic, description: Corrente quiescente (de polarização)}
+  IO_max:      {unit: A, kind: max_rating, description: Maior corrente de saída da faixa especificada}
+  Ipk:         {unit: A, kind: characteristic, description: Corrente de saída de pico}
+  ISC:         {unit: A, kind: characteristic, description: Corrente de curto-circuito, conditions_required: [VI]}
+  IL_min:      {unit: A, kind: characteristic, description: Corrente de carga mínima para manter a regulação}
+  Regline:     {unit: V, kind: characteristic, description: Regulação de linha (variação da saída na faixa de entrada indicada)}
+  Regline_pct: {unit: percent/V, kind: characteristic, description: Regulação de linha (% por volt)}
+  Regload:     {unit: V, kind: characteristic, description: Regulação de carga (variação da saída na faixa de corrente indicada)}
+  Regload_pct: {unit: percent, kind: characteristic, description: Regulação de carga (% de VO)}
+  RR:          {unit: dB, kind: characteristic, description: Rejeição de ondulação, conditions_required: [f]}
+  Rth_ja:      {unit: K/W, kind: thermal, description: Resistência térmica junção-ambiente}
+  Rth_jc:      {unit: K/W, kind: thermal, description: Resistência térmica junção-cápsula}
+  Tj_max:      {unit: degC, kind: max_rating, description: Temperatura máxima de junção}
+  Tstg_max:    {unit: degC, kind: max_rating, description: Temperatura máxima de armazenamento}
