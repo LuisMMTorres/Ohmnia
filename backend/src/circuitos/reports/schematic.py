@@ -102,14 +102,17 @@ class Svg:
         if value:
             self.text(x + 12, ym + 11, value, "start", "pn")
 
-    def cap_v(self, x: float, y1: float, y2: float, label: str, value: str = "") -> None:
+    def cap_v(
+        self, x: float, y1: float, y2: float, label: str, value: str = "", plus_bottom: bool = False
+    ) -> None:
+        """Polarised capacitor; the + mark at the top plate unless ``plus_bottom``."""
         ym = (y1 + y2) / 2
         self.line(x, y1, x, ym - 4)
         self.line(x, ym + 4, x, y2)
         self.line(x - 12, ym - 4, x + 12, ym - 4)
         self.parts.append(f'<path d="M{x - 12},{ym + 7} Q{x},{ym + 1} {x + 12},{ym + 7}"/>')
         self.text(x + 16, ym - 4, label)
-        self.text(x - 14, ym - 8, "+", "end")
+        self.text(x - 14, ym + 16 if plus_bottom else ym - 8, "+", "end")
         if value:
             self.text(x + 16, ym + 9, value, "start", "pn")
 

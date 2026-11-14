@@ -551,7 +551,7 @@ class LinModule:
             svg.terminal(30, y, f"{sign}VI", "start")
             svg.wire((34, y), (190, y))
             cin, co, _src = caps(s.kind, neg)
-            svg.cap_v(110, y, y + 90, "Cin", cin)
+            svg.cap_v(110, y, y + 90, "Cin", cin, plus_bottom=neg)
             svg.box(190, y - 22, 90, 44, designator, parts.get(designator, ""))
             svg.wire((280, y), (470, y))
             gx = 235
@@ -565,7 +565,7 @@ class LinModule:
             else:
                 svg.line(gx, y + 22, gx, y + 90)
                 svg.text(gx + 4, y + 36, "GND")
-            svg.cap_v(400, y, y + 90, "Co", co)
+            svg.cap_v(400, y, y + 90, "Co", co, plus_bottom=neg)
             svg.terminal(474, y, f"{sign}{format_eng(sm[f'Vo{sfx}'].to_pint())}", "start")
             svg.wire((110, y + 90), (420, y + 90))
             svg.ground(110, y + 90)
