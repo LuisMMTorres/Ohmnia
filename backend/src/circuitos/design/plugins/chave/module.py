@@ -296,7 +296,7 @@ class ChaveModule:
             ).m_as("ohm")
             m, w = bjt_model(rec, il, s.VBE.to_pint(), s.beta_ideal, log, "Q1")
             warnings += [DesignWarning(code="modelo", message=x) for x in w]
-            ib_on, ic_on, vbe_on, vce_on = ebers_moll_on(m, vcc, rl, vd, r["RB"], rpd)
+            ib_on, ic_on, _vbe_on, vce_on = ebers_moll_on(m, vcc, rl, vd, r["RB"], rpd)
             log.add(
                 record(
                     "VCE_on",

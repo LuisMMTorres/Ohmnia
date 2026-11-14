@@ -141,7 +141,7 @@ class DesignResult(BaseModel):
     bode: dict[str, Trace] = Field(default_factory=dict)
 
 
-Metric = Literal["avg", "rms", "pp", "max", "pf", "thd", "ac_mag", "ac_fl", "ac_fh"]
+Metric = Literal["avg", "rms", "pp", "max", "min", "pf", "thd", "ac_mag", "ac_fl", "ac_fh"]
 
 
 class SimCheck(BaseModel):

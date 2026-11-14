@@ -91,6 +91,8 @@ def measure(check: SimCheck, ss: SteadyState) -> float:
         return float(np.max(x) - np.min(x))
     if check.metric == "max":
         return float(np.max(x))
+    if check.metric == "min":
+        return float(np.min(x))
     if check.metric == "thd":
         h = _harmonics(ss.traces[check.probe])
         return float(np.sqrt(np.sum(h[2:] ** 2)) / h[1] * 100)
