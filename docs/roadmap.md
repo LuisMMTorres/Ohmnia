@@ -86,9 +86,16 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 - 🔶 `GT-P8..P19`: casos propostos, aguardando conferência do usuário
 - ✅ [validacao/fontes-amplificadores.md](validacao/fontes-amplificadores.md), [validacao/catalogo-reguladores.md](validacao/catalogo-reguladores.md), [validacao/catalogo-jfet.md](validacao/catalogo-jfet.md)
 
-## Fase 5 — Ampops, filtros e instrumentação 🚧
+## Fase 5 — Ampops, filtros e instrumentação 🔶 (aguardando aprovação)
 
-- ⏳ `DM-OPA`, `DM-OPNL`, `BV-AMPOP`, `DM-FIL`, `DM-OSC`, `DM-INST`, `BD-AMPOP`
+- ✅ `DM-OPA` (10 configurações), `DM-FIL` (Butterworth, Chebyshev, Bessel, elíptico; Sallen-Key, MFB, KHN, escada LC), `DM-OPNL`, `DM-OSC` (Wien, deslocamento de fase, astável, 555, multivibrador com TBJ), `DM-INST`
+- ✅ `BD-AMPOP` e `BV-AMPOP-*` (VOS, IB, IOS, A0, CMRR, PSRR, GBW, SR, excursão)
+- ✅ Macromodelo de ampop comum ao cálculo e ao ngspice; análise nodal exata com polos; integração Gear nos transitórios com ampop
+- ✅ Catálogo: LM741C, LM358, TL071C (`opamp`), LM311 (`comparator`), NE555 (`timer`)
+- ✅ `AS-*` da Fase 5 (70 casos, 175 grandezas, maior erro 2,19 % na amplitude do oscilador de deslocamento de fase, tol. 5 %)
+- ✅ `PT-OPA-GBW`, `PT-FIL-E24`
+- 🔶 `GT-P20..P32`: casos propostos, aguardando conferência do usuário
+- ✅ [validacao/ampops-filtros-instrumentacao.md](validacao/ampops-filtros-instrumentacao.md), [validacao/catalogo-ampops.md](validacao/catalogo-ampops.md)
 
 ## Fase 6 — Eletrônica de potência chaveada ⏳
 

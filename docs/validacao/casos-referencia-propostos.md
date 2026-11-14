@@ -75,3 +75,31 @@ P8–P10, cap. 7 para P11, cap. 5 e 9 para P12, cap. 2 para P13–P14 e multipli
 Exemplos parecidos no Boylestad & Nashelsky, 11ª ed.: cap. 7 (polarização de FET) para P16–P17 e
 cap. 12 (amplificadores de potência) para P18–P19. Confira o número na sua edição.
 
+
+## Fase 5: casos P20–P32 (`tests/golden/test_gt_fase5.py`)
+
+Os casos de módulo rodam o projeto (sem simulação) com o catálogo revisado e conferem que o resumo
+obedece à fórmula fechada com os valores comerciais escolhidos. Tolerância 1e-9 relativa nas
+fórmulas fechadas; 1e-4 nos elementos tabelados da escada LC (quatro casas); 1e-3 nos tempos do 555
+(limiares do datasheet).
+
+| Caso | Circuito | Grandeza | Valor |
+|---|---|---|---|
+| P20 | Inversor, \|Av\| = 10, R1 = 10 kΩ | R2 / Av / Rp | 100 kΩ / −R2/R1 = −10 / R1∥R2 ≈ 9,09 kΩ |
+| P21 | Não inversor, Av = 10, R1 = 10 kΩ | R2 (E96) / Av | 90,9 kΩ / 1 + R2/R1 = 10,09 |
+| P22 | Inversor com A0 finito | Av | −(R2/R1)/(1 + (1 + R2/R1)/A0) |
+| P23 | Butterworth PB, fp = 1 kHz (−3 dB), 30 dB em 3 kHz | n / Q das seções / atenuação em fs | 4 / 0,5412 e 1,3066 / 38,17 dB |
+| P24 | Chebyshev 1 dB, ωs/ωp = 3, 30 dB | n / atenuação em ωs | 3 / 10 log(1 + ε²·99²) = 34,05 dB |
+| P25 | Escada LC duplamente terminada | g (Butterworth n = 3; Chebyshev 0,5 dB n = 3) | 1, 2, 1; 1,5963, 1,0967, 1,5963 |
+| P26 | Ponte de Wien, 1 kHz, C = 10 nF | R (E96) / f0 / ganho mínimo | 15,8 kΩ / 1/(2πRC) = 1 007 Hz / 3 |
+| P27 | Deslocamento de fase (3 RC), 1 kHz, C = 10 nF | R (E96) / f0 / ganho mínimo | 6,49 kΩ / 1/(2π√6·RC) = 1 001 Hz / 29 |
+| P28 | 555 astável, 1 kHz, D = 60 %, C = 10 nF | tH / tL | ln2·(RA + RB)C / ln2·RB·C |
+| P29 | Multivibrador com TBJ, VCC = 5 V, VBE = 0,65 V, VCE(sat) = 0,1 V | T | 2·RB·C·ln(9,25/4,35) = 2·RB·C·0,7544 |
+| P30 | Schmitt inversor centrado em 0, histerese de 1 V, Vsat = 13,5 V | β / VT± | R2/(R1 + R2) = 0,0369 / ±0,498 V |
+| P31 | Retificador de precisão de onda completa, Vm = 5 V, G = 1 | Vo,méd | 2·Vm·G/π ≈ 3,18 V (com os comerciais: Vm(G+ + G−)/π) |
+| P32 | Amplificador logarítmico com transdiodo, Vin = 1 V, R = 10 kΩ | Iin / inclinação | 100 µA / −VT ln 10 = −59,5 mV por década |
+
+Exemplos parecidos (confira o número na sua edição): Boylestad & Nashelsky, 11ª ed., cap. 10
+(aplicações de ampops) para P20–P22 e P30–P32 e cap. 14 (osciladores) para P26–P29; Sedra & Smith,
+7ª ed., cap. 2 e 18; Williams & Taylor, 4ª ed., cap. 2, para P23–P24; Matthaei, Young & Jones
+(1964), cap. 4, para P25.

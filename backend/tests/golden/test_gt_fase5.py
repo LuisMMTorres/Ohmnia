@@ -98,15 +98,15 @@ def test_p23_butterworth_order_and_q():
 
 def test_p24_chebyshev_order_and_attenuation():
     """Chebyshev 1 dB, ws/wp = 3, As = 30 dB: n = ⌈acosh(√((10^3 − 1)/(10^0,1 − 1)))/acosh 3⌉ = 3;
-    atenuação em ws = 10 log(1 + ε² T3(3)²), T3(3) = 4·27 − 3·3 = 99 → 34,96 dB."""
+    atenuação em ws = 10 log(1 + ε² T3(3)²), T3(3) = 4·27 − 3·3 = 99 → 34,05 dB."""
     eps2 = 10**0.1 - 1
     n = min_order("chebyshev", 3.0, 1.0, 30)
     assert n == math.ceil(math.acosh(math.sqrt((10**3 - 1) / eps2)) / math.acosh(3))
     assert n == 3
     _, p = prototype("chebyshev", 3, 1.0, 30)
-    assert attenuation_db(np.array([]), p, 3.0) == pytest.approx(
-        10 * math.log10(1 + eps2 * 99**2), rel=1e-9
-    )
+    att = attenuation_db(np.array([]), p, 3.0)
+    assert att == pytest.approx(10 * math.log10(1 + eps2 * 99**2), rel=1e-9)
+    assert att == pytest.approx(34.05, abs=0.005)
 
 
 def test_p25_ladder_elements():
