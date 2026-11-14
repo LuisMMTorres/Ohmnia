@@ -1,0 +1,47 @@
+category: mosfet.n
+schema_version: "1.0"
+description: MOSFET de potência canal N (intensificação)
+required: [VDS, ID, RDS(on), VGS(th), Ptot, Qg, Tj_max]
+optional: []
+parameters:
+  VDS:       {unit: V, kind: max_rating, description: Tensão dreno-fonte máxima}
+  VGS:       {unit: V, kind: max_rating, description: Tensão porta-fonte máxima (em módulo)}
+  ID:        {unit: A, kind: max_rating, description: Corrente de dreno contínua, conditions_required: [TC|TA]}
+  IDM:       {unit: A, kind: max_rating, description: Corrente de dreno pulsada}
+  Ptot:      {unit: W, kind: max_rating, description: Dissipação máxima, conditions_required: [TC|TA]}
+  Ptot_derating: {unit: W/K, kind: thermal, description: Fator de redução linear da dissipação}
+  EAS:       {unit: J, kind: max_rating, description: Energia de avalanche, pulso único}
+  IAR:       {unit: A, kind: max_rating, description: Corrente de avalanche repetitiva}
+  EAR:       {unit: J, kind: max_rating, description: Energia de avalanche repetitiva}
+  dv/dt:     {unit: V/s, kind: max_rating, description: dv/dt máximo na recuperação do diodo intrínseco}
+  Tj_max:    {unit: degC, kind: max_rating, description: Temperatura máxima de junção}
+  Tj_min:    {unit: degC, kind: max_rating, description: Temperatura mínima de operação da junção}
+  Tstg_max:  {unit: degC, kind: max_rating, description: Temperatura máxima de armazenamento}
+  Rth_ja:    {unit: K/W, kind: thermal, description: Resistência térmica junção-ambiente}
+  Rth_jc:    {unit: K/W, kind: thermal, description: Resistência térmica junção-cápsula}
+  Rth_cs:    {unit: K/W, kind: thermal, description: Resistência térmica cápsula-dissipador}
+  V(BR)DSS:  {unit: V, kind: characteristic, description: Tensão de ruptura dreno-fonte, conditions_required: [ID]}
+  dVDS/dT:   {unit: V/K, kind: characteristic, description: Coeficiente de temperatura da ruptura}
+  VGS(th):   {unit: V, kind: characteristic, description: Tensão de limiar porta-fonte, conditions_required: [ID]}
+  IGSS:      {unit: A, kind: characteristic, description: Fuga de porta, conditions_required: [VGS]}
+  IDSS:      {unit: A, kind: characteristic, description: Corrente de dreno com VGS = 0, conditions_required: [VDS]}
+  RDS(on):   {unit: ohm, kind: characteristic, description: Resistência dreno-fonte em condução, conditions_required: [VGS, ID]}
+  gfs:       {unit: S, kind: characteristic, description: Transcondutância direta, conditions_required: [VDS, ID]}
+  Ciss:      {unit: F, kind: characteristic, description: Capacitância de entrada, conditions_required: [VDS]}
+  Coss:      {unit: F, kind: characteristic, description: Capacitância de saída, conditions_required: [VDS]}
+  Crss:      {unit: F, kind: characteristic, description: Capacitância de transferência reversa, conditions_required: [VDS]}
+  Qg:        {unit: C, kind: characteristic, description: Carga total de porta, conditions_required: [VGS, ID]}
+  Qgs:       {unit: C, kind: characteristic, description: Carga porta-fonte, conditions_required: [VGS, ID]}
+  Qgd:       {unit: C, kind: characteristic, description: Carga porta-dreno (Miller), conditions_required: [VGS, ID]}
+  td(on):    {unit: s, kind: characteristic, description: Atraso na entrada em condução, conditions_required: [ID]}
+  tr:        {unit: s, kind: characteristic, description: Tempo de subida, conditions_required: [ID]}
+  td(off):   {unit: s, kind: characteristic, description: Atraso no bloqueio, conditions_required: [ID]}
+  tf:        {unit: s, kind: characteristic, description: Tempo de descida, conditions_required: [ID]}
+  Rg:        {unit: ohm, kind: characteristic, description: Resistência interna de porta}
+  LD:        {unit: H, kind: characteristic, description: Indutância interna de dreno}
+  LS:        {unit: H, kind: characteristic, description: Indutância interna de fonte}
+  IS:        {unit: A, kind: max_rating, description: Corrente contínua do diodo intrínseco}
+  ISM:       {unit: A, kind: max_rating, description: Corrente pulsada do diodo intrínseco}
+  VSD:       {unit: V, kind: characteristic, description: Tensão direta do diodo intrínseco, conditions_required: [IS]}
+  trr:       {unit: s, kind: characteristic, description: Tempo de recuperação reversa do diodo intrínseco, conditions_required: [IF]}
+  Qrr:       {unit: C, kind: characteristic, description: Carga de recuperação reversa do diodo intrínseco, conditions_required: [IF]}

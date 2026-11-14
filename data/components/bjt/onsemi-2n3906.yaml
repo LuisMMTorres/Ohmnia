@@ -1,0 +1,389 @@
+# Fonte: onsemi, 2N3906/D, Rev. 4, February 2010.
+part_number: 2N3906
+category: bjt.pnp
+schema_version: '1.0'
+manufacturer: onsemi
+package: TO-92, case 29
+lifecycle: desconhecido
+notes:
+- 'PNP: tensões e correntes em módulo (o datasheet usa sinal negativo).'
+datasheets:
+- id: onsemi-2n3906
+  manufacturer: onsemi
+  document_number: 2N3906/D
+  revision: Rev. 4, February 2010
+  url: https://www.onsemi.com/pdf/datasheet/2n3906-d.pdf
+  sha256: 257d8eec1ed9eaf228f2f045d43071841e2ab9023d76c15ea9d8020554366226
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VCEO:
+    max: 40
+    unit: V
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — collector-emitter voltage
+  VCBO:
+    max: 40
+    unit: V
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — collector-base voltage
+  VEBO:
+    max: 5.0
+    unit: V
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — emitter-base voltage
+  IC:
+    max: 200
+    unit: mA
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — collector current continuous
+  Ptot:
+    max: 625
+    unit: mW
+    conditions:
+      TA: 25 degC
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — total device dissipation @ TA = 25 °C
+  Ptot_derating:
+    max: 5.0
+    unit: mW/K
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — total device dissipation @ TA = 25 °C — derate above 25 °C
+  Tj_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — operating and storage junction temperature range
+  Tj_min:
+    min: -55
+    unit: degC
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — operating and storage junction temperature range
+  Tstg_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — operating and storage junction temperature range
+  Rth_ja:
+    max: 200
+    unit: K/W
+    status: extraido
+    source:
+      page: 1
+      location: Thermal characteristics — RθJA
+  Rth_jc:
+    max: 83.3
+    unit: K/W
+    status: extraido
+    source:
+      page: 1
+      location: Thermal characteristics — RθJC
+  V(BR)CEO:
+    min: 40
+    unit: V
+    conditions:
+      IC: 1.0 mA
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — collector-emitter breakdown voltage
+  V(BR)CBO:
+    min: 40
+    unit: V
+    conditions:
+      IC: 10 uA
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — collector-base breakdown voltage
+  V(BR)EBO:
+    min: 5.0
+    unit: V
+    conditions:
+      IE: 10 uA
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — emitter-base breakdown voltage
+  IBL:
+    max: 50
+    unit: nA
+    conditions:
+      VCE: 30 V
+      VEB: 3 V
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — base cutoff current
+  ICEX:
+    max: 50
+    unit: nA
+    conditions:
+      VCE: 30 V
+      VEB: 3 V
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — collector cutoff current
+  hFE@0.1mA:
+    min: 60
+    unit: dimensionless
+    conditions:
+      IC: 0.1 mA
+      VCE: 1.0 V
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — DC current gain
+  hFE@1mA:
+    min: 80
+    unit: dimensionless
+    conditions:
+      IC: 1.0 mA
+      VCE: 1.0 V
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — DC current gain
+  hFE:
+    min: 100
+    max: 300
+    unit: dimensionless
+    conditions:
+      IC: 10 mA
+      VCE: 1.0 V
+    note: 'Teste pulsado: 300 µs, ciclo ≤ 2 %'
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — DC current gain
+  hFE@50mA:
+    min: 60
+    unit: dimensionless
+    conditions:
+      IC: 50 mA
+      VCE: 1.0 V
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — DC current gain
+  hFE@100mA:
+    min: 30
+    unit: dimensionless
+    conditions:
+      IC: 100 mA
+      VCE: 1.0 V
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — DC current gain
+  VCE(sat):
+    max: 0.25
+    unit: V
+    conditions:
+      IC: 10 mA
+      IB: 1.0 mA
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — collector-emitter saturation voltage
+  VCE(sat)@50mA:
+    max: 0.4
+    unit: V
+    conditions:
+      IC: 50 mA
+      IB: 5.0 mA
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — collector-emitter saturation voltage
+  VBE(sat):
+    min: 0.65
+    max: 0.85
+    unit: V
+    conditions:
+      IC: 10 mA
+      IB: 1.0 mA
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — base-emitter saturation voltage
+  VBE(sat)@50mA:
+    max: 0.95
+    unit: V
+    conditions:
+      IC: 50 mA
+      IB: 5.0 mA
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — base-emitter saturation voltage
+  fT:
+    min: 250
+    unit: MHz
+    conditions:
+      IC: 10 mA
+      VCE: 20 V
+      f: 100 MHz
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — current-gain-bandwidth product
+  Cobo:
+    max: 4.5
+    unit: pF
+    conditions:
+      VCB: 5.0 V
+      f: 1.0 MHz
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — output capacitance
+  Cibo:
+    max: 10
+    unit: pF
+    conditions:
+      VEB: 0.5 V
+      f: 1.0 MHz
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — input capacitance
+  NF:
+    max: 4.0
+    unit: dB
+    conditions:
+      IC: 100 uA
+      VCE: 5.0 V
+      RS: 1.0 kohm
+    note: f = 1,0 kHz
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — noise figure
+  td:
+    max: 35
+    unit: ns
+    conditions:
+      IC: 10 mA
+      IB1: 1.0 mA
+      VCC: 3.0 V
+    status: extraido
+    source:
+      page: 2
+      location: Switching characteristics — delay time
+  tr:
+    max: 35
+    unit: ns
+    conditions:
+      IC: 10 mA
+      IB1: 1.0 mA
+      VCC: 3.0 V
+    status: extraido
+    source:
+      page: 2
+      location: Switching characteristics — rise time
+  ts:
+    max: 225
+    unit: ns
+    conditions:
+      IC: 10 mA
+      IB1: 1.0 mA
+      IB2: 1.0 mA
+      VCC: 3.0 V
+    status: extraido
+    source:
+      page: 2
+      location: Switching characteristics — storage time
+  tf:
+    max: 75
+    unit: ns
+    conditions:
+      IC: 10 mA
+      IB1: 1.0 mA
+      IB2: 1.0 mA
+      VCC: 3.0 V
+    status: extraido
+    source:
+      page: 2
+      location: Switching characteristics — fall time
+  Ptot@60C:
+    max: 250
+    unit: mW
+    conditions:
+      TA: 60 degC
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — total power dissipation @ TA = 60 °C
+  Ptot@TC:
+    max: 1.5
+    unit: W
+    conditions:
+      TC: 25 degC
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — total device dissipation @ TC = 25 °C
+  Ptot_derating@TC:
+    max: 12
+    unit: mW/K
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — derate above 25 °C (TC)
+  hie:
+    min: 2.0
+    max: 12
+    unit: kohm
+    conditions:
+      IC: 1.0 mA
+      VCE: 10 V
+      f: 1.0 kHz
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — input impedance
+  hfe:
+    min: 100
+    max: 400
+    unit: dimensionless
+    conditions:
+      IC: 1.0 mA
+      VCE: 10 V
+      f: 1.0 kHz
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — small-signal current gain
+  hoe:
+    min: 3.0
+    max: 60
+    unit: uS
+    conditions:
+      IC: 1.0 mA
+      VCE: 10 V
+      f: 1.0 kHz
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — output admittance

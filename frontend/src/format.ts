@@ -26,6 +26,10 @@ const UNIT_SYMBOLS: Record<string, string> = {
   "A**2*s": "A²s",
   "A/us": "A/µs",
   percent: "%",
+  dimensionless: "",
+  kohm: "kΩ",
+  uS: "µS",
+  "A/V**2": "A/V²",
   "percent/K": "%/K",
   "W/K": "W/K",
 };

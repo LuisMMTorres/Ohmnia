@@ -1,0 +1,782 @@
+# Fonte: onsemi, BC546/D, Rev. 8, August 2021.
+family: BC546–BC548
+category: bjt.npn
+schema_version: '1.0'
+manufacturer: onsemi
+package: TO-92, case 29
+lifecycle: obsoleto
+notes:
+- 'O datasheet traz a marca d''água OBSOLETE: não recomendado para novos projetos, mas comum em laboratório.'
+- Grupos de ganho A, B e C conforme o sufixo; as linhas de 10 µA e 100 mA do grupo C citam só o BC548C.
+datasheets:
+- id: onsemi-bc546
+  manufacturer: onsemi
+  document_number: BC546/D
+  revision: Rev. 8, August 2021
+  url: https://www.onsemi.com/pdf/datasheet/bc546-d.pdf
+  sha256: 55620e4787cc8d87e60d2448732624d77691a1f97657365ae0637b07490e4167
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VEBO:
+    max: 6.0
+    unit: V
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — emitter-base voltage
+  IC:
+    max: 100
+    unit: mA
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — collector current continuous
+  Ptot:
+    max: 625
+    unit: mW
+    conditions:
+      TA: 25 degC
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — total device dissipation @ TA = 25 °C
+  Ptot_derating:
+    max: 5.0
+    unit: mW/K
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — derate above 25 °C (TA)
+  Ptot@TC:
+    max: 1.5
+    unit: W
+    conditions:
+      TC: 25 degC
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — total device dissipation @ TC = 25 °C
+  Ptot_derating@TC:
+    max: 12
+    unit: mW/K
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — derate above 25 °C (TC)
+  Tj_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — operating and storage junction temperature range
+  Tj_min:
+    min: -55
+    unit: degC
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — operating and storage junction temperature range
+  Tstg_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — operating and storage junction temperature range
+  Rth_ja:
+    max: 200
+    unit: K/W
+    status: extraido
+    source:
+      page: 1
+      location: Thermal characteristics — RθJA
+  Rth_jc:
+    max: 83.3
+    unit: K/W
+    status: extraido
+    source:
+      page: 1
+      location: Thermal characteristics — RθJC
+  ICES@125C:
+    max: 4.0
+    unit: uA
+    conditions:
+      VCE: 30 V
+      TA: 125 degC
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — collector cutoff current (VCE = 30 V, TA = 125 °C)
+  VCE(sat):
+    typ: 0.09
+    max: 0.25
+    unit: V
+    conditions:
+      IC: 10 mA
+      IB: 0.5 mA
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — collector-emitter saturation voltage
+  VCE(sat)@100mA:
+    typ: 0.2
+    max: 0.6
+    unit: V
+    conditions:
+      IC: 100 mA
+      IB: 5.0 mA
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — collector-emitter saturation voltage
+  VBE(sat):
+    typ: 0.7
+    unit: V
+    conditions:
+      IC: 10 mA
+      IB: 0.5 mA
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — base-emitter saturation voltage
+  VBE(on):
+    min: 0.55
+    max: 0.7
+    unit: V
+    conditions:
+      IC: 2.0 mA
+      VCE: 5.0 V
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — base-emitter on voltage
+  VBE(on)@10mA:
+    max: 0.77
+    unit: V
+    conditions:
+      IC: 10 mA
+      VCE: 5.0 V
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — base-emitter on voltage
+  fT:
+    min: 150
+    typ: 300
+    unit: MHz
+    conditions:
+      IC: 10 mA
+      VCE: 5.0 V
+      f: 100 MHz
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — current-gain-bandwidth product
+  Cobo:
+    typ: 1.7
+    max: 4.5
+    unit: pF
+    conditions:
+      VCB: 10 V
+      f: 1.0 MHz
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — output capacitance
+  Cibo:
+    typ: 10
+    unit: pF
+    conditions:
+      VEB: 0.5 V
+      f: 1.0 MHz
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — input capacitance
+  NF:
+    typ: 2.0
+    max: 10
+    unit: dB
+    conditions:
+      IC: 0.2 mA
+      VCE: 5.0 V
+      RS: 2 kohm
+      f: 1.0 kHz
+    note: Δf = 200 Hz
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — noise figure
+per_part: {}
+parts:
+  BC546B:
+    VCEO:
+      max: 65
+      unit: V
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — collector-emitter voltage, BC546
+    VCBO:
+      max: 80
+      unit: V
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — collector-base voltage, BC546
+    V(BR)CEO:
+      min: 65
+      unit: V
+      conditions:
+        IC: 1.0 mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — collector-emitter breakdown voltage, BC546
+    V(BR)CBO:
+      min: 80
+      unit: V
+      conditions:
+        IC: 100 uA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — collector-base breakdown voltage, BC546
+    V(BR)EBO:
+      min: 6.0
+      unit: V
+      conditions:
+        IE: 10 uA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — emitter-base breakdown voltage, BC546
+    ICES:
+      typ: 0.2
+      max: 15
+      unit: nA
+      conditions:
+        VCE: 70 V
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — collector cutoff current, BC546
+    hFE:
+      min: 200
+      typ: 290
+      max: 450
+      unit: dimensionless
+      conditions:
+        IC: 2.0 mA
+        VCE: 5.0 V
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — DC current gain, IC = 2.0 mA, grupo B
+    hfe:
+      min: 240
+      typ: 330
+      max: 500
+      unit: dimensionless
+      conditions:
+        IC: 2.0 mA
+        VCE: 5.0 V
+        f: 1.0 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — small-signal current gain, grupo B
+    hFE@10uA:
+      typ: 150
+      unit: dimensionless
+      conditions:
+        IC: 10 uA
+        VCE: 5.0 V
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — DC current gain, IC = 10 µA, grupo B
+    hFE@100mA:
+      typ: 180
+      unit: dimensionless
+      conditions:
+        IC: 100 mA
+        VCE: 5.0 V
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — DC current gain, IC = 100 mA, grupo B
+  BC547A:
+    VCEO:
+      max: 45
+      unit: V
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — collector-emitter voltage, BC547
+    VCBO:
+      max: 50
+      unit: V
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — collector-base voltage, BC547
+    V(BR)CEO:
+      min: 45
+      unit: V
+      conditions:
+        IC: 1.0 mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — collector-emitter breakdown voltage, BC547
+    V(BR)CBO:
+      min: 50
+      unit: V
+      conditions:
+        IC: 100 uA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — collector-base breakdown voltage, BC547
+    V(BR)EBO:
+      min: 6.0
+      unit: V
+      conditions:
+        IE: 10 uA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — emitter-base breakdown voltage, BC547
+    ICES:
+      typ: 0.2
+      max: 15
+      unit: nA
+      conditions:
+        VCE: 50 V
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — collector cutoff current, BC547
+    hFE:
+      min: 110
+      typ: 180
+      max: 220
+      unit: dimensionless
+      conditions:
+        IC: 2.0 mA
+        VCE: 5.0 V
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — DC current gain, IC = 2.0 mA, grupo A
+    hfe:
+      min: 125
+      typ: 220
+      max: 260
+      unit: dimensionless
+      conditions:
+        IC: 2.0 mA
+        VCE: 5.0 V
+        f: 1.0 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — small-signal current gain, grupo A
+    hFE@10uA:
+      typ: 90
+      unit: dimensionless
+      conditions:
+        IC: 10 uA
+        VCE: 5.0 V
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — DC current gain, IC = 10 µA, grupo A
+    hFE@100mA:
+      typ: 120
+      unit: dimensionless
+      conditions:
+        IC: 100 mA
+        VCE: 5.0 V
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — DC current gain, IC = 100 mA, grupo A
+  BC547B:
+    VCEO:
+      max: 45
+      unit: V
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — collector-emitter voltage, BC547
+    VCBO:
+      max: 50
+      unit: V
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — collector-base voltage, BC547
+    V(BR)CEO:
+      min: 45
+      unit: V
+      conditions:
+        IC: 1.0 mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — collector-emitter breakdown voltage, BC547
+    V(BR)CBO:
+      min: 50
+      unit: V
+      conditions:
+        IC: 100 uA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — collector-base breakdown voltage, BC547
+    V(BR)EBO:
+      min: 6.0
+      unit: V
+      conditions:
+        IE: 10 uA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — emitter-base breakdown voltage, BC547
+    ICES:
+      typ: 0.2
+      max: 15
+      unit: nA
+      conditions:
+        VCE: 50 V
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — collector cutoff current, BC547
+    hFE:
+      min: 200
+      typ: 290
+      max: 450
+      unit: dimensionless
+      conditions:
+        IC: 2.0 mA
+        VCE: 5.0 V
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — DC current gain, IC = 2.0 mA, grupo B
+    hfe:
+      min: 240
+      typ: 330
+      max: 500
+      unit: dimensionless
+      conditions:
+        IC: 2.0 mA
+        VCE: 5.0 V
+        f: 1.0 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — small-signal current gain, grupo B
+    hFE@10uA:
+      typ: 150
+      unit: dimensionless
+      conditions:
+        IC: 10 uA
+        VCE: 5.0 V
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — DC current gain, IC = 10 µA, grupo B
+    hFE@100mA:
+      typ: 180
+      unit: dimensionless
+      conditions:
+        IC: 100 mA
+        VCE: 5.0 V
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — DC current gain, IC = 100 mA, grupo B
+  BC547C:
+    VCEO:
+      max: 45
+      unit: V
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — collector-emitter voltage, BC547
+    VCBO:
+      max: 50
+      unit: V
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — collector-base voltage, BC547
+    V(BR)CEO:
+      min: 45
+      unit: V
+      conditions:
+        IC: 1.0 mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — collector-emitter breakdown voltage, BC547
+    V(BR)CBO:
+      min: 50
+      unit: V
+      conditions:
+        IC: 100 uA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — collector-base breakdown voltage, BC547
+    V(BR)EBO:
+      min: 6.0
+      unit: V
+      conditions:
+        IE: 10 uA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — emitter-base breakdown voltage, BC547
+    ICES:
+      typ: 0.2
+      max: 15
+      unit: nA
+      conditions:
+        VCE: 50 V
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — collector cutoff current, BC547
+    hFE:
+      min: 420
+      typ: 520
+      max: 800
+      unit: dimensionless
+      conditions:
+        IC: 2.0 mA
+        VCE: 5.0 V
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — DC current gain, IC = 2.0 mA, grupo C
+    hfe:
+      min: 450
+      typ: 600
+      max: 900
+      unit: dimensionless
+      conditions:
+        IC: 2.0 mA
+        VCE: 5.0 V
+        f: 1.0 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — small-signal current gain, grupo C
+  BC548B:
+    VCEO:
+      max: 30
+      unit: V
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — collector-emitter voltage, BC548
+    VCBO:
+      max: 30
+      unit: V
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — collector-base voltage, BC548
+    V(BR)CEO:
+      min: 30
+      unit: V
+      conditions:
+        IC: 1.0 mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — collector-emitter breakdown voltage, BC548
+    V(BR)CBO:
+      min: 30
+      unit: V
+      conditions:
+        IC: 100 uA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — collector-base breakdown voltage, BC548
+    V(BR)EBO:
+      min: 6.0
+      unit: V
+      conditions:
+        IE: 10 uA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — emitter-base breakdown voltage, BC548
+    ICES:
+      typ: 0.2
+      max: 15
+      unit: nA
+      conditions:
+        VCE: 35 V
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — collector cutoff current, BC548
+    hFE:
+      min: 200
+      typ: 290
+      max: 450
+      unit: dimensionless
+      conditions:
+        IC: 2.0 mA
+        VCE: 5.0 V
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — DC current gain, IC = 2.0 mA, grupo B
+    hfe:
+      min: 240
+      typ: 330
+      max: 500
+      unit: dimensionless
+      conditions:
+        IC: 2.0 mA
+        VCE: 5.0 V
+        f: 1.0 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — small-signal current gain, grupo B
+    hFE@10uA:
+      typ: 150
+      unit: dimensionless
+      conditions:
+        IC: 10 uA
+        VCE: 5.0 V
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — DC current gain, IC = 10 µA, grupo B
+    hFE@100mA:
+      typ: 180
+      unit: dimensionless
+      conditions:
+        IC: 100 mA
+        VCE: 5.0 V
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — DC current gain, IC = 100 mA, grupo B
+  BC548C:
+    VCEO:
+      max: 30
+      unit: V
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — collector-emitter voltage, BC548
+    VCBO:
+      max: 30
+      unit: V
+      status: extraido
+      source:
+        page: 1
+        location: Maximum ratings — collector-base voltage, BC548
+    V(BR)CEO:
+      min: 30
+      unit: V
+      conditions:
+        IC: 1.0 mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — collector-emitter breakdown voltage, BC548
+    V(BR)CBO:
+      min: 30
+      unit: V
+      conditions:
+        IC: 100 uA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — collector-base breakdown voltage, BC548
+    V(BR)EBO:
+      min: 6.0
+      unit: V
+      conditions:
+        IE: 10 uA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — emitter-base breakdown voltage, BC548
+    ICES:
+      typ: 0.2
+      max: 15
+      unit: nA
+      conditions:
+        VCE: 35 V
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — collector cutoff current, BC548
+    hFE:
+      min: 420
+      typ: 520
+      max: 800
+      unit: dimensionless
+      conditions:
+        IC: 2.0 mA
+        VCE: 5.0 V
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — DC current gain, IC = 2.0 mA, grupo C
+    hfe:
+      min: 450
+      typ: 600
+      max: 900
+      unit: dimensionless
+      conditions:
+        IC: 2.0 mA
+        VCE: 5.0 V
+        f: 1.0 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — small-signal current gain, grupo C
+    hFE@10uA:
+      typ: 270
+      unit: dimensionless
+      conditions:
+        IC: 10 uA
+        VCE: 5.0 V
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — DC current gain, IC = 10 µA, grupo C
+    hFE@100mA:
+      typ: 300
+      unit: dimensionless
+      conditions:
+        IC: 100 mA
+        VCE: 5.0 V
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — DC current gain, IC = 100 mA, grupo C

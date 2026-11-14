@@ -68,3 +68,50 @@ def test_zener_bench_rejects_other_category(client):
     comp = find(client, "diode.rectifier", "1N4007")
     r = client.post("/api/v1/devices/zener/iv", json={"component_id": comp["id"]})
     assert r.status_code == 422
+
+
+def test_bjt_bench_fit_and_markers(client):
+    comp = find(client, "bjt", "2N3904")
+    body = client.post(
+        "/api/v1/devices/bjt/output", json={"component_id": comp["id"], "fit": True}
+    ).json()
+    assert len(body["curves"]) == 5
+    assert body["steps"][0]["id"] == "BF_fit"
+    # 2N3904 hFE at 10 mA has min 100 and max 300 → geometric mean
+    assert body["model"]["BF"] == pytest.approx((100 * 300) ** 0.5)
+    assert any(m["key"] == "VCE(sat)" for m in body["markers"])
+
+
+def test_bjt_bench_pnp_warning(client):
+    comp = find(client, "bjt", "2N3906")
+    body = client.post("/api/v1/devices/bjt/output", json={"component_id": comp["id"]}).json()
+    assert any("PNP" in w for w in body["warnings"])
+
+
+def test_mosfet_bench_fit(client):
+    comp = find(client, "mosfet", "IRF540")
+    body = client.post(
+        "/api/v1/devices/mosfet/output", json={"component_id": comp["id"], "fit": True}
+    ).json()
+    assert [s["id"] for s in body["steps"]][:2] == ["VT_fit", "KP_fit"]
+    assert body["model"]["VTO"]["value"] == pytest.approx(3.0)
+    assert body["markers"][0]["key"] == "RDS(on)"
+    assert len(body["curves"]) == 5
+
+
+def test_transistor_bench_rejects_wrong_category(client):
+    comp = find(client, "diode.rectifier", "1N4007")
+    assert (
+        client.post("/api/v1/devices/bjt/output", json={"component_id": comp["id"]}).status_code
+        == 422
+    )
+    assert (
+        client.post("/api/v1/devices/mosfet/output", json={"component_id": comp["id"]}).status_code
+        == 422
+    )
+    assert (
+        client.post(
+            "/api/v1/devices/mosfet/output", json={"vds_max": {"value": -1, "unit": "V"}}
+        ).status_code
+        == 422
+    )

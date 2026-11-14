@@ -1,0 +1,5 @@
+category: bjt.pnp
+extends: bjt.npn
+schema_version: "1.0"
+description: Transistor bipolar PNP (tensões e correntes em módulo)
+required: [VCEO, IC, Ptot, hFE, VCE(sat), Tj_max]

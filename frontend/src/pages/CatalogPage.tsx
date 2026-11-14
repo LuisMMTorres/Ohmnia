@@ -9,6 +9,9 @@ const CATEGORY_LABEL: Record<string, string> = {
   "diode.signal": "Diodo de sinal",
   "diode.zener": "Diodo Zener",
   "bridge.single_phase": "Ponte retificadora monofásica",
+  "bjt.npn": "Transistor bipolar NPN",
+  "bjt.pnp": "Transistor bipolar PNP",
+  "mosfet.n": "MOSFET canal N",
 };
 
 export const REVIEW_LABEL: Record<string, string> = {

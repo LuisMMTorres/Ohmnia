@@ -283,9 +283,37 @@ export type ZenerBenchOut = Omit<DiodeBenchOut, "spice_model"> & {
   spice_model: string;
 };
 
+export interface CurvesOut {
+  x: Vector;
+  curves: Record<string, Vector>;
+  markers: DiodeBenchOut["markers"];
+  steps: CalcStep[];
+  model: Record<string, Quantity | number>;
+  spice_model: string;
+  warnings: string[];
+}
+export interface BjtBenchIn {
+  model: { IS: Quantity; BF: number; BR: number; VAF: Quantity };
+  ib: Quantity[];
+  vce_max: Quantity;
+  component_id?: string | null;
+  fit?: boolean;
+}
+export interface MosfetBenchIn {
+  model: { VTO: Quantity; KP: Quantity; LAMBDA: Quantity };
+  vgs: Quantity[];
+  vds_max: Quantity;
+  component_id?: string | null;
+  fit?: boolean;
+}
+
 export const bench = {
   diode: (body: DiodeBenchIn) =>
     request<DiodeBenchOut>("/devices/diode/iv", { method: "POST", body: JSON.stringify(body) }),
   zener: (body: ZenerBenchIn) =>
     request<ZenerBenchOut>("/devices/zener/iv", { method: "POST", body: JSON.stringify(body) }),
+  bjt: (body: BjtBenchIn) =>
+    request<CurvesOut>("/devices/bjt/output", { method: "POST", body: JSON.stringify(body) }),
+  mosfet: (body: MosfetBenchIn) =>
+    request<CurvesOut>("/devices/mosfet/output", { method: "POST", body: JSON.stringify(body) }),
 };

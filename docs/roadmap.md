@@ -49,11 +49,13 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 - ✅ Armazenamento de datasheets por SHA-256, download sob demanda, páginas renderizadas
 - ✅ Diodos: 28 componentes (retificadores, rápidos, Schottky, sinal), cada valor conferido na página citada (`docs/validacao/catalogo-diodos.md`)
 - ✅ Zener e pontes monofásicas: 107 componentes (`docs/validacao/catalogo-zener-pontes.md`)
-- ⏳ Catálogo: TBJ, MOSFET, SCR/TRIAC/DIAC
+- ✅ Transistores: 31 TBJ e 2 MOSFET (`docs/validacao/catalogo-transistores.md`)
+- ⏳ Catálogo: SCR/TRIAC/DIAC
 - ⏳ Dissipadores e núcleos (catálogo a definir)
 - ✅ Bancada `BD-DIODO` (curva I×V com temperatura, `AS-DIODO-01`)
 - ✅ Bancada `BD-ZENER` (curva reversa, ajuste ao datasheet, `AS-ZENER-01`)
-- ⏳ Bancadas `BD-PN`, `BD-TBJ`, `BD-FET`, `BD-TIR`
+- ✅ Bancadas `BD-TBJ` e `BD-FET` (curvas de saída, ajuste ao datasheet, `AS-TBJ-01`, `AS-FET-01`)
+- ⏳ Bancadas `BD-PN`, `BD-TIR`
 - ⏳ Sobreposição de curvas digitalizadas do datasheet; testes `DS-*`
 - ⏳ `docs/validacao/bancada.md`
 

@@ -1,0 +1,391 @@
+# Fonte: Vishay Siliconix, documento 91291, S21-1045-Rev. C, 25-Oct-2021.
+part_number: IRFZ44
+category: mosfet.n
+schema_version: '1.0'
+manufacturer: Vishay Siliconix
+package: TO-220AB
+lifecycle: ativo
+notes:
+- 'Pedido sem chumbo: sufixo PbF.'
+datasheets:
+- id: vishay-91291
+  manufacturer: Vishay
+  document_number: '91291'
+  revision: S21-1045-Rev. C, 25-Oct-2021
+  url: https://www.vishay.com/docs/91291/irfz44.pdf
+  sha256: 9e8fa18bdd78190a41fa07dc3d4258ac023a4d1f5820e1eeddb4259f2a157dc0
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VDS:
+    max: 60
+    unit: V
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings — drain-source voltage
+  VGS:
+    max: 20
+    unit: V
+    note: 'Limite simétrico: ± 20 V'
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings — gate-source voltage (± 20 V)
+  ID:
+    max: 50
+    unit: A
+    conditions:
+      TC: 25 degC
+      VGS: 10 V
+    note: 'Nota e: limitada pelo encapsulamento (corrente do die = 51 A)'
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings — continuous drain current, VGS at 10 V, TC = 25 °C
+  ID@100C:
+    max: 36
+    unit: A
+    conditions:
+      TC: 100 degC
+      VGS: 10 V
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings — continuous drain current, VGS at 10 V, TC = 100 °C
+  IDM:
+    max: 200
+    unit: A
+    note: 'Nota a: repetitivo; largura limitada pela temperatura de junção máxima'
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings — pulsed drain current (a)
+  Ptot_derating:
+    max: 1.0
+    unit: W/K
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings — linear derating factor
+  EAS:
+    max: 100
+    unit: mJ
+    note: 'Nota b: VDD = 25 V, TJ inicial 25 °C, L = 44 µH, Rg = 25 Ω, IAS = 51 A'
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings — single pulse avalanche energy (b)
+  Ptot:
+    max: 150
+    unit: W
+    conditions:
+      TC: 25 degC
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings — maximum power dissipation, TC = 25 °C
+  dv/dt:
+    max: 4.5
+    unit: V/ns
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings — peak diode recovery dv/dt (c)
+  Tj_max:
+    max: 175
+    unit: degC
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings — operating junction and storage temperature range
+  Tj_min:
+    min: -55
+    unit: degC
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings — operating junction and storage temperature range
+  Tstg_max:
+    max: 175
+    unit: degC
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings — operating junction and storage temperature range
+  Rth_ja:
+    max: 62
+    unit: K/W
+    status: extraido
+    source:
+      page: 2
+      location: Thermal resistance ratings — maximum junction-to-ambient
+  Rth_cs:
+    typ: 0.5
+    unit: K/W
+    status: extraido
+    source:
+      page: 2
+      location: Thermal resistance ratings — case-to-sink, flat, greased surface
+  Rth_jc:
+    max: 1.0
+    unit: K/W
+    status: extraido
+    source:
+      page: 2
+      location: Thermal resistance ratings — maximum junction-to-case (drain)
+  V(BR)DSS:
+    min: 60
+    unit: V
+    conditions:
+      ID: 250 uA
+      VGS: 0 V
+    status: extraido
+    source:
+      page: 2
+      location: Specifications (TJ = 25 °C) — drain-source breakdown voltage
+  dVDS/dT:
+    typ: 0.06
+    unit: V/K
+    conditions:
+      ID: 1 mA
+    note: Referência a 25 °C
+    status: extraido
+    source:
+      page: 2
+      location: Specifications (TJ = 25 °C) — VDS temperature coefficient
+  VGS(th):
+    min: 2.0
+    max: 4.0
+    unit: V
+    conditions:
+      ID: 250 uA
+    note: VDS = VGS
+    status: extraido
+    source:
+      page: 2
+      location: Specifications (TJ = 25 °C) — gate-source threshold voltage
+  IGSS:
+    max: 100
+    unit: nA
+    conditions:
+      VGS: 20 V
+    note: VGS = ± 20 V
+    status: extraido
+    source:
+      page: 2
+      location: Specifications (TJ = 25 °C) — gate-source leakage (± 100 nA)
+  IDSS:
+    max: 25
+    unit: uA
+    conditions:
+      VDS: 60 V
+      VGS: 0 V
+      Tj: 25 degC
+    status: extraido
+    source:
+      page: 2
+      location: Specifications (TJ = 25 °C) — zero gate voltage drain current
+  IDSS@hot:
+    max: 250
+    unit: uA
+    conditions:
+      VDS: 48 V
+      VGS: 0 V
+      Tj: 125 degC
+    status: extraido
+    source:
+      page: 2
+      location: Specifications (TJ = 25 °C) — zero gate voltage drain current, TJ = 125 °C
+  RDS(on):
+    max: 0.028
+    unit: ohm
+    conditions:
+      VGS: 10 V
+      ID: 31 A
+      Tj: 25 degC
+    note: 'Nota b: pulso ≤ 300 µs, ciclo ≤ 2 %'
+    status: extraido
+    source:
+      page: 2
+      location: Specifications (TJ = 25 °C) — drain-source on-state resistance (b)
+  gfs:
+    min: 15
+    unit: S
+    conditions:
+      VDS: 25 V
+      ID: 31 A
+    status: extraido
+    source:
+      page: 2
+      location: Specifications (TJ = 25 °C) — forward transconductance (b)
+  Ciss:
+    typ: 1900
+    unit: pF
+    conditions:
+      VGS: 0 V
+      VDS: 25 V
+      f: 1.0 MHz
+    status: extraido
+    source:
+      page: 2
+      location: Specifications (TJ = 25 °C) — input capacitance
+  Coss:
+    typ: 920
+    unit: pF
+    conditions:
+      VGS: 0 V
+      VDS: 25 V
+      f: 1.0 MHz
+    status: extraido
+    source:
+      page: 2
+      location: Specifications (TJ = 25 °C) — output capacitance
+  Crss:
+    typ: 170
+    unit: pF
+    conditions:
+      VGS: 0 V
+      VDS: 25 V
+      f: 1.0 MHz
+    status: extraido
+    source:
+      page: 2
+      location: Specifications (TJ = 25 °C) — reverse transfer capacitance
+  Qg:
+    max: 67
+    unit: nC
+    conditions:
+      VGS: 10 V
+      ID: 51 A
+      VDS: 48 V
+    status: extraido
+    source:
+      page: 2
+      location: Specifications (TJ = 25 °C) — total gate charge
+  Qgs:
+    max: 18
+    unit: nC
+    conditions:
+      VGS: 10 V
+      ID: 51 A
+      VDS: 48 V
+    status: extraido
+    source:
+      page: 2
+      location: Specifications (TJ = 25 °C) — gate-source charge
+  Qgd:
+    max: 25
+    unit: nC
+    conditions:
+      VGS: 10 V
+      ID: 51 A
+      VDS: 48 V
+    status: extraido
+    source:
+      page: 2
+      location: Specifications (TJ = 25 °C) — gate-drain charge
+  td(on):
+    typ: 14
+    unit: ns
+    conditions: &id001
+      VDD: 30 V
+      ID: 51 A
+      Rg: 9.1 ohm
+      RD: 0.55 ohm
+    status: extraido
+    source:
+      page: 2
+      location: Specifications (TJ = 25 °C) — turn-on delay time
+  tr:
+    typ: 110
+    unit: ns
+    conditions: *id001
+    status: extraido
+    source:
+      page: 2
+      location: Specifications (TJ = 25 °C) — rise time
+  td(off):
+    typ: 45
+    unit: ns
+    conditions: *id001
+    status: extraido
+    source:
+      page: 2
+      location: Specifications (TJ = 25 °C) — turn-off delay time
+  tf:
+    typ: 92
+    unit: ns
+    conditions: *id001
+    status: extraido
+    source:
+      page: 2
+      location: Specifications (TJ = 25 °C) — fall time
+  LD:
+    typ: 4.5
+    unit: nH
+    note: Entre o terminal a 6 mm do encapsulamento e o centro do contato do die
+    status: extraido
+    source:
+      page: 2
+      location: Specifications (TJ = 25 °C) — internal drain inductance
+  LS:
+    typ: 7.5
+    unit: nH
+    note: Entre o terminal a 6 mm do encapsulamento e o centro do contato do die
+    status: extraido
+    source:
+      page: 2
+      location: Specifications (TJ = 25 °C) — internal source inductance
+  IS:
+    max: 50
+    unit: A
+    status: extraido
+    source:
+      page: 2
+      location: Specifications (TJ = 25 °C) — continuous source-drain diode current
+  ISM:
+    max: 200
+    unit: A
+    status: extraido
+    source:
+      page: 2
+      location: Specifications (TJ = 25 °C) — pulsed diode forward current (a)
+  VSD:
+    max: 2.5
+    unit: V
+    conditions:
+      IS: 51 A
+      VGS: 0 V
+      Tj: 25 degC
+    status: extraido
+    source:
+      page: 2
+      location: Specifications (TJ = 25 °C) — body diode voltage (b)
+  trr:
+    typ: 120
+    max: 180
+    unit: ns
+    conditions:
+      IF: 51 A
+      di/dt: 100 A/us
+      Tj: 25 degC
+    status: extraido
+    source:
+      page: 2
+      location: Specifications (TJ = 25 °C) — body diode reverse recovery time
+  Qrr:
+    typ: 0.53
+    max: 0.8
+    unit: nC
+    conditions:
+      IF: 51 A
+      di/dt: 100 A/us
+      Tj: 25 degC
+    note: 'Unidade transcrita como impressa (nC). Para trr = 120 ns e IF = 51 A, µC seria o esperado (o IRF540 da mesma série
+      traz µC): possível erro do datasheet. Conferir.'
+    status: a_verificar
+    source:
+      page: 2
+      location: Specifications (TJ = 25 °C) — body diode reverse recovery charge
