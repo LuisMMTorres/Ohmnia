@@ -457,6 +457,7 @@ function Components({
               <th>Tj máx.</th>
               <th>Caminho térmico</th>
               <th>Rθsa exigida</th>
+              <th>Rθsa do dissipador</th>
               <th>Situação</th>
             </tr>
           </thead>
@@ -471,6 +472,7 @@ function Components({
                 <td className="num">
                   {t.required_Rsa && t.required_Rsa.value > 0 ? `≤ ${fmt(t.required_Rsa)}` : "—"}
                 </td>
+                <td className="num">{t.heatsink_Rsa ? `≈ ${fmt(t.heatsink_Rsa)}` : "—"}</td>
                 <td className={`status-${t.status}`}>{STATUS[t.status]}</td>
               </tr>
             ))}

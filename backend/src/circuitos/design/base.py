@@ -72,6 +72,10 @@ class ThermalResult(BaseModel):
     path: str  # "sem dissipador (Rθja)", "com dissipador"
     required_Rsa: QuantityModel | None = None  # heatsink needed to keep the Tj margin
     status: MarginStatus
+    heatsink: str | None = None  # catalogue part chosen (one per device)
+    heatsink_id: UUID | None = None
+    heatsink_manufacturer: str | None = None
+    heatsink_Rsa: QuantityModel | None = None  # effective, at the actual temperature rise
 
 
 class Choice(BaseModel):

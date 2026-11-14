@@ -1,0 +1,2969 @@
+# Fonte: HS Dissipadores, Catálogo 2026-27, revisão S - 260927 (www.hsdissipadores.com.br/catalogo.pdf).
+# Gerado a partir do texto de cada página de perfil; conferir na tela de revisão.
+family: HS Dissipadores — perfis extrudados
+category: heatsink.extrusion
+schema_version: '1.0'
+manufacturer: HS Dissipadores
+package: perfil extrudado de alumínio
+lifecycle: desconhecido
+notes:
+- Resistência térmica do catálogo para 4" (101,6 mm) de comprimento e ΔT = 75 °C, convecção natural. O
+  fabricante avisa que os valores são indicativos e dependem da montagem; recomenda protótipo.
+- 'Outro comprimento não escala linearmente: o catálogo pede consulta ao fabricante.'
+- 'Loja do mesmo fabricante: www.reidodissipador.com.br.'
+datasheets:
+- id: hs-catalogo-2026
+  manufacturer: HS Dissipadores
+  document_number: Catálogo 2026-27
+  revision: Revisão S - 260927
+  url: https://www.hsdissipadores.com.br/catalogo.pdf
+  sha256: 17eb80c6e833216c52ecc64e59c1bc0b7f487c1e57c861f14e872f318b96f206
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  length:
+    typ: 101.6
+    unit: mm
+    status: extraido
+    note: Comprimento de referência das resistências térmicas (4").
+    source:
+      datasheet_id: hs-catalogo-2026
+      page: 2
+      location: Introdução — resistências calculadas para 4 polegadas (101,6 mm)
+  dT_ref:
+    typ: 75
+    unit: K
+    status: extraido
+    source:
+      datasheet_id: hs-catalogo-2026
+      page: 10
+      location: Correção da temperatura — valores tabelados referem-se a ΔT = 75 °C
+per_part:
+  Rth_sa:
+    unit: K/W
+    status: extraido
+    conditions:
+      length: 101.6 mm
+      dT: 75 K
+  perimeter:
+    unit: mm
+    status: extraido
+  mass_per_length:
+    unit: kg/m
+    status: extraido
+parts:
+  HS 0820:
+    Rth_sa:
+      typ: 17.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 21
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 91.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 21
+        location: Perímetro
+    mass_per_length:
+      typ: 0.18
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 21
+        location: Peso linear
+  HS 1508:
+    Rth_sa:
+      typ: 19.8
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 22
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 81.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 22
+        location: Perímetro
+    mass_per_length:
+      typ: 0.21
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 22
+        location: Peso linear
+  HS 1509:
+    Rth_sa:
+      typ: 19.8
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 23
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 78.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 23
+        location: Perímetro
+    mass_per_length:
+      typ: 0.21
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 23
+        location: Peso linear
+  HS 1511:
+    Rth_sa:
+      typ: 15.5
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 24
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 100.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 24
+        location: Perímetro
+    mass_per_length:
+      typ: 0.17
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 24
+        location: Peso linear
+  HS 1515:
+    Rth_sa:
+      typ: 20.6
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 25
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 75.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 25
+        location: Perímetro
+    mass_per_length:
+      typ: 0.62
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 25
+        location: Peso linear
+    notes:
+    - Resistência térmica do catálogo para 4" (101,6 mm) de comprimento e ΔT = 75 °C, convecção natural.
+      O fabricante avisa que os valores são indicativos e dependem da montagem; recomenda protótipo.
+    - 'Outro comprimento não escala linearmente: o catálogo pede consulta ao fabricante.'
+    - 'Loja do mesmo fabricante: www.reidodissipador.com.br.'
+    - 'Catálogo: "não temos este perfil em estoque"; consultar o fabricante antes de usar.'
+    lifecycle: nrnd
+  HS 1616:
+    Rth_sa:
+      typ: 8.9
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 26
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 172.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 26
+        location: Perímetro
+    mass_per_length:
+      typ: 0.36
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 26
+        location: Peso linear
+  HS 1616L:
+    Rth_sa:
+      typ: 10.6
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 27
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 144.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 27
+        location: Perímetro
+    mass_per_length:
+      typ: 0.33
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 27
+        location: Peso linear
+  HS 1710:
+    Rth_sa:
+      typ: 14.6
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 28
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 106.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 28
+        location: Perímetro
+    mass_per_length:
+      typ: 0.22
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 28
+        location: Peso linear
+  HS 1807:
+    Rth_sa:
+      typ: 19.8
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 29
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 78.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 29
+        location: Perímetro
+    mass_per_length:
+      typ: 0.18
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 29
+        location: Peso linear
+  HS 1818:
+    Rth_sa:
+      typ: 13.4
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 30
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 115.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 30
+        location: Perímetro
+    mass_per_length:
+      typ: 0.23
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 30
+        location: Peso linear
+  HS 1920:
+    Rth_sa:
+      typ: 11.5
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 31
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 134.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 31
+        location: Perímetro
+    mass_per_length:
+      typ: 0.37
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 31
+        location: Peso linear
+    notes:
+    - Resistência térmica do catálogo para 4" (101,6 mm) de comprimento e ΔT = 75 °C, convecção natural.
+      O fabricante avisa que os valores são indicativos e dependem da montagem; recomenda protótipo.
+    - 'Outro comprimento não escala linearmente: o catálogo pede consulta ao fabricante.'
+    - 'Loja do mesmo fabricante: www.reidodissipador.com.br.'
+    - 'Catálogo: "não temos este perfil em estoque"; consultar o fabricante antes de usar.'
+    lifecycle: nrnd
+  HS 2053:
+    Rth_sa:
+      typ: 4.22
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 32
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 366.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 32
+        location: Perímetro
+    mass_per_length:
+      typ: 0.78
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 32
+        location: Peso linear
+    notes:
+    - Resistência térmica do catálogo para 4" (101,6 mm) de comprimento e ΔT = 75 °C, convecção natural.
+      O fabricante avisa que os valores são indicativos e dependem da montagem; recomenda protótipo.
+    - 'Outro comprimento não escala linearmente: o catálogo pede consulta ao fabricante.'
+    - 'Loja do mesmo fabricante: www.reidodissipador.com.br.'
+    - 'Catálogo: "não temos este perfil em estoque"; consultar o fabricante antes de usar.'
+    lifecycle: nrnd
+  HS 2053E:
+    Rth_sa:
+      typ: 4.22
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 33
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 359.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 33
+        location: Perímetro
+    mass_per_length:
+      typ: 0.78
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 33
+        location: Peso linear
+  HS 2315:
+    Rth_sa:
+      typ: 10.2
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 34
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 151.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 34
+        location: Perímetro
+    mass_per_length:
+      typ: 0.28
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 34
+        location: Peso linear
+  HS 2315M:
+    Rth_sa:
+      typ: 10.2
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 35
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 154.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 35
+        location: Perímetro
+    mass_per_length:
+      typ: 0.3
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 35
+        location: Peso linear
+  HS 2811:
+    Rth_sa:
+      typ: 10.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 36
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 154.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 36
+        location: Perímetro
+    mass_per_length:
+      typ: 0.31
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 36
+        location: Peso linear
+    notes:
+    - Resistência térmica do catálogo para 4" (101,6 mm) de comprimento e ΔT = 75 °C, convecção natural.
+      O fabricante avisa que os valores são indicativos e dependem da montagem; recomenda protótipo.
+    - 'Outro comprimento não escala linearmente: o catálogo pede consulta ao fabricante.'
+    - 'Loja do mesmo fabricante: www.reidodissipador.com.br.'
+    - 'Catálogo: "não temos este perfil em estoque"; consultar o fabricante antes de usar.'
+    lifecycle: nrnd
+  HS 2814:
+    Rth_sa:
+      typ: 4.4
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 37
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 350.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 37
+        location: Perímetro
+    mass_per_length:
+      typ: 0.55
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 37
+        location: Peso linear
+  HS 2816:
+    Rth_sa:
+      typ: 7.92
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 38
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 195.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 38
+        location: Perímetro
+    mass_per_length:
+      typ: 0.37
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 38
+        location: Peso linear
+  HS 3030:
+    Rth_sa:
+      typ: 5.72
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 39
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 270.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 39
+        location: Perímetro
+    mass_per_length:
+      typ: 0.56
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 39
+        location: Peso linear
+    notes:
+    - Resistência térmica do catálogo para 4" (101,6 mm) de comprimento e ΔT = 75 °C, convecção natural.
+      O fabricante avisa que os valores são indicativos e dependem da montagem; recomenda protótipo.
+    - 'Outro comprimento não escala linearmente: o catálogo pede consulta ao fabricante.'
+    - 'Loja do mesmo fabricante: www.reidodissipador.com.br.'
+    - 'Catálogo: "não temos este perfil em estoque"; consultar o fabricante antes de usar.'
+    lifecycle: nrnd
+  HS 3125:
+    Rth_sa:
+      typ: 6.2
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 40
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 250.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 40
+        location: Perímetro
+    mass_per_length:
+      typ: 0.36
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 40
+        location: Peso linear
+    notes:
+    - Resistência térmica do catálogo para 4" (101,6 mm) de comprimento e ΔT = 75 °C, convecção natural.
+      O fabricante avisa que os valores são indicativos e dependem da montagem; recomenda protótipo.
+    - 'Outro comprimento não escala linearmente: o catálogo pede consulta ao fabricante.'
+    - 'Loja do mesmo fabricante: www.reidodissipador.com.br.'
+    - 'Catálogo: "não temos este perfil em estoque"; consultar o fabricante antes de usar.'
+    lifecycle: nrnd
+  HS 3232:
+    Rth_sa:
+      typ: 6.3
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 41
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 244.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 41
+        location: Perímetro
+    mass_per_length:
+      typ: 1.04
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 41
+        location: Peso linear
+    notes:
+    - Resistência térmica do catálogo para 4" (101,6 mm) de comprimento e ΔT = 75 °C, convecção natural.
+      O fabricante avisa que os valores são indicativos e dependem da montagem; recomenda protótipo.
+    - 'Outro comprimento não escala linearmente: o catálogo pede consulta ao fabricante.'
+    - 'Loja do mesmo fabricante: www.reidodissipador.com.br.'
+    - 'Catálogo: "não temos este perfil em estoque"; consultar o fabricante antes de usar.'
+    lifecycle: nrnd
+  HS 3512:
+    Rth_sa:
+      typ: 8.44
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 42
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 183.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 42
+        location: Perímetro
+    mass_per_length:
+      typ: 0.36
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 42
+        location: Peso linear
+  HS 3520:
+    Rth_sa:
+      typ: 4.89
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 43
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 316.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 43
+        location: Perímetro
+    mass_per_length:
+      typ: 0.71
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 43
+        location: Peso linear
+  HS 3542:
+    Rth_sa:
+      typ: 3.2
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 44
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 484.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 44
+        location: Perímetro
+    mass_per_length:
+      typ: 1.8
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 44
+        location: Peso linear
+  HS 3542L:
+    Rth_sa:
+      typ: 3.9
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 45
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 398.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 45
+        location: Perímetro
+    mass_per_length:
+      typ: 1.8
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 45
+        location: Peso linear
+    notes:
+    - Resistência térmica do catálogo para 4" (101,6 mm) de comprimento e ΔT = 75 °C, convecção natural.
+      O fabricante avisa que os valores são indicativos e dependem da montagem; recomenda protótipo.
+    - 'Outro comprimento não escala linearmente: o catálogo pede consulta ao fabricante.'
+    - 'Loja do mesmo fabricante: www.reidodissipador.com.br.'
+    - 'Catálogo: "não temos este perfil em estoque"; consultar o fabricante antes de usar.'
+    lifecycle: nrnd
+  HS 3818:
+    Rth_sa:
+      typ: 6.57
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 46
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 235.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 46
+        location: Perímetro
+    mass_per_length:
+      typ: 0.52
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 46
+        location: Peso linear
+  HS 4017:
+    Rth_sa:
+      typ: 7.76
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 47
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 199.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 47
+        location: Perímetro
+    mass_per_length:
+      typ: 0.69
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 47
+        location: Peso linear
+    notes:
+    - Resistência térmica do catálogo para 4" (101,6 mm) de comprimento e ΔT = 75 °C, convecção natural.
+      O fabricante avisa que os valores são indicativos e dependem da montagem; recomenda protótipo.
+    - 'Outro comprimento não escala linearmente: o catálogo pede consulta ao fabricante.'
+    - 'Loja do mesmo fabricante: www.reidodissipador.com.br.'
+    - 'Catálogo: "não temos este perfil em estoque"; consultar o fabricante antes de usar.'
+    lifecycle: nrnd
+  HS 4225:
+    Rth_sa:
+      typ: 4.38
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 48
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 353.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 48
+        location: Perímetro
+    mass_per_length:
+      typ: 0.78
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 48
+        location: Peso linear
+  HS 4262:
+    Rth_sa:
+      typ: 3.72
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 49
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 415.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 49
+        location: Perímetro
+    mass_per_length:
+      typ: 3.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 49
+        location: Peso linear
+  HS 4313:
+    Rth_sa:
+      typ: 8.9
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 50
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 172.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 50
+        location: Perímetro
+    mass_per_length:
+      typ: 0.8
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 50
+        location: Peso linear
+    notes:
+    - Resistência térmica do catálogo para 4" (101,6 mm) de comprimento e ΔT = 75 °C, convecção natural.
+      O fabricante avisa que os valores são indicativos e dependem da montagem; recomenda protótipo.
+    - 'Outro comprimento não escala linearmente: o catálogo pede consulta ao fabricante.'
+    - 'Loja do mesmo fabricante: www.reidodissipador.com.br.'
+    - 'Catálogo: "não temos este perfil em estoque"; consultar o fabricante antes de usar.'
+    lifecycle: nrnd
+  HS 4320:
+    Rth_sa:
+      typ: 4.08
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 51
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 379.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 51
+        location: Perímetro
+    mass_per_length:
+      typ: 0.8
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 51
+        location: Peso linear
+    notes:
+    - Resistência térmica do catálogo para 4" (101,6 mm) de comprimento e ΔT = 75 °C, convecção natural.
+      O fabricante avisa que os valores são indicativos e dependem da montagem; recomenda protótipo.
+    - 'Outro comprimento não escala linearmente: o catálogo pede consulta ao fabricante.'
+    - 'Loja do mesmo fabricante: www.reidodissipador.com.br.'
+    - 'Catálogo: "não temos este perfil em estoque"; consultar o fabricante antes de usar.'
+    lifecycle: nrnd
+  HS 4328:
+    Rth_sa:
+      typ: 3.1
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 52
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 497.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 52
+        location: Perímetro
+    mass_per_length:
+      typ: 1.2
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 52
+        location: Peso linear
+  HS 4425:
+    Rth_sa:
+      typ: 4.38
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 53
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 335.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 53
+        location: Perímetro
+    mass_per_length:
+      typ: 1.2
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 53
+        location: Peso linear
+  HS 4525:
+    Rth_sa:
+      typ: 4.38
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 54
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 335.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 54
+        location: Perímetro
+    mass_per_length:
+      typ: 1.2
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 54
+        location: Peso linear
+  HS 5073:
+    Rth_sa:
+      typ: 2.28
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 55
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 695.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 55
+        location: Perímetro
+    mass_per_length:
+      typ: 2.7
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 55
+        location: Peso linear
+  HS 5331:
+    Rth_sa:
+      typ: 3.9
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 56
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 399.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 56
+        location: Perímetro
+    mass_per_length:
+      typ: 1.5
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 56
+        location: Peso linear
+    notes:
+    - Resistência térmica do catálogo para 4" (101,6 mm) de comprimento e ΔT = 75 °C, convecção natural.
+      O fabricante avisa que os valores são indicativos e dependem da montagem; recomenda protótipo.
+    - 'Outro comprimento não escala linearmente: o catálogo pede consulta ao fabricante.'
+    - 'Loja do mesmo fabricante: www.reidodissipador.com.br.'
+    - 'Catálogo: "não temos este perfil em estoque"; consultar o fabricante antes de usar.'
+    lifecycle: nrnd
+  HS 5620:
+    Rth_sa:
+      typ: 2.9
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 57
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 531.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 57
+        location: Perímetro
+    mass_per_length:
+      typ: 1.1
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 57
+        location: Peso linear
+  HS 6524:
+    Rth_sa:
+      typ: 3.9
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 58
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 393.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 58
+        location: Perímetro
+    mass_per_length:
+      typ: 0.87
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 58
+        location: Peso linear
+  HS 6634:
+    Rth_sa:
+      typ: 2.5
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 59
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 622.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 59
+        location: Perímetro
+    mass_per_length:
+      typ: 1.1
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 59
+        location: Peso linear
+    notes:
+    - Resistência térmica do catálogo para 4" (101,6 mm) de comprimento e ΔT = 75 °C, convecção natural.
+      O fabricante avisa que os valores são indicativos e dependem da montagem; recomenda protótipo.
+    - 'Outro comprimento não escala linearmente: o catálogo pede consulta ao fabricante.'
+    - 'Loja do mesmo fabricante: www.reidodissipador.com.br.'
+    - 'Catálogo: "não temos este perfil em estoque"; consultar o fabricante antes de usar.'
+    lifecycle: nrnd
+  HS 6642:
+    Rth_sa:
+      typ: 2.08
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 60
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 742.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 60
+        location: Perímetro
+    mass_per_length:
+      typ: 2.7
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 60
+        location: Peso linear
+    notes:
+    - Resistência térmica do catálogo para 4" (101,6 mm) de comprimento e ΔT = 75 °C, convecção natural.
+      O fabricante avisa que os valores são indicativos e dependem da montagem; recomenda protótipo.
+    - 'Outro comprimento não escala linearmente: o catálogo pede consulta ao fabricante.'
+    - 'Loja do mesmo fabricante: www.reidodissipador.com.br.'
+    - 'Catálogo: "não temos este perfil em estoque"; consultar o fabricante antes de usar.'
+    lifecycle: nrnd
+  HS 6835:
+    Rth_sa:
+      typ: 1.44
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 61
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 1076.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 61
+        location: Perímetro
+    mass_per_length:
+      typ: 3.3
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 61
+        location: Peso linear
+  HS 7021:
+    Rth_sa:
+      typ: 4.48
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 62
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 354.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 62
+        location: Perímetro
+    mass_per_length:
+      typ: 1.3
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 62
+        location: Peso linear
+    notes:
+    - Resistência térmica do catálogo para 4" (101,6 mm) de comprimento e ΔT = 75 °C, convecção natural.
+      O fabricante avisa que os valores são indicativos e dependem da montagem; recomenda protótipo.
+    - 'Outro comprimento não escala linearmente: o catálogo pede consulta ao fabricante.'
+    - 'Loja do mesmo fabricante: www.reidodissipador.com.br.'
+    - 'Catálogo: "não temos este perfil em estoque"; consultar o fabricante antes de usar.'
+    lifecycle: nrnd
+  HS 7028:
+    Rth_sa:
+      typ: 2.75
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 63
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 562.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 63
+        location: Perímetro
+    mass_per_length:
+      typ: 1.5
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 63
+        location: Peso linear
+    notes:
+    - Resistência térmica do catálogo para 4" (101,6 mm) de comprimento e ΔT = 75 °C, convecção natural.
+      O fabricante avisa que os valores são indicativos e dependem da montagem; recomenda protótipo.
+    - 'Outro comprimento não escala linearmente: o catálogo pede consulta ao fabricante.'
+    - 'Loja do mesmo fabricante: www.reidodissipador.com.br.'
+    - 'Catálogo: "não temos este perfil em estoque"; consultar o fabricante antes de usar.'
+    lifecycle: nrnd
+  HS 7032:
+    Rth_sa:
+      typ: 3.6
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 64
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 430.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 64
+        location: Perímetro
+    mass_per_length:
+      typ: 0.85
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 64
+        location: Peso linear
+    notes:
+    - Resistência térmica do catálogo para 4" (101,6 mm) de comprimento e ΔT = 75 °C, convecção natural.
+      O fabricante avisa que os valores são indicativos e dependem da montagem; recomenda protótipo.
+    - 'Outro comprimento não escala linearmente: o catálogo pede consulta ao fabricante.'
+    - 'Loja do mesmo fabricante: www.reidodissipador.com.br.'
+    - 'Catálogo: "não temos este perfil em estoque"; consultar o fabricante antes de usar.'
+    lifecycle: nrnd
+  HS 7223:
+    Rth_sa:
+      typ: 3.23
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 65
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 479.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 65
+        location: Perímetro
+    mass_per_length:
+      typ: 1.4
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 65
+        location: Peso linear
+    notes:
+    - Resistência térmica do catálogo para 4" (101,6 mm) de comprimento e ΔT = 75 °C, convecção natural.
+      O fabricante avisa que os valores são indicativos e dependem da montagem; recomenda protótipo.
+    - 'Outro comprimento não escala linearmente: o catálogo pede consulta ao fabricante.'
+    - 'Loja do mesmo fabricante: www.reidodissipador.com.br.'
+    - 'Catálogo: "não temos este perfil em estoque"; consultar o fabricante antes de usar.'
+    lifecycle: nrnd
+  HS 7245:
+    Rth_sa:
+      typ: 2.67
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 66
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 579.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 66
+        location: Perímetro
+    mass_per_length:
+      typ: 2.8
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 66
+        location: Peso linear
+    notes:
+    - Resistência térmica do catálogo para 4" (101,6 mm) de comprimento e ΔT = 75 °C, convecção natural.
+      O fabricante avisa que os valores são indicativos e dependem da montagem; recomenda protótipo.
+    - 'Outro comprimento não escala linearmente: o catálogo pede consulta ao fabricante.'
+    - 'Loja do mesmo fabricante: www.reidodissipador.com.br.'
+    - 'Catálogo: "não temos este perfil em estoque"; consultar o fabricante antes de usar.'
+    lifecycle: nrnd
+  HS 7324:
+    Rth_sa:
+      typ: 2.6
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 67
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 597.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 67
+        location: Perímetro
+    mass_per_length:
+      typ: 1.4
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 67
+        location: Peso linear
+  HS 7624:
+    Rth_sa:
+      typ: 3.6
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 68
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 429.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 68
+        location: Perímetro
+    mass_per_length:
+      typ: 2.6
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 68
+        location: Peso linear
+    notes:
+    - Resistência térmica do catálogo para 4" (101,6 mm) de comprimento e ΔT = 75 °C, convecção natural.
+      O fabricante avisa que os valores são indicativos e dependem da montagem; recomenda protótipo.
+    - 'Outro comprimento não escala linearmente: o catálogo pede consulta ao fabricante.'
+    - 'Loja do mesmo fabricante: www.reidodissipador.com.br.'
+    - 'Catálogo: "não temos este perfil em estoque"; consultar o fabricante antes de usar.'
+    lifecycle: nrnd
+  HS 8044:
+    Rth_sa:
+      typ: 2.03
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 69
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 755.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 69
+        location: Perímetro
+    mass_per_length:
+      typ: 3.4
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 69
+        location: Peso linear
+  HS 8134:
+    Rth_sa:
+      typ: 2.4
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 70
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 642.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 70
+        location: Perímetro
+    mass_per_length:
+      typ: 3.4
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 70
+        location: Peso linear
+  HS 8550:
+    Rth_sa:
+      typ: 2.1
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 71
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 761.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 71
+        location: Perímetro
+    mass_per_length:
+      typ: 4.5
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 71
+        location: Peso linear
+  HS 8620:
+    Rth_sa:
+      typ: 3.2
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 72
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 488.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 72
+        location: Perímetro
+    mass_per_length:
+      typ: 1.5
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 72
+        location: Peso linear
+  HS 8620L:
+    Rth_sa:
+      typ: 3.2
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 73
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 484.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 73
+        location: Perímetro
+    mass_per_length:
+      typ: 1.6
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 73
+        location: Peso linear
+  HS 8858:
+    Rth_sa:
+      typ: 1.74
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 74
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 884.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 74
+        location: Perímetro
+    mass_per_length:
+      typ: 7.1
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 74
+        location: Peso linear
+    notes:
+    - Resistência térmica do catálogo para 4" (101,6 mm) de comprimento e ΔT = 75 °C, convecção natural.
+      O fabricante avisa que os valores são indicativos e dependem da montagem; recomenda protótipo.
+    - 'Outro comprimento não escala linearmente: o catálogo pede consulta ao fabricante.'
+    - 'Loja do mesmo fabricante: www.reidodissipador.com.br.'
+    - 'Catálogo: "não temos este perfil em estoque"; consultar o fabricante antes de usar.'
+    lifecycle: nrnd
+  HS 9438:
+    Rth_sa:
+      typ: 1.4
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 75
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 1081.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 75
+        location: Perímetro
+    mass_per_length:
+      typ: 3.2
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 75
+        location: Peso linear
+  HS 9555:
+    Rth_sa:
+      typ: 1.29
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 76
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 1199.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 76
+        location: Perímetro
+    mass_per_length:
+      typ: 4.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 76
+        location: Peso linear
+  HS 10080:
+    Rth_sa:
+      typ: 1.3
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 77
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 1235.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 77
+        location: Perímetro
+    mass_per_length:
+      typ: 5.5
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 77
+        location: Peso linear
+    notes:
+    - Resistência térmica do catálogo para 4" (101,6 mm) de comprimento e ΔT = 75 °C, convecção natural.
+      O fabricante avisa que os valores são indicativos e dependem da montagem; recomenda protótipo.
+    - 'Outro comprimento não escala linearmente: o catálogo pede consulta ao fabricante.'
+    - 'Loja do mesmo fabricante: www.reidodissipador.com.br.'
+    - 'Catálogo: "não temos este perfil em estoque"; consultar o fabricante antes de usar.'
+    lifecycle: nrnd
+  HS 10325:
+    Rth_sa:
+      typ: 2.55
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 78
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 605.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 78
+        location: Perímetro
+    mass_per_length:
+      typ: 1.5
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 78
+        location: Peso linear
+    notes:
+    - Resistência térmica do catálogo para 4" (101,6 mm) de comprimento e ΔT = 75 °C, convecção natural.
+      O fabricante avisa que os valores são indicativos e dependem da montagem; recomenda protótipo.
+    - 'Outro comprimento não escala linearmente: o catálogo pede consulta ao fabricante.'
+    - 'Loja do mesmo fabricante: www.reidodissipador.com.br.'
+    - 'Catálogo: "não temos este perfil em estoque"; consultar o fabricante antes de usar.'
+    lifecycle: nrnd
+  HS 10334:
+    Rth_sa:
+      typ: 1.6
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 79
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 1012.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 79
+        location: Perímetro
+    mass_per_length:
+      typ: 4.8
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 79
+        location: Peso linear
+    notes:
+    - Resistência térmica do catálogo para 4" (101,6 mm) de comprimento e ΔT = 75 °C, convecção natural.
+      O fabricante avisa que os valores são indicativos e dependem da montagem; recomenda protótipo.
+    - 'Outro comprimento não escala linearmente: o catálogo pede consulta ao fabricante.'
+    - 'Loja do mesmo fabricante: www.reidodissipador.com.br.'
+    - 'Catálogo: "não temos este perfil em estoque"; consultar o fabricante antes de usar.'
+    lifecycle: nrnd
+  HS 10334L:
+    Rth_sa:
+      typ: 1.9
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 80
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 795.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 80
+        location: Perímetro
+    mass_per_length:
+      typ: 4.4
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 80
+        location: Peso linear
+  HS 10425:
+    Rth_sa:
+      typ: 1.79
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 81
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 862.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 81
+        location: Perímetro
+    mass_per_length:
+      typ: 2.3
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 81
+        location: Peso linear
+  HS 10425L:
+    Rth_sa:
+      typ: 2.14
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 82
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 722.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 82
+        location: Perímetro
+    mass_per_length:
+      typ: 2.6
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 82
+        location: Peso linear
+  HS 10526:
+    Rth_sa:
+      typ: 2.5
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 83
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 625.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 83
+        location: Perímetro
+    mass_per_length:
+      typ: 1.8
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 83
+        location: Peso linear
+  HS 11330:
+    Rth_sa:
+      typ: 1.5
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 84
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 1035.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 84
+        location: Perímetro
+    mass_per_length:
+      typ: 4.5
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 84
+        location: Peso linear
+  HS 11532:
+    Rth_sa:
+      typ: 1.73
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 85
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 892.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 85
+        location: Perímetro
+    mass_per_length:
+      typ: 3.2
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 85
+        location: Peso linear
+    notes:
+    - Resistência térmica do catálogo para 4" (101,6 mm) de comprimento e ΔT = 75 °C, convecção natural.
+      O fabricante avisa que os valores são indicativos e dependem da montagem; recomenda protótipo.
+    - 'Outro comprimento não escala linearmente: o catálogo pede consulta ao fabricante.'
+    - 'Loja do mesmo fabricante: www.reidodissipador.com.br.'
+    - 'Catálogo: "não temos este perfil em estoque"; consultar o fabricante antes de usar.'
+    lifecycle: nrnd
+  HS 11450:
+    Rth_sa:
+      typ: 1.42
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 86
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 1087.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 86
+        location: Perímetro
+    mass_per_length:
+      typ: 5.5
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 86
+        location: Peso linear
+  HS 11550:
+    Rth_sa:
+      typ: 1.3
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 87
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 1205.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 87
+        location: Perímetro
+    mass_per_length:
+      typ: 5.5
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 87
+        location: Peso linear
+  HS 11555:
+    Rth_sa:
+      typ: 1.2
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 88
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 1317.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 88
+        location: Perímetro
+    mass_per_length:
+      typ: 7.6
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 88
+        location: Peso linear
+    notes:
+    - Resistência térmica do catálogo para 4" (101,6 mm) de comprimento e ΔT = 75 °C, convecção natural.
+      O fabricante avisa que os valores são indicativos e dependem da montagem; recomenda protótipo.
+    - 'Outro comprimento não escala linearmente: o catálogo pede consulta ao fabricante.'
+    - 'Loja do mesmo fabricante: www.reidodissipador.com.br.'
+    - 'Catálogo: "não temos este perfil em estoque"; consultar o fabricante antes de usar.'
+    lifecycle: nrnd
+  HS 11960:
+    Rth_sa:
+      typ: 1.4
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 89
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 1094.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 89
+        location: Perímetro
+    mass_per_length:
+      typ: 7.6
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 89
+        location: Peso linear
+    notes:
+    - Resistência térmica do catálogo para 4" (101,6 mm) de comprimento e ΔT = 75 °C, convecção natural.
+      O fabricante avisa que os valores são indicativos e dependem da montagem; recomenda protótipo.
+    - 'Outro comprimento não escala linearmente: o catálogo pede consulta ao fabricante.'
+    - 'Loja do mesmo fabricante: www.reidodissipador.com.br.'
+    - 'Catálogo: "não temos este perfil em estoque"; consultar o fabricante antes de usar.'
+    lifecycle: nrnd
+  HS 12060:
+    Rth_sa:
+      typ: 1.2
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 90
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 1324.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 90
+        location: Perímetro
+    mass_per_length:
+      typ: 8.4
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 90
+        location: Peso linear
+    notes:
+    - Resistência térmica do catálogo para 4" (101,6 mm) de comprimento e ΔT = 75 °C, convecção natural.
+      O fabricante avisa que os valores são indicativos e dependem da montagem; recomenda protótipo.
+    - 'Outro comprimento não escala linearmente: o catálogo pede consulta ao fabricante.'
+    - 'Loja do mesmo fabricante: www.reidodissipador.com.br.'
+    - 'Catálogo: "não temos este perfil em estoque"; consultar o fabricante antes de usar.'
+    lifecycle: nrnd
+  HS 12135:
+    Rth_sa:
+      typ: 1.92
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 91
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 804.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 91
+        location: Perímetro
+    mass_per_length:
+      typ: 2.6
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 91
+        location: Peso linear
+  HS 12135N:
+    Rth_sa:
+      typ: 1.88
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 92
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 822.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 92
+        location: Perímetro
+    mass_per_length:
+      typ: 2.2
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 92
+        location: Peso linear
+  HS 12149:
+    Rth_sa:
+      typ: 1.64
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 93
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 944.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 93
+        location: Perímetro
+    mass_per_length:
+      typ: 2.5
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 93
+        location: Peso linear
+    notes:
+    - Resistência térmica do catálogo para 4" (101,6 mm) de comprimento e ΔT = 75 °C, convecção natural.
+      O fabricante avisa que os valores são indicativos e dependem da montagem; recomenda protótipo.
+    - 'Outro comprimento não escala linearmente: o catálogo pede consulta ao fabricante.'
+    - 'Loja do mesmo fabricante: www.reidodissipador.com.br.'
+    - 'Catálogo: "não temos este perfil em estoque"; consultar o fabricante antes de usar.'
+    lifecycle: nrnd
+  HS 12168:
+    Rth_sa:
+      typ: 1.26
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 94
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 1230.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 94
+        location: Perímetro
+    mass_per_length:
+      typ: 3.6
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 94
+        location: Peso linear
+  HS 12454:
+    Rth_sa:
+      typ: 1.1
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 95
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 1410.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 95
+        location: Perímetro
+    mass_per_length:
+      typ: 7.7
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 95
+        location: Peso linear
+    notes:
+    - Resistência térmica do catálogo para 4" (101,6 mm) de comprimento e ΔT = 75 °C, convecção natural.
+      O fabricante avisa que os valores são indicativos e dependem da montagem; recomenda protótipo.
+    - 'Outro comprimento não escala linearmente: o catálogo pede consulta ao fabricante.'
+    - 'Loja do mesmo fabricante: www.reidodissipador.com.br.'
+    - 'Catálogo: "não temos este perfil em estoque"; consultar o fabricante antes de usar.'
+    lifecycle: nrnd
+  HS 12544:
+    Rth_sa:
+      typ: 2.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 96
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 769.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 96
+        location: Perímetro
+    mass_per_length:
+      typ: 4.3
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 96
+        location: Peso linear
+  HS 12545:
+    Rth_sa:
+      typ: 1.7
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 97
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 945.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 97
+        location: Perímetro
+    mass_per_length:
+      typ: 3.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 97
+        location: Peso linear
+  HS 12552:
+    Rth_sa:
+      typ: 3.2
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 98
+        location: Resistência térmica (°C/W/4")
+      note: (*) calculada considerando apenas a área externa.
+    perimeter:
+      typ: 481.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 98
+        location: Perímetro
+    mass_per_length:
+      typ: 2.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 98
+        location: Peso linear
+  HS 12643:
+    Rth_sa:
+      typ: 1.7
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 99
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 897.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 99
+        location: Perímetro
+    mass_per_length:
+      typ: 2.9
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 99
+        location: Peso linear
+  HS 12764:
+    Rth_sa:
+      typ: 1.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 100
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 1517.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 100
+        location: Perímetro
+    mass_per_length:
+      typ: 7.6
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 100
+        location: Peso linear
+  HS 12764L:
+    Rth_sa:
+      typ: 1.2
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 101
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 1262.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 101
+        location: Perímetro
+    mass_per_length:
+      typ: 7.6
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 101
+        location: Peso linear
+  HS 13052:
+    Rth_sa:
+      typ: 2.4
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 102
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 650.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 102
+        location: Perímetro
+    mass_per_length:
+      typ: 2.5
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 102
+        location: Peso linear
+    notes:
+    - Resistência térmica do catálogo para 4" (101,6 mm) de comprimento e ΔT = 75 °C, convecção natural.
+      O fabricante avisa que os valores são indicativos e dependem da montagem; recomenda protótipo.
+    - 'Outro comprimento não escala linearmente: o catálogo pede consulta ao fabricante.'
+    - 'Loja do mesmo fabricante: www.reidodissipador.com.br.'
+    - 'Catálogo: "não temos este perfil em estoque"; consultar o fabricante antes de usar.'
+    lifecycle: nrnd
+  HS 13548:
+    Rth_sa:
+      typ: 1.9
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 103
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 828.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 103
+        location: Perímetro
+    mass_per_length:
+      typ: 2.9
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 103
+        location: Peso linear
+    notes:
+    - Resistência térmica do catálogo para 4" (101,6 mm) de comprimento e ΔT = 75 °C, convecção natural.
+      O fabricante avisa que os valores são indicativos e dependem da montagem; recomenda protótipo.
+    - 'Outro comprimento não escala linearmente: o catálogo pede consulta ao fabricante.'
+    - 'Loja do mesmo fabricante: www.reidodissipador.com.br.'
+    - 'Catálogo: "não temos este perfil em estoque"; consultar o fabricante antes de usar.'
+    lifecycle: nrnd
+  HS 13917:
+    Rth_sa:
+      typ: 1.6
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 104
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 949.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 104
+        location: Perímetro
+    mass_per_length:
+      typ: 3.6
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 104
+        location: Peso linear
+    notes:
+    - Resistência térmica do catálogo para 4" (101,6 mm) de comprimento e ΔT = 75 °C, convecção natural.
+      O fabricante avisa que os valores são indicativos e dependem da montagem; recomenda protótipo.
+    - 'Outro comprimento não escala linearmente: o catálogo pede consulta ao fabricante.'
+    - 'Loja do mesmo fabricante: www.reidodissipador.com.br.'
+    - 'Catálogo: "não temos este perfil em estoque"; consultar o fabricante antes de usar.'
+    lifecycle: nrnd
+  HS 13952:
+    Rth_sa:
+      typ: 2.2
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 105
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 683.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 105
+        location: Perímetro
+    mass_per_length:
+      typ: 3.3
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 105
+        location: Peso linear
+    notes:
+    - Resistência térmica do catálogo para 4" (101,6 mm) de comprimento e ΔT = 75 °C, convecção natural.
+      O fabricante avisa que os valores são indicativos e dependem da montagem; recomenda protótipo.
+    - 'Outro comprimento não escala linearmente: o catálogo pede consulta ao fabricante.'
+    - 'Loja do mesmo fabricante: www.reidodissipador.com.br.'
+    - 'Catálogo: "não temos este perfil em estoque"; consultar o fabricante antes de usar.'
+    lifecycle: nrnd
+  HS 14050:
+    Rth_sa:
+      typ: 1.06
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 106
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 1460.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 106
+        location: Perímetro
+    mass_per_length:
+      typ: 7.6
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 106
+        location: Peso linear
+  HS 14153:
+    Rth_sa:
+      typ: 0.91
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 107
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 1699.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 107
+        location: Perímetro
+    mass_per_length:
+      typ: 6.1
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 107
+        location: Peso linear
+  HS 14376:
+    Rth_sa:
+      typ: 1.11
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 108
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 1391.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 108
+        location: Perímetro
+    mass_per_length:
+      typ: 10.5
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 108
+        location: Peso linear
+    notes:
+    - Resistência térmica do catálogo para 4" (101,6 mm) de comprimento e ΔT = 75 °C, convecção natural.
+      O fabricante avisa que os valores são indicativos e dependem da montagem; recomenda protótipo.
+    - 'Outro comprimento não escala linearmente: o catálogo pede consulta ao fabricante.'
+    - 'Loja do mesmo fabricante: www.reidodissipador.com.br.'
+    - 'Catálogo: "não temos este perfil em estoque"; consultar o fabricante antes de usar.'
+    lifecycle: nrnd
+  HS 14569:
+    Rth_sa:
+      typ: 1.17
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 109
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 1322.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 109
+        location: Perímetro
+    mass_per_length:
+      typ: 8.2
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 109
+        location: Peso linear
+  HS 14676:
+    Rth_sa:
+      typ: 1.02
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 110
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 1513.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 110
+        location: Perímetro
+    mass_per_length:
+      typ: 10.8
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 110
+        location: Peso linear
+    notes:
+    - Resistência térmica do catálogo para 4" (101,6 mm) de comprimento e ΔT = 75 °C, convecção natural.
+      O fabricante avisa que os valores são indicativos e dependem da montagem; recomenda protótipo.
+    - 'Outro comprimento não escala linearmente: o catálogo pede consulta ao fabricante.'
+    - 'Loja do mesmo fabricante: www.reidodissipador.com.br.'
+    - 'Catálogo: "não temos este perfil em estoque"; consultar o fabricante antes de usar.'
+    lifecycle: nrnd
+  HS 15073:
+    Rth_sa:
+      typ: 1.24
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 111
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 1250.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 111
+        location: Perímetro
+    mass_per_length:
+      typ: 12.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 111
+        location: Peso linear
+  HS 15433:
+    Rth_sa:
+      typ: 1.3
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 112
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 1206.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 112
+        location: Perímetro
+    mass_per_length:
+      typ: 4.8
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 112
+        location: Peso linear
+  HS 15450:
+    Rth_sa:
+      typ: 1.2
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 113
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 1269.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 113
+        location: Perímetro
+    mass_per_length:
+      typ: 8.8
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 113
+        location: Peso linear
+  HS 15559:
+    Rth_sa:
+      typ: 0.73
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 114
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 2112.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 114
+        location: Perímetro
+    mass_per_length:
+      typ: 12.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 114
+        location: Peso linear
+  HS 15560:
+    Rth_sa:
+      typ: 0.78
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 115
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 1980.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 115
+        location: Perímetro
+    mass_per_length:
+      typ: 8.4
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 115
+        location: Peso linear
+  HS 15560L:
+    Rth_sa:
+      typ: 1.01
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 116
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 1525.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 116
+        location: Perímetro
+    mass_per_length:
+      typ: 14.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 116
+        location: Peso linear
+  HS 17050:
+    Rth_sa:
+      typ: 2.1
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 117
+        location: Resistência térmica (°C/W/4")
+      note: (*) calculada considerando apenas a área externa.
+    perimeter:
+      typ: 715.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 117
+        location: Perímetro
+    mass_per_length:
+      typ: 3.6
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 117
+        location: Peso linear
+  HS 17068:
+    Rth_sa:
+      typ: 3.9
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 118
+        location: Resistência térmica (°C/W/4")
+      note: (*) calculada considerando apenas a área externa.
+    perimeter:
+      typ: 917.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 118
+        location: Perímetro
+    mass_per_length:
+      typ: 4.6
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 118
+        location: Peso linear
+  HS 17232L:
+    Rth_sa:
+      typ: 1.07
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 119
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 1442.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 119
+        location: Perímetro
+    mass_per_length:
+      typ: 4.8
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 119
+        location: Peso linear
+  HS 17909:
+    Rth_sa:
+      typ: 2.06
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 120
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 752.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 120
+        location: Perímetro
+    mass_per_length:
+      typ: 2.9
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 120
+        location: Peso linear
+  HS 18034:
+    Rth_sa:
+      typ: 0.71
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 121
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 2172.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 121
+        location: Perímetro
+    mass_per_length:
+      typ: 6.1
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 121
+        location: Peso linear
+  HS 19013:
+    Rth_sa:
+      typ: 1.8
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 122
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 861.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 122
+        location: Perímetro
+    mass_per_length:
+      typ: 3.6
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 122
+        location: Peso linear
+  HS 19032:
+    Rth_sa:
+      typ: 0.98
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 123
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 1575.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 123
+        location: Perímetro
+    mass_per_length:
+      typ: 5.6
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 123
+        location: Peso linear
+    notes:
+    - Resistência térmica do catálogo para 4" (101,6 mm) de comprimento e ΔT = 75 °C, convecção natural.
+      O fabricante avisa que os valores são indicativos e dependem da montagem; recomenda protótipo.
+    - 'Outro comprimento não escala linearmente: o catálogo pede consulta ao fabricante.'
+    - 'Loja do mesmo fabricante: www.reidodissipador.com.br.'
+    - 'Catálogo: "não temos este perfil em estoque"; consultar o fabricante antes de usar.'
+    lifecycle: nrnd
+  HS 19334:
+    Rth_sa:
+      typ: 1.07
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 124
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 1450.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 124
+        location: Perímetro
+    mass_per_length:
+      typ: 8.2
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 124
+        location: Peso linear
+  HS 20855:
+    Rth_sa:
+      typ: 1.03
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 125
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 1495.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 125
+        location: Perímetro
+    mass_per_length:
+      typ: 13.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 125
+        location: Peso linear
+    notes:
+    - Resistência térmica do catálogo para 4" (101,6 mm) de comprimento e ΔT = 75 °C, convecção natural.
+      O fabricante avisa que os valores são indicativos e dependem da montagem; recomenda protótipo.
+    - 'Outro comprimento não escala linearmente: o catálogo pede consulta ao fabricante.'
+    - 'Loja do mesmo fabricante: www.reidodissipador.com.br.'
+    - 'Catálogo: "não temos este perfil em estoque"; consultar o fabricante antes de usar.'
+    lifecycle: nrnd
+  HS 21019:
+    Rth_sa:
+      typ: 1.64
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 126
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 964.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 126
+        location: Perímetro
+    mass_per_length:
+      typ: 2.6
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 126
+        location: Peso linear
+  HS 21021:
+    Rth_sa:
+      typ: 1.5
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 127
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 1065.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 127
+        location: Perímetro
+    mass_per_length:
+      typ: 3.9
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 127
+        location: Peso linear
+    notes:
+    - Resistência térmica do catálogo para 4" (101,6 mm) de comprimento e ΔT = 75 °C, convecção natural.
+      O fabricante avisa que os valores são indicativos e dependem da montagem; recomenda protótipo.
+    - 'Outro comprimento não escala linearmente: o catálogo pede consulta ao fabricante.'
+    - 'Loja do mesmo fabricante: www.reidodissipador.com.br.'
+    - 'Catálogo: "não temos este perfil em estoque"; consultar o fabricante antes de usar.'
+    lifecycle: nrnd
+  HS 21060:
+    Rth_sa:
+      typ: 0.83
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 128
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 1870.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 128
+        location: Perímetro
+    mass_per_length:
+      typ: 16.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 128
+        location: Peso linear
+  HS 21073:
+    Rth_sa:
+      typ: 0.66
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 129
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 2315.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 129
+        location: Perímetro
+    mass_per_length:
+      typ: 20.3
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 129
+        location: Peso linear
+    notes:
+    - Resistência térmica do catálogo para 4" (101,6 mm) de comprimento e ΔT = 75 °C, convecção natural.
+      O fabricante avisa que os valores são indicativos e dependem da montagem; recomenda protótipo.
+    - 'Outro comprimento não escala linearmente: o catálogo pede consulta ao fabricante.'
+    - 'Loja do mesmo fabricante: www.reidodissipador.com.br.'
+    - 'Catálogo: "não temos este perfil em estoque"; consultar o fabricante antes de usar.'
+    lifecycle: nrnd
+  HS 21526:
+    Rth_sa:
+      typ: 1.07
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 130
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 1445.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 130
+        location: Perímetro
+    mass_per_length:
+      typ: 6.6
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 130
+        location: Peso linear
+  HS 21575:
+    Rth_sa:
+      typ: 0.52
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 131
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 2965.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 131
+        location: Perímetro
+    mass_per_length:
+      typ: 21.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 131
+        location: Peso linear
+  HS 21577E:
+    Rth_sa:
+      typ: 0.52
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 132
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 2989.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 132
+        location: Perímetro
+    mass_per_length:
+      typ: 26.5
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 132
+        location: Peso linear
+    notes:
+    - Resistência térmica do catálogo para 4" (101,6 mm) de comprimento e ΔT = 75 °C, convecção natural.
+      O fabricante avisa que os valores são indicativos e dependem da montagem; recomenda protótipo.
+    - 'Outro comprimento não escala linearmente: o catálogo pede consulta ao fabricante.'
+    - 'Loja do mesmo fabricante: www.reidodissipador.com.br.'
+    - 'Catálogo: "não temos este perfil em estoque"; consultar o fabricante antes de usar.'
+    lifecycle: nrnd
+  HS 23742:
+    Rth_sa:
+      typ: 0.57
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 133
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 2700.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 133
+        location: Perímetro
+    mass_per_length:
+      typ: 10.6
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 133
+        location: Peso linear
+  HS 25040:
+    Rth_sa:
+      typ: 0.77
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 134
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 1965.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 134
+        location: Perímetro
+    mass_per_length:
+      typ: 12.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 134
+        location: Peso linear
+    notes:
+    - Resistência térmica do catálogo para 4" (101,6 mm) de comprimento e ΔT = 75 °C, convecção natural.
+      O fabricante avisa que os valores são indicativos e dependem da montagem; recomenda protótipo.
+    - 'Outro comprimento não escala linearmente: o catálogo pede consulta ao fabricante.'
+    - 'Loja do mesmo fabricante: www.reidodissipador.com.br.'
+    - 'Catálogo: "não temos este perfil em estoque"; consultar o fabricante antes de usar.'
+    lifecycle: nrnd
+  HS 26574:
+    Rth_sa:
+      typ: 0.57
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 135
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 2705.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 135
+        location: Perímetro
+    mass_per_length:
+      typ: 22.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 135
+        location: Peso linear
+    notes:
+    - Resistência térmica do catálogo para 4" (101,6 mm) de comprimento e ΔT = 75 °C, convecção natural.
+      O fabricante avisa que os valores são indicativos e dependem da montagem; recomenda protótipo.
+    - 'Outro comprimento não escala linearmente: o catálogo pede consulta ao fabricante.'
+    - 'Loja do mesmo fabricante: www.reidodissipador.com.br.'
+    - 'Catálogo: "não temos este perfil em estoque"; consultar o fabricante antes de usar.'
+    lifecycle: nrnd
+  HS 271019:
+    Rth_sa:
+      typ: 0.98
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 136
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 1580.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 136
+        location: Perímetro
+    mass_per_length:
+      typ: 6.8
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 136
+        location: Peso linear
+  HS 100100:
+    Rth_sa:
+      typ: 1.17
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 137
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 1320.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 137
+        location: Perímetro
+    mass_per_length:
+      typ: 8.3
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 137
+        location: Peso linear
+  HS 120120:
+    Rth_sa:
+      typ: 0.76
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 138
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 2050.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 138
+        location: Perímetro
+    mass_per_length:
+      typ: 11.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 138
+        location: Peso linear
+  HS 120120E:
+    Rth_sa:
+      typ: 0.76
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 140
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 2066.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 140
+        location: Perímetro
+    mass_per_length:
+      typ: 11.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 140
+        location: Peso linear
+  HS 125135:
+    Rth_sa:
+      typ: 0.73
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 142
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 2126.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 142
+        location: Perímetro
+    mass_per_length:
+      typ: 16.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 142
+        location: Peso linear
+  HS 125135L:
+    Rth_sa:
+      typ: 0.73
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 144
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 2126.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 144
+        location: Perímetro
+    mass_per_length:
+      typ: 18.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 144
+        location: Peso linear
+  HS 125136:
+    Rth_sa:
+      typ: 0.74
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 146
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 2084.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 146
+        location: Perímetro
+    mass_per_length:
+      typ: 16.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 146
+        location: Peso linear
+    notes:
+    - Resistência térmica do catálogo para 4" (101,6 mm) de comprimento e ΔT = 75 °C, convecção natural.
+      O fabricante avisa que os valores são indicativos e dependem da montagem; recomenda protótipo.
+    - 'Outro comprimento não escala linearmente: o catálogo pede consulta ao fabricante.'
+    - 'Loja do mesmo fabricante: www.reidodissipador.com.br.'
+    - 'Catálogo: "não temos este perfil em estoque"; consultar o fabricante antes de usar.'
+    lifecycle: nrnd
+  HS 125137:
+    Rth_sa:
+      typ: 0.66
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 148
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 2331.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 148
+        location: Perímetro
+    mass_per_length:
+      typ: 18.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 148
+        location: Peso linear
+  HS 5126:
+    Rth_sa:
+      typ: 4.9
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 152
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 316.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 152
+        location: Perímetro
+    mass_per_length:
+      typ: 1.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 152
+        location: Peso linear
+  HS 7550:
+    Rth_sa:
+      typ: 2.4
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 153
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 639.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 153
+        location: Perímetro
+    mass_per_length:
+      typ: 4.4
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 153
+        location: Peso linear
+  HS 7659:
+    Rth_sa:
+      typ: 1.5
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 154
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 1062.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 154
+        location: Perímetro
+    mass_per_length:
+      typ: 5.9
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 154
+        location: Peso linear
+  HS 7660:
+    Rth_sa:
+      typ: 1.5
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 155
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 1004.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 155
+        location: Perímetro
+    mass_per_length:
+      typ: 4.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 155
+        location: Peso linear
+  HS 2932:
+    Rth_sa:
+      typ: 5.5
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 156
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 281.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 156
+        location: Perímetro
+    mass_per_length:
+      typ: 0.9
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 156
+        location: Peso linear
+  HS 3732:
+    Rth_sa:
+      typ: 4.4
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 157
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 352.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 157
+        location: Perímetro
+    mass_per_length:
+      typ: 1.2
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 157
+        location: Peso linear
+  HS 8532:
+    Rth_sa:
+      typ: 2.2
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 158
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 716.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 158
+        location: Perímetro
+    mass_per_length:
+      typ: 2.5
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 158
+        location: Peso linear
+  HS 4413:
+    Rth_sa:
+      typ: 7.2
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 159
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 214.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 159
+        location: Perímetro
+    mass_per_length:
+      typ: 0.9
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 159
+        location: Peso linear
+  HS 5713:
+    Rth_sa:
+      typ: 5.6
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 160
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 275.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 160
+        location: Perímetro
+    mass_per_length:
+      typ: 1.2
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 160
+        location: Peso linear
+  HS 9213:
+    Rth_sa:
+      typ: 3.6
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 161
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 428.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 161
+        location: Perímetro
+    mass_per_length:
+      typ: 1.8
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 161
+        location: Peso linear
+  HS 3434:
+    Rth_sa:
+      typ: 5.4
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 162
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 290.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 162
+        location: Perímetro
+    mass_per_length:
+      typ: 1.6
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 162
+        location: Peso linear
+  HS 4434:
+    Rth_sa:
+      typ: 4.3
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 163
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 363.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 163
+        location: Perímetro
+    mass_per_length:
+      typ: 2.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 163
+        location: Peso linear
+  HS 6434:
+    Rth_sa:
+      typ: 3.1
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 164
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 507.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 164
+        location: Perímetro
+    mass_per_length:
+      typ: 2.8
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 164
+        location: Peso linear
+  HS 9334:
+    Rth_sa:
+      typ: 2.2
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 165
+        location: Resistência térmica (°C/W/4")
+    perimeter:
+      typ: 723.0
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 165
+        location: Perímetro
+    mass_per_length:
+      typ: 4.1
+      source:
+        datasheet_id: hs-catalogo-2026
+        page: 165
+        location: Peso linear

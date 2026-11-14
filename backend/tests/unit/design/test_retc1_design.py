@@ -43,11 +43,15 @@ def test_alpha_range_for_mains_tolerance(reviewed_catalogue):
     assert s["alpha_min"].value < 30 < s["alpha_max"].value
 
 
-def test_heatsink_warning_names_the_required_rsa(reviewed_catalogue):
+def test_heatsink_chosen_from_catalogue(reviewed_catalogue):
     res, _ = design(reviewed_catalogue, topology="ponte")
-    warn = [w for w in res.warnings if w.code == "dissipador"]
-    assert warn and "Rθsa" in warn[0].message
-    assert res.thermal[0].required_Rsa is not None
+    t = res.thermal[0]
+    assert t.required_Rsa is not None and t.heatsink is not None
+    assert t.heatsink_Rsa is not None and t.heatsink_Rsa.value <= t.required_Rsa.value
+    assert t.status == "ok"
+    warn = [w for w in res.warnings if w.code == "dissipador_escolhido"]
+    assert warn and t.heatsink in warn[0].message
+    assert any(s.id.startswith("Tj_hs_") for s in res.steps)
 
 
 def test_counter_emf_must_be_below_vo(reviewed_catalogue):

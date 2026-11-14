@@ -453,6 +453,10 @@ export interface ThermalResult {
   path: string;
   required_Rsa: Quantity | null;
   status: MarginStatus;
+  heatsink: string | null;
+  heatsink_id: string | null;
+  heatsink_manufacturer: string | null;
+  heatsink_Rsa: Quantity | null;
 }
 export interface DesignWarning {
   code: string;

@@ -25,6 +25,7 @@ from circuitos.core.errors import CircuitosError
 from circuitos.core.units import Q_, QuantityModel, format_eng, parse_unit
 from circuitos.selection.derating import DeratingPolicy
 from circuitos.selection.select import check, rank
+from circuitos.thermal import heatsink as hs
 from circuitos.thermal.steady import junction_temperature, required_heatsink
 
 from .base import (
@@ -227,6 +228,7 @@ def run(
     margins: list[MarginCheck] = []
     thermal: list[ThermalResult] = []
     TA = module.ambient(spec)
+    sinks = catalogue("heatsink.extrusion")
     for role in roles:
         part = chosen[role.designator]
         if part is None:
@@ -243,14 +245,32 @@ def run(
             )
         power = analysis.losses.get(role.designator)
         if power is not None:
-            result = _thermal(role, part, power, TA, policy, module.interface_resistance(spec))
+            result = _thermal(
+                role, part, power, TA, policy, module.interface_resistance(spec), sinks
+            )
             if result is not None:
                 thermal_result, steps = result
                 thermal.append(thermal_result)
-                if thermal_result.status != "ok":
+                if thermal_result.heatsink is not None:
+                    eff = thermal_result.heatsink_Rsa
+                    req = thermal_result.required_Rsa
+                    eff_txt = format_eng(eff.to_pint()) if eff else "?"
+                    req_txt = format_eng(req.to_pint()) if req else "?"
+                    warnings.append(
+                        DesignWarning(
+                            code="dissipador_escolhido",
+                            message=f"{role.designator}: sem dissipador a junção passaria do "
+                            f"limite; escolhido {thermal_result.heatsink} "
+                            f"(Rθsa ≈ {eff_txt} na elevação real, exigido ≤ {req_txt}), "
+                            f"Tj = {thermal_result.Tj.value:.0f} °C. Um dissipador por "
+                            "dispositivo; confirme em protótipo.",
+                        )
+                    )
+                elif thermal_result.status != "ok":
                     rsa = thermal_result.required_Rsa
                     hint = (
-                        f"use dissipador com Rθsa ≤ {format_eng(rsa.to_pint())}"
+                        f"use dissipador com Rθsa ≤ {format_eng(rsa.to_pint())} "
+                        "(nenhum dissipador liberado do catálogo atende)"
                         if rsa is not None and rsa.value > 0
                         else "nenhum dissipador resolve: escolha um componente maior ou "
                         "divida a corrente"
@@ -353,6 +373,7 @@ def _thermal(
     TA: pint.Quantity,
     policy: DeratingPolicy,
     rth_cs: pint.Quantity,
+    sinks: Sequence[ComponentRecord] = (),
 ) -> tuple[ThermalResult, list[CalcStep]] | None:
     p_ja = part.parameters.get("Rth_ja")
     p_tj = part.parameters.get("Tj_max")
@@ -378,6 +399,33 @@ def _thermal(
         )
         steps.append(rsa.step)
         required = QuantityModel.from_pint(rsa.value)
+        rth_jc = Q_(_value(p_jc), parse_unit(p_jc.unit)).to("K/W")
+        P = power.m_as("W")
+        ta = TA.to("degC").magnitude
+        limit = tj_max.to("degC").magnitude - policy.tj_margin_K
+        sink = (
+            hs.choose(sinks, P, ta, limit, rth_jc.m_as("K/W"), rth_cs.m_as("K/W"))
+            if rsa.value.magnitude > 0
+            else None
+        )
+        if sink is not None:
+            steps.append(hs.step(role.designator, sink, power.to("W"), TA, rth_jc, rth_cs))
+            return (
+                ThermalResult(
+                    designator=role.designator,
+                    power=QuantityModel.from_pint(power.to("W")),
+                    Tj=QuantityModel.from_pint(Q_(sink.Tj, "degC")),
+                    Tj_max=QuantityModel.from_pint(tj_max.to("degC")),
+                    path=f"com dissipador {sink.record.part_number}",
+                    required_Rsa=required,
+                    status="ok",
+                    heatsink=sink.record.part_number,
+                    heatsink_id=sink.record.id,
+                    heatsink_manufacturer=sink.record.manufacturer,
+                    heatsink_Rsa=QuantityModel.from_pint(Q_(sink.rsa_effective, "K/W")),
+                ),
+                steps,
+            )
     return (
         ThermalResult(
             designator=role.designator,

@@ -123,16 +123,30 @@ def bom(spec: BaseModel, result: DesignResult) -> list[BomRow]:
     th = {t.designator: t for t in result.thermal}
     for role in result.roles:
         t = th.get(role.designator)
-        if t and t.required_Rsa is not None and t.status != "ok":
+        if t and t.heatsink is not None:
             rows.append(
                 BomRow(
                     designator=f"HS ({role.designator})",
-                    quantity=1,
+                    quantity=role.count,
+                    description="Dissipador, perfil extrudado, 101,6 mm (um por dispositivo)",
+                    part_number=t.heatsink,
+                    manufacturer=t.heatsink_manufacturer or "",
+                    value=f"Rθsa ≈ {_eng(t.heatsink_Rsa.value, 'K/W')}" if t.heatsink_Rsa else "",
+                    note=f"exigido Rθsa ≤ {_eng(t.required_Rsa.value, 'K/W')}"
+                    if t.required_Rsa
+                    else "",
+                )
+            )
+        elif t and t.required_Rsa is not None and t.status != "ok":
+            rows.append(
+                BomRow(
+                    designator=f"HS ({role.designator})",
+                    quantity=role.count,
                     description="Dissipador",
                     part_number="(a escolher)",
                     manufacturer="",
                     value=f"Rθsa ≤ {_eng(t.required_Rsa.value, 'K/W')}",
-                    note="catálogo de dissipadores pendente",
+                    note="nenhum dissipador liberado do catálogo atende",
                 )
             )
     vc = s.get("VC_max")

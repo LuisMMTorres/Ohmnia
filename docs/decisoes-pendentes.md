@@ -38,19 +38,22 @@ Pergunta: segue alguma referência formal de derating (norma ou manual de empres
 
 - **Recomendado:** IEC 60617 como padrão (alinhado à ABNT), com ANSI/IEEE 315 selecionável, já que parte da bibliografia (Boylestad, Hart) usa símbolos ANSI.
 
-## D6. Casos de referência (golden tests)
+## D6. Casos de referência (golden tests) — **EM CONFERÊNCIA (2026-11-14)**
 
-- Tenho as referências por capítulo, mas não os livros. **Pedido:** indicar exemplos resolvidos preferidos (livro, edição, número do exemplo) para cada disciplina, ou enviar fotos/PDFs das páginas. Começo pelos de retificadores (Fase 3).
-- Sem isso, proponho os casos e o usuário confere os números com o livro antes de o teste entrar.
+- O usuário pediu que eu sugerisse os exemplos. Sete casos propostos em [validacao/casos-referencia-propostos.md](validacao/casos-referencia-propostos.md), já como teste `GT-RET-P1..P7`. Aguardam conferência dos números ou a indicação do exemplo equivalente do livro.
 
 ## D7. Revisão dos componentes do banco inicial — **ADOTADA A RECOMENDAÇÃO (2026-11-14), sem objeção do usuário:** eu cadastro como `extraido` com página; o usuário libera (`revisado`) pela tela de revisão, por amostragem.
 
 - Eu baixo os datasheets oficiais e preencho os YAML com página de cada valor, status `extraido`.
 - **Pergunta:** quem libera (`revisado`)? Recomendação: o usuário revisa por amostragem um lote por categoria na Fase 2, e o restante fica liberado após conferência dupla automática (dois datasheets/fabricantes concordando, quando houver segunda fonte).
 
-## D8. Catálogos de dissipadores e núcleos
+## D8. Catálogos de dissipadores e núcleos — **DECIDIDA (2026-11-14)**
 
-- Sugestão: incluir fabricantes com presença no Brasil, que os alunos conseguem comprar (por exemplo Thornton para ferrites e HS Dissipadores para perfis), além de TDK/EPCOS, Ferroxcube e Magnetics. Confirmar quais o usuário usa no laboratório.
+- Fabricantes indicados pelo usuário: HS Dissipadores, Rei dos Dissipadores e Eletrogate.
+- HS Dissipadores: catálogo 2026-27 (rev. S) transcrito, 137 perfis (`data/components/heatsink/hs-dissipadores-perfis.yaml`). A loja Rei do Dissipador (reidodissipador.com.br) é do mesmo fabricante e vende os mesmos perfis HS.
+- Eletrogate: só tem um dissipador adesivo para Raspberry Pi, sem resistência térmica publicada; não entra no catálogo.
+- Núcleos magnéticos: nenhum dos três vende; fica para a Fase 6 (conversores), com nova consulta.
+- DIAC: adiado a pedido do usuário.
 
 ## D9. Extração de datasheets com LLM (Fase 8)
 

@@ -51,7 +51,9 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 - ✅ Zener e pontes monofásicas: 107 componentes (`docs/validacao/catalogo-zener-pontes.md`)
 - ✅ Transistores: 31 TBJ e 2 MOSFET (`docs/validacao/catalogo-transistores.md`)
 - ✅ Tiristores: 8 SCR e 6 TRIAC onsemi (`docs/validacao/catalogo-tiristores.md`); esquema de DIAC pronto, sem datasheet acessível
-- 🔶 Dissipadores e núcleos: esquemas `heatsink.extrusion` e `magnetic.core` prontos; dados aguardam a decisão D8 e acesso aos sites dos fabricantes
+- ✅ Dissipadores: 137 perfis da HS Dissipadores (D8, `docs/validacao/catalogo-dissipadores.md`)
+- ➡️ Núcleos magnéticos: passam para a Fase 6 (nenhum dos fabricantes indicados vende núcleos)
+- ➡️ DIAC: adiado a pedido do usuário
 - ✅ Bancada `BD-DIODO` (curva I×V com temperatura, `AS-DIODO-01`)
 - ✅ Bancada `BD-ZENER` (curva reversa, ajuste ao datasheet, `AS-ZENER-01`)
 - ✅ Bancadas `BD-TBJ` e `BD-FET` (curvas de saída, ajuste ao datasheet, `AS-TBJ-01`, `AS-FET-01`)
@@ -66,11 +68,11 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 - ✅ `DM-RET1` (meia onda, derivação central, ponte; sem filtro, C, LC, π), `DM-RETC1` (meia onda controlada com e sem roda livre, ponte total e semicontrolada, carga R-L-E), `DM-RET3` (3, 6 e 12 pulsos, comutação por Ls); transformador ideal com relação de espiras e VA
 - ✅ `selection/` com derating configurável (critérios didático e industrial), travamento manual de componente, nova seleção sobre a envoltória dos esforços ideal e real
 - ✅ `thermal/` estacionário: Tj sem dissipador e Rθsa máxima exigida
-- 🔶 Escolha de dissipador do catálogo: aguarda D8 (só a Rθsa exigida é informada)
+- ✅ Escolha automática de dissipador do catálogo, com a correção por ΔT do fabricante
 - ✅ Aba **Projeto**: formulário gerado do esquema, controles deslizantes que refazem o projeto (painel de limites), margens, térmico, formas de onda do cálculo × ngspice
 - ✅ Esquemático por gabarito (SVG), lista de materiais (CSV), relatório HTML com memória de cálculo (KaTeX embutido, funciona sem internet) e roteiro de prática
 - ✅ `AS-RET-01..03` (25 casos, maior erro 0,29 %), `GT-RET*` por fórmulas fechadas, `PT-RET-FP`
-- 🔶 `GT-RET*` com exemplos resolvidos de livro: aguarda D6
+- 🔶 `GT-RET-P1..P7`: casos propostos (D6), aguardando conferência do usuário
 - ✅ [validacao/retificadores.md](validacao/retificadores.md)
 
 ## Fase 4 — Fontes reguladas e amplificadores ⏳

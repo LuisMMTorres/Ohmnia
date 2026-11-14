@@ -48,8 +48,14 @@ conferido pela solução exata. Cada passo traz equação, entradas, premissas e
    ideal e real (até 5 rodadas).
 4. Margens: tabela esforço × valor nominal × fator exigido × margem, com situação ok, atenção ou
    violado.
-5. Temperatura de junção: `Tj = TA + P·Rθja` sem dissipador; se passar do limite, o aviso indica
-   a resistência térmica máxima do dissipador `Rθsa ≤ (Tj,máx − margem − TA)/P − Rθjc − Rθcs`.
+5. Temperatura de junção: `Tj = TA + P·Rθja` sem dissipador. Se passar do limite, calcula a
+   resistência térmica máxima do dissipador `Rθsa ≤ (Tj,máx − margem − TA)/P − Rθjc − Rθcs` e
+   escolhe do catálogo (HS Dissipadores, só perfis liberados) o menor perfil que atende, um por
+   dispositivo, no comprimento do catálogo (101,6 mm). O Rθsa do catálogo vale para elevação de
+   75 °C; com elevação menor ele aumenta pelo fator do fabricante (catálogo, p. 10), então a
+   elevação real é resolvida por ponto fixo. Perfis marcados "sem estoque" só entram se nenhum
+   outro servir. Exemplo (padrão do `DM-RETC1`, MCR265-4, 5,7 W): exigido Rθsa ≤ 10,9 K/W,
+   escolhido HS 2315 (10,2 K/W no catálogo, 10,7 K/W na elevação real), Tj = 109 °C.
 
 O usuário pode **travar** um componente em qualquer posição (lista suspensa em
 *Componentes e margens*). Componente não revisado nunca entra na escolha automática; se for
@@ -110,14 +116,9 @@ e descontínua, semicontrolada, 3 e 6 pulsos, comutação, corrente de linha ide
 5ª e 7ª harmônicas em 12 pulsos). Hoje eles conferem **fórmulas**; ainda não conferem exemplos
 resolvidos de livro, porque isso depende da decisão D6.
 
-**Pedido (D6):** indique os exemplos resolvidos que usa em aula (livro, edição, número do exemplo),
-ou envie fotos das páginas. Cada exemplo vira um teste GT com a fonte no docstring e tolerância
-explícita. Sugestão de cobertura mínima:
-
-1. ponte com filtro C (ondulação e corrente de pico no diodo);
-2. retificador controlado de meia onda com carga R-L (ângulo de extinção);
-3. ponte totalmente controlada R-L-E em condução contínua;
-4. ponte trifásica controlada com indutância de comutação (μ e queda de tensão).
+**D6:** a seu pedido, propus sete casos em
+[casos-referencia-propostos.md](casos-referencia-propostos.md), já como testes `GT-RET-P1..P7`.
+Falta conferir os números ou indicar o exemplo equivalente do livro.
 
 Os testes `PT-RET-FP` conferem propriedades em pontos de operação aleatórios: fator de potência
 entre 0 e 1, Vo ≤ Vm − n·VF, balanço de potência (entrada = carga + diodos, 0,5 %) no filtro C, e
@@ -131,8 +132,9 @@ FP ≤ 2√2/π (≈ 0,9) no filtro LC.
 - `Rθcs = 0,5 K/W` (pasta térmica) é premissa editável no formulário.
 - Perda nos dispositivos por VF/VT0 + rT·I²; sem perdas de recuperação reversa (frequência da rede).
 - Capacitores, indutores e transformador saem com valor e requisitos (tensão, corrente de
-  ondulação, VA), mas **sem peça do catálogo**: o banco ainda não tem capacitores, e dissipadores e
-  núcleos dependem de D8.
+  ondulação, VA), mas **sem peça do catálogo**: o banco ainda não tem capacitores nem núcleos.
+- Dissipador: só convecção natural, comprimento do catálogo e um por dispositivo. O fabricante
+  avisa que os valores são indicativos e dependem da montagem.
 - `DM-RET3` assume corrente de carga constante; a ondulação de Io não é calculada.
 - O esquemático de 12 pulsos é simplificado: o secundário em Δ aparece com o mesmo símbolo de
   fonte, indicado pelo rótulo.
@@ -145,8 +147,8 @@ FP ≤ 2√2/π (≈ 0,9) no filtro LC.
       as aulas (por exemplo, o C de 15 mF para 12 V, 1 A e 5 % de ondulação).
 - [ ] Conferir a memória de cálculo de um caso de cada módulo.
 - [ ] Gerar o **Relatório** e o roteiro de prática de um retificador que use no laboratório.
-- [ ] Indicar os exemplos de livro para os testes GT (D6).
-- [ ] Responder D8 (fabricantes de dissipadores e núcleos).
+- [ ] Conferir os casos propostos para os testes GT (D6).
+- [ ] Liberar, na tela de revisão, os perfis de dissipador que usa (por amostragem).
 
 ## Como executar
 
