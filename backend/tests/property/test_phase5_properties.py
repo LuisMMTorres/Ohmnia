@@ -43,7 +43,7 @@ def fil(repo, **raw):
         repo.get,
         DeratingPolicy.from_preset("didatico"),
     )
-    return {k: v.value for k, v in res.summary.items()}
+    return {k: v.value for k, v in res.summary.items()}, {w.code for w in res.warnings}
 
 
 @settings(
@@ -57,9 +57,11 @@ def fil(repo, **raw):
     realization=st.sampled_from(["sallen_key", "mfb"]),
 )
 def test_pt_fil_e24_rounding_bound(reviewed_catalogue, fp, approx, realization):
-    """With E24 resistors and E12 capacitors the −3 dB corner stays within 5 % of the corner of
-    the unrounded design (f_dev, from the exact response of the rounded parts)."""
-    s = fil(
+    """With E24 resistors and E12 capacitors the −3 dB corner stays near the corner of the
+    unrounded design (f_dev, from the exact response of the rounded parts), and a deviation above
+    5 % is never hidden: the result carries the "desvio" warning (rule 4). Half an E24 step is
+    about 5 % per part, so a sixth-order design can pass 5 %; 15 % is the sanity bound."""
+    s, warnings = fil(
         reviewed_catalogue,
         approx=approx,
         realization=realization,
@@ -67,5 +69,6 @@ def test_pt_fil_e24_rounding_bound(reviewed_catalogue, fp, approx, realization):
         f_stop={"value": 3 * fp, "unit": "Hz"},
         res_series="E24",
     )
-    assert abs(s["f_dev"]) <= 5.0
+    assert abs(s["f_dev"]) <= 15.0
+    assert (abs(s["f_dev"]) > 5.0) == ("desvio" in warnings)
     assert s["n"] >= 2
