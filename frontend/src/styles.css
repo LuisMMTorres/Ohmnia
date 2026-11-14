@@ -341,3 +341,8 @@ img.page {
 .params td:nth-child(4) {
   white-space: nowrap;
 }
+/* Descriptive paragraphs (panel intros, notes, warnings): justified, with hyphenation. */
+.panel p {
+  text-align: justify;
+  hyphens: auto;
+}
