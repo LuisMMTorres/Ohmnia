@@ -11,8 +11,8 @@ simulator):
 * Cockcroft-Walton multiplier with n stages (2n diodes, 2n capacitors): no-load output 2n·(Vm −
   VF); with load current Io, droop ΔV = Io/(f·C)·(2n³/3 + n²/2 − n/6) and ripple
   δV = Io/(f·C)·n(n + 1)/2 (Kuffel, Zaengl & Kuffel, *High Voltage Engineering: Fundamentals*,
-  2nd ed., ch. 2, Cockcroft-Walton cascade). These are approximations (linear discharge): the simulation
-  tolerance says so.
+  2nd ed., ch. 2, Cockcroft-Walton cascade). These are approximations (linear discharge):
+  the simulation tolerance says so.
 """
 
 from __future__ import annotations

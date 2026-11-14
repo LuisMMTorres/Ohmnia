@@ -203,7 +203,7 @@ class DiffModule:
 
             def residual(v: float) -> float:  # v = VBE of Q1 = Q2
                 ic = m.ic(v)
-                return 2 * ic * (1 + 1 / m.BF) - (-v + vee) / r["REE"]
+                return float(2 * ic * (1 + 1 / m.BF) - (-v + vee) / r["REE"])
 
             vbe_q = brentq(residual, 0.0, min(vee, 1.5), xtol=1e-15)
             ic_q = m.ic(vbe_q)
@@ -241,7 +241,7 @@ class DiffModule:
 
             def residual_m(v: float) -> float:  # VBE of Q3 = Q4
                 ic = m3.ic(v)
-                return ic * (1 + 2 / m3.BF) - (vcc + vee - v) / r["Rref"]
+                return float(ic * (1 + 2 / m3.BF) - (vcc + vee - v) / r["Rref"])
 
             v3 = brentq(residual_m, 0.0, min(vcc + vee, 1.5), xtol=1e-15)
             i_tail_q = m3.ic(v3)  # identical transistors, no Early effect
