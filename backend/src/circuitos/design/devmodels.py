@@ -247,6 +247,10 @@ class Darlington:
 
     def split(self, vbe: float) -> float:
         """VBE of Q2 for a composite |VBE| in forward-active operation (IE1 = IB2)."""
+        k1 = self.q1.IS * (1 + 1 / self.q1.BF)
+        k2 = self.q2.IS / self.q2.BF
+        if abs(k1 - k2) <= 1e-9 * k2:  # built by darlington_model: equal junction voltages
+            return vbe / 2
 
         def f(v2: float) -> float:
             ib2 = self.q2.IS * math.expm1(min(v2 / VT_300K, 200)) / self.q2.BF

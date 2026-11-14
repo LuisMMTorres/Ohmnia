@@ -37,7 +37,17 @@ from circuitos.design.base import (
     Stress,
     make_trace,
 )
-from circuitos.design.devmodels import BOYLESTAD, VT_300K, Bjt, bjt_model, hfe_entries, quantity
+from circuitos.design.devmodels import (
+    BOYLESTAD,
+    VT_300K,
+    Bjt,
+    Darlington,
+    bjt_model,
+    darlington_model,
+    hfe_entries,
+    is_darlington,
+    quantity,
+)
 from circuitos.design.engine import Analysis, Device
 from circuitos.reports.common import BomRow, LabItem, passive
 from circuitos.reports.schematic import Svg
@@ -53,6 +63,7 @@ class PaSpec(BaseModel):
     RL: QuantityModel = QuantityModel(value=8, unit="ohm")
     Po: QuantityModel = QuantityModel(value=5, unit="W")  # desired output power (sine)
     IQ: QuantityModel = QuantityModel(value=20, unit="mA")  # class AB quiescent current
+    darlington: bool = False  # B/AB with complementary Darlingtons
     f_sig: QuantityModel = QuantityModel(value=1, unit="kHz")
     VBE: QuantityModel = QuantityModel(value=0.7, unit="V")
     beta_ideal: float = Field(default=50, gt=1, le=2000)
@@ -85,6 +96,7 @@ SPEC_LABELS = {
     "RL": "Carga (alto-falante)",
     "Po": "Potência de saída desejada",
     "IQ": "Corrente quiescente (AB)",
+    "darlington": "Transistores Darlington (B/AB)",
     "f_sig": "Frequência do sinal",
     "VBE": "VBE na corrente de ensaio (premissa)",
     "beta_ideal": "β de projeto (passo ideal)",
@@ -109,30 +121,40 @@ def _harm(x: NDArray[np.float64]) -> NDArray[np.float64]:
     return np.asarray(amp)
 
 
+Out = Bjt | Darlington
+
+
+def _ic(q: Out, v: float) -> float:
+    if isinstance(q, Darlington):
+        v2 = q.split(v)
+        return q.q1.IS * math.expm1(min((v - v2) / VT_300K, 200.0)) + q.q2.IS * math.expm1(
+            min(v2 / VT_300K, 200.0)
+        )
+    return q.IS * math.expm1(min(v / VT_300K, 200.0))
+
+
 def push_pull(
-    qn: Bjt, qp: Bjt, vb_n: NDArray[np.float64], vb_p: NDArray[np.float64], rl: float
+    qn: Out, qp: Out, vb_n: NDArray[np.float64], vb_p: NDArray[np.float64], rl: float
 ) -> tuple[NDArray[np.float64], NDArray[np.float64], NDArray[np.float64]]:
-    """Output voltage and collector currents of the complementary follower (quasi-static)."""
+    """Output voltage and collector currents of the complementary follower (quasi-static).
+
+    Works for single transistors and for Darlington pairs (two junctions per side).
+    """
     vo = np.empty_like(vb_n)
     icn = np.empty_like(vb_n)
     icp = np.empty_like(vb_n)
-
-    def ie_n(v: float) -> float:
-        return qn.IS * math.expm1(min(v / VT_300K, 200.0)) * (1 + 1 / qn.BF)
-
-    def ie_p(v: float) -> float:
-        return qp.IS * math.expm1(min(v / VT_300K, 200.0)) * (1 + 1 / qp.BF)
+    span = 4.0 if isinstance(qn, Darlington) else 2.0
 
     for k, (bn, bp) in enumerate(zip(vb_n, vb_p, strict=True)):
 
         def residual(v: float, bn: float = bn, bp: float = bp) -> float:
-            return ie_n(bn - v) - ie_p(v - bp) - v / rl
+            return qn.ie(bn - v) - qp.ie(v - bp) - v / rl
 
-        lo, hi = min(bn, bp) - 2.0, max(bn, bp) + 2.0
+        lo, hi = min(bn, bp) - span, max(bn, bp) + span
         v = brentq(residual, lo, hi, xtol=1e-13)
         vo[k] = v
-        icn[k] = qn.IS * math.expm1(min((bn - v) / VT_300K, 200.0))
-        icp[k] = qp.IS * math.expm1(min((v - bp) / VT_300K, 200.0))
+        icn[k] = _ic(qn, bn - v)
+        icp[k] = _ic(qp, v - bp)
     return vo, icn, icp
 
 
@@ -189,8 +211,18 @@ class PaModule:
         return _spec(spec).Rth_cs.to_pint()
 
     def accepts(self, spec: BaseModel, role: Role, rec: ComponentRecord) -> bool:
-        # a Darlington (hFE in the thousands) is not one junction: the model would not fit it
-        return bool(hfe_entries(rec)) and all((p.min or 0) < 500 for _, p in hfe_entries(rec))
+        # a Darlington (hFE in the thousands) is two junctions: modelled only when asked for
+        s = _spec(spec)
+        want = s.darlington and s.cls != "A"
+        return bool(hfe_entries(rec)) and is_darlington(rec) == want
+
+    def _model(
+        self, s: PaSpec, devices: Mapping[str, Device], ip: float, log: CalcLog, d: str
+    ) -> tuple[Out, list[str]]:
+        rec = devices[d].record
+        if s.darlington and s.cls != "A":
+            return darlington_model(rec, ip, s.VBE.to_pint(), s.beta_ideal**2, log, d)
+        return bjt_model(rec, ip, s.VBE.to_pint(), s.beta_ideal, log, d)
 
     def preference(self, spec: BaseModel, role: Role, rec: ComponentRecord) -> float:
         q = quantity(rec, "IC", ("max",))
@@ -225,8 +257,8 @@ class PaModule:
                     "o transistor satura. Aumente VCC.",
                 )
             )
-        qn, w1 = bjt_model(devices["Q1"].record, ip, s.VBE.to_pint(), s.beta_ideal, log, "Q1")
-        qp, w2 = bjt_model(devices["Q2"].record, ip, s.VBE.to_pint(), s.beta_ideal, log, "Q2")
+        qn, w1 = self._model(s, devices, ip, log, "Q1")
+        qp, w2 = self._model(s, devices, ip, log, "Q2")
         warnings += [DesignWarning(code="modelo", message=x) for x in w1 + w2]
         # textbook (ideal) formulas
         pi_id = 2 * vcc * vp / (math.pi * rl)
@@ -283,11 +315,7 @@ class PaModule:
                     "Polarização entre as bases para a corrente quiescente",
                     r"V_{BB} = V_{BE,n}(I_Q) + |V_{BE,p}(I_Q)|",
                     output=Q_(vbn0 - vbp0, "V"),
-                    inputs={
-                        "I_Q": s.IQ.to_pint(),
-                        "I_{S,n}": Q_(qn.IS, "A"),
-                        "I_{S,p}": Q_(qp.IS, "A"),
-                    },
+                    inputs={"I_Q": s.IQ.to_pint()},
                     assumptions=[
                         "fonte ideal de polarização (diodos ou multiplicador de V_BE na montagem)"
                     ],
@@ -575,14 +603,20 @@ class PaModule:
             probes = {"VCE de Q1": "v(c)", "Corrente de coletor de Q1": "i(vsc)"}
         else:
             ip = summary["Ip"].to_pint().m_as("A")
-            qn, _ = bjt_model(devices["Q1"].record, ip, s.VBE.to_pint(), s.beta_ideal, log, "Q1")
-            qp, _ = bjt_model(devices["Q2"].record, ip, s.VBE.to_pint(), s.beta_ideal, log, "Q2")
+            qn, _ = self._model(s, devices, ip, log, "Q1")
+            qp, _ = self._model(s, devices, ip, log, "Q2")
             vin = summary["Vin_pk"].to_pint().m_as("V")
             vbb = summary["VBB"].to_pint().m_as("V") if "VBB" in summary else 0.0
             vbn = qn.vbe(s.IQ.to_pint().m_as("A")) if s.cls == "AB" else 0.0
+            if isinstance(qn, Darlington) and isinstance(qp, Darlington):
+                models = [qn.subckt("DN"), qp.subckt("DP")]
+                dev = ["X1 cn bn o DN", "X2 cp bp o DP"]
+            else:
+                assert isinstance(qn, Bjt) and isinstance(qp, Bjt)
+                models = [qn.spice("QN"), qp.spice("QP")]
+                dev = ["Q1 cn bn o QN", "Q2 cp bp o QP"]
             lines = [
-                qn.spice("QN"),
-                qp.spice("QP"),
+                *models,
                 f"VCC vcc 0 DC {vcc:.9g}",
                 f"VEE vee 0 DC {-vcc:.9g}",
                 f"VIN in 0 SIN(0 {vin:.9g} {f:.9g})",
@@ -590,8 +624,7 @@ class PaModule:
                 f"VBP in bp DC {vbb - vbn:.9g}",
                 "VSN vcc cn 0",
                 "VSP cp vee 0",
-                "Q1 cn bn o QN",
-                "Q2 cp bp o QP",
+                *dev,
                 f"RL o 0 {rl:.9g}",
             ]
             checks = [

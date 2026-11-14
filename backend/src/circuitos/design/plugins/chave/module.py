@@ -20,7 +20,7 @@ from typing import Literal
 
 import pint
 from pydantic import BaseModel, Field
-from scipy.optimize import fsolve
+from scipy.optimize import fsolve, root
 
 from circuitos.components.models import ComponentRecord
 from circuitos.core.calc import CalcLog, record
@@ -31,8 +31,11 @@ from circuitos.design.devmodels import (
     BOYLESTAD,
     VT_300K,
     Bjt,
+    Darlington,
     bjt_model,
+    darlington_model,
     hfe_entries,
+    is_darlington,
     mos_model,
     quantity,
 )
@@ -40,7 +43,7 @@ from circuitos.design.engine import Analysis, Device
 from circuitos.reports.common import BomRow, LabItem, passive, resistor_row
 from circuitos.reports.schematic import Svg
 
-Kind = Literal["tbj", "mosfet"]
+Kind = Literal["tbj", "darlington", "mosfet"]
 Load = Literal["resistiva", "indutiva"]
 REF = BOYLESTAD.model_copy(update={"chapter": "4 (Transistor switching networks)"})
 
@@ -89,6 +92,7 @@ SPEC_LABELS = {
 }
 ENUM_LABELS = {
     "tbj": "TBJ NPN",
+    "darlington": "Darlington NPN",
     "mosfet": "MOSFET canal N",
     "resistiva": "resistiva",
     "indutiva": "indutiva (relé, solenoide)",
@@ -115,6 +119,30 @@ def _nearest(rec: ComponentRecord, symbol: str, ic: float) -> tuple[float, float
             dist = d
             best = (float(Q_(p.max, parse_unit(p.unit)).m_as("V")), i)
     return best
+
+
+def darlington_on(
+    d: Darlington, vcc: float, rl: float, vd: float, rb: float, rpd: float
+) -> tuple[float, float, float, float]:
+    """(IB, IC, VBE, VCE) of a Darlington switch, both transistors with full Ebers-Moll."""
+
+    def eqs(x: list[float]) -> list[float]:
+        vb, vm, vc = x
+        ib1, ic1 = d.q1.em(vb - vm, vb - vc)
+        ib2, ic2 = d.q2.em(vm, vm - vc)
+        return [
+            (vd - vb) / rb - vb / rpd - ib1,
+            ib1 + ic1 - ib2,
+            (vcc - vc) / rl - ic1 - ic2,
+        ]
+
+    # Levenberg-Marquardt on the raw KCL residuals: the scaled hybrid solver
+    # stopped on a spurious point when the base drive is weak.
+    sol = root(eqs, [1.45, 0.72, 0.9], method="lm", options={"xtol": 1e-14, "ftol": 1e-18})
+    vb, vm, vc = (float(v) for v in sol.x)
+    ib1, ic1 = d.q1.em(vb - vm, vb - vc)
+    _, ic2 = d.q2.em(vm, vm - vc)
+    return float(ib1), float(ic1 + ic2), float(vb), float(vc)
 
 
 def ebers_moll_on(
@@ -204,8 +232,11 @@ class ChaveModule:
             vth = rec.parameters.get("VGS(th)")
             rds = rec.parameters.get("RDS(on)")
             return bool(vth and vth.min is not None and rds and rds.max is not None)
-        return bool(hfe_entries(rec)) and any(
-            p.symbol == "VCE(sat)" for p in rec.parameters.values()
+        want = _spec(spec).device == "darlington"
+        return (
+            bool(hfe_entries(rec))
+            and is_darlington(rec) == want
+            and any(p.symbol == "VCE(sat)" for p in rec.parameters.values())
         )
 
     def preference(self, spec: BaseModel, role: Role, rec: ComponentRecord) -> float:
@@ -225,7 +256,8 @@ class ChaveModule:
         rec = devices["Q1"].record
         summary: dict[str, pint.Quantity] = {}
         r: dict[str, float] = {}
-        if s.device == "tbj":
+        if s.device in ("tbj", "darlington"):
+            dar = s.device == "darlington"
             i0 = vcc / rl
             sat = _nearest(rec, "VCE(sat)", i0) if rec else None
             vce_ds = sat[0] if sat else 0.2
@@ -266,14 +298,14 @@ class ChaveModule:
                     "IB_req",
                     "Corrente de base exigida",
                     r"I_B = \frac{I_C}{\beta_{forçado}} + \frac{V_{BE}}{R_{pd}}",
-                    output=Q_(il / bf + 0.8 / rpd, "A").to("mA"),
+                    output=Q_(il / bf + (1.6 if dar else 0.8) / rpd, "A").to("mA"),
                     inputs={"I_C": Q_(il, "A"), r"\beta_{forçado}": Q_(bf, "")},
                     assumptions=["R_pd desvia ~V_BE(sat)/R_pd"],
                     reference=REF,
                 )
             ).m_as("A")
-            vbe_sat = _nearest(rec, "VBE(sat)", il) if rec else None
-            vbs = vbe_sat[0] if vbe_sat else 0.8
+            vbe_sat = _nearest(rec, "VBE(on)" if dar else "VBE(sat)", il) if rec else None
+            vbs = vbe_sat[0] if vbe_sat else (1.6 if dar else 0.8)
             rb_c = log.add(
                 record(
                     "RB_calc",
@@ -294,9 +326,14 @@ class ChaveModule:
             r["RB"] = commercial(
                 log, "RB", "RB comercial (para baixo: mais corrente)", rb_c, s.res_series, "down"
             ).m_as("ohm")
-            m, w = bjt_model(rec, il, s.VBE.to_pint(), s.beta_ideal, log, "Q1")
+            m: Bjt | Darlington
+            if dar:
+                m, w = darlington_model(rec, il, s.VBE.to_pint(), s.beta_ideal, log, "Q1")
+                ib_on, ic_on, _vbe_on, vce_on = darlington_on(m, vcc, rl, vd, r["RB"], rpd)
+            else:
+                m, w = bjt_model(rec, il, s.VBE.to_pint(), s.beta_ideal, log, "Q1")
+                ib_on, ic_on, _vbe_on, vce_on = ebers_moll_on(m, vcc, rl, vd, r["RB"], rpd)
             warnings += [DesignWarning(code="modelo", message=x) for x in w]
-            ib_on, ic_on, _vbe_on, vce_on = ebers_moll_on(m, vcc, rl, vd, r["RB"], rpd)
             log.add(
                 record(
                     "VCE_on",
@@ -485,11 +522,18 @@ class ChaveModule:
             f"RL vcc c {rl:.9g}",
             "VSC c cq 0",
         ]
-        if s.device == "tbj":
+        if s.device in ("tbj", "darlington"):
             il = summary["I_load"].to_pint().m_as("A")
-            m, _ = bjt_model(devices["Q1"].record, il, s.VBE.to_pint(), s.beta_ideal, log, "Q1")
             rb = summary["RB"].to_pint().m_as("ohm")
-            lines += [m.spice("QS"), f"RB dr b {rb:.9g}", f"RPD b 0 {rpd:.9g}", "Q1 cq b 0 QS"]
+            lines += [f"RB dr b {rb:.9g}", f"RPD b 0 {rpd:.9g}"]
+            if s.device == "darlington":
+                dm, _ = darlington_model(
+                    devices["Q1"].record, il, s.VBE.to_pint(), s.beta_ideal, log, "Q1"
+                )
+                lines += [dm.subckt("DS"), "X1 cq b 0 DS"]
+            else:
+                m, _ = bjt_model(devices["Q1"].record, il, s.VBE.to_pint(), s.beta_ideal, log, "Q1")
+                lines += [m.spice("QS"), "Q1 cq b 0 QS"]
             checks = [
                 dc_check("Corrente de coletor", "IC_on", "i(vsc)"),
                 dc_check("VCE de saturação", "VCE_on", "v(c)", 1.0),
@@ -533,7 +577,7 @@ class ChaveModule:
             svg.diode_v(x + 80, 40, 130, "D1", parts.get("D1", ""), up=True)
             svg.wire((x + 8, 40), (x + 80, 40))
             svg.wire((x + 8, 130), (x + 80, 130))
-        if s.device == "tbj":
+        if s.device in ("tbj", "darlington"):
             b, c, e = svg.bjt(x, 170, "Q1", parts.get("Q1", ""))
             rname, rval = "RB", format_eng(sm["RB"].to_pint())
         else:
