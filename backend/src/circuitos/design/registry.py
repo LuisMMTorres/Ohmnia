@@ -8,11 +8,20 @@ from circuitos.design.plugins.lin import LinModule
 from circuitos.design.plugins.ret1 import Ret1Module
 from circuitos.design.plugins.ret3 import Ret3Module
 from circuitos.design.plugins.retc1 import Retc1Module
+from circuitos.design.plugins.ssa import SsaModule
 from circuitos.design.plugins.zen import ZenModule
 
 MODULES: dict[str, TopologyModule] = {
     m.id: m
-    for m in (Ret1Module(), Retc1Module(), Ret3Module(), ZenModule(), LinModule(), BiasModule())
+    for m in (
+        Ret1Module(),
+        Retc1Module(),
+        Ret3Module(),
+        ZenModule(),
+        LinModule(),
+        BiasModule(),
+        SsaModule(),
+    )
 }
 
 

@@ -59,6 +59,8 @@ class Bjt:
     BF: float
     pnp: bool = False
     VAF: float | None = None  # V; None: no Early effect (the designs neglect it)
+    CJC: float = 0.0  # F, constant (MJC = 0): Cμ
+    TF: float = 0.0  # s, forward transit time: Cπ = TF·gm
 
     def vbe(self, ic: float, vt: float = VT_300K) -> float:
         """|VBE| for a collector current |IC| in forward-active operation."""
@@ -70,7 +72,42 @@ class Bjt:
     def spice(self, name: str) -> str:
         kind = "PNP" if self.pnp else "NPN"
         vaf = f" VAF={self.VAF:.6g}" if self.VAF else ""
-        return f".model {name} {kind}(IS={self.IS:.6g} BF={self.BF:.6g} BR=1{vaf})"
+        caps = f" CJC={self.CJC:.6g} MJC=0 TF={self.TF:.6g}" if self.CJC > 0 or self.TF > 0 else ""
+        return f".model {name} {kind}(IS={self.IS:.6g} BF={self.BF:.6g} BR=1{vaf}{caps})"
+
+
+def with_capacitances(
+    m: Bjt, rec: ComponentRecord | None, ic: float, log: CalcLog, designator: str
+) -> tuple[Bjt, list[str]]:
+    """Add Cμ = Cobo and Cπ = gm/(2π·fT) − Cμ from the datasheet (hybrid-π at the Q-point)."""
+    if rec is None:
+        return m, []
+    ft = quantity(rec, "fT", ("typ", "min"))
+    cobo = quantity(rec, "Cobo", ("typ", "max"))
+    if ft is None or cobo is None:
+        return m, [
+            f"{designator}: o datasheet não dá fT e Cobo; a resposta em alta frequência "
+            "não foi calculada."
+        ]
+    gm = ic / VT_300K
+    cmu = float(cobo.m_as("F"))
+    fT = float(ft.m_as("Hz"))
+    cpi = max(gm / (2 * math.pi * fT) - cmu, 0.0)
+    log.add(
+        record(
+            f"Cpi_{designator}",
+            f"Capacitâncias do modelo π-híbrido de {designator}",
+            r"C_\mu = C_{obo};\quad C_\pi = \frac{g_m}{2\pi f_T} - C_\mu",
+            output=Q_(cpi, "F").to("pF"),
+            inputs={"f_T": ft, "C_{obo}": cobo, "g_m": Q_(gm, "S").to("mS")},
+            assumptions=[
+                "fT e Cobo do datasheet (típicos, ou o limite dado) usados no ponto Q",
+                "C_μ constante (sem variação com V_CB)",
+            ],
+            reference=SEDRA.model_copy(update={"chapter": "10 (Frequency response)"}),
+        )
+    )
+    return Bjt(m.IS, m.BF, m.pnp, m.VAF, CJC=cmu, TF=cpi / gm if gm > 0 else 0.0), []
 
 
 def hfe_entries(rec: ComponentRecord) -> list[tuple[float | None, Parameter]]:

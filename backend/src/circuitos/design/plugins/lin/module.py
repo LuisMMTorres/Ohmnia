@@ -198,7 +198,7 @@ class LinModule:
         s = _spec(spec)
         if s.kind == "ajustavel":
             return 0.0
-        return abs((_num(rec, "VO", "V", ("typ",)) or 0.0) - s.Vo.to_pint().m_as("V"))
+        return abs((_num(rec, "VO", "V", ("typ",)) or 0.0) - float(s.Vo.to_pint().m_as("V")))
 
     # ------------------------------------------------------------------ analysis
     def analyse(self, spec: BaseModel, devices: Mapping[str, Device]) -> Analysis:
