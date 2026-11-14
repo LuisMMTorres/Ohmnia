@@ -184,7 +184,7 @@ def _as_real(data: NDArray[Any], unit: str, form: Form) -> tuple[NDArray[Any], s
         return np.abs(data), unit
     if form == "mag_db":
         with np.errstate(divide="ignore"):
-            return 20 * np.log10(np.abs(data)), ""
+            return 20 * np.log10(np.abs(data)), "dB"
     return np.degrees(np.unwrap(np.angle(data))), "deg"
 
 

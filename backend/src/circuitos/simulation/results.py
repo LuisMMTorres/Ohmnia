@@ -97,6 +97,9 @@ class Plot:
             ) from exc
 
 
+_KIND_ORDER = {"op": 0, "dc": 1, "tran": 2, "ac": 3, "noise": 4, "other": 5}
+
+
 @dataclass
 class SimulationResult:
     backend: str
@@ -104,6 +107,10 @@ class SimulationResult:
     log: str = ""
     warnings: list[str] = field(default_factory=list)
     elapsed_s: float = 0.0
+
+    def __post_init__(self) -> None:
+        # Same order for every backend: .op, .dc, .tran, .ac, ... then by name.
+        self.plots.sort(key=lambda p: (_KIND_ORDER[p.kind], p.name))
 
     def plot(self, kind: PlotKind, index: int = 0) -> Plot:
         matches = [p for p in self.plots if p.kind == kind]
