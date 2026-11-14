@@ -197,3 +197,25 @@ def test_pn_bench_rejects_bad_input(client):
     assert client.post(url, json={"vr_max": {"value": 0, "unit": "V"}}).status_code == 422
     body = client.post(url, json={"NA": {"value": 1e20, "unit": "1/cm**3"}}).json()
     assert any("degenerado" in w for w in body["warnings"])
+
+
+@pytest.mark.ngspice
+def test_opamp_bench_default_model(client):
+    body = client.post("/api/v1/devices/opamp/bench", json={}).json()
+    assert body["tests"] and all(t["ok"] for t in body["tests"]), body["tests"]
+    assert {t["id"] for t in body["tests"]} >= {"BV-AMPOP-GBW", "BV-AMPOP-SR", "BV-AMPOP-CMRR"}
+    assert len(body["bode_f"]["values"]) == len(body["bode_mag_db"]["values"])
+
+
+@pytest.mark.ngspice
+def test_opamp_bench_catalogue_part(client):
+    comp = find(client, "opamp", "TL071CP")
+    r = client.post("/api/v1/devices/opamp/bench", json={"component_id": comp["id"]})
+    assert r.status_code == 200, r.text
+    assert all(t["ok"] for t in r.json()["tests"])
+
+
+def test_opamp_bench_rejects_other_category(client):
+    comp = find(client, "diode.rectifier", "1N4007")
+    r = client.post("/api/v1/devices/opamp/bench", json={"component_id": comp["id"]})
+    assert r.status_code in (400, 422)

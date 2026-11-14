@@ -144,3 +144,39 @@ def test_simulate_returns_bode_for_amplifier(client):
     assert body["bode_f"] and body["bode"]
     first = next(iter(body["bode"].values()))
     assert len(first["values"]) == len(body["bode_f"])
+
+
+PHASE5 = ["DM-OPA", "DM-FIL", "DM-OPNL", "DM-OSC", "DM-INST"]
+
+
+def test_modules_list_phase5_with_labels(client):
+    body = {m["id"]: m for m in client.get("/api/v1/design/modules").json()}
+    for mid in PHASE5:
+        assert mid in body
+        assert body[mid]["summary_labels"], mid
+
+
+@pytest.mark.parametrize("mid", PHASE5)
+def test_phase5_design_schematic_bom_report(client, mid):
+    r = client.post(f"/api/v1/design/{mid}", json={"spec": {}})
+    assert r.status_code == 200, r.text
+    body = r.json()
+    assert body["result"]["selection"]
+    assert body["result"]["steps"]
+    svg = client.post(f"/api/v1/design/{mid}/schematic.svg", json={"spec": {}})
+    assert svg.status_code == 200 and "<svg" in svg.text
+    bom = client.post(f"/api/v1/design/{mid}/bom.csv", json={"spec": {}})
+    assert bom.status_code == 200
+    assert len(bom.content.decode("utf-8-sig").strip().splitlines()) >= 2
+    rep = client.post(f"/api/v1/design/{mid}/report.html?simulate=false", json={"spec": {}})
+    assert rep.status_code == 200
+    assert "Roteiro de prática" in rep.text
+
+
+@pytest.mark.ngspice
+def test_simulate_filter_returns_bode(client):
+    r = client.post("/api/v1/design/DM-FIL/simulate", json={"spec": {}})
+    assert r.status_code == 200
+    body = r.json()
+    assert body["ok"], body["comparisons"]
+    assert body["bode_f"] and body["bode"]

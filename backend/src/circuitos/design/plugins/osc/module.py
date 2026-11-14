@@ -50,7 +50,7 @@ from circuitos.design.base import (
     Trace,
     make_trace,
 )
-from circuitos.design.devmodels import bjt_model, quantity
+from circuitos.design.devmodels import VT_300K, bjt_model, quantity
 from circuitos.design.engine import Analysis, Device
 from circuitos.design.mna import Circuit as Mna
 from circuitos.design.opamp import REF as OPA_REF
@@ -106,6 +106,7 @@ class OscSpec(BaseModel):
 LABELS = {
     "f0": "Frequência de oscilação (com o modelo do ampop)",
     "f0_ideal": "Frequência de oscilação (ampop ideal)",
+    "f0_regen": "Frequência com limiar de regeneração do modelo",
     "T": "Período",
     "tH": "Tempo em nível alto",
     "tL": "Tempo em nível baixo",
@@ -742,6 +743,32 @@ class OscModule:
         ic = (vcc - vce) / rc
         q1, _ = bjt_model(devices["Q1"].record, ic, s.VBE.to_pint(), 100.0, log, "Q1")
         q2, _ = bjt_model(devices["Q2"].record, ic, s.VBE.to_pint(), 100.0, log, "Q2")
+        # Regeneration starts when the loop gain (gm·RC)² of the pair reaches 1, i.e. at
+        # IC = VT/RC, well below the design VBE (Sedra & Smith, ch. 18, bistable loop gain)
+        v_on = VT_300K * math.log(VT_300K / (rc * q1.IS))
+        k_on = math.log((2 * vcc - vbe - vce) / (vcc - v_on))
+        t_on = 2 * rb * cb * k_on
+        log.add(
+            record(
+                "f0_regen",
+                "Frequência com o limiar de regeneração do modelo (conferência com a simulação)",
+                r"V_{on} = V_T \ln\frac{V_T}{R_C I_S},\ "
+                r"f = \left[2 R_B C \ln\frac{2V_{CC} - V_{BE} - V_{CE(sat)}}{V_{CC} - V_{on}}"
+                r"\right]^{-1}",
+                output=Q_(1 / t_on, "Hz"),
+                inputs={
+                    "V_T": Q_(VT_300K, "V"),
+                    "R_C": Q_(rc, "ohm"),
+                    "I_S": Q_(q1.IS, "A"),
+                    "V_{on}": Q_(v_on, "V"),
+                },
+                assumptions=[
+                    "a transição começa quando gm·R_C = 1 no transistor que sai do corte",
+                    "mesmo ponto de partida da base que a fórmula de livro",
+                ],
+                reference=OPA_REF.model_copy(update={"chapter": "18 (bistable feedback loop)"}),
+            )
+        )
         w: list[DesignWarning] = []
         if rb > 0.7 * q1.BF * rc:
             w.append(
@@ -763,7 +790,7 @@ class OscModule:
                 )
             )
         v = {"RB1": rb, "RB2": rb, "RC1": rc, "RC2": rc, "C1": cb, "C2": cb}
-        sm = {"f0": 1 / t, "T": t, "tH": half, "tL": half, "duty": 0.5}
+        sm = {"f0": 1 / t, "f0_regen": 1 / t_on, "T": t, "tH": half, "tL": half, "duty": 0.5}
         lines = [
             f"Vcc vcc 0 DC {vcc:.9g}",
             q1.spice("QM1"),
@@ -781,7 +808,7 @@ class OscModule:
 
     @staticmethod
     def _q(key: str, x: float) -> pint.Quantity:
-        if key in ("f0", "f0_ideal"):
+        if key in ("f0", "f0_ideal", "f0_regen"):
             return Q_(x, "Hz")
         if key in ("T", "tH", "tL", "t_w"):
             return Q_(x, "s").to("ms")
@@ -893,12 +920,12 @@ class OscModule:
                 "deslocamento_fase": (2.0, "distorção dos diodos limitadores; função descritiva"),
                 "astavel_ampop": (2.0, "transição por SR aproximada como tempo somado"),
                 "ne555_astavel": (1.0, "mesmos limiares; chave de descarga de 1 Ω"),
-                "multivibrador_tbj": (5.0, "V_BE e V_CE(sat) de projeto × Ebers-Moll"),
+                "multivibrador_tbj": (3.0, "V_CE(sat) de projeto × Ebers-Moll; recarga R_C·C"),
             }[c]
             checks.append(
                 SimCheck(
                     quantity="Frequência de oscilação",
-                    summary_key="f0",
+                    summary_key="f0_regen" if c == "multivibrador_tbj" else "f0",
                     metric="freq",
                     probe=probe,
                     tolerance_pct=tol,
@@ -943,7 +970,8 @@ class OscModule:
         win = N_WIN * period
         return Circuit(
             title=f"{self.id}: {ENUM_LABELS[c]}",
-            netlist="\n".join([TRAN_OPTIONS, *lines]),
+            # Gear for the op-amp clamps; the BJT regenerative edge needs the default (trap)
+            netlist="\n".join(lines if c == "multivibrador_tbj" else [TRAN_OPTIONS, *lines]),
             tran_stop=QuantityModel(value=(n_settle + 2 * N_WIN) * period, unit="s"),
             tran_step=QuantityModel(value=period / NPTS, unit="s"),
             period=QuantityModel(value=win, unit="s"),

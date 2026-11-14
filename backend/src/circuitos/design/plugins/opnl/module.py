@@ -443,7 +443,9 @@ class OpnlModule:
                 reference=PERT,
             )
         )
-        sm |= {"Vlim_p": vlim, "Vlim_n": -vlim, "Iz_pk": iz}
+        # below the Zener level the circuit is a plain inverter: the peak is G·Vm
+        vpk = min(vlim, s.G * vm)
+        sm |= {"Vlim_p": vlim, "Vlim_n": -vlim, "Iz_pk": iz, "Vo_max": vpk, "Vo_min": -vpk}
         if s.G * vm <= vlim:
             w.append(
                 DesignWarning(
@@ -859,16 +861,16 @@ class OpnlModule:
         else:
             checks = [
                 SimCheck(
-                    quantity="Limitação positiva",
-                    summary_key="Vlim_p",
+                    quantity="Pico positivo (limitação)",
+                    summary_key="Vo_max",
                     metric="max",
                     probe="v(o)",
                     tolerance_pct=1.0,
                     justification="mesmos modelos de Zener e diodo; ganho finito do ampop",
                 ),
                 SimCheck(
-                    quantity="Limitação negativa",
-                    summary_key="Vlim_n",
+                    quantity="Pico negativo (limitação)",
+                    summary_key="Vo_min",
                     metric="min",
                     probe="v(o)",
                     tolerance_pct=1.0,
