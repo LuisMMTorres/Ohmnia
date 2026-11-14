@@ -6,6 +6,7 @@ from circuitos.design.engine import TopologyModule
 from circuitos.design.plugins.bias import BiasModule
 from circuitos.design.plugins.diff import DiffModule
 from circuitos.design.plugins.lin import LinModule
+from circuitos.design.plugins.pa import PaModule
 from circuitos.design.plugins.ret1 import Ret1Module
 from circuitos.design.plugins.ret3 import Ret3Module
 from circuitos.design.plugins.retc1 import Retc1Module
@@ -23,6 +24,7 @@ MODULES: dict[str, TopologyModule] = {
         BiasModule(),
         SsaModule(),
         DiffModule(),
+        PaModule(),
     )
 }
 
