@@ -25,6 +25,9 @@ const UNIT_SYMBOLS: Record<string, string> = {
   "K/W": "K/W",
   "A**2*s": "A²s",
   "A/us": "A/µs",
+  percent: "%",
+  "percent/K": "%/K",
+  "W/K": "W/K",
 };
 
 export function unitSymbol(unit: string): string {

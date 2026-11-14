@@ -155,10 +155,16 @@ def test_catalogue_files_are_valid_and_traceable():
     report = repo.import_directory(CATALOG)
     assert not report.errors, report.errors
     records = repo.search()
-    assert len(records) >= 28
+    assert len(records) >= 28 + 107
     for record in records:
         assert record.datasheets and all(d.sha256 and d.url for d in record.datasheets)
         for key, param in record.parameters.items():
             if param.has_value:
                 assert param.source is not None and param.source.page, (record.part_number, key)
-                assert param.status in ("extraido", "revisado"), (record.part_number, key)
+                assert param.status in ("extraido", "revisado", "a_verificar"), (
+                    record.part_number,
+                    key,
+                )
+                if param.status == "a_verificar":
+                    # a doubtful value must say why
+                    assert param.note, (record.part_number, key)

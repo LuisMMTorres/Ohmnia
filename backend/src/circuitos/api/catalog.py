@@ -83,17 +83,21 @@ class ComponentSummary(BaseModel):
     highlights: dict[str, str]
 
 
-_HIGHLIGHT = ["VRRM", "IF(AV)", "IFSM", "VF", "trr", "Tj_max"]
+_HIGHLIGHT_DIODE = ["VRRM", "IF(AV)", "IFSM", "VF", "trr"]
+_HIGHLIGHT = {
+    "diode.zener": ["VZ", "IZT", "ZZT", "IR", "Ptot"],
+}
+_UNIT_TEXT = {"degC": "°C", "uA": "µA", "ohm": "Ω", "percent": "%"}
 
 
 def _fmt(record: ComponentRecord, key: str) -> str | None:
     param = record.parameters.get(key)
     if param is None or not param.has_value:
         return None
-    value = (
-        param.max if param.max is not None else param.typ if param.typ is not None else param.min
-    )
-    unit = param.unit.replace("degC", "°C").replace("uA", "µA").replace("ohm", "Ω")
+    # Characteristics are shown by their nominal value; ratings by their limit.
+    order = ("typ", "max", "min") if param.typ is not None else ("max", "min")
+    value = next(v for k in order if (v := getattr(param, k)) is not None)
+    unit = _UNIT_TEXT.get(param.unit, param.unit)
     return f"{value:g} {unit}".replace(".", ",")
 
 
@@ -109,7 +113,11 @@ def summarise(record: ComponentRecord) -> ComponentSummary:
         review_status=record.review.status,
         parameters_reviewed=sum(p.status == "revisado" for p in params),
         parameters_total=len(record.parameters),
-        highlights={k: v for k in _HIGHLIGHT if (v := _fmt(record, k))},
+        highlights={
+            k: v
+            for k in _HIGHLIGHT.get(record.category, _HIGHLIGHT_DIODE)
+            if (v := _fmt(record, k))
+        },
     )
 
 

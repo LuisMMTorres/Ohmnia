@@ -1,13 +1,43 @@
-import { useEffect, useMemo, useState } from "react";
+import { type ReactNode, useEffect, useMemo, useState } from "react";
 import { bench, catalog, ComponentSummary, DiodeBenchOut } from "../api";
 import { CalcSteps } from "../components/CalcSteps";
 import { SignalPlot, Trace } from "../components/SignalPlot";
+import { ZenerBench } from "./ZenerBench";
 
-function num(text: string): number {
+export function num(text: string): number {
   return Number(text.replace(",", "."));
 }
 
+type Device = "diodo" | "zener";
+
 export function BenchPage() {
+  const [device, setDevice] = useState<Device>("diodo");
+  const selector = (
+    <div className="tabs">
+      {(
+        [
+          ["diodo", "Diodo de junção"],
+          ["zener", "Diodo Zener"],
+        ] as const
+      ).map(([id, label]) => (
+        <button
+          key={id}
+          className={`tab ${device === id ? "active" : ""}`}
+          onClick={() => setDevice(id)}
+        >
+          {label}
+        </button>
+      ))}
+    </div>
+  );
+  return device === "diodo" ? (
+    <DiodeBench selector={selector} />
+  ) : (
+    <ZenerBench selector={selector} />
+  );
+}
+
+function DiodeBench({ selector }: { selector: ReactNode }) {
   const [isValue, setIsValue] = useState("10");
   const [isUnit, setIsUnit] = useState("nA");
   const [n, setN] = useState("1,8");
@@ -23,7 +53,7 @@ export function BenchPage() {
   useEffect(() => {
     catalog
       .list({ category: "diode" })
-      .then(setDiodes)
+      .then((list) => setDiodes(list.filter((d) => d.category !== "diode.zener")))
       .catch(() => undefined);
   }, []);
 
@@ -79,6 +109,7 @@ export function BenchPage() {
   return (
     <main className="two-col">
       <section className="panel editor">
+        {selector}
         <h2>Bancada: diodo de junção</h2>
         <p className="small muted">
           Equação de Shockley com resistência série e dependência térmica do modelo SPICE. Os

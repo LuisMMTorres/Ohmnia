@@ -1,0 +1,2586 @@
+# Fonte: Vishay, documento 85816, Rev. 2.7, 07-Nov-2024.
+# Gerado a partir do texto das tabelas do datasheet; conferir na tela de revisão.
+family: 1N4728A–1N4761A
+category: diode.zener
+schema_version: '1.0'
+manufacturer: Vishay Semiconductors
+package: DO-41 (DO-204AL)
+lifecycle: ativo
+datasheets:
+- id: vishay-85816
+  manufacturer: Vishay
+  document_number: '85816'
+  revision: Rev. 2.7, 07-Nov-2024
+  url: https://www.vishay.com/docs/85816/1n4728a.pdf
+  sha256: eb8913e493841b5d9e32c25ee452764810d6a2acb8f800203f8953df28203f79
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VZ_tol:
+    max: 5
+    unit: percent
+    status: extraido
+    source:
+      page: 1
+      location: Features — standard Zener voltage tolerance ± 5 %
+  Ptot:
+    max: 1300
+    unit: mW
+    conditions:
+      TA: 25 degC
+    note: Terminais a 4 mm do corpo mantidos à temperatura ambiente; tp = 10 ms (como no datasheet)
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings — power dissipation
+  Rth_ja:
+    max: 110
+    unit: K/W
+    note: Terminais a 4 mm do corpo mantidos à temperatura ambiente
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings — thermal resistance junction to ambient air
+  Tj_max:
+    max: 175
+    unit: degC
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings — junction temperature
+  Tstg_max:
+    max: 175
+    unit: degC
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings — storage temperature range
+  VF:
+    max: 1.2
+    unit: V
+    conditions:
+      IF: 200 mA
+      TA: 25 degC
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings — forward voltage (max.)
+per_part: {}
+parts:
+  1N4728A:
+    VZ:
+      typ: 3.3
+      unit: V
+      conditions:
+        IZ: 76 mA
+        TL: 30 degC
+      note: 'Nota (1): medição CC em equilíbrio térmico, terminal a 30 °C, 9,5 mm do corpo'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — Zener voltage range, VZ at IZT1 (nom.)
+    IZT:
+      typ: 76.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT1
+    IZK:
+      typ: 1.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT2
+    ZZT:
+      typ: 10.0
+      unit: ohm
+      conditions:
+        IZ: 76 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZT at IZT1 (typ.), f = 1 kHz
+    ZZK:
+      max: 400.0
+      unit: ohm
+      conditions:
+        IZ: 1 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZK at IZT2 (max.), f = 1 kHz
+    IR:
+      max: 100.0
+      unit: uA
+      conditions:
+        VR: 1 V
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — reverse leakage current IR at VR (max.)
+    IZSM:
+      max: 1380.0
+      unit: mA
+      conditions:
+        t_pulse: 10 ms
+      note: 'O datasheet usa o símbolo IR para esta coluna; nota (3): tp = 10 ms'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — surge current (3)
+    IZM:
+      max: 276.0
+      unit: mA
+      note: 'Nota (2): terminais a 4 mm do corpo mantidos à temperatura ambiente'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — regulator current IZM (max.) (2)
+  1N4729A:
+    VZ:
+      typ: 3.6
+      unit: V
+      conditions:
+        IZ: 69 mA
+        TL: 30 degC
+      note: 'Nota (1): medição CC em equilíbrio térmico, terminal a 30 °C, 9,5 mm do corpo'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — Zener voltage range, VZ at IZT1 (nom.)
+    IZT:
+      typ: 69.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT1
+    IZK:
+      typ: 1.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT2
+    ZZT:
+      typ: 10.0
+      unit: ohm
+      conditions:
+        IZ: 69 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZT at IZT1 (typ.), f = 1 kHz
+    ZZK:
+      max: 400.0
+      unit: ohm
+      conditions:
+        IZ: 1 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZK at IZT2 (max.), f = 1 kHz
+    IR:
+      max: 100.0
+      unit: uA
+      conditions:
+        VR: 1 V
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — reverse leakage current IR at VR (max.)
+    IZSM:
+      max: 1260.0
+      unit: mA
+      conditions:
+        t_pulse: 10 ms
+      note: 'O datasheet usa o símbolo IR para esta coluna; nota (3): tp = 10 ms'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — surge current (3)
+    IZM:
+      max: 252.0
+      unit: mA
+      note: 'Nota (2): terminais a 4 mm do corpo mantidos à temperatura ambiente'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — regulator current IZM (max.) (2)
+  1N4730A:
+    VZ:
+      typ: 3.9
+      unit: V
+      conditions:
+        IZ: 64 mA
+        TL: 30 degC
+      note: 'Nota (1): medição CC em equilíbrio térmico, terminal a 30 °C, 9,5 mm do corpo'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — Zener voltage range, VZ at IZT1 (nom.)
+    IZT:
+      typ: 64.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT1
+    IZK:
+      typ: 1.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT2
+    ZZT:
+      typ: 9.0
+      unit: ohm
+      conditions:
+        IZ: 64 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZT at IZT1 (typ.), f = 1 kHz
+    ZZK:
+      max: 400.0
+      unit: ohm
+      conditions:
+        IZ: 1 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZK at IZT2 (max.), f = 1 kHz
+    IR:
+      max: 50.0
+      unit: uA
+      conditions:
+        VR: 1 V
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — reverse leakage current IR at VR (max.)
+    IZSM:
+      max: 1190.0
+      unit: mA
+      conditions:
+        t_pulse: 10 ms
+      note: 'O datasheet usa o símbolo IR para esta coluna; nota (3): tp = 10 ms'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — surge current (3)
+    IZM:
+      max: 234.0
+      unit: mA
+      note: 'Nota (2): terminais a 4 mm do corpo mantidos à temperatura ambiente'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — regulator current IZM (max.) (2)
+  1N4731A:
+    VZ:
+      typ: 4.3
+      unit: V
+      conditions:
+        IZ: 58 mA
+        TL: 30 degC
+      note: 'Nota (1): medição CC em equilíbrio térmico, terminal a 30 °C, 9,5 mm do corpo'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — Zener voltage range, VZ at IZT1 (nom.)
+    IZT:
+      typ: 58.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT1
+    IZK:
+      typ: 1.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT2
+    ZZT:
+      typ: 9.0
+      unit: ohm
+      conditions:
+        IZ: 58 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZT at IZT1 (typ.), f = 1 kHz
+    ZZK:
+      max: 400.0
+      unit: ohm
+      conditions:
+        IZ: 1 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZK at IZT2 (max.), f = 1 kHz
+    IR:
+      max: 10.0
+      unit: uA
+      conditions:
+        VR: 1 V
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — reverse leakage current IR at VR (max.)
+    IZSM:
+      max: 1070.0
+      unit: mA
+      conditions:
+        t_pulse: 10 ms
+      note: 'O datasheet usa o símbolo IR para esta coluna; nota (3): tp = 10 ms'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — surge current (3)
+    IZM:
+      max: 217.0
+      unit: mA
+      note: 'Nota (2): terminais a 4 mm do corpo mantidos à temperatura ambiente'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — regulator current IZM (max.) (2)
+  1N4732A:
+    VZ:
+      typ: 4.7
+      unit: V
+      conditions:
+        IZ: 53 mA
+        TL: 30 degC
+      note: 'Nota (1): medição CC em equilíbrio térmico, terminal a 30 °C, 9,5 mm do corpo'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — Zener voltage range, VZ at IZT1 (nom.)
+    IZT:
+      typ: 53.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT1
+    IZK:
+      typ: 1.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT2
+    ZZT:
+      typ: 8.0
+      unit: ohm
+      conditions:
+        IZ: 53 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZT at IZT1 (typ.), f = 1 kHz
+    ZZK:
+      max: 500.0
+      unit: ohm
+      conditions:
+        IZ: 1 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZK at IZT2 (max.), f = 1 kHz
+    IR:
+      max: 10.0
+      unit: uA
+      conditions:
+        VR: 1 V
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — reverse leakage current IR at VR (max.)
+    IZSM:
+      max: 970.0
+      unit: mA
+      conditions:
+        t_pulse: 10 ms
+      note: 'O datasheet usa o símbolo IR para esta coluna; nota (3): tp = 10 ms'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — surge current (3)
+    IZM:
+      max: 193.0
+      unit: mA
+      note: 'Nota (2): terminais a 4 mm do corpo mantidos à temperatura ambiente'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — regulator current IZM (max.) (2)
+  1N4733A:
+    VZ:
+      typ: 5.1
+      unit: V
+      conditions:
+        IZ: 49 mA
+        TL: 30 degC
+      note: 'Nota (1): medição CC em equilíbrio térmico, terminal a 30 °C, 9,5 mm do corpo'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — Zener voltage range, VZ at IZT1 (nom.)
+    IZT:
+      typ: 49.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT1
+    IZK:
+      typ: 1.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT2
+    ZZT:
+      typ: 7.0
+      unit: ohm
+      conditions:
+        IZ: 49 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZT at IZT1 (typ.), f = 1 kHz
+    ZZK:
+      max: 550.0
+      unit: ohm
+      conditions:
+        IZ: 1 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZK at IZT2 (max.), f = 1 kHz
+    IR:
+      max: 10.0
+      unit: uA
+      conditions:
+        VR: 1 V
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — reverse leakage current IR at VR (max.)
+    IZSM:
+      max: 890.0
+      unit: mA
+      conditions:
+        t_pulse: 10 ms
+      note: 'O datasheet usa o símbolo IR para esta coluna; nota (3): tp = 10 ms'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — surge current (3)
+    IZM:
+      max: 178.0
+      unit: mA
+      note: 'Nota (2): terminais a 4 mm do corpo mantidos à temperatura ambiente'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — regulator current IZM (max.) (2)
+  1N4734A:
+    VZ:
+      typ: 5.6
+      unit: V
+      conditions:
+        IZ: 45 mA
+        TL: 30 degC
+      note: 'Nota (1): medição CC em equilíbrio térmico, terminal a 30 °C, 9,5 mm do corpo'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — Zener voltage range, VZ at IZT1 (nom.)
+    IZT:
+      typ: 45.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT1
+    IZK:
+      typ: 1.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT2
+    ZZT:
+      typ: 5.0
+      unit: ohm
+      conditions:
+        IZ: 45 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZT at IZT1 (typ.), f = 1 kHz
+    ZZK:
+      max: 600.0
+      unit: ohm
+      conditions:
+        IZ: 1 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZK at IZT2 (max.), f = 1 kHz
+    IR:
+      max: 10.0
+      unit: uA
+      conditions:
+        VR: 2 V
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — reverse leakage current IR at VR (max.)
+    IZSM:
+      max: 810.0
+      unit: mA
+      conditions:
+        t_pulse: 10 ms
+      note: 'O datasheet usa o símbolo IR para esta coluna; nota (3): tp = 10 ms'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — surge current (3)
+    IZM:
+      max: 162.0
+      unit: mA
+      note: 'Nota (2): terminais a 4 mm do corpo mantidos à temperatura ambiente'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — regulator current IZM (max.) (2)
+  1N4735A:
+    VZ:
+      typ: 6.2
+      unit: V
+      conditions:
+        IZ: 41 mA
+        TL: 30 degC
+      note: 'Nota (1): medição CC em equilíbrio térmico, terminal a 30 °C, 9,5 mm do corpo'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — Zener voltage range, VZ at IZT1 (nom.)
+    IZT:
+      typ: 41.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT1
+    IZK:
+      typ: 1.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT2
+    ZZT:
+      typ: 2.0
+      unit: ohm
+      conditions:
+        IZ: 41 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZT at IZT1 (typ.), f = 1 kHz
+    ZZK:
+      max: 700.0
+      unit: ohm
+      conditions:
+        IZ: 1 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZK at IZT2 (max.), f = 1 kHz
+    IR:
+      max: 10.0
+      unit: uA
+      conditions:
+        VR: 3 V
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — reverse leakage current IR at VR (max.)
+    IZSM:
+      max: 730.0
+      unit: mA
+      conditions:
+        t_pulse: 10 ms
+      note: 'O datasheet usa o símbolo IR para esta coluna; nota (3): tp = 10 ms'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — surge current (3)
+    IZM:
+      max: 146.0
+      unit: mA
+      note: 'Nota (2): terminais a 4 mm do corpo mantidos à temperatura ambiente'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — regulator current IZM (max.) (2)
+  1N4736A:
+    VZ:
+      typ: 6.8
+      unit: V
+      conditions:
+        IZ: 37 mA
+        TL: 30 degC
+      note: 'Nota (1): medição CC em equilíbrio térmico, terminal a 30 °C, 9,5 mm do corpo'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — Zener voltage range, VZ at IZT1 (nom.)
+    IZT:
+      typ: 37.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT1
+    IZK:
+      typ: 1.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT2
+    ZZT:
+      typ: 3.5
+      unit: ohm
+      conditions:
+        IZ: 37 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZT at IZT1 (typ.), f = 1 kHz
+    ZZK:
+      max: 700.0
+      unit: ohm
+      conditions:
+        IZ: 1 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZK at IZT2 (max.), f = 1 kHz
+    IR:
+      max: 10.0
+      unit: uA
+      conditions:
+        VR: 4 V
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — reverse leakage current IR at VR (max.)
+    IZSM:
+      max: 660.0
+      unit: mA
+      conditions:
+        t_pulse: 10 ms
+      note: 'O datasheet usa o símbolo IR para esta coluna; nota (3): tp = 10 ms'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — surge current (3)
+    IZM:
+      max: 133.0
+      unit: mA
+      note: 'Nota (2): terminais a 4 mm do corpo mantidos à temperatura ambiente'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — regulator current IZM (max.) (2)
+  1N4737A:
+    VZ:
+      typ: 7.5
+      unit: V
+      conditions:
+        IZ: 34 mA
+        TL: 30 degC
+      note: 'Nota (1): medição CC em equilíbrio térmico, terminal a 30 °C, 9,5 mm do corpo'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — Zener voltage range, VZ at IZT1 (nom.)
+    IZT:
+      typ: 34.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT1
+    IZK:
+      typ: 0.5
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT2
+    ZZT:
+      typ: 4.0
+      unit: ohm
+      conditions:
+        IZ: 34 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZT at IZT1 (typ.), f = 1 kHz
+    ZZK:
+      max: 700.0
+      unit: ohm
+      conditions:
+        IZ: 0.5 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZK at IZT2 (max.), f = 1 kHz
+    IR:
+      max: 10.0
+      unit: uA
+      conditions:
+        VR: 5 V
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — reverse leakage current IR at VR (max.)
+    IZSM:
+      max: 605.0
+      unit: mA
+      conditions:
+        t_pulse: 10 ms
+      note: 'O datasheet usa o símbolo IR para esta coluna; nota (3): tp = 10 ms'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — surge current (3)
+    IZM:
+      max: 121.0
+      unit: mA
+      note: 'Nota (2): terminais a 4 mm do corpo mantidos à temperatura ambiente'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — regulator current IZM (max.) (2)
+  1N4738A:
+    VZ:
+      typ: 8.2
+      unit: V
+      conditions:
+        IZ: 31 mA
+        TL: 30 degC
+      note: 'Nota (1): medição CC em equilíbrio térmico, terminal a 30 °C, 9,5 mm do corpo'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — Zener voltage range, VZ at IZT1 (nom.)
+    IZT:
+      typ: 31.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT1
+    IZK:
+      typ: 0.5
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT2
+    ZZT:
+      typ: 4.5
+      unit: ohm
+      conditions:
+        IZ: 31 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZT at IZT1 (typ.), f = 1 kHz
+    ZZK:
+      max: 700.0
+      unit: ohm
+      conditions:
+        IZ: 0.5 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZK at IZT2 (max.), f = 1 kHz
+    IR:
+      max: 10.0
+      unit: uA
+      conditions:
+        VR: 6 V
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — reverse leakage current IR at VR (max.)
+    IZSM:
+      max: 550.0
+      unit: mA
+      conditions:
+        t_pulse: 10 ms
+      note: 'O datasheet usa o símbolo IR para esta coluna; nota (3): tp = 10 ms'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — surge current (3)
+    IZM:
+      max: 110.0
+      unit: mA
+      note: 'Nota (2): terminais a 4 mm do corpo mantidos à temperatura ambiente'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — regulator current IZM (max.) (2)
+  1N4739A:
+    VZ:
+      typ: 9.1
+      unit: V
+      conditions:
+        IZ: 28 mA
+        TL: 30 degC
+      note: 'Nota (1): medição CC em equilíbrio térmico, terminal a 30 °C, 9,5 mm do corpo'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — Zener voltage range, VZ at IZT1 (nom.)
+    IZT:
+      typ: 28.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT1
+    IZK:
+      typ: 0.5
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT2
+    ZZT:
+      typ: 5.0
+      unit: ohm
+      conditions:
+        IZ: 28 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZT at IZT1 (typ.), f = 1 kHz
+    ZZK:
+      max: 700.0
+      unit: ohm
+      conditions:
+        IZ: 0.5 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZK at IZT2 (max.), f = 1 kHz
+    IR:
+      max: 10.0
+      unit: uA
+      conditions:
+        VR: 7 V
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — reverse leakage current IR at VR (max.)
+    IZSM:
+      max: 500.0
+      unit: mA
+      conditions:
+        t_pulse: 10 ms
+      note: 'O datasheet usa o símbolo IR para esta coluna; nota (3): tp = 10 ms'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — surge current (3)
+    IZM:
+      max: 100.0
+      unit: mA
+      note: 'Nota (2): terminais a 4 mm do corpo mantidos à temperatura ambiente'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — regulator current IZM (max.) (2)
+  1N4740A:
+    VZ:
+      typ: 10.0
+      unit: V
+      conditions:
+        IZ: 25 mA
+        TL: 30 degC
+      note: 'Nota (1): medição CC em equilíbrio térmico, terminal a 30 °C, 9,5 mm do corpo'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — Zener voltage range, VZ at IZT1 (nom.)
+    IZT:
+      typ: 25.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT1
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT2
+    ZZT:
+      typ: 7.0
+      unit: ohm
+      conditions:
+        IZ: 25 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZT at IZT1 (typ.), f = 1 kHz
+    ZZK:
+      max: 700.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZK at IZT2 (max.), f = 1 kHz
+    IR:
+      max: 10.0
+      unit: uA
+      conditions:
+        VR: 7.6 V
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — reverse leakage current IR at VR (max.)
+    IZSM:
+      max: 454.0
+      unit: mA
+      conditions:
+        t_pulse: 10 ms
+      note: 'O datasheet usa o símbolo IR para esta coluna; nota (3): tp = 10 ms'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — surge current (3)
+    IZM:
+      max: 91.0
+      unit: mA
+      note: 'Nota (2): terminais a 4 mm do corpo mantidos à temperatura ambiente'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — regulator current IZM (max.) (2)
+  1N4741A:
+    VZ:
+      typ: 11.0
+      unit: V
+      conditions:
+        IZ: 23 mA
+        TL: 30 degC
+      note: 'Nota (1): medição CC em equilíbrio térmico, terminal a 30 °C, 9,5 mm do corpo'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — Zener voltage range, VZ at IZT1 (nom.)
+    IZT:
+      typ: 23.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT1
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT2
+    ZZT:
+      typ: 8.0
+      unit: ohm
+      conditions:
+        IZ: 23 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZT at IZT1 (typ.), f = 1 kHz
+    ZZK:
+      max: 700.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZK at IZT2 (max.), f = 1 kHz
+    IR:
+      max: 5.0
+      unit: uA
+      conditions:
+        VR: 8.4 V
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — reverse leakage current IR at VR (max.)
+    IZSM:
+      max: 414.0
+      unit: mA
+      conditions:
+        t_pulse: 10 ms
+      note: 'O datasheet usa o símbolo IR para esta coluna; nota (3): tp = 10 ms'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — surge current (3)
+    IZM:
+      max: 83.0
+      unit: mA
+      note: 'Nota (2): terminais a 4 mm do corpo mantidos à temperatura ambiente'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — regulator current IZM (max.) (2)
+  1N4742A:
+    VZ:
+      typ: 12.0
+      unit: V
+      conditions:
+        IZ: 21 mA
+        TL: 30 degC
+      note: 'Nota (1): medição CC em equilíbrio térmico, terminal a 30 °C, 9,5 mm do corpo'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — Zener voltage range, VZ at IZT1 (nom.)
+    IZT:
+      typ: 21.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT1
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT2
+    ZZT:
+      typ: 9.0
+      unit: ohm
+      conditions:
+        IZ: 21 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZT at IZT1 (typ.), f = 1 kHz
+    ZZK:
+      max: 700.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZK at IZT2 (max.), f = 1 kHz
+    IR:
+      max: 5.0
+      unit: uA
+      conditions:
+        VR: 9.1 V
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — reverse leakage current IR at VR (max.)
+    IZSM:
+      max: 380.0
+      unit: mA
+      conditions:
+        t_pulse: 10 ms
+      note: 'O datasheet usa o símbolo IR para esta coluna; nota (3): tp = 10 ms'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — surge current (3)
+    IZM:
+      max: 76.0
+      unit: mA
+      note: 'Nota (2): terminais a 4 mm do corpo mantidos à temperatura ambiente'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — regulator current IZM (max.) (2)
+  1N4743A:
+    VZ:
+      typ: 13.0
+      unit: V
+      conditions:
+        IZ: 19 mA
+        TL: 30 degC
+      note: 'Nota (1): medição CC em equilíbrio térmico, terminal a 30 °C, 9,5 mm do corpo'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — Zener voltage range, VZ at IZT1 (nom.)
+    IZT:
+      typ: 19.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT1
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT2
+    ZZT:
+      typ: 10.0
+      unit: ohm
+      conditions:
+        IZ: 19 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZT at IZT1 (typ.), f = 1 kHz
+    ZZK:
+      max: 700.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZK at IZT2 (max.), f = 1 kHz
+    IR:
+      max: 5.0
+      unit: uA
+      conditions:
+        VR: 9.9 V
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — reverse leakage current IR at VR (max.)
+    IZSM:
+      max: 344.0
+      unit: mA
+      conditions:
+        t_pulse: 10 ms
+      note: 'O datasheet usa o símbolo IR para esta coluna; nota (3): tp = 10 ms'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — surge current (3)
+    IZM:
+      max: 69.0
+      unit: mA
+      note: 'Nota (2): terminais a 4 mm do corpo mantidos à temperatura ambiente'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — regulator current IZM (max.) (2)
+  1N4744A:
+    VZ:
+      typ: 15.0
+      unit: V
+      conditions:
+        IZ: 17 mA
+        TL: 30 degC
+      note: 'Nota (1): medição CC em equilíbrio térmico, terminal a 30 °C, 9,5 mm do corpo'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — Zener voltage range, VZ at IZT1 (nom.)
+    IZT:
+      typ: 17.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT1
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT2
+    ZZT:
+      typ: 14.0
+      unit: ohm
+      conditions:
+        IZ: 17 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZT at IZT1 (typ.), f = 1 kHz
+    ZZK:
+      max: 700.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZK at IZT2 (max.), f = 1 kHz
+    IR:
+      max: 5.0
+      unit: uA
+      conditions:
+        VR: 11.4 V
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — reverse leakage current IR at VR (max.)
+    IZSM:
+      max: 304.0
+      unit: mA
+      conditions:
+        t_pulse: 10 ms
+      note: 'O datasheet usa o símbolo IR para esta coluna; nota (3): tp = 10 ms'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — surge current (3)
+    IZM:
+      max: 61.0
+      unit: mA
+      note: 'Nota (2): terminais a 4 mm do corpo mantidos à temperatura ambiente'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — regulator current IZM (max.) (2)
+  1N4745A:
+    VZ:
+      typ: 16.0
+      unit: V
+      conditions:
+        IZ: 15.5 mA
+        TL: 30 degC
+      note: 'Nota (1): medição CC em equilíbrio térmico, terminal a 30 °C, 9,5 mm do corpo'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — Zener voltage range, VZ at IZT1 (nom.)
+    IZT:
+      typ: 15.5
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT1
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT2
+    ZZT:
+      typ: 16.0
+      unit: ohm
+      conditions:
+        IZ: 15.5 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZT at IZT1 (typ.), f = 1 kHz
+    ZZK:
+      max: 700.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZK at IZT2 (max.), f = 1 kHz
+    IR:
+      max: 5.0
+      unit: uA
+      conditions:
+        VR: 12.2 V
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — reverse leakage current IR at VR (max.)
+    IZSM:
+      max: 285.0
+      unit: mA
+      conditions:
+        t_pulse: 10 ms
+      note: 'O datasheet usa o símbolo IR para esta coluna; nota (3): tp = 10 ms'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — surge current (3)
+    IZM:
+      max: 57.0
+      unit: mA
+      note: 'Nota (2): terminais a 4 mm do corpo mantidos à temperatura ambiente'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — regulator current IZM (max.) (2)
+  1N4746A:
+    VZ:
+      typ: 18.0
+      unit: V
+      conditions:
+        IZ: 14 mA
+        TL: 30 degC
+      note: 'Nota (1): medição CC em equilíbrio térmico, terminal a 30 °C, 9,5 mm do corpo'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — Zener voltage range, VZ at IZT1 (nom.)
+    IZT:
+      typ: 14.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT1
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT2
+    ZZT:
+      typ: 20.0
+      unit: ohm
+      conditions:
+        IZ: 14 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZT at IZT1 (typ.), f = 1 kHz
+    ZZK:
+      max: 750.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZK at IZT2 (max.), f = 1 kHz
+    IR:
+      max: 5.0
+      unit: uA
+      conditions:
+        VR: 13.7 V
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — reverse leakage current IR at VR (max.)
+    IZSM:
+      max: 250.0
+      unit: mA
+      conditions:
+        t_pulse: 10 ms
+      note: 'O datasheet usa o símbolo IR para esta coluna; nota (3): tp = 10 ms'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — surge current (3)
+    IZM:
+      max: 50.0
+      unit: mA
+      note: 'Nota (2): terminais a 4 mm do corpo mantidos à temperatura ambiente'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — regulator current IZM (max.) (2)
+  1N4747A:
+    VZ:
+      typ: 20.0
+      unit: V
+      conditions:
+        IZ: 12.5 mA
+        TL: 30 degC
+      note: 'Nota (1): medição CC em equilíbrio térmico, terminal a 30 °C, 9,5 mm do corpo'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — Zener voltage range, VZ at IZT1 (nom.)
+    IZT:
+      typ: 12.5
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT1
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT2
+    ZZT:
+      typ: 22.0
+      unit: ohm
+      conditions:
+        IZ: 12.5 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZT at IZT1 (typ.), f = 1 kHz
+    ZZK:
+      max: 750.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZK at IZT2 (max.), f = 1 kHz
+    IR:
+      max: 5.0
+      unit: uA
+      conditions:
+        VR: 15.2 V
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — reverse leakage current IR at VR (max.)
+    IZSM:
+      max: 225.0
+      unit: mA
+      conditions:
+        t_pulse: 10 ms
+      note: 'O datasheet usa o símbolo IR para esta coluna; nota (3): tp = 10 ms'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — surge current (3)
+    IZM:
+      max: 45.0
+      unit: mA
+      note: 'Nota (2): terminais a 4 mm do corpo mantidos à temperatura ambiente'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — regulator current IZM (max.) (2)
+  1N4748A:
+    VZ:
+      typ: 22.0
+      unit: V
+      conditions:
+        IZ: 11.5 mA
+        TL: 30 degC
+      note: 'Nota (1): medição CC em equilíbrio térmico, terminal a 30 °C, 9,5 mm do corpo'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — Zener voltage range, VZ at IZT1 (nom.)
+    IZT:
+      typ: 11.5
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT1
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT2
+    ZZT:
+      typ: 23.0
+      unit: ohm
+      conditions:
+        IZ: 11.5 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZT at IZT1 (typ.), f = 1 kHz
+    ZZK:
+      max: 750.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZK at IZT2 (max.), f = 1 kHz
+    IR:
+      max: 5.0
+      unit: uA
+      conditions:
+        VR: 16.7 V
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — reverse leakage current IR at VR (max.)
+    IZSM:
+      max: 205.0
+      unit: mA
+      conditions:
+        t_pulse: 10 ms
+      note: 'O datasheet usa o símbolo IR para esta coluna; nota (3): tp = 10 ms'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — surge current (3)
+    IZM:
+      max: 41.0
+      unit: mA
+      note: 'Nota (2): terminais a 4 mm do corpo mantidos à temperatura ambiente'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — regulator current IZM (max.) (2)
+  1N4749A:
+    VZ:
+      typ: 24.0
+      unit: V
+      conditions:
+        IZ: 10.5 mA
+        TL: 30 degC
+      note: 'Nota (1): medição CC em equilíbrio térmico, terminal a 30 °C, 9,5 mm do corpo'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — Zener voltage range, VZ at IZT1 (nom.)
+    IZT:
+      typ: 10.5
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT1
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT2
+    ZZT:
+      typ: 25.0
+      unit: ohm
+      conditions:
+        IZ: 10.5 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZT at IZT1 (typ.), f = 1 kHz
+    ZZK:
+      max: 750.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZK at IZT2 (max.), f = 1 kHz
+    IR:
+      max: 5.0
+      unit: uA
+      conditions:
+        VR: 18.2 V
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — reverse leakage current IR at VR (max.)
+    IZSM:
+      max: 190.0
+      unit: mA
+      conditions:
+        t_pulse: 10 ms
+      note: 'O datasheet usa o símbolo IR para esta coluna; nota (3): tp = 10 ms'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — surge current (3)
+    IZM:
+      max: 38.0
+      unit: mA
+      note: 'Nota (2): terminais a 4 mm do corpo mantidos à temperatura ambiente'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — regulator current IZM (max.) (2)
+  1N4750A:
+    VZ:
+      typ: 27.0
+      unit: V
+      conditions:
+        IZ: 9.5 mA
+        TL: 30 degC
+      note: 'Nota (1): medição CC em equilíbrio térmico, terminal a 30 °C, 9,5 mm do corpo'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — Zener voltage range, VZ at IZT1 (nom.)
+    IZT:
+      typ: 9.5
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT1
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT2
+    ZZT:
+      typ: 35.0
+      unit: ohm
+      conditions:
+        IZ: 9.5 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZT at IZT1 (typ.), f = 1 kHz
+    ZZK:
+      max: 750.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZK at IZT2 (max.), f = 1 kHz
+    IR:
+      max: 5.0
+      unit: uA
+      conditions:
+        VR: 20.6 V
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — reverse leakage current IR at VR (max.)
+    IZSM:
+      max: 170.0
+      unit: mA
+      conditions:
+        t_pulse: 10 ms
+      note: 'O datasheet usa o símbolo IR para esta coluna; nota (3): tp = 10 ms'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — surge current (3)
+    IZM:
+      max: 34.0
+      unit: mA
+      note: 'Nota (2): terminais a 4 mm do corpo mantidos à temperatura ambiente'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — regulator current IZM (max.) (2)
+  1N4751A:
+    VZ:
+      typ: 30.0
+      unit: V
+      conditions:
+        IZ: 8.5 mA
+        TL: 30 degC
+      note: 'Nota (1): medição CC em equilíbrio térmico, terminal a 30 °C, 9,5 mm do corpo'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — Zener voltage range, VZ at IZT1 (nom.)
+    IZT:
+      typ: 8.5
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT1
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT2
+    ZZT:
+      typ: 40.0
+      unit: ohm
+      conditions:
+        IZ: 8.5 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZT at IZT1 (typ.), f = 1 kHz
+    ZZK:
+      max: 1000.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZK at IZT2 (max.), f = 1 kHz
+    IR:
+      max: 5.0
+      unit: uA
+      conditions:
+        VR: 22.8 V
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — reverse leakage current IR at VR (max.)
+    IZSM:
+      max: 150.0
+      unit: mA
+      conditions:
+        t_pulse: 10 ms
+      note: 'O datasheet usa o símbolo IR para esta coluna; nota (3): tp = 10 ms'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — surge current (3)
+    IZM:
+      max: 30.0
+      unit: mA
+      note: 'Nota (2): terminais a 4 mm do corpo mantidos à temperatura ambiente'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — regulator current IZM (max.) (2)
+  1N4752A:
+    VZ:
+      typ: 33.0
+      unit: V
+      conditions:
+        IZ: 7.5 mA
+        TL: 30 degC
+      note: 'Nota (1): medição CC em equilíbrio térmico, terminal a 30 °C, 9,5 mm do corpo'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — Zener voltage range, VZ at IZT1 (nom.)
+    IZT:
+      typ: 7.5
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT1
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT2
+    ZZT:
+      typ: 45.0
+      unit: ohm
+      conditions:
+        IZ: 7.5 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZT at IZT1 (typ.), f = 1 kHz
+    ZZK:
+      max: 1000.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZK at IZT2 (max.), f = 1 kHz
+    IR:
+      max: 5.0
+      unit: uA
+      conditions:
+        VR: 25.1 V
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — reverse leakage current IR at VR (max.)
+    IZSM:
+      max: 135.0
+      unit: mA
+      conditions:
+        t_pulse: 10 ms
+      note: 'O datasheet usa o símbolo IR para esta coluna; nota (3): tp = 10 ms'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — surge current (3)
+    IZM:
+      max: 27.0
+      unit: mA
+      note: 'Nota (2): terminais a 4 mm do corpo mantidos à temperatura ambiente'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — regulator current IZM (max.) (2)
+  1N4753A:
+    VZ:
+      typ: 36.0
+      unit: V
+      conditions:
+        IZ: 7 mA
+        TL: 30 degC
+      note: 'Nota (1): medição CC em equilíbrio térmico, terminal a 30 °C, 9,5 mm do corpo'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — Zener voltage range, VZ at IZT1 (nom.)
+    IZT:
+      typ: 7.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT1
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT2
+    ZZT:
+      typ: 50.0
+      unit: ohm
+      conditions:
+        IZ: 7 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZT at IZT1 (typ.), f = 1 kHz
+    ZZK:
+      max: 1000.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZK at IZT2 (max.), f = 1 kHz
+    IR:
+      max: 5.0
+      unit: uA
+      conditions:
+        VR: 27.4 V
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — reverse leakage current IR at VR (max.)
+    IZSM:
+      max: 125.0
+      unit: mA
+      conditions:
+        t_pulse: 10 ms
+      note: 'O datasheet usa o símbolo IR para esta coluna; nota (3): tp = 10 ms'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — surge current (3)
+    IZM:
+      max: 25.0
+      unit: mA
+      note: 'Nota (2): terminais a 4 mm do corpo mantidos à temperatura ambiente'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — regulator current IZM (max.) (2)
+  1N4754A:
+    VZ:
+      typ: 39.0
+      unit: V
+      conditions:
+        IZ: 6.5 mA
+        TL: 30 degC
+      note: 'Nota (1): medição CC em equilíbrio térmico, terminal a 30 °C, 9,5 mm do corpo'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — Zener voltage range, VZ at IZT1 (nom.)
+    IZT:
+      typ: 6.5
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT1
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT2
+    ZZT:
+      typ: 60.0
+      unit: ohm
+      conditions:
+        IZ: 6.5 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZT at IZT1 (typ.), f = 1 kHz
+    ZZK:
+      max: 1000.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZK at IZT2 (max.), f = 1 kHz
+    IR:
+      max: 5.0
+      unit: uA
+      conditions:
+        VR: 29.7 V
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — reverse leakage current IR at VR (max.)
+    IZSM:
+      max: 115.0
+      unit: mA
+      conditions:
+        t_pulse: 10 ms
+      note: 'O datasheet usa o símbolo IR para esta coluna; nota (3): tp = 10 ms'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — surge current (3)
+    IZM:
+      max: 23.0
+      unit: mA
+      note: 'Nota (2): terminais a 4 mm do corpo mantidos à temperatura ambiente'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — regulator current IZM (max.) (2)
+  1N4755A:
+    VZ:
+      typ: 43.0
+      unit: V
+      conditions:
+        IZ: 6 mA
+        TL: 30 degC
+      note: 'Nota (1): medição CC em equilíbrio térmico, terminal a 30 °C, 9,5 mm do corpo'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — Zener voltage range, VZ at IZT1 (nom.)
+    IZT:
+      typ: 6.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT1
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT2
+    ZZT:
+      typ: 70.0
+      unit: ohm
+      conditions:
+        IZ: 6 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZT at IZT1 (typ.), f = 1 kHz
+    ZZK:
+      max: 1500.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZK at IZT2 (max.), f = 1 kHz
+    IR:
+      max: 5.0
+      unit: uA
+      conditions:
+        VR: 32.7 V
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — reverse leakage current IR at VR (max.)
+    IZSM:
+      max: 110.0
+      unit: mA
+      conditions:
+        t_pulse: 10 ms
+      note: 'O datasheet usa o símbolo IR para esta coluna; nota (3): tp = 10 ms'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — surge current (3)
+    IZM:
+      max: 22.0
+      unit: mA
+      note: 'Nota (2): terminais a 4 mm do corpo mantidos à temperatura ambiente'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — regulator current IZM (max.) (2)
+  1N4756A:
+    VZ:
+      typ: 47.0
+      unit: V
+      conditions:
+        IZ: 5.5 mA
+        TL: 30 degC
+      note: 'Nota (1): medição CC em equilíbrio térmico, terminal a 30 °C, 9,5 mm do corpo'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — Zener voltage range, VZ at IZT1 (nom.)
+    IZT:
+      typ: 5.5
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT1
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT2
+    ZZT:
+      typ: 80.0
+      unit: ohm
+      conditions:
+        IZ: 5.5 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZT at IZT1 (typ.), f = 1 kHz
+    ZZK:
+      max: 1500.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZK at IZT2 (max.), f = 1 kHz
+    IR:
+      max: 5.0
+      unit: uA
+      conditions:
+        VR: 35.8 V
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — reverse leakage current IR at VR (max.)
+    IZSM:
+      max: 95.0
+      unit: mA
+      conditions:
+        t_pulse: 10 ms
+      note: 'O datasheet usa o símbolo IR para esta coluna; nota (3): tp = 10 ms'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — surge current (3)
+    IZM:
+      max: 19.0
+      unit: mA
+      note: 'Nota (2): terminais a 4 mm do corpo mantidos à temperatura ambiente'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — regulator current IZM (max.) (2)
+  1N4757A:
+    VZ:
+      typ: 51.0
+      unit: V
+      conditions:
+        IZ: 5 mA
+        TL: 30 degC
+      note: 'Nota (1): medição CC em equilíbrio térmico, terminal a 30 °C, 9,5 mm do corpo'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — Zener voltage range, VZ at IZT1 (nom.)
+    IZT:
+      typ: 5.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT1
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT2
+    ZZT:
+      typ: 95.0
+      unit: ohm
+      conditions:
+        IZ: 5 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZT at IZT1 (typ.), f = 1 kHz
+    ZZK:
+      max: 1500.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZK at IZT2 (max.), f = 1 kHz
+    IR:
+      max: 5.0
+      unit: uA
+      conditions:
+        VR: 38.8 V
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — reverse leakage current IR at VR (max.)
+    IZSM:
+      max: 90.0
+      unit: mA
+      conditions:
+        t_pulse: 10 ms
+      note: 'O datasheet usa o símbolo IR para esta coluna; nota (3): tp = 10 ms'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — surge current (3)
+    IZM:
+      max: 18.0
+      unit: mA
+      note: 'Nota (2): terminais a 4 mm do corpo mantidos à temperatura ambiente'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — regulator current IZM (max.) (2)
+  1N4758A:
+    VZ:
+      typ: 56.0
+      unit: V
+      conditions:
+        IZ: 4.5 mA
+        TL: 30 degC
+      note: 'Nota (1): medição CC em equilíbrio térmico, terminal a 30 °C, 9,5 mm do corpo'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — Zener voltage range, VZ at IZT1 (nom.)
+    IZT:
+      typ: 4.5
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT1
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT2
+    ZZT:
+      typ: 110.0
+      unit: ohm
+      conditions:
+        IZ: 4.5 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZT at IZT1 (typ.), f = 1 kHz
+    ZZK:
+      max: 2000.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZK at IZT2 (max.), f = 1 kHz
+    IR:
+      max: 5.0
+      unit: uA
+      conditions:
+        VR: 42.6 V
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — reverse leakage current IR at VR (max.)
+    IZSM:
+      max: 80.0
+      unit: mA
+      conditions:
+        t_pulse: 10 ms
+      note: 'O datasheet usa o símbolo IR para esta coluna; nota (3): tp = 10 ms'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — surge current (3)
+    IZM:
+      max: 16.0
+      unit: mA
+      note: 'Nota (2): terminais a 4 mm do corpo mantidos à temperatura ambiente'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — regulator current IZM (max.) (2)
+  1N4759A:
+    VZ:
+      typ: 62.0
+      unit: V
+      conditions:
+        IZ: 4 mA
+        TL: 30 degC
+      note: 'Nota (1): medição CC em equilíbrio térmico, terminal a 30 °C, 9,5 mm do corpo'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — Zener voltage range, VZ at IZT1 (nom.)
+    IZT:
+      typ: 4.0
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT1
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT2
+    ZZT:
+      typ: 125.0
+      unit: ohm
+      conditions:
+        IZ: 4 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZT at IZT1 (typ.), f = 1 kHz
+    ZZK:
+      max: 2000.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZK at IZT2 (max.), f = 1 kHz
+    IR:
+      max: 5.0
+      unit: uA
+      conditions:
+        VR: 47.1 V
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — reverse leakage current IR at VR (max.)
+    IZSM:
+      max: 70.0
+      unit: mA
+      conditions:
+        t_pulse: 10 ms
+      note: 'O datasheet usa o símbolo IR para esta coluna; nota (3): tp = 10 ms'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — surge current (3)
+    IZM:
+      max: 14.0
+      unit: mA
+      note: 'Nota (2): terminais a 4 mm do corpo mantidos à temperatura ambiente'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — regulator current IZM (max.) (2)
+  1N4760A:
+    VZ:
+      typ: 68.0
+      unit: V
+      conditions:
+        IZ: 3.7 mA
+        TL: 30 degC
+      note: 'Nota (1): medição CC em equilíbrio térmico, terminal a 30 °C, 9,5 mm do corpo'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — Zener voltage range, VZ at IZT1 (nom.)
+    IZT:
+      typ: 3.7
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT1
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT2
+    ZZT:
+      typ: 150.0
+      unit: ohm
+      conditions:
+        IZ: 3.7 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZT at IZT1 (typ.), f = 1 kHz
+    ZZK:
+      max: 2000.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZK at IZT2 (max.), f = 1 kHz
+    IR:
+      max: 5.0
+      unit: uA
+      conditions:
+        VR: 51.7 V
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — reverse leakage current IR at VR (max.)
+    IZSM:
+      max: 65.0
+      unit: mA
+      conditions:
+        t_pulse: 10 ms
+      note: 'O datasheet usa o símbolo IR para esta coluna; nota (3): tp = 10 ms'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — surge current (3)
+    IZM:
+      max: 13.0
+      unit: mA
+      note: 'Nota (2): terminais a 4 mm do corpo mantidos à temperatura ambiente'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — regulator current IZM (max.) (2)
+  1N4761A:
+    VZ:
+      typ: 75.0
+      unit: V
+      conditions:
+        IZ: 3.3 mA
+        TL: 30 degC
+      note: 'Nota (1): medição CC em equilíbrio térmico, terminal a 30 °C, 9,5 mm do corpo'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — Zener voltage range, VZ at IZT1 (nom.)
+    IZT:
+      typ: 3.3
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT1
+    IZK:
+      typ: 0.25
+      unit: mA
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — test current IZT2
+    ZZT:
+      typ: 175.0
+      unit: ohm
+      conditions:
+        IZ: 3.3 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZT at IZT1 (typ.), f = 1 kHz
+    ZZK:
+      max: 2000.0
+      unit: ohm
+      conditions:
+        IZ: 0.25 mA
+        f: 1 kHz
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — dynamic resistance ZZK at IZT2 (max.), f = 1 kHz
+    IR:
+      max: 5.0
+      unit: uA
+      conditions:
+        VR: 56 V
+        TA: 25 degC
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — reverse leakage current IR at VR (max.)
+    IZSM:
+      max: 60.0
+      unit: mA
+      conditions:
+        t_pulse: 10 ms
+      note: 'O datasheet usa o símbolo IR para esta coluna; nota (3): tp = 10 ms'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — surge current (3)
+    IZM:
+      max: 12.0
+      unit: mA
+      note: 'Nota (2): terminais a 4 mm do corpo mantidos à temperatura ambiente'
+      status: extraido
+      source:
+        page: 2
+        location: Electrical characteristics — regulator current IZM (max.) (2)

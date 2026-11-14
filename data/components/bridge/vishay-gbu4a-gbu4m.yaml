@@ -1,0 +1,192 @@
+# Fonte: Vishay, documento 88614, revisão 13-Jul-2020.
+# Valores transcritos das tabelas do datasheet; conferir na tela de revisão.
+family: GBU4A–GBU4M
+category: bridge.single_phase
+schema_version: '1.0'
+manufacturer: Vishay General Semiconductor
+package: GBU (em linha)
+lifecycle: ativo
+datasheets:
+- id: vishay-88614
+  manufacturer: Vishay
+  document_number: '88614'
+  revision: 13-Jul-2020
+  url: https://www.vishay.com/docs/88614/gbu4a.pdf
+  sha256: ccfef6df7592c354ff31f5bf5d90b33756cd0c347734f8b9febfa2d5c6dabbb2
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  IF(AV):
+    max: 4.0
+    unit: A
+    conditions:
+      TC: 100 degC
+    note: 'Nota (1): cápsula montada em placa de alumínio de 4,0 x 4,0 x 0,15 cm'
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — average forward rectified output current at TC = 100 °C (1)
+  IF(AV)@PCB:
+    max: 3.0
+    unit: A
+    conditions:
+      TA: 40 degC
+    note: 'Nota (2): em placa de circuito, sem dissipador, ilhas de cobre de 12 x 12 mm, terminais de 9,5 mm'
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — average forward rectified output current at TA = 40 °C (2)
+  IFSM:
+    max: 150
+    unit: A
+    conditions:
+      t_pulse: 8.3 ms
+    note: A tabela não informa a duração; 8,3 ms (meio ciclo de 60 Hz) inferido da fig. 2 e do I²t (t < 8,3 ms). Conferir.
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — peak forward surge current single sine-wave superimposed on rated load
+  I2t:
+    max: 93
+    unit: A**2*s
+    conditions:
+      t_pulse: 8.3 ms
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — rating for fusing (t < 8.3 ms)
+  Tj_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — operating junction and storage temperature range
+  Tj_min:
+    min: -55
+    unit: degC
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — operating junction and storage temperature range
+  VF:
+    max: 1.0
+    unit: V
+    conditions:
+      IF: 4.0 A
+      TA: 25 degC
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — maximum instantaneous forward voltage drop per diode
+  Cj:
+    typ: 57
+    unit: pF
+    conditions:
+      VR: 4 V
+      f: 1 MHz
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — typical junction capacitance per diode
+  Rth_ja:
+    typ: 22
+    unit: K/W
+    note: 'Nota (2): em placa, sem dissipador, ilhas de 12 x 12 mm'
+    status: extraido
+    source:
+      page: 2
+      location: Thermal characteristics — typical thermal resistance RθJA (2)
+  Rth_jc:
+    typ: 4.2
+    unit: K/W
+    note: 'Nota (1): cápsula em dissipador de alumínio'
+    status: extraido
+    source:
+      page: 2
+      location: Thermal characteristics — typical thermal resistance RθJC (1)
+per_part:
+  VRRM:
+    unit: V
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — VRRM
+  VRMS:
+    unit: V
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — VRMS
+  VDC:
+    unit: V
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — VDC
+  IR:
+    max: 5.0
+    unit: uA
+    conditions:
+      VR: =VDC
+      TA: 25 degC
+    note: Por diodo, na tensão de bloqueio CC nominal
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — maximum DC reverse current at rated DC blocking voltage per diode
+  IR@125C:
+    max: 500
+    unit: uA
+    conditions:
+      VR: =VDC
+      TA: 125 degC
+    note: Por diodo, na tensão de bloqueio CC nominal
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics — maximum DC reverse current at rated DC blocking voltage per diode
+parts:
+  GBU4A:
+    VRRM: 50
+    VRMS: 35
+    VDC: 50
+    IR: {}
+    IR@125C: {}
+  GBU4B:
+    VRRM: 100
+    VRMS: 70
+    VDC: 100
+    IR: {}
+    IR@125C: {}
+  GBU4D:
+    VRRM: 200
+    VRMS: 140
+    VDC: 200
+    IR: {}
+    IR@125C: {}
+  GBU4G:
+    VRRM: 400
+    VRMS: 280
+    VDC: 400
+    IR: {}
+    IR@125C: {}
+  GBU4J:
+    VRRM: 600
+    VRMS: 420
+    VDC: 600
+    IR: {}
+    IR@125C: {}
+  GBU4K:
+    VRRM: 800
+    VRMS: 560
+    VDC: 800
+    IR: {}
+    IR@125C: {}
+  GBU4M:
+    VRRM: 1000
+    VRMS: 700
+    VDC: 1000
+    IR: {}
+    IR@125C: {}

@@ -261,7 +261,31 @@ export interface DiodeBenchOut {
   warnings: string[];
 }
 
+export interface ZenerModel {
+  VZ0: Quantity;
+  Rz: Quantity;
+  Is_r: Quantity;
+  n_r: number;
+  TC: Quantity;
+  forward: { Is: Quantity; n: number; Rs: Quantity };
+}
+export interface ZenerBenchIn {
+  model: ZenerModel;
+  temperatures: Quantity[];
+  v_max?: Quantity | null;
+  points?: number;
+  component_id?: string | null;
+  fit?: boolean;
+  iz_op?: Quantity | null;
+}
+export type ZenerBenchOut = Omit<DiodeBenchOut, "spice_model"> & {
+  model: ZenerModel;
+  spice_model: string;
+};
+
 export const bench = {
   diode: (body: DiodeBenchIn) =>
     request<DiodeBenchOut>("/devices/diode/iv", { method: "POST", body: JSON.stringify(body) }),
+  zener: (body: ZenerBenchIn) =>
+    request<ZenerBenchOut>("/devices/zener/iv", { method: "POST", body: JSON.stringify(body) }),
 };
