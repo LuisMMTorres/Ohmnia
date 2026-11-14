@@ -238,6 +238,24 @@ def run(
             if result is not None:
                 thermal_result, steps = result
                 thermal.append(thermal_result)
+                if thermal_result.status != "ok":
+                    rsa = thermal_result.required_Rsa
+                    hint = (
+                        f"use dissipador com Rθsa ≤ {rsa.value:.3g} K/W"
+                        if rsa is not None and rsa.value > 0
+                        else "nenhum dissipador resolve: escolha um componente maior ou "
+                        "divida a corrente"
+                        if rsa is not None
+                        else "o datasheet não tem Rθjc para dimensionar o dissipador"
+                    )
+                    warnings.append(
+                        DesignWarning(
+                            code="dissipador",
+                            message=f"{role.designator}: Tj = {thermal_result.Tj.value:.0f} °C "
+                            f"sem dissipador (máx. {thermal_result.Tj_max.value:.0f} °C, "
+                            f"margem {policy.tj_margin_K:g} K); {hint}.",
+                        )
+                    )
                 for s in steps:
                     analysis.log.add_step(s)
             else:
