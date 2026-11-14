@@ -5,7 +5,7 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 | Fase | Entrega | Status |
 |---|---|---|
 | 0 | Descoberta e planejamento | ✅ |
-| 1 | Fundação | 🔄 |
+| 1 | Fundação | 👀 |
 | 2 | Banco de componentes e bancada de dispositivos | ⏳ |
 | 3 | Retificadores (vertical completa, define o padrão) | ⏳ |
 | 4 | Fontes reguladas e amplificadores | ⏳ |
@@ -27,20 +27,21 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 - ✅ `docs/decisoes-pendentes.md`
 - ✅ Aprovação do usuário de escopo e arquitetura (2026-11-14)
 
-## Fase 1 — Fundação 🔄
+## Fase 1 — Fundação 👀
 
-- ⏳ Monorepo `backend/`, `frontend/`, `docs/`, `data/`
-- ⏳ Script de verificação local `scripts/check.sh` (D1): ruff, mypy, pytest, ESLint, Vitest, import-linter (Linux e Windows)
-- ⏳ Docker Compose de desenvolvimento
-- ⏳ `core/`: registro de unidades, serialização de grandezas, notação de engenharia, séries E6–E192 (TDD)
-- ⏳ `CalcStep` e `Calculated[T]` (memória de cálculo)
-- ⏳ Esquemas de categoria e validação do `ComponentRecord`
-- ⏳ `NgspiceBackend`: executar netlist e retornar vetores com unidades; worker com cancelamento
-- ⏳ Pós-processamento básico: média, RMS, pico, FFT
-- ⏳ Visualizador de sinais mínimo (uPlot)
-- ⏳ `AS-SMOKE-01`: divisor RC (.OP, .TRAN, .AC) analítico × ngspice
-
-**Critério de saída:** `docker compose up` abre a interface, uma netlist de exemplo simula e os traços aparecem; testes e CI verdes.
+- ✅ Monorepo `backend/`, `frontend/`, `docs/`, `data/`, `scripts/`
+- ✅ Script de verificação local `scripts/check.sh` (D1): ruff, mypy, import-linter, pytest com cobertura, Prettier, tsc, ESLint, Vitest, build
+- ✅ Dockerfile e `docker-compose.yml` (não construídos neste ambiente)
+- ✅ `core/`: registro de unidades, serialização de grandezas, notação de engenharia, séries E3–E192
+- ✅ `CalcStep`, `Calculated[T]` e `CalcLog` (memória de cálculo)
+- ✅ Esquema de categoria (diodo retificador) e validação do `ComponentRecord` com regras de rastreabilidade e liberação
+- ✅ ngspice via biblioteca compartilhada (ctypes) e via executável (rawfile), com diagnóstico de convergência
+- ✅ Simulações em processo separado, com progresso, tempo limite e cancelamento
+- ✅ Pós-processamento: média, RMS, pico, pico a pico, potência média, FFT, harmônicos, THD, frequência, razão cíclica e decimação mín./máx.
+- ✅ API REST e WebSocket (`/api/v1`)
+- ✅ Visualizador de sinais mínimo (uPlot): transitória, CA (módulo/fase) e tabela de ponto de operação
+- ✅ `AS-SMOKE-01`: circuitos RC, analítico × ngspice
+- 👀 Revisão do usuário ([validacao/fundacao.md](validacao/fundacao.md))
 
 ## Fase 2 — Banco de componentes e bancada ⏳
 
