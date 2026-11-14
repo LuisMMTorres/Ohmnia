@@ -104,3 +104,19 @@ describe("visible (Phase 4)", () => {
     expect(visible("DM-ZEN", "beta_ideal", { variant: "transistor" })).toBe(true);
   });
 });
+
+describe("visible (Phase 5)", () => {
+  it("shows only the fields of the chosen configuration", () => {
+    expect(visible("DM-OPA", "Rt", { config: "inversor" })).toBe(false);
+    expect(visible("DM-OPA", "Rt", { config: "transimpedancia" })).toBe(true);
+    expect(visible("DM-FIL", "B", { kind: "passa_baixas" })).toBe(false);
+    expect(visible("DM-FIL", "ripple_db", { approx: "chebyshev" })).toBe(true);
+    expect(visible("DM-FIL", "R0", { realization: "passivo_lc" })).toBe(true);
+    expect(visible("DM-OPNL", "Rp", { config: "comparador", device: "comparador" })).toBe(true);
+    expect(visible("DM-OPNL", "Vlim", {})).toBe(false);
+    expect(visible("DM-OSC", "RC_tbj", { config: "multivibrador_tbj" })).toBe(true);
+    expect(visible("DM-OSC", "duty", {})).toBe(false);
+    expect(visible("DM-INST", "x_max", { config: "ponte_wheatstone" })).toBe(true);
+    expect(visible("DM-INST", "V_fs", { config: "transmissor_4_20" })).toBe(false);
+  });
+});

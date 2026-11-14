@@ -130,6 +130,67 @@ export function visible(moduleId: string, key: string, spec: Record<string, unkn
     if (key === "alpha_nom") return spec.controlled === true;
     return true;
   }
+  return visiblePhase5(moduleId, key, spec);
+}
+
+function visiblePhase5(moduleId: string, key: string, spec: Record<string, unknown>): boolean {
+  if (moduleId === "DM-OPA") {
+    const c = (spec.config as string | undefined) ?? "inversor";
+    if (key === "Av")
+      return c !== "seguidor" && c !== "transimpedancia" && c !== "transcondutancia";
+    if (key === "Rt" || key === "Iin") return c === "transimpedancia";
+    if (key === "Gm" || key === "R_load_fb") return c === "transcondutancia";
+    if (key === "Vin") return c !== "transimpedancia";
+    return true;
+  }
+  if (moduleId === "DM-FIL") {
+    const k = (spec.kind as string | undefined) ?? "passa_baixas";
+    const a = (spec.approx as string | undefined) ?? "butterworth";
+    const lc = spec.realization === "passivo_lc";
+    if (key === "B") return k === "passa_faixa" || k === "rejeita_faixa";
+    if (key === "ripple_db") return a === "chebyshev" || a === "eliptico";
+    if (key === "R0") return lc;
+    if (key === "R_base") return spec.realization === "variaveis_estado";
+    if (key === "C_base" || key === "VCC" || key === "res_series") return !lc;
+    return true;
+  }
+  if (moduleId === "DM-OPNL") {
+    const c = (spec.config as string | undefined) ?? "schmitt_inversor";
+    if (key === "device" || key === "Vref") return c === "comparador";
+    if (key === "Rp") return c === "comparador" && spec.device === "comparador";
+    if (key === "Vc" || key === "VH") return c.startsWith("schmitt");
+    if (key === "G") return c.startsWith("retificador") || c === "limitador";
+    if (key === "Vlim") return c === "limitador";
+    if (key === "Vin_dc" || key === "VBE") return c === "logaritmico";
+    if (key === "Vm" || key === "f") return c !== "logaritmico";
+    return true;
+  }
+  if (moduleId === "DM-OSC") {
+    const c = (spec.config as string | undefined) ?? "wien";
+    const tbj = c === "multivibrador_tbj";
+    if (key === "duty") return c === "ne555_astavel";
+    if (key === "t_w") return c === "ne555_monoestavel";
+    if (key === "f") return c !== "ne555_monoestavel";
+    if (key === "gain_margin") return c === "wien" || c === "deslocamento_fase";
+    if (key === "beta") return c === "astavel_ampop";
+    if (key === "R_base") return c === "wien" || c === "astavel_ampop";
+    if (key === "VCC") return !tbj;
+    if (key === "VCC_tbj" || key === "RC_tbj" || key === "VBE" || key === "VCEsat") return tbj;
+    return true;
+  }
+  if (moduleId === "DM-INST") {
+    const c = (spec.config as string | undefined) ?? "voltimetro";
+    const tx = c === "transmissor_4_20";
+    if (key === "V_max") return c === "voltimetro" || c === "potencia";
+    if (key === "R_in") return c === "voltimetro";
+    if (key === "I_max" || key === "V_sh") return c === "amperimetro" || c === "potencia";
+    if (key === "Vs_min" || key === "Vs_max") return tx || c === "condicionamento";
+    if (key === "V_ref" || key === "R_sense") return tx;
+    if (key === "R_loop") return tx || c === "receptor_4_20";
+    if (key === "V_exc" || key === "R0" || key === "x_max") return c === "ponte_wheatstone";
+    if (key === "V_fs") return !tx;
+    return true;
+  }
   return true;
 }
 
