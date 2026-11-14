@@ -141,7 +141,22 @@ class DesignResult(BaseModel):
     bode: dict[str, Trace] = Field(default_factory=dict)
 
 
-Metric = Literal["avg", "rms", "pp", "max", "min", "pf", "thd", "ac_mag", "ac_fl", "ac_fh"]
+Metric = Literal[
+    "avg",
+    "rms",
+    "pp",
+    "max",
+    "min",
+    "pf",
+    "thd",
+    "freq",
+    "duty",
+    "x_rise",
+    "x_fall",
+    "ac_mag",
+    "ac_fl",
+    "ac_fh",
+]
 
 
 class SimCheck(BaseModel):
@@ -150,6 +165,10 @@ class SimCheck(BaseModel):
     ``probe`` is a sum of vectors (``"v(p)-v(n)"``, ``"i(vsd1)"``); ``pf`` and ``thd`` use the
     current in ``probe`` and, for ``pf``, the voltage in ``voltage``. Both remove the mean of
     the current first (the primary of a transformer never carries DC).
+
+    ``freq`` and ``duty`` use the crossings of ``probe`` through the middle of its range over
+    the whole window (several periods for an oscillator); ``x_rise``/``x_fall`` return the value
+    of ``voltage`` at the first rising/falling crossing of ``probe`` (a comparator threshold).
 
     AC metrics use the ``.ac`` sweep (input source with ``AC 1``): ``ac_mag`` is |probe| at
     ``freq``; ``ac_fl`` and ``ac_fh`` are the frequencies where |probe| falls 3 dB below its

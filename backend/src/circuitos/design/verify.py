@@ -81,8 +81,33 @@ def _harmonics(x: FloatArray, n: int = 50) -> FloatArray:
     return np.asarray(amp)
 
 
+def crossings(t: FloatArray, x: FloatArray, rising: bool) -> FloatArray:
+    """Instants where x crosses the middle of its range (linear interpolation)."""
+    mid = (float(np.max(x)) + float(np.min(x))) / 2
+    d = x - mid
+    idx = np.nonzero((d[:-1] < 0) & (d[1:] >= 0) if rising else (d[:-1] >= 0) & (d[1:] < 0))[0]
+    return np.asarray(t[idx] - d[idx] * (t[idx + 1] - t[idx]) / (d[idx + 1] - d[idx]))
+
+
 def measure(check: SimCheck, ss: SteadyState) -> float:
     t, x = ss.t_raw, ss.raw[check.probe]
+    if check.metric in ("freq", "duty"):
+        up = crossings(t, x, True)
+        if up.size < 2:
+            raise ValueError(f"{check.quantity}: menos de dois ciclos na janela simulada")
+        if check.metric == "freq":
+            return float((up.size - 1) / (up[-1] - up[0]))
+        sel = (t >= up[0]) & (t <= up[-1])
+        mid = (float(np.max(x)) + float(np.min(x))) / 2
+        ts = np.concatenate([[up[0]], t[sel], [up[-1]]])
+        hs = np.concatenate([[1.0], (x[sel] > mid).astype(np.float64), [1.0]])
+        return float(np.trapezoid(hs, ts) / (up[-1] - up[0]))
+    if check.metric in ("x_rise", "x_fall"):
+        assert check.voltage is not None
+        tc = crossings(t, x, check.metric == "x_rise")
+        if tc.size == 0:
+            raise ValueError(f"{check.quantity}: a saída não comutou na janela simulada")
+        return float(np.interp(tc[0], t, ss.raw[check.voltage]))
     if check.metric == "avg":
         return _avg(t, x)
     if check.metric == "rms":
@@ -237,7 +262,9 @@ def compare_full(
             sim = measure(check, ss)
         # the simulator works in V, A and Hz; analytic values may carry prefixes (mA, kHz)
         si = _SI_OF.get(str(a.dimensionality))
-        if si is not None:
+        if check.metric == "duty":  # measured as a fraction; the summary may be in percent
+            sim = float(Q_(sim, "").m_as(a.units))
+        elif si is not None:
             sim = float(Q_(sim, si).m_as(a.units))
         a_val = float(a.magnitude)
         err = abs(sim - a_val) / abs(a_val) * 100 if a_val != 0 else abs(sim) * 100

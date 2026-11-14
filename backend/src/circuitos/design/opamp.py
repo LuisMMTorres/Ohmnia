@@ -28,7 +28,8 @@ from circuitos.design.mna import Circuit
 
 REF = SEDRA.model_copy(update={"chapter": "2 (Operational amplifiers)"})
 TI_BW = BibRef(book="Texas Instruments LM741 (SNOSC25D)", edition="Rev. D", chapter="6.6, nota 2")
-C_POLE = 1e-6  # F, pole capacitor of the macromodel (R = 1 Ω, so v(n1) = A0·vd at DC)
+C_POLE = 1e-9  # F, pole capacitor of the macromodel; R = 1/(2π fb C), gm = A0/R
+CLAMP_G = 1e3  # S, conductance of the output-swing clamp beyond the limits
 
 
 @dataclass(frozen=True)
@@ -49,6 +50,11 @@ class OpAmp:
         """Open-loop −3 dB frequency, GBW/A0."""
         return self.GBW / self.A0
 
+    @property
+    def r_pole(self) -> float:
+        """Pole resistor: with C_POLE, R·C = 1/(2π fb); v(n1) = A0·vd at DC."""
+        return 1 / (2 * math.pi * self.fb * C_POLE)
+
     def a(self, f: float) -> complex:
         return self.A0 / (1 + 1j * f / self.fb)
 
@@ -62,15 +68,16 @@ class OpAmp:
         x = f"{p}x"
         c.V(f"{p}os", x, inp, self.Vos)
         n1 = f"{p}n1"
-        c.G(f"{p}1", "0", n1, x, inn, self.A0)
-        c.R(f"{p}1", n1, "0", 1.0)
-        c.C(f"{p}1", n1, "0", 1 / (2 * math.pi * self.fb))
+        c.G(f"{p}1", "0", n1, x, inn, self.A0 / self.r_pole)
+        c.R(f"{p}1", n1, "0", self.r_pole)
+        c.C(f"{p}1", n1, "0", C_POLE)
         c.E(f"{p}o", out, "0", n1, "0", 1.0)
 
     def nonlinear_lines(self, p: str, inp: str, inn: str, out: str) -> list[str]:
         """Netlist of the macromodel with slew-rate limit and output clamp (transient)."""
-        cp = 1 / (2 * math.pi * self.fb)
-        il = self.SR * cp if math.isfinite(self.SR) else 1e30
+        gm = self.A0 / self.r_pole
+        # the current into the pole capacitor limited to SR·C: dv/dt ≤ SR
+        il = self.SR * C_POLE if math.isfinite(self.SR) else 1e30
         hi = self.v_hi if math.isfinite(self.v_hi) else 1e6
         lo = self.v_lo if math.isfinite(self.v_lo) else -1e6
         lines = []
@@ -84,11 +91,11 @@ class OpAmp:
         x, n1 = f"{p}x", f"{p}n1"
         lines += [
             f"V{p}os {x} {inp} DC {self.Vos:.9g}",
-            f"B{p}1 0 {n1} I=max(min({self.A0:.9g}*(v({x})-v({inn})),{il:.9g}),{-il:.9g})",
-            f"R{p}1 {n1} 0 1",
-            f"C{p}1 {n1} 0 {cp:.9g}",
-            # soft clamp of the internal node at the output swing (1 kS beyond the limits)
-            f"B{p}c {n1} 0 I=1e3*(max(v({n1})-{hi:.9g},0)+min(v({n1})-{lo:.9g},0))",
+            f"B{p}1 0 {n1} I=max(min({gm:.9g}*(v({x})-v({inn})),{il:.9g}),{-il:.9g})",
+            f"R{p}1 {n1} 0 {self.r_pole:.9g}",
+            f"C{p}1 {n1} 0 {C_POLE:.9g}",
+            # stiff clamp of the internal node at the output swing (overshoot il/CLAMP_G)
+            f"B{p}c {n1} 0 I={CLAMP_G:.9g}*(max(v({n1})-{hi:.9g},0)+min(v({n1})-{lo:.9g},0))",
             f"E{p}o {out} 0 {n1} 0 1",
         ]
         return lines

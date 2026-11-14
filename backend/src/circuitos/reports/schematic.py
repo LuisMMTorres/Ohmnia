@@ -537,3 +537,18 @@ def three_phase(
     svg.text(x + 50, (top + bot) / 2, f"Vo = {_fmt(summary, 'Vo', 'V')}")
     svg.text(x + 50, (top + bot) / 2 + 14, f"Io = {_fmt(summary, 'Io', 'A')}")
     return svg.render(title)
+
+
+def value_sheet(
+    title: str, description: str, values: Mapping[str, str], parts: Mapping[str, str]
+) -> str:
+    """Block drawing with the list of part values (circuits whose wiring is in the netlist)."""
+    items = [f"{k} = {v}" for k, v in values.items()] + [f"{k}: {p}" for k, p in parts.items()]
+    svg = Svg(640, 130 + 18 * ((len(items) + 3) // 4))
+    svg.title(title)
+    svg.text(10, 40, description)
+    svg.box(60, 55, 220, 36, "circuito (ligação completa na netlist)")
+    svg.text(10, 108, "Componentes:")
+    for i, s in enumerate(items):
+        svg.text(10 + 155 * (i % 4), 126 + 18 * (i // 4), s, "start", "pn")
+    return svg.render(title)
