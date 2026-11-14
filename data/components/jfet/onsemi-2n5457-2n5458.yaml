@@ -1,0 +1,228 @@
+# Fonte: onsemi, 2N5457/D, Rev. 6, February 2010.
+family: 2N5457, 2N5458
+category: jfet.n
+schema_version: '1.0'
+manufacturer: onsemi
+package: TO-92, case 29
+lifecycle: ativo
+notes:
+- JFET canal N de uso geral (áudio e chaveamento). Dreno e fonte intercambiáveis.
+datasheets:
+- id: onsemi-2n5457
+  manufacturer: onsemi
+  document_number: 2N5457/D
+  revision: Rev. 6, February 2010
+  url: https://www.onsemi.com/pdf/datasheet/2n5457-d.pdf
+  sha256: d547280c34509502772575b907afb58426da1e4795766b036d3a3e46eefcaf66
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VDS:
+    max: 25
+    unit: V
+    status: extraido
+    source:
+      page: 2
+      location: Maximum ratings — drain-source voltage
+  VDG:
+    max: 25
+    unit: V
+    status: extraido
+    source:
+      page: 2
+      location: Maximum ratings — drain-gate voltage
+  VGSR:
+    max: 25
+    unit: V
+    status: extraido
+    source:
+      page: 2
+      location: Maximum ratings — reverse gate-source voltage (−25 V)
+  IG:
+    max: 10
+    unit: mA
+    status: extraido
+    source:
+      page: 2
+      location: Maximum ratings — gate current
+  Ptot:
+    max: 310
+    unit: mW
+    conditions:
+      TA: 25 degC
+    status: extraido
+    source:
+      page: 2
+      location: Maximum ratings — total device dissipation @ TA = 25 °C
+  Ptot_derating:
+    max: 2.82
+    unit: mW/K
+    status: extraido
+    source:
+      page: 2
+      location: Maximum ratings — derate above 25 °C
+  Tj_max:
+    max: 135
+    unit: degC
+    status: extraido
+    source:
+      page: 2
+      location: Maximum ratings — operating junction temperature
+  Tstg_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 2
+      location: Maximum ratings — storage temperature range
+  V(BR)GSS:
+    min: 25
+    unit: V
+    status: extraido
+    source:
+      page: 3
+      location: Gate-source breakdown voltage (IG = −10 µA, VDS = 0)
+  IGSS:
+    max: 1.0
+    unit: nA
+    conditions:
+      VGS: -15 V
+    status: extraido
+    source:
+      page: 3
+      location: Gate reverse current (VGS = −15 V, VDS = 0)
+per_part: {}
+parts:
+  2N5457:
+    VGS(off):
+      min: 0.5
+      max: 6.0
+      unit: V
+      conditions:
+        VDS: 15 V
+      status: extraido
+      source:
+        page: 3
+        location: Gate-source cutoff voltage, 2N5457 (VDS = 15 V, ID = 10 nA)
+    IDSS:
+      min: 1.0
+      typ: 3.0
+      max: 5.0
+      unit: mA
+      conditions:
+        VDS: 15 V
+      status: extraido
+      source:
+        page: 3
+        location: Zero-gate-voltage drain current, 2N5457 (VDS = 15 V, VGS = 0)
+    yfs:
+      min: 1000
+      typ: 3000
+      max: 5000
+      unit: uS
+      conditions:
+        VDS: 15 V
+        f: 1 kHz
+      note: impresso 'mmhos'; o texto do PDF mostra 'm' no lugar de 'µ' (fonte Symbol); a unidade correta é µ
+      status: extraido
+      source:
+        page: 3
+        location: Forward transfer admittance |Yfs|, 2N5457 (VDS = 15 V, VGS = 0, f = 1 kHz)
+    yos:
+      typ: 10
+      max: 50
+      unit: uS
+      conditions:
+        VDS: 15 V
+      note: impresso 'mmhos'; o texto do PDF mostra 'm' no lugar de 'µ' (fonte Symbol); a unidade correta é µ
+      status: extraido
+      source:
+        page: 3
+        location: Output admittance |Yos| (VDS = 15 V, VGS = 0, f = 1 kHz)
+    Ciss:
+      typ: 4.5
+      max: 7.0
+      unit: pF
+      conditions:
+        VDS: 15 V
+      status: extraido
+      source:
+        page: 3
+        location: Input capacitance (VDS = 15 V, VGS = 0, f = 1 kHz)
+    Crss:
+      typ: 1.5
+      max: 3.0
+      unit: pF
+      conditions:
+        VDS: 15 V
+      status: extraido
+      source:
+        page: 3
+        location: Reverse transfer capacitance (VDS = 15 V, VGS = 0, f = 1 kHz)
+  2N5458:
+    VGS(off):
+      min: 1.0
+      max: 7.0
+      unit: V
+      conditions:
+        VDS: 15 V
+      status: extraido
+      source:
+        page: 3
+        location: Gate-source cutoff voltage, 2N5458 (VDS = 15 V, ID = 10 nA)
+    IDSS:
+      min: 2.0
+      typ: 6.0
+      max: 9.0
+      unit: mA
+      conditions:
+        VDS: 15 V
+      status: extraido
+      source:
+        page: 3
+        location: Zero-gate-voltage drain current, 2N5458 (VDS = 15 V, VGS = 0)
+    yfs:
+      min: 1500
+      typ: 4000
+      max: 5500
+      unit: uS
+      conditions:
+        VDS: 15 V
+        f: 1 kHz
+      note: impresso 'mmhos'; o texto do PDF mostra 'm' no lugar de 'µ' (fonte Symbol); a unidade correta é µ
+      status: extraido
+      source:
+        page: 3
+        location: Forward transfer admittance |Yfs|, 2N5458 (VDS = 15 V, VGS = 0, f = 1 kHz)
+    yos:
+      typ: 10
+      max: 50
+      unit: uS
+      conditions:
+        VDS: 15 V
+      note: impresso 'mmhos'; o texto do PDF mostra 'm' no lugar de 'µ' (fonte Symbol); a unidade correta é µ
+      status: extraido
+      source:
+        page: 3
+        location: Output admittance |Yos| (VDS = 15 V, VGS = 0, f = 1 kHz)
+    Ciss:
+      typ: 4.5
+      max: 7.0
+      unit: pF
+      conditions:
+        VDS: 15 V
+      status: extraido
+      source:
+        page: 3
+        location: Input capacitance (VDS = 15 V, VGS = 0, f = 1 kHz)
+    Crss:
+      typ: 1.5
+      max: 3.0
+      unit: pF
+      conditions:
+        VDS: 15 V
+      status: extraido
+      source:
+        page: 3
+        location: Reverse transfer capacitance (VDS = 15 V, VGS = 0, f = 1 kHz)

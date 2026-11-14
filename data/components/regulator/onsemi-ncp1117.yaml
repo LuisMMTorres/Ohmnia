@@ -1,0 +1,223 @@
+# Fonte: onsemi, NCP1117/D, Rev. 31, August 2021.
+family: NCP1117 (fixos)
+category: regulator.positive
+schema_version: '1.0'
+manufacturer: onsemi
+package: DPAK, case 369A (sufixo DT)
+lifecycle: ativo
+notes:
+- Regulador de baixa queda (LDO de 1 A, queda ≈ 1,1 V).
+- 'Cápsula SMD: o ''dissipador'' é a área de cobre da placa; RθJA vale para a ilha mínima.'
+datasheets:
+- id: onsemi-ncp1117
+  manufacturer: onsemi
+  document_number: NCP1117/D
+  revision: Rev. 31, August 2021
+  url: https://www.onsemi.com/pdf/datasheet/ncp1117-d.pdf
+  sha256: e2b4731d02a098c3a5e395ac7059e7f0b29328026329ce26212319f0747749ec
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  Rth_ja:
+    max: 67
+    unit: K/W
+    status: extraido
+    source:
+      page: 2
+      location: Maximum ratings — RθJA, case 369A (DPAK), minimum size pad
+  Rth_jc:
+    max: 6.0
+    unit: K/W
+    status: extraido
+    source:
+      page: 2
+      location: Maximum ratings — RθJC, case 369A (DPAK)
+  Tj_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 2
+      location: Maximum ratings — maximum die junction temperature range
+  Tstg_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 2
+      location: Maximum ratings — storage temperature range
+  VI_max:
+    max: 20
+    unit: V
+    status: extraido
+    source:
+      page: 2
+      location: Maximum ratings — input voltage
+  Vdo:
+    typ: 1.07
+    max: 1.2
+    unit: V
+    conditions:
+      IO: 800 mA
+    status: extraido
+    source:
+      page: 3
+      location: Dropout voltage (measured at Vout − 100 mV), Iout = 800 mA
+  Ipk:
+    min: 1000
+    typ: 1500
+    max: 2200
+    unit: mA
+    status: extraido
+    source:
+      page: 3
+      location: Output current limit (Vin − Vout = 5,0 V, TA = 25 °C)
+  IO_max:
+    min: 1000
+    unit: mA
+    note: 'o módulo usa este mínimo do limite de corrente como corrente máxima (Nota 6: ≤ 1,0 A com Vin > 12 V)'
+    status: extraido
+    source:
+      page: 3
+      location: Output current limit, mínimo garantido
+  Cin_app:
+    typ: 10
+    unit: uF
+    note: o texto do PDF mostra 'm' no lugar de 'µ' (fonte Symbol); a unidade correta é µ
+    status: extraido
+    source:
+      page: 3
+      location: Electrical characteristics — condição Cin = 10 µF
+  Co_app:
+    typ: 10
+    unit: uF
+    note: o texto do PDF mostra 'm' no lugar de 'µ' (fonte Symbol); a unidade correta é µ
+    status: extraido
+    source:
+      page: 3
+      location: Electrical characteristics — condição Cout = 10 µF (mínimo 4,7 µF para estabilidade, p. 9)
+per_part: {}
+parts:
+  NCP1117DT33G:
+    VO:
+      min: 3.267
+      typ: 3.3
+      max: 3.333
+      unit: V
+      conditions:
+        TJ: 25 degC
+      status: extraido
+      source:
+        page: 3
+        location: Output voltage 3,3 V (Vin = 5,3 V, Iout = 10 mA, TA = 25 °C)
+    VO_band:
+      min: 3.235
+      max: 3.365
+      unit: V
+      status: extraido
+      source:
+        page: 3
+        location: Output voltage 3,3 V, Vin = 4,75 V a 10 V, Iout = 0 a 800 mA
+    VI_reg_min:
+      min: 4.75
+      unit: V
+      status: extraido
+      source:
+        page: 3
+        location: Output voltage band — lowest Vin of the specified range (3,3 V)
+    Regline:
+      typ: 0.8
+      max: 4.5
+      unit: mV
+      status: extraido
+      source:
+        page: 3
+        location: Line regulation 3,3 V (Vin = 4,75 V a 15 V, Iout = 0 mA)
+    Regload:
+      typ: 4.3
+      max: 10
+      unit: mV
+      status: extraido
+      source:
+        page: 3
+        location: Load regulation 3,3 V (Iout = 0 a 800 mA, Vin = 4,75 V)
+    IQ:
+      typ: 6.0
+      max: 10
+      unit: mA
+      status: extraido
+      source:
+        page: 4
+        location: Quiescent current 3,3 V (Vin = 15 V)
+    RR:
+      min: 60
+      typ: 64
+      unit: dB
+      conditions:
+        f: 120 Hz
+      status: extraido
+      source:
+        page: 4
+        location: Ripple rejection 3,3 V (10 Vpp, 120 Hz)
+  NCP1117DT50G:
+    VO:
+      min: 4.95
+      typ: 5.0
+      max: 5.05
+      unit: V
+      conditions:
+        TJ: 25 degC
+      status: extraido
+      source:
+        page: 3
+        location: Output voltage 5,0 V (Vin = 7,0 V, Iout = 10 mA, TA = 25 °C)
+    VO_band:
+      min: 4.9
+      max: 5.1
+      unit: V
+      status: extraido
+      source:
+        page: 3
+        location: Output voltage 5,0 V, Vin = 6,5 V a 12 V, Iout = 0 a 800 mA
+    VI_reg_min:
+      min: 6.5
+      unit: V
+      status: extraido
+      source:
+        page: 3
+        location: Output voltage band — lowest Vin of the specified range (5,0 V)
+    Regline:
+      typ: 0.9
+      max: 6.0
+      unit: mV
+      status: extraido
+      source:
+        page: 3
+        location: Line regulation 5,0 V (Vin = 6,5 V a 15 V, Iout = 0 mA)
+    Regload:
+      typ: 6.7
+      max: 15
+      unit: mV
+      status: extraido
+      source:
+        page: 3
+        location: Load regulation 5,0 V (Iout = 0 a 800 mA, Vin = 6,5 V)
+    IQ:
+      typ: 6.0
+      max: 10
+      unit: mA
+      status: extraido
+      source:
+        page: 4
+        location: Quiescent current 5,0 V (Vin = 15 V)
+    RR:
+      min: 57
+      typ: 61
+      unit: dB
+      conditions:
+        f: 120 Hz
+      status: extraido
+      source:
+        page: 4
+        location: Ripple rejection 5,0 V (10 Vpp, 120 Hz)

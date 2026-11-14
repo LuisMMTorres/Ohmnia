@@ -1,0 +1,122 @@
+# Fonte: onsemi, LM2931/D, Rev. 30, January 2024.
+family: LM2931AC (ajustável)
+category: regulator.positive
+schema_version: '1.0'
+manufacturer: onsemi
+package: D2PAK, case 936 (sufixo D2T)
+lifecycle: ativo
+notes:
+- Regulador LDO ajustável de 100 mA. Vout = Vref(1 + R2/R1) + IAdj·R2 (Figure 18).
+datasheets:
+- id: onsemi-lm2931
+  manufacturer: onsemi
+  document_number: LM2931/D
+  revision: Rev. 30, January 2024
+  url: https://www.onsemi.com/pdf/datasheet/lm2931-d.pdf
+  sha256: a9a868967bed04aa444a3dcb32358c2fafc6f31661374705c20e3765b6a5ae51
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  Tj_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 3
+      location: Maximum ratings — operating die junction temperature
+  Tstg_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 3
+      location: Maximum ratings — storage temperature range
+  VI_max:
+    max: 40
+    unit: V
+    status: extraido
+    source:
+      page: 3
+      location: Maximum ratings — input voltage continuous
+  IO_max:
+    max: 100
+    unit: mA
+    note: corrente nominal do título; as tabelas usam IO ≤ 100 mA
+    status: extraido
+    source:
+      page: 1
+      location: 'Título: ''Low Dropout Voltage Regulators, 60 V, 100 mA'''
+  Vdo:
+    typ: 0.16
+    max: 0.6
+    unit: V
+    conditions:
+      IO: 100 mA
+    status: extraido
+    source:
+      page: 4
+      location: Dropout voltage, IO = 100 mA
+  Cin_app:
+    typ: 0.1
+    unit: uF
+    status: extraido
+    source:
+      page: 9
+      location: Figure 17/18 — Cin = 0,1 µF
+  Co_app:
+    typ: 100
+    unit: uF
+    note: o texto do PDF mostra 'm' no lugar de 'µ' (fonte Symbol); a unidade correta é µ
+    status: extraido
+    source:
+      page: 4
+      location: Electrical characteristics — condição CO = 100 µF, ESR 0,3 Ω (exigido para estabilidade, p. 8)
+  Rth_ja:
+    max: 70
+    unit: K/W
+    status: extraido
+    source:
+      page: 3
+      location: Maximum ratings — RθJA, D2PAK (case 936)
+  Rth_jc:
+    max: 5.0
+    unit: K/W
+    status: extraido
+    source:
+      page: 3
+      location: Maximum ratings — RθJC, D2PAK (case 936)
+  Vref:
+    min: 1.17
+    typ: 1.2
+    max: 1.23
+    unit: V
+    status: extraido
+    source:
+      page: 5
+      location: Reference voltage, IO = 10 mA, TA = 25 °C (LM2931AC)
+  IAdj:
+    typ: 0.2
+    unit: uA
+    note: o PDF mostra 0,2 'mA'; o texto do PDF mostra 'm' no lugar de 'µ' (fonte Symbol); a unidade correta é µ
+    status: extraido
+    source:
+      page: 5
+      location: Adjustment pin current
+  VIO_min:
+    min: 0.6
+    unit: V
+    status: extraido
+    source:
+      page: 5
+      location: Line regulation range, Vin = VO + 0,6 V a 26 V
+  IQ:
+    typ: 6.0
+    unit: mA
+    status: extraido
+    source:
+      page: 5
+      location: Bias current, IO = 100 mA
+per_part: {}
+parts:
+  LM2931ACD2TR4G: {}

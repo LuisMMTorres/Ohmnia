@@ -1,0 +1,151 @@
+# Fonte: onsemi, LM2931/D, Rev. 30, January 2024.
+family: LM2931-5.0
+category: regulator.positive
+schema_version: '1.0'
+manufacturer: onsemi
+package: TO-220, case 221A (sufixo T)
+lifecycle: ativo
+notes:
+- Regulador LDO de 100 mA (queda típica 0,16 V a 100 mA). Exige capacitor de saída para estabilidade.
+datasheets:
+- id: onsemi-lm2931
+  manufacturer: onsemi
+  document_number: LM2931/D
+  revision: Rev. 30, January 2024
+  url: https://www.onsemi.com/pdf/datasheet/lm2931-d.pdf
+  sha256: a9a868967bed04aa444a3dcb32358c2fafc6f31661374705c20e3765b6a5ae51
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  Tj_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 3
+      location: Maximum ratings — operating die junction temperature
+  Tstg_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 3
+      location: Maximum ratings — storage temperature range
+  VI_max:
+    max: 40
+    unit: V
+    status: extraido
+    source:
+      page: 3
+      location: Maximum ratings — input voltage continuous
+  IO_max:
+    max: 100
+    unit: mA
+    note: corrente nominal do título; as tabelas usam IO ≤ 100 mA
+    status: extraido
+    source:
+      page: 1
+      location: 'Título: ''Low Dropout Voltage Regulators, 60 V, 100 mA'''
+  Vdo:
+    typ: 0.16
+    max: 0.6
+    unit: V
+    conditions:
+      IO: 100 mA
+    status: extraido
+    source:
+      page: 4
+      location: Dropout voltage, IO = 100 mA
+  Cin_app:
+    typ: 0.1
+    unit: uF
+    status: extraido
+    source:
+      page: 9
+      location: Figure 17/18 — Cin = 0,1 µF
+  Co_app:
+    typ: 100
+    unit: uF
+    note: o texto do PDF mostra 'm' no lugar de 'µ' (fonte Symbol); a unidade correta é µ
+    status: extraido
+    source:
+      page: 4
+      location: Electrical characteristics — condição CO = 100 µF, ESR 0,3 Ω (exigido para estabilidade, p. 8)
+  Rth_ja:
+    max: 65
+    unit: K/W
+    status: extraido
+    source:
+      page: 3
+      location: Maximum ratings — RθJA, TO-220
+  Rth_jc:
+    max: 5.0
+    unit: K/W
+    status: extraido
+    source:
+      page: 3
+      location: Maximum ratings — RθJC, TO-220
+  VO:
+    min: 4.75
+    typ: 5.0
+    max: 5.25
+    unit: V
+    conditions:
+      TJ: 25 degC
+    status: extraido
+    source:
+      page: 4
+      location: Output voltage, Vin = 14 V, IO = 10 mA, TA = 25 °C (LM2931-5.0)
+  VO_band:
+    min: 4.5
+    max: 5.5
+    unit: V
+    status: extraido
+    source:
+      page: 4
+      location: Output voltage, Vin = 6,0 V a 26 V, IO ≤ 100 mA, TA = −40 a +125 °C (LM2931-5.0)
+  VI_reg_min:
+    min: 6.0
+    unit: V
+    status: extraido
+    source:
+      page: 4
+      location: Output voltage band — lowest Vin of the specified range
+  Regline:
+    typ: 4.0
+    max: 30
+    unit: mV
+    status: extraido
+    source:
+      page: 4
+      location: Line regulation, Vin = 6,0 V a 26 V
+  Regload:
+    typ: 14
+    max: 50
+    unit: mV
+    status: extraido
+    source:
+      page: 4
+      location: Load regulation, IO = 5,0 mA a 100 mA
+  IQ:
+    typ: 5.8
+    max: 30
+    unit: mA
+    status: extraido
+    source:
+      page: 4
+      location: Bias current, Vin = 14 V, IO = 100 mA
+  RR:
+    min: 60
+    typ: 90
+    unit: dB
+    conditions:
+      f: 120 Hz
+    status: extraido
+    source:
+      page: 4
+      location: Ripple rejection (f = 120 Hz)
+per_part: {}
+parts:
+  LM2931T-5.0G: {}

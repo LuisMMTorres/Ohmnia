@@ -1,0 +1,146 @@
+# Fonte: onsemi, MPF102/D, Rev. 3, January 2006.
+family: MPF102
+category: jfet.n
+schema_version: '1.0'
+manufacturer: onsemi
+package: TO-92, case 29-11
+lifecycle: ativo
+notes:
+- 'JFET canal N para VHF. Só faixas mín./máx. de IDSS e |yfs|: o modelo usa a média geométrica.'
+datasheets:
+- id: onsemi-mpf102
+  manufacturer: onsemi
+  document_number: MPF102/D
+  revision: Rev. 3, January 2006
+  url: https://www.onsemi.com/pdf/datasheet/mpf102-d.pdf
+  sha256: c6022bcb4a809a5da956dc8530ac57f4697fe65983435ebfecddc5eca66e80e7
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VDS:
+    max: 25
+    unit: V
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — drain-source voltage
+  VDG:
+    max: 25
+    unit: V
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — drain-gate voltage
+  VGSR:
+    max: 25
+    unit: V
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — gate-source voltage (−25 V)
+  IG:
+    max: 10
+    unit: mA
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — gate current
+  Ptot:
+    max: 350
+    unit: mW
+    conditions:
+      TA: 25 degC
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — total device dissipation @ TA = 25 °C
+  Ptot_derating:
+    max: 2.8
+    unit: mW/K
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — derate above 25 °C
+  Tj_max:
+    max: 125
+    unit: degC
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — junction temperature range
+  Tstg_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings — storage temperature range
+  V(BR)GSS:
+    min: 25
+    unit: V
+    status: extraido
+    source:
+      page: 2
+      location: Gate-source breakdown voltage (IG = −10 µA, VDS = 0)
+  IGSS:
+    max: 2.0
+    unit: nA
+    conditions:
+      VGS: -15 V
+    status: extraido
+    source:
+      page: 2
+      location: Gate reverse current (VGS = −15 V, VDS = 0)
+  VGS(off):
+    max: 8.0
+    unit: V
+    conditions:
+      VDS: 15 V
+    status: extraido
+    source:
+      page: 2
+      location: Gate-source cutoff voltage (VDS = 15 V, ID = 2,0 nA)
+  IDSS:
+    min: 2.0
+    max: 20
+    unit: mA
+    conditions:
+      VDS: 15 V
+    status: extraido
+    source:
+      page: 2
+      location: Zero-gate-voltage drain current (VDS = 15 V, VGS = 0)
+  yfs:
+    min: 2000
+    max: 7500
+    unit: uS
+    conditions:
+      VDS: 15 V
+      f: 1 kHz
+    note: impresso 'mmhos'; o texto do PDF mostra 'm' no lugar de 'µ' (fonte Symbol); a unidade correta é µ
+    status: extraido
+    source:
+      page: 2
+      location: Forward transfer admittance |yfs| (VDS = 15 V, VGS = 0, f = 1,0 kHz)
+  Ciss:
+    max: 7.0
+    unit: pF
+    conditions:
+      VDS: 15 V
+    status: extraido
+    source:
+      page: 2
+      location: Input capacitance (VDS = 15 V, VGS = 0, f = 1,0 MHz)
+  Crss:
+    max: 3.0
+    unit: pF
+    conditions:
+      VDS: 15 V
+    status: extraido
+    source:
+      page: 2
+      location: Reverse transfer capacitance (VDS = 15 V, VGS = 0, f = 1,0 MHz)
+per_part: {}
+parts:
+  MPF102: {}

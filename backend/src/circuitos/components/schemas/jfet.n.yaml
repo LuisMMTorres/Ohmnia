@@ -1,0 +1,22 @@
+category: jfet.n
+schema_version: "1.0"
+description: JFET canal N (depleção), pequenos sinais
+required: [IDSS, VGS(off), Ptot, Tj_max]
+optional: []
+parameters:
+  VDS:       {unit: V, kind: max_rating, description: Tensão dreno-fonte máxima}
+  VDG:       {unit: V, kind: max_rating, description: Tensão dreno-porta máxima}
+  VGSR:      {unit: V, kind: max_rating, description: Tensão reversa porta-fonte máxima (em módulo)}
+  IG:        {unit: A, kind: max_rating, description: Corrente de porta máxima (direta)}
+  Ptot:      {unit: W, kind: max_rating, description: Dissipação máxima, conditions_required: [TA]}
+  Ptot_derating: {unit: W/K, kind: thermal, description: Fator de redução linear da dissipação acima de 25 °C}
+  Tj_max:    {unit: degC, kind: max_rating, description: Temperatura máxima de junção}
+  Tstg_max:  {unit: degC, kind: max_rating, description: Temperatura máxima de armazenamento}
+  V(BR)GSS:  {unit: V, kind: characteristic, description: Tensão de ruptura porta-fonte (em módulo)}
+  IGSS:      {unit: A, kind: characteristic, description: Corrente reversa de porta (em módulo), conditions_required: [VGS]}
+  VGS(off):  {unit: V, kind: characteristic, description: Tensão de corte porta-fonte (em módulo), conditions_required: [VDS]}
+  IDSS:      {unit: A, kind: characteristic, description: Corrente de dreno com VGS = 0, conditions_required: [VDS]}
+  yfs:       {unit: S, kind: characteristic, description: Transadmitância direta com VGS = 0 (gm0), conditions_required: [VDS, f]}
+  yos:       {unit: S, kind: characteristic, description: Admitância de saída em fonte comum, conditions_required: [VDS]}
+  Ciss:      {unit: F, kind: characteristic, description: Capacitância de entrada, conditions_required: [VDS]}
+  Crss:      {unit: F, kind: characteristic, description: Capacitância de transferência reversa, conditions_required: [VDS]}
