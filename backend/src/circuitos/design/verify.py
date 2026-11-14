@@ -14,13 +14,14 @@ from dataclasses import dataclass
 import numpy as np
 from numpy.typing import NDArray
 
-from circuitos.core.units import QuantityModel
+from circuitos.core.units import Q_, QuantityModel
 from circuitos.simulation.backend import SimulatorBackend, make_backend
 from circuitos.simulation.results import Plot
 
 from .base import Circuit, SimCheck, SimComparison
 
 FloatArray = NDArray[np.float64]
+_SI_OF = {str(Q_(1, u).dimensionality): u for u in ("V", "A", "Hz", "s", "W", "ohm")}
 N_SAMPLES = 4096
 
 _TERM = re.compile(r"([+-]?)((?:\d+(?:\.\d*)?(?:e[+-]?\d+)?\*)?)([vi]\([^()]+\))")
@@ -220,6 +221,10 @@ def compare_full(
         else:
             assert ss is not None, "verificação no tempo sem transitória no circuito"
             sim = measure(check, ss)
+        # the simulator works in V, A and Hz; analytic values may carry prefixes (mA, kHz)
+        si = _SI_OF.get(str(a.dimensionality))
+        if si is not None:
+            sim = float(Q_(sim, si).m_as(a.units))
         a_val = float(a.magnitude)
         err = abs(sim - a_val) / abs(a_val) * 100 if a_val != 0 else abs(sim) * 100
         out.append(

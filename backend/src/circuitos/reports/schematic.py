@@ -146,6 +146,162 @@ class Svg:
         self.parts.append(f'<path d="M{x - 8},{y} q4,-8 8,0 q4,8 8,0"/>')
         self.text(x, y + 30, label, "middle")
 
+    # ------------------------------------------------ symbols for the analog modules
+    def resistor_h(self, x1: float, x2: float, y: float, label: str, value: str = "") -> None:
+        xm = (x1 + x2) / 2
+        self.line(x1, y, xm - 18, y)
+        self.line(xm + 18, y, x2, y)
+        self.parts.append(f'<rect class="o" x="{xm - 18}" y="{y - 6}" width="36" height="12"/>')
+        self.text(xm, y - 11, label, "middle")
+        if value:
+            self.text(xm, y + 20, value, "middle", "pn")
+
+    def cap_h(self, x1: float, x2: float, y: float, label: str, value: str = "") -> None:
+        xm = (x1 + x2) / 2
+        self.line(x1, y, xm - 4, y)
+        self.line(xm + 4, y, x2, y)
+        self.line(xm - 4, y - 11, xm - 4, y + 11)
+        self.line(xm + 4, y - 11, xm + 4, y + 11)
+        self.text(xm, y - 15, label, "middle")
+        if value:
+            self.text(xm, y + 24, value, "middle", "pn")
+
+    def zener_v(
+        self, x: float, y_top: float, y_bot: float, label: str, part: str = "", left: bool = False
+    ) -> None:
+        """Zener diode with the cathode at the top (reverse biased by a positive rail)."""
+        ym = (y_top + y_bot) / 2
+        self.line(x, y_top, x, ym - 7)
+        self.line(x, ym + 7, x, y_bot)
+        self.parts.append(f'<path d="M{x - 8},{ym + 7} L{x + 8},{ym + 7} L{x},{ym - 6} Z"/>')
+        self.parts.append(
+            f'<path d="M{x - 12},{ym - 11} L{x - 8},{ym - 7} '
+            f'L{x + 8},{ym - 7} L{x + 12},{ym - 3}"/>'
+        )
+        tx, anchor = (x - 16, "end") if left else (x + 16, "start")
+        self.text(tx, ym - 2, label, anchor)
+        if part:
+            self.text(tx, ym + 11, part, anchor, "pn")
+
+    def diode_v(
+        self, x: float, y_top: float, y_bot: float, label: str, part: str = "", up: bool = True
+    ) -> None:
+        """Diode between two vertical points; up=True conducts from bottom to top."""
+        if up:
+            self.device_up(x, y_bot, y_top, "diode", label, part)
+        else:
+            ym = (y_top + y_bot) / 2
+            self.line(x, y_top, x, ym - 8)
+            self.line(x, ym + 8, x, y_bot)
+            self.parts.append(f'<path d="M{x - 8},{ym - 8} L{x + 8},{ym - 8} L{x},{ym + 6} Z"/>')
+            self.line(x - 8, ym + 7, x + 8, ym + 7)
+            self.text(x + 14, ym - 2, label)
+            if part:
+                self.text(x + 14, ym + 11, part, "start", "pn")
+
+    def bjt(
+        self,
+        x: float,
+        y: float,
+        label: str,
+        part: str = "",
+        pnp: bool = False,
+        mirror: bool = False,
+    ) -> tuple[tuple[float, float], tuple[float, float], tuple[float, float]]:
+        """Transistor with the base at the left (right if mirror); returns (B, C, E) points.
+
+        The collector leaves upwards and the emitter downwards (swapped for PNP so the emitter
+        stays on the positive side).
+        """
+        k = -1 if mirror else 1
+        bx = x - 22 * k
+        self.parts.append(f'<circle class="o" cx="{x}" cy="{y}" r="17"/>')
+        self.line(bx, y, x - 6 * k, y)
+        self.line(x - 6 * k, y - 10, x - 6 * k, y + 10)
+        top, bot = (x + 8 * k, y - 26), (x + 8 * k, y + 26)
+        self.line(x - 6 * k, y - 5, top[0], y - 14)
+        self.line(top[0], y - 14, *top)
+        self.line(x - 6 * k, y + 5, bot[0], y + 14)
+        self.line(bot[0], y + 14, *bot)
+        if pnp:  # arrow into the base, on the upper (emitter) lead
+            ax, ay = x - 6 * k + 6 * k, y - 7
+            self.parts.append(
+                f'<path d="M{ax + 1 * k},{ay - 5} L{ax - 4 * k},{ay + 1} L{ax + 3 * k},{ay + 3}"/>'
+            )
+            c, e = bot, top
+        else:  # arrow out of the base, on the lower (emitter) lead
+            ax, ay = bot[0], y + 14
+            self.parts.append(
+                f'<path d="M{ax - 7 * k},{ay - 1} L{ax},{ay} L{ax - 3 * k},{ay - 7}"/>'
+            )
+            c, e = top, bot
+        tx, anchor = (x + 22 * k, "start" if k > 0 else "end")
+        self.text(tx, y - 2, label, anchor)
+        if part:
+            self.text(tx, y + 11, part, anchor, "pn")
+        return (bx, y), c, e
+
+    def nmos(
+        self, x: float, y: float, label: str, part: str = ""
+    ) -> tuple[tuple[float, float], tuple[float, float], tuple[float, float]]:
+        """Enhancement N-MOSFET, gate at the left; returns (G, D, S)."""
+        gx = x - 22
+        self.line(gx, y, x - 8, y)
+        self.line(x - 8, y - 12, x - 8, y + 12)
+        for dy in (-10, 0, 10):
+            self.line(x - 3, y + dy - 4, x - 3, y + dy + 4)
+        self.line(x - 3, y - 10, x + 8, y - 10)
+        self.line(x + 8, y - 10, x + 8, y - 26)
+        self.line(x - 3, y + 10, x + 8, y + 10)
+        self.line(x + 8, y + 10, x + 8, y + 26)
+        self.line(x - 3, y, x + 8, y)
+        self.line(x + 8, y, x + 8, y + 10)
+        self.parts.append(f'<path d="M{x + 3},{y - 3} L{x - 2},{y} L{x + 3},{y + 3}"/>')
+        self.text(x + 16, y - 2, label)
+        if part:
+            self.text(x + 16, y + 11, part, "start", "pn")
+        return (gx, y), (x + 8, y - 26), (x + 8, y + 26)
+
+    def ground(self, x: float, y: float) -> None:
+        self.line(x, y, x, y + 6)
+        self.line(x - 10, y + 6, x + 10, y + 6)
+        self.line(x - 6, y + 10, x + 6, y + 10)
+        self.line(x - 2, y + 14, x + 2, y + 14)
+
+    def dc_source(self, x: float, y_top: float, y_bot: float, label: str, value: str = "") -> None:
+        ym = (y_top + y_bot) / 2
+        self.line(x, y_top, x, ym - 15)
+        self.line(x, ym + 15, x, y_bot)
+        self.parts.append(f'<circle class="o" cx="{x}" cy="{ym}" r="15"/>')
+        self.text(x, ym - 3, "+", "middle")
+        self.text(x, ym + 10, "−", "middle")
+        self.text(x - 20, ym - 2, label, "end")
+        if value:
+            self.text(x - 20, ym + 11, value, "end", "pn")
+
+    def ac_source(self, x: float, y_top: float, y_bot: float, label: str, value: str = "") -> None:
+        ym = (y_top + y_bot) / 2
+        self.line(x, y_top, x, ym - 15)
+        self.line(x, ym + 15, x, y_bot)
+        self.parts.append(f'<circle class="o" cx="{x}" cy="{ym}" r="15"/>')
+        self.parts.append(f'<path d="M{x - 8},{ym} q4,-8 8,0 q4,8 8,0"/>')
+        self.text(x - 20, ym - 2, label, "end")
+        if value:
+            self.text(x - 20, ym + 11, value, "end", "pn")
+
+    def terminal(self, x: float, y: float, label: str, anchor: str = "start") -> None:
+        self.parts.append(f'<circle class="o" cx="{x}" cy="{y}" r="3.5" fill="#fff"/>')
+        self.text(x + (8 if anchor == "start" else -8), y + 4, label, anchor)
+
+    def box(self, x: float, y: float, w: float, h: float, label: str, part: str = "") -> None:
+        self.parts.append(f'<rect class="o" x="{x}" y="{y}" width="{w}" height="{h}"/>')
+        self.text(x + w / 2, y + h / 2 - 2, label, "middle")
+        if part:
+            self.text(x + w / 2, y + h / 2 + 11, part, "middle", "pn")
+
+    def title(self, s: str) -> None:
+        self.text(10, 18, s, "start", "ttl")
+
     def transformer(self, x: float, y1: float, y2: float, tap: bool = False) -> None:
         """Primary coil at x, secondary at x + 26 (both from y1 to y2)."""
         for cx, sweep in ((x, 1), (x + 26, 0)):

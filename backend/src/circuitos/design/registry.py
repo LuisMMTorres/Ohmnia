@@ -3,11 +3,15 @@
 from __future__ import annotations
 
 from circuitos.design.engine import TopologyModule
+from circuitos.design.plugins.lin import LinModule
 from circuitos.design.plugins.ret1 import Ret1Module
 from circuitos.design.plugins.ret3 import Ret3Module
 from circuitos.design.plugins.retc1 import Retc1Module
+from circuitos.design.plugins.zen import ZenModule
 
-MODULES: dict[str, TopologyModule] = {m.id: m for m in (Ret1Module(), Retc1Module(), Ret3Module())}
+MODULES: dict[str, TopologyModule] = {
+    m.id: m for m in (Ret1Module(), Retc1Module(), Ret3Module(), ZenModule(), LinModule())
+}
 
 
 def get(module_id: str) -> TopologyModule:

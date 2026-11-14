@@ -43,6 +43,10 @@ target-version = "py312"
 select = ["E", "F", "W", "I", "B", "UP", "N", "SIM", "RUF"]
 ignore = ["N802", "N803", "N806", "N815", "RUF001", "RUF002", "RUF003"]
 
+[tool.ruff.lint.per-file-ignores]
+# design modules declare their labels, lab items and questions as plain class constants
+"src/circuitos/design/plugins/**" = ["RUF012"]
+
 [tool.mypy]
 python_version = "3.12"
 strict = true
