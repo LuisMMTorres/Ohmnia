@@ -1,0 +1,21 @@
+category: comparator
+schema_version: "1.0"
+description: Comparador de tensão (saída em coletor aberto ou totem-pole)
+required: [Vos, Ib, Avol, t_resp, VS_max]
+optional: []
+parameters:
+  VS_max:    {unit: V, kind: max_rating, description: Alimentação total máxima (VCC+ − VCC−)}
+  VID_max:   {unit: V, kind: max_rating, description: Tensão diferencial de entrada máxima (em módulo)}
+  VI_max:    {unit: V, kind: max_rating, description: Tensão de entrada máxima (em módulo, relativa ao centro da alimentação)}
+  VOUT_max:  {unit: V, kind: max_rating, description: Tensão máxima do coletor de saída em relação a VCC−}
+  Tj_max:    {unit: degC, kind: max_rating, description: Temperatura máxima de junção}
+  Tstg_max:  {unit: degC, kind: max_rating, description: Temperatura máxima de armazenamento}
+  Rth_ja:    {unit: K/W, kind: thermal, description: Resistência térmica junção-ambiente}
+  Vos:       {unit: V, kind: characteristic, description: Tensão de offset de entrada (em módulo), conditions_required: [TA]}
+  Ios:       {unit: A, kind: characteristic, description: Corrente de offset de entrada (em módulo), conditions_required: [TA]}
+  Ib:        {unit: A, kind: characteristic, description: Corrente de polarização de entrada (em módulo), conditions_required: [TA]}
+  Avol:      {unit: V/mV, kind: characteristic, description: Ganho de tensão diferencial (grandes sinais)}
+  VOL:       {unit: V, kind: characteristic, description: Tensão de saída em nível baixo (coletor-emissor), conditions_required: [IOL]}
+  IOH_leak:  {unit: A, kind: characteristic, description: Fuga do coletor de saída em nível alto}
+  IQ:        {unit: A, kind: characteristic, description: Corrente de alimentação de VCC+}
+  t_resp:    {unit: s, kind: characteristic, description: Tempo de resposta}

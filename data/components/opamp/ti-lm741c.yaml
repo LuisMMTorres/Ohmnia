@@ -1,0 +1,192 @@
+# Fonte: Texas Instruments, LM741 (SNOSC25D), revisado em outubro de 2015.
+family: LM741C
+category: opamp
+schema_version: '1.0'
+manufacturer: Texas Instruments
+package: PDIP-8 (P)
+lifecycle: ativo
+notes:
+- Ampop bipolar de uso geral, um por encapsulamento. Alimentação simétrica (± em módulo nas chaves VS_*).
+- 'GBW não é dado para o LM741C: o modelo calcula BW = 0,35/tr a partir do tempo de subida típico (fórmula da nota
+  2 da tabela do LM741A).'
+datasheets:
+- id: ti-lm741
+  manufacturer: Texas Instruments
+  document_number: SNOSC25D
+  revision: Rev. D, October 2015
+  url: https://www.ti.com/lit/ds/symlink/lm741.pdf
+  sha256: 6f3bf3cbce352c73a8f3e7506023ab1f5d12549834840e0227d6bb37de6c48db
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS_max:
+    max: 18
+    unit: V
+    status: extraido
+    source:
+      page: 4
+      location: Absolute maximum ratings — supply voltage LM741C (±18 V)
+  VS_min:
+    min: 10
+    unit: V
+    status: extraido
+    source:
+      page: 4
+      location: Recommended operating conditions — supply voltage LM741C (±10 V mín.)
+  VID_max:
+    max: 30
+    unit: V
+    status: extraido
+    source:
+      page: 4
+      location: Absolute maximum ratings — differential input voltage (±30 V)
+  VI_max:
+    max: 15
+    unit: V
+    status: extraido
+    source:
+      page: 4
+      location: Absolute maximum ratings — input voltage (±15 V)
+  Pd_max:
+    max: 500
+    unit: mW
+    status: extraido
+    source:
+      page: 4
+      location: Absolute maximum ratings — power dissipation
+  Tj_max:
+    max: 100
+    unit: degC
+    status: extraido
+    source:
+      page: 4
+      location: Absolute maximum ratings — junction temperature LM741C
+  Tstg_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 4
+      location: Absolute maximum ratings — storage temperature
+  Rth_ja:
+    max: 100
+    unit: K/W
+    status: extraido
+    source:
+      page: 4
+      location: Thermal information — RθJA, PDIP (P)
+  Vos:
+    typ: 2
+    max: 6
+    unit: mV
+    conditions: &id001
+      TA: 25 degC
+    status: extraido
+    source:
+      page: 6
+      location: Input offset voltage, RS ≤ 10 kΩ, TA = 25 °C
+  Ios:
+    typ: 20
+    max: 200
+    unit: nA
+    conditions: *id001
+    status: extraido
+    source:
+      page: 6
+      location: Input offset current, TA = 25 °C
+  Ib:
+    typ: 80
+    max: 500
+    unit: nA
+    conditions: *id001
+    status: extraido
+    source:
+      page: 6
+      location: Input bias current, TA = 25 °C
+  Rin:
+    min: 0.3
+    typ: 2
+    unit: Mohm
+    status: extraido
+    source:
+      page: 6
+      location: Input resistance, TA = 25 °C, VS = ±20 V
+  VICR:
+    min: 12
+    typ: 13
+    unit: V
+    status: extraido
+    source:
+      page: 6
+      location: Input voltage range, TA = 25 °C (±12 / ±13 V)
+  Avol:
+    min: 20
+    typ: 200
+    unit: V/mV
+    conditions:
+      RL: 2 kohm
+      VS: 15 V
+    status: extraido
+    source:
+      page: 6
+      location: Large signal voltage gain, VS = ±15 V, VO = ±10 V, RL ≥ 2 kΩ, TA = 25 °C
+  tr:
+    typ: 0.3
+    unit: us
+    status: extraido
+    source:
+      page: 6
+      location: Transient response — rise time, unity gain, TA = 25 °C
+  SR:
+    typ: 0.5
+    unit: V/us
+    status: extraido
+    source:
+      page: 6
+      location: Slew rate, TA = 25 °C, unity gain
+  Vom:
+    min: 10
+    typ: 13
+    unit: V
+    conditions:
+      VS: 15 V
+      RL: 2 kohm
+    status: extraido
+    source:
+      page: 6
+      location: Output voltage swing, VS = ±15 V, RL ≥ 2 kΩ (±10 / ±13 V)
+  Isc:
+    typ: 25
+    unit: mA
+    status: extraido
+    source:
+      page: 6
+      location: Output short circuit current, TA = 25 °C
+  CMRR:
+    min: 70
+    typ: 90
+    unit: dB
+    status: extraido
+    source:
+      page: 6
+      location: Common-mode rejection ratio, RS ≤ 10 kΩ, VCM = ±12 V
+  PSRR:
+    min: 77
+    typ: 96
+    unit: dB
+    status: extraido
+    source:
+      page: 6
+      location: Supply voltage rejection ratio, VS = ±20 V a ±5 V, RS ≤ 10 Ω
+  IQ:
+    typ: 1.7
+    max: 2.8
+    unit: mA
+    status: extraido
+    source:
+      page: 6
+      location: Supply current, TA = 25 °C
+per_part: {}
+parts:
+  LM741CP: {}

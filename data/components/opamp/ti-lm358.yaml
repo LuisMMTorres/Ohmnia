@@ -1,0 +1,161 @@
+# Fonte: Texas Instruments, LM358 (SNOSC16AB / Rev. AB).
+family: LM358
+category: opamp
+schema_version: '1.0'
+manufacturer: Texas Instruments
+package: PDIP-8 (P), dois ampops
+lifecycle: ativo
+notes:
+- Ampop duplo para alimentação simples (entrada e saída chegam ao trilho negativo).
+- Tabela 5.7 especificada com VS = 5 V; o ganho, com VS = 15 V. VS_max aqui é ± (32 V totais).
+datasheets:
+- id: ti-lm358
+  manufacturer: Texas Instruments
+  document_number: LM358 datasheet
+  revision: Rev. AB
+  url: https://www.ti.com/lit/ds/symlink/lm358.pdf
+  sha256: 8277dff7b89138c63b3582d37f378065a1dea3cae5ed1e2926ddc2779eb7e3a2
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS_max:
+    max: 16
+    unit: V
+    status: extraido
+    source:
+      page: 4
+      location: Absolute maximum ratings — supply voltage LM358 (±16 V ou 32 V)
+  VID_max:
+    max: 32
+    unit: V
+    status: extraido
+    source:
+      page: 4
+      location: Absolute maximum ratings — differential input voltage (±32 V)
+  Rth_ja:
+    max: 80.9
+    unit: K/W
+    status: extraido
+    source:
+      page: 5
+      location: Thermal information — RθJA, PDIP (P)
+  Vos:
+    typ: 3
+    max: 7
+    unit: mV
+    conditions: &id001
+      TA: 25 degC
+    status: extraido
+    source:
+      page: 10
+      location: VOS, VS = 5 V a 30 V, VCM = 0 V, VO = 1,4 V, LM358, TA = 25 °C
+  Ios:
+    typ: 2
+    max: 50
+    unit: nA
+    conditions: *id001
+    status: extraido
+    source:
+      page: 10
+      location: IOS, VO = 1,4 V, LM358, TA = 25 °C
+  Ib:
+    typ: 20
+    max: 250
+    unit: nA
+    conditions: *id001
+    status: extraido
+    source:
+      page: 10
+      location: IB, VO = 1,4 V, LM358, TA = 25 °C (−20 / −250 nA)
+  Avol:
+    min: 25
+    typ: 100
+    unit: V/mV
+    conditions:
+      RL: 2 kohm
+      VS: 15 V
+    status: extraido
+    source:
+      page: 10
+      location: AOL, VS = 15 V, VO = 1 V a 11 V, RL ≥ 2 kΩ
+  GBW:
+    typ: 0.7
+    unit: MHz
+    status: extraido
+    source:
+      page: 10
+      location: GBW gain bandwidth product
+  SR:
+    typ: 0.3
+    unit: V/us
+    status: extraido
+    source:
+      page: 10
+      location: SR slew rate, G = +1
+  VOH_drop:
+    typ: 2
+    max: 3
+    unit: V
+    conditions:
+      VS: 30 V
+      RL: 10 kohm
+    status: extraido
+    source:
+      page: 10
+      location: Voltage output swing from rail — positive rail, VS = 30 V, RL ≥ 10 kΩ
+  VOL_drop:
+    typ: 5
+    max: 20
+    unit: mV
+    conditions:
+      VS: 5 V
+      RL: 10 kohm
+    status: extraido
+    source:
+      page: 10
+      location: Voltage output swing from rail — negative rail, VS = 5 V, RL ≤ 10 kΩ
+  Isc:
+    typ: 40
+    max: 60
+    unit: mA
+    status: extraido
+    source:
+      page: 10
+      location: ISC short-circuit current, VS = 10 V, VO = VS/2
+  CMRR:
+    min: 65
+    typ: 80
+    unit: dB
+    status: extraido
+    source:
+      page: 10
+      location: CMRR, VS = 5 V a 30 V, VCM = 0 V
+  PSRR:
+    min: 65
+    typ: 100
+    unit: dB
+    status: extraido
+    source:
+      page: 10
+      location: PSRR, VS = 5 V a 30 V
+  IQ:
+    typ: 350
+    max: 600
+    unit: uA
+    status: extraido
+    source:
+      page: 10
+      location: IQ per amplifier, VO = 2,5 V, IO = 0 A
+  en:
+    typ: 40
+    unit: nV/Hz**0.5
+    conditions:
+      f: 1 kHz
+    status: extraido
+    source:
+      page: 10
+      location: en input voltage noise density, f = 1 kHz
+per_part: {}
+parts:
+  LM358P: {}

@@ -1,0 +1,165 @@
+# Fonte: Texas Instruments, TL07xx (SLOS080W), revisado em julho de 2025.
+family: TL071C
+category: opamp
+schema_version: '1.0'
+manufacturer: Texas Instruments
+package: PDIP-8 (P)
+lifecycle: ativo
+notes:
+- Ampop com entrada JFET, baixo ruído, um por encapsulamento.
+- VS_total_max é a alimentação total (V+ − V−); as demais tensões são ± em módulo.
+datasheets:
+- id: ti-tl071
+  manufacturer: Texas Instruments
+  document_number: SLOS080W
+  revision: Rev. W, July 2025
+  url: https://www.ti.com/lit/ds/symlink/tl071.pdf
+  sha256: d6e672f79ba4941d864de72e5d93983e5fd3dbe50f3bcbaac3d83d5007333689
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS_total_max:
+    max: 42
+    unit: V
+    status: extraido
+    source:
+      page: 10
+      location: Absolute maximum ratings — supply voltage VS = (V+) − (V−), all other devices
+  Tj_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 10
+      location: Absolute maximum ratings — junction temperature
+  Tstg_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 10
+      location: Absolute maximum ratings — storage temperature
+  Rth_ja:
+    max: 85
+    unit: K/W
+    status: extraido
+    source:
+      page: 11
+      location: Thermal information single channel — RθJA, PDIP (P)
+  Vos:
+    typ: 3
+    max: 10
+    unit: mV
+    conditions: &id001
+      TA: 25 degC
+    status: extraido
+    source:
+      page: 15
+      location: VOS, VO = 0 V, RS = 50 Ω, TL07xC, TA = 25 °C
+  Ios:
+    typ: 5
+    max: 100
+    unit: pA
+    conditions: *id001
+    status: extraido
+    source:
+      page: 15
+      location: IOS, VO = 0 V, TL07xC, TA = 25 °C
+  Ib:
+    typ: 65
+    max: 200
+    unit: pA
+    conditions: *id001
+    status: extraido
+    source:
+      page: 15
+      location: IB, VO = 0 V, TL07xC, TA = 25 °C
+  Rin:
+    typ: 1
+    unit: Tohm
+    status: extraido
+    source:
+      page: 15
+      location: RID common-mode input resistance (1 TΩ)
+  VICR:
+    min: 11
+    unit: V
+    status: extraido
+    source:
+      page: 15
+      location: VCM common-mode voltage (±11 V mín.; −12 a 15 V típico)
+  Avol:
+    min: 25
+    typ: 200
+    unit: V/mV
+    conditions:
+      RL: 2 kohm
+      VS: 15 V
+    note: a condição de carga vem da linha de VOM (RL ≥ 2 kΩ); confira
+    status: extraido
+    source:
+      page: 15
+      location: AOL open-loop voltage gain, VO = 0 V, TL07xC, TA = 25 °C
+  GBW:
+    typ: 5.25
+    unit: MHz
+    status: extraido
+    source:
+      page: 15
+      location: GBW gain-bandwidth product, all other devices
+  SR:
+    min: 8
+    typ: 20
+    unit: V/us
+    status: extraido
+    source:
+      page: 16
+      location: SR slew rate, VI = 10 V, CL = 100 pF, RL = 2 kΩ, TL07xC
+  Vom:
+    min: 12
+    typ: 13.5
+    unit: V
+    conditions:
+      VS: 15 V
+      RL: 10 kohm
+    status: extraido
+    source:
+      page: 15
+      location: VOM maximum peak output voltage swing, RL = 10 kΩ (±12 / ±13,5 V)
+  CMRR:
+    min: 70
+    typ: 100
+    unit: dB
+    status: extraido
+    source:
+      page: 15
+      location: CMRR, VIC = VICR(min), VO = 0 V, RS = 50 Ω, TL07xC
+  PSRR:
+    min: 70
+    typ: 100
+    unit: dB
+    status: extraido
+    source:
+      page: 15
+      location: PSRR, VS = ±9 V a ±18 V, TL07xC
+  IQ:
+    typ: 1.4
+    max: 2.5
+    unit: mA
+    status: extraido
+    source:
+      page: 16
+      location: IQ quiescent current per amplifier, VO = 0 V, no load
+  en:
+    typ: 37
+    unit: nV/Hz**0.5
+    conditions:
+      f: 1 kHz
+    status: extraido
+    source:
+      page: 16
+      location: eN input voltage noise density, all other devices, f = 1 kHz
+per_part: {}
+parts:
+  TL071CP: {}

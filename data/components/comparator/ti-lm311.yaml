@@ -1,0 +1,134 @@
+# Fonte: Texas Instruments, LM111/LM211/LM311 (SLCS007K).
+family: LM311
+category: comparator
+schema_version: '1.0'
+manufacturer: Texas Instruments
+package: PDIP-8 (P)
+lifecycle: ativo
+notes:
+- Comparador com saída em coletor aberto (emissor da saída ao terra ou a VCC−); precisa de resistor de pull-up.
+datasheets:
+- id: ti-lm311
+  manufacturer: Texas Instruments
+  document_number: SLCS007K
+  revision: Rev. K
+  url: https://www.ti.com/lit/ds/symlink/lm311.pdf
+  sha256: 1877bb45737cb7e83537fb4e958b2c897cdd0376020804ed6e3f9deed0af0b49
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS_max:
+    max: 36
+    unit: V
+    status: extraido
+    source:
+      page: 4
+      location: Absolute maximum ratings — VCC+ − VCC−
+  VID_max:
+    max: 30
+    unit: V
+    status: extraido
+    source:
+      page: 4
+      location: Absolute maximum ratings — differential input voltage (±30 V)
+  VI_max:
+    max: 15
+    unit: V
+    status: extraido
+    source:
+      page: 4
+      location: Absolute maximum ratings — input voltage, either input (±15 V)
+  VOUT_max:
+    max: 40
+    unit: V
+    status: extraido
+    source:
+      page: 4
+      location: Absolute maximum ratings — voltage from collector output to VCC−, LM311
+  Tj_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 4
+      location: Absolute maximum ratings — operating virtual-junction temperature
+  Tstg_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 4
+      location: Absolute maximum ratings — storage temperature
+  Vos:
+    typ: 2
+    max: 7.5
+    unit: mV
+    conditions: &id001
+      TA: 25 degC
+    status: extraido
+    source:
+      page: 6
+      location: VIO input offset voltage, LM311, 25 °C
+  Ios:
+    typ: 6
+    max: 50
+    unit: nA
+    conditions: *id001
+    status: extraido
+    source:
+      page: 6
+      location: IIO input offset current, LM311, 25 °C
+  Ib:
+    typ: 100
+    max: 250
+    unit: nA
+    conditions: *id001
+    status: extraido
+    source:
+      page: 6
+      location: IIB input bias current, LM311, 25 °C
+  Avol:
+    min: 40
+    typ: 200
+    unit: V/mV
+    status: extraido
+    source:
+      page: 6
+      location: AVD, 5 V ≤ VO ≤ 35 V, RL = 1 kΩ, LM311
+  VOL:
+    typ: 0.75
+    max: 1.5
+    unit: V
+    conditions:
+      IOL: 50 mA
+    status: extraido
+    source:
+      page: 6
+      location: VOL, IOL = 50 mA, VID = −10 mV, LM311, 25 °C
+  IOH_leak:
+    typ: 0.2
+    max: 50
+    unit: nA
+    status: extraido
+    source:
+      page: 6
+      location: IOH output leakage, VID = 5 mV, VOH = 35 V, LM311, 25 °C
+  IQ:
+    typ: 5.1
+    max: 7.5
+    unit: mA
+    status: extraido
+    source:
+      page: 6
+      location: ICC+ supply current from VCC+, output low, LM311
+  t_resp:
+    typ: 115
+    unit: ns
+    status: extraido
+    source:
+      page: 6
+      location: Response time, low-to-high-level output
+per_part: {}
+parts:
+  LM311P: {}

@@ -1,0 +1,23 @@
+category: timer
+schema_version: "1.0"
+description: Temporizador do tipo 555 (bipolar)
+required: [VCC_max, V_thres, V_trig, I_thres]
+optional: []
+parameters:
+  VCC_max:   {unit: V, kind: max_rating, description: Alimentação máxima}
+  VCC_min:   {unit: V, kind: characteristic, description: Alimentação mínima recomendada}
+  IO_max:    {unit: A, kind: max_rating, description: Corrente de saída máxima (em módulo)}
+  Tj_max:    {unit: degC, kind: max_rating, description: Temperatura máxima de junção}
+  Tstg_max:  {unit: degC, kind: max_rating, description: Temperatura máxima de armazenamento}
+  Rth_ja:    {unit: K/W, kind: thermal, description: Resistência térmica junção-ambiente}
+  V_thres:   {unit: V, kind: characteristic, description: Nível de THRES (limiar superior), conditions_required: [VCC]}
+  V_trig:    {unit: V, kind: characteristic, description: Nível de TRIG (limiar inferior), conditions_required: [VCC]}
+  I_thres:   {unit: A, kind: characteristic, description: Corrente de THRES}
+  I_trig:    {unit: A, kind: characteristic, description: Corrente de TRIG}
+  V_disch:   {unit: V, kind: characteristic, description: Tensão do transistor de descarga ligado, conditions_required: [VCC, IO]}
+  I_disch_off: {unit: A, kind: characteristic, description: Fuga do transistor de descarga desligado}
+  VOL:       {unit: V, kind: characteristic, description: Tensão de saída em nível baixo, conditions_required: [VCC, IO]}
+  VOH:       {unit: V, kind: characteristic, description: Tensão de saída em nível alto, conditions_required: [VCC, IO]}
+  ICC:       {unit: A, kind: characteristic, description: Corrente de alimentação sem carga, conditions_required: [VCC]}
+  tc_mono:   {unit: ppm/K, kind: characteristic, description: Coeficiente de temperatura do intervalo (monoestável)}
+  tc_astable: {unit: ppm/K, kind: characteristic, description: Coeficiente de temperatura do intervalo (astável)}

@@ -1,0 +1,32 @@
+category: opamp
+schema_version: "1.0"
+description: Amplificador operacional (por unidade do encapsulamento)
+required: [Vos, Ib, Avol, SR]
+optional: [VS_max, VS_total_max, GBW, tr, VOH_drop, VOL_drop]
+parameters:
+  VS_max:    {unit: V, kind: max_rating, description: Alimentação máxima simétrica (± em módulo)}
+  VS_total_max: {unit: V, kind: max_rating, description: Alimentação total máxima (V+ − V−), quando o datasheet a dá assim}
+  VS_min:    {unit: V, kind: characteristic, description: Alimentação mínima de operação (± em módulo, ou total; ver nota)}
+  VID_max:   {unit: V, kind: max_rating, description: Tensão diferencial de entrada máxima (em módulo)}
+  VI_max:    {unit: V, kind: max_rating, description: Tensão de entrada máxima (em módulo)}
+  Pd_max:    {unit: W, kind: max_rating, description: Dissipação máxima do encapsulamento}
+  Tj_max:    {unit: degC, kind: max_rating, description: Temperatura máxima de junção}
+  Tstg_max:  {unit: degC, kind: max_rating, description: Temperatura máxima de armazenamento}
+  Rth_ja:    {unit: K/W, kind: thermal, description: Resistência térmica junção-ambiente}
+  Vos:       {unit: V, kind: characteristic, description: Tensão de offset de entrada (em módulo), conditions_required: [TA]}
+  Ios:       {unit: A, kind: characteristic, description: Corrente de offset de entrada (em módulo), conditions_required: [TA]}
+  Ib:        {unit: A, kind: characteristic, description: Corrente de polarização de entrada (em módulo), conditions_required: [TA]}
+  Rin:       {unit: ohm, kind: characteristic, description: Resistência de entrada diferencial}
+  VICR:      {unit: V, kind: characteristic, description: Faixa de modo comum de entrada (em módulo, relativa ao centro da alimentação simétrica; ver nota)}
+  Avol:      {unit: V/mV, kind: characteristic, description: Ganho de tensão em malha aberta (grandes sinais), conditions_required: [RL]}
+  GBW:       {unit: Hz, kind: characteristic, description: Produto ganho-banda (ou frequência de ganho unitário)}
+  SR:        {unit: V/us, kind: characteristic, description: Taxa de inclinação (slew rate)}
+  Vom:       {unit: V, kind: characteristic, description: Excursão máxima de saída (em módulo, para a alimentação e a carga indicadas), conditions_required: [VS, RL]}
+  Isc:       {unit: A, kind: characteristic, description: Corrente de curto-circuito de saída (em módulo)}
+  CMRR:      {unit: dB, kind: characteristic, description: Rejeição de modo comum (20 log)}
+  PSRR:      {unit: dB, kind: characteristic, description: Rejeição da alimentação (20 log)}
+  IQ:        {unit: A, kind: characteristic, description: Corrente de alimentação por amplificador}
+  tr:        {unit: s, kind: characteristic, description: Tempo de subida com ganho unitário (pequenos sinais)}
+  en:        {unit: V/Hz**0.5, kind: characteristic, description: Densidade espectral de ruído de tensão na entrada, conditions_required: [f]}
+  VOH_drop:  {unit: V, kind: characteristic, description: Distância da saída em nível alto até o trilho positivo, conditions_required: [VS, RL]}
+  VOL_drop:  {unit: V, kind: characteristic, description: Distância da saída em nível baixo até o trilho negativo, conditions_required: [VS, RL]}

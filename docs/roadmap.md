@@ -75,7 +75,7 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 - 🔶 `GT-RET-P1..P7`: casos propostos (D6), aguardando conferência do usuário
 - ✅ [validacao/retificadores.md](validacao/retificadores.md)
 
-## Fase 4 — Fontes reguladas e amplificadores 👀
+## Fase 4 — Fontes reguladas e amplificadores ✅ (aprovada em 2026-11-14)
 
 - ✅ `DM-ZEN`, `DM-LIN`, `DM-BIAS`, `DM-SSA`, `DM-DIFF`, `DM-PA`, `DM-PAD` (classe D), `DM-CHAVE`, `DM-FORMA`
 - ✅ Acréscimo: LDO no `DM-LIN`, JFET no `DM-BIAS` e `DM-SSA`, Darlington no `DM-PA` e `DM-CHAVE`
@@ -86,7 +86,7 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 - 🔶 `GT-P8..P19`: casos propostos, aguardando conferência do usuário
 - ✅ [validacao/fontes-amplificadores.md](validacao/fontes-amplificadores.md), [validacao/catalogo-reguladores.md](validacao/catalogo-reguladores.md), [validacao/catalogo-jfet.md](validacao/catalogo-jfet.md)
 
-## Fase 5 — Ampops, filtros e instrumentação ⏳
+## Fase 5 — Ampops, filtros e instrumentação 🚧
 
 - ⏳ `DM-OPA`, `DM-OPNL`, `BV-AMPOP`, `DM-FIL`, `DM-OSC`, `DM-INST`, `BD-AMPOP`
 
