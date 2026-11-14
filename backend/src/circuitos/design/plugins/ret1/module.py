@@ -14,7 +14,7 @@ from scipy.optimize import brentq
 from circuitos.core.calc import BibRef, CalcLog, record
 from circuitos.core.eseries import snap
 from circuitos.core.units import Q_, QuantityModel
-from circuitos.design.base import Circuit, DesignWarning, Role, SimCheck, Stress
+from circuitos.design.base import Circuit, DesignWarning, Role, SimCheck, Stress, make_trace
 from circuitos.design.engine import Analysis, Device
 
 from . import model as m
@@ -651,6 +651,14 @@ class Ret1Module:
                 "eff": Q_(p_out / p_in * 100 if p_in > 0 else 0.0, "percent"),
             }
         )
+        traces = {
+            "Tensão no secundário": make_trace("V", waves.vs),
+            "Tensão na carga": make_trace("V", waves.vo),
+            "Corrente em D1": make_trace("A", waves.i_diode),
+            "Corrente de entrada (referida ao secundário)": make_trace(
+                "A", waves.i_sec if topo == "meia_onda" else waves.i_in
+            ),
+        }
         return Analysis(
             log=log,
             stresses=stresses,
@@ -658,6 +666,7 @@ class Ret1Module:
             losses=losses,
             warnings=warnings,
             convergence_keys=("Vm", "Vo"),
+            traces=traces,
         )
 
     # ------------------------------------------------------------------ circuit

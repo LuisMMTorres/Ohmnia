@@ -1,1 +1,1 @@
-"""Reservado para fases posteriores (ver docs/roadmap.md)."""
+"""Design outputs: schematic by template (SVG), bill of materials (CSV), report and lab guide."""

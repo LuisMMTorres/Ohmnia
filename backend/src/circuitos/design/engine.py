@@ -36,6 +36,7 @@ from .base import (
     Role,
     Stress,
     ThermalResult,
+    Trace,
 )
 
 
@@ -59,13 +60,21 @@ class Analysis:
     losses: dict[str, pint.Quantity]  # designator → power of ONE device of the role
     warnings: list[DesignWarning] = field(default_factory=list)
     convergence_keys: Sequence[str] = ()
+    traces: dict[str, Trace] = field(default_factory=dict)
 
 
 class TopologyModule(Protocol):
-    id: str
-    family: str
-    title: str
-    spec_schema: type[BaseModel]
+    @property
+    def id(self) -> str: ...
+
+    @property
+    def family(self) -> str: ...
+
+    @property
+    def title(self) -> str: ...
+
+    @property
+    def spec_schema(self) -> type[BaseModel]: ...
 
     def roles(self, spec: BaseModel) -> list[Role]: ...
 
@@ -281,6 +290,7 @@ def run(
             iterations=iteration,
             converged=True,
             warnings=warnings + analysis.warnings,
+            traces=analysis.traces,
         ),
         devices,
     )

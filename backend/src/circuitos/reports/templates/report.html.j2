@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>{{ title }}</title>
+<style>{{ katex.css|safe }}</style>
+<script>{{ katex.js|safe }}</script>
+<script>{{ katex.auto_render|safe }}</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  renderMathInElement(document.body, {delimiters: [
+    {left: "\\(", right: "\\)", display: false},
+    {left: "\\[", right: "\\]", display: true}]});
+});
+</script>
+<style>
+ body{font:14px/1.45 system-ui,sans-serif;color:#1f2937;max-width:960px;margin:24px auto;padding:0 16px}
+ h1{font-size:22px;margin-bottom:2px} h2{font-size:17px;border-bottom:1px solid #d1d5db;padding-bottom:4px;margin-top:28px}
+ h3{font-size:14px;margin:14px 0 4px}
+ table{border-collapse:collapse;width:100%;margin:8px 0} th,td{border:1px solid #e5e7eb;padding:4px 6px;text-align:left;vertical-align:top}
+ th{background:#f3f4f6} td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+ .ok{color:#15803d}.atencao{color:#b45309}.violado{color:#b91c1c;font-weight:600}
+ .warn{background:#fffbeb;border-left:3px solid #d97706;padding:6px 10px;margin:6px 0}
+ .step{border:1px solid #e5e7eb;border-radius:6px;padding:8px 10px;margin:8px 0;break-inside:avoid}
+ .muted{color:#6b7280;font-size:12px} svg{max-width:100%;height:auto}
+ @media print{a{color:inherit}}
+</style>
+</head>
+<body>
+<h1>{{ title }}</h1>
+<div class="muted">{{ module_id }} · gerado em {{ generated }} · critério de derating "{{ policy }}" (critério de projeto, não normativo)</div>
+
+<h2>1. Especificação</h2>
+<table>{% for k, v in spec_rows %}<tr><th>{{ k }}</th><td>{{ v }}</td></tr>{% endfor %}</table>
+
+<h2>2. Esquemático</h2>
+{{ schematic|safe }}
+
+<h2>3. Resultados principais</h2>
+<table><tr><th>Grandeza</th><th>Valor</th></tr>
+{% for label, value in summary_rows %}<tr><td>{{ label }}</td><td class="n">{{ value }}</td></tr>{% endfor %}
+</table>
+{% if warnings %}<h3>Avisos</h3>{% for w in warnings %}<div class="warn">{{ w.message }}</div>{% endfor %}{% endif %}
+
+<h2>4. Componentes e margens</h2>
+{% if selection %}<table><tr><th>Posição</th><th>Componente</th><th>Seleção</th></tr>
+{% for c in selection %}<tr><td>{{ c.designator }}</td><td>{{ c.part_number }} ({{ c.manufacturer }})</td><td>{{ "travado à mão" if c.locked else "automática" }}{{ "" if c.released else " · NÃO REVISADO" }}</td></tr>{% endfor %}
+</table>
+<table><tr><th>Posição</th><th>Parâmetro</th><th>Esforço</th><th>Valor nominal</th><th>Fator exigido</th><th>Margem</th><th>Situação</th></tr>
+{% for m in margins %}<tr><td>{{ m.designator }}</td><td>{{ m.parameter }}</td><td class="n">{{ fmt(m.stress) }}</td><td class="n">{{ fmt(m.rating) }}</td><td class="n">{{ "%.2f"|format(m.required_factor)|replace(".", ",") }}</td><td class="n">{{ "%.0f"|format(m.margin_pct) }} %</td><td class="{{ m.status }}">{{ status[m.status] }}</td></tr>{% endfor %}
+</table>
+{% else %}<p class="muted">Nenhum componente real foi escolhido: não há candidato liberado no catálogo que atenda às margens (veja os avisos). O cálculo seguiu com dispositivos ideais.</p>{% endif %}
+{% if thermal %}<h3>Temperatura de junção</h3>
+<table><tr><th>Posição</th><th>Perda</th><th>Tj</th><th>Tj máx.</th><th>Caminho</th><th>Rθsa exigido</th><th>Situação</th></tr>
+{% for t in thermal %}<tr><td>{{ t.designator }}</td><td class="n">{{ fmt(t.power) }}</td><td class="n">{{ fmt(t.Tj) }}</td><td class="n">{{ fmt(t.Tj_max) }}</td><td>{{ t.path }}</td><td class="n">{{ fmt(t.required_Rsa) if t.required_Rsa else "—" }}</td><td class="{{ t.status }}">{{ status[t.status] }}</td></tr>{% endfor %}
+</table>{% endif %}
+
+<h2>5. Lista de materiais</h2>
+<table><tr><th>Designador</th><th>Qtd</th><th>Descrição</th><th>Código</th><th>Fabricante</th><th>Valor</th><th>Observação</th></tr>
+{% for r in bom %}<tr><td>{{ r.designator }}</td><td class="n">{{ r.quantity }}</td><td>{{ r.description }}</td><td>{{ r.part_number }}</td><td>{{ r.manufacturer }}</td><td>{{ r.value }}</td><td>{{ r.note }}</td></tr>{% endfor %}
+</table>
+
+{% if sim %}<h2>6. Conferência com a simulação (ngspice)</h2>
+<table><tr><th>Grandeza</th><th>Analítico</th><th>Simulado</th><th>Erro</th><th>Tolerância</th><th></th></tr>
+{% for c in sim %}<tr><td>{{ c.quantity }}</td><td class="n">{{ fmt(c.analytic) }}</td><td class="n">{{ fmt(c.simulated) }}</td><td class="n">{{ "%.2f"|format(c.error_pct)|replace(".", ",") }} %</td><td class="n">{{ "%.1f"|format(c.tolerance_pct)|replace(".", ",") }} %</td><td class="{{ 'ok' if c.ok else 'violado' }}">{{ "confere" if c.ok else "DIVERGE" }}</td></tr>{% endfor %}
+</table>{% endif %}
+
+<h2>{{ 7 if sim else 6 }}. Memória de cálculo</h2>
+{% for s in steps %}<div class="step"><b>{{ loop.index }}. {{ s.description }}</b>
+<div>\[ {{ s.latex }} \]</div>
+<div>Resultado: <b>{{ fmt(s.output) }}</b>{% if s.inputs %} · entradas: {% for k, v in s.inputs.items() %}\({{ k }}\) = {{ fmt(v) }}{{ "; " if not loop.last }}{% endfor %}{% endif %}</div>
+{% if s.assumptions %}<div class="muted">Premissas: {{ s.assumptions|join("; ") }}</div>{% endif %}
+{% if s.reference %}<div class="muted">Referência: {{ s.reference.book }}{% if s.reference.edition %}, {{ s.reference.edition }} ed.{% endif %}{% if s.reference.chapter %}, cap. {{ s.reference.chapter }}{% endif %}{% if s.reference.equation %}, eq. {{ s.reference.equation }}{% endif %}</div>{% endif %}
+</div>{% endfor %}
+
+<h2>{{ 8 if sim else 7 }}. Roteiro de prática</h2>
+<h3>Objetivo</h3>
+<p>Montar o {{ title_lower }}, medir as grandezas da tabela abaixo e comparar com o cálculo e a simulação, discutindo as diferenças (queda real dos dispositivos, resistência do transformador, tolerância dos componentes).</p>
+<h3>Segurança</h3><ul>{% for s in safety %}<li>{{ s }}</li>{% endfor %}</ul>
+<h3>Material</h3><p>Componentes da lista de materiais (seção 5), osciloscópio com ponteira diferencial, multímetro true RMS, alicate amperímetro{% if module_id != "DM-RET1" %}, circuito de disparo dos tiristores sincronizado com a rede{% endif %}.</p>
+<h3>Procedimento</h3>
+<ol>
+ <li>Monte o circuito do esquemático com a alimentação desligada; confira a polaridade dos {{ "tiristores e diodos" if module_id != "DM-RET1" else "diodos" }}{% if "C" in summary_keys %} e do capacitor eletrolítico{% endif %}.</li>
+ <li>Energize pelo transformador isolador e aguarde o regime (alguns ciclos{% if "C" in summary_keys %}; a carga inicial do capacitor provoca um pico de corrente{% endif %}).</li>
+ {% if module_id != "DM-RET1" %}<li>Ajuste o ângulo de disparo para α = {{ alpha }} e confira no osciloscópio o instante do pulso em relação à passagem por zero.</li>{% endif %}
+ <li>Meça as grandezas da tabela e registre as formas de onda da tensão na carga e da corrente de entrada.</li>
+ <li>Calcule o erro de cada medida em relação ao valor calculado e justifique.</li>
+</ol>
+<table><tr><th>Grandeza</th><th>Instrumento</th><th>Calculado</th><th>Simulado</th><th>Medido</th></tr>
+{% for item in lab %}<tr><td>{{ item.quantity }}</td><td>{{ item.instrument }}</td><td class="n">{{ item.calc }}</td><td class="n">{{ item.sim }}</td><td></td></tr>{% endfor %}
+</table>
+<h3>Questões</h3>
+<ol>{% for q in questions %}<li>{{ q }}</li>{% endfor %}</ol>
+</body>
+</html>

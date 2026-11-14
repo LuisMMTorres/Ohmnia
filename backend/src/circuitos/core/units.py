@@ -192,6 +192,12 @@ _PREFIXABLE = [
 
 def _base_unit_for(quantity: pint.Quantity) -> tuple[str, str] | None:
     unit_name = str(quantity.units)
+    # Units that share a dimension with a prefixable one but must keep their own name:
+    # apparent power (V·A, not W) and angular frequency (rad/s, not Hz).
+    if sorted(unit_name.split(" * ")) == ["ampere", "volt"]:
+        return "V*A", "VA"
+    if unit_name.startswith("radian"):
+        return unit_name, f"{quantity.units:~P}"
     compatible = [
         (name, sym)
         for name, sym in _PREFIXABLE

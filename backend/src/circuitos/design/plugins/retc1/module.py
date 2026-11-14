@@ -12,7 +12,7 @@ from scipy.optimize import brentq
 
 from circuitos.core.calc import BibRef, CalcLog, record
 from circuitos.core.units import Q_, QuantityModel
-from circuitos.design.base import Circuit, DesignWarning, Role, SimCheck, Stress
+from circuitos.design.base import Circuit, DesignWarning, Role, SimCheck, Stress, make_trace
 from circuitos.design.engine import Analysis, Device
 
 from . import model as m
@@ -530,6 +530,12 @@ class Retc1Module:
             summary["alpha_max"] = Q_(math.degrees(a_high_v), "deg")
         if a_low_v is not None:
             summary["alpha_min"] = Q_(math.degrees(a_low_v), "deg")
+        traces = {
+            "Tensão no secundário": make_trace("V", wv.vs),
+            "Tensão na carga": make_trace("V", wv.vo),
+            "Corrente na carga": make_trace("A", wv.io),
+            "Corrente no secundário": make_trace("A", wv.i_src),
+        }
         return Analysis(
             log=log,
             stresses=stresses,
@@ -537,6 +543,7 @@ class Retc1Module:
             losses=losses,
             warnings=warnings,
             convergence_keys=("Vm", "Vo"),
+            traces=traces,
         )
 
     @staticmethod

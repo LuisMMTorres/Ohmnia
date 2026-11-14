@@ -11,7 +11,7 @@ from pydantic import BaseModel, Field, model_validator
 
 from circuitos.core.calc import BibRef, CalcLog, record
 from circuitos.core.units import Q_, QuantityModel
-from circuitos.design.base import Circuit, DesignWarning, Role, SimCheck, Stress
+from circuitos.design.base import Circuit, DesignWarning, Role, SimCheck, Stress, make_trace
 from circuitos.design.engine import Analysis, Device
 from circuitos.design.plugins.retc1.module import diode_model, scr_model
 
@@ -422,6 +422,12 @@ class Ret3Module:
             losses=losses,
             warnings=warnings,
             convergence_keys=("Vll_m", "Vo"),
+            traces={
+                "Tensão na saída": make_trace("V", wv.vo),
+                "Corrente na carga": make_trace("A", np.full_like(wv.vo, Io)),
+                "Corrente de linha (fase a)": make_trace("A", wv.bridges[0].i_line[0]),
+                "Tensão de fase a (fonte)": make_trace("V", wv.e[0]),
+            },
         )
 
     # ------------------------------------------------------------------ circuit

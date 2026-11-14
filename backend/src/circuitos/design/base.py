@@ -13,11 +13,13 @@ Every number of the result comes from a :class:`CalcStep` of the calculation log
 
 from __future__ import annotations
 
-from collections.abc import Callable, Mapping
+from collections.abc import Callable, Mapping, Sequence
 from typing import Literal, Protocol
 from uuid import UUID
 
+import numpy as np
 import pint
+from numpy.typing import NDArray
 from pydantic import BaseModel, Field
 
 from circuitos.core.calc import CalcStep
@@ -97,6 +99,22 @@ class DesignWarning(BaseModel):
     message: str
 
 
+class Trace(BaseModel):
+    """One analytic waveform over one source period (uniform samples from θ = 0)."""
+
+    unit: str
+    values: list[float]
+
+
+TRACE_POINTS = 720
+
+
+def make_trace(unit: str, values: Sequence[float] | NDArray[np.float64]) -> Trace:
+    arr = np.asarray(values, dtype=np.float64)
+    step = max(arr.size // TRACE_POINTS, 1)
+    return Trace(unit=unit, values=[float(v) for v in arr[::step]])
+
+
 class DesignResult(BaseModel):
     module_id: str
     steps: list[CalcStep]
@@ -111,6 +129,7 @@ class DesignResult(BaseModel):
     converged: bool
     warnings: list[DesignWarning]
     sim_check: list[SimComparison] | None = None
+    traces: dict[str, Trace] = Field(default_factory=dict)  # label = Circuit.probes label
 
 
 Metric = Literal["avg", "rms", "pp", "max", "pf", "thd"]

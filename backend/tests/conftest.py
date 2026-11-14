@@ -30,7 +30,8 @@ def reviewed_catalogue():
 
     from circuitos.components.repository import ComponentRepository
 
-    repo = ComponentRepository()
+    # a file, not :memory:, so the API test client (another thread) sees the same database
+    repo = ComponentRepository(f"sqlite:///{tempfile.mkdtemp(prefix='circuitos-rev-')}/c.db")
     repo.import_directory(Path(__file__).resolve().parents[2] / "data" / "components")
     for record in repo.search():
         for key, param in record.parameters.items():
