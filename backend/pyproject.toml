@@ -62,6 +62,7 @@ omit = ["src/circuitos/api/*"]
 
 [tool.importlinter]
 root_package = "circuitos"
+include_external_packages = true
 
 [[tool.importlinter.contracts]]
 name = "Domain core must not depend on the web layer"
