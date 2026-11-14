@@ -93,20 +93,23 @@ export function visible(moduleId: string, key: string, spec: Record<string, unkn
     return true;
   }
   if (moduleId === "DM-BIAS") {
-    const mos = spec.config === "mos_divisor";
-    if (key === "R_gate") return mos;
-    if (key === "divider_k") return spec.config === "divisor";
-    if (key === "VBE" || key === "beta_ideal") return !mos;
-    if (key === "kE") return spec.config !== "fixa";
+    const cfg = spec.config as string | undefined;
+    const fet = cfg === "mos_divisor" || cfg === "jfet_auto" || cfg === "jfet_divisor";
+    if (key === "R_gate") return fet;
+    if (key === "divider_k") return cfg === "divisor" || !cfg;
+    if (key === "VBE" || key === "beta_ideal") return !fet;
+    if (key === "kE") return cfg !== "fixa" && cfg !== "jfet_auto";
     return true;
   }
   if (moduleId === "DM-SSA") {
-    if (key === "Av") return spec.config === "EC" || spec.config === "FC" || !spec.config;
-    if (key === "VBE" || key === "beta_ideal") return spec.config !== "FC";
+    const c = spec.config as string | undefined;
+    if (key === "Av") return c === "EC" || c === "FC" || c === "FCJ" || !c;
+    if (key === "VBE" || key === "beta_ideal") return c !== "FC" && c !== "FCJ";
     return true;
   }
   if (moduleId === "DM-PA") {
     if (key === "IQ") return spec.cls === "AB" || !spec.cls;
+    if (key === "darlington") return spec.cls !== "A";
     return true;
   }
   if (moduleId === "DM-CHAVE") {

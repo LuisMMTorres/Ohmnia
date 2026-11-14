@@ -92,6 +92,15 @@ describe("visible (Phase 4)", () => {
     expect(visible("DM-FORMA", "C", { kind: "grampeador" })).toBe(true);
     expect(visible("DM-BIAS", "R_gate", { config: "divisor" })).toBe(false);
     expect(visible("DM-CHAVE", "overdrive", { device: "mosfet" })).toBe(false);
+    expect(visible("DM-CHAVE", "overdrive", { device: "darlington" })).toBe(true);
+    expect(visible("DM-BIAS", "R_gate", { config: "jfet_auto" })).toBe(true);
+    expect(visible("DM-BIAS", "kE", { config: "jfet_auto" })).toBe(false);
+    expect(visible("DM-BIAS", "kE", { config: "jfet_divisor" })).toBe(true);
+    expect(visible("DM-BIAS", "beta_ideal", { config: "jfet_divisor" })).toBe(false);
+    expect(visible("DM-SSA", "VBE", { config: "FCJ" })).toBe(false);
+    expect(visible("DM-SSA", "Av", { config: "FCJ" })).toBe(true);
+    expect(visible("DM-PA", "darlington", { cls: "A" })).toBe(false);
+    expect(visible("DM-PA", "darlington", { cls: "B" })).toBe(true);
     expect(visible("DM-ZEN", "beta_ideal", { variant: "transistor" })).toBe(true);
   });
 });
