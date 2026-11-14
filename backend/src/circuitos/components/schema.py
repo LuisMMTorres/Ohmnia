@@ -71,7 +71,10 @@ def validate_against_schema(record: ComponentRecord) -> list[str]:
         if spec is None:
             problems.append(f"{key}: parâmetro não previsto na categoria {record.category}")
             continue
-        if Q_(1, parse_unit(param.unit)).dimensionality != Q_(1, parse_unit(spec.unit)).dimensionality:
+        if (
+            Q_(1, parse_unit(param.unit)).dimensionality
+            != Q_(1, parse_unit(spec.unit)).dimensionality
+        ):
             problems.append(f"{key}: unidade {param.unit} incompatível com {spec.unit}")
         if param.has_value:
             for cond in spec.conditions_required:

@@ -42,11 +42,15 @@ def full_record(**overrides):
         "IF(AV)": p("IF(AV)", "A", max=1, conditions={"T_ref": {"value": 75, "unit": "degC"}}),
         "IFSM": p("IFSM", "A", max=10, conditions={"t_pulse": {"value": 8.3, "unit": "ms"}}),
         "VF": p(
-            "VF", "V", max=1,
+            "VF",
+            "V",
+            max=1,
             conditions={"IF": {"value": 1, "unit": "A"}, "Tj": {"value": 25, "unit": "degC"}},
         ),
         "IR": p(
-            "IR", "uA", max=5,
+            "IR",
+            "uA",
+            max=5,
             conditions={"VR": {"value": 100, "unit": "V"}, "Tj": {"value": 25, "unit": "degC"}},
         ),
         "Tj_max": p("Tj_max", "degC", max=150),
@@ -84,8 +88,9 @@ def test_full_record_releases():
 
 def test_reviewed_parameter_requires_page():
     with pytest.raises(ValidationError, match="página"):
-        Parameter(symbol="VRRM", unit="V", max=100, status="revisado",
-                  source={"datasheet_id": "ds1"})
+        Parameter(
+            symbol="VRRM", unit="V", max=100, status="revisado", source={"datasheet_id": "ds1"}
+        )
 
 
 def test_extracted_parameter_requires_source():
@@ -117,8 +122,14 @@ def test_source_must_reference_known_datasheet():
     bad["source"]["datasheet_id"] = "x"
     with pytest.raises(ValidationError):
         ComponentRecord.model_validate(
-            {"category": "diode.rectifier", "schema_version": "1.0", "manufacturer": "F",
-             "part_number": "P", "parameters": {"VRRM": bad}, "datasheets": [DS]}
+            {
+                "category": "diode.rectifier",
+                "schema_version": "1.0",
+                "manufacturer": "F",
+                "part_number": "P",
+                "parameters": {"VRRM": bad},
+                "datasheets": [DS],
+            }
         )
 
 

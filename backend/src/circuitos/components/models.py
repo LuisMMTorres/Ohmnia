@@ -114,8 +114,7 @@ class ComponentRecord(BaseModel):
                 raise ValueError(f"Chave {key!r} difere do símbolo {param.symbol!r}")
             if param.source is not None and param.source.datasheet_id not in known:
                 raise ValueError(
-                    f"{key}: fonte aponta para datasheet inexistente "
-                    f"{param.source.datasheet_id!r}"
+                    f"{key}: fonte aponta para datasheet inexistente {param.source.datasheet_id!r}"
                 )
         return self
 

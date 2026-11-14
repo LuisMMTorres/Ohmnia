@@ -9,15 +9,12 @@ from __future__ import annotations
 
 from collections.abc import Iterable, Iterator, Mapping
 from dataclasses import dataclass
-from typing import Generic, TypeVar
 
 import pint
 from pydantic import BaseModel, ConfigDict, Field
 
 from circuitos.core.errors import UnitError
 from circuitos.core.units import QuantityModel
-
-T = TypeVar("T")
 
 
 class BibRef(BaseModel):
@@ -49,7 +46,7 @@ class CalcStep(BaseModel):
 
 
 @dataclass(frozen=True)
-class Calculated(Generic[T]):
+class Calculated[T]:
     value: T
     step: CalcStep
 
@@ -89,7 +86,7 @@ class CalcLog:
     def __init__(self) -> None:
         self._steps: dict[str, CalcStep] = {}
 
-    def add(self, calculated: Calculated[T]) -> T:
+    def add[T](self, calculated: Calculated[T]) -> T:
         if calculated.step.id in self._steps:
             raise ValueError(f"Passo de cálculo duplicado: {calculated.step.id}")
         self._steps[calculated.step.id] = calculated.step

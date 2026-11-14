@@ -36,7 +36,12 @@ def test_parse_unit_dimensionless():
 
 @pytest.mark.parametrize(
     ("text", "unit", "value"),
-    [("4,7 kΩ", "ohm", 4700), ("2.2uF", "F", 2.2e-6), ("60 Hz", "Hz", 60), ("25 degC", "K", 298.15)],
+    [
+        ("4,7 kΩ", "ohm", 4700),
+        ("2.2uF", "F", 2.2e-6),
+        ("60 Hz", "Hz", 60),
+        ("25 degC", "K", 298.15),
+    ],
 )
 def test_parse_quantity(text, unit, value):
     assert parse_quantity(text).m_as(unit) == pytest.approx(value)

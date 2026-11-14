@@ -1,7 +1,7 @@
 import pytest
 
-from circuitos.core.eseries import TOLERANCE, series, snap
 from circuitos.core.errors import UnitError
+from circuitos.core.eseries import TOLERANCE, series, snap
 from circuitos.core.units import q
 
 # Independent transcription of IEC 60063 E48, used to cross-check the geometric construction.
@@ -13,8 +13,10 @@ E48_IEC = (
 )  # fmt: skip
 
 
-@pytest.mark.parametrize(("name", "n"), [("E3", 3), ("E6", 6), ("E12", 12), ("E24", 24),
-                                         ("E48", 48), ("E96", 96), ("E192", 192)])
+@pytest.mark.parametrize(
+    ("name", "n"),
+    [("E3", 3), ("E6", 6), ("E12", 12), ("E24", 24), ("E48", 48), ("E96", 96), ("E192", 192)],
+)
 def test_series_length_and_order(name, n):
     s = series(name)
     assert len(s) == n
