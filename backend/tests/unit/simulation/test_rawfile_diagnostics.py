@@ -106,3 +106,13 @@ def test_generic_failure_only_when_no_output():
         raise_for_log("tudo certo", no_output=True)
     with pytest.raises(SimulationError, match="fatal"):
         raise_for_log("fatal: algo", no_output=True)
+
+
+def test_out_of_memory_is_classified():
+    log = (
+        "Warning: The memory required for storing the output data is more than the memory "
+        "available (1009.8 MB)!\nSetting the output memory is not possible.\n"
+        "ERROR: fatal error in ngspice, exit(1)\n"
+    )
+    with pytest.raises(SimulationError, match="Memória insuficiente"):
+        raise_for_log(log, no_output=True)

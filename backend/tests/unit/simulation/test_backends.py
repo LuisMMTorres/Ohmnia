@@ -70,7 +70,7 @@ def test_batch_missing_executable():
 
 
 def test_batch_timeout():
-    long = "t\nV1 a 0 SIN(0 1 1k)\nR1 a 0 1k\n.tran 1n 10\n"
+    long = "t\nV1 a 0 SIN(0 1 1k)\nR1 a 0 1k\n.tran 1m 10 0 1n\n"
     with pytest.raises(SimulationError, match="Tempo limite"):
         BatchNgspiceBackend(timeout_s=0.5).run(long)
 

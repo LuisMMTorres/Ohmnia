@@ -6,7 +6,7 @@ from circuitos.simulation.results import SimulationRequest
 pytestmark = pytest.mark.ngspice
 
 DIV = "div\nV1 a 0 10\nR1 a b 1k\nR2 b 0 3k\n.op\n"
-LONG = "t\nV1 a 0 SIN(0 1 1k)\nR1 a b 1k\nC1 b 0 1u\n.tran 1n 20\n"
+LONG = "t\nV1 a 0 SIN(0 1 1k)\nR1 a b 1k\nC1 b 0 1u\n.tran 1m 20 0 1n\n"
 
 
 @pytest.fixture
