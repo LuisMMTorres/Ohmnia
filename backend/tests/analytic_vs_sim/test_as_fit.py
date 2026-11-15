@@ -139,3 +139,16 @@ def test_as_fit_mosfet_transfer() -> None:
     assert model.fit is not None and model.fit.max_error_pct < 1.0
     # the same through the explicit entry point
     assert fit_mosfet(rec, curve).params["VTO"] == pytest.approx(model.params["VTO"])
+
+
+def test_too_few_points_are_flagged() -> None:
+    curve = _curve(
+        "IF×VF",
+        AxisSpec(quantity="VF", unit="V"),
+        AxisSpec(quantity="IF", unit="A", scale="log"),
+        [(0.6, 0.01), (0.7, 0.1), (0.8, 1.0)],
+        Tj=T25,
+    )
+    model = fit_diode(_record("diode.rectifier", curves=[curve]), curve)
+    assert model.fit is not None
+    assert any("quase por construção" in a for a in model.fit.assumptions)

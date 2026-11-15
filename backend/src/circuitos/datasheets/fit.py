@@ -150,6 +150,14 @@ def _report(
     simulated: bool,
 ) -> FitReport:
     err = 100 * (model - measured) / np.where(measured == 0, 1e-30, measured)
+    fitted = sum(1 for origin in fit.origin.values() if origin.startswith("ajuste"))
+    assumptions = list(fit.assumptions)
+    if len(x) <= fitted + 1:
+        assumptions.append(
+            f"{len(x)} ponto(s) para {fitted} parâmetro(s) ajustado(s): o ajuste passa pelos "
+            "pontos quase por construção e o erro não mede a qualidade do modelo; digitalize "
+            "mais pontos ao longo de toda a curva"
+        )
     return FitReport(
         curves=curve_ids,
         quantity=quantity,
@@ -161,7 +169,7 @@ def _report(
             for a, b, c, e in zip(x, measured, model, err, strict=True)
         ],
         simulated=simulated,
-        assumptions=fit.assumptions,
+        assumptions=assumptions,
         params_origin=fit.origin,
     )
 
