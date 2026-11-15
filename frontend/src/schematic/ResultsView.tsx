@@ -113,21 +113,24 @@ export function ResultsView({ job, probeNames, onJobUpdate }: Props) {
       if (keep.length) return keep;
       const probes = probeNames.map((n) => n.toLowerCase()).filter((n) => vectorNames.includes(n));
       const volts = vectorNames.filter((n) => n.startsWith("v(") && !n.includes("am_"));
-      return (probes.length ? probes : volts).slice(0, 4);
+      return (probes.length ? probes : volts.length ? volts : vectorNames).slice(0, 4);
     });
   }, [first, vectorNames, probeNames]);
 
   // the stored mode may not fit the analysis shown (e.g. Bode on a transient): normalise it
   // synchronously so no request or plot is ever made with a stale combination
+  const scaled = !!first?.scale;
   const mode = useMemo((): Mode => {
     const m = modeChoice;
-    if (kind === "op") return multi ? (m === "stats" || m === "worst" ? m : "table") : "table";
+    // .op and scalar plots (e.g. total noise, which has no x vector) are tables
+    if (kind === "op" || !scaled)
+      return multi ? (m === "stats" || m === "worst" ? m : "table") : "table";
     if (kind === "ac" && (m === "scope" || m === "fft" || m === "table")) return "bode";
     if (kind !== "ac" && m === "bode") return "scope";
     if (kind !== "tran" && m === "fft") return "scope";
     if (m === "table") return kind === "ac" ? "bode" : "scope";
     return m;
-  }, [modeChoice, kind, multi]);
+  }, [modeChoice, kind, multi, scaled]);
   useEffect(() => {
     setCursors({ a: null, b: null });
     setZoom(null);
@@ -160,7 +163,7 @@ export function ResultsView({ job, probeNames, onJobUpdate }: Props) {
           const suffix = shown.length > 1 ? ` · ${p.run_label || `#${p.run}`}` : "";
           Object.entries(data.traces).forEach(([name, v], vi) => {
             const color =
-              shown.length > 1 && selected.length === 1
+              shown.length > 1 && (selected.length === 1 || shown.length <= 8)
                 ? TRACE_COLORS[ri % TRACE_COLORS.length]
                 : TRACE_COLORS[vi % TRACE_COLORS.length];
             out.push({
@@ -249,11 +252,11 @@ export function ResultsView({ job, probeNames, onJobUpdate }: Props) {
 
   if (!first) return <p className="muted">Sem resultados.</p>;
   const modes: [Mode, string][] = [];
-  if (kind === "op") modes.push(["table", "Valores"]);
+  if (kind === "op" || !scaled) modes.push(["table", "Valores"]);
   if (kind === "ac") modes.push(["bode", "Bode"]);
-  if (kind !== "op") modes.push(["scope", kind === "ac" ? "Curvas" : "Osciloscópio"]);
+  if (kind !== "op" && scaled) modes.push(["scope", kind === "tran" ? "Osciloscópio" : "Curvas"]);
   if (kind === "tran") modes.push(["fft", "FFT / THD"]);
-  if (kind !== "op") modes.push(["xy", "XY"]);
+  if (kind !== "op" && scaled) modes.push(["xy", "XY"]);
   if (multi) modes.push(["stats", "Estatística"]);
   if (job.summary?.kind === "worstcase") modes.push(["worst", "Pior caso"]);
 

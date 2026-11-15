@@ -43,6 +43,11 @@ interface Props {
   onZoom?: (range: [number, number] | null) => void;
 }
 
+/** Unit as shown on screen (pint spelling → usual notation). */
+export function shownUnit(unit: string): string {
+  return unit.replace("/Hz^0.5", "/√Hz");
+}
+
 function isDecade(v: number): boolean {
   const e = Math.log10(v);
   return Math.abs(e - Math.round(e)) < 1e-6;
@@ -119,11 +124,13 @@ export function Scope({
         ...units.map((unit, i) => ({
           scale: unit,
           side: i === 0 ? 3 : 1,
-          size: 72,
+          size: Math.max(72, 44 + 7 * shownUnit(unit).length),
           stroke: "currentColor",
           grid: { show: i === 0, stroke: "rgba(128,128,128,0.2)" },
           values: (_u: uPlot, splits: number[]) =>
-            splits.map((v) => (v == null ? "" : formatEng(v, unit === "1" ? "" : unit, 3))),
+            splits.map((v) =>
+              v == null ? "" : formatEng(v, unit === "1" ? "" : shownUnit(unit), 3),
+            ),
         })),
       ],
       series: [
@@ -134,7 +141,8 @@ export function Scope({
           stroke: t.color ?? TRACE_COLORS[i % TRACE_COLORS.length],
           width: t.width ?? 1.5,
           spanGaps: true,
-          value: (_u: uPlot, v: number | null) => (v == null ? "—" : formatEng(v, t.unit, 4)),
+          value: (_u: uPlot, v: number | null) =>
+            v == null ? "—" : formatEng(v, shownUnit(t.unit), 4),
         })),
       ],
       cursor: { drag: { x: true, y: false } },

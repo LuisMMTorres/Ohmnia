@@ -110,11 +110,21 @@ const OUT = process.env.SHOTS || "";
     await simulate();
     await shot("08-rlc-step.png");
 
+    await example("Ruído térmico com varredura de temperatura");
+    await simulate();
+    {
+      const t = await p.locator(".results-view").innerText();
+      assert.match(t, /Ruído/);
+      assert.match(t, /onoise_spectrum/);
+      assert.ok((await p.locator(".results-view .u-over").count()) > 0, "noise curves plotted");
+    }
+    await shot("09-ruido-temperatura.png");
+
     await example("Amplificador emissor comum");
     await simulate();
-    await shot("09-emissor-comum-tran.png");
+    await shot("10-emissor-comum-tran.png");
     await analysis(/operação/i);
-    await shot("10-emissor-comum-op.png");
+    await shot("11-emissor-comum-op.png");
 
     // import a SPICE netlist
     await p.click('button:text-is("Importar netlist")');
@@ -131,7 +141,7 @@ E1 out 0 0 n1 1e5
     await p.click('.import-box button:text-is("Importar")');
     await p.waitForTimeout(800);
     await simulate();
-    await shot("11-netlist-importada.png");
+    await shot("12-netlist-importada.png");
 
     // draw a circuit from scratch: V source, resistor, wires, ground, probe
     await p.click('button:text-is("Novo")');
@@ -182,7 +192,7 @@ E1 out 0 0 n1 1e5
     await p.click('button:text-is("+ Ponto de operação (.op)")');
     await simulate();
     await analysis(/operação/i);
-    await shot("12-desenho-do-zero-op.png");
+    await shot("13-desenho-do-zero-op.png");
     const txt = await p.locator(".results-view").innerText();
     // default source 5 V across two equal default resistors
     assert.match(txt, /v\(n00\d\)\s+2,5 V/);

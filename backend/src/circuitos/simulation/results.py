@@ -34,6 +34,9 @@ def unit_for(type_name: str, vector_name: str) -> str:
     if unit:
         return unit
     lname = vector_name.lower()
+    if lname in ("onoise_spectrum", "inoise_spectrum"):
+        # noise spectral density; input-referred assumes a voltage input source (usual case)
+        return "V/Hz^0.5"
     if lname.startswith("i(") or lname.endswith("#branch"):
         return "A"
     if lname.startswith("v("):

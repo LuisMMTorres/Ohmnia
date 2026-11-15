@@ -88,6 +88,10 @@ const PREFIX_FACTOR: Record<string, number> = {
 
 export function formatEng(value: number, unit: string, digits = 3): string {
   let sym = unitSymbol(unit);
+  // Densities such as V/√Hz take the prefix on the numerator (nV/√Hz).
+  const slash = sym.indexOf("/");
+  if (slash > 0 && PREFIXABLE.has(sym.slice(0, slash)))
+    return formatEng(value, sym.slice(0, slash), digits) + sym.slice(slash);
   // A prefixed unit ("µF", "mH", "kΩ") is brought to its base so the prefix is chosen again.
   const factor = PREFIX_FACTOR[sym.charAt(0)];
   if (factor !== undefined && PREFIXABLE.has(sym.slice(1))) {

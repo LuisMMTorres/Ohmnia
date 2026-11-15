@@ -141,3 +141,27 @@ def test_as_sim_05_monte_carlo_bounds():
     lo, hi = 10 * 9.9 / 20, 10 * 10.1 / 20
     assert all(lo - 1e-9 <= v <= hi + 1e-9 for v in outs)
     assert np.std(outs) > 0
+
+
+@pytest.mark.parametrize("temp_c", [-40.0, 27.0, 125.0])
+def test_as_sim_06_thermal_noise_and_temperature_sweep(temp_c):
+    """AS-SIM-06: output noise of two 10 kΩ resistors (5 kΩ seen at the output) is the Johnson
+    density √(4·k·T·R) (Sedra & Smith, 7th ed., appendix on noise; Johnson–Nyquist), here in a
+    temperature sweep −40/27/125 °C. Tolerance 0,1 %.
+    """
+    b = Builder()
+    b.add("vsin", "VIN", ["in", "0"], ac="1")
+    b.add("resistor", "R1", ["in", "out"], value="10k")
+    b.add("resistor", "R2", ["out", "0"], value="10k")
+    b.analysis(
+        "noise", output="out", source="VIN", variation="dec", points="5", fstart="10", fstop="100k"
+    )
+    b.sch.sweep = Sweep(kind="temp", spacing="list", values=["-40", "27", "125"])
+    res = _run(b)
+    k_b = 1.380649e-23
+    run = [-40.0, 27.0, 125.0].index(temp_c)
+    plot = next(p for p in res.plots if p.name == f"noise1 r{run}")
+    density = np.real(plot["onoise_spectrum"].data)
+    assert plot["onoise_spectrum"].unit == "V/Hz^0.5"
+    expected = math.sqrt(4 * k_b * (temp_c + 273.15) * 5e3)
+    np.testing.assert_allclose(density, expected, rtol=1e-3)

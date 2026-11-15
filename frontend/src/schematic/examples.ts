@@ -200,10 +200,55 @@ function rlcStep(): Schematic {
   };
 }
 
+function noise(): Schematic {
+  return {
+    ...emptySchematic(),
+    title: "Ruído térmico de um divisor resistivo em −40, 27 e 125 °C",
+    components: [
+      c("vsin", "VIN", 0, 0, 0, { amplitude: "0", freq: "1k", ac: "1" }),
+      c("resistor", "R1", 4, -4, 0, { value: "10k" }),
+      c("resistor", "R2", 8, 0, 90, { value: "10k" }),
+      c("ground", "GND1", 0, 4),
+      c("ground", "GND2", 8, 4),
+    ],
+    wires: [
+      w([0, -2], [0, -4], [2, -4]),
+      w([6, -4], [8, -4], [8, -2]),
+      w([0, 2], [0, 4]),
+      w([8, 2], [8, 4]),
+    ],
+    labels: [l("in", 0, -4), l("out", 8, -4)],
+    probes: [],
+    analyses: [
+      {
+        kind: "noise",
+        params: {
+          output: "out",
+          source: "VIN",
+          variation: "dec",
+          points: "20",
+          fstart: "10",
+          fstop: "100k",
+        },
+        enabled: true,
+      },
+    ],
+    sweep: {
+      kind: "temp",
+      spacing: "list",
+      values: ["-40", "27", "125"],
+      runs: 30,
+      seed: 1,
+      distribution: "gauss",
+    },
+  };
+}
+
 export const SCHEMATIC_EXAMPLES: Record<string, () => Schematic> = {
   "Filtro RC passa-baixas": rc,
   "Amplificador emissor comum": ce,
   "Retificador em ponte com filtro": bridge,
   "Filtro RC: Monte Carlo": rcMonteCarlo,
   "RLC série: STEP de R": rlcStep,
+  "Ruído térmico com varredura de temperatura": noise,
 };
