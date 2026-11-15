@@ -123,7 +123,7 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 - ✅ `AS-SIM-01..06`, `PT-SIM`, E2E no navegador (`scripts/e2e.sh`)
 - ✅ [validacao/simulador.md](validacao/simulador.md)
 
-## Fase 8 — Importação de datasheets 👀 (aguardando aprovação)
+## Fase 8 — Importação de datasheets ✅ (aprovada em 2026-11-15)
 
 - ✅ `SV-PDF`: upload com SHA-256, extração em linhas visuais, OCR (Tesseract via PyMuPDF)
 - ✅ Mapeamento por regras com página, trecho e posição na página; ranking de categoria

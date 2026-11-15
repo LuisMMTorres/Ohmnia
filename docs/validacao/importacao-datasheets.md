@@ -1,6 +1,6 @@
 # Validação: importação de datasheets em PDF (Fase 8)
 
-Data: 2026-11-15. Status: aguardando a sua aprovação.
+Data: 2026-11-15. Status: aprovada em 2026-11-15.
 
 A nova aba **Importar datasheet** recebe o PDF do fabricante e propõe os valores dos parâmetros. Cada
 valor vem com a página, o trecho literal e a posição na página. Nada entra no catálogo sem duas
