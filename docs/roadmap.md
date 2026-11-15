@@ -86,7 +86,7 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 - 🔶 `GT-P8..P19`: casos propostos, aguardando conferência do usuário
 - ✅ [validacao/fontes-amplificadores.md](validacao/fontes-amplificadores.md), [validacao/catalogo-reguladores.md](validacao/catalogo-reguladores.md), [validacao/catalogo-jfet.md](validacao/catalogo-jfet.md)
 
-## Fase 5 — Ampops, filtros e instrumentação 🔶 (aguardando aprovação)
+## Fase 5 — Ampops, filtros e instrumentação ✅ (aprovada em 2026-11-15)
 
 - ✅ `DM-OPA` (10 configurações), `DM-FIL` (Butterworth, Chebyshev, Bessel, elíptico; Sallen-Key, MFB, KHN, escada LC), `DM-OPNL`, `DM-OSC` (Wien, deslocamento de fase, astável, 555, multivibrador com TBJ), `DM-INST`
 - ✅ `BD-AMPOP` e `BV-AMPOP-*` (VOS, IB, IOS, A0, CMRR, PSRR, GBW, SR, excursão)
