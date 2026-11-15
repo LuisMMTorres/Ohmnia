@@ -38,7 +38,7 @@ def test_ds_ext_rules_against_catalogue(capsys: pytest.CaptureFixture[str]) -> N
     for path in sorted(CATALOGUE.rglob("*.yaml")):
         try:
             records = load_records_file(path)
-        except Exception:  # noqa: BLE001 - auxiliary catalogues (heatsinks, cores) have no parts
+        except Exception:
             continue
         for rec in records:
             ds = next((d for d in rec.datasheets if d.url and d.sha256), None)
