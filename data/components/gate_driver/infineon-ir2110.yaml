@@ -1,0 +1,266 @@
+# Fonte: Infineon (IR) IR2110/IR2113, data sheet PD60147 rev. V.
+part_number: IR2110
+category: gate_driver
+schema_version: '1.0'
+manufacturer: Infineon (International Rectifier)
+package: PDIP-14
+lifecycle: ativo
+notes:
+- 'Driver de meia ponte: lado alto flutuante (bootstrap) e lado baixo, entradas independentes.'
+- A versão IR2113 vai a 600 V; aqui só o IR2110 (500 V).
+datasheets:
+- id: infineon-ir2110
+  manufacturer: Infineon
+  document_number: PD60147
+  revision: rev. V
+  url: https://www.infineon.com/assets/row/public/documents/24/49/infineon-ir2110-datasheet-en.pdf
+  sha256: e8ed2058e4b5c6f1d24a804af1ceb585a09dbbd09d8b1bb2d49409e243e8cc08
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VOFFSET:
+    max: 500
+    unit: V
+    status: extraido
+    source:
+      datasheet_id: infineon-ir2110
+      page: 2
+      location: Recommended operating conditions — VS (IR2110)
+  VB_max:
+    max: 525
+    unit: V
+    status: extraido
+    source:
+      datasheet_id: infineon-ir2110
+      page: 2
+      location: Absolute maximum ratings — VB (IR2110)
+  VCC_max:
+    max: 25
+    unit: V
+    status: extraido
+    source:
+      datasheet_id: infineon-ir2110
+      page: 2
+      location: Absolute maximum ratings — VCC
+  VCC_min:
+    min: 10
+    unit: V
+    status: extraido
+    source:
+      datasheet_id: infineon-ir2110
+      page: 2
+      location: Recommended operating conditions — VCC
+  VCC_rec_max:
+    max: 20
+    unit: V
+    status: extraido
+    source:
+      datasheet_id: infineon-ir2110
+      page: 2
+      location: Recommended operating conditions — VCC
+  dVs/dt:
+    max: 50
+    unit: V/ns
+    status: extraido
+    source:
+      datasheet_id: infineon-ir2110
+      page: 2
+      location: Absolute maximum ratings — dVs/dt
+  Ptot:
+    max: 1.6
+    unit: W
+    conditions:
+      TA: 25 degC
+    status: extraido
+    source:
+      datasheet_id: infineon-ir2110
+      page: 2
+      location: Absolute maximum ratings — PD, 14 lead DIP, TA ≤ 25 °C
+  Rth_ja:
+    max: 75
+    unit: K/W
+    status: extraido
+    source:
+      datasheet_id: infineon-ir2110
+      page: 2
+      location: Absolute maximum ratings — RTHJA, 14 lead DIP
+  Tj_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      datasheet_id: infineon-ir2110
+      page: 2
+      location: Absolute maximum ratings — TJ
+  Tstg_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      datasheet_id: infineon-ir2110
+      page: 2
+      location: Absolute maximum ratings — TS
+  ton:
+    typ: 120
+    max: 150
+    unit: ns
+    conditions: &id001
+      VCC: 15 V
+      VBS: 15 V
+      VDD: 15 V
+      TA: 25 degC
+      CL: 1000 pF
+    status: extraido
+    source:
+      datasheet_id: infineon-ir2110
+      page: 3
+      location: Dynamic electrical characteristics — ton
+  toff:
+    typ: 94
+    max: 125
+    unit: ns
+    conditions: *id001
+    status: extraido
+    source:
+      datasheet_id: infineon-ir2110
+      page: 3
+      location: Dynamic electrical characteristics — toff
+  tr:
+    typ: 25
+    max: 35
+    unit: ns
+    conditions: *id001
+    status: extraido
+    source:
+      datasheet_id: infineon-ir2110
+      page: 3
+      location: Dynamic electrical characteristics — tr
+  tf:
+    typ: 17
+    max: 25
+    unit: ns
+    conditions: *id001
+    status: extraido
+    source:
+      datasheet_id: infineon-ir2110
+      page: 3
+      location: Dynamic electrical characteristics — tf
+  MT:
+    max: 10
+    unit: ns
+    conditions: *id001
+    status: extraido
+    source:
+      datasheet_id: infineon-ir2110
+      page: 3
+      location: Dynamic electrical characteristics — MT (IR2110)
+  VIH:
+    min: 9.5
+    unit: V
+    conditions: &id002
+      VCC: 15 V
+      VBS: 15 V
+      VDD: 15 V
+      TA: 25 degC
+    status: extraido
+    source:
+      datasheet_id: infineon-ir2110
+      page: 3
+      location: Static electrical characteristics — VIH
+  VIL:
+    max: 6.0
+    unit: V
+    conditions: *id002
+    status: extraido
+    source:
+      datasheet_id: infineon-ir2110
+      page: 3
+      location: Static electrical characteristics — VIL
+  VOH:
+    max: 1.2
+    unit: V
+    conditions: *id002
+    status: extraido
+    source:
+      datasheet_id: infineon-ir2110
+      page: 3
+      location: Static electrical characteristics — VOH (VBIAS − VO), IO = 0 A
+  VOL:
+    max: 0.1
+    unit: V
+    conditions: *id002
+    status: extraido
+    source:
+      datasheet_id: infineon-ir2110
+      page: 3
+      location: Static electrical characteristics — VOL, IO = 0 A
+  ILK:
+    max: 50
+    unit: uA
+    conditions: *id002
+    status: extraido
+    source:
+      datasheet_id: infineon-ir2110
+      page: 3
+      location: Static electrical characteristics — ILK
+  IQBS:
+    typ: 125
+    max: 230
+    unit: uA
+    conditions: *id002
+    status: extraido
+    source:
+      datasheet_id: infineon-ir2110
+      page: 3
+      location: Static electrical characteristics — IQBS
+  IQCC:
+    typ: 180
+    max: 340
+    unit: uA
+    conditions: *id002
+    status: extraido
+    source:
+      datasheet_id: infineon-ir2110
+      page: 3
+      location: Static electrical characteristics — IQCC
+  VBSUV-:
+    min: 7.0
+    typ: 8.2
+    max: 9.4
+    unit: V
+    status: extraido
+    source:
+      datasheet_id: infineon-ir2110
+      page: 3
+      location: Static electrical characteristics — VBSUV−
+  VCCUV-:
+    min: 7.0
+    typ: 8.2
+    max: 9.4
+    unit: V
+    status: extraido
+    source:
+      datasheet_id: infineon-ir2110
+      page: 3
+      location: Static electrical characteristics — VCCUV−
+  IO+:
+    min: 2.0
+    typ: 2.5
+    unit: A
+    conditions: *id002
+    status: extraido
+    source:
+      datasheet_id: infineon-ir2110
+      page: 3
+      location: Static electrical characteristics — IO+ (curto, pulso ≤ 10 µs)
+  IO-:
+    min: 2.0
+    typ: 2.5
+    unit: A
+    conditions: *id002
+    status: extraido
+    source:
+      datasheet_id: infineon-ir2110
+      page: 3
+      location: Static electrical characteristics — IO− (curto, pulso ≤ 10 µs)

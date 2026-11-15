@@ -1,0 +1,32 @@
+category: gate_driver
+schema_version: "1.0"
+description: Driver de porta para MOSFET/IGBT (meia ponte, lado alto com bootstrap e lado baixo)
+required: [VOFFSET, VCC_max, VCC_min, IO+, IO-, ton, toff, IQBS]
+optional: []
+parameters:
+  VOFFSET:  {unit: V, kind: max_rating, description: Tensão máxima do lado alto (VS) em relação a COM}
+  VB_max:   {unit: V, kind: max_rating, description: Tensão máxima da alimentação flutuante VB}
+  VCC_max:  {unit: V, kind: max_rating, description: Alimentação fixa máxima (VCC)}
+  VCC_min:  {unit: V, kind: characteristic, description: Alimentação mínima recomendada}
+  VCC_rec_max: {unit: V, kind: characteristic, description: Alimentação máxima recomendada}
+  dVs/dt:   {unit: V/s, kind: max_rating, description: dVS/dt admissível}
+  Ptot:     {unit: W, kind: max_rating, description: Dissipação do encapsulamento, conditions_required: [TA]}
+  Rth_ja:   {unit: K/W, kind: thermal, description: Resistência térmica junção-ambiente}
+  Tj_max:   {unit: degC, kind: max_rating, description: Temperatura máxima de junção}
+  Tstg_max: {unit: degC, kind: max_rating, description: Temperatura máxima de armazenamento}
+  IO+:      {unit: A, kind: characteristic, description: Corrente de pico de saída (fonte)}
+  IO-:      {unit: A, kind: characteristic, description: Corrente de pico de saída (dreno)}
+  ton:      {unit: s, kind: characteristic, description: Atraso de propagação na entrada em condução}
+  toff:     {unit: s, kind: characteristic, description: Atraso de propagação no bloqueio}
+  tr:       {unit: s, kind: characteristic, description: Tempo de subida da saída, conditions_required: [CL]}
+  tf:       {unit: s, kind: characteristic, description: Tempo de descida da saída, conditions_required: [CL]}
+  MT:       {unit: s, kind: characteristic, description: Casamento de atraso entre canais}
+  VIH:      {unit: V, kind: characteristic, description: Entrada nível 1}
+  VIL:      {unit: V, kind: characteristic, description: Entrada nível 0}
+  VOH:      {unit: V, kind: characteristic, description: Queda da saída em nível alto (VBIAS − VO)}
+  VOL:      {unit: V, kind: characteristic, description: Saída em nível baixo}
+  ILK:      {unit: A, kind: characteristic, description: Fuga da alimentação flutuante}
+  IQBS:     {unit: A, kind: characteristic, description: Corrente quiescente da alimentação flutuante VBS}
+  IQCC:     {unit: A, kind: characteristic, description: Corrente quiescente de VCC}
+  VBSUV-:   {unit: V, kind: characteristic, description: Subtensão de VBS (desliga)}
+  VCCUV-:   {unit: V, kind: characteristic, description: Subtensão de VCC (desliga)}
