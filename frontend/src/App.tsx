@@ -3,13 +3,13 @@ import { api } from "./api";
 import { BenchPage } from "./pages/BenchPage";
 import { CatalogPage } from "./pages/CatalogPage";
 import { DesignPage } from "./pages/DesignPage";
-import { SimulatorPage } from "./pages/SimulatorPage";
+import { SchematicPage } from "./pages/SchematicPage";
 
 const PAGES = {
   catalog: { label: "Componentes", element: <CatalogPage /> },
   bench: { label: "Bancada de dispositivos", element: <BenchPage /> },
   design: { label: "Projeto", element: <DesignPage /> },
-  simulator: { label: "Simulador", element: <SimulatorPage /> },
+  simulator: { label: "Simulador", element: <SchematicPage /> },
 } as const;
 type PageKey = keyof typeof PAGES;
 

@@ -1,4 +1,5 @@
 /** Typed client for the backend REST/WebSocket API (/api/v1). */
+import type { Library, ScalarMeasure, Schematic } from "./schematic/types";
 
 export interface Quantity {
   value: number;
@@ -20,6 +21,14 @@ export interface PlotInfo {
   title: string;
   scale: string | null;
   vectors: VectorInfo[];
+  run?: number;
+  run_label?: string;
+  base?: string;
+}
+export interface RunInfo {
+  index: number;
+  label: string;
+  values: Record<string, string>;
 }
 export interface JobError {
   kind: string;
@@ -36,6 +45,9 @@ export interface Job {
   elapsed_s?: number | null;
   plots?: PlotInfo[] | null;
   error?: JobError | null;
+  runs?: RunInfo[] | null;
+  summary?: Record<string, unknown> | null;
+  warnings?: string[] | null;
 }
 export interface PlotData {
   plot: string;
@@ -53,6 +65,15 @@ export interface Measurements {
   peak_to_peak: Quantity;
   minimum: Quantity;
   maximum: Quantity;
+  frequency?: Quantity | null;
+  period?: Quantity | null;
+  duty_cycle?: Quantity | null;
+  base?: Quantity | null;
+  top?: Quantity | null;
+  rise_time?: Quantity | null;
+  fall_time?: Quantity | null;
+  overshoot?: Quantity | null;
+  undershoot?: Quantity | null;
 }
 export type ComplexForm = "mag" | "mag_db" | "phase_deg" | "real" | "imag";
 
@@ -87,10 +108,14 @@ export const api = {
       `/simulations/${id}/plots/${encodeURIComponent(plot)}?` +
         new URLSearchParams({ vectors: vectors.join(","), form, max_points: String(maxPoints) }),
     ),
-  measures: (id: string, plot: string, vector: string) =>
+  measures: (id: string, plot: string, vector: string, start?: number, stop?: number) =>
     request<Measurements>(
       `/simulations/${id}/plots/${encodeURIComponent(plot)}/measures?` +
-        new URLSearchParams({ vector }),
+        new URLSearchParams({
+          vector,
+          ...(start !== undefined ? { start: String(start) } : {}),
+          ...(stop !== undefined ? { stop: String(stop) } : {}),
+        }),
     ),
 };
 
@@ -595,3 +620,107 @@ export const design = {
   report: (id: string, body: DesignIn, simulate: boolean) =>
     postBlob(`/design/${id}/report.html?simulate=${simulate}`, body),
 };
+
+// ------------------------------------------------------------------- schematic simulator
+
+export interface NetlistOut {
+  netlist: string;
+  nets: Record<string, string[]>;
+  probes: { name: string; expr: string; unit: string; probe_id: string | null }[];
+  warnings: string[];
+  spreads: {
+    component: string;
+    param: string;
+    low: number;
+    nominal: number;
+    high: number;
+    source: string;
+  }[];
+  steps: unknown[];
+}
+export interface PartOut {
+  id: string;
+  part_number: string;
+  manufacturer: string;
+  category: string;
+  released: boolean;
+  status: string;
+}
+export interface SpectrumOut {
+  vector: string;
+  unit: string;
+  f0: number;
+  window_start: number;
+  window_stop: number;
+  frequency: Vector;
+  amplitude: Vector;
+  harmonics: { k: number; frequency: number; amplitude: number; percent: number }[];
+  thd: number;
+  rms: number;
+  dc: number;
+}
+export interface StatisticsOut {
+  measure: ScalarMeasure;
+  unit: string;
+  values: { run: number; label: string; value: number | null; error: string | null }[];
+  stats: { mean: number; std: number; min: number; max: number; [k: string]: number };
+  nominal: number | null;
+  histogram: { edges: number[]; counts: number[] };
+}
+export interface FigureIn {
+  plot: string;
+  vectors: string[];
+  kind: "time" | "xy" | "bode" | "spectrum";
+  format: "svg" | "png" | "pdf";
+  title?: string;
+  x_vector?: string | null;
+  all_runs?: boolean;
+  start?: number | null;
+  stop?: number | null;
+  f0?: number | null;
+  periods?: number;
+}
+
+const plotPath = (id: string, plot: string) =>
+  `/simulations/${id}/plots/${encodeURIComponent(plot)}`;
+
+export const schematicApi = {
+  library: () => request<Library>("/schematic/library"),
+  parts: (kind: string) => request<PartOut[]>(`/schematic/parts?kind=${encodeURIComponent(kind)}`),
+  netlist: (schematic: Schematic) =>
+    request<NetlistOut>("/schematic/netlist", {
+      method: "POST",
+      body: JSON.stringify({ schematic }),
+    }),
+  importNetlist: (netlist: string) =>
+    request<{ schematic: Schematic; warnings: string[] }>("/schematic/import", {
+      method: "POST",
+      body: JSON.stringify({ netlist }),
+    }),
+  simulate: (schematic: Schematic) =>
+    request<{ job_id: string; netlist: string; runs: number; warnings: string[] }>(
+      "/schematic/simulate",
+      { method: "POST", body: JSON.stringify({ schematic }) },
+    ),
+  spectrum: (id: string, plot: string, params: Record<string, string>) =>
+    request<SpectrumOut>(`${plotPath(id, plot)}/spectrum?` + new URLSearchParams(params)),
+  statistics: (id: string, params: Record<string, string>) =>
+    request<StatisticsOut>(`/simulations/${id}/statistics?` + new URLSearchParams(params)),
+  expression: (id: string, plot: string, expr: string, name?: string) =>
+    request<VectorInfo>(`${plotPath(id, plot)}/expressions`, {
+      method: "POST",
+      body: JSON.stringify({ expr, name: name || null, all_runs: true }),
+    }),
+  csvUrl: (id: string, plot: string, vectors: string[], form: ComplexForm) =>
+    `${BASE}${plotPath(id, plot)}/csv?` + new URLSearchParams({ vectors: vectors.join(","), form }),
+  figure: (id: string, body: FigureIn) => postBlob(`/simulations/${id}/figure`, body),
+};
+
+export function download(blob: Blob, filename: string): void {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
