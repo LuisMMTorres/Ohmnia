@@ -46,3 +46,13 @@ Pontos para a sua conferência:
 Os TRIACs (`thyristor.triac`) têm IGT por quadrante (`IGT@Q1` … `IGT@Q4`), mas a regra de liberação
 procurava `IGT`. Agora um obrigatório dado por condição é aceito quando todas as entradas com valor
 estão revisadas. Sem essa correção, nenhum TRIAC podia ser liberado e `DM-CACA` ficava sem peça.
+
+## Datasheets da onsemi baixados de novo
+
+Em 2026-11-15 cinco PDFs da onsemi passaram a vir com outro hash: NCP1117, MC7900, MBR20100CT,
+MUR420 (MUR460) e MUR1520 (MUR1560). Comparei o arquivo guardado com o novo: mesmo número de
+páginas, mesma data de modificação e texto idêntico em todas as páginas; muda só a sequência de
+bytes. O teste `DS-CATALOGO` recusa o arquivo novo (regra: revisar antes de trocar o hash), por isso
+as 182 conferências desses cinco documentos falham num ambiente sem os arquivos antigos. Com os
+arquivos guardados todas passam. Para resolver: trocar o `sha256` dos cinco registros pelo do
+arquivo novo, com o seu OK.
