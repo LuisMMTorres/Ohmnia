@@ -137,7 +137,9 @@ class DesignModule(Protocol):
 
 ## 10. Importação de datasheets
 
-- `PyMuPDF` para texto e imagens; `pdfplumber` para tabelas; OCR com Tesseract quando a página não tem texto.
+- `PyMuPDF` para texto, imagens e traços vetoriais; OCR com o Tesseract embutido no PyMuPDF quando a página não tem texto.
+- **[ajuste na Fase 8]** Sem `pdfplumber`: as tabelas de datasheet raramente têm bordas, então o texto é reagrupado em linhas visuais pela posição das palavras (`datasheets/extract.py`) e as colunas Mín./Típ./Máx. vêm do cabeçalho. Uma dependência a menos, e o mesmo caminho serve para o texto do OCR.
+- Módulos: `extract` (linhas e OCR), `mapping` + `aliases.yaml` (regras), `llm` (opcional, verificado), `imports` (tarefas de importação, tabela `extraction_jobs`), `digitize` (curvas), `spice_import` e `fit` (modelos). API em `api/imports.py`.
 - LLM **opcional**: API da Anthropic com saída estruturada validada pelo esquema Pydantic da categoria. Sem chave configurada, o fluxo funciona manualmente (o usuário preenche com o PDF ao lado).
 - Cada parâmetro extraído guarda página, trecho e caixa delimitadora de origem. Nada entra em seleção automática antes da revisão humana.
 
