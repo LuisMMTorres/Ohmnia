@@ -3,10 +3,12 @@ import { api } from "./api";
 import { BenchPage } from "./pages/BenchPage";
 import { CatalogPage } from "./pages/CatalogPage";
 import { DesignPage } from "./pages/DesignPage";
+import { ImportPage } from "./pages/ImportPage";
 import { SchematicPage } from "./pages/SchematicPage";
 
 const PAGES = {
   catalog: { label: "Componentes", element: <CatalogPage /> },
+  imports: { label: "Importar datasheet", element: <ImportPage /> },
   bench: { label: "Bancada de dispositivos", element: <BenchPage /> },
   design: { label: "Projeto", element: <DesignPage /> },
   simulator: { label: "Simulador", element: <SchematicPage /> },

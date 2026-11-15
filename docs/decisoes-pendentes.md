@@ -59,6 +59,7 @@ Pergunta: segue alguma referência formal de derating (norma ou manual de empres
 ## D9. Extração de datasheets com LLM (Fase 8)
 
 - Opcional, por chave de API da Anthropic configurada localmente. Confirmar se o IFMA tem como prover a chave ou se o fluxo manual (sem LLM) é suficiente.
+- Implementado na Fase 8 como opcional (`uv sync --extra llm` + credencial). O PDF só é enviado quando a caixa é marcada na importação. Toda proposta do modelo precisa citar página e trecho; o sistema confere o trecho e os números no texto do PDF e descarta o que não confere. Sem chave, regras + digitação manual cobrem o fluxo inteiro. **Decisão ainda sua:** haverá chave?
 
 ## D10. Licença do software
 

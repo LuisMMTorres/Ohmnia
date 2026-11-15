@@ -8,6 +8,18 @@ from circuitos.core.errors import ConvergenceError, SimulationError
 
 _RULES: list[tuple[re.Pattern[str], str, list[str], bool]] = [
     (
+        re.compile(
+            r"more than the memory available|setting the output memory is not possible", re.I
+        ),
+        "Memória insuficiente para guardar os resultados da simulação.",
+        [
+            "Reduza o tempo simulado ou aumente o passo de saída (TSTEP) em .tran.",
+            "Use TSTART em .tran para guardar só o regime permanente.",
+            "Guarde só os vetores necessários com .save.",
+        ],
+        False,
+    ),
+    (
         re.compile(r"timestep too small", re.I),
         "Passo de tempo muito pequeno: o simulador não conseguiu avançar no tempo.",
         [

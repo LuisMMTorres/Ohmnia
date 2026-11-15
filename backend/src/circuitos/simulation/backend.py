@@ -104,7 +104,10 @@ class BatchNgspiceBackend(SimulatorBackend):
                     suggestions=["Reduza o tempo simulado ou aumente o passo máximo."],
                 ) from exc
             log = proc.stdout + proc.stderr
-            plots = parse_rawfile(raw.read_bytes()) if raw.exists() else []
+            try:
+                plots = parse_rawfile(raw.read_bytes()) if raw.exists() else []
+            except ValueError:
+                plots = []  # rawfile cut short by a fatal error: the log says why
         raise_for_log(log, no_output=not plots)
         progress(1.0, "concluído")
         return SimulationResult(
@@ -159,6 +162,15 @@ def find_ngspice_library() -> str | None:
     return None
 
 
+def _load_library(path: str) -> ctypes.CDLL:
+    """Load libngspice. On Windows the DLL's own folder must be on the DLL search path, because
+    the official build ships its dependencies (``libomp140.x86_64.dll``) next to it and Python
+    3.8+ no longer searches there."""
+    if sys.platform == "win32" and os.path.dirname(path):
+        os.add_dll_directory(os.path.dirname(os.path.abspath(path)))
+    return ctypes.CDLL(path)
+
+
 class SharedNgspiceBackend(SimulatorBackend):
     """One instance per process: libngspice keeps global state."""
 
@@ -169,7 +181,7 @@ class SharedNgspiceBackend(SimulatorBackend):
         if path is None:
             raise SimulatorUnavailableError("Biblioteca compartilhada do ngspice não encontrada")
         try:
-            self._lib = ctypes.CDLL(path)
+            self._lib = _load_library(path)
         except OSError as exc:
             raise SimulatorUnavailableError(f"Falha ao carregar {path}: {exc}") from exc
         self._log: list[str] = []

@@ -17,6 +17,13 @@ Planejamento: [docs/escopo.md](docs/escopo.md), [docs/arquitetura.md](docs/arqui
     Use a versão com a DLL (`ngspice.dll`) e defina a variável de ambiente
     `CIRCUITOS_NGSPICE_LIB` com o caminho completo da DLL. Se preferir o executável,
     defina `CIRCUITOS_NGSPICE_EXE` com o caminho de `ngspice.exe`.
+    O pacote da DLL da versão 47 não traz `sndfile.dll` e `samplerate.dll`: copie-as da pasta
+    `bin` do pacote do executável para a pasta da DLL.
+- Tesseract com os idiomas `eng` e `por` (opcional, para OCR de datasheets digitalizados).
+  Windows: `winget install tesseract-ocr.tesseract`; Linux: `sudo apt install tesseract-ocr`.
+  Se a pasta `tessdata` não estiver no lugar padrão, defina `CIRCUITOS_TESSDATA`.
+- Extração de datasheets com modelo de linguagem (opcional): `uv sync --extra llm` e uma
+  credencial da API da Anthropic (`ANTHROPIC_API_KEY` ou `ant auth login`).
 
 ## Como executar
 
@@ -49,6 +56,7 @@ scripts/check.sh frontend   # só interface
 | `CIRCUITOS_DATA_DIR` | Pasta de dados local (padrão `~/.circuitos`): banco `catalog.db` e datasheets baixados |
 | `CIRCUITOS_DB_URL` | URL SQLAlchemy do banco de componentes (padrão `sqlite:///<DATA_DIR>/catalog.db`) |
 | `CIRCUITOS_CATALOG_DIR` | Pasta dos YAML importados na partida (padrão `data/components`) |
+| `CIRCUITOS_TESSDATA` | Pasta dos idiomas do Tesseract para OCR (padrão: procurada nos locais usuais) |
 
 ## Banco de componentes
 

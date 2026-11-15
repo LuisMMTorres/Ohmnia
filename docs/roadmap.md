@@ -123,9 +123,19 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 - ✅ `AS-SIM-01..06`, `PT-SIM`, E2E no navegador (`scripts/e2e.sh`)
 - ✅ [validacao/simulador.md](validacao/simulador.md)
 
-## Fase 8 — Importação de datasheets ⏳
+## Fase 8 — Importação de datasheets ✅ (aprovada em 2026-11-15)
 
-- ⏳ Extração, OCR, LLM opcional, digitalização de curvas, ajuste de modelo SPICE, tela de revisão
+- ✅ `SV-PDF`: upload com SHA-256, extração em linhas visuais, OCR (Tesseract via PyMuPDF)
+- ✅ Mapeamento por regras com página, trecho e posição na página; ranking de categoria
+- ✅ LLM opcional (D9) com verificação do trecho e dos números no texto do PDF
+- ✅ Digitalização de curvas: traço vetorial, seguir cor, cliques; eixos lin/log
+- ✅ Importação de `.model`/`.subckt` com carga no ngspice
+- ✅ Ajuste de modelo: diodo, TBJ (Gummel-Poon reduzido), MOSFET nível 1; erro simulado no ngspice
+- ✅ Tela de importação e revisão com destaque da origem no PDF; abas Curvas e Modelos SPICE
+- ✅ `AS-FIT` (4 casos), testes de extração, LLM, digitalização, SPICE e API (57 novos)
+- ⏳ `DS-EXT`: comparação com o catálogo nos PDFs reais (rede), aguardando autorização para rodar
+- ✅ Ambiente Windows: DLL do ngspice, memória insuficiente classificada
+- ✅ [validacao/importacao-datasheets.md](validacao/importacao-datasheets.md)
 
 ## Fase 9 — Relatórios, empacotamento e documentação ⏳
 
