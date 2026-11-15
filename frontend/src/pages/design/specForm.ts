@@ -191,6 +191,39 @@ function visiblePhase5(moduleId: string, key: string, spec: Record<string, unkno
     if (key === "V_fs") return !tx;
     return true;
   }
+  return visiblePhase6(moduleId, key, spec);
+}
+
+function visiblePhase6(moduleId: string, key: string, spec: Record<string, unknown>): boolean {
+  if (moduleId === "DM-CC") {
+    const t = (spec.topology as string | undefined) ?? "buck";
+    const fourth = t === "cuk" || t === "sepic" || t === "zeta";
+    const mcd = spec.mode === "MCD";
+    const loop = spec.compensator !== "nenhum";
+    if (key === "mode") return !fourth;
+    if (key === "ripple_iL") return !mcd;
+    if (key === "L_ratio") return mcd;
+    if (key === "ripple_vc1") return fourth;
+    if (["fc_ratio", "phase_margin", "Vm", "Vref", "R1"].includes(key)) return loop;
+    return true;
+  }
+  if (moduleId === "DM-INV") {
+    const m = (spec.modulation as string | undefined) ?? "spwm_unipolar";
+    const pwm = m.startsWith("spwm") || m === "svpwm";
+    if (key === "mf" || key === "ma" || key === "filter") return pwm;
+    if (key === "alpha_deg") return m === "quase_quadrada";
+    if (key === "fc_ratio" || key === "ripple_if") return pwm && spec.filter === true;
+    return true;
+  }
+  if (moduleId === "DM-CACA") {
+    const phase = spec.control !== "ciclo_integral";
+    const diac = phase && spec.trigger === "diac";
+    if (key === "trigger") return phase;
+    if (key === "alpha_deg") return phase && !diac;
+    if (key === "n_on" || key === "N_cycles") return !phase;
+    if (key === "R_trig" || key === "C_trig" || key === "V_BO") return diac;
+    return true;
+  }
   return true;
 }
 

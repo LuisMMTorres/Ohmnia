@@ -219,3 +219,28 @@ def test_opamp_bench_rejects_other_category(client):
     comp = find(client, "diode.rectifier", "1N4007")
     r = client.post("/api/v1/devices/opamp/bench", json={"component_id": comp["id"]})
     assert r.status_code in (400, 422)
+
+
+def test_igbt_bench_fit_and_losses(client):
+    comp = find(client, "igbt", "FGH40N60SMD")
+    body = client.post(
+        "/api/v1/devices/igbt/output",
+        json={"component_id": comp["id"], "fit": True, "vce_max": {"value": 4, "unit": "V"}},
+    ).json()
+    ids = [s["id"] for s in body["steps"]]
+    assert ids == ["VT_fit", "R_on_fit", "P_cond", "P_sw"]
+    # datasheet: VCE(sat) typ 1.9 V at 40 A, VGE(th) typ 4.5 V; knee V0 = 0.7 V (default)
+    assert body["model"]["VT"]["value"] == pytest.approx(4.5)
+    assert body["model"]["R_on"]["value"] == pytest.approx((1.9 - 0.7) / 40)
+    # conduction at D = 0.5, 20 A: 0.5·(0.7·20 + 0.03·400) = 13 W
+    assert body["model"]["P_cond"]["value"] == pytest.approx(0.5 * (0.7 * 20 + 0.03 * 400))
+    # switching: (0.87 + 0.26) mJ at 400 V / 40 A, scaled to 400 V / 20 A, 20 kHz
+    assert body["model"]["P_sw"]["value"] == pytest.approx(1.13e-3 * 0.5 * 20e3)
+    assert {m["key"] for m in body["markers"]} == {"VCE(sat)", "VCE(sat)@hot"}
+    assert body["spice_model"].startswith(".subckt IGBT")
+
+
+def test_igbt_bench_without_component(client):
+    body = client.post("/api/v1/devices/igbt/output", json={}).json()
+    assert len(body["curves"]) == 5
+    assert any("E_on" in w for w in body["warnings"])

@@ -105,13 +105,15 @@ def leg_voltages(
     v_on: float = 0.0,
     r_on: float = 0.0,
     vf: float = 0.0,
+    synchronous: bool = False,
 ) -> list[FloatArray]:
     """Leg voltages to the negative DC rail.
 
     Dead time: both switches are off in a window of ``dead_samples`` centred on each ideal
     edge; the conducting diode then fixes the leg at −V_F (current leaving the leg, i > 0) or
     at Vdc + V_F (i < 0) (Mohan ch. 8, blanking time). With the current known, the on-state
-    drops are applied: transistor V_CE(sat) + R_on·|i|, diode V_F.
+    drops are applied: transistor V_CE(sat) + R_on·|i|, diode V_F. ``synchronous`` (MOSFET):
+    a gated channel also conducts the reverse current, with R_on·|i| instead of the diode.
     """
     out = []
     for k, s in enumerate(states):
@@ -131,8 +133,9 @@ def leg_voltages(
         drop_t = v_on + r_on * np.abs(i)
         pos = i > 0
         # upper on: transistor (i > 0) drops, diode (i < 0) adds; lower on: the mirror
-        v_upper = np.where(pos, vdc - drop_t, vdc + vf)
-        v_lower = np.where(pos, -vf, drop_t)
+        rev = drop_t if synchronous else vf
+        v_upper = np.where(pos, vdc - drop_t, vdc + rev)
+        v_lower = np.where(pos, -rev, drop_t)
         v_blank = np.where(pos, -vf, vdc + vf)
         out.append(np.where(win, v_blank, np.where(on, v_upper, v_lower)))
     return out

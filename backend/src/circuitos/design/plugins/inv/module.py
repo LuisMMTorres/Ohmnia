@@ -236,7 +236,7 @@ class InvModule:
         vo: list[np.ndarray] = []
         need = dead > 0 or any(d > 0 for d in drops)
         for _ in range(60):  # the current sign fixes the drops and the blanking voltage
-            legs = leg_voltages(st, vdc, i_leg, dead, *drops)
+            legs = leg_voltages(st, vdc, i_leg, dead, *drops, synchronous=s.switch == "mosfet")
             vl = load_voltages(s.phases, legs)
             il, vo = [], []
             for v in vl:

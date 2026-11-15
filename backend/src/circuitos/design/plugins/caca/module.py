@@ -44,7 +44,7 @@ from circuitos.reports.common import BomRow, LabItem, passive
 from circuitos.reports.schematic import value_sheet
 
 HART5 = BibRef(book="Hart, Power Electronics", edition="1st", chapter="5 (AC voltage controllers)")
-N = 2**14  # samples per source cycle
+N = 2**16  # samples per source cycle
 FloatArray = NDArray[np.float64]
 
 
