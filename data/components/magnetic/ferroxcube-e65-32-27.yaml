@@ -1,0 +1,170 @@
+# Fonte: Ferroxcube, product specification E65/32/27 (2016), texto do PDF.
+part_number: E65/32/27-3C94
+category: magnetic.core
+schema_version: '1.1'
+manufacturer: Ferroxcube
+package: E (par de metades, E65/32/27)
+lifecycle: ativo
+tags:
+- shape:E
+- size:E65/32/27
+- material:3C94
+notes:
+- Conjunto de duas metades E65/32/27 em 3C94, sem entreferro. O entreferro do projeto é calculado (retífica da perna
+  central) a partir do AL e do comprimento efetivo.
+- A janela e a espira média saem das cotas do desenho (memória de cálculo) quando não há carretel no catálogo.
+datasheets:
+- id: fxc-e65_32_27
+  manufacturer: Ferroxcube
+  document_number: Product specification E65/32/27
+  revision: '2016'
+  url: https://www.ferroxcube.com/upload/media/product/file/Pr_ds/E65_32_27.pdf
+  sha256: e94307865a2ced5a96faaf09c844bde3008b5ed427511205bbe9e5443070d43b
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  C1:
+    typ: 0.274
+    unit: 1/mm
+    status: extraido
+    source:
+      datasheet_id: fxc-e65_32_27
+      page: 1
+      location: Effective parameters — C1
+  Ve:
+    typ: 79000.0
+    unit: mm**3
+    status: extraido
+    source:
+      datasheet_id: fxc-e65_32_27
+      page: 1
+      location: Effective parameters — Ve
+  le:
+    typ: 147.0
+    unit: mm
+    status: extraido
+    source:
+      datasheet_id: fxc-e65_32_27
+      page: 1
+      location: Effective parameters — Le
+  Ae:
+    typ: 540.0
+    unit: mm**2
+    status: extraido
+    source:
+      datasheet_id: fxc-e65_32_27
+      page: 1
+      location: Effective parameters — Ae
+  Amin:
+    typ: 530.0
+    unit: mm**2
+    status: extraido
+    source:
+      datasheet_id: fxc-e65_32_27
+      page: 1
+      location: Effective parameters — Amin
+  mass:
+    typ: 205.0
+    unit: g
+    status: extraido
+    note: Massa por peça (metade do conjunto), como no datasheet.
+    source:
+      datasheet_id: fxc-e65_32_27
+      page: 1
+      location: Effective parameters — m (por metade, g/pcs)
+  dim_A:
+    min: 63.8
+    typ: 65.0
+    max: 66.5
+    unit: mm
+    status: extraido
+    source:
+      datasheet_id: fxc-e65_32_27
+      page: 1
+      location: Dimensions — A (nominal, máx., mín.)
+  dim_B:
+    min: 44.2
+    typ: 44.2
+    max: 46.0
+    unit: mm
+    status: extraido
+    source:
+      datasheet_id: fxc-e65_32_27
+      page: 1
+      location: Dimensions — B (nominal, máx., mín.)
+  dim_C:
+    min: 19.3
+    typ: 20.0
+    max: 20.0
+    unit: mm
+    status: extraido
+    source:
+      datasheet_id: fxc-e65_32_27
+      page: 1
+      location: Dimensions — C (nominal, máx., mín.)
+  dim_D:
+    min: 32.2
+    typ: 32.8
+    max: 32.8
+    unit: mm
+    status: extraido
+    source:
+      datasheet_id: fxc-e65_32_27
+      page: 1
+      location: Dimensions — D (nominal, máx., mín.)
+  dim_E:
+    min: 22.2
+    typ: 22.2
+    max: 23.0
+    unit: mm
+    status: extraido
+    source:
+      datasheet_id: fxc-e65_32_27
+      page: 1
+      location: Dimensions — E (nominal, máx., mín.)
+  dim_F:
+    min: 26.6
+    typ: 27.4
+    max: 27.4
+    unit: mm
+    status: extraido
+    source:
+      datasheet_id: fxc-e65_32_27
+      page: 1
+      location: Dimensions — F (nominal, máx., mín.)
+  AL:
+    typ: 8600.0
+    unit: nH
+    status: extraido
+    conditions:
+      gap: 0 mm
+    note: Sem entreferro, material 3C94, tolerância ±25%.
+    source:
+      datasheet_id: fxc-e65_32_27
+      page: 1
+      location: Inductance factor — 3C94
+  Pcore:
+    max: 43.0
+    unit: W
+    status: extraido
+    conditions:
+      f: 100 kHz
+      B: 200 mT
+      T: 100 degC
+    source:
+      datasheet_id: fxc-e65_32_27
+      page: 1
+      location: 'Power loss: 3C94 — 100 kHz, 200 mT, 100 °C (W/set)'
+  Bsat:
+    min: 320.0
+    unit: mT
+    status: extraido
+    conditions:
+      T: 100 degC
+      H: 250 A/m
+      f: 25 kHz
+    source:
+      datasheet_id: fxc-e65_32_27
+      page: 2
+      location: Bsat — 3C94, 25 kHz, 250 A/m, 100 °C

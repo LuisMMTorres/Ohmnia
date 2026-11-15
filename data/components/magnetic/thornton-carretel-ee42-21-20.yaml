@@ -1,0 +1,56 @@
+# Fonte: Thornton, folha do núcleo NEE-42/21/20 (página de acessórios).
+part_number: CE-42/20-1/0-POM
+category: magnetic.bobbin
+schema_version: '1.0'
+manufacturer: Thornton Inpec Eletrônica
+package: carretel para E42/21/20
+lifecycle: ativo
+tags:
+- size:E42/21/20
+notes:
+- Carretel do núcleo Thornton NEE-42/21/20, de mesma geometria padronizada que o Ferroxcube E42/21/20 (Ae, le e
+  Ve conferidos no validacao/catalogo-magneticos.md).
+- Uma seção, poliacetal (POM).
+datasheets:
+- id: thornton-nee_42_21_20
+  manufacturer: Thornton
+  document_number: NEE-42/21/20
+  revision: sem revisão no documento
+  url: https://www.thornton.com.br/pdf/nee_42_21_20.pdf
+  sha256: 25f7de56e174d9b1b201771ae967c6d6db36b74b05e96b21ee268ccd7827a0cd
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  Aw:
+    typ: 157.0
+    unit: mm**2
+    status: extraido
+    source:
+      datasheet_id: thornton-nee_42_21_20
+      page: 2
+      location: Acessórios NEE-42/21/20 — carretel CE-42/20-1/0-POM — janela [mm²]
+  lw:
+    typ: 105.0
+    unit: mm
+    status: extraido
+    source:
+      datasheet_id: thornton-nee_42_21_20
+      page: 2
+      location: Acessórios NEE-42/21/20 — carretel CE-42/20-1/0-POM — comprimento médio [mm/esp]
+  sections:
+    typ: 1
+    unit: dimensionless
+    status: extraido
+    source:
+      datasheet_id: thornton-nee_42_21_20
+      page: 2
+      location: Acessórios NEE-42/21/20 — carretel CE-42/20-1/0-POM — nº de secções
+  mass:
+    typ: 6.0
+    unit: g
+    status: extraido
+    source:
+      datasheet_id: thornton-nee_42_21_20
+      page: 2
+      location: Acessórios NEE-42/21/20 — carretel CE-42/20-1/0-POM — peso ~g

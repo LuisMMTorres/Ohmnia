@@ -1,0 +1,120 @@
+# Fonte: Ferroxcube, 3C94 material specification (2008 Sep 01).
+part_number: 3C94
+category: magnetic.material
+schema_version: '1.0'
+manufacturer: Ferroxcube
+package: material
+lifecycle: ativo
+notes:
+- Ferrite MnZn de potência para até 0,3 MHz.
+- Valores típicos (≈) da tabela de especificações; as perdas dos núcleos (W/conjunto) são máximas.
+- 'Só dois pontos de perdas na mesma frequência: dão o expoente de B (β), não o de f (α).'
+datasheets:
+- id: fxc-3c94
+  manufacturer: Ferroxcube
+  document_number: 3C94 Material specification
+  revision: 2008 Sep 01
+  url: https://www.ferroxcube.com/upload/media/product/file/MDS/3c94.pdf
+  sha256: 85baa0ebc78e351bff15026df6c3d7be8c8b7a02e808fa005a09b43665ae0fa9
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  mu_i:
+    typ: 2300
+    unit: dimensionless
+    status: extraido
+    conditions:
+      T: 25 degC
+      f: 10 kHz
+      B: 0.25 mT
+    source:
+      datasheet_id: fxc-3c94
+      page: 2
+      location: Specifications — µi (25 °C, ≤10 kHz, 0,25 mT)
+  mu_a:
+    typ: 5500
+    unit: dimensionless
+    status: extraido
+    conditions:
+      T: 100 degC
+      f: 25 kHz
+      B: 200 mT
+    source:
+      datasheet_id: fxc-3c94
+      page: 2
+      location: Specifications — µa (100 °C, 25 kHz, 200 mT)
+  Bsat_25:
+    typ: 470
+    unit: mT
+    status: extraido
+    conditions:
+      T: 25 degC
+      H: 1200 A/m
+      f: 10 kHz
+    source:
+      datasheet_id: fxc-3c94
+      page: 2
+      location: Specifications — B (25 °C, 10 kHz, 1200 A/m)
+  Bsat:
+    typ: 380
+    unit: mT
+    status: extraido
+    conditions:
+      T: 100 degC
+      H: 1200 A/m
+      f: 10 kHz
+    source:
+      datasheet_id: fxc-3c94
+      page: 2
+      location: Specifications — B (100 °C, 10 kHz, 1200 A/m)
+  Pv_1:
+    typ: 50
+    unit: kW/m**3
+    status: extraido
+    conditions:
+      f: 100 kHz
+      B: 100 mT
+      T: 100 degC
+    source:
+      datasheet_id: fxc-3c94
+      page: 2
+      location: Specifications — PV (100 °C, 100 kHz, 100 mT)
+  Pv_2:
+    typ: 350
+    unit: kW/m**3
+    status: extraido
+    conditions:
+      f: 100 kHz
+      B: 200 mT
+      T: 100 degC
+    source:
+      datasheet_id: fxc-3c94
+      page: 2
+      location: Specifications — PV (100 °C, 100 kHz, 200 mT)
+  rho:
+    typ: 5
+    unit: ohm*m
+    status: extraido
+    conditions:
+      T: 25 degC
+    source:
+      datasheet_id: fxc-3c94
+      page: 2
+      location: Specifications — ρ (DC, 25 °C)
+  Tc:
+    min: 220
+    unit: degC
+    status: extraido
+    source:
+      datasheet_id: fxc-3c94
+      page: 2
+      location: Specifications — TC
+  density:
+    typ: 4800
+    unit: kg/m**3
+    status: extraido
+    source:
+      datasheet_id: fxc-3c94
+      page: 2
+      location: Specifications — density

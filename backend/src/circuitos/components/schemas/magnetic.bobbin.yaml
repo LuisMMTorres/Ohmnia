@@ -1,0 +1,10 @@
+category: magnetic.bobbin
+schema_version: "1.0"
+description: Carretel (bobina) para núcleo de formato padronizado; janela útil e espira média
+required: [Aw, lw]
+optional: []
+parameters:
+  Aw:       {unit: mm**2, kind: geometry, description: Área da janela de enrolamento}
+  lw:       {unit: mm, kind: geometry, description: Comprimento médio de uma espira}
+  sections: {unit: dimensionless, kind: geometry, description: Número de seções}
+  mass:     {unit: g, kind: geometry, description: Massa aproximada}

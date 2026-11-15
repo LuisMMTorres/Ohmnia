@@ -1,0 +1,182 @@
+# Fonte: Ferroxcube, product specification E16/8/5 (2016), texto do PDF.
+part_number: E16/8/5-3C96
+category: magnetic.core
+schema_version: '1.1'
+manufacturer: Ferroxcube
+package: E (par de metades, E16/8/5)
+lifecycle: ativo
+tags:
+- shape:E
+- size:E16/8/5
+- material:3C96
+notes:
+- Conjunto de duas metades E16/8/5 em 3C96, sem entreferro. O entreferro do projeto é calculado (retífica da perna
+  central) a partir do AL e do comprimento efetivo.
+- A janela e a espira média saem das cotas do desenho (memória de cálculo) quando não há carretel no catálogo.
+datasheets:
+- id: fxc-e16_8_5
+  manufacturer: Ferroxcube
+  document_number: Product specification E16/8/5
+  revision: '2016'
+  url: https://www.ferroxcube.com/upload/media/product/file/Pr_ds/E16_8_5.pdf
+  sha256: b19ad515354e26a92a36d8faf1ef6ddd4e2d1ba5d60e96ff695e4413aa9293ac
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  C1:
+    typ: 1.87
+    unit: 1/mm
+    status: extraido
+    source:
+      datasheet_id: fxc-e16_8_5
+      page: 1
+      location: Effective parameters — C1
+  Ve:
+    typ: 750.0
+    unit: mm**3
+    status: extraido
+    source:
+      datasheet_id: fxc-e16_8_5
+      page: 1
+      location: Effective parameters — Ve
+  le:
+    typ: 37.6
+    unit: mm
+    status: extraido
+    source:
+      datasheet_id: fxc-e16_8_5
+      page: 1
+      location: Effective parameters — Le
+  Ae:
+    typ: 20.1
+    unit: mm**2
+    status: extraido
+    source:
+      datasheet_id: fxc-e16_8_5
+      page: 1
+      location: Effective parameters — Ae
+  Amin:
+    typ: 19.3
+    unit: mm**2
+    status: extraido
+    source:
+      datasheet_id: fxc-e16_8_5
+      page: 1
+      location: Effective parameters — Amin
+  mass:
+    typ: 2.0
+    unit: g
+    status: extraido
+    note: Massa por peça (metade do conjunto), como no datasheet.
+    source:
+      datasheet_id: fxc-e16_8_5
+      page: 1
+      location: Effective parameters — m (por metade, g/pcs)
+  dim_A:
+    min: 15.5
+    typ: 16.0
+    max: 16.7
+    unit: mm
+    status: extraido
+    source:
+      datasheet_id: fxc-e16_8_5
+      page: 1
+      location: Dimensions — A (nominal, máx., mín.)
+  dim_B:
+    min: 11.3
+    typ: 11.3
+    max: 11.9
+    unit: mm
+    status: extraido
+    source:
+      datasheet_id: fxc-e16_8_5
+      page: 1
+      location: Dimensions — B (nominal, máx., mín.)
+  dim_C:
+    min: 4.4
+    typ: 4.7
+    max: 4.7
+    unit: mm
+    status: extraido
+    source:
+      datasheet_id: fxc-e16_8_5
+      page: 1
+      location: Dimensions — C (nominal, máx., mín.)
+  dim_D:
+    min: 7.9
+    typ: 8.2
+    max: 8.2
+    unit: mm
+    status: extraido
+    source:
+      datasheet_id: fxc-e16_8_5
+      page: 1
+      location: Dimensions — D (nominal, máx., mín.)
+  dim_E:
+    min: 5.7
+    typ: 5.7
+    max: 6.1
+    unit: mm
+    status: extraido
+    source:
+      datasheet_id: fxc-e16_8_5
+      page: 1
+      location: Dimensions — E (nominal, máx., mín.)
+  dim_F:
+    min: 4.3
+    typ: 4.7
+    max: 4.7
+    unit: mm
+    status: extraido
+    source:
+      datasheet_id: fxc-e16_8_5
+      page: 1
+      location: Dimensions — F (nominal, máx., mín.)
+  AL:
+    typ: 980.0
+    unit: nH
+    status: extraido
+    conditions:
+      gap: 0 mm
+    note: Sem entreferro, material 3C96, tolerância ±25%.
+    source:
+      datasheet_id: fxc-e16_8_5
+      page: 1
+      location: Inductance factor — 3C96
+  Pcore:
+    max: 0.34
+    unit: W
+    status: extraido
+    conditions:
+      f: 100 kHz
+      B: 200 mT
+      T: 100 degC
+    source:
+      datasheet_id: fxc-e16_8_5
+      page: 1
+      location: 'Power loss: 3C96 — 100 kHz, 200 mT, 100 °C (W/set)'
+  Pcore_2:
+    max: 0.13
+    unit: W
+    status: extraido
+    conditions:
+      f: 400 kHz
+      B: 50 mT
+      T: 100 degC
+    source:
+      datasheet_id: fxc-e16_8_5
+      page: 1
+      location: 'Power loss: 3C96 — 400 kHz, 50 mT, 100 °C (W/set)'
+  Bsat:
+    min: 340.0
+    unit: mT
+    status: extraido
+    conditions:
+      T: 100 degC
+      H: 250 A/m
+      f: 25 kHz
+    source:
+      datasheet_id: fxc-e16_8_5
+      page: 2
+      location: Bsat — 3C96, 25 kHz, 250 A/m, 100 °C

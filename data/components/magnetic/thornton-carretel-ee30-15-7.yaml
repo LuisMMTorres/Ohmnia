@@ -1,0 +1,56 @@
+# Fonte: Thornton, folha do núcleo NEE-30/15/7 (página de acessórios).
+part_number: CE-30/15/7-1/0-POM
+category: magnetic.bobbin
+schema_version: '1.0'
+manufacturer: Thornton Inpec Eletrônica
+package: carretel para E30/15/7
+lifecycle: ativo
+tags:
+- size:E30/15/7
+notes:
+- Carretel do núcleo Thornton NEE-30/15/7, de mesma geometria padronizada que o Ferroxcube E30/15/7 (Ae, le e Ve
+  conferidos no validacao/catalogo-magneticos.md).
+- Uma seção, poliacetal (POM).
+datasheets:
+- id: thornton-nee_30_15_7
+  manufacturer: Thornton
+  document_number: NEE-30/15/7
+  revision: sem revisão no documento
+  url: https://www.thornton.com.br/pdf/nee_30_15_7.pdf
+  sha256: fc718c0e19c6beceb9784a210651dfd85961ef97fd7c0a9167f934a6bc98a4b5
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  Aw:
+    typ: 80.0
+    unit: mm**2
+    status: extraido
+    source:
+      datasheet_id: thornton-nee_30_15_7
+      page: 2
+      location: Acessórios NEE-30/15/7 — carretel CE-30/15/7-1/0-POM — janela [mm²]
+  lw:
+    typ: 56.0
+    unit: mm
+    status: extraido
+    source:
+      datasheet_id: thornton-nee_30_15_7
+      page: 2
+      location: Acessórios NEE-30/15/7 — carretel CE-30/15/7-1/0-POM — comprimento médio [mm/esp]
+  sections:
+    typ: 1
+    unit: dimensionless
+    status: extraido
+    source:
+      datasheet_id: thornton-nee_30_15_7
+      page: 2
+      location: Acessórios NEE-30/15/7 — carretel CE-30/15/7-1/0-POM — nº de secções
+  mass:
+    typ: 1.2
+    unit: g
+    status: extraido
+    source:
+      datasheet_id: thornton-nee_30_15_7
+      page: 2
+      location: Acessórios NEE-30/15/7 — carretel CE-30/15/7-1/0-POM — peso ~g
