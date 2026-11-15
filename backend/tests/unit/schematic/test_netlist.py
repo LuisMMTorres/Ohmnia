@@ -1,6 +1,6 @@
 import pytest
 
-from circuitos.schematic.library import SYMBOLS, pin_positions, transform
+from circuitos.schematic.library import SYMBOLS, transform
 from circuitos.schematic.model import (
     Analysis,
     Component,
