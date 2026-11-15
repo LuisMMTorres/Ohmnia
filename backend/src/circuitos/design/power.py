@@ -709,6 +709,105 @@ def design_inductors(
     return out
 
 
+@dataclass
+class TransformerNeed:
+    """A transformer (kind "transformador") or a flyback coupled inductor (kind "flyback").
+
+    ``windings``: (name, turns ratio to the first winding, rms current).
+    """
+
+    designator: str
+    kind: str
+    f: float
+    windings: tuple[tuple[str, float, float], ...]
+    lam: float = 0.0  # V·s per half cycle (transformer)
+    bipolar: bool = True
+    L: float = 0.0  # magnetising inductance (flyback)
+    I_pk: float = 0.0
+    dI_pp: float = 0.0
+
+
+def design_transformer(
+    need: TransformerNeed,
+    catalogue: Callable[[str], list[ComponentRecord]],
+    TA: float,
+    J: float = 4e6,
+) -> MagneticsOut:
+    """SV-MAG for a transformer or flyback inductor; also returns its magnetising inductance
+    (N1²·AL of the ungapped set, or the gapped design L) as ``<des>_Lm``."""
+    from typing import cast
+
+    from circuitos.magnetics.design import Kind, MagSpec, Winding, design
+
+    out = MagneticsOut()
+    spec = MagSpec(
+        kind=cast(Kind, need.kind),
+        f=need.f,
+        windings=tuple(Winding(n, r, i) for n, r, i in need.windings),
+        L=need.L,
+        I_pk=need.I_pk,
+        dI_pp=need.dI_pp,
+        lam=need.lam,
+        bipolar=need.bipolar,
+        J=J,
+        TA=TA,
+    )
+    log = CalcLog()
+    d = need.designator
+    try:
+        r = design(
+            spec,
+            catalogue("magnetic.core"),
+            catalogue("magnetic.material"),
+            catalogue("magnetic.bobbin"),
+            log,
+        )
+    except ValueError as e:
+        out.warnings.append(DesignWarning(code="magnetico", message=f"{d}: {e}"))
+        return out
+    for st in log:
+        out.steps.append(
+            st.model_copy(update={"id": f"{d}_{st.id}", "description": f"{d}: {st.description}"})
+        )
+    n1 = r.windings[0].N
+    lm = need.L if need.kind == "flyback" else n1**2 * r.core.AL
+    out.summary |= {
+        f"{d}_N{k + 1}": Q_(w.N, "") for k, w in enumerate(r.windings)
+    } | {
+        f"{d}_Lm": Q_(lm, "H").to("mH"),
+        f"{d}_Bpk": Q_(r.B_pk, "T").to("mT"),
+        f"{d}_P": Q_(r.P_total, "W"),
+        f"{d}_dT": Q_(r.dT, "K"),
+        f"{d}_ratio": Q_(r.windings[1].N / n1 if len(r.windings) > 1 else 1.0, ""),
+    }
+    if need.kind == "flyback":
+        out.summary[f"{d}_gap"] = Q_(r.gap, "m").to("mm")
+    out.losses[d] = r.P_total
+    wtxt = ", ".join(f"{w.name}: {w.N} esp. {w.strand.n}× AWG {w.strand.awg}" for w in r.windings)
+    out.warnings.append(
+        DesignWarning(
+            code="magnetico_ok",
+            message=f"{d}: núcleo {r.core.size} ({r.core.material}); {wtxt}"
+            + (f"; entreferro {r.gap * 1e3:.2f} mm" if need.kind == "flyback" else "")
+            + f"; ocupação {r.fill:.0%}.",
+        )
+    )
+    want = need.windings[1][1] if len(need.windings) > 1 else 1.0
+    got = r.windings[1].N / n1 if len(r.windings) > 1 else 1.0
+    if abs(got / want - 1) > 0.03:
+        out.warnings.append(
+            DesignWarning(
+                code="relacao_espiras",
+                message=f"{d}: a relação de espiras inteira ({got:.4g}) difere "
+                f"{abs(got / want - 1):.1%} da calculada ({want:.4g}); a razão cíclica do "
+                "controle corrige, mas confira a faixa de D.",
+            )
+        )
+    for msg in r.warnings:
+        out.warnings.append(DesignWarning(code="magnetico_premissa", message=f"{d}: {msg}"))
+    return out
+
+
 def merge_magnetics(
     log: CalcLog,
     summary: dict[str, pint.Quantity],
