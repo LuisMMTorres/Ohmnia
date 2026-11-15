@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { catalog, ComponentSummary } from "../api";
 import { ComponentReview } from "./ComponentReview";
 
-const CATEGORY_LABEL: Record<string, string> = {
+export const CATEGORY_LABEL: Record<string, string> = {
   "diode.rectifier": "Diodo retificador",
   "diode.fast": "Diodo rápido/ultrarrápido",
   "diode.schottky": "Diodo Schottky",

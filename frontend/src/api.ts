@@ -164,6 +164,7 @@ export interface SourceRef {
   page: number | null;
   location: string | null;
   excerpt: string | null;
+  bbox?: [number, number, number, number] | null;
 }
 export interface Parameter {
   symbol: string;
@@ -196,6 +197,52 @@ export interface ComponentRecord {
   datasheets: DatasheetRef[];
   review: { status: string; reviewed_by: string | null; reviewed_at: string | null };
   notes: string[];
+  curves: Curve[];
+  spice_models: SpiceModel[];
+}
+
+export type AxisScale = "lin" | "log";
+export interface AxisSpec {
+  quantity: string;
+  unit: string;
+  scale: AxisScale;
+}
+export interface Curve {
+  id: string;
+  name: string;
+  x: AxisSpec;
+  y: AxisSpec;
+  family: Record<string, Quantity>;
+  points: [number, number][];
+  source: SourceRef;
+  method: "manual" | "vetor" | "cor";
+  digitized_by: string;
+  created_at: string;
+}
+export interface FitReport {
+  curves: string[];
+  quantity: string;
+  points: number;
+  rms_error_pct: number;
+  max_error_pct: number;
+  residuals: { x: number; measured: number; model: number; error_pct: number }[];
+  simulated: boolean;
+  assumptions: string[];
+  params_origin: Record<string, string>;
+}
+export interface SpiceModel {
+  id: string;
+  name: string;
+  kind: "model" | "subckt";
+  device: string;
+  pins: string[];
+  params: Record<string, number>;
+  text: string;
+  origin: "fabricante" | "ajustado";
+  source_note: string | null;
+  checked: boolean;
+  check_log: string | null;
+  fit: FitReport | null;
 }
 export interface ParameterSpec {
   unit: string;
@@ -250,6 +297,193 @@ export const catalog = {
   pageUrl: (sha: string, page: number) => `${BASE}/datasheets/${sha}/pages/${page}.png`,
   pdfUrl: (sha: string) => `${BASE}/datasheets/${sha}/pdf`,
   datasheet: (sha: string) => request<{ sha256: string; pages: number }>(`/datasheets/${sha}`),
+};
+
+// --------------------------------------------------------------- datasheet import -------
+
+export type Bbox = [number, number, number, number];
+export type ImportMethod = "regras" | "llm" | "manual";
+export interface Candidate {
+  key: string;
+  symbol: string;
+  min: number | null;
+  typ: number | null;
+  max: number | null;
+  unit: string;
+  conditions: Record<string, Quantity>;
+  conditions_text: string | null;
+  page: number;
+  bbox: Bbox | null;
+  excerpt: string;
+  method: ImportMethod;
+  confidence: number;
+  notes: string[];
+  accepted: boolean;
+}
+export interface ImportMeta {
+  manufacturer: string;
+  part_number: string;
+  category: string;
+  package: string | null;
+  family: string | null;
+  document_number: string | null;
+  revision: string | null;
+  url: string | null;
+}
+export interface CategoryScore {
+  category: string;
+  score: number;
+  found: string[];
+}
+export interface RejectedProposal {
+  proposal: {
+    key: string;
+    min: number | null;
+    typ: number | null;
+    max: number | null;
+    unit: string;
+    page: number;
+    excerpt: string;
+  };
+  reason: string;
+}
+export interface ImportJob {
+  id: string;
+  sha256: string;
+  filename: string;
+  pages: number;
+  status: "extraido" | "importado" | "descartado";
+  meta: ImportMeta;
+  ranking: CategoryScore[];
+  candidates: Candidate[];
+  rejected: RejectedProposal[];
+  ocr_pages: number[];
+  warnings: string[];
+  llm_model: string | null;
+  component_id: string | null;
+  created_at: string;
+  updated_at: string;
+}
+export interface ImportSummary {
+  id: string;
+  filename: string;
+  status: ImportJob["status"];
+  part_number: string;
+  category: string;
+  candidates: number;
+  accepted: number;
+  updated_at: string;
+}
+export interface Capabilities {
+  ocr: boolean;
+  llm: { available: boolean; model: string; reason: string | null };
+}
+export interface PageText {
+  page: number;
+  width: number;
+  height: number;
+  ocr: boolean;
+  rows: { text: string; bbox: Bbox }[];
+}
+export interface AxisCalibration {
+  p1: number;
+  v1: number;
+  p2: number;
+  v2: number;
+  scale: AxisScale;
+}
+export interface Rect {
+  x0: number;
+  y0: number;
+  x1: number;
+  y1: number;
+}
+export interface VectorPath {
+  index: number;
+  colour: [number, number, number] | null;
+  width: number | null;
+  points: [number, number][];
+  bbox: Bbox;
+}
+export interface CurveIn {
+  name: string;
+  x: AxisSpec;
+  y: AxisSpec;
+  family: Record<string, Quantity>;
+  calibration: { x: AxisCalibration; y: AxisCalibration };
+  positions: [number, number][];
+  datasheet_id: string;
+  page: number;
+  location?: string | null;
+  bbox?: Bbox | null;
+  method: Curve["method"];
+  digitized_by: string;
+}
+
+const post = <T>(path: string, body: unknown) =>
+  request<T>(path, { method: "POST", body: JSON.stringify(body) });
+
+export const imports = {
+  capabilities: () => request<Capabilities>("/imports/capabilities"),
+  upload: async (file: File) => {
+    const response = await fetch(`${BASE}/datasheets?filename=${encodeURIComponent(file.name)}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/pdf" },
+      body: file,
+    });
+    if (!response.ok) {
+      let detail = response.statusText;
+      try {
+        detail = (await response.json()).detail ?? detail;
+      } catch {
+        /* not JSON */
+      }
+      throw new Error(String(detail));
+    }
+    return (await response.json()) as { sha256: string; pages: number; filename: string };
+  },
+  start: (body: {
+    sha256: string;
+    filename: string;
+    meta: Partial<ImportMeta>;
+    use_llm: boolean;
+  }) => post<ImportJob>("/imports", body),
+  list: () => request<ImportSummary[]>("/imports"),
+  get: (id: string) => request<ImportJob>(`/imports/${id}`),
+  save: (id: string, meta: ImportMeta, candidates: Candidate[]) =>
+    request<ImportJob>(`/imports/${id}`, {
+      method: "PUT",
+      body: JSON.stringify({ meta, candidates }),
+    }),
+  remap: (id: string, meta: ImportMeta, use_llm: boolean) =>
+    post<ImportJob>(`/imports/${id}/remap`, { meta, use_llm }),
+  commit: (id: string, created_by: string, replace = false) =>
+    post<ComponentDetail>(`/imports/${id}/commit`, { created_by, replace }),
+  discard: (id: string) => request<ImportJob>(`/imports/${id}`, { method: "DELETE" }),
+  pageText: (sha: string, page: number) =>
+    request<PageText>(`/datasheets/${sha}/pages/${page}/text`),
+  vectorPaths: (sha: string, page: number, rect: Rect) =>
+    post<VectorPath[]>(`/datasheets/${sha}/pages/${page}/vector-paths`, rect),
+  trace: (
+    sha: string,
+    page: number,
+    rect: Rect,
+    colour: [number, number, number],
+    tolerance = 60,
+  ) =>
+    post<[number, number][]>(`/datasheets/${sha}/pages/${page}/trace`, { rect, colour, tolerance }),
+  addCurve: (componentId: string, body: CurveIn) =>
+    post<ComponentDetail>(`/components/${componentId}/curves`, body),
+  deleteCurve: (componentId: string, curveId: string) =>
+    request<ComponentDetail>(`/components/${componentId}/curves/${curveId}`, { method: "DELETE" }),
+  importModels: (componentId: string, text: string, source_note: string | null) =>
+    post<ComponentDetail>(`/components/${componentId}/spice-models/import`, { text, source_note }),
+  fitModel: (componentId: string, curve_ids: string[], name?: string) =>
+    post<ComponentDetail>(`/components/${componentId}/spice-models/fit`, { curve_ids, name }),
+  deleteModel: (componentId: string, modelId: string) =>
+    request<ComponentDetail>(`/components/${componentId}/spice-models/${modelId}`, {
+      method: "DELETE",
+    }),
 };
 
 // --------------------------------------------------------------------- bench ------------

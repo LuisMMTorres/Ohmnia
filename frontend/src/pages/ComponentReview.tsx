@@ -1,7 +1,17 @@
 import { useEffect, useMemo, useState } from "react";
 import { catalog, ComponentDetail, Parameter, ParamStatus } from "../api";
 import { formatRaw, formatEng, unitSymbol } from "../format";
+import { PdfPage } from "../components/PdfPage";
 import { REVIEW_LABEL } from "./CatalogPage";
+import { CurvesTab } from "./review/CurvesTab";
+import { ModelsTab } from "./review/ModelsTab";
+
+type Tab = "params" | "curves" | "models";
+const TAB_LABEL: Record<Tab, string> = {
+  params: "Parâmetros",
+  curves: "Curvas",
+  models: "Modelos SPICE",
+};
 
 const STATUS_LABEL: Record<ParamStatus, string> = {
   a_verificar: "A verificar",
@@ -37,6 +47,7 @@ export function ComponentReview({ id, onBack }: { id: string; onBack: () => void
   const [page, setPage] = useState(1);
   const [pages, setPages] = useState<number | null>(null);
   const [reviewer, setReviewer] = useState(readReviewer);
+  const [tab, setTab] = useState<Tab>("params");
 
   useEffect(() => {
     catalog
@@ -104,6 +115,54 @@ export function ComponentReview({ id, onBack }: { id: string; onBack: () => void
 
   const active = activeKey ? record.parameters[activeKey] : null;
 
+  const tabs = (
+    <nav className="tabs" aria-label="Partes do componente">
+      {(Object.keys(TAB_LABEL) as Tab[]).map((k) => (
+        <button
+          key={k}
+          className={k === tab ? "tab active" : "tab"}
+          aria-current={k === tab ? "page" : undefined}
+          onClick={() => setTab(k)}
+        >
+          {TAB_LABEL[k]}
+          {k === "curves" && record.curves.length > 0 && ` (${record.curves.length})`}
+          {k === "models" && record.spice_models.length > 0 && ` (${record.spice_models.length})`}
+        </button>
+      ))}
+    </nav>
+  );
+
+  if (tab !== "params") {
+    return (
+      <main className="single">
+        <section className="panel">
+          <button className="secondary" onClick={onBack}>
+            ← Catálogo
+          </button>
+          <h2>
+            {record.part_number}{" "}
+            <span className={`badge ${record.review.status}`}>
+              {REVIEW_LABEL[record.review.status] ?? record.review.status}
+            </span>
+          </h2>
+          {tabs}
+          {tab === "curves" ? (
+            <CurvesTab
+              detail={detail}
+              page={page}
+              setPage={setPage}
+              pages={pages}
+              onChange={setDetail}
+              author={reviewer}
+            />
+          ) : (
+            <ModelsTab detail={detail} onChange={setDetail} />
+          )}
+        </section>
+      </main>
+    );
+  }
+
   return (
     <main className="review">
       <section className="panel">
@@ -116,6 +175,7 @@ export function ComponentReview({ id, onBack }: { id: string; onBack: () => void
             {REVIEW_LABEL[record.review.status] ?? record.review.status}
           </span>
         </h2>
+        {tabs}
         <p className="muted">
           {record.manufacturer} · {detail.schema_.description} · {record.package}
           {record.family ? ` · família ${record.family}` : ""}
@@ -269,11 +329,16 @@ export function ComponentReview({ id, onBack }: { id: string; onBack: () => void
             <strong>{activeKey}</strong>: {active.source.location}
           </p>
         )}
+        {active?.source?.excerpt && <p className="small muted">“{active.source.excerpt}”</p>}
         {datasheet?.sha256 && (
-          <img
-            className="page"
-            src={catalog.pageUrl(datasheet.sha256, page)}
-            alt={`Página ${page} do datasheet`}
+          <PdfPage
+            sha={datasheet.sha256}
+            page={page}
+            highlights={
+              active?.source?.bbox && active.source.page === page
+                ? [{ bbox: active.source.bbox, label: activeKey ?? undefined }]
+                : []
+            }
           />
         )}
       </section>

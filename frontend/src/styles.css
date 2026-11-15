@@ -802,3 +802,204 @@ fieldset.analysis {
 .netlabel path {
   fill: var(--panel);
 }
+
+/* ---------------------------------------------------------------- datasheet import (Fase 8) */
+main.single {
+  padding: 16px;
+  max-width: 1500px;
+  margin: 0 auto;
+}
+.pdf-page {
+  position: relative;
+}
+.pdf-page img.page {
+  display: block;
+}
+.pdf-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.pdf-overlay .hl {
+  fill: rgba(42, 111, 209, 0.12);
+  stroke: #2a6fd1;
+  stroke-width: 1;
+}
+.pdf-overlay .hl.muted {
+  fill: rgba(240, 170, 0, 0.1);
+  stroke: rgba(200, 140, 0, 0.6);
+  stroke-width: 0.5;
+}
+.pdf-overlay .hl-label {
+  font-size: 7px;
+  fill: #2a6fd1;
+  font-weight: 600;
+}
+.pdf-overlay .cal {
+  stroke: #d1342a;
+  stroke-width: 0.6;
+  stroke-dasharray: 3 2;
+}
+.pdf-overlay .plot-area {
+  fill: none;
+  stroke: #2a6fd1;
+  stroke-width: 0.8;
+  stroke-dasharray: 4 2;
+}
+.pdf-overlay .corner {
+  fill: #2a6fd1;
+}
+.pdf-overlay .dpoint {
+  fill: #e0007a;
+}
+.pdf-overlay .vpath {
+  fill: none;
+  stroke-width: 2.5;
+  stroke-opacity: 0.6;
+}
+fieldset.meta {
+  border: 0;
+  padding: 0;
+  margin: 12px 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 8px;
+}
+fieldset.meta label,
+.cal-values label {
+  display: flex;
+  flex-direction: column;
+  font-size: 12px;
+  gap: 2px;
+}
+fieldset.meta label.wide,
+.cal-values label.wide {
+  grid-column: 1 / -1;
+}
+.candidates input.num {
+  width: 70px;
+}
+.candidates input.unit {
+  width: 60px;
+}
+.note {
+  color: var(--muted);
+  font-style: italic;
+}
+label.file input[type="file"] {
+  display: none;
+}
+label.file {
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.digitizer {
+  display: grid;
+  grid-template-columns: minmax(320px, 420px) 1fr;
+  gap: 16px;
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .digitizer {
+    grid-template-columns: 1fr;
+  }
+}
+.cal-values {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 6px;
+  margin: 8px 0;
+}
+.step {
+  font-weight: 600;
+  color: var(--accent);
+}
+button.swatch span {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border: 1px solid var(--border);
+  vertical-align: middle;
+}
+.curve-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.curve-card {
+  margin: 0;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px;
+  font-size: 12px;
+}
+.curve-card figcaption button {
+  margin-left: 8px;
+}
+svg.curve-plot {
+  width: 100%;
+  max-width: 460px;
+  height: auto;
+  background: #fff;
+  border: 1px solid var(--border);
+}
+svg.curve-plot .frame {
+  fill: none;
+  stroke: #888;
+}
+svg.curve-plot .grid {
+  stroke: #e3e3e3;
+}
+svg.curve-plot .tick,
+svg.curve-plot .axis-label {
+  font-size: 10px;
+  fill: #333;
+}
+svg.curve-plot .series circle {
+  fill: #2a6fd1;
+}
+svg.curve-plot .series.s1 circle {
+  fill: #d1342a;
+}
+svg.curve-plot polyline.series {
+  fill: none;
+  stroke: #d1342a;
+  stroke-width: 1.5;
+}
+.two-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+@media (max-width: 900px) {
+  .two-cols {
+    grid-template-columns: 1fr;
+  }
+}
+.models-tab textarea {
+  width: 100%;
+  font-family: ui-monospace, monospace;
+  font-size: 12px;
+}
+.model-card {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px;
+  margin: 10px 0;
+}
+pre.spice {
+  white-space: pre-wrap;
+  font-size: 12px;
+  background: var(--bg);
+  padding: 6px;
+  border-radius: 4px;
+  max-height: 200px;
+  overflow: auto;
+}
+label.block {
+  display: block;
+}
