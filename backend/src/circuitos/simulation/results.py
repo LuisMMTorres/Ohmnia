@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass, field
-from typing import Any, Literal
+from typing import Any, Literal, Protocol
 
 import numpy as np
 import pint
@@ -93,6 +93,9 @@ class Plot:
     scale: str | None  # name of the independent vector ("time", "frequency"); None for .op
     vectors: dict[str, Vector] = field(default_factory=dict)
     title: str = ""
+    run: int = 0  # index of the run in a sweep, Monte Carlo or worst case (0: single run)
+    run_label: str = ""
+    base: str = ""  # plot name inside its run ("tran1"), equal to ``name`` for a single run
 
     def __getitem__(self, name: str) -> Vector:
         try:
@@ -107,16 +110,28 @@ _KIND_ORDER = {"op": 0, "dc": 1, "tran": 2, "ac": 3, "noise": 4, "other": 5}
 
 
 @dataclass
+class RunInfo:
+    index: int
+    label: str
+    values: dict[str, str] = field(default_factory=dict)  # varied parameter -> value used
+
+
+@dataclass
 class SimulationResult:
     backend: str
     plots: list[Plot]
     log: str = ""
     warnings: list[str] = field(default_factory=list)
     elapsed_s: float = 0.0
+    runs: list[RunInfo] = field(default_factory=list)
+    summary: dict[str, Any] = field(default_factory=dict)  # worst case, Monte Carlo set-up
 
     def __post_init__(self) -> None:
-        # Same order for every backend: .op, .dc, .tran, .ac, ... then by name.
-        self.plots.sort(key=lambda p: (_KIND_ORDER[p.kind], p.name))
+        # Same order for every backend: .op, .dc, .tran, .ac, ... then by run and name.
+        self.plots.sort(key=lambda p: (_KIND_ORDER[p.kind], p.run, p.name))
+        for p in self.plots:
+            if not p.base:
+                p.base = p.name
 
     def plot(self, kind: PlotKind, index: int = 0) -> Plot:
         matches = [p for p in self.plots if p.kind == kind]
@@ -125,8 +140,15 @@ class SimulationResult:
         return matches[index]
 
 
+class RunPlan(Protocol):
+    """Several netlists run in one job (sweeps, Monte Carlo, worst case)."""
+
+    def execute(self, backend: Any, progress: Any) -> SimulationResult: ...
+
+
 @dataclass(frozen=True)
 class SimulationRequest:
     netlist: str
     timeout_s: float = 120.0
     backend: Literal["auto", "shared", "batch"] = "auto"
+    plan: RunPlan | None = None  # when given, the worker runs the plan instead of ``netlist``

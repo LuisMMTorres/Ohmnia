@@ -97,7 +97,7 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 - 🔶 `GT-P20..P32`: casos propostos, aguardando conferência do usuário
 - ✅ [validacao/ampops-filtros-instrumentacao.md](validacao/ampops-filtros-instrumentacao.md), [validacao/catalogo-ampops.md](validacao/catalogo-ampops.md)
 
-## Fase 6 — Eletrônica de potência chaveada 👀
+## Fase 6 — Eletrônica de potência chaveada ✅ (aprovada em 2026-11-15)
 
 - ✅ `SV-MAG`: indutores, flyback e transformadores em núcleos do catálogo (Ap, entreferro, janela, Steinmetz, ΔT)
 - ✅ `DM-CC` (buck, boost, buck-boost, Ćuk, SEPIC, Zeta; MCC e MCD; malha tipo II/III pelo fator K)

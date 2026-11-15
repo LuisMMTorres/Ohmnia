@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Literal
+from typing import Any, Literal
 
 from pydantic import BaseModel, Field
 
@@ -28,6 +28,15 @@ class PlotInfo(BaseModel):
     title: str
     scale: str | None
     vectors: list[VectorInfo]
+    run: int = 0
+    run_label: str = ""
+    base: str = ""
+
+
+class RunOut(BaseModel):
+    index: int
+    label: str
+    values: dict[str, str]
 
 
 class JobErrorOut(BaseModel):
@@ -47,6 +56,9 @@ class JobOut(BaseModel):
     plots: list[PlotInfo] | None = None
     error: JobErrorOut | None = None
     log: str | None = None
+    runs: list[RunOut] | None = None
+    summary: dict[str, Any] | None = None
+    warnings: list[str] | None = None
 
 
 class PlotData(BaseModel):
@@ -66,6 +78,15 @@ class Measurements(BaseModel):
     peak_to_peak: QuantityModel
     minimum: QuantityModel
     maximum: QuantityModel
+    frequency: QuantityModel | None = None
+    period: QuantityModel | None = None
+    duty_cycle: QuantityModel | None = None
+    base: QuantityModel | None = None
+    top: QuantityModel | None = None
+    rise_time: QuantityModel | None = None
+    fall_time: QuantityModel | None = None
+    overshoot: QuantityModel | None = None
+    undershoot: QuantityModel | None = None
 
 
 class SnapIn(BaseModel):
