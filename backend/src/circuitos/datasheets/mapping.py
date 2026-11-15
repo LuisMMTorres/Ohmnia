@@ -175,7 +175,9 @@ def _parse_tail(words: list[Word]) -> _Parsed:
             consumed, value = _condition_value(rest, words[i + 1 : i + 3])
             if name and value is not None:
                 out.conditions[condition_name(name)] = value
-                out.conditions_text.append(" ".join(x.text for x in words[i : i + 1 + consumed]))
+                out.conditions_text.append(
+                    " ".join(x.text for x in words[i : i + 1 + consumed]).rstrip(",;")
+                )
                 i += 1 + consumed
                 continue
         if i + 1 < len(words) and words[i + 1].text.startswith("=") and _looks_like_name(text):
@@ -183,7 +185,9 @@ def _parse_tail(words: list[Word]) -> _Parsed:
             consumed, value = _condition_value(rest, words[i + 2 : i + 4])
             if value is not None:
                 out.conditions[condition_name(text)] = value
-                out.conditions_text.append(" ".join(x.text for x in words[i : i + 2 + consumed]))
+                out.conditions_text.append(
+                    " ".join(x.text for x in words[i : i + 2 + consumed]).rstrip(",;")
+                )
                 i += 2 + consumed
                 continue
         token = number_with_unit(text)
@@ -238,6 +242,11 @@ _HEAD = {"min": "min", "min.": "min", "typ": "typ", "typ.": "typ", "max": "max",
 _UNIT_HEAD = {"unit", "units", "unid.", "unidade", "dim.", "unit."}
 
 
+def _looks_like_part(text: str) -> bool:
+    t = text.strip("(),;")
+    return len(t) >= 4 and any(c.isdigit() for c in t) and any(c.isalpha() for c in t)
+
+
 def _header_of(row: Row, part: str | None) -> _Header | None:
     cols: dict[Position, float] = {}
     unit_x = None
@@ -250,6 +259,10 @@ def _header_of(row: Row, part: str | None) -> _Header | None:
             unit_x = (w.x0 + w.x1) / 2
         elif part and normalise_symbol(w.text) == normalise_symbol(part):
             part_x = (w.x0 + w.x1) / 2
+    # A part number alone (a title, "TESTE-D1 General Purpose Rectifier") is not a family table:
+    # the header of one lists several part numbers side by side.
+    if part_x is not None and sum(_looks_like_part(w.text) for w in row.words) < 2:
+        part_x = None
     if len(cols) >= 2 or part_x is not None:
         return _Header(cols, unit_x, part_x)
     return None

@@ -162,3 +162,12 @@ def test_category_ranking() -> None:
     ranking = rank_categories(_doc(rectifier_pdf()))
     assert ranking[0].category == "diode.rectifier"
     assert "VRRM" in ranking[0].found
+
+
+def test_part_number_in_title_is_not_a_family_column() -> None:
+    cands = map_document(_doc(rectifier_pdf()), "diode.rectifier", part_number="TESTE-D1")
+    vrrm = _best(cands, "VRRM")
+    assert vrrm.max == 800
+    assert not any("coluna do part number" in n for c in cands for n in c.notes)
+    vf = _best(cands, "VF")
+    assert vf.conditions_text is not None and not vf.conditions_text.split(";")[0].endswith(",")
