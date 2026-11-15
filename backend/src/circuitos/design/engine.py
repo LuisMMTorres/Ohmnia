@@ -234,6 +234,12 @@ def run(
         if not reselect:
             break
     warnings = lock_warnings + select_warnings
+    # Optional last step of a module that needs the catalogue beyond the selected roles
+    # (custom magnetics designed on catalogue cores): it may add steps, summary values,
+    # losses of parts without a role and warnings.
+    finish = getattr(module, "finish", None)
+    if finish is not None:
+        finish(spec, analysis, devices, catalogue)
 
     margins: list[MarginCheck] = []
     thermal: list[ThermalResult] = []
