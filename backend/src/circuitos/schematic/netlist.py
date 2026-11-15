@@ -274,7 +274,10 @@ def analysis_card(a: Analysis, sch: Schematic, conn: Connectivity) -> str:
         return ".op"
     if a.kind == "tran":
         tstop = p.get("tstop") or "10m"
-        tstep = p.get("tstep") or format_value(parse_value(tstop) / 1000)
+        # LTspice accepts a zero print step; ngspice does not (TSTEP must be > 0)
+        tstep = p.get("tstep") or ""
+        if not tstep or try_parse(tstep) == 0:
+            tstep = format_value(parse_value(tstop) / 1000)
         card = f".tran {tstep} {tstop}"
         tstart, tmax = p.get("tstart", ""), p.get("tmax", "")
         if tstart or tmax:

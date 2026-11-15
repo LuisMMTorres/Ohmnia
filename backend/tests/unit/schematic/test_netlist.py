@@ -204,3 +204,13 @@ def test_noise_and_dc_cards():
     assert ".noise v(out) VIN dec 5 10 1meg" in text
     assert ".dc VIN 0 1 0.5 temp 0 50 25" in text
     assert ".tran 1u 1m 0 1u uic" in text
+
+
+def test_zero_tran_step_is_replaced():
+    """LTspice netlists often write `.tran 0 3m`; ngspice requires TSTEP > 0."""
+    b = Builder()
+    b.add("vdc", "V1", ["in", "0"], dc="1")
+    b.add("resistor", "R1", ["in", "0"], value="1k")
+    b.analysis("tran", tstep="0", tstop="3m")
+    text = build_netlist(b.sch, {}).text
+    assert ".tran 3u 3m" in text

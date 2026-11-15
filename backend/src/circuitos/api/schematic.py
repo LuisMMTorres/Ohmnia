@@ -187,8 +187,11 @@ def simulate(request: Request, body: SimulateIn) -> SimulateOut:
     try:
         nominal = plan.nominal()
         sweep = body.schematic.sweep
-        if sweep.kind == "worstcase" and sweep.measure is None:
-            raise SchematicError("O pior caso precisa de uma medida (vetor e tipo)")
+        measure = sweep.measure
+        if sweep.kind == "worstcase" and (measure is None or not measure.vector.strip()):
+            raise SchematicError(
+                "O pior caso precisa de uma medida: informe o sinal (ex.: v(out)) e o tipo"
+            )
         n_runs = len(nominal.spreads) + 3 if sweep.kind == "worstcase" else len(plan.runs(nominal))
     except (SchematicError, ValueError, CircuitosError) as exc:
         raise HTTPException(422, str(exc)) from exc

@@ -155,3 +155,9 @@ def test_monte_carlo_job(client):
     assert fig.status_code == 200
     bad = dict(sch, sweep={"kind": "worstcase"})
     assert client.post("/api/v1/schematic/simulate", json={"schematic": bad}).status_code == 422
+
+
+def test_split_vectors_keeps_differential_names():
+    from circuitos.api.results import split_vectors
+
+    assert split_vectors("v(p), V(a,b),i(v1)") == ["v(p)", "v(a,b)", "i(v1)"]

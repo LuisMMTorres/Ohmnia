@@ -20,7 +20,7 @@ from circuitos.api.catalog import open_repository
 from circuitos.api.catalog import router as catalog_router
 from circuitos.api.design import router as design_router
 from circuitos.api.devices import router as devices_router
-from circuitos.api.results import Form, as_real
+from circuitos.api.results import Form, as_real, split_vectors
 from circuitos.api.results import router as results_router
 from circuitos.api.schemas import (
     JobErrorOut,
@@ -187,11 +187,7 @@ def plot_data(
     form: Form = "mag",
 ) -> PlotData:
     plot = _plot_or_404(_job_or_404(job_id), plot_name)
-    names = (
-        [n.strip().lower() for n in vectors.split(",")]
-        if vectors
-        else [n for n in plot.vectors if n != plot.scale]
-    )
+    names = split_vectors(vectors) if vectors else [n for n in plot.vectors if n != plot.scale]
     missing = [n for n in names if n not in plot.vectors]
     if missing:
         raise HTTPException(404, f"Vetores inexistentes: {missing}")

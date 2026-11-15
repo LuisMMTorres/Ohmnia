@@ -62,10 +62,26 @@ def _plot(job: Job, name: str) -> Plot:
     raise HTTPException(404, f"Análise {name!r} não encontrada")
 
 
+def split_vectors(names: str) -> list[str]:
+    """Split a comma-separated vector list, keeping commas inside parentheses: v(a,b)."""
+    out: list[str] = []
+    depth = 0
+    cur = ""
+    for ch in names:
+        if ch == "," and depth == 0:
+            out.append(cur)
+            cur = ""
+            continue
+        depth += (ch == "(") - (ch == ")")
+        cur += ch
+    out.append(cur)
+    return [n.strip().lower() for n in out if n.strip()]
+
+
 def _vectors(plot: Plot, names: str | None) -> list[str]:
     if not names:
         return [n for n in plot.vectors if n != plot.scale]
-    out = [n.strip().lower() for n in names.split(",") if n.strip()]
+    out = split_vectors(names)
     missing = [n for n in out if n not in plot.vectors]
     if missing:
         raise HTTPException(404, f"Vetores inexistentes: {missing}")
