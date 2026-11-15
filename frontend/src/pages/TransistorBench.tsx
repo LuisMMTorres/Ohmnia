@@ -362,3 +362,129 @@ export function MosfetBench({ selector }: { selector: ReactNode }) {
     />
   );
 }
+
+/** BD-IGBT: output characteristics IC × VCE (knee + on-resistance, gate-limited current) and
+ * the losses of a hard-switched chopper from the datasheet switching energies. */
+export function IgbtBench({ selector }: { selector: ReactNode }) {
+  const [vt, setVt] = useState("5");
+  const [v0, setV0] = useState("0,7");
+  const [ron, setRon] = useState("0,03");
+  const [k, setK] = useState("3");
+  const [vge, setVge] = useState("7; 8; 9; 10; 15");
+  const [vmax, setVmax] = useState("5");
+  const [vcc, setVcc] = useState("400");
+  const [ic, setIc] = useState("20");
+  const [fs, setFs] = useState("20");
+  const [duty, setDuty] = useState("0,5");
+  const [componentId, setComponentId] = useState("");
+  const [result, setResult] = useState<CurvesOut | null>(null);
+  const [fitResult, setFitResult] = useState<CurvesOut | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const components = useComponents("igbt");
+
+  const body = (fit: boolean) => {
+    const v = list(vge, "V");
+    if (!v) {
+      setError("Tensões de porta inválidas");
+      return null;
+    }
+    return {
+      model: {
+        VT: { value: num(vt), unit: "V" },
+        V0: { value: num(v0), unit: "V" },
+        R_on: { value: num(ron), unit: "ohm" },
+        K: { value: num(k), unit: "A/V**2" },
+      },
+      vge: v,
+      vce_max: { value: num(vmax), unit: "V" },
+      losses: {
+        VCC: { value: num(vcc), unit: "V" },
+        IC: { value: num(ic), unit: "A" },
+        fs: { value: num(fs), unit: "kHz" },
+        D: num(duty),
+      },
+      component_id: componentId || null,
+      fit,
+    };
+  };
+
+  useEffect(() => {
+    const b = body(false);
+    if (!b) return;
+    const handle = window.setTimeout(() => {
+      bench
+        .igbt(b)
+        .then((r) => {
+          setResult(r);
+          setError(null);
+        })
+        .catch((e: Error) => setError(e.message));
+    }, 200);
+    return () => window.clearTimeout(handle);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [vt, v0, ron, k, vge, vmax, vcc, ic, fs, duty, componentId]);
+
+  const fit = () => {
+    const b = body(true);
+    if (!b) return;
+    bench
+      .igbt(b)
+      .then((r) => {
+        setFitResult(r);
+        setVt(text((r.model.VT as Quantity).value));
+        setRon(text((r.model.R_on as Quantity).value));
+      })
+      .catch((e: Error) => setError(e.message));
+  };
+  const shown =
+    result && fitResult
+      ? {
+          ...result,
+          steps: [...fitResult.steps.filter((s) => s.id.endsWith("_fit")), ...result.steps],
+        }
+      : result;
+  const edit = (setter: (v: string) => void) => (v: string) => {
+    setFitResult(null);
+    setter(v);
+  };
+
+  return (
+    <CurvesLayout
+      selector={selector}
+      title="Bancada: IGBT"
+      intro={
+        <>
+          Curvas de saída I<sub>C</sub> × V<sub>CE</sub>: joelho V<sub>0</sub> mais resistência r
+          <sub>on</sub>, com a corrente limitada pela porta. O ajuste ao datasheet toma V
+          <sub>T</sub> de V<sub>GE(th)</sub> e r<sub>on</sub> de V<sub>CE(sat)</sub>; as perdas de
+          condução e de comutação (E<sub>on</sub> + E<sub>off</sub> escaladas) aparecem na memória
+          de cálculo.
+        </>
+      }
+      fields={[
+        { label: "Tensão de limiar VT (V)", value: vt, set: edit(setVt) },
+        { label: "Joelho V0 (V)", value: v0, set: edit(setV0) },
+        { label: "Resistência em condução r_on (Ω)", value: ron, set: edit(setRon) },
+        { label: "Ganho da porta K (A/V²)", value: k, set: edit(setK) },
+        { label: "Tensões de porta VGE (V, separadas por ;)", value: vge, set: setVge },
+        { label: "VCE máxima no gráfico (V)", value: vmax, set: setVmax },
+        { label: "Perdas: tensão comutada VCC (V)", value: vcc, set: setVcc },
+        { label: "Perdas: corrente IC (A)", value: ic, set: setIc },
+        { label: "Perdas: frequência fs (kHz)", value: fs, set: setFs },
+        { label: "Perdas: razão cíclica D", value: duty, set: setDuty },
+      ]}
+      components={components}
+      componentId={componentId}
+      setComponentId={(id) => {
+        setFitResult(null);
+        setComponentId(id);
+      }}
+      onFit={fit}
+      result={shown}
+      fitWarnings={fitResult?.warnings ?? []}
+      error={error}
+      xLabel="Tensão coletor-emissor"
+      yUnit="A"
+    />
+  );
+}

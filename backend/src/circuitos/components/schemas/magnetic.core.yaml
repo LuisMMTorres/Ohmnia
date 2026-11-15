@@ -1,6 +1,6 @@
 category: magnetic.core
-schema_version: "1.0"
-description: Núcleo magnético (ferrite, pó de ferro, lâminas); dados efetivos do conjunto
+schema_version: "1.1"
+description: Núcleo magnético (ferrite, pó de ferro, lâminas); dados efetivos do conjunto (par de metades)
 required: [Ae, le, Ve, AL, Bsat]
 optional: []
 parameters:
@@ -8,13 +8,24 @@ parameters:
   Amin:   {unit: mm**2, kind: geometry, description: Área mínima da seção}
   le:     {unit: mm, kind: geometry, description: Comprimento efetivo do caminho magnético}
   Ve:     {unit: mm**3, kind: geometry, description: Volume efetivo}
+  C1:     {unit: 1/mm, kind: geometry, description: Fator do núcleo Σ(l/A)}
   Aw:     {unit: mm**2, kind: geometry, description: Área da janela do carretel}
   lw:     {unit: mm, kind: geometry, description: Comprimento médio de uma espira}
-  mass:   {unit: g, kind: geometry, description: Massa do conjunto}
+  mass:   {unit: g, kind: geometry, description: Massa (por metade ou por conjunto, ver nota)}
+  dim_A:  {unit: mm, kind: geometry, description: Cota A do desenho (largura total)}
+  dim_B:  {unit: mm, kind: geometry, description: Cota B do desenho}
+  dim_C:  {unit: mm, kind: geometry, description: Cota C do desenho}
+  dim_D:  {unit: mm, kind: geometry, description: Cota D do desenho}
+  dim_D2: {unit: mm, kind: geometry, description: Cota D2 do desenho (ETD, largura interna da janela)}
+  dim_D3: {unit: mm, kind: geometry, description: Cota D3 do desenho (ETD, diâmetro da perna central)}
+  dim_E:  {unit: mm, kind: geometry, description: Cota E do desenho}
+  dim_F:  {unit: mm, kind: geometry, description: Cota F do desenho}
   AL:     {unit: nH, kind: characteristic, description: Indutância por espira ao quadrado (nH/esp²), conditions_required: [gap]}
   mu_e:   {unit: dimensionless, kind: characteristic, description: Permeabilidade efetiva}
   mu_i:   {unit: dimensionless, kind: characteristic, description: Permeabilidade inicial do material}
   Bsat:   {unit: mT, kind: characteristic, description: Densidade de fluxo de saturação, conditions_required: [T]}
   Pv:     {unit: kW/m**3, kind: characteristic, description: Perdas volumétricas no núcleo, conditions_required: [f, B, T]}
+  Pcore:  {unit: W, kind: characteristic, description: Perdas no conjunto (primeiro ponto do datasheet), conditions_required: [f, B, T]}
+  Pcore_2: {unit: W, kind: characteristic, description: Perdas no conjunto (segundo ponto do datasheet), conditions_required: [f, B, T]}
   Tc:     {unit: degC, kind: characteristic, description: Temperatura de Curie do material}
   Rth:    {unit: K/W, kind: thermal, description: Resistência térmica do conjunto montado}

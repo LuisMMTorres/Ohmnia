@@ -1,0 +1,182 @@
+# Fonte: Ferroxcube, product specification ETD34/17/11 (2016), texto do PDF.
+part_number: ETD34/17/11-3C96
+category: magnetic.core
+schema_version: '1.1'
+manufacturer: Ferroxcube
+package: ETD (par de metades, ETD34/17/11)
+lifecycle: ativo
+tags:
+- shape:ETD
+- size:ETD34/17/11
+- material:3C96
+notes:
+- Conjunto de duas metades ETD34/17/11 em 3C96, sem entreferro. O entreferro do projeto é calculado (retífica da
+  perna central) a partir do AL e do comprimento efetivo.
+- A janela e a espira média saem das cotas do desenho (memória de cálculo) quando não há carretel no catálogo.
+datasheets:
+- id: fxc-etd34_17_11
+  manufacturer: Ferroxcube
+  document_number: Product specification ETD34/17/11
+  revision: '2016'
+  url: https://www.ferroxcube.com/upload/media/product/file/Pr_ds/ETD34_17_11.pdf
+  sha256: ce42f8ac99500ada3f01f1860f91169461f0fcd6381dabb3812f15a016e39e1c
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  C1:
+    typ: 0.81
+    unit: 1/mm
+    status: extraido
+    source:
+      datasheet_id: fxc-etd34_17_11
+      page: 1
+      location: Effective parameters — C1
+  Ve:
+    typ: 7640.0
+    unit: mm**3
+    status: extraido
+    source:
+      datasheet_id: fxc-etd34_17_11
+      page: 1
+      location: Effective parameters — Ve
+  le:
+    typ: 78.6
+    unit: mm
+    status: extraido
+    source:
+      datasheet_id: fxc-etd34_17_11
+      page: 1
+      location: Effective parameters — Le
+  Ae:
+    typ: 97.1
+    unit: mm**2
+    status: extraido
+    source:
+      datasheet_id: fxc-etd34_17_11
+      page: 1
+      location: Effective parameters — Ae
+  Amin:
+    typ: 91.6
+    unit: mm**2
+    status: extraido
+    source:
+      datasheet_id: fxc-etd34_17_11
+      page: 1
+      location: Effective parameters — Amin
+  mass:
+    typ: 20.0
+    unit: g
+    status: extraido
+    note: Massa por peça (metade do conjunto), como no datasheet.
+    source:
+      datasheet_id: fxc-etd34_17_11
+      page: 1
+      location: Effective parameters — m (por metade, g/pcs)
+  dim_A:
+    min: 33.4
+    typ: 35.0
+    max: 35.0
+    unit: mm
+    status: extraido
+    source:
+      datasheet_id: fxc-etd34_17_11
+      page: 1
+      location: Dimensions — A (nominal, máx., mín.)
+  dim_B:
+    min: 10.5
+    typ: 11.1
+    max: 11.1
+    unit: mm
+    status: extraido
+    source:
+      datasheet_id: fxc-etd34_17_11
+      page: 1
+      location: Dimensions — B (nominal, máx., mín.)
+  dim_D2:
+    min: 25.6
+    typ: 25.6
+    max: 27.0
+    unit: mm
+    status: extraido
+    source:
+      datasheet_id: fxc-etd34_17_11
+      page: 1
+      location: Dimensions — D2 (nominal, máx., mín.)
+  dim_D3:
+    min: 10.5
+    typ: 11.1
+    max: 11.1
+    unit: mm
+    status: extraido
+    source:
+      datasheet_id: fxc-etd34_17_11
+      page: 1
+      location: Dimensions — D3 (nominal, máx., mín.)
+  dim_E:
+    min: 17.1
+    typ: 17.3
+    max: 17.5
+    unit: mm
+    status: extraido
+    source:
+      datasheet_id: fxc-etd34_17_11
+      page: 1
+      location: Dimensions — E (nominal, máx., mín.)
+  dim_F:
+    min: 11.8
+    typ: 11.8
+    max: 12.4
+    unit: mm
+    status: extraido
+    source:
+      datasheet_id: fxc-etd34_17_11
+      page: 1
+      location: Dimensions — F (nominal, máx., mín.)
+  AL:
+    typ: 2500.0
+    unit: nH
+    status: extraido
+    conditions:
+      gap: 0 mm
+    note: Sem entreferro, material 3C96, tolerância ±25%.
+    source:
+      datasheet_id: fxc-etd34_17_11
+      page: 1
+      location: Inductance factor — 3C96
+  Pcore:
+    max: 3.4
+    unit: W
+    status: extraido
+    conditions:
+      f: 100 kHz
+      B: 200 mT
+      T: 100 degC
+    source:
+      datasheet_id: fxc-etd34_17_11
+      page: 2
+      location: 'Power loss: 3C96 — 100 kHz, 200 mT, 100 °C (W/set)'
+  Pcore_2:
+    max: 1.4
+    unit: W
+    status: extraido
+    conditions:
+      f: 400 kHz
+      B: 50 mT
+      T: 100 degC
+    source:
+      datasheet_id: fxc-etd34_17_11
+      page: 2
+      location: 'Power loss: 3C96 — 400 kHz, 50 mT, 100 °C (W/set)'
+  Bsat:
+    min: 340.0
+    unit: mT
+    status: extraido
+    conditions:
+      T: 100 degC
+      H: 250 A/m
+      f: 25 kHz
+    source:
+      datasheet_id: fxc-etd34_17_11
+      page: 2
+      location: Bsat — 3C96, 25 kHz, 250 A/m, 100 °C

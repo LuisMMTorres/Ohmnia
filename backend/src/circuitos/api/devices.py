@@ -18,7 +18,7 @@ from circuitos.core.calc import BibRef, CalcLog, CalcStep, record
 from circuitos.core.errors import CircuitosError
 from circuitos.core.units import Q_, QuantityModel, VectorModel, parse_unit
 from circuitos.design.opamp import OpAmp, opamp_model
-from circuitos.devices import bjt, diode, mosfet, pn, thyristor, zener
+from circuitos.devices import bjt, diode, igbt, mosfet, pn, thyristor, zener
 from circuitos.devices.opamp_bench import run_bench
 
 router = APIRouter(prefix="/api/v1/devices")
@@ -633,6 +633,177 @@ def mosfet_output(request: Request, body: MosfetBenchIn) -> CurvesOut:
             "LAMBDA": QuantityModel(value=model.LAMBDA.m_as("1/V"), unit="1/V"),
         },
         spice_model=model.spice(),
+        warnings=warnings,
+    )
+
+
+class IgbtModelIn(BaseModel):
+    VT: QuantityModel = QuantityModel(value=5.0, unit="V")
+    V0: QuantityModel = QuantityModel(value=0.7, unit="V")  # knee (user model parameter)
+    R_on: QuantityModel = QuantityModel(value=0.03, unit="ohm")
+    K: QuantityModel = QuantityModel(value=3.0, unit="A/V**2")
+
+
+class IgbtLossIn(BaseModel):
+    VCC: QuantityModel = QuantityModel(value=400, unit="V")
+    IC: QuantityModel = QuantityModel(value=20, unit="A")
+    fs: QuantityModel = QuantityModel(value=20, unit="kHz")
+    D: float = Field(default=0.5, ge=0, le=1)
+    E_on: QuantityModel | None = None  # J at (V_test, I_test); from the component when None
+    E_off: QuantityModel | None = None
+    V_test: QuantityModel | None = None
+    I_test: QuantityModel | None = None
+
+
+class IgbtBenchIn(BaseModel):
+    model: IgbtModelIn = IgbtModelIn()
+    vge: list[QuantityModel] = Field(
+        default_factory=lambda: [QuantityModel(value=v, unit="V") for v in (7, 8, 9, 10, 15)],
+        min_length=1,
+        max_length=10,
+    )
+    vce_max: QuantityModel = QuantityModel(value=5, unit="V")
+    points: int = Field(default=400, ge=20, le=5000)
+    losses: IgbtLossIn = IgbtLossIn()
+    component_id: uuid.UUID | None = None
+    fit: bool = False
+
+
+@router.post("/igbt/output")
+def igbt_output(request: Request, body: IgbtBenchIn) -> CurvesOut:
+    """BD-IGBT: output characteristics IC × VCE and chopper losses."""
+    try:
+        model = igbt.IgbtModel(
+            VT=body.model.VT.to_pint(),
+            V0=body.model.V0.to_pint(),
+            R_on=body.model.R_on.to_pint(),
+            K=body.model.K.to_pint(),
+        )
+        vmax = body.vce_max.to_pint().m_as("V")
+    except (CircuitosError, ValueError) as exc:
+        raise HTTPException(422, str(exc)) from exc
+    if vmax <= 0:
+        raise HTTPException(422, "vce_max deve ser positivo")
+    steps: list[CalcStep] = []
+    warnings: list[str] = []
+    markers: list[Marker] = []
+    lo = body.losses
+    e_on = lo.E_on.to_pint() if lo.E_on else None
+    e_off = lo.E_off.to_pint() if lo.E_off else None
+    v_test = lo.V_test.to_pint() if lo.V_test else None
+    i_test = lo.I_test.to_pint() if lo.I_test else None
+    if body.component_id is not None:
+        rec = _record_for(request, body.component_id, "igbt")
+        sat = rec.parameters.get("VCE(sat)")
+        vth = rec.parameters.get("VGE(th)")
+        for key, p in (("VCE(sat)", sat), ("VCE(sat)@hot", rec.parameters.get("VCE(sat)@hot"))):
+            if p is None or "IC" not in p.conditions:
+                continue
+            v = p.typ if p.typ is not None else p.max
+            if v is None:
+                continue
+            temp = p.conditions.get("TC")
+            markers.append(
+                Marker(
+                    key=key,
+                    label=f"{rec.part_number}: {key} {'típ.' if p.typ is not None else 'máx.'}"
+                    f" @ IC = {formatq(p.conditions['IC'].to_pint())}",
+                    v=QuantityModel(value=Q_(v, parse_unit(p.unit)).m_as("V"), unit="V"),
+                    i=QuantityModel(value=p.conditions["IC"].to_pint().m_as("A"), unit="A"),
+                    temperature=temp,
+                    reviewed=p.status == "revisado",
+                )
+            )
+        on, off = rec.parameters.get("Eon"), rec.parameters.get("Eoff")
+        if e_on is None and on is not None and on.typ is not None:
+            e_on = Q_(on.typ, parse_unit(on.unit))
+            v_test = v_test or (on.conditions["VCC"].to_pint() if "VCC" in on.conditions else None)
+            i_test = i_test or (on.conditions["IC"].to_pint() if "IC" in on.conditions else None)
+        if e_off is None and off is not None and off.typ is not None:
+            e_off = Q_(off.typ, parse_unit(off.unit))
+        warnings += _unreviewed([on, off])
+        if body.fit:
+            if sat is None or sat.typ is None or "IC" not in sat.conditions:
+                raise HTTPException(422, "O componente não tem VCE(sat) típico com IC de ensaio")
+            if vth is None or (vth.typ is None and (vth.min is None or vth.max is None)):
+                raise HTTPException(422, "O componente não tem VGE(th)")
+            vt = (
+                Q_(vth.typ, parse_unit(vth.unit))
+                if vth.typ is not None
+                else Q_((vth.min or 0) + (vth.max or 0), parse_unit(vth.unit)) / 2
+            )
+            vt_step = record_step(
+                "VT_fit",
+                "Tensão de limiar do modelo",
+                r"V_T = V_{GE(th)}",
+                vt.to("V"),
+                {"V_{GE(th)}": vt},
+                ["valor típico (ou ponto médio da faixa)"],
+                igbt.IGBT_REF,
+            )
+            try:
+                r_step = igbt.fit_r_on(
+                    Q_(sat.typ, parse_unit(sat.unit)), sat.conditions["IC"].to_pint(), model.V0
+                )
+            except ValueError as exc:
+                raise HTTPException(422, str(exc)) from exc
+            model = igbt.IgbtModel(VT=vt.to("V"), V0=model.V0, R_on=r_step.value, K=model.K)
+            steps += [vt_step, r_step.step]
+            warnings.append(
+                "O joelho V0 e o ganho K não vêm do datasheet: ajuste-os pela curva de saída "
+                "do fabricante. O modelo linear vale perto da corrente de ensaio."
+            )
+            warnings += _unreviewed([sat, vth])
+    grid = np.linspace(0, vmax, body.points)
+    grid = np.unique(np.concatenate([grid, [m.v.value for m in markers if m.v.value < vmax]]))
+    curves: dict[str, VectorModel] = {}
+    for vq in body.vge:
+        vge = vq.to_pint()
+        curves[f"VGE = {formatq(vge)}"] = VectorModel.from_pint(
+            igbt.collector_current(model, vge, Q_(grid, "V")), "A"
+        )
+    out_model: dict[str, QuantityModel | float] = {
+        "VT": QuantityModel(value=model.VT.m_as("V"), unit="V"),
+        "V0": QuantityModel(value=model.V0.m_as("V"), unit="V"),
+        "R_on": QuantityModel(value=model.R_on.m_as("ohm"), unit="ohm"),
+        "K": QuantityModel(value=model.K.m_as("A/V**2"), unit="A/V**2"),
+    }
+    if e_on is not None and e_off is not None and v_test is not None and i_test is not None:
+        cond, sw = igbt.chopper_losses(
+            model,
+            lo.VCC.to_pint(),
+            lo.IC.to_pint(),
+            lo.fs.to_pint(),
+            lo.D,
+            e_on,
+            e_off,
+            v_test,
+            i_test,
+        )
+        steps += [cond.step, sw.step]
+        out_model |= {
+            "P_cond": QuantityModel(value=cond.value.m_as("W"), unit="W"),
+            "P_sw": QuantityModel(value=sw.value.m_as("W"), unit="W"),
+        }
+    else:
+        warnings.append(
+            "Sem E_on/E_off e condição de ensaio: as perdas de comutação não foram calculadas."
+        )
+    vt_ = model.VT.m_as("V")
+    spice = (
+        ".subckt IGBT c g e\n"
+        f"B1 c e I = (v(g,e) > {vt_:.6g}) ? min(max(v(c,e) - {model.V0.m_as('V'):.6g}, 0) / "
+        f"{model.R_on.m_as('ohm'):.6g}, "
+        f"{model.K.m_as('A/V**2') / 2:.6g} * (v(g,e) - {vt_:.6g})**2) : 0\n"
+        ".ends"
+    )
+    return CurvesOut(
+        x=VectorModel(values=grid.tolist(), unit="V"),
+        curves=curves,
+        markers=markers,
+        steps=steps,
+        model=out_model,
+        spice_model=spice,
         warnings=warnings,
     )
 

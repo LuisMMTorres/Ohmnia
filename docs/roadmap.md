@@ -8,9 +8,9 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 | 1 | Fundação | ✅ |
 | 2 | Banco de componentes e bancada de dispositivos | ✅ |
 | 3 | Retificadores (vertical completa, define o padrão) | 👀 |
-| 4 | Fontes reguladas e amplificadores | ⏳ |
-| 5 | Ampops, filtros e instrumentação | ⏳ |
-| 6 | Eletrônica de potência chaveada | ⏳ |
+| 4 | Fontes reguladas e amplificadores | ✅ |
+| 5 | Ampops, filtros e instrumentação | ✅ |
+| 6 | Eletrônica de potência chaveada | 👀 |
 | 7 | Simulador livre e editor de esquemáticos | ⏳ |
 | 8 | Importação de datasheets em PDF | ⏳ |
 | 9 | Relatórios, empacotamento e documentação | ⏳ |
@@ -86,7 +86,7 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 - 🔶 `GT-P8..P19`: casos propostos, aguardando conferência do usuário
 - ✅ [validacao/fontes-amplificadores.md](validacao/fontes-amplificadores.md), [validacao/catalogo-reguladores.md](validacao/catalogo-reguladores.md), [validacao/catalogo-jfet.md](validacao/catalogo-jfet.md)
 
-## Fase 5 — Ampops, filtros e instrumentação 🔶 (aguardando aprovação)
+## Fase 5 — Ampops, filtros e instrumentação ✅ (aprovada em 2026-11-15)
 
 - ✅ `DM-OPA` (10 configurações), `DM-FIL` (Butterworth, Chebyshev, Bessel, elíptico; Sallen-Key, MFB, KHN, escada LC), `DM-OPNL`, `DM-OSC` (Wien, deslocamento de fase, astável, 555, multivibrador com TBJ), `DM-INST`
 - ✅ `BD-AMPOP` e `BV-AMPOP-*` (VOS, IB, IOS, A0, CMRR, PSRR, GBW, SR, excursão)
@@ -97,9 +97,21 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 - 🔶 `GT-P20..P32`: casos propostos, aguardando conferência do usuário
 - ✅ [validacao/ampops-filtros-instrumentacao.md](validacao/ampops-filtros-instrumentacao.md), [validacao/catalogo-ampops.md](validacao/catalogo-ampops.md)
 
-## Fase 6 — Eletrônica de potência chaveada ⏳
+## Fase 6 — Eletrônica de potência chaveada 👀
 
-- ⏳ `DM-CC`, `DM-CCI`, `SV-MAG`, malha de controle; `DM-INV`, `DM-CACA`, `DM-CMD`; `BD-IGBT`
+- ✅ `SV-MAG`: indutores, flyback e transformadores em núcleos do catálogo (Ap, entreferro, janela, Steinmetz, ΔT)
+- ✅ `DM-CC` (buck, boost, buck-boost, Ćuk, SEPIC, Zeta; MCC e MCD; malha tipo II/III pelo fator K)
+- ✅ `DM-CCI` (flyback, forward, push-pull, meia ponte, ponte completa)
+- ✅ `DM-INV` (mono e trifásico; onda quadrada, quase quadrada, SPWM bipolar e unipolar, SVPWM; tempo morto; filtro LC amortecido)
+- ✅ `DM-CACA` (controle de fase R e RL, ciclos inteiros, rede RC + DIAC)
+- ✅ `DM-CMD` (R_g, bootstrap AN-978, snubber RCD, fusível I²t, varistor, NTC)
+- ✅ Bancada `BD-IGBT`
+- ✅ Catálogo: IRF840, FGH40N60SMD, MBR20100CT, MUR1560, IR2110; núcleos E/ETD Ferroxcube, 3C94/3C96, carretéis Thornton
+- ✅ `AS-*` da Fase 6 (33 casos, 114 grandezas, maior erro 3,68 % na THD da corrente do inversor filtrado com mf = 201, tol. 10 %)
+- ✅ `PT-ENERGIA`, `PT-CC-D`, `PT-INV-MA`, `PT-FFT-PARSEVAL`
+- 🔶 `GT-P33..P49`: casos propostos, aguardando conferência do usuário
+- ➡️ `GT-CMD-02` (UJT): sem UJT no catálogo
+- ✅ [validacao/potencia-chaveada.md](validacao/potencia-chaveada.md), [validacao/magneticos.md](validacao/magneticos.md), [validacao/catalogo-potencia.md](validacao/catalogo-potencia.md)
 
 ## Fase 7 — Simulador livre ⏳
 

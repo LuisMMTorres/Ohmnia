@@ -1,0 +1,162 @@
+# Fonte: onsemi MBR20100CT/D, Rev. 1, janeiro de 2015.
+part_number: MBR20100CTG
+category: diode.schottky
+schema_version: '1.0'
+manufacturer: onsemi
+package: TO-220 (dois diodos, catodo comum)
+lifecycle: ativo
+notes:
+- Valores por diodo (perna); o encapsulamento tem dois, 20 A no total.
+datasheets:
+- id: onsemi-mbr20100ct-d
+  manufacturer: onsemi
+  document_number: MBR20100CT/D
+  revision: Rev. 1, January 2015
+  url: https://www.onsemi.com/download/data-sheet/pdf/mbr20100ct-d.pdf
+  sha256: 28163311260f34bbcaafa7da78d320b79e09e900e75fe8cd31bea7b359809870
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VRRM:
+    max: 100
+    unit: V
+    status: extraido
+    source:
+      datasheet_id: onsemi-mbr20100ct-d
+      page: 2
+      location: Maximum ratings (per leg) — VRRM, 20100CT
+  VDC:
+    max: 100
+    unit: V
+    status: extraido
+    source:
+      datasheet_id: onsemi-mbr20100ct-d
+      page: 2
+      location: Maximum ratings (per leg) — VR, 20100CT
+  IF(AV):
+    max: 10
+    unit: A
+    conditions:
+      TC: 133 degC
+    status: extraido
+    source:
+      datasheet_id: onsemi-mbr20100ct-d
+      page: 2
+      location: Maximum ratings (per leg) — IF(AV), TC = 133 °C
+  IFRM:
+    max: 20
+    unit: A
+    conditions:
+      TC: 133 degC
+      f: 20 kHz
+    status: extraido
+    source:
+      datasheet_id: onsemi-mbr20100ct-d
+      page: 2
+      location: Maximum ratings (per leg) — IFRM, 20 kHz, TC = 133 °C
+  IFSM:
+    max: 150
+    unit: A
+    conditions:
+      t_pulse: 8.3 ms
+    status: extraido
+    source:
+      datasheet_id: onsemi-mbr20100ct-d
+      page: 2
+      location: Maximum ratings (per leg) — IFSM, meia onda 60 Hz
+  Tj_max:
+    max: 175
+    unit: degC
+    status: extraido
+    source:
+      datasheet_id: onsemi-mbr20100ct-d
+      page: 2
+      location: Maximum ratings — TJ
+  Tj_min:
+    min: -65
+    unit: degC
+    status: extraido
+    source:
+      datasheet_id: onsemi-mbr20100ct-d
+      page: 2
+      location: Maximum ratings — TJ
+  Tstg_max:
+    max: 175
+    unit: degC
+    status: extraido
+    source:
+      datasheet_id: onsemi-mbr20100ct-d
+      page: 2
+      location: Maximum ratings — Tstg
+  Rth_jc:
+    max: 2.0
+    unit: K/W
+    status: extraido
+    source:
+      datasheet_id: onsemi-mbr20100ct-d
+      page: 2
+      location: Thermal characteristics — RθJC
+  Rth_ja:
+    max: 60
+    unit: K/W
+    status: extraido
+    source:
+      datasheet_id: onsemi-mbr20100ct-d
+      page: 2
+      location: Thermal characteristics — RθJA
+  VF:
+    max: 0.85
+    unit: V
+    conditions:
+      IF: 10 A
+      Tj: 25 degC
+    status: extraido
+    source:
+      datasheet_id: onsemi-mbr20100ct-d
+      page: 2
+      location: Electrical (per leg) — vF, iF = 10 A, TC = 25 °C
+  VF@125C:
+    max: 0.75
+    unit: V
+    conditions:
+      IF: 10 A
+      Tj: 125 degC
+    status: extraido
+    source:
+      datasheet_id: onsemi-mbr20100ct-d
+      page: 2
+      location: Electrical (per leg) — vF, iF = 10 A, TC = 125 °C
+  VF@20A:
+    max: 0.95
+    unit: V
+    conditions:
+      IF: 20 A
+      Tj: 25 degC
+    status: extraido
+    source:
+      datasheet_id: onsemi-mbr20100ct-d
+      page: 2
+      location: Electrical (per leg) — vF, iF = 20 A, TC = 25 °C
+  IR:
+    max: 0.1
+    unit: mA
+    conditions:
+      VR: 100 V
+      Tj: 25 degC
+    status: extraido
+    source:
+      datasheet_id: onsemi-mbr20100ct-d
+      page: 2
+      location: Electrical (per leg) — iR, VR nominal, TC = 25 °C
+  IR@125C:
+    max: 6.0
+    unit: mA
+    conditions:
+      VR: 100 V
+      Tj: 125 degC
+    status: extraido
+    source:
+      datasheet_id: onsemi-mbr20100ct-d
+      page: 2
+      location: Electrical (per leg) — iR, VR nominal, TC = 125 °C

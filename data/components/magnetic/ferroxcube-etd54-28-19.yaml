@@ -1,0 +1,170 @@
+# Fonte: Ferroxcube, product specification ETD54/28/19 (2016), texto do PDF.
+part_number: ETD54/28/19-3C94
+category: magnetic.core
+schema_version: '1.1'
+manufacturer: Ferroxcube
+package: ETD (par de metades, ETD54/28/19)
+lifecycle: ativo
+tags:
+- shape:ETD
+- size:ETD54/28/19
+- material:3C94
+notes:
+- Conjunto de duas metades ETD54/28/19 em 3C94, sem entreferro. O entreferro do projeto é calculado (retífica da
+  perna central) a partir do AL e do comprimento efetivo.
+- A janela e a espira média saem das cotas do desenho (memória de cálculo) quando não há carretel no catálogo.
+datasheets:
+- id: fxc-etd54_28_19
+  manufacturer: Ferroxcube
+  document_number: Product specification ETD54/28/19
+  revision: '2016'
+  url: https://www.ferroxcube.com/upload/media/product/file/Pr_ds/ETD54_28_19.pdf
+  sha256: ab79d4a6c74487b22b0c9f3c192b3a96b4fd39ba07f9c45793515417cb5bfe2e
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  C1:
+    typ: 0.454
+    unit: 1/mm
+    status: extraido
+    source:
+      datasheet_id: fxc-etd54_28_19
+      page: 1
+      location: Effective parameters — C1
+  Ve:
+    typ: 35500.0
+    unit: mm**3
+    status: extraido
+    source:
+      datasheet_id: fxc-etd54_28_19
+      page: 1
+      location: Effective parameters — Ve
+  le:
+    typ: 127.0
+    unit: mm
+    status: extraido
+    source:
+      datasheet_id: fxc-etd54_28_19
+      page: 1
+      location: Effective parameters — Le
+  Ae:
+    typ: 280.0
+    unit: mm**2
+    status: extraido
+    source:
+      datasheet_id: fxc-etd54_28_19
+      page: 1
+      location: Effective parameters — Ae
+  Amin:
+    typ: 270.0
+    unit: mm**2
+    status: extraido
+    source:
+      datasheet_id: fxc-etd54_28_19
+      page: 1
+      location: Effective parameters — Amin
+  mass:
+    typ: 90.0
+    unit: g
+    status: extraido
+    note: Massa por peça (metade do conjunto), como no datasheet.
+    source:
+      datasheet_id: fxc-etd54_28_19
+      page: 1
+      location: Effective parameters — m (por metade, g/pcs)
+  dim_A:
+    min: 53.2
+    typ: 54.5
+    max: 55.8
+    unit: mm
+    status: extraido
+    source:
+      datasheet_id: fxc-etd54_28_19
+      page: 1
+      location: Dimensions — A (nominal, máx., mín.)
+  dim_B:
+    min: 18.5
+    typ: 18.9
+    max: 19.3
+    unit: mm
+    status: extraido
+    source:
+      datasheet_id: fxc-etd54_28_19
+      page: 1
+      location: Dimensions — B (nominal, máx., mín.)
+  dim_D2:
+    min: 40.1
+    typ: 41.2
+    max: 42.3
+    unit: mm
+    status: extraido
+    source:
+      datasheet_id: fxc-etd54_28_19
+      page: 1
+      location: Dimensions — D2 (nominal, máx., mín.)
+  dim_D3:
+    min: 18.5
+    typ: 18.9
+    max: 19.3
+    unit: mm
+    status: extraido
+    source:
+      datasheet_id: fxc-etd54_28_19
+      page: 1
+      location: Dimensions — D3 (nominal, máx., mín.)
+  dim_E:
+    min: 27.4
+    typ: 27.6
+    max: 27.8
+    unit: mm
+    status: extraido
+    source:
+      datasheet_id: fxc-etd54_28_19
+      page: 1
+      location: Dimensions — E (nominal, máx., mín.)
+  dim_F:
+    min: 19.8
+    typ: 20.2
+    max: 20.6
+    unit: mm
+    status: extraido
+    source:
+      datasheet_id: fxc-etd54_28_19
+      page: 1
+      location: Dimensions — F (nominal, máx., mín.)
+  AL:
+    typ: 5000.0
+    unit: nH
+    status: extraido
+    conditions:
+      gap: 0 mm
+    note: Sem entreferro, material 3C94, tolerância ±25%.
+    source:
+      datasheet_id: fxc-etd54_28_19
+      page: 1
+      location: Inductance factor — 3C94
+  Pcore:
+    max: 18.0
+    unit: W
+    status: extraido
+    conditions:
+      f: 100 kHz
+      B: 200 mT
+      T: 100 degC
+    source:
+      datasheet_id: fxc-etd54_28_19
+      page: 1
+      location: 'Power loss: 3C94 — 100 kHz, 200 mT, 100 °C (W/set)'
+  Bsat:
+    min: 320.0
+    unit: mT
+    status: extraido
+    conditions:
+      T: 100 degC
+      H: 250 A/m
+      f: 25 kHz
+    source:
+      datasheet_id: fxc-etd54_28_19
+      page: 2
+      location: Bsat — 3C94, 25 kHz, 250 A/m, 100 °C

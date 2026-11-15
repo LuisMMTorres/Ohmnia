@@ -120,3 +120,19 @@ describe("visible (Phase 5)", () => {
     expect(visible("DM-INST", "V_fs", { config: "transmissor_4_20" })).toBe(false);
   });
 });
+
+describe("visible (phase 6)", () => {
+  it("follows topology, modulation and control of the power modules", () => {
+    expect(visible("DM-CC", "ripple_vc1", { topology: "buck" })).toBe(false);
+    expect(visible("DM-CC", "ripple_vc1", { topology: "sepic" })).toBe(true);
+    expect(visible("DM-CC", "mode", { topology: "cuk" })).toBe(false);
+    expect(visible("DM-CC", "L_ratio", { mode: "MCD" })).toBe(true);
+    expect(visible("DM-CC", "Vm", { compensator: "nenhum" })).toBe(false);
+    expect(visible("DM-INV", "alpha_deg", { modulation: "quase_quadrada" })).toBe(true);
+    expect(visible("DM-INV", "mf", { modulation: "quadrada" })).toBe(false);
+    expect(visible("DM-INV", "fc_ratio", { modulation: "svpwm", filter: true })).toBe(true);
+    expect(visible("DM-CACA", "V_BO", { control: "fase", trigger: "diac" })).toBe(true);
+    expect(visible("DM-CACA", "alpha_deg", { control: "fase", trigger: "diac" })).toBe(false);
+    expect(visible("DM-CACA", "n_on", { control: "ciclo_integral" })).toBe(true);
+  });
+});

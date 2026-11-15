@@ -1,0 +1,16 @@
+category: magnetic.material
+schema_version: "1.0"
+description: Material magnético (ferrite de potência); pontos de perdas do datasheet para o ajuste de Steinmetz
+required: [mu_i, Bsat, Pv_1, Pv_2]
+optional: []
+parameters:
+  mu_i:   {unit: dimensionless, kind: characteristic, description: Permeabilidade inicial, conditions_required: [T, f]}
+  mu_a:   {unit: dimensionless, kind: characteristic, description: Permeabilidade de amplitude, conditions_required: [T, f, B]}
+  Bsat:   {unit: mT, kind: characteristic, description: Densidade de fluxo com H alto, conditions_required: [T, H]}
+  Bsat_25: {unit: mT, kind: characteristic, description: Densidade de fluxo com H alto a 25 °C, conditions_required: [T, H]}
+  Pv_1:   {unit: kW/m**3, kind: characteristic, description: Perdas volumétricas, ponto 1, conditions_required: [f, B, T]}
+  Pv_2:   {unit: kW/m**3, kind: characteristic, description: Perdas volumétricas, ponto 2, conditions_required: [f, B, T]}
+  Pv_3:   {unit: kW/m**3, kind: characteristic, description: Perdas volumétricas, ponto 3, conditions_required: [f, B, T]}
+  rho:    {unit: ohm*m, kind: characteristic, description: Resistividade em CC}
+  Tc:     {unit: degC, kind: characteristic, description: Temperatura de Curie}
+  density: {unit: kg/m**3, kind: characteristic, description: Densidade}

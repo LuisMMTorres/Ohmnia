@@ -7,14 +7,14 @@ import { SignalPlot, Trace } from "../components/SignalPlot";
 import { OpampBench } from "./OpampBench";
 import { PnBench } from "./PnBench";
 import { ThyristorBench } from "./ThyristorBench";
-import { BjtBench, MosfetBench } from "./TransistorBench";
+import { BjtBench, IgbtBench, MosfetBench } from "./TransistorBench";
 import { ZenerBench } from "./ZenerBench";
 
 export function num(text: string): number {
   return Number(text.replace(",", "."));
 }
 
-type Device = "pn" | "diodo" | "zener" | "tbj" | "mosfet" | "tiristor" | "ampop";
+type Device = "pn" | "diodo" | "zener" | "tbj" | "mosfet" | "igbt" | "tiristor" | "ampop";
 
 export function BenchPage() {
   const [device, setDevice] = useState<Device>("diodo");
@@ -27,6 +27,7 @@ export function BenchPage() {
           ["zener", "Diodo Zener"],
           ["tbj", "TBJ"],
           ["mosfet", "MOSFET"],
+          ["igbt", "IGBT"],
           ["tiristor", "SCR e TRIAC"],
           ["ampop", "Ampop"],
         ] as const
@@ -45,6 +46,7 @@ export function BenchPage() {
   if (device === "zener") return <ZenerBench selector={selector} />;
   if (device === "tbj") return <BjtBench selector={selector} />;
   if (device === "mosfet") return <MosfetBench selector={selector} />;
+  if (device === "igbt") return <IgbtBench selector={selector} />;
   if (device === "tiristor") return <ThyristorBench selector={selector} />;
   if (device === "ampop") return <OpampBench selector={selector} />;
   return <DiodeBench selector={selector} />;

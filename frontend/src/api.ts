@@ -307,6 +307,15 @@ export interface MosfetBenchIn {
   fit?: boolean;
 }
 
+export interface IgbtBenchIn {
+  model: { VT: Quantity; V0: Quantity; R_on: Quantity; K: Quantity };
+  vge: Quantity[];
+  vce_max: Quantity;
+  losses: { VCC: Quantity; IC: Quantity; fs: Quantity; D: number };
+  component_id?: string | null;
+  fit?: boolean;
+}
+
 export interface ThyristorBenchIn {
   model: {
     kind: "scr" | "triac";
@@ -419,6 +428,8 @@ export const bench = {
     request<CurvesOut>("/devices/bjt/output", { method: "POST", body: JSON.stringify(body) }),
   mosfet: (body: MosfetBenchIn) =>
     request<CurvesOut>("/devices/mosfet/output", { method: "POST", body: JSON.stringify(body) }),
+  igbt: (body: IgbtBenchIn) =>
+    request<CurvesOut>("/devices/igbt/output", { method: "POST", body: JSON.stringify(body) }),
   pn: (body: PnBenchIn) =>
     request<PnOut>("/devices/pn", { method: "POST", body: JSON.stringify(body) }),
   thyristor: (body: ThyristorBenchIn) =>

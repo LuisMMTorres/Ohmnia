@@ -1,6 +1,6 @@
 # Validação: ampops, filtros e instrumentação (Fase 5)
 
-Data: 2026-11-14. Status: aguardando aprovação da Fase 5.
+Data: 2026-11-14. Status: Fase 5 aprovada em 2026-11-15; dados do catálogo e casos P20–P32 aguardam a sua conferência.
 
 Cinco módulos novos na aba **Projeto** e uma bancada nova na aba **Bancada**, no mesmo caminho das
 fases anteriores: especificação → cálculo com memória → escolha de peças reais → margens →

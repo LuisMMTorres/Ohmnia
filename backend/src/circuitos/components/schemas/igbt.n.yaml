@@ -1,0 +1,43 @@
+category: igbt.n
+schema_version: "1.0"
+description: IGBT canal N (com ou sem diodo antiparalelo no encapsulamento)
+required: [VCES, IC, VCE(sat), Eon, Eoff, Tj_max, Rth_jc]
+optional: []
+parameters:
+  VCES:      {unit: V, kind: max_rating, description: Tensão coletor-emissor máxima}
+  VGES:      {unit: V, kind: max_rating, description: Tensão porta-emissor máxima (em módulo)}
+  IC:        {unit: A, kind: max_rating, description: Corrente de coletor contínua, conditions_required: [TC]}
+  IC@100C:   {unit: A, kind: max_rating, description: Corrente de coletor contínua a TC = 100 °C, conditions_required: [TC]}
+  ICM:       {unit: A, kind: max_rating, description: Corrente de coletor pulsada}
+  IF:        {unit: A, kind: max_rating, description: Corrente direta do diodo, conditions_required: [TC]}
+  IFM:       {unit: A, kind: max_rating, description: Corrente direta pulsada do diodo}
+  Ptot:      {unit: W, kind: max_rating, description: Dissipação máxima, conditions_required: [TC]}
+  Tj_max:    {unit: degC, kind: max_rating, description: Temperatura máxima de junção}
+  Tj_min:    {unit: degC, kind: max_rating, description: Temperatura mínima de junção}
+  Tstg_max:  {unit: degC, kind: max_rating, description: Temperatura máxima de armazenamento}
+  Rth_jc:    {unit: K/W, kind: thermal, description: Resistência térmica junção-cápsula do IGBT}
+  Rth_jc_d:  {unit: K/W, kind: thermal, description: Resistência térmica junção-cápsula do diodo}
+  Rth_ja:    {unit: K/W, kind: thermal, description: Resistência térmica junção-ambiente}
+  BVCES:     {unit: V, kind: characteristic, description: Tensão de ruptura coletor-emissor, conditions_required: [IC]}
+  ICES:      {unit: A, kind: characteristic, description: Corrente de corte do coletor, conditions_required: [VCE]}
+  IGES:      {unit: A, kind: characteristic, description: Fuga de porta, conditions_required: [VGE]}
+  VGE(th):   {unit: V, kind: characteristic, description: Tensão de limiar porta-emissor, conditions_required: [IC]}
+  VCE(sat):  {unit: V, kind: characteristic, description: Tensão de saturação, conditions_required: [IC, VGE]}
+  VCE(sat)@hot: {unit: V, kind: characteristic, description: Tensão de saturação a quente, conditions_required: [IC, VGE]}
+  Cies:      {unit: F, kind: characteristic, description: Capacitância de entrada, conditions_required: [VCE]}
+  Coes:      {unit: F, kind: characteristic, description: Capacitância de saída, conditions_required: [VCE]}
+  Cres:      {unit: F, kind: characteristic, description: Capacitância de transferência reversa, conditions_required: [VCE]}
+  td(on):    {unit: s, kind: characteristic, description: Atraso de entrada em condução}
+  tr:        {unit: s, kind: characteristic, description: Tempo de subida da corrente}
+  td(off):   {unit: s, kind: characteristic, description: Atraso de bloqueio}
+  tf:        {unit: s, kind: characteristic, description: Tempo de queda da corrente}
+  Eon:       {unit: J, kind: characteristic, description: Energia de entrada em condução, conditions_required: [VCC, IC]}
+  Eoff:      {unit: J, kind: characteristic, description: Energia de bloqueio, conditions_required: [VCC, IC]}
+  Eon@hot:   {unit: J, kind: characteristic, description: Energia de entrada em condução a quente, conditions_required: [VCC, IC]}
+  Eoff@hot:  {unit: J, kind: characteristic, description: Energia de bloqueio a quente, conditions_required: [VCC, IC]}
+  Qg:        {unit: C, kind: characteristic, description: Carga total de porta, conditions_required: [VCE, IC, VGE]}
+  Qge:       {unit: C, kind: characteristic, description: Carga porta-emissor}
+  Qgc:       {unit: C, kind: characteristic, description: Carga porta-coletor}
+  VF:        {unit: V, kind: characteristic, description: Queda direta do diodo, conditions_required: [IF]}
+  trr:       {unit: s, kind: characteristic, description: Tempo de recuperação reversa do diodo, conditions_required: [IF]}
+  Qrr:       {unit: C, kind: characteristic, description: Carga de recuperação reversa do diodo, conditions_required: [IF]}

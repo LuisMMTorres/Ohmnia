@@ -103,3 +103,35 @@ Exemplos parecidos (confira o número na sua edição): Boylestad & Nashelsky, 1
 (aplicações de ampops) para P20–P22 e P30–P32 e cap. 14 (osciladores) para P26–P29; Sedra & Smith,
 7ª ed., cap. 2 e 18; Williams & Taylor, 4ª ed., cap. 2, para P23–P24; Matthaei, Young & Jones
 (1964), cap. 4, para P25.
+
+
+## Fase 6: casos P33–P49 (`tests/golden/test_gt_fase6.py`)
+
+Os conversores, inversores e gradadores rodam a análise com dispositivos ideais e conferem a fórmula
+fechada; os casos de comando e proteção usam o catálogo revisado, e os valores do datasheet entram na
+fórmula. Tolerância 1e-9 relativa nas fórmulas fechadas; 1e-6 nas raízes numéricas (β); 1e-3 na
+fundamental do PWM sintetizado; 2e-3 na série de Fourier lida pela FFT.
+
+| Caso | Circuito | Grandeza | Valor |
+|---|---|---|---|
+| P33 | Buck MCC, 24 → 12 V, 2 A, 50 kHz, ΔiL = 30 %, ΔVo = 1 % | D / L / C / ΔVo | 0,5 / 200 µH / 12,5 µF → 15 µF (E12) / 0,1 V |
+| P34 | Boost MCC, 12 → 24 V, 1 A | D / IL / L / ΔVo | 0,5 / 2 A / 200 µH / Io·D/(fs C) |
+| P35 | Buck-boost MCC, 12 → \|24\| V, 1 A | D / IL / L | 2/3 / 3 A / 177,8 µH |
+| P36 | Buck MCD, L = 0,5·L_crit | L_crit / D / i_pk | (1 − M)R/(2fs) = 30 µH / 1/√8 = 0,3536 / (Vin − Vo)D/(L fs) |
+| P37 | Flyback 48 → 12 V, D = 0,4 | Ns/Np / I_m,pk | 0,375 / I_m(1 + ΔI/2), I_m = Io n/(1 − D) |
+| P38 | Forward 48 → 12 V, D = 0,4 | Ns/Np / L_o | 0,625 / 240 µH |
+| P39 | Onda quadrada monofásica, Vdc = 400 V | V1 / V_rms / THD | 360,1 V / 400 V / 48,34 % |
+| P40 | SPWM bipolar, ma = 0,8, mf = 21 | V1 | ma·Vdc/√2 = 226,3 V |
+| P41 | SPWM unipolar, ma = 0,8, mf = 21 | V1 / harmônico em mf | 226,3 V / cancelado (primeiros em 2mf ± 1) |
+| P42 | Onda quase quadrada, α = 30° (GT-HARM-01) | V_n | 4Vdc/(nπ)·cos(nα); V3 = 0 |
+| P43 | Filtro LC de saída (GT-INV-FLT-01) | fc / Cf | 1/(2π√(Lf Cf)) / E12 mais próximo de 1/((2π·0,2·fs)² Lf) |
+| P44 | Gradador, carga R, 220 V, α = 90° | Vo / FP | 220/√2 = 155,6 V / 0,707 |
+| P45 | Gradador, R = 50 Ω, L = 100 mH, α = 90° | θ / β / Vo | 37,0° / raiz de sen(β − θ) = sen(α − θ)e^{(α − β)/ωτ} / Vs√{[(β − α) − (sen 2β − sen 2α)/2]/π} |
+| P46 | Rede RC + DIAC, 100 kΩ, 100 nF, V_BO = 32 V (GT-CMD-01) | k / α | 0,0663 / 98,8° |
+| P47 | Snubber RCD, 311 V, 10 A (GT-CMD-SNUB-01) | C_s / E / P_R | I_o t_f/(2V_s) / I_o² t_f²/(24C_s) + V_F I_o t_f/2 / ½C_s V² f_s |
+| P48 | Fusível × ponte (GT-CMD-I2T-01) | aviso | sem aviso com 20 A²s; aviso com 10⁴ A²s |
+| P49 | Bootstrap do IR2110 (GT-CMD-BOOT-01) | C_min | 2[2Q_g + I_QBS/f + Q_ls]/(V_CC − V_F − V_LS − V_Min) |
+
+Exemplos parecidos (confira o número na sua edição): Hart, 1ª ed., cap. 6 (buck, boost, buck-boost,
+MCD) para P33–P36, cap. 7 para P37–P38, cap. 8 para P39–P43, cap. 5 para P44–P46 e cap. 10 para P47;
+Erickson & Maksimović, 2ª ed., cap. 5, para P36; Infineon/IR AN-978 para P49.

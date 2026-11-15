@@ -1,0 +1,154 @@
+# Fonte: onsemi MUR1520/D, Rev. 11, outubro de 2025.
+part_number: MUR1560G
+category: diode.fast
+schema_version: '1.0'
+manufacturer: onsemi
+package: TO-220AC (2 terminais)
+lifecycle: ativo
+notes:
+- Ultrarrápido de 600 V, 15 A.
+datasheets:
+- id: onsemi-mur1520-d
+  manufacturer: onsemi
+  document_number: MUR1520/D
+  revision: Rev. 11, October 2025
+  url: https://www.onsemi.com/download/data-sheet/pdf/mur1520-d.pdf
+  sha256: 3945c143ca6d804078df2451b9f7e1b0a4ba86c616d54c17779535793196af8b
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VRRM:
+    max: 600
+    unit: V
+    status: extraido
+    source:
+      datasheet_id: onsemi-mur1520-d
+      page: 2
+      location: Maximum ratings — VRRM, 1560
+  VDC:
+    max: 600
+    unit: V
+    status: extraido
+    source:
+      datasheet_id: onsemi-mur1520-d
+      page: 2
+      location: Maximum ratings — VR, 1560
+  IF(AV):
+    max: 15
+    unit: A
+    conditions:
+      TC: 145 degC
+    status: extraido
+    source:
+      datasheet_id: onsemi-mur1520-d
+      page: 2
+      location: Maximum ratings — IF(AV), 1560, TC = 145 °C
+  IFRM:
+    max: 30
+    unit: A
+    conditions:
+      TC: 145 degC
+      f: 20 kHz
+    status: extraido
+    source:
+      datasheet_id: onsemi-mur1520-d
+      page: 2
+      location: Maximum ratings — IFRM, 1560, 20 kHz, TC = 145 °C
+  IFSM:
+    max: 150
+    unit: A
+    conditions:
+      t_pulse: 8.3 ms
+    status: extraido
+    source:
+      datasheet_id: onsemi-mur1520-d
+      page: 2
+      location: Maximum ratings — IFSM, 1560, meia onda 60 Hz
+  Tj_max:
+    max: 175
+    unit: degC
+    status: extraido
+    source:
+      datasheet_id: onsemi-mur1520-d
+      page: 2
+      location: Maximum ratings — TJ, Tstg
+  Tj_min:
+    min: -65
+    unit: degC
+    status: extraido
+    source:
+      datasheet_id: onsemi-mur1520-d
+      page: 2
+      location: Maximum ratings — TJ, Tstg
+  Rth_jc:
+    max: 1.5
+    unit: K/W
+    status: extraido
+    source:
+      datasheet_id: onsemi-mur1520-d
+      page: 2
+      location: Thermal — MUR1510 series, RθJC
+  Rth_ja:
+    max: 73
+    unit: K/W
+    status: extraido
+    source:
+      datasheet_id: onsemi-mur1520-d
+      page: 2
+      location: Thermal — MUR1510 series, RθJA
+  VF:
+    max: 1.5
+    unit: V
+    conditions:
+      IF: 15 A
+      Tj: 25 degC
+    status: extraido
+    source:
+      datasheet_id: onsemi-mur1520-d
+      page: 2
+      location: Electrical — vF, 1560, iF = 15 A, TC = 25 °C
+  VF@150C:
+    max: 1.2
+    unit: V
+    conditions:
+      IF: 15 A
+      Tj: 150 degC
+    status: extraido
+    source:
+      datasheet_id: onsemi-mur1520-d
+      page: 2
+      location: Electrical — vF, 1560, iF = 15 A, TC = 150 °C
+  IR:
+    max: 10
+    unit: uA
+    conditions:
+      VR: 600 V
+      Tj: 25 degC
+    status: extraido
+    source:
+      datasheet_id: onsemi-mur1520-d
+      page: 2
+      location: Electrical — iR, 1560, VR nominal, TC = 25 °C
+  IR@150C:
+    max: 1000
+    unit: uA
+    conditions:
+      VR: 600 V
+      Tj: 150 degC
+    status: extraido
+    source:
+      datasheet_id: onsemi-mur1520-d
+      page: 2
+      location: Electrical — iR, 1560, VR nominal, TC = 150 °C
+  trr:
+    max: 60
+    unit: ns
+    conditions:
+      IF: 1.0 A
+      di_dt: 50 A/us
+    status: extraido
+    source:
+      datasheet_id: onsemi-mur1520-d
+      page: 2
+      location: Electrical — trr, 1540/1560, IF = 1,0 A, di/dt = 50 A/µs

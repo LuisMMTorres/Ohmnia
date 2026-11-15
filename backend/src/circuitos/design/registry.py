@@ -4,11 +4,16 @@ from __future__ import annotations
 
 from circuitos.design.engine import TopologyModule
 from circuitos.design.plugins.bias import BiasModule
+from circuitos.design.plugins.caca import CacaModule
+from circuitos.design.plugins.cc import CcModule
+from circuitos.design.plugins.cci import CciModule
 from circuitos.design.plugins.chave import ChaveModule
+from circuitos.design.plugins.cmd import CmdModule
 from circuitos.design.plugins.diff import DiffModule
 from circuitos.design.plugins.fil import FilModule
 from circuitos.design.plugins.forma import FormaModule
 from circuitos.design.plugins.inst import InstModule
+from circuitos.design.plugins.inv import InvModule
 from circuitos.design.plugins.lin import LinModule
 from circuitos.design.plugins.opa import OpaModule
 from circuitos.design.plugins.opnl import OpnlModule
@@ -41,6 +46,11 @@ MODULES: dict[str, TopologyModule] = {
         OpnlModule(),
         OscModule(),
         InstModule(),
+        CcModule(),
+        CciModule(),
+        InvModule(),
+        CacaModule(),
+        CmdModule(),
     )
 }
 

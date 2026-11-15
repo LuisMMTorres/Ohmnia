@@ -1,0 +1,182 @@
+# Fonte: Ferroxcube, product specification E25/13/7 (2016), texto do PDF.
+part_number: E25/13/7-3C96
+category: magnetic.core
+schema_version: '1.1'
+manufacturer: Ferroxcube
+package: E (par de metades, E25/13/7)
+lifecycle: ativo
+tags:
+- shape:E
+- size:E25/13/7
+- material:3C96
+notes:
+- Conjunto de duas metades E25/13/7 em 3C96, sem entreferro. O entreferro do projeto é calculado (retífica da perna
+  central) a partir do AL e do comprimento efetivo.
+- A janela e a espira média saem das cotas do desenho (memória de cálculo) quando não há carretel no catálogo.
+datasheets:
+- id: fxc-e25_13_7
+  manufacturer: Ferroxcube
+  document_number: Product specification E25/13/7
+  revision: '2016'
+  url: https://www.ferroxcube.com/upload/media/product/file/Pr_ds/E25_13_7.pdf
+  sha256: 094da40fd0c55694e59f5de2687134cb604b8d2aefd51363f892ff1ef7dcdcc9
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  C1:
+    typ: 1.11
+    unit: 1/mm
+    status: extraido
+    source:
+      datasheet_id: fxc-e25_13_7
+      page: 1
+      location: Effective parameters — C1
+  Ve:
+    typ: 2990.0
+    unit: mm**3
+    status: extraido
+    source:
+      datasheet_id: fxc-e25_13_7
+      page: 1
+      location: Effective parameters — Ve
+  le:
+    typ: 58.0
+    unit: mm
+    status: extraido
+    source:
+      datasheet_id: fxc-e25_13_7
+      page: 1
+      location: Effective parameters — Le
+  Ae:
+    typ: 52.0
+    unit: mm**2
+    status: extraido
+    source:
+      datasheet_id: fxc-e25_13_7
+      page: 1
+      location: Effective parameters — Ae
+  Amin:
+    typ: 52.0
+    unit: mm**2
+    status: extraido
+    source:
+      datasheet_id: fxc-e25_13_7
+      page: 1
+      location: Effective parameters — Amin
+  mass:
+    typ: 8.0
+    unit: g
+    status: extraido
+    note: Massa por peça (metade do conjunto), como no datasheet.
+    source:
+      datasheet_id: fxc-e25_13_7
+      page: 1
+      location: Effective parameters — m (por metade, g/pcs)
+  dim_A:
+    min: 24.3
+    typ: 25.0
+    max: 25.8
+    unit: mm
+    status: extraido
+    source:
+      datasheet_id: fxc-e25_13_7
+      page: 1
+      location: Dimensions — A (nominal, máx., mín.)
+  dim_B:
+    min: 17.5
+    typ: 17.5
+    max: 18.5
+    unit: mm
+    status: extraido
+    source:
+      datasheet_id: fxc-e25_13_7
+      page: 1
+      location: Dimensions — B (nominal, máx., mín.)
+  dim_C:
+    min: 7.0
+    typ: 7.5
+    max: 7.5
+    unit: mm
+    status: extraido
+    source:
+      datasheet_id: fxc-e25_13_7
+      page: 1
+      location: Dimensions — C (nominal, máx., mín.)
+  dim_D:
+    min: 12.3
+    typ: 12.8
+    max: 12.8
+    unit: mm
+    status: extraido
+    source:
+      datasheet_id: fxc-e25_13_7
+      page: 1
+      location: Dimensions — D (nominal, máx., mín.)
+  dim_E:
+    min: 8.7
+    typ: 8.7
+    max: 9.2
+    unit: mm
+    status: extraido
+    source:
+      datasheet_id: fxc-e25_13_7
+      page: 1
+      location: Dimensions — E (nominal, máx., mín.)
+  dim_F:
+    min: 7.0
+    typ: 7.5
+    max: 7.5
+    unit: mm
+    status: extraido
+    source:
+      datasheet_id: fxc-e25_13_7
+      page: 1
+      location: Dimensions — F (nominal, máx., mín.)
+  AL:
+    typ: 1650.0
+    unit: nH
+    status: extraido
+    conditions:
+      gap: 0 mm
+    note: Sem entreferro, material 3C96, tolerância ±25%.
+    source:
+      datasheet_id: fxc-e25_13_7
+      page: 1
+      location: Inductance factor — 3C96
+  Pcore:
+    max: 1.3
+    unit: W
+    status: extraido
+    conditions:
+      f: 100 kHz
+      B: 200 mT
+      T: 100 degC
+    source:
+      datasheet_id: fxc-e25_13_7
+      page: 1
+      location: 'Power loss: 3C96 — 100 kHz, 200 mT, 100 °C (W/set)'
+  Pcore_2:
+    max: 0.54
+    unit: W
+    status: extraido
+    conditions:
+      f: 400 kHz
+      B: 50 mT
+      T: 100 degC
+    source:
+      datasheet_id: fxc-e25_13_7
+      page: 1
+      location: 'Power loss: 3C96 — 400 kHz, 50 mT, 100 °C (W/set)'
+  Bsat:
+    min: 340.0
+    unit: mT
+    status: extraido
+    conditions:
+      T: 100 degC
+      H: 250 A/m
+      f: 25 kHz
+    source:
+      datasheet_id: fxc-e25_13_7
+      page: 2
+      location: Bsat — 3C96, 25 kHz, 250 A/m, 100 °C

@@ -1,0 +1,411 @@
+# Fonte: onsemi FGH40N60SMD/D, Rev. 4, abril de 2026.
+part_number: FGH40N60SMD
+category: igbt.n
+schema_version: '1.0'
+manufacturer: onsemi
+package: TO-247-3LD
+lifecycle: ativo
+notes:
+- IGBT field stop de 2ª geração com diodo antiparalelo no encapsulamento.
+- O texto do PDF perde o símbolo µ (250 µA, µJ, A/µs); as unidades foram conferidas na figura.
+datasheets:
+- id: onsemi-fgh40n60smd
+  manufacturer: onsemi
+  document_number: FGH40N60SMD/D
+  revision: Rev. 4, April 2026
+  url: https://www.onsemi.com/download/data-sheet/pdf/fgh40n60smd-d.pdf
+  sha256: 93254f785df2e493e095838545dee4bd7a376870c090af4a06a18bfa72171de1
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VCES:
+    max: 600
+    unit: V
+    status: extraido
+    source:
+      datasheet_id: onsemi-fgh40n60smd
+      page: 2
+      location: Absolute maximum ratings — VCES
+  VGES:
+    max: 20
+    unit: V
+    status: extraido
+    source:
+      datasheet_id: onsemi-fgh40n60smd
+      page: 2
+      location: Absolute maximum ratings — VGES (±20 V; transitório ±30 V)
+  IC:
+    max: 80
+    unit: A
+    conditions:
+      TC: 25 degC
+    status: extraido
+    source:
+      datasheet_id: onsemi-fgh40n60smd
+      page: 2
+      location: Absolute maximum ratings — IC, TC = 25 °C
+  IC@100C:
+    max: 40
+    unit: A
+    conditions:
+      TC: 100 degC
+    status: extraido
+    source:
+      datasheet_id: onsemi-fgh40n60smd
+      page: 2
+      location: Absolute maximum ratings — IC, TC = 100 °C
+  ICM:
+    max: 120
+    unit: A
+    note: Repetitivo; largura limitada pela Tj máxima.
+    status: extraido
+    source:
+      datasheet_id: onsemi-fgh40n60smd
+      page: 2
+      location: Absolute maximum ratings — ICM (nota 1)
+  IF:
+    max: 40
+    unit: A
+    conditions:
+      TC: 25 degC
+    status: extraido
+    source:
+      datasheet_id: onsemi-fgh40n60smd
+      page: 2
+      location: Absolute maximum ratings — IF do diodo, TC = 25 °C
+  IFM:
+    max: 120
+    unit: A
+    status: extraido
+    source:
+      datasheet_id: onsemi-fgh40n60smd
+      page: 2
+      location: Absolute maximum ratings — IFM
+  Ptot:
+    max: 349
+    unit: W
+    conditions:
+      TC: 25 degC
+    status: extraido
+    source:
+      datasheet_id: onsemi-fgh40n60smd
+      page: 2
+      location: Absolute maximum ratings — PD, TC = 25 °C
+  Tj_max:
+    max: 175
+    unit: degC
+    status: extraido
+    source:
+      datasheet_id: onsemi-fgh40n60smd
+      page: 2
+      location: Absolute maximum ratings — TJ
+  Tj_min:
+    min: -55
+    unit: degC
+    status: extraido
+    source:
+      datasheet_id: onsemi-fgh40n60smd
+      page: 2
+      location: Absolute maximum ratings — TJ
+  Tstg_max:
+    max: 175
+    unit: degC
+    status: extraido
+    source:
+      datasheet_id: onsemi-fgh40n60smd
+      page: 2
+      location: Absolute maximum ratings — Tstg
+  Rth_jc:
+    max: 0.43
+    unit: K/W
+    note: O datasheet não diz se é típico ou máximo; guardado como máximo.
+    status: extraido
+    source:
+      datasheet_id: onsemi-fgh40n60smd
+      page: 2
+      location: Thermal characteristics — RθJC (IGBT)
+  Rth_jc_d:
+    max: 1.5
+    unit: K/W
+    status: extraido
+    source:
+      datasheet_id: onsemi-fgh40n60smd
+      page: 2
+      location: Thermal characteristics — RθJC (Diode)
+  Rth_ja:
+    max: 40
+    unit: K/W
+    status: extraido
+    source:
+      datasheet_id: onsemi-fgh40n60smd
+      page: 2
+      location: Thermal characteristics — RθJA
+  BVCES:
+    min: 600
+    unit: V
+    conditions:
+      IC: 250 uA
+      VGE: 0 V
+    status: extraido
+    source:
+      datasheet_id: onsemi-fgh40n60smd
+      page: 2
+      location: Off characteristics — BVCES
+  ICES:
+    max: 250
+    unit: uA
+    conditions:
+      VCE: 600 V
+      VGE: 0 V
+    status: extraido
+    source:
+      datasheet_id: onsemi-fgh40n60smd
+      page: 2
+      location: Off characteristics — ICES (VCE = VCES)
+  IGES:
+    max: 400
+    unit: nA
+    conditions:
+      VGE: 20 V
+    status: extraido
+    source:
+      datasheet_id: onsemi-fgh40n60smd
+      page: 2
+      location: Off characteristics — IGES (VGE = VGES)
+  VGE(th):
+    min: 3.5
+    typ: 4.5
+    max: 6.0
+    unit: V
+    conditions:
+      IC: 250 uA
+    status: extraido
+    source:
+      datasheet_id: onsemi-fgh40n60smd
+      page: 2
+      location: On characteristics — VGE(th)
+  VCE(sat):
+    typ: 1.9
+    max: 2.5
+    unit: V
+    conditions:
+      IC: 40 A
+      VGE: 15 V
+      TC: 25 degC
+    status: extraido
+    source:
+      datasheet_id: onsemi-fgh40n60smd
+      page: 2
+      location: On characteristics — VCE(sat), TC = 25 °C
+  VCE(sat)@hot:
+    typ: 2.1
+    unit: V
+    conditions:
+      IC: 40 A
+      VGE: 15 V
+      TC: 175 degC
+    status: extraido
+    source:
+      datasheet_id: onsemi-fgh40n60smd
+      page: 2
+      location: On characteristics — VCE(sat), TC = 175 °C
+  Cies:
+    typ: 1880
+    unit: pF
+    conditions:
+      VCE: 30 V
+      VGE: 0 V
+      f: 1 MHz
+    status: extraido
+    source:
+      datasheet_id: onsemi-fgh40n60smd
+      page: 3
+      location: Dynamic — Cies
+  Coes:
+    typ: 180
+    unit: pF
+    conditions:
+      VCE: 30 V
+      VGE: 0 V
+      f: 1 MHz
+    status: extraido
+    source:
+      datasheet_id: onsemi-fgh40n60smd
+      page: 3
+      location: Dynamic — Coes
+  Cres:
+    typ: 50
+    unit: pF
+    conditions:
+      VCE: 30 V
+      VGE: 0 V
+      f: 1 MHz
+    status: extraido
+    source:
+      datasheet_id: onsemi-fgh40n60smd
+      page: 3
+      location: Dynamic — Cres
+  td(on):
+    typ: 12
+    max: 16
+    unit: ns
+    conditions: &id001
+      VCC: 400 V
+      IC: 40 A
+      RG: 6 ohm
+      VGE: 15 V
+      TC: 25 degC
+    status: extraido
+    source:
+      datasheet_id: onsemi-fgh40n60smd
+      page: 3
+      location: Switching, TC = 25 °C — td(on)
+  tr:
+    typ: 20
+    max: 28
+    unit: ns
+    conditions: *id001
+    status: extraido
+    source:
+      datasheet_id: onsemi-fgh40n60smd
+      page: 3
+      location: Switching, TC = 25 °C — tr
+  td(off):
+    typ: 92
+    max: 120
+    unit: ns
+    conditions: *id001
+    status: extraido
+    source:
+      datasheet_id: onsemi-fgh40n60smd
+      page: 3
+      location: Switching, TC = 25 °C — td(off)
+  tf:
+    typ: 13
+    max: 17
+    unit: ns
+    conditions: *id001
+    status: extraido
+    source:
+      datasheet_id: onsemi-fgh40n60smd
+      page: 3
+      location: Switching, TC = 25 °C — tf
+  Eon:
+    typ: 0.87
+    max: 1.3
+    unit: mJ
+    conditions: *id001
+    status: extraido
+    source:
+      datasheet_id: onsemi-fgh40n60smd
+      page: 3
+      location: Switching, TC = 25 °C — Eon (carga indutiva)
+  Eoff:
+    typ: 0.26
+    max: 0.34
+    unit: mJ
+    conditions: *id001
+    status: extraido
+    source:
+      datasheet_id: onsemi-fgh40n60smd
+      page: 3
+      location: Switching, TC = 25 °C — Eoff (carga indutiva)
+  Eon@hot:
+    typ: 0.97
+    unit: mJ
+    conditions: &id002
+      VCC: 400 V
+      IC: 40 A
+      RG: 6 ohm
+      VGE: 15 V
+      TC: 175 degC
+    status: extraido
+    source:
+      datasheet_id: onsemi-fgh40n60smd
+      page: 3
+      location: Switching, TC = 175 °C — Eon
+  Eoff@hot:
+    typ: 0.6
+    unit: mJ
+    conditions: *id002
+    status: extraido
+    source:
+      datasheet_id: onsemi-fgh40n60smd
+      page: 3
+      location: Switching, TC = 175 °C — Eoff
+  Qg:
+    typ: 119
+    max: 180
+    unit: nC
+    conditions:
+      VCE: 400 V
+      IC: 40 A
+      VGE: 15 V
+    status: extraido
+    source:
+      datasheet_id: onsemi-fgh40n60smd
+      page: 3
+      location: Gate charge — Qg
+  Qge:
+    typ: 13
+    max: 20
+    unit: nC
+    conditions:
+      VCE: 400 V
+      IC: 40 A
+      VGE: 15 V
+    status: extraido
+    source:
+      datasheet_id: onsemi-fgh40n60smd
+      page: 3
+      location: Gate charge — Qge
+  Qgc:
+    typ: 58
+    max: 90
+    unit: nC
+    conditions:
+      VCE: 400 V
+      IC: 40 A
+      VGE: 15 V
+    status: extraido
+    source:
+      datasheet_id: onsemi-fgh40n60smd
+      page: 3
+      location: Gate charge — Qgc
+  VF:
+    typ: 2.3
+    max: 2.8
+    unit: V
+    conditions:
+      IF: 20 A
+      TC: 25 degC
+    status: extraido
+    source:
+      datasheet_id: onsemi-fgh40n60smd
+      page: 3
+      location: Diode — VFM, TC = 25 °C
+  trr:
+    typ: 36
+    unit: ns
+    conditions:
+      IF: 20 A
+      di/dt: 200 A/us
+      TC: 25 degC
+    status: extraido
+    source:
+      datasheet_id: onsemi-fgh40n60smd
+      page: 3
+      location: Diode — trr, TC = 25 °C
+  Qrr:
+    typ: 46.8
+    unit: nC
+    conditions:
+      IF: 20 A
+      di/dt: 200 A/us
+      TC: 25 degC
+    status: extraido
+    source:
+      datasheet_id: onsemi-fgh40n60smd
+      page: 3
+      location: Diode — Qrr, TC = 25 °C
