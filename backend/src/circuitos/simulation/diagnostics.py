@@ -8,7 +8,9 @@ from circuitos.core.errors import ConvergenceError, SimulationError
 
 _RULES: list[tuple[re.Pattern[str], str, list[str], bool]] = [
     (
-        re.compile(r"more than the memory available|setting the output memory is not possible", re.I),
+        re.compile(
+            r"more than the memory available|setting the output memory is not possible", re.I
+        ),
         "Memória insuficiente para guardar os resultados da simulação.",
         [
             "Reduza o tempo simulado ou aumente o passo de saída (TSTEP) em .tran.",

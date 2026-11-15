@@ -85,6 +85,86 @@ class Parameter(BaseModel):
         return any(v is not None for v in (self.min, self.typ, self.max))
 
 
+AxisScale = Literal["lin", "log"]
+
+
+class AxisSpec(BaseModel):
+    model_config = ConfigDict(frozen=True)
+
+    quantity: str  # "IF", "VF", "RDS(on)/RDS(on)@25°C"
+    unit: str  # "A", "V", "dimensionless"
+    scale: AxisScale = "lin"
+
+    @field_validator("unit")
+    @classmethod
+    def _unit_known(cls, unit: str) -> str:
+        parse_unit(unit)
+        return unit
+
+
+class Curve(BaseModel):
+    """A curve digitised from a datasheet figure (docs/modelo-de-dados.md, section 2.5)."""
+
+    id: str = Field(default_factory=lambda: uuid4().hex[:12])
+    name: str
+    x: AxisSpec
+    y: AxisSpec
+    family: dict[str, QuantityModel] = Field(default_factory=dict)  # e.g. Tj = 125 °C
+    points: list[tuple[float, float]] = Field(min_length=2)
+    source: SourceRef
+    method: Literal["manual", "vetor", "cor"] = "manual"
+    digitized_by: str
+    created_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
+
+    @model_validator(mode="after")
+    def _points_fit_scales(self) -> Curve:
+        if self.source.page is None:
+            raise ValueError(f"Curva {self.name}: a fonte precisa da página da figura")
+        for axis, idx in ((self.x, 0), (self.y, 1)):
+            if axis.scale == "log" and any(p[idx] <= 0 for p in self.points):
+                raise ValueError(f"Curva {self.name}: eixo logarítmico com valor não positivo")
+        return self
+
+
+class FitResidual(BaseModel):
+    x: float
+    measured: float
+    model: float
+    error_pct: float
+
+
+class FitReport(BaseModel):
+    """How well a fitted SPICE model reproduces the datasheet (rule 4 for models)."""
+
+    curves: list[str] = Field(default_factory=list)  # curve ids used
+    quantity: str  # what the error is measured on, e.g. "VF(IF)"
+    points: int
+    rms_error_pct: float
+    max_error_pct: float
+    residuals: list[FitResidual] = Field(default_factory=list)
+    simulated: bool = False  # residuals computed by ngspice on the final .model
+    assumptions: list[str] = Field(default_factory=list)
+    params_origin: dict[str, str] = Field(default_factory=dict)
+
+
+class SpiceModel(BaseModel):
+    """A ``.model`` or ``.subckt``: from the manufacturer, or fitted to the datasheet."""
+
+    id: str = Field(default_factory=lambda: uuid4().hex[:12])
+    name: str
+    kind: Literal["model", "subckt"]
+    device: str  # D, NPN, PNP, NMOS, PMOS, NJF, PJF, ... or "subckt"
+    pins: list[str] = Field(default_factory=list)
+    params: dict[str, float] = Field(default_factory=dict)
+    text: str
+    origin: Literal["fabricante", "ajustado"]
+    source_note: str | None = None  # file name / URL of a manufacturer model
+    checked: bool = False  # loaded and ran in ngspice
+    check_log: str | None = None
+    fit: FitReport | None = None
+    created_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
+
+
 class ReviewState(BaseModel):
     status: ReviewStatus = "rascunho"
     reviewed_by: str | None = None
@@ -103,6 +183,8 @@ class ComponentRecord(BaseModel):
     lifecycle: Lifecycle = "desconhecido"
     parameters: dict[str, Parameter] = Field(default_factory=dict)
     datasheets: list[DatasheetRef] = Field(default_factory=list)
+    curves: list[Curve] = Field(default_factory=list)
+    spice_models: list[SpiceModel] = Field(default_factory=list)
     review: ReviewState = Field(default_factory=ReviewState)
     tags: list[str] = Field(default_factory=list)
     family: str | None = None  # e.g. "1N4001–1N4007": parts sharing one datasheet
@@ -119,6 +201,12 @@ class ComponentRecord(BaseModel):
             if param.source is not None and param.source.datasheet_id not in known:
                 raise ValueError(
                     f"{key}: fonte aponta para datasheet inexistente {param.source.datasheet_id!r}"
+                )
+        for curve in self.curves:
+            if curve.source.datasheet_id not in known:
+                raise ValueError(
+                    f"Curva {curve.name}: fonte aponta para datasheet inexistente "
+                    f"{curve.source.datasheet_id!r}"
                 )
         return self
 
