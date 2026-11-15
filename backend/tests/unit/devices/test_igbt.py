@@ -5,9 +5,7 @@ from circuitos.devices import igbt
 
 
 def model() -> igbt.IgbtModel:
-    return igbt.IgbtModel(
-        VT=Q_(5, "V"), V0=Q_(0.7, "V"), R_on=Q_(0.05, "ohm"), K=Q_(2, "A/V**2")
-    )
+    return igbt.IgbtModel(VT=Q_(5, "V"), V0=Q_(0.7, "V"), R_on=Q_(0.05, "ohm"), K=Q_(2, "A/V**2"))
 
 
 def test_regions():
