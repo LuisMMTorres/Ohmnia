@@ -107,7 +107,12 @@ impresso, como nas fases anteriores.
 | Front-end (`vitest`) | calibração e leitura das condições da curva | ✅ 2 novos (34 no total) |
 | Verificação no navegador | importação do PDF de teste, destaque no PDF, importação, aba Curvas (calibração, área, cliques, salvar), aba Modelos (importar e ajustar) | ✅ feito manualmente nesta máquina |
 
-A suíte completa do backend está descrita em "Ambiente Windows", abaixo.
+**Suíte completa do backend** (`pytest -m "not datasheet"` com cobertura, nesta máquina Windows):
+tudo passa, exceto os dois casos `opnl_limitador` da Fase 5, que já falhavam antes de qualquer
+mudança desta fase (ver pendência 3). Cobertura total de 94,65 % (mínimo 80 %); pacote
+`datasheets/` entre 77 % (`fit.py`) e 92 % (`mapping.py`, `textvalues.py`). `evaluate.py` só é
+exercitado pelo DS-EXT. Lint, formatação, mypy strict e contratos de importação passam.
+Front-end: tsc, ESLint, Prettier, 34 testes e build passam.
 
 Os PDFs dos testes são **sintéticos e fictícios** (TESTE-D1…), gerados pelo próprio teste. Nenhum
 valor de componente real foi escrito de memória (regra 1).
