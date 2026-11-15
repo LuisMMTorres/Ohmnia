@@ -20,6 +20,7 @@ from circuitos.api.catalog import open_repository
 from circuitos.api.catalog import router as catalog_router
 from circuitos.api.design import router as design_router
 from circuitos.api.devices import router as devices_router
+from circuitos.api.imports import router as imports_router
 from circuitos.api.results import Form, as_real, split_vectors
 from circuitos.api.results import router as results_router
 from circuitos.api.schemas import (
@@ -62,6 +63,7 @@ app.include_router(catalog_router)
 app.include_router(devices_router)
 app.include_router(design_router)
 app.include_router(schematic_router)
+app.include_router(imports_router)
 app.include_router(results_router)
 
 
