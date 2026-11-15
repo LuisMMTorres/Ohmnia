@@ -1,0 +1,115 @@
+# How parameters are printed in datasheets, for the rule-based mapper (datasheets/mapping.py).
+#
+# Every schema symbol is already its own alias ("VRRM", "IF(AV)", "RDS(on)"); this file adds the
+# other spellings. Matching ignores spaces and case, so "V RRM" (subscript as separate text) and
+# "Vrrm" match "VRRM". Greek letters are spelled out (θ → th, ψ → psi) before comparison.
+#
+#   aliases:  symbols printed in the "Symbol" column
+#   phrases:  words of the "Parameter" column, used only when no symbol is found on the row
+#   range:    upper | lower, for rows that give a range ("-65 to +175 °C")
+#
+# This is about *finding* a value. Every value found still enters as "extraido" and needs the
+# user's review before the component can be released (rule 5).
+
+Tj_max: {aliases: [TJ, Tj, TJM, Tvj, TJ max, TJ(max), Tjmax], phrases: [operating junction temperature, junction temperature], range: upper}
+Tj_min: {aliases: [TJ, Tj, Tvj], phrases: [operating junction temperature], range: lower}
+Tstg_max: {aliases: [Tstg, TSTG, Ts], phrases: [storage temperature], range: upper}
+Rth_ja: {aliases: [RθJA, RthJA, Rth(j-a), RthJ-A, θJA, Rth j-a, RJA], phrases: [junction to ambient, junction-to-ambient]}
+Rth_jc: {aliases: [RθJC, RthJC, Rth(j-c), RthJ-C, θJC, Rth j-c, RJC], phrases: [junction to case, junction-to-case]}
+Rth_jl: {aliases: [RθJL, RthJL, Rth(j-l), θJL, RJL], phrases: [junction to lead, junction-to-lead]}
+Rth_cs: {aliases: [RθCS, RthCS, Rth(c-s), θCS, RthCH], phrases: [case to sink, case-to-sink, case to heatsink]}
+Rth_sa: {aliases: [RθSA, RthSA, Rth(s-a)], phrases: [sink to ambient, heatsink to ambient]}
+Psi_jc: {aliases: [ΨJC, PsiJC, ψJT]}
+Ptot: {aliases: [PD, Pd, PTOT, Ptot, P tot, PD(max)], phrases: [total power dissipation, power dissipation, total device dissipation]}
+Ptot_derating: {phrases: [derate above, linear derating factor, derating factor]}
+Pd_max: {aliases: [PD, Pd], phrases: [power dissipation]}
+
+# diodes
+VRRM: {aliases: [VRRM, VRWM], phrases: [peak repetitive reverse voltage, repetitive peak reverse voltage, maximum recurrent peak reverse voltage]}
+VRSM: {phrases: [non-repetitive peak reverse voltage, nonrepetitive peak reverse voltage]}
+VRMS: {aliases: [VR(RMS), VRMS], phrases: [rms reverse voltage]}
+VDC: {aliases: [VDC, VR], phrases: [dc blocking voltage, dc reverse voltage]}
+IF(AV): {aliases: [IO, I(AV), IFAV, IF(AV), IO(AV)], phrases: [average rectified forward current, average forward current, average rectified output current]}
+IFSM: {aliases: [IFSM, IFSM(surge)], phrases: [peak forward surge current, non-repetitive peak forward surge, forward surge current]}
+IFRM: {phrases: [repetitive peak forward current]}
+I2t: {aliases: [I2t, I²t, i2t], phrases: [current squared time, rating for fusing]}
+VF: {aliases: [VF, VFM, VF(max)], phrases: [forward voltage, instantaneous forward voltage, maximum forward voltage]}
+IR: {aliases: [IR, IRM(DC)], phrases: [reverse current, reverse leakage current, dc reverse current]}
+trr: {aliases: [trr, tRR, t rr], phrases: [reverse recovery time]}
+Qrr: {phrases: [reverse recovery charge, recovered charge]}
+Cj: {aliases: [CJ, Cj, CT, Ctot, CD], phrases: [junction capacitance, diode capacitance, typical junction capacitance]}
+V(BR): {aliases: [V(BR), VBR, V(BR)R], phrases: [breakdown voltage]}
+VZ: {aliases: [VZ, Vz, VZ(nom)], phrases: [zener voltage]}
+IZT: {phrases: [test current]}
+ZZT: {aliases: [ZZT, ZZ, rZT, ZZT@IZT], phrases: [dynamic impedance, zener impedance]}
+ZZK: {aliases: [ZZK, rZK]}
+IZM: {aliases: [IZM, IZ(max)], phrases: [maximum zener current]}
+TC_VZ: {aliases: [αVZ, TC, SZ, αZ], phrases: [temperature coefficient]}
+
+# bipolar transistors
+VCEO: {aliases: [VCEO, V(BR)CEO*], phrases: [collector-emitter voltage]}
+VCBO: {phrases: [collector-base voltage]}
+VEBO: {phrases: [emitter-base voltage]}
+IC: {phrases: [collector current - continuous, collector current continuous, collector current]}
+ICM: {aliases: [ICM, ICP, IC(peak)], phrases: [collector current - peak, collector current peak, peak collector current]}
+IB: {phrases: [base current]}
+hFE: {aliases: [hFE, HFE, hFE1, β], phrases: [dc current gain]}
+VCE(sat): {aliases: [VCE(sat), VCEsat, VCE(SAT)], phrases: [collector-emitter saturation voltage]}
+VBE(sat): {aliases: [VBE(sat), VBEsat, VBE(SAT)], phrases: [base-emitter saturation voltage]}
+VBE(on): {aliases: [VBE(on), VBE, VBE(ON)], phrases: [base-emitter on voltage]}
+fT: {aliases: [fT, FT, fτ], phrases: [current-gain bandwidth product, transition frequency, gain bandwidth product]}
+Cobo: {aliases: [Cobo, Cob, Cob(o)], phrases: [output capacitance]}
+Cibo: {aliases: [Cibo, Cib], phrases: [input capacitance]}
+
+# MOSFET / IGBT
+VDS: {aliases: [VDS, VDSS, VDS(max)], phrases: [drain-source voltage, drain-to-source voltage]}
+VGS: {aliases: [VGS, VGSS], phrases: [gate-source voltage, gate-to-source voltage]}
+ID: {aliases: [ID], phrases: [continuous drain current]}
+IDM: {aliases: [IDM, ID(pulse), ID,pulse], phrases: [pulsed drain current]}
+RDS(on): {aliases: [RDS(on), RDSon, RDS(ON), RDS (on), rDS(on)], phrases: [static drain-source on-resistance, drain-source on-state resistance, drain-to-source on-resistance]}
+VGS(th): {aliases: [VGS(th), VGS(TH), VGSth, VTH], phrases: [gate threshold voltage]}
+V(BR)DSS: {aliases: [V(BR)DSS, BVDSS], phrases: [drain-source breakdown voltage, drain-to-source breakdown voltage]}
+gfs: {aliases: [gfs, gFS, Gfs], phrases: [forward transconductance]}
+Qg: {aliases: [Qg, QG, Qg(tot), Qg,tot], phrases: [total gate charge]}
+Qgs: {aliases: [Qgs, QGS], phrases: [gate-source charge, gate-to-source charge]}
+Qgd: {aliases: [Qgd, QGD], phrases: [gate-drain charge, gate-to-drain charge, miller charge]}
+Ciss: {aliases: [Ciss, CISS], phrases: [input capacitance]}
+Coss: {aliases: [Coss, COSS], phrases: [output capacitance]}
+Crss: {aliases: [Crss, CRSS], phrases: [reverse transfer capacitance]}
+td(on): {aliases: [td(on), tD(on), td(ON)], phrases: [turn-on delay time]}
+td(off): {aliases: [td(off), tD(off), td(OFF)], phrases: [turn-off delay time]}
+tr: {aliases: [tr, tR], phrases: [rise time]}
+tf: {aliases: [tf, tF], phrases: [fall time]}
+VSD: {aliases: [VSD, VSDS], phrases: [diode forward voltage]}
+EAS: {aliases: [EAS], phrases: [single pulse avalanche energy]}
+VCES: {aliases: [VCES, VCE], phrases: [collector-emitter voltage]}
+VGE(th): {aliases: [VGE(th), VGE(TH)], phrases: [gate-emitter threshold voltage]}
+VGES: {aliases: [VGES, VGE], phrases: [gate-emitter voltage]}
+
+# thyristors
+VDRM: {aliases: [VDRM, VDRM/VRRM, VRRM/VDRM], phrases: [repetitive peak off-state voltage]}
+IT(RMS): {aliases: [IT(RMS), IT(rms), ITRMS], phrases: [rms on-state current]}
+IT(AV): {aliases: [IT(AV), IT(av)], phrases: [average on-state current]}
+ITSM: {aliases: [ITSM], phrases: [non-repetitive surge peak on-state current, surge on-state current]}
+IGT: {aliases: [IGT], phrases: [gate trigger current]}
+VGT: {aliases: [VGT], phrases: [gate trigger voltage]}
+IH: {aliases: [IH], phrases: [holding current]}
+IL: {aliases: [IL], phrases: [latching current]}
+VTM: {aliases: [VTM, VT], phrases: [peak on-state voltage, on-state voltage]}
+dv/dt: {aliases: [dv/dt, dV/dt, dVD/dt], phrases: [critical rate of rise of off-state voltage]}
+di/dt: {aliases: [di/dt, dI/dt], phrases: [critical rate of rise of on-state current]}
+tq: {aliases: [tq], phrases: [turn-off time, circuit commutated turn-off time]}
+VBO: {aliases: [VBO, V(BO)], phrases: [breakover voltage]}
+
+# integrated circuits
+Vos: {aliases: [VIO, VOS, Vos], phrases: [input offset voltage]}
+Ios: {aliases: [IIO, IOS, Ios], phrases: [input offset current]}
+Ib: {aliases: [IIB, IB, Ib], phrases: [input bias current]}
+GBW: {aliases: [GBW, GBP, B1], phrases: [gain bandwidth product, unity-gain bandwidth, unity gain bandwidth]}
+SR: {aliases: [SR], phrases: [slew rate]}
+Avol: {aliases: [AVD, AVOL, AOL, Avol], phrases: [large-signal differential voltage amplification, open-loop voltage gain, large signal voltage gain]}
+CMRR: {aliases: [CMRR, kCMR, CMR], phrases: [common-mode rejection ratio, common mode rejection ratio]}
+PSRR: {aliases: [PSRR, kSVR, SVR], phrases: [supply voltage rejection ratio, power supply rejection ratio]}
+Vref: {aliases: [VREF, Vref], phrases: [reference voltage]}
+Vdo: {aliases: [VDO, Vdrop, VD], phrases: [dropout voltage]}
+IQ: {aliases: [IQ, IB, Id], phrases: [quiescent current]}

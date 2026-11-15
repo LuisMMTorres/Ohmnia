@@ -17,6 +17,10 @@ dependencies = [
     "matplotlib>=3.9",
 ]
 
+[project.optional-dependencies]
+# Optional LLM-assisted datasheet mapping (decision D9). Without it, rules-only mapping.
+llm = ["anthropic>=1.0"]
+
 [dependency-groups]
 dev = [
     "pytest>=8",
