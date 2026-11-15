@@ -104,11 +104,18 @@ def release_blockers(record: ComponentRecord) -> list[str]:
     blockers = validate_against_schema(record)
     schema = load_schema(record.category)
     for key in schema.required:
-        param = record.parameters.get(key)
-        if param is None or not param.has_value:
+        # a symbol given per condition ("IGT@Q1" … "IGT@Q4" of a TRIAC) satisfies the
+        # requirement when every entry with a value is reviewed
+        params = [
+            (k, p)
+            for k, p in record.parameters.items()
+            if (k == key or p.symbol == key) and p.has_value
+        ]
+        if not params:
             blockers.append(f"{key}: parâmetro obrigatório ausente")
-        elif param.status != "revisado":
-            blockers.append(f"{key}: parâmetro obrigatório não revisado ({param.status})")
+        for k, param in params:
+            if param.status != "revisado":
+                blockers.append(f"{k}: parâmetro obrigatório não revisado ({param.status})")
     return blockers
 
 

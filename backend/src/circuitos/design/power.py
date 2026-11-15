@@ -771,9 +771,7 @@ def design_transformer(
         )
     n1 = r.windings[0].N
     lm = need.L if need.kind == "flyback" else n1**2 * r.core.AL
-    out.summary |= {
-        f"{d}_N{k + 1}": Q_(w.N, "") for k, w in enumerate(r.windings)
-    } | {
+    out.summary |= {f"{d}_N{k + 1}": Q_(w.N, "") for k, w in enumerate(r.windings)} | {
         f"{d}_Lm": Q_(lm, "H").to("mH"),
         f"{d}_Bpk": Q_(r.B_pk, "T").to("mT"),
         f"{d}_P": Q_(r.P_total, "W"),
