@@ -113,9 +113,15 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 - ➡️ `GT-CMD-02` (UJT): sem UJT no catálogo
 - ✅ [validacao/potencia-chaveada.md](validacao/potencia-chaveada.md), [validacao/magneticos.md](validacao/magneticos.md), [validacao/catalogo-potencia.md](validacao/catalogo-potencia.md)
 
-## Fase 7 — Simulador livre ⏳
+## Fase 7 — Simulador livre 👀 (aguardando aprovação)
 
-- ⏳ Editor, pontas de prova, todas as análises, Monte Carlo/pior caso, importação e exportação de netlist
+- ✅ Editor de esquemático (35 símbolos, peças do catálogo, rótulos, pontas V, V diferencial, I e P)
+- ✅ Análises .OP, .TRAN, .AC, .DC, ruído; .STEP paramétrico e de temperatura
+- ✅ Monte Carlo e pior caso com tolerâncias do componente e faixas do datasheet (V_Z, h_FE, V_GS(th))
+- ✅ Osciloscópio (dois eixos, cursores, zoom), medidas, Bode, FFT/THD, expressões, XY, estatística
+- ✅ Importação e exportação de netlist SPICE; CSV e figuras SVG/PNG/PDF (Matplotlib)
+- ✅ `AS-SIM-01..06`, `PT-SIM`, E2E no navegador (`scripts/e2e.sh`)
+- ✅ [validacao/simulador.md](validacao/simulador.md)
 
 ## Fase 8 — Importação de datasheets ⏳
 
