@@ -1,0 +1,36 @@
+"""Build schematics in tests: each part in its own grid cell, its pins tied to nets by labels."""
+
+from __future__ import annotations
+
+from circuitos.schematic.library import pin_defs, pin_positions
+from circuitos.schematic.model import Analysis, Component, NetLabel, Schematic
+
+
+class Builder:
+    def __init__(self, title: str = "teste") -> None:
+        self.sch = Schematic(title=title)
+        self._n = 0
+
+    def add(self, kind: str, ref: str, nodes: list[str], part_id: str | None = None, **params: str):
+        self._n += 1
+        comp = Component(
+            id=f"c{self._n}",
+            kind=kind,
+            ref=ref,
+            x=(self._n % 8) * 20,
+            y=(self._n // 8) * 20,
+            params={k: str(v) for k, v in params.items()},
+            part_id=part_id,
+        )
+        pins = pin_defs(comp)
+        assert len(pins) == len(nodes), f"{kind} tem {len(pins)} pinos"
+        pos = pin_positions(comp)
+        self.sch.components.append(comp)
+        for p, node in zip(pins, nodes, strict=True):
+            x, y = pos[p.name]
+            self.sch.labels.append(NetLabel(id=f"l{len(self.sch.labels)}", name=node, x=x, y=y))
+        return comp
+
+    def analysis(self, kind: str, **params: str) -> Builder:
+        self.sch.analyses.append(Analysis(kind=kind, params={k: str(v) for k, v in params.items()}))  # type: ignore[arg-type]
+        return self

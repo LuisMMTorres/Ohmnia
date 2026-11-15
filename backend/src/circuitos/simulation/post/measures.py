@@ -169,3 +169,92 @@ def duty_cycle(
     tu = np.linspace(tm[0], tm[-1], max(20 * tm.size, 10_000))
     yu = np.interp(tu, tm, ym)
     return Q_(float(np.mean(yu > lv)), "")
+
+
+def levels(t: pint.Quantity, y: pint.Quantity) -> tuple[pint.Quantity, pint.Quantity]:
+    """Base and top levels as an oscilloscope finds them (histogram mode of each half).
+
+    The signal is resampled uniformly (time weighting); the most frequent value below the
+    midpoint is the base and above it the top. A step with overshoot keeps its final value as
+    the top, because the ringing is brief.
+    """
+    tm, ym, unit = _xy(t, y)
+    tu = np.linspace(tm[0], tm[-1], max(20 * tm.size, 20_000))
+    yu = np.interp(tu, tm, ym)
+    lo, hi = float(yu.min()), float(yu.max())
+    if hi - lo <= 0:
+        raise ValueError("Sinal constante: sem níveis de base e topo")
+    mid = (lo + hi) / 2
+    counts, edges = np.histogram(yu, bins=200, range=(lo, hi))
+    centers = (edges[:-1] + edges[1:]) / 2
+    k_lo = int(np.argmax(np.where(centers < mid, counts, -1)))
+    k_hi = int(np.argmax(np.where(centers >= mid, counts, -1)))
+
+    def level(k: int) -> float:
+        # mean of the samples in the modal bin: no quantisation to the bin centre
+        sel = (yu >= edges[k]) & (yu <= edges[k + 1])
+        return float(yu[sel].mean())
+
+    return Q_(level(k_lo), unit), Q_(level(k_hi), unit)
+
+
+def _edge_time(tm: FloatArray, ym: FloatArray, a: float, b: float, rising: bool) -> float:
+    """Time of the first transition from level a to level b (linear interpolation)."""
+    s = ym if rising else -ym
+    la, lb = (a, b) if rising else (-a, -b)
+
+    def cross(level: float, after: float) -> float | None:
+        d = s - level
+        idx = np.where((d[:-1] < 0) & (d[1:] >= 0) & (tm[1:] >= after))[0]
+        if idx.size == 0:
+            return None
+        k = int(idx[0])
+        return float(tm[k] - d[k] * (tm[k + 1] - tm[k]) / (d[k + 1] - d[k]))
+
+    start = tm[0]
+    while True:
+        ta = cross(la, start)
+        if ta is None:
+            raise ValueError("Transição não encontrada no intervalo")
+        tb = cross(lb, ta)
+        if tb is None:
+            raise ValueError("Transição não encontrada no intervalo")
+        # the signal must not fall back below a between the two crossings
+        sel = (tm > ta) & (tm < tb)
+        if not np.any(s[sel] < la):
+            return tb - ta
+        start = float(tm[sel][np.where(s[sel] < la)[0][-1]])
+
+
+def rise_time(
+    t: pint.Quantity, y: pint.Quantity, low: float = 0.1, high: float = 0.9
+) -> pint.Quantity:
+    """First 10–90 % rise between the base and top levels (:func:`levels`)."""
+    tm, ym, _ = _xy(t, y)
+    base, top = (q.magnitude for q in levels(t, y))
+    span = top - base
+    return Q_(_edge_time(tm, ym, base + low * span, base + high * span, True), "s")
+
+
+def fall_time(
+    t: pint.Quantity, y: pint.Quantity, low: float = 0.1, high: float = 0.9
+) -> pint.Quantity:
+    """First 90–10 % fall between the top and base levels."""
+    tm, ym, _ = _xy(t, y)
+    base, top = (q.magnitude for q in levels(t, y))
+    span = top - base
+    return Q_(_edge_time(tm, ym, base + high * span, base + low * span, False), "s")
+
+
+def overshoot(t: pint.Quantity, y: pint.Quantity) -> pint.Quantity:
+    """(max − top)/(top − base): overshoot above the top level, dimensionless ratio."""
+    _, ym, _ = _xy(t, y)
+    base, top = (q.magnitude for q in levels(t, y))
+    return Q_(max(float(ym.max()) - top, 0.0) / (top - base), "")
+
+
+def undershoot(t: pint.Quantity, y: pint.Quantity) -> pint.Quantity:
+    """(base − min)/(top − base): undershoot below the base level."""
+    _, ym, _ = _xy(t, y)
+    base, top = (q.magnitude for q in levels(t, y))
+    return Q_(max(base - float(ym.min()), 0.0) / (top - base), "")

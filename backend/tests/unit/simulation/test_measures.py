@@ -98,3 +98,36 @@ def test_input_validation():
         m.mean(q([0, 1, 2], "s"), q([0, 1], "V"))
     with pytest.raises(ValueError):
         m.mean(q([1, 0], "s"), q([0, 1], "V"))
+
+
+def test_levels_rise_fall_overshoot():
+    import numpy as np
+
+    from circuitos.core.units import Q_
+    from circuitos.simulation.post import measures as m
+
+    t = np.linspace(0, 10e-3, 20001)
+    sq = np.where((t % 2e-3) < 1e-3, 5.0, 0.0)
+    base, top = m.levels(Q_(t, "s"), Q_(sq, "V"))
+    assert base.m_as("V") == pytest.approx(0.0, abs=1e-6)
+    assert top.m_as("V") == pytest.approx(5.0)
+    # a linear ramp edge of 100 µs: 10–90 % in 80 µs
+    tr = np.array([0, 1e-3, 1.1e-3, 3e-3])
+    yr = np.array([0, 0, 1.0, 1.0])
+    assert m.rise_time(Q_(tr, "s"), Q_(yr, "V")).m_as("s") == pytest.approx(80e-6, rel=1e-3)
+    tf = np.array([0, 1e-3, 1.2e-3, 3e-3])
+    yf = np.array([1.0, 1.0, 0, 0])
+    assert m.fall_time(Q_(tf, "s"), Q_(yf, "V")).m_as("s") == pytest.approx(160e-6, rel=1e-3)
+    # second-order step: Mp = exp(−ζπ/√(1−ζ²)) (Ogata, Modern Control Engineering, 5th ed.,
+    # ch. 5); the histogram top level is within 0.3 % of the final value
+    wn, z = 2 * np.pi * 1e3, 0.3
+    wd = wn * np.sqrt(1 - z * z)
+    t2 = np.linspace(0, 20e-3, 40001)
+    y2 = 1 - np.exp(-z * wn * t2) * (np.cos(wd * t2) + z / np.sqrt(1 - z * z) * np.sin(wd * t2))
+    mp = m.overshoot(Q_(t2, "s"), Q_(y2, "V")).magnitude
+    assert mp == pytest.approx(np.exp(-z * np.pi / np.sqrt(1 - z * z)), rel=5e-3)
+    assert m.undershoot(Q_(t2, "s"), Q_(y2, "V")).magnitude == pytest.approx(0.0, abs=5e-3)
+    with pytest.raises(ValueError, match="constante"):
+        m.levels(Q_(t, "s"), Q_(np.ones_like(t), "V"))
+    with pytest.raises(ValueError, match="Transição"):
+        m.rise_time(Q_(tf, "s"), Q_(yf, "V"))

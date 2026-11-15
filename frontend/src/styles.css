@@ -407,3 +407,398 @@ ul.warnings li {
   font-size: 14px;
   margin: 16px 0 4px;
 }
+
+/* ---- Phase 7: schematic simulator ---- */
+.subtabs {
+  display: flex;
+  gap: 6px;
+  padding: 12px 16px 0;
+}
+main.schematic-page,
+main.single {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.toolbar {
+  gap: 8px;
+}
+.title-input {
+  min-width: 260px;
+  flex: 0 1 360px;
+}
+.import-box textarea {
+  min-height: 200px;
+}
+label.button {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+}
+a.button {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  color: var(--text);
+  text-decoration: none;
+}
+.schematic-layout {
+  display: grid;
+  grid-template-columns: 190px minmax(0, 1fr) 270px;
+  gap: 12px;
+  align-items: stretch;
+}
+@media (max-width: 1100px) {
+  .schematic-layout {
+    grid-template-columns: 1fr;
+  }
+}
+.palette {
+  padding: 10px;
+  max-height: 640px;
+  overflow: auto;
+}
+.palette .tools {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+.palette details {
+  margin: 6px 0;
+}
+.palette summary {
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+.tool,
+.palette-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 4px 8px;
+  font-size: 0.85rem;
+  background: transparent;
+  color: var(--text);
+  border-color: transparent;
+}
+.tool:hover,
+.palette-item:hover {
+  border-color: var(--border);
+}
+.tool.active,
+.palette-item.active {
+  background: var(--accent);
+  color: var(--accent-text);
+  border-color: var(--accent);
+}
+.properties {
+  padding: 12px;
+  max-height: 640px;
+  overflow: auto;
+}
+.properties h3,
+.panel h3 {
+  margin: 4px 0 8px;
+  font-size: 1rem;
+}
+.properties label,
+.param-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 0.85rem;
+  margin-bottom: 8px;
+}
+.properties input,
+.properties select,
+.param-grid input,
+.param-grid select {
+  width: 100%;
+}
+label.inline {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+}
+.param-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 4px 12px;
+}
+.param-grid .full {
+  grid-column: 1 / -1;
+}
+.param-grid textarea {
+  min-height: 80px;
+}
+fieldset.analysis {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin: 0 0 10px;
+}
+.small-btn {
+  padding: 2px 8px;
+  font-size: 0.8rem;
+}
+.probe-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.probe-list li {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-bottom: 4px;
+}
+.probe-list input {
+  flex: 1;
+  min-width: 0;
+}
+.swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  flex: none;
+}
+.netlist-view {
+  font:
+    12px/1.45 ui-monospace,
+    Consolas,
+    monospace;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px;
+  max-height: 360px;
+  overflow: auto;
+  white-space: pre;
+}
+.warnings {
+  background: #fff6db;
+  color: #6b4e00;
+  border-radius: 6px;
+  padding: 8px 12px 8px 28px;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+/* schematic canvas */
+.schematic-editor {
+  position: relative;
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--canvas, #fcfcfd);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.schematic-canvas {
+  display: block;
+  width: 100%;
+  height: 600px;
+  cursor: default;
+  user-select: none;
+  touch-action: none;
+}
+.schematic-canvas.drawing,
+.schematic-canvas.probing {
+  cursor: crosshair;
+}
+.grid-dot {
+  fill: var(--border);
+}
+.wire {
+  stroke: #1b5e20;
+  stroke-width: 2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.wire.sel {
+  stroke: var(--accent);
+  stroke-width: 3;
+}
+.wire.preview {
+  stroke-dasharray: 5 4;
+  opacity: 0.8;
+}
+.comp {
+  stroke: var(--text);
+  stroke-width: 1.8;
+  fill: none;
+  cursor: move;
+}
+.comp .fill {
+  fill: var(--text);
+}
+.comp.sel {
+  stroke: var(--accent);
+}
+.comp.sel .fill {
+  fill: var(--accent);
+}
+.comp.ghost {
+  opacity: 0.45;
+  pointer-events: none;
+}
+.comp .thin {
+  stroke-width: 1;
+}
+.comp text,
+.sym-text {
+  stroke: none;
+  fill: var(--text);
+  font-size: 11px;
+  font-family: system-ui, sans-serif;
+}
+.ref-text {
+  stroke: none;
+  font-size: 12px;
+  font-family: system-ui, sans-serif;
+  pointer-events: none;
+}
+.ref-text .ref {
+  fill: var(--text);
+  font-weight: 600;
+}
+.ref-text .val {
+  fill: var(--muted);
+}
+.pins circle {
+  fill: var(--panel);
+  stroke: #c0392b;
+  stroke-width: 1.2;
+}
+.junctions circle {
+  fill: #1b5e20;
+  stroke: none;
+}
+.netlabel text {
+  font-size: 12px;
+  font-family: ui-monospace, Consolas, monospace;
+  fill: #6a1b9a;
+  stroke: none;
+}
+.netlabel path,
+.netlabel line {
+  stroke: #6a1b9a;
+  stroke-width: 1.5;
+  fill: none;
+}
+.diff-start {
+  fill: none;
+  stroke: #e5533d;
+  stroke-width: 2;
+  stroke-dasharray: 3 2;
+}
+.cursor-dot {
+  fill: var(--accent);
+  opacity: 0.6;
+  pointer-events: none;
+}
+.canvas-status {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 4px 8px;
+  border-top: 1px solid var(--border);
+  background: var(--panel);
+}
+
+/* results */
+.results-view {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+.vectors-box {
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 13px;
+}
+.vectors-box summary {
+  cursor: pointer;
+  margin-bottom: 6px;
+}
+.vectors-box .vectors {
+  padding: 6px 10px;
+}
+.vectors-box .vectors label {
+  display: inline-flex;
+  flex-direction: row;
+  gap: 4px;
+  align-items: center;
+}
+.expr-row input {
+  flex: 1;
+  min-width: 220px;
+}
+.measure-table td,
+.measure-table th,
+.cursors td,
+.cursors th {
+  padding: 3px 10px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.measure-table td:first-child,
+.measure-table th:first-child,
+.cursors td:first-child {
+  text-align: left;
+}
+.chart {
+  width: 100%;
+  max-width: 900px;
+  height: auto;
+}
+.chart-axes text {
+  fill: var(--muted);
+  font-size: 11px;
+  font-family: system-ui, sans-serif;
+}
+.chart-axes .grid {
+  stroke: var(--border);
+  stroke-width: 0.6;
+}
+.chart-axes .box {
+  fill: none;
+  stroke: var(--border);
+}
+@media (prefers-color-scheme: dark) {
+  .schematic-editor {
+    --canvas: #171a1f;
+  }
+  .wire,
+  .junctions circle {
+    stroke: #7fd18a;
+  }
+  .junctions circle {
+    fill: #7fd18a;
+  }
+  .netlabel text {
+    fill: #d6a6ff;
+  }
+  .netlabel path,
+  .netlabel line {
+    stroke: #d6a6ff;
+  }
+  .warnings {
+    background: #3a3010;
+    color: #f2d98a;
+  }
+}
+.vectors-box input,
+.probe-list .swatch + input {
+  width: auto;
+}
+.netlabel path {
+  fill: var(--panel);
+}

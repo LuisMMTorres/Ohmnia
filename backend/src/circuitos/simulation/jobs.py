@@ -70,10 +70,15 @@ def _worker_main(request: SimulationRequest, conn: Connection) -> None:  # pragm
 
     try:
         backend = make_backend(request.backend, timeout_s=request.timeout_s)
-        result = backend.run(request.netlist, progress)
+        if request.plan is not None:
+            result = request.plan.execute(backend, progress)
+        else:
+            result = backend.run(request.netlist, progress)
         send("result", result)
     except errors.SimulationError as exc:
         send("error", type(exc).__name__, str(exc), exc.suggestions, exc.log)
+    except ValueError as exc:  # invalid sweep or schematic found while running a plan
+        send("error", type(exc).__name__, str(exc), [], "")
     except Exception as exc:
         send("error", type(exc).__name__, f"Erro interno do simulador: {exc}", [], "")
     finally:

@@ -14,6 +14,7 @@ describe("formatEng", () => {
     [45.25, "deg", "45,3 °"],
     [1.484e10, "1/cm**3", "1,48·10¹⁰ cm⁻³"],
     [1e15, "1/cm**3", "10¹⁵ cm⁻³"],
+    [9.1e-9, "V/√Hz", "9,1 nV/√Hz"],
   ])("%s %s → %s", (value, unit, expected) => {
     expect(formatEng(value, unit)).toBe(expected);
   });

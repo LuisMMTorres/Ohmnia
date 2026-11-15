@@ -4,12 +4,13 @@ from __future__ import annotations
 
 import asyncio
 import os
-from collections.abc import AsyncIterator
+from collections.abc import AsyncIterator, Callable
 from contextlib import asynccontextmanager
 from pathlib import Path
-from typing import Any, Literal
+from typing import Any
 
 import numpy as np
+import pint
 from fastapi import FastAPI, HTTPException, Query, WebSocket, WebSocketDisconnect
 from fastapi.staticfiles import StaticFiles
 from numpy.typing import NDArray
@@ -19,17 +20,21 @@ from circuitos.api.catalog import open_repository
 from circuitos.api.catalog import router as catalog_router
 from circuitos.api.design import router as design_router
 from circuitos.api.devices import router as devices_router
+from circuitos.api.results import Form, as_real, split_vectors
+from circuitos.api.results import router as results_router
 from circuitos.api.schemas import (
     JobErrorOut,
     JobOut,
     Measurements,
     PlotData,
     PlotInfo,
+    RunOut,
     SimulationIn,
     SnapIn,
     SnapOut,
     VectorInfo,
 )
+from circuitos.api.schematic import router as schematic_router
 from circuitos.core import eseries
 from circuitos.core.errors import CircuitosError
 from circuitos.core.units import Q_, QuantityModel, VectorModel, format_eng, parse_unit
@@ -56,6 +61,8 @@ app = FastAPI(title="Sistema de Projeto de Circuitos", version=__version__, life
 app.include_router(catalog_router)
 app.include_router(devices_router)
 app.include_router(design_router)
+app.include_router(schematic_router)
+app.include_router(results_router)
 
 
 def _jobs() -> JobQueue:
@@ -80,6 +87,9 @@ def _plot_info(plot: Plot) -> PlotInfo:
             VectorInfo(name=v.name, unit=v.unit, length=int(v.data.size), complex=v.is_complex)
             for v in plot.vectors.values()
         ],
+        run=plot.run,
+        run_label=plot.run_label,
+        base=plot.base or plot.name,
     )
 
 
@@ -89,6 +99,9 @@ def _job_out(job: Job, *, with_log: bool = False) -> JobOut:
         out.backend = job.result.backend
         out.elapsed_s = job.result.elapsed_s
         out.plots = [_plot_info(p) for p in job.result.plots]
+        out.runs = [RunOut(index=r.index, label=r.label, values=r.values) for r in job.result.runs]
+        out.summary = job.result.summary or None
+        out.warnings = job.result.warnings
         if with_log:
             out.log = job.result.log
     if job.error is not None:
@@ -165,24 +178,6 @@ def cancel_simulation(job_id: str) -> JobOut:
     return _job_out(job)
 
 
-Form = Literal["real", "imag", "mag", "mag_db", "phase_deg"]
-
-
-def _as_real(data: NDArray[Any], unit: str, form: Form) -> tuple[NDArray[Any], str]:
-    if not np.iscomplexobj(data):
-        return data, unit
-    if form == "real":
-        return data.real, unit
-    if form == "imag":
-        return data.imag, unit
-    if form == "mag":
-        return np.abs(data), unit
-    if form == "mag_db":
-        with np.errstate(divide="ignore"):
-            return 20 * np.log10(np.abs(data)), "dB"
-    return np.degrees(np.unwrap(np.angle(data))), "deg"
-
-
 @app.get(f"{API}/simulations/{{job_id}}/plots/{{plot_name}}")
 def plot_data(
     job_id: str,
@@ -192,15 +187,11 @@ def plot_data(
     form: Form = "mag",
 ) -> PlotData:
     plot = _plot_or_404(_job_or_404(job_id), plot_name)
-    names = (
-        [n.strip().lower() for n in vectors.split(",")]
-        if vectors
-        else [n for n in plot.vectors if n != plot.scale]
-    )
+    names = split_vectors(vectors) if vectors else [n for n in plot.vectors if n != plot.scale]
     missing = [n for n in names if n not in plot.vectors]
     if missing:
         raise HTTPException(404, f"Vetores inexistentes: {missing}")
-    traces = [_as_real(plot.vectors[n].data, plot.vectors[n].unit, form) for n in names]
+    traces = [as_real(plot.vectors[n].data, plot.vectors[n].unit, form) for n in names]
     x_vec = plot.vectors.get(plot.scale) if plot.scale else None
     decimated = False
     x: NDArray[Any] | None
@@ -250,7 +241,7 @@ def plot_measures(
     except ValueError as exc:
         raise HTTPException(422, str(exc)) from exc
     m = np.asarray(y.magnitude)
-    return Measurements(
+    out = Measurements(
         vector=vec.name,
         mean=QuantityModel.from_pint(measures.mean(t, y)),
         rms=QuantityModel.from_pint(measures.rms(t, y)),
@@ -259,6 +250,27 @@ def plot_measures(
         minimum=QuantityModel.from_pint(Q_(float(m.min()), y.units)),
         maximum=QuantityModel.from_pint(Q_(float(m.max()), y.units)),
     )
+    optional: dict[str, Callable[[], pint.Quantity]] = {
+        "frequency": lambda: measures.frequency(t, y),
+        "duty_cycle": lambda: measures.duty_cycle(t, y),
+        "rise_time": lambda: measures.rise_time(t, y),
+        "fall_time": lambda: measures.fall_time(t, y),
+        "overshoot": lambda: measures.overshoot(t, y),
+        "undershoot": lambda: measures.undershoot(t, y),
+    }
+    for key, fn in optional.items():
+        try:
+            setattr(out, key, QuantityModel.from_pint(fn()))
+        except (ValueError, ZeroDivisionError, FloatingPointError):
+            continue
+    try:
+        base, top = measures.levels(t, y)
+        out.base, out.top = QuantityModel.from_pint(base), QuantityModel.from_pint(top)
+    except ValueError:
+        pass
+    if out.frequency is not None:
+        out.period = QuantityModel(value=1.0 / out.frequency.value, unit="s")
+    return out
 
 
 @app.websocket(f"{API}/simulations/{{job_id}}/ws")
