@@ -1,6 +1,6 @@
 # Validação: simulador livre (Fase 7)
 
-Data: 2026-11-15. Status: aguardando a sua aprovação.
+Data: 2026-11-15. Status: aprovada em 2026-11-15.
 
 A aba **Simulador** agora abre um editor de esquemático. O editor de netlist em texto das fases
 anteriores continua disponível na subaba **Netlist (texto)**. O caminho é o mesmo para todos os

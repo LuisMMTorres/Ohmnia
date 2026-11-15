@@ -113,7 +113,7 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 - ➡️ `GT-CMD-02` (UJT): sem UJT no catálogo
 - ✅ [validacao/potencia-chaveada.md](validacao/potencia-chaveada.md), [validacao/magneticos.md](validacao/magneticos.md), [validacao/catalogo-potencia.md](validacao/catalogo-potencia.md)
 
-## Fase 7 — Simulador livre 👀 (aguardando aprovação)
+## Fase 7 — Simulador livre ✅ (aprovada em 2026-11-15)
 
 - ✅ Editor de esquemático (35 símbolos, peças do catálogo, rótulos, pontas V, V diferencial, I e P)
 - ✅ Análises .OP, .TRAN, .AC, .DC, ruído; .STEP paramétrico e de temperatura
