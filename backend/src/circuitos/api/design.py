@@ -11,6 +11,12 @@ from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import HTMLResponse, Response
 from pydantic import BaseModel, Field, ValidationError
 
+from circuitos.api.breadboard import AutoOut, reference_for
+from circuitos.breadboard.autoplace import autoplace
+from circuitos.breadboard.check import check
+from circuitos.breadboard.guide import guide
+from circuitos.breadboard.physical import physical_circuit
+from circuitos.components.models import ComponentRecord
 from circuitos.components.repository import ComponentRepository
 from circuitos.core.errors import CircuitosError
 from circuitos.design import registry
@@ -19,6 +25,7 @@ from circuitos.design.engine import Device, TopologyModule, run
 from circuitos.design.verify import compare_full, netlist_with_analysis
 from circuitos.reports import bom, kicad, outputs, pdf, report
 from circuitos.reports.sections import SimWaves
+from circuitos.schematic.model import Schematic
 from circuitos.selection.derating import DeratingPolicy
 
 router = APIRouter(prefix="/api/v1/design")
@@ -345,4 +352,52 @@ def kicad_netlist(request: Request, module_id: str, body: DesignIn) -> Response:
         text,
         media_type="text/plain; charset=utf-8",
         headers={"Content-Disposition": f'attachment; filename="{module_id}.net"'},
+    )
+
+
+class DesignBreadboardOut(BaseModel):
+    available: bool
+    reason: str | None = None
+    schematic: Schematic | None = None
+    assembly: AutoOut | None = None
+    notes: list[str] = Field(default_factory=list)
+
+
+@router.post("/{module_id}/breadboard")
+def design_breadboard(request: Request, module_id: str, body: DesignIn) -> DesignBreadboardOut:
+    """The designed circuit as you assemble it: real parts, automatic layout, check and guide."""
+    module, spec, result, _, circuit = _design(request, module_id, body)
+    repo = _repo(request)
+    chosen = {c.designator: repo.get_or_none(c.component_id) for c in result.selection}
+
+    def record_for(ref: str) -> ComponentRecord | None:
+        for designator, record in chosen.items():
+            if kicad._match(ref, {designator}):
+                return record
+        return None
+
+    vcc = getattr(spec, "VCC", None)
+    supply = vcc.to_pint().m_as("V") if vcc is not None else None
+    title = f"{module.title} — {circuit.title}"
+    phys = physical_circuit(netlist_with_analysis(circuit), title, record_for, supply)
+    if phys.schematic is None:
+        return DesignBreadboardOut(
+            available=False,
+            reason=(
+                "A simulação deste módulo representa parte do circuito por modelos sem peça física "
+                f"equivalente ({', '.join(phys.unsupported)}). Monte-o no simulador livre, com as "
+                "peças reais, e use a conferência da protoboard."
+            ),
+            notes=phys.notes,
+        )
+    ref = reference_for(repo, phys.schematic)
+    bb, layout_notes = autoplace(ref)
+    sch = phys.schematic.model_copy(update={"breadboard": bb})
+    return DesignBreadboardOut(
+        available=True,
+        schematic=sch,
+        assembly=AutoOut(
+            breadboard=bb, notes=layout_notes, report=check(ref, bb), guide=guide(ref, bb)
+        ),
+        notes=phys.notes,
     )

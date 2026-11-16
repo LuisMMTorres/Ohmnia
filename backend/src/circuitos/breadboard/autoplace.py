@@ -44,8 +44,10 @@ class _State:
     used: set[str] = field(default_factory=set)
     owner: dict[Strip, str | None] = field(default_factory=dict)  # strip -> net (None: no net)
     strips: dict[str, list[Strip]] = field(default_factory=dict)  # net -> strips, in order
-    nxt: dict[str, int] = field(default_factory=lambda: {"U": 2, "L": 2})
+    nxt: dict[str, int] = field(default_factory=lambda: {"U": 3, "L": 3})
     notes: list[str] = field(default_factory=list)
+    standing: set[Strip] = field(default_factory=set)  # rows with a part standing to a rail
+    busy: set[Strip] = field(default_factory=set)  # rows under a transistor or IC body
 
     def free(self, s: Strip) -> list[str]:
         h, row = s
@@ -113,7 +115,7 @@ def autoplace(ref: Reference) -> tuple[Breadboard, list[str]]:
             r = st.nxt[half]
             while r + width <= board.ROWS:
                 if all((half, x) not in st.owner for x in range(r, r + width + 1)):
-                    st.nxt[half] = r + width + 2
+                    st.nxt[half] = r + width + 3  # two empty rows between parts
                     if half != h:
                         st.notes.append("Metade de cima cheia: peças seguem na metade de baixo.")
                     return r if half == h else -r
@@ -134,7 +136,7 @@ def autoplace(ref: Reference) -> tuple[Breadboard, list[str]]:
             for pin, (dr, dc) in zip(pkg.pins, pkg.leg_offsets(), strict=True):
                 col = "e" if dc < 0 else "f"
                 legs[pin] = f"{col}{row + dr}"
-            st.nxt["U"] = st.nxt["L"] = row + half_n + 1
+            st.nxt["U"] = st.nxt["L"] = row + half_n + 2
         elif pkg.style == "inline":
             offs = pkg.leg_offsets()
             width = offs[-1][0]
@@ -171,6 +173,8 @@ def autoplace(ref: Reference) -> tuple[Breadboard, list[str]]:
             else:
                 st.used.add(h)
         placed.append(PlacedPart(ref=r.ref, package=pkg.id, legs=legs))
+        if pkg.style in ("dip", "inline"):
+            st.busy.update(_strip_of(h) for h in legs.values())
         if r.origin == "sem_pinagem":
             st.notes.append(f"{r.ref}: pinagem desconhecida, colocado sem ligações.")
 
@@ -268,8 +272,9 @@ def _two_legs(
             if nb not in rails:
                 continue
             for s in homes(na):
-                if s[1] not in board.RAIL_ROWS:
-                    continue
+                near = {(s[0], s[1] - 1), s, (s[0], s[1] + 1)}
+                if s[1] not in board.RAIL_ROWS or near & (st.standing | st.busy):
+                    continue  # no rail hole, or a body next door (standing part, transistor, IC)
                 rail = rails[nb][s[0]]
                 hole_r = f"{rail}{s[1]}"
                 if hole_r in st.used:
@@ -277,6 +282,7 @@ def _two_legs(
                 for c in _LEG_PREF[s[0]]:
                     hole = f"{c}{s[1]}"
                     if hole not in st.used and abs(board.Y[c] - board.Y[rail]) >= min_span:
+                        st.standing.add(s)
                         return {pa: hole, pb: hole_r}
     # (c) one node has a strip: the other leg goes to a new strip at reach
     for pa, na, pb, nb in ((p1, n1, p2, n2), (p2, n2, p1, n1)):

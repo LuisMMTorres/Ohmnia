@@ -14,6 +14,7 @@ import { CalcSteps } from "../components/CalcSteps";
 import { SignalPlot, type Trace } from "../components/SignalPlot";
 import { formatEng, unitSymbol } from "../format";
 import { BomTab } from "./design/BomTab";
+import { BreadboardTab } from "./design/BreadboardTab";
 import { ProjectBar } from "./design/ProjectBar";
 import {
   type Field,
@@ -27,13 +28,21 @@ import {
   visible,
 } from "./design/specForm";
 
-type Tab = "resultados" | "componentes" | "materiais" | "ondas" | "esquematico" | "memoria";
+type Tab =
+  | "resultados"
+  | "componentes"
+  | "materiais"
+  | "ondas"
+  | "esquematico"
+  | "protoboard"
+  | "memoria";
 const TABS: [Tab, string][] = [
   ["resultados", "Resultados"],
   ["componentes", "Componentes e margens"],
   ["materiais", "Lista de materiais"],
   ["ondas", "Formas de onda"],
   ["esquematico", "Esquemático"],
+  ["protoboard", "Protoboard"],
   ["memoria", "Memória de cálculo"],
 ];
 const STATUS: Record<MarginStatus, string> = { ok: "ok", atencao: "atenção", violado: "violado" };
@@ -311,6 +320,9 @@ export function DesignPage() {
         {tab === "esquematico" && (
           // The SVG comes from our own backend (escaped labels), not from user HTML.
           <div className="schematic" dangerouslySetInnerHTML={{ __html: svg }} />
+        )}
+        {out && tab === "protoboard" && (
+          <BreadboardTab moduleId={moduleId} body={body} version={out} />
         )}
         {out && tab === "memoria" && <CalcSteps steps={out.result.steps} />}
       </section>

@@ -1,4 +1,12 @@
 /** Typed client for the backend REST/WebSocket API (/api/v1). */
+import type {
+  AutoOut,
+  CheckReport,
+  ResolveOut,
+  Spec as BreadboardSpec,
+  Step,
+} from "./breadboard/types";
+import type { Pinout } from "./breadboard/CataloguePinout";
 import type { Library, ScalarMeasure, Schematic } from "./schematic/types";
 
 export interface Quantity {
@@ -79,7 +87,7 @@ export type ComplexForm = "mag" | "mag_db" | "phase_deg" | "real" | "imag";
 
 const BASE = "/api/v1";
 
-async function request<T>(path: string, init?: RequestInit): Promise<T> {
+export async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const response = await fetch(`${BASE}${path}`, {
     headers: { "Content-Type": "application/json" },
     ...init,
@@ -199,6 +207,7 @@ export interface ComponentRecord {
   notes: string[];
   curves: Curve[];
   spice_models: SpiceModel[];
+  pinout?: Pinout | null; // breadboard view: package and pinout from the datasheet
 }
 
 export type AxisScale = "lin" | "log";
@@ -1079,3 +1088,23 @@ export function download(blob: Blob, filename: string): void {
   a.click();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
+
+// ---------------------------------------------------------------------------- breadboard
+
+export const breadboardApi = {
+  spec: () => request<BreadboardSpec>("/breadboard/spec"),
+  resolve: (schematic: Schematic) =>
+    request<ResolveOut>("/breadboard/resolve", {
+      method: "POST",
+      body: JSON.stringify({ schematic }),
+    }),
+  auto: (schematic: Schematic) =>
+    request<AutoOut>("/breadboard/auto", { method: "POST", body: JSON.stringify({ schematic }) }),
+  check: (schematic: Schematic) =>
+    request<CheckReport>("/breadboard/check", {
+      method: "POST",
+      body: JSON.stringify({ schematic }),
+    }),
+  guide: (schematic: Schematic) =>
+    request<Step[]>("/breadboard/guide", { method: "POST", body: JSON.stringify({ schematic }) }),
+};

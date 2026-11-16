@@ -1055,3 +1055,294 @@ label.block {
   color: #b91c1c;
   font-weight: 600;
 }
+
+/* ---------------------------------------------------------------- breadboard (Fase 10) */
+.segmented {
+  display: inline-flex;
+  gap: 0;
+}
+.segmented .tab {
+  border-radius: 0;
+}
+.segmented .tab:first-child {
+  border-radius: 6px 0 0 6px;
+}
+.segmented .tab:last-child {
+  border-radius: 0 6px 6px 0;
+}
+.bb-layout {
+  display: grid;
+  grid-template-columns: 230px minmax(0, 1fr) 300px;
+  gap: 12px;
+  align-items: start;
+}
+.bb-side,
+.bb-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 80vh;
+  overflow: auto;
+}
+.bb-canvas {
+  overflow: auto;
+  max-height: 82vh;
+}
+.bb-zoom {
+  float: right;
+  margin-top: -1.6em;
+}
+li.clickable {
+  cursor: pointer;
+}
+li.clickable:hover {
+  text-decoration: underline;
+}
+.bb-hint {
+  margin: 0 0 6px;
+  min-height: 1.2em;
+}
+.bb-svg {
+  max-width: none;
+  height: auto;
+  user-select: none;
+  cursor: default;
+}
+.bb-svg.placing {
+  cursor: crosshair;
+}
+.bb-board {
+  fill: #f3f0e8;
+  stroke: #d8d2c4;
+}
+.bb-channel {
+  fill: #e4dfd2;
+}
+.bb-rail-plus {
+  stroke: #d32f2f;
+  stroke-width: 1.5;
+}
+.bb-rail-minus {
+  stroke: #1e63c6;
+  stroke-width: 1.5;
+}
+.bb-ruler {
+  font-size: 8px;
+  fill: #8b8576;
+}
+.bb-hole {
+  fill: #3d3a33;
+}
+.bb-hole.lit {
+  fill: #2e8b3c;
+}
+.bb-hole.hover {
+  fill: #f07f12;
+}
+.bb-mark {
+  fill: none;
+  stroke: #e53935;
+  stroke-width: 2.5;
+}
+.bb-leg {
+  fill: #b8bcc2;
+  stroke: #6b7076;
+  stroke-width: 0.8;
+}
+.bb-lead {
+  stroke: #9aa0a6;
+  stroke-width: 2;
+}
+.bb-leg-label {
+  font-size: 7.5px;
+  fill: #333;
+  paint-order: stroke;
+  stroke: #f3f0e8;
+  stroke-width: 2.5px;
+}
+.bb-res {
+  fill: #e7d3a8;
+  stroke: #b49a6a;
+}
+.bb-ind {
+  fill: #4f8f6f;
+  stroke: #2f6249;
+}
+.bb-diode {
+  fill: #2a2a2a;
+}
+.bb-diode-band {
+  fill: #c8c8c8;
+}
+.bb-glass {
+  fill: #f2a35a;
+  opacity: 0.85;
+  stroke: #b56b25;
+}
+.bb-glass-band {
+  fill: #1b1b1b;
+}
+.bb-ceramic {
+  fill: #f0a030;
+  stroke: #b06a10;
+}
+.bb-film {
+  fill: #c9d84a;
+  stroke: #7d8a1d;
+}
+.bb-elco {
+  fill: #2b4f9e;
+  stroke: #17306a;
+}
+.bb-elco-stripe {
+  stroke: #d9e1f2;
+  stroke-width: 5;
+  opacity: 0.8;
+}
+.bb-elco-sign {
+  font-size: 10px;
+  font-weight: bold;
+  fill: #fff;
+}
+.bb-to92,
+.bb-epoxy {
+  fill: #2b2b2b;
+  stroke: #111;
+}
+.bb-tab {
+  fill: #b9bec5;
+  stroke: #7f858c;
+}
+.bb-notch {
+  fill: #555;
+}
+.bb-dot {
+  fill: #777;
+}
+.bb-part-text {
+  font-size: 6.5px;
+  fill: #ddd;
+}
+.bb-part-text.light {
+  font-size: 8px;
+}
+.bb-part.selected .bb-epoxy,
+.bb-part.selected .bb-to92,
+.bb-part.selected .bb-res,
+.bb-part.selected .bb-diode,
+.bb-part.selected .bb-elco,
+.bb-part.selected .bb-ceramic {
+  stroke: #f07f12;
+  stroke-width: 2;
+}
+.bb-part.bad .bb-leg {
+  fill: #e53935;
+}
+.bb-wire {
+  fill: none;
+  stroke-width: 3;
+  stroke-linecap: round;
+  cursor: pointer;
+}
+.bb-wire.selected {
+  stroke-width: 5;
+  filter: drop-shadow(0 0 2px #f07f12);
+}
+.bb-wire.ghost {
+  stroke-dasharray: 4 3;
+  pointer-events: none;
+}
+.bb-ghost {
+  opacity: 0.6;
+  pointer-events: none;
+}
+.bb-ghost.invalid {
+  opacity: 0.35;
+  filter: grayscale(1);
+}
+.bb-instrument rect {
+  fill: #dfe4ea;
+  stroke: #8a94a0;
+}
+.bb-instrument.selected rect {
+  stroke: #f07f12;
+  stroke-width: 2;
+}
+.bb-instrument.bad rect {
+  stroke: #e53935;
+}
+.bb-inst-title {
+  font-size: 9px;
+  fill: #222;
+}
+.bb-lead-wire {
+  fill: none;
+  stroke-width: 2;
+  opacity: 0.85;
+}
+.bb-clip {
+  fill: #c0c0c0;
+  stroke: #555;
+}
+.bb-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.bb-list li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: center;
+  font-size: 0.85rem;
+}
+.bb-list li.bad strong {
+  color: #c62828;
+}
+.bb-ok {
+  color: #2e7d32;
+  font-weight: 600;
+}
+.bb-fail {
+  color: #c62828;
+  font-weight: 600;
+}
+.bb-issues,
+.bb-guide {
+  font-size: 0.82rem;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.bb-issues .issue-aviso,
+.bb-issues .issue-sem_pinagem {
+  color: var(--muted);
+}
+.bb-preview {
+  background: #f3f0e8;
+  border-radius: 6px;
+  max-width: 100%;
+}
+.bb-symbol-package {
+  border-top: 1px solid var(--border);
+  margin-top: 8px;
+  padding-top: 6px;
+}
+button.link {
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+}
+@media (max-width: 1200px) {
+  .bb-layout {
+    grid-template-columns: 1fr;
+  }
+}
