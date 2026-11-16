@@ -1,0 +1,56 @@
+# Fonte: Siemens, Room temperature sensors QAA20... (CE1N1745en, Building Technologies), 2014-07-30.
+part_number: S55720-S102
+category: sensor.temperature
+schema_version: '1.0'
+manufacturer: Siemens
+family: QAA20...
+lifecycle: desconhecido
+notes:
+- "Nome na fila: S55720-S102. O número S55720-S102 não aparece no documento; o documento cobre a série QAA20... (QAA2010 Pt100, QAA2012 Pt1000, QAA2030 NTC 10k), então os valores são da série (p. 1). Confira qual tipo corresponde ao S55720-S102."
+- "Exatidão e curva R(T) só aparecem como gráficos (p. 2: Pt100 classe B, Pt1000 classe B, NTC 10k); não transcritos."
+- "Temperatura de transporte -25 a +65 °C, umidade < 95 % r.h. (p. 4); umidade de operação < 85 % r.h. (p. 3)."
+datasheets:
+- id: ds1
+  manufacturer: Siemens
+  document_number: CE1N1745en
+  revision: '2014-07-30'
+  url: https://www.farnell.com/datasheets/3749277.pdf
+  sha256: 8ac502df4417e8523ee8ebc4547ace9caaa7e9f4c797e7adc1e1a51eab424dc0
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  range:
+    min: 0
+    max: 50
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Type summary - Range of use, excerpt: "Range of use 0…50 °C / <85 % r. h."}
+  t_resp:
+    typ: 420
+    unit: s
+    status: extraido
+    source: {page: 1, location: Type summary - Time constant, excerpt: "Time constant Approx. 7 min"}
+  Top:
+    min: 0
+    max: 50
+    unit: °C
+    status: extraido
+    source: {page: 3, location: Technical data - Operation - Climatic condition - Temperature, excerpt: "class 3K5 0...50 °C <85 % r. h."}
+attributes:
+  elemento:
+    value: "QAA2010 Pt100 (classe B); QAA2012 Pt1000 (classe B); QAA2030 NTC 10k"
+    status: extraido
+    source: {page: 1, location: Type summary - Sensing element}
+  saida:
+    value: passivo (variação de resistência)
+    status: extraido
+    source: {page: 3, location: Technical data - Type of measurement and output, excerpt: "passive"}
+  grau_protecao:
+    value: IP30
+    status: extraido
+    source: {page: 3, location: Technical data - Protection degree of housing, excerpt: "IP30 according to EN 60529"}
+  certificacoes:
+    value: CE; UL873
+    status: extraido
+    source: {page: 4, location: Directives and Standards - EU Conformity (CE) / UL, excerpt: "UL873"}

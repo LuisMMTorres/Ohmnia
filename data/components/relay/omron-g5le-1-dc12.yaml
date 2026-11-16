@@ -1,0 +1,84 @@
+# Fonte: Omron, G5LE PCB Power Relay (Cubic, Single-pole 10A Power Relay), Cat. No. K100-E1-08.
+part_number: G5LE-1-DC12
+category: relay.electromechanical
+schema_version: '1.0'
+manufacturer: Omron
+family: G5LE
+package: PCB, proteção contra fluxo (flux protection), SPDT (1c), peso aprox. 12 g
+lifecycle: desconhecido
+notes:
+- 'Modelo G5LE-1 (padrão, SPDT, proteção contra fluxo) com bobina de 12 VDC (pág. 1). O documento não traz a tabela de bobina (resistência, corrente, tensões de operação/liberação); por isso R_coil, P_coil e V_pickup não foram transcritos.'
+- 'Carga nominal tipo padrão: 10 A a 120 VAC e 8 A a 30 VDC (resistiva); 5 A a 120 VAC e 4 A a 30 VDC (indutiva, cosφ=0,4) (pág. 1). Material do contato: liga de Ag sem Cd.'
+- 'Resistência de contato 100 mΩ máx.; resistência de isolação 100 MΩ mín.; impulso 4500 V (1,2x50 µs) bobina-contatos; rigidez entre contatos de mesma polaridade 750 VAC (pág. 2).'
+datasheets:
+- id: ds1
+  manufacturer: Omron
+  document_number: K100-E1-08
+  sha256: faf3b16409722ace13979dec61565d44942894d59509fdaa68a408ed2eba1827
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  V_coil:
+    typ: 12
+    unit: V
+    status: extraido
+    source: {datasheet_id: ds1, page: 1, location: Ordering Information - G5LE-1 rated coil voltage, excerpt: "G5LE-1  5 VDC / 12 VDC / 24 VDC"}
+  I_contact:
+    max: 10
+    unit: A
+    status: extraido
+    note: Rated carry current, tipo padrão.
+    source: {datasheet_id: ds1, page: 1, location: Ratings - Rated carry current, excerpt: "Rated carry current 10 A"}
+  V_contact:
+    max: 250
+    unit: V
+    status: extraido
+    note: '250 VAC; 125 VDC (30 VDC quando se aplica a norma UL/CSA).'
+    source: {datasheet_id: ds1, page: 1, location: Ratings - Max. switching voltage, excerpt: "250 VAC, 125 VDC (30 VDC when UL/CSA standard is applied)"}
+  t_on:
+    max: 10
+    unit: ms
+    status: extraido
+    source: {datasheet_id: ds1, page: 2, location: Characteristics - Operate time, excerpt: "Operate time 10 ms max."}
+  t_off:
+    max: 5
+    unit: ms
+    status: extraido
+    source: {datasheet_id: ds1, page: 2, location: Characteristics - Release time, excerpt: "Release time 5 ms max."}
+  life_mech:
+    min: 10000000
+    unit: '1'
+    status: extraido
+    source: {datasheet_id: ds1, page: 2, location: Characteristics - Durability Mechanical, excerpt: "10,000,000 operations min. (at 18,000 operations/hr)"}
+  life_el:
+    min: 100000
+    unit: '1'
+    status: extraido
+    note: Tipo padrão, carga nominal, 1800 operações/h.
+    source: {datasheet_id: ds1, page: 2, location: Characteristics - Durability Electrical, excerpt: "100,000 operations min. (at 1,800 operations/hr)"}
+  V_iso:
+    max: 2000
+    unit: V
+    status: extraido
+    note: Rigidez dielétrica entre bobina e contatos, 2000 VAC 50/60 Hz por 1 min.
+    source: {datasheet_id: ds1, page: 2, location: Characteristics - Dielectric strength, excerpt: "2,000 VAC, 50/60 Hz for 1 min"}
+  Top:
+    min: -25
+    max: 85
+    unit: °C
+    status: extraido
+    source: {datasheet_id: ds1, page: 2, location: Characteristics - Ambient operating temperature, excerpt: "-25°C to 85°C (with no icing or condensation)"}
+attributes:
+  contatos:
+    value: SPDT (1c)
+    status: extraido
+    source: {page: 1, location: Ordering Information - Contact form SPDT (1c)}
+  montagem:
+    value: PCB (terminais para placa)
+    status: extraido
+    source: {page: 1, location: Ordering Information - Terminal Shape PCB terminals}
+  certificacoes:
+    value: UL, CSA, VDE EN/IEC, TUV EN/IEC
+    status: extraido
+    source: {page: 4, location: Approved Standards}

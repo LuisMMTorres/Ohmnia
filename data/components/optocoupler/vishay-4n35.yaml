@@ -1,0 +1,103 @@
+# Fonte: Vishay Semiconductors, 4N35, 4N36, 4N37 - Optocoupler, Phototransistor Output, with Base Connection, Document Number 81181, Rev. 1.2, 07-Jan-10.
+part_number: 4N35
+category: optocoupler
+schema_version: '1.0'
+manufacturer: Vishay
+family: 4N35 (4N35, 4N36, 4N37)
+package: DIP-6
+lifecycle: desconhecido
+notes:
+- Documento comum aos 4N35, 4N36 e 4N37 (CTR mínimo 100 % para os três).
+- VCEO é o limite absoluto da saída (70 V, página 1); a tensão de ruptura coletor-emissor garantida BVCEO é 30 V mínimo (IC = 1 mA, página 2).
+- Tempos de chaveamento (página 3, VCC = 10 V, IC = 2 mA, RL = 100 ohm) - ton e toff 10 us, dados juntos; o esquema só tem t_r e t_f. O documento não traz VCE(sat) para esta série.
+- CTR a TA de -55 a +100 C - mínimo 40 e típico 50 %.
+datasheets:
+- id: ds1
+  manufacturer: Vishay
+  document_number: '81181'
+  revision: Rev. 1.2, 07-Jan-10
+  sha256: 36e7fc654f6098e7d1bd7a53880f62e58454cd2d1d6baeac05852ee379e46bb2
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  IF:
+    max: 50
+    unit: mA
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - Input, Forward current
+      excerpt: "Forward current IF 50 mA"
+  VF:
+    typ: 1.3
+    max: 1.5
+    unit: V
+    conditions:
+      IF: 10 mA
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics - Input, Forward voltage, IF = 10 mA
+      excerpt: "Forward voltage (2) IF = 10 mA VF 1.3 1.5 V"
+  CTR:
+    min: 100
+    unit: '%'
+    conditions:
+      VCE: 10 V
+      IF: 10 mA
+    status: extraido
+    source:
+      page: 3
+      location: Current transfer ratio - DC current transfer ratio, 4N35, VCE = 10 V, IF = 10 mA
+      excerpt: "VCE = 10 V, IF = 10 mA 4N35 CTRDC 100 %"
+  VCEO:
+    max: 70
+    unit: V
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - Output, Collector emitter breakdown voltage VCEO
+      excerpt: "Collector emitter breakdown voltage VCEO 70 V"
+  IC:
+    max: 50
+    unit: mA
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - Output, Collector current
+      excerpt: "Collector current IC 50 mA"
+  V_iso:
+    max: 5000
+    unit: V
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - Coupler, Isolation test voltage VISO (VRMS)
+      excerpt: "Isolation test voltage VISO 5000 VRMS"
+  Top:
+    min: -55
+    max: 100
+    unit: °C
+    status: extraido
+    source:
+      page: 2
+      location: Absolute maximum ratings - Coupler, Operating temperature Tamb
+      excerpt: "Operating temperature Tamb - 55 to + 100 °C"
+  Tstg:
+    min: -55
+    max: 150
+    unit: °C
+    status: extraido
+    source:
+      page: 2
+      location: Absolute maximum ratings - Coupler, Storage temperature
+      excerpt: "Storage temperature Tstg - 55 to + 150 °C"
+attributes:
+  saida:
+    value: Fototransistor NPN com conexão de base
+    status: extraido
+    source:
+      page: 1
+      location: título e Description
+      excerpt: "Optocoupler, Phototransistor Output, with Base Connection"

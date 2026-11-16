@@ -1,0 +1,95 @@
+# Fonte: Analog Devices, AD5662 2.7 V to 5.5 V, 250 uA, Rail-to-Rail Output 16-Bit nanoDAC in a SOT-23, Rev. A, 2005-2010 (cópia Chipsmall).
+part_number: AD5662
+category: ic.dac
+schema_version: '1.0'
+manufacturer: Analog Devices
+package: SOT-23 8 pinos ou MSOP 8 pinos
+lifecycle: desconhecido
+notes:
+- 'Especificações para VDD = 2,7 a 5,5 V, RL = 2 kohm, CL = 200 pF, VREF = VDD, TMIN a TMAX (pág. 5). Colunas A Grade, B Grade e Y Version; usada a coluna A Grade (pior caso).'
+- 'Relative accuracy (INL): ±8 LSB típ., ±32 LSB máx. (A Grade) e ±16 LSB máx. (B Grade); DNL ±1 LSB máx., monotônico por projeto (pág. 5).'
+- 'Entrada de referência 0,75 V a VDD, impedância de referência típ. 125 kohm (pág. 5).'
+- 'Corrente em modo normal 150 uA típ./250 uA máx. com VDD 4,5 a 5,5 V e 140/225 uA com VDD 2,7 a 3,6 V (pág. 6); IS abaixo é o máximo a 4,5-5,5 V.'
+- 'Sufixos -1 e -2 definem reset para zero ou meia escala (pág. 2).'
+datasheets:
+- id: ds1
+  manufacturer: Analog Devices
+  revision: Rev. A
+  url: https://datasheet.chipsmall.com/AD5662ARJ-1500RL7/137442.pdf
+  sha256: 9cb5c6f26ce6a374997d3465a5cf3099e9f8e9e1275d3a4e05e598b24908c678
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  bits:
+    typ: 16
+    unit: bit
+    status: extraido
+    source: {page: 5, location: Table 1 - Static performance - Resolution, excerpt: "Resolution 16 Bits"}
+  t_settle:
+    typ: 8
+    max: 10
+    unit: us
+    status: extraido
+    source: {page: 5, location: Table 1 - Output characteristics - settling time, excerpt: "Output Voltage Settling Time 8 10 µs"}
+  channels:
+    typ: 1
+    unit: '1'
+    status: extraido
+    source: {page: 2, location: Features, excerpt: "single 16-bit nanoDAC"}
+  VS:
+    min: 2.7
+    max: 5.5
+    unit: V
+    status: extraido
+    source: {page: 6, location: Table 1 - Power requirements - VDD, excerpt: "VDD 2.7 5.5 V"}
+  VREF:
+    min: 0.75
+    max: 5.5
+    unit: V
+    status: extraido
+    source: {page: 5, location: Table 1 - Reference input - reference input range, excerpt: "Reference Input Range 0.75 VDD V"}
+  V_out:
+    min: 0
+    max: 5.5
+    unit: V
+    status: extraido
+    source: {page: 5, location: Table 1 - Output characteristics - output voltage range, excerpt: "Output Voltage Range 0 VDD V"}
+  INL:
+    typ: 8
+    max: 32
+    unit: '1'
+    status: extraido
+    source: {page: 5, location: Table 1 - Static performance - relative accuracy (A Grade), excerpt: "Relative Accuracy ±8 ±32 LSB"}
+  DNL:
+    max: 1
+    unit: '1'
+    status: extraido
+    source: {page: 5, location: Table 1 - Static performance - differential nonlinearity, excerpt: "Differential Nonlinearity ±1 LSB"}
+  IS:
+    typ: 0.15
+    max: 0.25
+    unit: mA
+    status: extraido
+    source: {page: 6, location: Power requirements - IDD normal mode, excerpt: "VDD = 4.5 V to 5.5 V 150 250 µA"}
+  Top:
+    min: -40
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 8, location: Absolute maximum ratings - operating temperature range, excerpt: "Industrial (Y Version) −40°C to +125°C"}
+  Tstg:
+    min: -65
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 8, location: Absolute maximum ratings - storage temperature range, excerpt: "Storage Temperature Range −65°C to +150°C"}
+attributes:
+  interface:
+    value: SPI 3 fios, até 30 MHz (compatível SPI, QSPI, MICROWIRE, DSP)
+    status: extraido
+    source: {page: 2, location: General description, excerpt: "3-wire serial interface that operates at clock rates up to 30 MHz"}
+  encapsulamento:
+    value: SOT-23 8 pinos ou MSOP 8 pinos
+    status: extraido
+    source: {page: 2, location: Product highlights, excerpt: "Available in 8-lead SOT-23 and 8-lead MSOP packages"}

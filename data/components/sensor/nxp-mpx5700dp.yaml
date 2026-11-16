@@ -1,0 +1,90 @@
+# Fonte: NXP (Freescale), MPX5700 series, Integrated Silicon Pressure Sensor, Rev 9, 09/2009 (cópia RS).
+part_number: MPX5700DP
+category: sensor.pressure
+schema_version: '1.0'
+manufacturer: NXP
+family: MPX5700
+package: Unibody CASE 867C (duas portas, diferencial)
+lifecycle: desconhecido
+notes:
+- 'Fila: MPX5700DP. Valores de operação da tabela 1 são da série (MPX5700D/A) a VS = 5,0 V e TA = 25 °C.'
+- 'Função de transferência (pág. 4): Vout = VS*(0,0012858*P+0,04) ± erro, P em kPa, 0 a 85 °C.'
+- 'Sensibilidade típica 6,4 mV/kPa, offset 0,2 V típico (D), fundo de escala 4,7 V típico (pág. 2).'
+- 'Pressão máxima P1 2800 kPa (P2 <= 1 atm) e P2 máx 500 kPa (pág. 3).'
+datasheets:
+- id: ds1
+  manufacturer: NXP
+  document_number: MPX5700
+  revision: Rev 9, 09/2009
+  url: https://docs.rs-online.com/848b/0900766b80ef41d6.pdf
+  sha256: 6d96db16d9978d216891c19b3e006d9e68125bb3ebd9f7aa01aef2b4098f8538
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  range_bar:
+    min: 0
+    max: 700
+    unit: kPa
+    status: extraido
+    source: {page: 2, location: Table 1 - Pressure Range, Gauge/Differential MPX5700D, excerpt: "Pressure Range Gauge, Differential: MPX5700D 0 ... 700 kPa"}
+  overpressure:
+    max: 2800
+    unit: kPa
+    status: extraido
+    source: {page: 3, location: Table 2 - Maximum Ratings, Maximum Pressure P1max (P2 <= 1 atm), excerpt: "Maximum Pressure (P2 <= 1 Atmosphere) P1max 2800 kPa"}
+  VS:
+    min: 4.75
+    typ: 5.0
+    max: 5.25
+    unit: V
+    status: extraido
+    source: {page: 2, location: Table 1 - Supply Voltage, excerpt: "Supply Voltage VS 4.75 5.0 5.25 Vdc"}
+  IS:
+    typ: 7.0
+    max: 10
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Table 1 - Supply Current IO, excerpt: "Supply Current IO 7.0 10 mAdc"}
+  V_out:
+    min: 0.2
+    max: 4.7
+    unit: V
+    status: extraido
+    source: {page: 1, location: Title block, excerpt: "0.2 to 4.7 V Output"}
+  accuracy:
+    max: 2.5
+    unit: '%'
+    status: extraido
+    source: {page: 2, location: Table 1 - Accuracy (0 to 85 C), excerpt: "Accuracy +-2.5 %VFSS"}
+    conditions: {Top: 0 a 85 °C}
+  t_resp:
+    typ: 1.0
+    unit: ms
+    status: extraido
+    source: {page: 2, location: Table 1 - Response Time tR, excerpt: "Response Time tR 1.0 ms"}
+  Top:
+    min: -40
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 3, location: Table 2 - Maximum Ratings, Operating Temperature, excerpt: "Operating Temperature TA -40 to +125 C"}
+  Tstg:
+    min: -40
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 3, location: Table 2 - Maximum Ratings, Storage Temperature, excerpt: "Storage Temperature Tstg -40 to +125 C"}
+attributes:
+  saida:
+    value: tensão analógica ratiométrica, 0,2 a 4,7 V
+    status: extraido
+    source: {page: 1, location: Title block, excerpt: "0.2 to 4.7 V Output"}
+  principio:
+    value: piezoresistivo, silício monolítico, compensado em temperatura e calibrado
+    status: extraido
+    source: {page: 1, location: Description, excerpt: "piezoresistive transducer ... On-Chip Signal Conditioned, Temperature Compensated and Calibrated"}
+  invólucro:
+    value: Unibody CASE 867C-05, ambos os lados com porta (DP)
+    status: extraido
+    source: {page: 6, location: Package dimensions, excerpt: "CASE 867C-05 PRESSURE AND VACUUM SIDES PORTED (DP)"}

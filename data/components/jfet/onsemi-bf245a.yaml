@@ -1,0 +1,115 @@
+# Fonte: onsemi, BF245A / BF245B JFET VHF/UHF Amplifiers, N-Channel Depletion, BF245A/D, Rev. 0, June 2001.
+part_number: BF245A
+category: jfet.n
+schema_version: '1.0'
+manufacturer: onsemi
+family: BF245, BF245A, BF245B, BF245C
+package: TO-92 (TO-226AA), case 29-11, style 23
+lifecycle: desconhecido
+notes:
+- 'Datasheet comum aos subtipos; IDSS é da linha BF245A. Os demais valores são da série (a tabela não os separa por subtipo).'
+- "O texto extraído troca o prefixo µ por m: yos (40) foi lido como µS; yfs (mmhos) como mS."
+- 'Não transcritos por falta de símbolo no esquema: VGS na corrente de dreno de 200 uA (faixas por subtipo), ID máx. (100 mA), Coss, Yrs, F(Yfs). Tj_max não consta no datasheet.'
+datasheets:
+- id: ds1
+  manufacturer: onsemi
+  document_number: BF245A/D
+  revision: Rev. 0, June 2001
+  sha256: 4c7b8233c4266515470e88cf33a1057ef1b4afee97643e76fc60d263e3e11a37
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VDS:
+    max: 30
+    unit: V
+    status: extraido
+    source: {page: 2, location: Maximum ratings - Drain-Source Voltage, excerpt: "Drain-Source Voltage VDS ±30 Vdc"}
+  VDG:
+    max: 30
+    unit: V
+    status: extraido
+    source: {page: 2, location: Maximum ratings - Drain-Gate Voltage, excerpt: "Drain-Gate Voltage VDG 30 Vdc"}
+  VGSR:
+    max: 30
+    unit: V
+    status: extraido
+    source: {page: 2, location: Maximum ratings - Gate-Source Voltage, excerpt: "Gate-Source Voltage VGS 30 Vdc"}
+  IG:
+    max: 10
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Maximum ratings - Forward Gate Current, excerpt: "Forward Gate Current IG(f) 10 mAdc"}
+  Ptot:
+    max: 350
+    unit: mW
+    conditions: {TA: 25 degC}
+    status: extraido
+    source: {page: 2, location: Maximum ratings - Total Device Dissipation @ TA = 25°C, excerpt: "PD 350 mW"}
+  Ptot_derating:
+    max: 2.8
+    unit: mW/K
+    status: extraido
+    source: {page: 2, location: Maximum ratings - Derate above 25°C, excerpt: "Derate above 25°C 2.8 mW/°C"}
+  Tstg_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source: {page: 2, location: Maximum ratings - Storage Channel Temperature Range, excerpt: "Tstg -65 to +150 °C"}
+  V(BR)GSS:
+    min: 30
+    unit: V
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - Gate-Source Breakdown Voltage, excerpt: "(IG = 1.0 µAdc, VDS = 0) V(BR)GSS 30 Vdc"}
+  VGS(off):
+    min: 0.5
+    max: 8.0
+    unit: V
+    conditions: {VDS: 15 V}
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - Gate-Source Cutoff Voltage, excerpt: "(VDS = 15 Vdc, ID = 10 nAdc) VGS(off) -0.5 ... -8.0 Vdc"}
+  IGSS:
+    max: 5.0
+    unit: nA
+    conditions: {VGS: 20 V}
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - Gate Reverse Current, excerpt: "(VGS = 20 Vdc, VDS = 0) IGSS 5.0 nAdc"}
+  IDSS:
+    min: 2.0
+    max: 6.5
+    unit: mA
+    conditions: {VDS: 15 V}
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - Zero-Gate-Voltage Drain Current linha BF245A, excerpt: "(VDS = 15 Vdc, VGS = 0) BF245A IDSS 2.0 ... 6.5 mAdc"}
+  yfs:
+    min: 3.0
+    max: 6.5
+    unit: mS
+    conditions: {VDS: 15 V, f: 1 kHz}
+    status: extraido
+    source: {page: 3, location: Small-signal characteristics - Forward Transfer Admittance, excerpt: "(VDS = 15 Vdc, VGS = 0, f = 1.0 kHz) Yfs 3.0 ... 6.5 mmhos"}
+  yfs@2:
+    typ: 5.6
+    unit: mS
+    conditions: {VDS: 15 V, f: 200 MHz}
+    status: extraido
+    source: {page: 3, location: Small-signal characteristics - Forward Transfer Admittance, excerpt: "(VDS = 15 Vdc, VGS = 0, f = 200 MHz) Yfs 5.6 mmhos"}
+  yos:
+    typ: 40
+    unit: uS
+    conditions: {VDS: 15 V}
+    note: unidade impressa 'mmhos' (µ perdido na extração do texto); lida como µS
+    status: extraido
+    source: {page: 3, location: Small-signal characteristics - Output Admittance, excerpt: "(VDS = 15 Vdc, VGS = 0, f = 1.0 kHz) Yos 40 mmhos"}
+  Ciss:
+    typ: 3.0
+    unit: pF
+    conditions: {VDS: 20 V}
+    status: extraido
+    source: {page: 3, location: Small-signal characteristics - Input Capacitance, excerpt: "(VDS = 20 Vdc, -VGS = 1.0 Vdc) Ciss 3.0 pF"}
+  Crss:
+    typ: 0.7
+    unit: pF
+    conditions: {VDS: 20 V}
+    status: extraido
+    source: {page: 3, location: Small-signal characteristics - Reverse Transfer Capacitance, excerpt: "(VDS = 20 Vdc, -VGS = 1.0 Vdc, f = 1.0 MHz) Crss 0.7 pF"}

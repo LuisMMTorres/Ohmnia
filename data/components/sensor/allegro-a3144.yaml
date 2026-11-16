@@ -1,0 +1,89 @@
+# Fonte: Allegro MicroSystems, Data Sheet 27621.6B, A3141/A3142/A3143/A3144 Sensitive Hall-Effect Switches for High-Temperature Operation.
+part_number: A3144
+category: sensor.magnetic
+schema_version: '1.0'
+manufacturer: Allegro MicroSystems
+family: A3141-A3144
+lifecycle: obsoleto
+notes:
+- 'Pág. 1: produto descontinuado (mudança de status em 31/10/2005); substituto indicado para o A3144: A1104.'
+- 'Documento cobre A3141 a A3144; os pontos magnéticos transcritos são da coluna A3144 (pág. 3). Campos magnéticos convertidos de gauss para mT (1 G = 0,1 mT, nota da pág. 3).'
+- 'Top: sufixo E- vai de -40 a 85 °C e sufixo L- de -40 a 150 °C (pág. 2); registrada a faixa total.'
+- 'Condições elétricas (pág. 3): VCC = 8 V, sobre a faixa de temperatura de operação, salvo indicação.'
+- 'Encapsulamentos (pág. 2): sufixo -LT = SOT89/TO-243AA; sufixo -UA = SIP ultra-mini de 3 terminais.'
+datasheets:
+- id: ds1
+  manufacturer: Allegro MicroSystems
+  document_number: 27621.6B
+  url: https://www.allegromicro.com/-/media/files/datasheets/a3141-2-3-4-datasheet.pdf
+  sha256: 6b31142e9ce83e9759ba8edf3864f51859a945d1c4d85da9fe2c1546be337937
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  B_op:
+    min: 7
+    max: 35
+    unit: mT
+    conditions: {TA: 25 °C}
+    status: extraido
+    source: {page: 3, location: Magnetic characteristics - A3144 BOP at TA = 25°C, excerpt: "BOP at TA = 25°C ... A3144: min 70, max 350 G"}
+  B_rel:
+    min: 5
+    max: 33
+    unit: mT
+    conditions: {TA: 25 °C}
+    status: extraido
+    source: {page: 3, location: Magnetic characteristics - A3144 BRP at TA = 25°C, excerpt: "BRP at TA = 25°C ... A3144: min 50, max 330 G"}
+  VS:
+    min: 4.5
+    max: 24
+    unit: V
+    status: extraido
+    source: {page: 3, location: Electrical characteristics - Supply Voltage VCC Operating, excerpt: "Supply Voltage VCC Operating 4.5 — 24 V"}
+  IS:
+    typ: 4.4
+    max: 9.0
+    unit: mA
+    conditions: {VCC: 8 V}
+    status: extraido
+    source: {page: 3, location: Electrical characteristics - Supply Current ICC, excerpt: "ICC B < BRP (Output OFF) — 4.4 9.0 mA"}
+  IL:
+    max: 25
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - Continuous Output Current, excerpt: "Continuous Output Current, IOUT ...... 25 mA"}
+  Vdrop:
+    typ: 0.175
+    max: 0.4
+    unit: V
+    conditions: {IOUT: 20 mA}
+    status: extraido
+    source: {page: 3, location: Electrical characteristics - Output Saturation Voltage VOUT(SAT), excerpt: "IOUT = 20 mA, B > BOP — 175 400 mV"}
+  Ir:
+    max: 0.01
+    unit: mA
+    conditions: {VOUT: 24 V}
+    status: extraido
+    source: {page: 3, location: Electrical characteristics - Output Leakage Current IOFF, excerpt: "VOUT = 24 V, B < BRP — <1.0 10 µA"}
+  Top:
+    min: -40
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - Operating Temperature Range, excerpt: "Suffix 'E-' -40°C to +85°C; Suffix 'L-' -40°C to +150°C"}
+  Tstg:
+    min: -65
+    max: 170
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - Storage Temperature Range, excerpt: "TS ...... -65°C to +170°C"}
+attributes:
+  saida:
+    value: Coletor aberto (sink de até 25 mA), chave unipolar
+    status: extraido
+    source: {page: 2, location: Descrição, excerpt: "an open-collector output to sink up to 25 mA"}
+  encapsulamento:
+    value: SOT89/TO-243AA (sufixo -LT) ou SIP ultra-mini de 3 terminais (sufixo -UA)
+    status: extraido
+    source: {page: 2, location: Descrição, excerpt: "Suffix '-LT' is a miniature SOT89/TO-243AA ... suffix '-UA' is a three-lead ultra-mini-SIP"}

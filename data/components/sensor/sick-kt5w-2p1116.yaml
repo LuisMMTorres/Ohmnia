@@ -1,0 +1,92 @@
+# Fonte: SICK, Online data sheet KT5W-2P1116 (part no. 1018044), sensor de contraste KT5, impresso em 2026-07-25.
+part_number: KT5W-2P1116
+category: sensor.photoelectric
+schema_version: '1.0'
+manufacturer: SICK
+family: KT5
+package: Caixa de zinco fundido, 30,4 x 53 x 80 mm
+lifecycle: desconhecido
+notes:
+- 'Fila: KT5W-2P1116. Sensor de contraste (LED RGB) classificado como fotoelétrico por falta de categoria específica.'
+- 'Comprimentos de onda do LED RGB: 470, 525 e 640 nm (pág. 2); lambda não preenchido por ser múltiplo.'
+- 'Mancha de luz 1,2 x 4,2 mm, direção vertical; teach-in estático de 2 pontos (pág. 2).'
+- 'Distância de detecção <= 10 mm a partir da borda da lente (pág. 2). Saída protegida contra curto-circuito; sem atraso (pág. 3). Frequência de comutação medida com razão claro/escuro 1:1.'
+datasheets:
+- id: ds1
+  manufacturer: SICK
+  document_number: '1018044'
+  revision: impresso em 2026-07-25
+  url: https://www.sick.com/media/pdf/7/77/077/dataSheet_KT5W-2P1116_1018044_en.pdf
+  sha256: 992a68cddebe72354f8d6ce545a7202ec1191f3a87e6d86606ea513e7eea5355
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  range:
+    max: 0.01
+    unit: m
+    status: extraido
+    source: {page: 2, location: Features - Sensing distance, excerpt: "Sensing distance ≤ 10 mm"}
+  t_resp:
+    max: 0.05
+    unit: ms
+    status: extraido
+    source: {page: 3, location: Electronics - Response time, excerpt: "Response time 50 µs"}
+  f_sw:
+    max: 10000
+    unit: Hz
+    status: extraido
+    source: {page: 3, location: Electronics - Switching frequency, excerpt: "Switching frequency 10 kHz"}
+  VS:
+    min: 10
+    max: 30
+    unit: V
+    status: extraido
+    source: {page: 2, location: Electronics - Supply voltage, excerpt: "10 V DC ... 30 V DC"}
+  IS:
+    max: 80
+    unit: mA
+    status: extraido
+    source: {page: 3, location: Electronics - Current consumption, excerpt: "Current consumption < 80 mA (without load)"}
+  IL:
+    max: 100
+    unit: mA
+    status: extraido
+    source: {page: 3, location: Electronics - Output current Imax., excerpt: "Output current Imax. 100 mA"}
+  Top:
+    min: -10
+    max: 55
+    unit: °C
+    status: extraido
+    source: {page: 3, location: Ambient data, excerpt: "Ambient operating temperature –10 °C ... +55 °C"}
+  Tstg:
+    min: -25
+    max: 75
+    unit: °C
+    status: extraido
+    source: {page: 3, location: Ambient data, excerpt: "Ambient temperature, storage –25 °C ... +75 °C"}
+attributes:
+  saida:
+    value: PNP (HIGH = UV <= 2 V), protegida contra curto-circuito
+    status: extraido
+    source: {page: 3, location: Electronics - Switching output}
+  conexao:
+    value: Plugue M12, 5 pinos
+    status: extraido
+    source: {page: 3, location: Electronics - Connection type}
+  invólucro:
+    value: Zinco fundido (zinc diecast)
+    status: extraido
+    source: {page: 3, location: Mechanics - Housing material}
+  grau_protecao:
+    value: IP67
+    status: extraido
+    source: {page: 3, location: Ambient data - Enclosure rating}
+  principio:
+    value: Sensor de contraste (teach-in estático de 2 pontos)
+    status: extraido
+    source: {page: 2, location: Features - Teach-in mode}
+  luz:
+    value: LED RGB (470, 525, 640 nm)
+    status: extraido
+    source: {page: 2, location: Features - Light source / Wave length}

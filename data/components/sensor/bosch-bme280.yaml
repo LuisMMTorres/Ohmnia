@@ -1,0 +1,82 @@
+# Fonte: Bosch Sensortec, BME280 Data sheet, BST-BME280-DS001-23, Revision_1.23_012022.
+part_number: BME280
+category: sensor.humidity
+schema_version: '1.0'
+manufacturer: Bosch
+package: LGA 2,5 mm x 2,5 mm x 0,93 mm, tampa metálica
+lifecycle: desconhecido
+notes:
+- 'Sensor digital combinado de umidade, pressão e temperatura (I2C até 3,4 MHz e SPI até 10 MHz; p. 2).'
+- 'Pressão: faixa de operação 300 a 1100 hPa; exatidão absoluta ±1,0 hPa (0 a 65 °C, 300 a 1100 hPa) (p. 2 e p. 10-11).'
+- 'Consumo: 3,6 uA a 1 Hz com umidade, pressão e temperatura; 0,1 uA em repouso (p. 2).'
+- 'Alimentação VDDIO (interface): 1,2 a 3,6 V (p. 8, Table 1).'
+- 'Tensão máxima em pino de alimentação: -0,3 a 4,25 V (p. 13, Table 5).'
+datasheets:
+- id: ds1
+  manufacturer: Bosch
+  document_number: BST-BME280-DS001-23
+  revision: Revision_1.23_012022
+  sha256: a2ccdb449fec94380742fe8eec851a11d9bd4142252d332b34682b4deecd7d89
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  range:
+    min: 0
+    max: 100
+    unit: '%'
+    status: extraido
+    source: {page: 9, location: Table 2 - Operating range RH, excerpt: "Operating range RH 0 ... 100 %RH"}
+  accuracy:
+    max: 3
+    unit: '%'
+    conditions: {T: 25 °C}
+    status: extraido
+    source: {page: 9, location: Table 2 - Absolute accuracy tolerance AH (20 a 80 %RH), excerpt: "Absolute accuracy tolerance AH 20...80 %RH, 25 °C, including hysteresis ±3 %RH"}
+  T_range:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 11, location: Table 4 - Temperature operating range, excerpt: "Operating range T Operational -40 25 85 °C"}
+  T_accuracy:
+    max: 0.5
+    unit: K
+    conditions: {T: 25 °C}
+    status: extraido
+    source: {page: 11, location: Table 4 - Absolute accuracy temperature AT,25, excerpt: "AT,25 25 °C ±0.5 °C"}
+  t_resp:
+    typ: 1
+    unit: s
+    conditions: {T: 25 °C}
+    status: extraido
+    source: {page: 9, location: Table 2 - Response time tau63%, excerpt: "Response time to complete 63% of step ... 25°C 1"}
+  VS:
+    min: 1.71
+    typ: 1.8
+    max: 3.6
+    unit: V
+    status: extraido
+    source: {page: 8, location: Table 1 - Supply voltage internal domains VDD, excerpt: "VDD ripple max. 50 mVpp 1.71 1.8 3.6 V"}
+  IS:
+    typ: 0.0036
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Key features - current consumption, excerpt: "3.6 µA @ 1 Hz humidity, pressure and temperature"}
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Key features - operating range, excerpt: "-40…+85 °C, 0…100 % rel. humidity, 300…1100 hPa"}
+  Tstg:
+    min: -45
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 13, location: Table 5 - Storage temperature, excerpt: "Storage temperature ≤ 65% RH -45 +85 °C"}
+attributes:
+  saida:
+    value: Digital I2C ou SPI (3 e 4 fios)
+    status: extraido
+    source: {page: 2, location: Key features - digital interface, excerpt: "I²C (up to 3.4 MHz) and SPI (3 and 4 wire, up to 10 MHz)"}

@@ -1,0 +1,105 @@
+# Fonte: Balluff, Laser Reflexlichtschranke / Laser retro-reflective Sensor BOS 18M-../MR-..-LR10-, Nr./No. 860 288 DE/EN, Edition B19.
+part_number: BOS 18M-../18MR-..-LR10
+category: sensor.photoelectric
+schema_version: '1.0'
+manufacturer: Balluff
+family: BOS 18M / BOS 18MR LR10
+package: Corpo roscado M18x1, latão niquelado
+lifecycle: desconhecido
+notes:
+- 'Fila: DS BOS013M EN. Documento da série (códigos BOS013N, BOS013Z, BOS0145, BOS0140, BOS0146); valores da série.'
+- 'Alcance: BOS 18M 0,1...2 m; BOS 18MR (ótica angular 90°) 0,1...1,5 m (pág. 2). O parâmetro range abaixo cobre a faixa da série (0,1 a 2 m).'
+- 'Laser vermelho classe 1, potência média < 100 uW, frequência de pulso 5 kHz, largura de pulso 4,5 us (pág. 2).'
+- 'Atrasos de ligar/desligar: < 333 us na página alemã (pág. 1); a página inglesa (pág. 2) traz "< 333 ms", provável erro de impressão; usado 333 us por coerência com f = 1,5 kHz. Conferir.'
+- 'Tensão nominal de operação Ue 24 V, ondulação < 10 %, corrente de operação Ie 100 mA, Ud < 2 V em Ie (pág. 2). Imunidade a luz externa 5 klux (pág. 2). Peso 110 g (cabo) / 60 g (conector).'
+- 'Ajuste de sensibilidade por potenciômetro (270 mecânicos).'
+datasheets:
+- id: ds1
+  manufacturer: Balluff
+  document_number: 860 288 DE/EN
+  revision: Edition B19 (substitui G18)
+  url: https://assets.balluff.com/WebBinary1/MAN_BOS_18M_LASER_REFLEXLICHT_DE_EN_B19_DRW_860288_03_000.pdf
+  sha256: bd5baa3e88d4f49ef9584552a3aefb2dc67e8db8d69ec1ebf5d5ba9981b49f8f
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  range:
+    min: 0.1
+    max: 2
+    unit: m
+    status: extraido
+    source: {page: 2, location: Optical - Range sr, excerpt: "BOS 18M-... 0.1...2 m; BOS 18MR-... 0.1...1.5 m"}
+  t_resp:
+    max: 0.333
+    unit: ms
+    status: extraido
+    source: {page: 1, location: Elektrisch - Einschaltverzug/Ausschaltverzug, excerpt: "Einschaltverzug < 333 µs; Ausschaltverzug < 333 µs"}
+  lambda:
+    min: 630
+    max: 680
+    unit: nm
+    status: extraido
+    source: {page: 2, location: Optical - Wavelength, excerpt: "Wavelenght λ 630...680 nm"}
+  VS:
+    min: 10
+    max: 30
+    unit: V
+    status: extraido
+    source: {page: 2, location: Electrical - Supply voltage UB, excerpt: "Supply voltage UB 10...30 V DC"}
+  IS:
+    max: 35
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Electrical - No-load current IO, excerpt: "No-load current IO < 35 mA"}
+  IL:
+    max: 100
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Electrical - Effective operating current Ie, excerpt: "Effective operating current Ie 100 mA"}
+  Vdrop:
+    max: 2
+    unit: V
+    conditions: {IL: 100 mA}
+    status: extraido
+    source: {page: 2, location: Electrical - Voltage drop Ud at Ie, excerpt: "Voltage drop Ud at Ie < 2 V"}
+  f_sw:
+    max: 1500
+    unit: Hz
+    status: extraido
+    source: {page: 2, location: Electrical - Switching frequency f, excerpt: "Switching frequency f 1.5 kHz"}
+  Top:
+    min: -10
+    max: 50
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Ambient - Ambient temperature Ta, excerpt: "Ambient temperature Ta –10... +50 °C"}
+attributes:
+  saida:
+    value: PNP ou NPN conforme a versão; NA/NF (comutação escuro/claro); protegida contra curto-circuito e polaridade
+    status: extraido
+    source: {page: 2, location: Electrical - Output depending on version}
+  conexao:
+    value: Conector M12 de 4 pinos ou cabo de 2 m, Ø 4 mm
+    status: extraido
+    source: {page: 2, location: Mechanical - Connection type}
+  invólucro:
+    value: M18x1, CuZn niquelado; superfície ativa PMMA; 77 a 93,5 mm conforme versão
+    status: extraido
+    source: {page: 2, location: Mechanical - Housing material and dimensions}
+  grau_protecao:
+    value: IP 67 (IEC 60529)
+    status: extraido
+    source: {page: 2, location: Ambient - Enclosure rating}
+  certificacoes:
+    value: CE (EN 60947-5-2), cULus (class 2 source of supply)
+    status: extraido
+    source: {page: 2, location: Safety Notes and wiring diagram}
+  principio:
+    value: Retrorreflexivo a laser
+    status: extraido
+    source: {page: 2, location: Title - Laser retro-reflective Sensor}
+  luz:
+    value: Laser vermelho, classe 1 (IEC 60825-1:2014)
+    status: extraido
+    source: {page: 2, location: Optical - Light type emitter / Laser class}

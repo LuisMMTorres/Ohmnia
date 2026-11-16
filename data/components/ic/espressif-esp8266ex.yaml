@@ -1,0 +1,72 @@
+# Fonte: Espressif, ESP8266EX Datasheet, Version 7.1 (NRND), 2025.11.
+part_number: ESP8266EX
+category: ic.mcu
+schema_version: '1.0'
+manufacturer: Espressif
+family: ESP8266
+package: QFN32 (5 mm × 5 mm) (p. 7)
+lifecycle: nrnd
+notes:
+- 'O PDF da fila (NodeMCU ESP8266) é o datasheet do chip ESP8266EX; a placa NodeMCU usa este chip. Registro do chip, não da placa.'
+- 'Documento marcado "NOT RECOMMENDED FOR NEW DESIGNS" (p. 1). Sem ROM programável: o programa fica em flash SPI externa, até 16 MB, mínimo 512 kB sem OTA (p. 13).'
+- 'RAM: espaço de heap + dados disponível ao usuário < 50 kB no modo Station conectado ao roteador (p. 13); não há tamanho total de SRAM declarado.'
+- 'Níveis de E/S (Tabela 5-1, p. 24): VIL = -0,3 V a 0,25×VIO; VIH = 0,75×VIO a 3,6 V; VOL max 0,1×VIO; VOH min 0,8×VIO. VIO = domínio de alimentação digital/E/S VDDPST de 1,8 V a 3,6 V (p. 10).'
+- 'Corrente máxima por pino IMAX = 12 mA (Tabela 5-1, p. 24). ESD HBM 2 kV, CDM 0,5 kV (p. 24).'
+- 'ADC: um SAR de 10 bits no pino TOUT (pino 6), mede VDD3P3 ou a tensão em TOUT, não ambos ao mesmo tempo (p. 22). PWM: 4 interfaces, implementadas por software, frequência de 100 Hz a 1 kHz (p. 21).'
+- 'Corrente de operação média 80 mA (p. 7).'
+datasheets:
+- id: ds1
+  manufacturer: Espressif
+  revision: Version 7.1
+  sha256: 3a038e2fd3040ad06d95d41b16afc8292090339e9f8e728ce46a83db439cecf1
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 2.5
+    typ: 3.3
+    max: 3.6
+    unit: V
+    status: extraido
+    source: {page: 24, location: 5.1 Electrical Characteristics - Working Voltage Value (Tabela 5-1), excerpt: "Working Voltage Value - 2.5 3.3 3.6 V"}
+  I_io:
+    max: 12
+    unit: mA
+    status: extraido
+    source: {page: 24, location: 5.1 Electrical Characteristics - I/O IMAX (Tabela 5-1), excerpt: "IMAX - - - 12 mA"}
+  f_clk:
+    max: 160
+    unit: MHz
+    status: extraido
+    source: {page: 12, location: 3.1.1 CPU, excerpt: "reaches a maximum clock speed of 160 MHz"}
+  gpio:
+    typ: 17
+    unit: '1'
+    status: extraido
+    source: {page: 18, location: 4.1 General Purpose Input/Output Interface (GPIO), excerpt: "ESP8266EX has 17 GPIO pins"}
+  adc_bits:
+    typ: 10
+    unit: bit
+    status: extraido
+    source: {page: 22, location: 4.9 ADC, excerpt: "embedded with a 10-bit precision SAR ADC"}
+  pwm_ch:
+    typ: 4
+    unit: '1'
+    status: extraido
+    source: {page: 21, location: 4.7 Pulse-Width Modulation (PWM), excerpt: "ESP8266EX has four PWM output interfaces"}
+  Top:
+    min: -40
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 24, location: 5.1 Electrical Characteristics - Operating Temperature Range (Tabela 5-1), excerpt: "Operating Temperature Range - -40 Normal 125 °C"}
+attributes:
+  microcontrolador:
+    value: Tensilica L106 de 32 bits
+    status: extraido
+    source: {page: 7, location: 1.2 Specifications - Hardware CPU, excerpt: "CPU Tensilica L106 32-bit processor"}
+  comunicacao:
+    value: Wi-Fi 802.11 b/g/n (HT20), UART, SDIO, SPI, I2C, I2S, IR Remote Control
+    status: extraido
+    source: {page: 7, location: 1.2 Specifications - Wi-Fi Protocols e Peripheral Interface}

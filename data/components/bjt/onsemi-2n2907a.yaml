@@ -1,0 +1,164 @@
+# Fonte: onsemi, 2N2907A Small Signal Switching Transistor PNP Silicon, 2N2907A/D, Rev. 3, November 2013.
+part_number: 2N2907A
+category: bjt.pnp
+schema_version: '1.0'
+manufacturer: onsemi
+package: TO-18, case 206AA
+lifecycle: desconhecido
+notes:
+- 'PNP: tensões e correntes em módulo (o datasheet usa sinal negativo). Qualificado MIL-PRF-19500/291 (JAN, JANTX, JANTXV).'
+- "Não transcritos: ton (45 ns) e toff (300 ns) máx., pois o esquema não tem esses símbolos; segunda linha de ICBO e de IEBO (VCB = 60 V, VEB = 5 V) também não, pois a unidade impressa 'mAdc' perdeu o µ na extração."
+datasheets:
+- id: ds1
+  manufacturer: onsemi
+  document_number: 2N2907A/D
+  revision: Rev. 3, November 2013
+  url: https://www.onsemi.com/download/data-sheet/pdf/2n2907a-d.pdf
+  sha256: d3b5d64acc7691dbf892c9816340feca9266bd34b39ecdb0c0a59eda17bc6c82
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VCEO:
+    max: 60
+    unit: V
+    status: extraido
+    source: {page: 1, location: Maximum ratings - Collector-Emitter Voltage, excerpt: "Collector-Emitter Voltage VCEO -60 Vdc"}
+  VCBO:
+    max: 60
+    unit: V
+    status: extraido
+    source: {page: 1, location: Maximum ratings - Collector-Base Voltage, excerpt: "Collector-Base Voltage VCBO -60 Vdc"}
+  VEBO:
+    max: 5.0
+    unit: V
+    status: extraido
+    source: {page: 1, location: Maximum ratings - Emitter-Base Voltage, excerpt: "Emitter-Base Voltage VEBO -5.0 Vdc"}
+  IC:
+    max: 600
+    unit: mA
+    status: extraido
+    source: {page: 1, location: Maximum ratings - Collector Current Continuous, excerpt: "Collector Current - Continuous IC -600 mAdc"}
+  Ptot:
+    max: 500
+    unit: mW
+    conditions: {TA: 25 degC}
+    status: extraido
+    source: {page: 1, location: Maximum ratings - Total Device Dissipation @ TA = 25°C, excerpt: "Total Device Dissipation @ TA = 25°C PT 500 mW"}
+  Ptot@2:
+    max: 1.0
+    unit: W
+    conditions: {TC: 25 degC}
+    status: extraido
+    source: {page: 1, location: Maximum ratings - Total Device Dissipation @ TC = 25°C, excerpt: "Total Device Dissipation @ TC = 25°C PT 1.0 W"}
+  Tj_max:
+    max: 200
+    unit: degC
+    status: extraido
+    source: {page: 1, location: Maximum ratings - Operating and Storage Junction Temperature Range, excerpt: "TJ, Tstg -65 to +200 °C"}
+  Tj_min:
+    min: -65
+    unit: degC
+    status: extraido
+    source: {page: 1, location: Maximum ratings - Operating and Storage Junction Temperature Range, excerpt: "TJ, Tstg -65 to +200 °C"}
+  Tstg_max:
+    max: 200
+    unit: degC
+    status: extraido
+    source: {page: 1, location: Maximum ratings - Operating and Storage Junction Temperature Range, excerpt: "TJ, Tstg -65 to +200 °C"}
+  Rth_ja:
+    max: 325
+    unit: K/W
+    status: extraido
+    source: {page: 1, location: Thermal characteristics - Junction-to-Ambient, excerpt: "Thermal Resistance, Junction-to-Ambient RθJA 325 °C/W"}
+  Rth_jc:
+    max: 150
+    unit: K/W
+    status: extraido
+    source: {page: 1, location: Thermal characteristics - Junction-to-Case, excerpt: "Thermal Resistance, Junction-to-Case RθJC 150 °C/W"}
+  V(BR)CEO:
+    min: 60
+    unit: V
+    conditions: {IC: 10 mA}
+    status: extraido
+    source: {page: 2, location: Off characteristics - Collector-Emitter Breakdown Voltage, excerpt: "(IC = -10 mAdc) V(BR)CEO -60"}
+  ICES:
+    max: 50
+    unit: nA
+    conditions: {VCE: 50 V}
+    status: extraido
+    source: {page: 2, location: Off characteristics - Collector-Emitter Cutoff Current, excerpt: "(VCE = -50 Vdc) ICES -50 nAdc"}
+  ICBO:
+    max: 10
+    unit: nA
+    conditions: {VCB: 50 V}
+    status: extraido
+    source: {page: 2, location: Off characteristics - Collector-Base Cutoff Current (primeira linha), excerpt: "(VCB = -50 Vdc, IE = 0) ICBO -10 nAdc"}
+  IEBO:
+    max: 50
+    unit: nA
+    conditions: {VEB: 4.0 V}
+    status: extraido
+    source: {page: 2, location: Off characteristics - Emitter-Base Cutoff Current (primeira linha), excerpt: "(VEB = -4.0 Vdc) IEBO -50 nAdc"}
+  hFE:
+    min: 100
+    max: 300
+    unit: dimensionless
+    conditions: {IC: 150 mA, VCE: 10 V}
+    status: extraido
+    source: {page: 2, location: On characteristics - DC Current Gain, excerpt: "(IC = -150 mAdc, VCE = -10 Vdc) hFE 100 ... 300"}
+  hFE@2:
+    min: 100
+    max: 450
+    unit: dimensionless
+    conditions: {IC: 1.0 mA, VCE: 10 V}
+    status: extraido
+    source: {page: 2, location: On characteristics - DC Current Gain, excerpt: "(IC = -1.0 mAdc, VCE = -10 Vdc) hFE 100 ... 450"}
+  hFE@3:
+    min: 50
+    unit: dimensionless
+    conditions: {IC: 500 mA, VCE: 10 V}
+    status: extraido
+    source: {page: 2, location: On characteristics - DC Current Gain, excerpt: "(IC = -500 mAdc, VCE = -10 Vdc) hFE min 50"}
+  VCE(sat):
+    max: 0.4
+    unit: V
+    conditions: {IC: 150 mA, IB: 15 mA}
+    status: extraido
+    source: {page: 2, location: On characteristics - Collector-Emitter Saturation Voltage, excerpt: "(IC = -150 mAdc, IB = -15 mAdc) VCE(sat) -0.4 Vdc"}
+  VCE(sat)@2:
+    max: 1.6
+    unit: V
+    conditions: {IC: 500 mA, IB: 50 mA}
+    status: extraido
+    source: {page: 2, location: On characteristics - Collector-Emitter Saturation Voltage, excerpt: "(IC = -500 mAdc, IB = -50 mAdc) VCE(sat) -1.6 Vdc"}
+  VBE(sat):
+    max: 1.3
+    unit: V
+    conditions: {IC: 150 mA, IB: 15 mA}
+    status: extraido
+    source: {page: 2, location: On characteristics - Base-Emitter Saturation Voltage, excerpt: "(IC = -150 mAdc, IB = -15 mAdc) VBE(sat) -0.6 ... -1.3"}
+  VBE(sat)@2:
+    max: 2.6
+    unit: V
+    conditions: {IC: 500 mA, IB: 50 mA}
+    status: extraido
+    source: {page: 2, location: On characteristics - Base-Emitter Saturation Voltage, excerpt: "(IC = -500 mAdc, IB = -50 mAdc) VBE(sat) -2.6"}
+  hfe:
+    min: 100
+    unit: dimensionless
+    conditions: {IC: 1.0 mA, VCE: 10 V}
+    status: extraido
+    source: {page: 2, location: Small-signal characteristics - Small-Signal Current Gain f = 1 kHz, excerpt: "(IC = -1.0 mAdc, VCE = -10 Vdc, f = 1 kHz) hfe 100"}
+  Cobo:
+    max: 8.0
+    unit: pF
+    conditions: {VCB: 10 V}
+    status: extraido
+    source: {page: 2, location: Small-signal characteristics - Output Capacitance, excerpt: "(VCB = -10 Vdc, IE = 0, 100 kHz <= f <= 1.0 MHz) Cobo 8.0 pF"}
+  Cibo:
+    max: 30
+    unit: pF
+    conditions: {VEB: 2.0 V}
+    status: extraido
+    source: {page: 2, location: Small-signal characteristics - Input Capacitance, excerpt: "(VEB = -2.0 Vdc, IC = 0, 100 kHz <= f <= 1.0 MHz) Cibo 30 pF"}

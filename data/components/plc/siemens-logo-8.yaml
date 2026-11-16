@@ -1,0 +1,93 @@
+# Fonte: Siemens, LOGO! System Manual (LOGO! 8, 6ED1052-xxx08-0BA1), A5E33039675-AK, 7/2022.
+part_number: LOGO! 8
+category: plc
+schema_version: '1.0'
+manufacturer: Siemens
+family: LOGO! 8 (6ED1052-xxx08-0BA1)
+lifecycle: desconhecido
+notes:
+- 'Nome na fila: logo system manual en-US; manual de sistema da série LOGO! 8 (módulos base 12/24 V, 24 V, 24 V RC e 230 V), valores do Anexo A (Technical data, p. 325-339) como faixa entre os modelos de módulo base em tensão contínua.'
+- 'VS: módulos 24 VDC (20.4 a 28.8 V) e 12/24 VDC (10.8 a 28.8 V) (p. 331, 338); módulos 230 V: 85 a 265 VAC / 100 a 253 VDC (p. 326); não incluídos em VS.'
+- 'di: 8 entradas digitais nos módulos base (LOGO! 24CE, 12/24RCE); 4 nos módulos de expansão DM8 12/24R (p. 331, 338). ai: 4 entradas analógicas 0-10 V nos módulos base 24 e 12/24 (I1, I2, I7, I8).'
+- 'do: 4 saídas digitais nos módulos base; LOGO! 24CE com transistor (máx. 0,3 A por canal), LOGO! 12/24RCE com relé (máx. 10 A por relé) (p. 332, 339). do_I = relé, do_I@2 = transistor.'
+- 'di_on/di_off: níveis do LOGO! 24CE (sinal 1 > 12 VDC, sinal 0 < 5 VDC); no 12/24 sinal 1 > 8.5 VDC (p. 331, 338).'
+- 'Tempo de ciclo por função < 0,1 ms; startup típico 1,2 s (p. 325-326).'
+datasheets:
+- id: ds1
+  manufacturer: Siemens
+  document_number: A5E33039675-AK
+  revision: 7/2022
+  url: https://cache.industry.siemens.com/dl/files/041/109741041/att_924628/v1/logo_system_manual_en-US_en-US.pdf
+  sha256: 9398f933e8cbc8b78514f34964221c8b18aecd742afc25031a76322032e34442
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 10.8
+    max: 28.8
+    unit: V
+    status: extraido
+    source: {page: 338, location: A.8 Technical data LOGO! 12/24 - Permissible range, excerpt: "Permissible range 10.8 VDC to 28.8 VDC"}
+  di:
+    typ: 8
+    unit: '1'
+    status: extraido
+    source: {page: 331, location: A.4 Technical data LOGO! 24 - Digital inputs Number, excerpt: "Digital inputs Number 8"}
+  do:
+    typ: 4
+    unit: '1'
+    status: extraido
+    source: {page: 332, location: A.4 Technical data LOGO! 24 - Digital outputs Number, excerpt: "Digital outputs Number 4"}
+  ai:
+    typ: 4
+    unit: '1'
+    status: extraido
+    source: {page: 332, location: A.4 Technical data LOGO! 24 - Analog inputs Number, excerpt: "Number 4 (I1=AI3, I2=AI4, I7=AI1, I8=AI2)"}
+  di_on:
+    min: 12
+    unit: V
+    conditions: {VS: 24 V}
+    status: extraido
+    source: {page: 331, location: A.4 Technical data LOGO! 24 - Input voltage Signal 1, excerpt: "Signal 1 > 12 VDC"}
+  di_off:
+    max: 5
+    unit: V
+    conditions: {VS: 24 V}
+    status: extraido
+    source: {page: 331, location: A.4 Technical data LOGO! 24 - Input voltage Signal 0, excerpt: "Signal 0 < 5 VDC"}
+  do_I:
+    max: 10
+    unit: A
+    status: extraido
+    source: {page: 339, location: A.8 Technical data LOGO! 12/24RCE - Continuous current Ith (per terminal), excerpt: "Max. 10 A per relay"}
+  do_I@2:
+    max: 0.3
+    unit: A
+    status: extraido
+    source: {page: 332, location: A.4 Technical data LOGO! 24 - Digital outputs Output current, excerpt: "Output current Max. 0.3 A per channel"}
+  Top:
+    min: -20
+    max: 55
+    unit: °C
+    status: extraido
+    source: {page: 325, location: A.1 General technical data - Ambient temperature for BM and EM, excerpt: "-20 °C to +55 °C"}
+  Tstg:
+    min: -40
+    max: 70
+    unit: °C
+    status: extraido
+    source: {page: 325, location: A.1 General technical data - Storage and Transport, excerpt: "- 40 °C to +70 °C"}
+attributes:
+  linguagens:
+    value: Ladder Diagram (LAD) e Function Block Diagram (FBD) no software LOGO!Soft Comfort
+    status: extraido
+    source: {page: 317, location: 12 LOGO! software, excerpt: "Ladder Diagram (contact chart / circuit diagram) or Function Block Diagram (function chart)"}
+  tipo_saida:
+    value: Relé (modelos R, ex. 12/24RCE, 230RCE) ou transistor sourcing (modelos 24CE)
+    status: extraido
+    source: {page: 332, location: A.4 Technical data LOGO! 24 - Output type, excerpt: "Output type Transistor, current-sourcing"}
+  grau_protecao:
+    value: IP20 (módulos base, expansão e LOGO! TDE exceto painel frontal do TDE); IP65 painel frontal do LOGO! TDE
+    status: extraido
+    source: {page: 325, location: A.1 General technical data - Degree of protection, excerpt: "IP20 for LOGO! Base Modules, expansion modules, and the LOGO! TDE"}

@@ -1,0 +1,73 @@
+# Fonte: MASSUSE LTD., MTS SERIES Miniature Toggle Switch (MTS-101 ... MTS-402), sem número/revisão de documento visível.
+part_number: MTS-202
+category: switch.mechanical
+schema_version: '1.0'
+manufacturer: MASSUSE
+family: MTS Series
+lifecycle: desconhecido
+notes:
+- 'Atenção: o PDF é da MASSUSE LTD. (série MTS); a fila indicava NKK. Conferir se é o documento certo para NKK MTS-202.'
+- Valores da série MTS (ficha comum a todos os modelos). MTS-202 é DPDT ON-ON, 6 terminais (tabela de circuitos, página 1).
+datasheets:
+- id: ds1
+  manufacturer: MASSUSE
+  url: https://elab.untidar.ac.id/assets/Datasheets/MTSSeries.pdf
+  sha256: 3849eaffd6a9d2d38c6c3faaaad2a9a151835f96972732d3fb48dd559a8d890e
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_rated:
+    max: 6
+    unit: A
+    conditions: {V: 125 V}
+    status: extraido
+    source: {page: 1, location: Specification - rating, excerpt: "Rating: 6A 125VAC: 3A 250VAC"}
+  I_rated@2:
+    max: 3
+    unit: A
+    conditions: {V: 250 V}
+    status: extraido
+    source: {page: 1, location: Specification - rating, excerpt: "Rating: 6A 125VAC: 3A 250VAC"}
+  V_rated:
+    max: 250
+    unit: V
+    status: extraido
+    source: {page: 1, location: Specification - rating, excerpt: "Rating: 6A 125VAC: 3A 250VAC"}
+  R_contact:
+    max: 20
+    unit: mohm
+    status: extraido
+    source: {page: 1, location: Specification - contact resistance, excerpt: "Contact Resistance: 20mΩmax."}
+  R_iso:
+    min: 1000
+    unit: Mohm
+    conditions: {V: 500 V}
+    status: extraido
+    source: {page: 1, location: Specification - insulation resistance, excerpt: "Insulation Resistance: 500VDC 1000MΩmin."}
+  V_diel:
+    max: 1500
+    unit: V
+    conditions: {t: 1 min}
+    status: extraido
+    source: {page: 1, location: Specification - dielectric strength, excerpt: "Dielectric strength:1500VAC,1Minute"}
+  life:
+    min: 20000
+    unit: '1'
+    status: extraido
+    source: {page: 1, location: Specification - electrical life, excerpt: "Electrical Life:20,000 Cycles"}
+  Top:
+    min: -55
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Specification - operating temperature, excerpt: "Operating Temperature:-55 ~ +85 ℃"}
+attributes:
+  tipo:
+    value: Chave de alavanca (toggle) miniatura
+    status: extraido
+    source: {page: 1, location: Title, excerpt: "MTS SERIES ... Miniature Toggle Switch"}
+  contatos:
+    value: DPDT ON-ON, 6 terminais
+    status: extraido
+    source: {page: 1, location: Circuitry trait table, excerpt: "MTS-202 ON - ON DPDT 6P"}

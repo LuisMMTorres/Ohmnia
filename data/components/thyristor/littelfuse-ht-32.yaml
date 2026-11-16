@@ -1,0 +1,84 @@
+# Fonte: Littelfuse, Teccor brand Thyristors - HTxxx & HTMxxx & STxxx Series Standard Bidirectional DIAC Trigger, Revised July 9, 2008 (documento de série; linha HT-32 em DO-35).
+part_number: HT-32
+category: thyristor.diac
+schema_version: '1.0'
+manufacturer: Littelfuse
+family: HTxxx / HTMxxx / STxxx
+package: DO-35
+lifecycle: desconhecido
+notes:
+- Documento de série (HT, HTM, ST); VBO do HT-32 vem da tabela Product Selector (pág. 3); demais limites são da série.
+- 'Ptot de 250 mW é a dissipação de serviço para DO-35 entre TA = -40 e +40 °C, com derating de 3.6 mW/°C acima de +40 °C (pág. 2, notas 1 e 2).'
+- 'Resistência térmica DO-35 junção-ambiente 278 °C/W e junção-terminal 100 °C/W (pág. 3): sem símbolo no esquema.'
+- A página 1 do PDF é folha de rosto do distribuidor (Chipsmall).
+datasheets:
+- id: ds1
+  manufacturer: Littelfuse
+  revision: Revised July 9, 2008
+  url: https://datasheet.chipsmall.com/HT32/525415.pdf
+  sha256: 90e12e2f48355847f0af7afc454ff90da21c68a87fd0671c0fca57f17fc18b93
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VBO:
+    min: 27
+    max: 37
+    unit: V
+    conditions: {f: 50/60 Hz}
+    status: extraido
+    source:
+      page: 3
+      location: Product Selector - HT-32 (DO-35), VBO MIN / MAX
+      excerpt: "XX-32 HT-32 ST-32 27V 37V"
+  dVBO:
+    max: 2
+    unit: V
+    status: extraido
+    source:
+      page: 3
+      location: Electrical Characteristics - Breakover Voltage Symmetry
+      excerpt: "Breakover Voltage Symmetry +VBO to -VBO 2 V"
+  dV:
+    max: 5
+    unit: V
+    conditions: {IF: 10 mA}
+    status: extraido
+    source:
+      page: 3
+      location: Electrical Characteristics - VBB Delta Breakback Voltage
+      excerpt: "VBB Breakback Voltage VBO to V10mA 5 V"
+  IBO:
+    max: 15
+    unit: uA
+    status: extraido
+    source:
+      page: 3
+      location: Electrical Characteristics - IBO Breakover Current
+      excerpt: "IBO Breakover Current 50/60Hz Sine Wave 15 uA"
+  ITRM:
+    max: 2
+    unit: A
+    conditions: {TA: 40 °C, tp: 10 us}
+    status: extraido
+    source:
+      page: 2
+      location: Absolute Maximum Ratings - Pulse On-State Current
+      excerpt: "ITRM 120PPS, TA <= 40C, pulse width = 10 uS 2 A"
+  Ptot:
+    max: 250
+    unit: mW
+    conditions: {TA: 40 °C}
+    status: extraido
+    source:
+      page: 2
+      location: Notes 1 - Service Dissipation for DO-35
+      excerpt: "Service Dissipation (at TA= -40C to +40C): 250mW for DO-35"
+  Tj_max:
+    max: 125
+    unit: °C
+    status: extraido
+    source:
+      page: 2
+      location: Absolute Maximum Ratings - Operating Junction Temperature
+      excerpt: "TJ Operating Junction Temperature -40 +125 C"

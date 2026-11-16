@@ -1,0 +1,62 @@
+# Fonte: Littelfuse, catálogo "Blade Terminal and Special Purpose Fuses - ATO Fuse Fast-Acting Type" (pág. 86 do catálogo), sem data de revisão.
+part_number: '257'
+category: fuse
+schema_version: '1.0'
+manufacturer: Littelfuse
+family: ATO 257 (fusível de lâmina automotivo, ação rápida)
+package: lâmina (blade) automotivo
+lifecycle: desconhecido
+notes:
+- 'Valores da série: 1 A a 40 A, 32 VDC; cores por corrente (Black, Grey, Violet, Pink, Tan, Brown, Red, Blue, Yellow, Natural, Green, Blue Green, Orange).'
+- 'Resistência a frio nominal de 0,123 ohm (1 A) a 0,0014 ohm (40 A); I2t mínimo de fusão de 0,4 A2s (1 A) a 3310 A2s (40 A), conforme a tabela.'
+- 'Tempos de abertura: a 110 % da corrente nominal, 100 h mínimo (1 a 40 A); a 200 %, 0,10 s min. a 5 s máx. (1 a 2 A) e 0,15 s min. a 5 s máx. (3 a 40 A).'
+datasheets:
+- id: ds1
+  manufacturer: Littelfuse
+  document_number: ATO 257 Series (catálogo, pág. 86)
+  url: https://www.farnell.com/datasheets/5428.pdf
+  sha256: 8a2e7bc5f5387c571046a4f9900e2c57af1bac274b061a89522fddba251ca482
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_rated:
+    min: 1
+    max: 40
+    unit: A
+    status: extraido
+    note: Faixa da série.
+    source: {datasheet_id: ds1, page: 1, location: Ordering information table - Ampere Rating, excerpt: "257 001 ... 257 040 (1 ... 40 A)"}
+  V_rated:
+    max: 32
+    unit: V
+    status: extraido
+    note: Tensão contínua (VDC).
+    source: {datasheet_id: ds1, page: 1, location: Ordering information table - Voltage Rating (VDC), excerpt: "32"}
+  I2t:
+    min: 0.4
+    max: 3310
+    unit: A^2*s
+    status: extraido
+    note: Minimum Melting I2t; faixa entre os modelos.
+    source: {datasheet_id: ds1, page: 1, location: Ordering information table - Minimum Melting I2t, excerpt: ".4 ... 3310"}
+  R_cold:
+    min: 0.0014
+    max: 0.123
+    unit: ohm
+    status: extraido
+    note: Resistência a frio nominal; faixa entre os modelos.
+    source: {datasheet_id: ds1, page: 1, location: Ordering information table - Nominal Cold Resistance, excerpt: "0.123 ... 0.0014"}
+attributes:
+  curva:
+    value: ação rápida (fast-acting), tipo ATO
+    status: extraido
+    source: {page: 1, location: title, excerpt: "ATO Fuse Fast-Acting Type"}
+  formato:
+    value: lâmina automotiva (blade), tipo ATO
+    status: extraido
+    source: {page: 1, location: design standards, excerpt: "U.L. Standard for Automotive Blade Type Fuses. SAE J1284"}
+  certificacoes:
+    value: UL (1 a 40 A), CSA (3 a 30 A); norma UL para fusíveis de lâmina automotivos e SAE J1284
+    status: extraido
+    source: {page: 1, location: Agency approvals / design standards}

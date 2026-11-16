@@ -1,0 +1,71 @@
+# Fonte: Rapid Electronics / TruOpto, GL5528 Light Dependent Photoresistor, order code 58-0134 (MPN GL5528), v1, 2 páginas.
+part_number: GL5528
+category: sensor.optical
+schema_version: '1.0'
+manufacturer: Token
+family: GL55 (série Φ5)
+lifecycle: desconhecido
+notes:
+- 'Fila: "GL5528 LDR" do fabricante Token; o PDF é da Rapid Electronics (código 58-0134, logo TruOpto), MPN GL5528.'
+- 'Pág. 1: resistência iluminado medida a 10 lux (fonte padrão A, 2856 K); resistência no escuro medida dez segundos após cortar a luz de 10 lux; gama = Lg(R10/R100).'
+- 'Pág. 1: tempo de resposta 20 ms na subida (increase) e 30 ms na descida (decrease); registrado 20 ms em t_resp e 30 ms em t_resp@2.'
+- 'Pág. 1: a resistência no escuro (1 Mohm) vem sem indicação de mínimo ou típico; potência máxima definida à temperatura ambiente de 25 °C.'
+datasheets:
+- id: ds1
+  manufacturer: Rapid Electronics
+  document_number: 58-0134
+  url: https://static.rapidonline.com/pdf/58-0134_v1.pdf
+  sha256: c11b2ac83273db4657606b77ab962fe3fcadc90c0d321c7b840af1ea3f7e1ba5
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  R_light:
+    min: 10
+    max: 20
+    unit: kohm
+    conditions: {E: 10 lux}
+    status: extraido
+    source: {page: 1, location: Types and specification - Light resistance (10Lux) (KΩ), excerpt: "Φ5 Series 10-20"}
+  R_dark:
+    typ: 1
+    unit: Mohm
+    status: extraido
+    source: {page: 1, location: Types and specification - Dark resistance (MΩ), excerpt: "Φ5 Series ... 1"}
+  gamma:
+    typ: 0.6
+    unit: '1'
+    status: extraido
+    source: {page: 1, location: Types and specification - gamma 100/10, excerpt: "gamma value 0.6"}
+  lambda:
+    typ: 540
+    unit: nm
+    status: extraido
+    source: {page: 1, location: Types and specification - Spectrum peak value, excerpt: "GL5528 150 100 -30~+70 540"}
+  V_max:
+    max: 150
+    unit: V
+    status: extraido
+    source: {page: 1, location: Types and specification - Maximum voltage, excerpt: "GL5528 150 100 -30~+70 540"}
+  P_max:
+    max: 100
+    unit: mW
+    conditions: {TA: 25 °C}
+    status: extraido
+    source: {page: 1, location: Types and specification - Maximum power, excerpt: "GL5528 150 100 -30~+70 540"}
+  t_resp:
+    typ: 20
+    unit: ms
+    status: extraido
+    source: {page: 1, location: Types and specification - Response time (ms) Increase, excerpt: "Increase 20 / Decrease 30"}
+  t_resp@2:
+    typ: 30
+    unit: ms
+    status: extraido
+    source: {page: 1, location: Types and specification - Response time (ms) Decrease, excerpt: "Increase 20 / Decrease 30"}
+  Top:
+    min: -30
+    max: 70
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Types and specification - Environmental temperature, excerpt: "GL5528 150 100 -30~+70 540"}

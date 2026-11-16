@@ -1,0 +1,67 @@
+# Fonte: Analog Devices (Linear Technology), LTC4151 / LTC4151-1 / LTC4151-2 High Voltage I2C Current and Voltage Monitor, rev. 4151fc (cópia RS).
+part_number: LTC4151
+category: ic.energy_meter
+schema_version: '1.0'
+manufacturer: Analog Devices
+family: LTC4151 / LTC4151-1 / LTC4151-2
+package: 10-Lead MSOP, 10-Lead DFN 3 mm x 3 mm, 16-Lead SO
+lifecycle: desconhecido
+notes:
+- 'Monitor de potência no lado alto com ADC de 12 bits (corrente, tensão de entrada e tensão externa) e interface I2C; -1 e -2 têm SDA dividido para optoacopladores (pág. 1).'
+- 'Faixa de operação por grau: C 0 a 70 °C, I -40 a 85 °C, H -40 a 125 °C (pág. 2); Top abaixo usa a faixa total entre os graus.'
+- 'Erro total não ajustado (TUE) máx. ±1,25 % (condição SENSE+ - SENSE-) e ±1 % / ±0,75 % para VIN e ADIN conforme o grau (pág. 3); tensão de fundo de escala do SENSE 102,4 mV típ.'
+- 'Corrente de alimentação em shutdown 120 µA típ. (300 µA máx.), VIN = 12 V (pág. 3). Absolutos máximos: VIN -0,3 a 90 V (pág. 2).'
+datasheets:
+- id: ds1
+  manufacturer: Analog Devices
+  document_number: 4151fc
+  url: https://docs.rs-online.com/c755/0900766b810edb70.pdf
+  sha256: 560a457c9f1cb02ffec8356277f1510fe3577509cc43ea91bdb4bb58c759e687
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 7
+    max: 80
+    unit: V
+    status: extraido
+    source: {page: 3, location: Electrical Characteristics - General - VIN Supply Voltage, excerpt: "Supply Voltage"}
+  accuracy:
+    max: 1.25
+    unit: '%'
+    status: extraido
+    source: {page: 3, location: Electrical Characteristics - ADC - Total Unadjusted Error, excerpt: "Total Unadjusted Error"}
+  bits:
+    typ: 12
+    unit: bit
+    status: extraido
+    source: {page: 3, location: Electrical Characteristics - ADC - Resolution (No Missing Codes), excerpt: "Resolution (No Missing Codes)"}
+  IS:
+    typ: 1.2
+    max: 1.7
+    unit: mA
+    status: extraido
+    conditions: {VIN: 48 V}
+    source: {page: 3, location: Electrical Characteristics - General - Supply Current, normal operation, excerpt: "VIN = 48V, Normal Operation Mode"}
+  Top:
+    min: -40
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Absolute Maximum Ratings - Operating Temperature Range (LTC4151H), excerpt: "–40°C to 125°C"}
+  Tstg:
+    min: -65
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Absolute Maximum Ratings - Storage Temperature Range (MSOP, SO), excerpt: "–65°C to 150°C"}
+attributes:
+  grandezas:
+    value: Corrente do lado alto (shunt), tensão de entrada e tensão externa (ADIN)
+    status: extraido
+    source: {page: 1, location: Description, excerpt: "high side current, input voltage and an external voltage"}
+  interface:
+    value: I2C (SDA dividido nas variantes -1 e -2), modo contínuo e snapshot
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "I2C Interface"}

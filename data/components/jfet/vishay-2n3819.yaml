@@ -1,0 +1,124 @@
+# Fonte: Vishay Siliconix, 2N3819 N-Channel JFET, S-52424 Rev. C, 14-Apr-97 (FaxBack document #70238).
+part_number: 2N3819
+category: jfet.n
+schema_version: '1.0'
+manufacturer: Vishay
+family: 2N3819
+package: TO-226AA (TO-92)
+lifecycle: desconhecido
+notes:
+- 'JFET canal N de uso geral (alta frequência, baixo ruído). Tensões em módulo (o datasheet usa sinal negativo).'
+- 'Valores típicos do datasheet são só auxílio de projeto, não garantidos (Nota B da tabela).'
+- 'O texto extraído troca o prefixo µ por m em várias unidades (yos impresso em mS; corrente de teste de V(BR)GSS impressa em mA); aqui yos foi lido como µS (gráfico de gos na p. 2 vai de 0 a 100) e não se transcreveu a condição de V(BR)GSS.'
+- 'Não transcritos: IGSS a TA = 100 °C (unidade ambígua), rDS(on) (150 ohm), en (6 nV/raiz Hz).'
+datasheets:
+- id: ds1
+  manufacturer: Vishay Siliconix
+  document_number: S-52424 (FaxBack 70238)
+  revision: Rev. C, 14-Apr-97
+  url: https://www.farnell.com/datasheets/39764.pdf
+  sha256: 75a58bb2aa811ed1e099562579f3c58528a8d96992b8813943f73dab66c95b96
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VGSR:
+    max: 25
+    unit: V
+    status: extraido
+    source: {page: 1, location: Absolute maximum ratings - Gate-Source/Gate-Drain Voltage, excerpt: "Gate-Source/Gate-Drain Voltage -25 V"}
+  VDG:
+    max: 25
+    unit: V
+    status: extraido
+    source: {page: 1, location: Absolute maximum ratings - Gate-Source/Gate-Drain Voltage, excerpt: "Gate-Source/Gate-Drain Voltage -25 V"}
+  IG:
+    max: 10
+    unit: mA
+    status: extraido
+    source: {page: 1, location: Absolute maximum ratings - Forward Gate Current, excerpt: "Forward Gate Current 10 mA"}
+  Ptot:
+    max: 350
+    unit: mW
+    conditions: {TA: 25 degC}
+    status: extraido
+    source: {page: 1, location: Absolute maximum ratings - Power Dissipation (Nota A), excerpt: "Power Dissipation 350 mW; Derate 2.8 mW/°C above 25°C"}
+  Ptot_derating:
+    max: 2.8
+    unit: mW/K
+    status: extraido
+    source: {page: 1, location: Absolute maximum ratings - Nota A, excerpt: "A. Derate 2.8 mW/°C above 25°C"}
+  Tj_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source: {page: 1, location: Absolute maximum ratings - Operating Junction Temperature, excerpt: "Operating Junction Temperature -55 to 150 °C"}
+  Tstg_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source: {page: 1, location: Absolute maximum ratings - Storage Temperature, excerpt: "Storage Temperature -55 to 150 °C"}
+  V(BR)GSS:
+    min: 25
+    typ: 35
+    unit: V
+    status: extraido
+    source: {page: 2, location: Specifications - Static - Gate-Source Breakdown Voltage, excerpt: "V(BR)GSS  Min -25  Typ -35"}
+  VGS(off):
+    min: 3
+    max: 8
+    unit: V
+    conditions: {VDS: 15 V}
+    status: extraido
+    source: {page: 2, location: Specifications - Static - Gate-Source Cutoff Voltage, excerpt: "VGS(off) VDS = 15 V, ID = 2 nA  -3 ... -8 V"}
+  IDSS:
+    min: 2
+    typ: 10
+    max: 20
+    unit: mA
+    conditions: {VDS: 15 V}
+    status: extraido
+    source: {page: 2, location: Specifications - Static - Saturation Drain Current, excerpt: "IDSS VDS = 15 V, VGS = 0 V  2  10  20 mA"}
+  IGSS:
+    max: 2
+    unit: nA
+    conditions: {VGS: -15 V}
+    status: extraido
+    source: {page: 2, location: Specifications - Static - Gate Reverse Current (TA = 25 °C), excerpt: "IGSS VGS = -15 V, VDS = 0 V  Max -2 nA"}
+  yfs:
+    min: 2
+    typ: 5.5
+    max: 6.5
+    unit: mS
+    conditions: {VDS: 15 V, f: 1 kHz}
+    status: extraido
+    source: {page: 2, location: Specifications - Dynamic - Common-Source Forward Transconductance gfs, excerpt: "gfs VDS = 15 V, VGS = 0 V, f = 1 kHz  2  5.5  6.5 mS"}
+  yfs@2:
+    min: 1.6
+    typ: 5.5
+    unit: mS
+    conditions: {VDS: 15 V, f: 100 MHz}
+    status: extraido
+    source: {page: 2, location: Specifications - Dynamic - Common-Source Forward Transconductance gfs, excerpt: "gfs VDS = 15 V, VGS = 0 V, f = 100 MHz  1.6  5.5 mS"}
+  yos:
+    typ: 25
+    max: 50
+    unit: uS
+    conditions: {VDS: 15 V}
+    note: unidade impressa 'mS' (µ perdido na extração do texto); lida como µS (gráfico de gos na p. 2 vai de 0 a 100 µS)
+    status: extraido
+    source: {page: 2, location: Specifications - Dynamic - Common-Source Output Conductance gos, excerpt: "gos VDS = 15 V, VGS = 0 V, f = 1 kHz  25  50"}
+  Ciss:
+    typ: 2.2
+    max: 8
+    unit: pF
+    conditions: {VDS: 15 V}
+    status: extraido
+    source: {page: 2, location: Specifications - Dynamic - Common-Source Input Capacitance, excerpt: "Ciss VDS = 15 V, VGS = 0 V, f = 1 MHz  2.2  8 pF"}
+  Crss:
+    typ: 0.7
+    max: 4
+    unit: pF
+    conditions: {VDS: 15 V}
+    status: extraido
+    source: {page: 2, location: Specifications - Dynamic - Common-Source Reverse Transfer Capacitance, excerpt: "Crss VDS = 15 V, VGS = 0 V, f = 1 MHz  0.7  4 pF"}

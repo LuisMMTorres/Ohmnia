@@ -1,0 +1,81 @@
+# Fonte: Analog Devices (Linear Technology), LTC2945 Wide Range I2C Power Monitor, rev. 2945fb (cópia Farnell).
+part_number: LTC2945
+category: ic.energy_meter
+schema_version: '1.0'
+manufacturer: Analog Devices
+family: LTC2945 / LTC2945-1
+package: 12-Lead QFN 3 mm x 3 mm (UD) e 12-Lead MSOP (MS)
+lifecycle: desconhecido
+notes:
+- 'Monitor de potência (corrente, tensão e potência de 24 bits) com ADC Δ∑ de 12 bits e interface I2C; a variante -1 tem saída de dados invertida para optoacopladores (pág. 1).'
+- 'Faixa de operação por grau: C 0 a 70 °C, I -40 a 85 °C, H -40 a 125 °C (pág. 2); Top abaixo usa a faixa total entre os graus.'
+- 'Erro total não ajustado (TUE) < ±0,75 % para as entradas de corrente (SENSE), tensão (VIN) e ADIN (pág. 4). Tensão de fundo de escala do SENSE 102,4 mV típ.; ADIN 2,048 V típ.'
+- 'Faixa de tensão de entrada dos sensores (SENSE+/SENSE-) de modo comum: 0 a 80 V; VDD de 4 a 80 V; INTVCC de 2,7 a 5,9 V (págs. 3-4). Corrente em shutdown IDD 40 µA típ. (70 µA máx.).'
+- 'Absolutos máximos (pág. 2): VDD -0,3 a 100 V; SENSE+ -1 a 100 V. TJmax 125 °C; θJA 58,7 °C/W (QFN) e 135 °C/W (MSOP).'
+datasheets:
+- id: ds1
+  manufacturer: Analog Devices
+  document_number: 2945fb
+  url: https://www.farnell.com/datasheets/1972278.pdf
+  sha256: 96780209cd5576fe4768b2d9cf30d96220099d371b427a42d2b6c7be34f9d0e1
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 4
+    max: 80
+    unit: V
+    status: extraido
+    source: {page: 3, location: Electrical Characteristics - Supplies - VDD Supply Voltage Range, excerpt: "VDD Supply Voltage Range"}
+  V_in:
+    min: 0
+    max: 80
+    unit: V
+    status: extraido
+    source: {page: 4, location: Electrical Characteristics - Sense Inputs - SENSE+, SENSE- Common Mode Voltage, excerpt: "SENSE+, SENSE– Common Mode Voltage"}
+  accuracy:
+    max: 0.75
+    unit: '%'
+    status: extraido
+    source: {page: 4, location: Electrical Characteristics - ADC - Total Unadjusted Error, excerpt: "Total Unadjusted Error"}
+  bits:
+    typ: 12
+    unit: bit
+    status: extraido
+    source: {page: 4, location: Electrical Characteristics - ADC - Resolution (No missing codes), excerpt: "Resolution (No missing codes)"}
+  fs:
+    min: 0.006
+    typ: 0.0075
+    max: 0.009
+    unit: kHz
+    status: extraido
+    source: {page: 4, location: Electrical Characteristics - ADC - Conversion Rate (Continuous Mode), excerpt: "Conversion Rate (Continuous Mode)"}
+  IS:
+    typ: 0.8
+    max: 1.2
+    unit: mA
+    status: extraido
+    conditions: {VDD: 48 V}
+    source: {page: 3, location: Electrical Characteristics - Supplies - VDD Supply Current (INTVCC aberto), excerpt: "VDD Supply Current"}
+  Top:
+    min: -40
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Absolute Maximum Ratings - Operating Temperature Range (graus C/I/H), excerpt: "–40°C to 125°C"}
+  Tstg:
+    min: -65
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Absolute Maximum Ratings - Storage Temperature Range, excerpt: "–65°C to 150°C"}
+attributes:
+  grandezas:
+    value: Corrente (tensão sobre resistor shunt), tensão de entrada, tensão auxiliar (ADIN) e potência (24 bits)
+    status: extraido
+    source: {page: 1, location: Description, excerpt: "A 24-bit power value is"}
+  interface:
+    value: I2C (SDA separado em SDAI/SDAO para optoisolação), nove endereços
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "Split SDA for Opto-Isolation"}

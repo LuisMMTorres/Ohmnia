@@ -1,0 +1,95 @@
+# Fonte: IXYS Integrated Circuits Division, CPC1017N Single-Pole, Normally Open 4-Lead SOP OptoMOS Relay, DS-CPC1017N-R08, 5/6/2013.
+part_number: CPC1017N
+category: relay.solid_state
+schema_version: '1.0'
+manufacturer: IXYS
+family: OptoMOS 1-Form-A
+package: SOP de 4 terminais
+lifecycle: desconhecido
+notes:
+- 'Resistência em condução máx. 16 ohm (IL=100 mA), típica 6,8 a 7,4 ohm na distribuição da pág. 3; sem símbolo no schema (pág. 1 e 2).'
+- 'Corrente de carga contínua de 100 mA a 25 °C reduz linearmente até 80 mA a 80 °C (nota 1, pág. 2). Acima de 60 °C recomenda-se corrente de LED de 3 mA (nota 3, pág. 2).'
+- 'Capacitância de saída típica 25 pF (VL=50 V, 1 MHz); capacitância entrada-saída típica 1 pF (pág. 2).'
+- 'Queda do LED de entrada VF 0,9 / 1,2 / 1,4 V (mín./típ./máx.) a IF=5 mA; tensão reversa de entrada máx. 5 V (pág. 2).'
+- 'Corrente de fuga desligado lida como 1 uA (o símbolo da unidade saiu corrompido no texto da pág. 2): conferir no PDF.'
+datasheets:
+- id: ds1
+  manufacturer: IXYS Integrated Circuits Division
+  document_number: DS-CPC1017N-R08
+  revision: R08, 5/6/2013
+  url: https://static.chipdip.ru/lib/482/DOC013482323.pdf
+  sha256: 5e4dbd6484590c458797297d994e782d4a70285258e6c8c1b46c26bb2df95dda
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_control:
+    typ: 0.4
+    max: 1
+    unit: mA
+    status: extraido
+    note: Corrente de controle para ativar (IL=100 mA). Para desativar, mín. 0,3 mA.
+    source: {datasheet_id: ds1, page: 2, location: Electrical Characteristics - Input Control Current to Activate, excerpt: "IL=100mA IF - 0.4 1 mA"}
+  V_load:
+    max: 60
+    unit: V
+    status: extraido
+    note: Tensão de bloqueio, valor de pico (VP).
+    source: {datasheet_id: ds1, page: 2, location: Absolute Maximum Ratings - Blocking Voltage, excerpt: "Blocking Voltage 60 VP"}
+  I_load:
+    max: 100
+    unit: mA
+    status: extraido
+    note: Contínua, mArms / mADC, a 25 °C com IF=2 mA.
+    source: {datasheet_id: ds1, page: 2, location: Electrical Characteristics - Load Current Continuous, excerpt: "IF=2mA IL 100 mArms / mADC"}
+  I_surge:
+    max: 350
+    unit: mA
+    status: extraido
+    note: Pico, t=10 ms (±350 mAP).
+    source: {datasheet_id: ds1, page: 2, location: Electrical Characteristics - Load Current Peak, excerpt: "Peak t=10ms ILPK ±350 mAP"}
+  I_off:
+    max: 0.001
+    unit: mA
+    status: extraido
+    note: Fuga desligado a VL=60 VP; lida como 1 uA (unidade corrompida no texto).
+    source: {datasheet_id: ds1, page: 2, location: Electrical Characteristics - Off-State Leakage Current, excerpt: "VL=60VP ILEAK 1"}
+  t_on:
+    max: 10
+    unit: ms
+    status: extraido
+    note: IF=5 mA, VL=10 V.
+    source: {datasheet_id: ds1, page: 2, location: Electrical Characteristics - Switching Speeds Turn-On, excerpt: "IF=5mA, VL=10V ton 10 ms"}
+  t_off:
+    max: 10
+    unit: ms
+    status: extraido
+    note: IF=5 mA, VL=10 V.
+    source: {datasheet_id: ds1, page: 2, location: Electrical Characteristics - Switching Speeds Turn-Off, excerpt: "toff 10 ms"}
+  V_iso:
+    max: 1500
+    unit: V
+    status: extraido
+    note: Vrms, entrada para saída.
+    source: {datasheet_id: ds1, page: 2, location: Absolute Maximum Ratings - Isolation Voltage Input to Output, excerpt: "1500 Vrms"}
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {datasheet_id: ds1, page: 2, location: Absolute Maximum Ratings - Operational Temperature, excerpt: "-40 to +85 ºC"}
+  Tstg:
+    min: -40
+    max: 125
+    unit: °C
+    status: extraido
+    source: {datasheet_id: ds1, page: 2, location: Absolute Maximum Ratings - Storage Temperature, excerpt: "-40 to +125 ºC"}
+attributes:
+  comutacao:
+    value: 1-Form-A (monopolar, normalmente aberto), MOSFET acoplado oticamente (OptoMOS), carga em mArms / mADC
+    status: extraido
+    source: {page: 1, location: Description, excerpt: "single pole, normally open (1-Form-A) solid state relay"}
+  certificacoes:
+    value: UL Recognized (File E76270), CSA (Certificate 1175739), EN/IEC 60950-1 (TUV B 09 07 49410 004)
+    status: extraido
+    source: {page: 1, location: Approvals}

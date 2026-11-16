@@ -1,0 +1,74 @@
+# Fonte: Texas Instruments, AMC1301 Precision, ±250-mV Input, Reinforced Isolated Amplifier, SBAS667G, abril 2016, revisado abril 2023.
+part_number: AMC1301
+category: ic.interface
+schema_version: '1.0'
+manufacturer: Texas Instruments
+family: AMC1301 / AMC1301S
+package: DWV (SOIC, 8 pinos), 5.85 mm x 7.50 mm
+lifecycle: desconhecido
+notes:
+- 'Fila: AMC1301. Amplificador isolado reforçado de ganho fixo para medição de corrente com shunt; categoria ic.interface escolhida por falta de categoria própria (sensor.current exige I_PN, que o datasheet não declara).'
+- 'Entrada diferencial linear +-250 mV (VFSR), clipping em +-302.7 mV, ganho nominal fixo 8.2 V/V, saída diferencial (tensão de modo comum de saída 1.39 ... 1.49 V) (p.1, p.5, p.9).'
+- 'Erro de ganho +-0.3 % máx. a 25 °C; deriva de ganho +-50 ppm/°C máx.; offset +-0.2 mV máx.; deriva de offset +-3 µV/°C máx.; não linearidade 0.03 % máx. (p.1, p.9).'
+- 'Isolação (p.7): 5000 VRMS por 1 min (UL1577), VIOTM 7000 VPK, VIORM 1500 VPK, tensão de trabalho 1000 VRMS, surge 10000 VPK; CMTI 15 kV/us mín. (p.9).'
+- 'Atraso 50 %-50 % da entrada à saída 1.6 us típ., 2.6 us máx.; tempo de subida/descida 2.0 us (p.10).'
+- 'Corrente de alimentação IDD1 (alto lado) 7.2 típ. / 9.8 mA máx. em 4.5 ... 5.5 V (registrada em ICC); IDD2 (baixo lado) 5.9 típ. / 8.1 mA máx. (p.10).'
+- 'AMC1301S: faixa especificada -55 ... +125 °C (p.5). Os valores de Top aqui são do AMC1301.'
+datasheets:
+- id: ds1
+  manufacturer: Texas Instruments
+  document_number: SBAS667G
+  revision: 'abril 2016, revisado abril 2023'
+  url: https://www.ti.com/lit/ds/symlink/amc1301.pdf
+  sha256: 15dfeb41619312e0cabdcf45907752100352c661bc4390b2294229f0846aad7f
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 3
+    max: 5.5
+    unit: V
+    status: extraido
+    source: {page: 5, location: 6.3 Recommended Operating Conditions - Power supply VDD1 and VDD2, excerpt: "High-side VDD1 3 / 5 / 5.5 V; Low-side VDD2 3 / 3.3 / 5.5 V"}
+  ICC:
+    max: 9.8
+    unit: mA
+    status: extraido
+    source: {page: 10, location: 6.9 Electrical Characteristics - Power supply IDD1, excerpt: "4.5 V ≤ VDD1 ≤ 5.5 V 7.2 9.8 mA"}
+  f_max:
+    min: 190
+    typ: 210
+    unit: kHz
+    status: extraido
+    source: {page: 9, location: 6.9 Electrical Characteristics - Analog output BW, excerpt: "BW Output bandwidth 190 210 kHz"}
+  channels:
+    typ: 1
+    unit: '1'
+    status: extraido
+    source: {page: 1, location: Description (single isolated amplifier, one differential input and output)}
+  Top:
+    min: -40
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 5, location: 6.3 Recommended Operating Conditions - Specified ambient temperature TA (AMC1301), excerpt: "AMC1301 -40 125 °C"}
+  Tstg:
+    min: -65
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 5, location: 6.1 Absolute Maximum Ratings - Temperature Storage Tstg, excerpt: "Storage, Tstg -65 150 °C"}
+attributes:
+  funcao:
+    value: Amplificador isolado reforçado, entrada +-250 mV para shunt, ganho fixo 8.2 V/V, saída diferencial
+    status: extraido
+    source: {page: 1, location: 1 Features, excerpt: "±250-mV input voltage range ... Fixed gain: 8.2 V/V"}
+  interface:
+    value: Saída analógica diferencial (OUTP/OUTN), sem interface digital
+    status: extraido
+    source: {page: 1, location: Simplified Schematic}
+  encapsulamento:
+    value: DWV (SOIC, 8 pinos), 5.85 mm x 7.50 mm
+    status: extraido
+    source: {page: 1, location: Package Information, excerpt: "AMC1301 DWV (SOIC, 8) 5.85 mm × 7.50 mm"}

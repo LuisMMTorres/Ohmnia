@@ -1,0 +1,109 @@
+# Fonte: Siemens, SIMATIC S7-1200 Programmable controller - System Manual, A5E02486680-05, 11/2011 (Anexo A Technical specifications).
+part_number: S7-1200
+category: plc
+schema_version: '1.0'
+manufacturer: Siemens
+family: SIMATIC S7-1200 (CPU 1211C, 1212C, 1214C)
+lifecycle: desconhecido
+notes:
+- 'Nome na fila: s71200 system manual en-US; manual de sistema da série (edição antiga 11/2011).'
+- 'Valores específicos de CPU (di, do, ai, memory, do_I) são da CPU 1214C (Anexo A.4, p. 680-685); a CPU 1211C tem 6 entradas/4 saídas e 25 kB de memória de trabalho (p. 664).'
+- 'VS: 20.4 a 28.8 VDC (CPUs DC); as CPUs AC/DC/Relay usam 85 a 264 VAC, 47 a 63 Hz (p. 683). Consumo da CPU 1214C: 500 mA a 24 VDC (somente CPU) (p. 683).'
+- 'do_I = saída a relé (2.0 A); do_I@2 = saída a MOSFET sourcing (0.5 A) (p. 684). Corrente de alimentação do sensor: 400 mA máx. (p. 681).'
+- 'Entrada digital: nominal 24 VDC a 4 mA, lógico 1 mín. 15 VDC a 2.5 mA, lógico 0 máx. 5 VDC a 1 mA (p. 684).'
+- 'Top: 0 a 55 °C em montagem horizontal e 0 a 45 °C na vertical (p. 661). Memória de carga 2 MB; expansão com até 8 módulos de sinal (CPU 1214C) (p. 681).'
+datasheets:
+- id: ds1
+  manufacturer: Siemens
+  document_number: A5E02486680-05
+  revision: 11/2011
+  url: https://cache.industry.siemens.com/dl/files/246/61777246/att_98021/v1/s71200_system_manual_en-US_en-US.pdf
+  sha256: 22f5f006aba33be48f8a312af9872c46de0f7692dac1f7f2aca4487d2220ab10
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 20.4
+    max: 28.8
+    unit: V
+    status: extraido
+    source: {page: 661, location: A.1 Rated voltages (Table A-7), excerpt: "24 VDC 20.4 VDC to 28.8 VDC"}
+  di:
+    typ: 14
+    unit: '1'
+    status: extraido
+    source: {page: 681, location: A.4.1 CPU 1214C features (Table A-41), excerpt: "On-board digital I/O 14 inputs/10 outputs"}
+  do:
+    typ: 10
+    unit: '1'
+    status: extraido
+    source: {page: 681, location: A.4.1 CPU 1214C features (Table A-41), excerpt: "On-board digital I/O 14 inputs/10 outputs"}
+  ai:
+    typ: 2
+    unit: '1'
+    status: extraido
+    source: {page: 681, location: A.4.1 CPU 1214C features (Table A-41), excerpt: "On-board analog I/O 2 inputs"}
+  di_on:
+    min: 15
+    unit: V
+    status: extraido
+    source: {page: 684, location: A.4.2 Digital inputs (Table A-47), excerpt: "Logic 1 signal (min.) 15 VDC at 2.5 mA"}
+  di_off:
+    max: 5
+    unit: V
+    status: extraido
+    source: {page: 684, location: A.4.2 Digital inputs (Table A-47), excerpt: "Logic 0 signal (max.) 5 VDC at 1 mA"}
+  do_I:
+    max: 2
+    unit: A
+    status: extraido
+    source: {page: 684, location: A.4.2 Digital outputs (Table A-48) - Relay, excerpt: "Current (max.) 2.0 A 0.5 A"}
+  do_I@2:
+    max: 0.5
+    unit: A
+    status: extraido
+    source: {page: 684, location: A.4.2 Digital outputs (Table A-48) - DC/DC/DC MOSFET, excerpt: "Current (max.) 2.0 A 0.5 A"}
+  memory:
+    typ: 50
+    unit: kB
+    status: extraido
+    source: {page: 681, location: A.4.1 CPU 1214C features (Table A-41) - User memory Work, excerpt: "Work 50 Kbytes; Load 2 Mbytes"}
+  t_instr:
+    typ: 0.1
+    unit: us
+    status: extraido
+    source: {page: 682, location: A.4.1 Performance (Table A-42), excerpt: "Boolean 0.1 μs/instruction"}
+  Top:
+    min: 0
+    max: 55
+    unit: °C
+    status: extraido
+    source: {page: 661, location: A.1 Operating conditions (Table A-5), excerpt: "0° C to 55° C horizontal mounting"}
+  Tstg:
+    min: -40
+    max: 70
+    unit: °C
+    status: extraido
+    source: {page: 660, location: A.1 Transport and storage (Table A-4), excerpt: "-40° C to +70° C"}
+attributes:
+  linguagens:
+    value: Ladder (LAD) e Function Block Diagram (FBD)
+    status: extraido
+    source: {page: 7, location: Índice - Programming concepts, excerpt: "Ladder logic (LAD) ... Function Block Diagram (FBD)"}
+  comunicacao:
+    value: Ethernet 10/100 Mb/s (PROFINET) integrada, 1 porta (CPU 1214C); até 3 módulos de comunicação
+    status: extraido
+    source: {page: 683, location: A.4.1 Communication (Table A-44), excerpt: "Number of ports 1; Type Ethernet; Data rates 10/100 Mb/s"}
+  tipo_saida:
+    value: Relé (dry contact) ou MOSFET sourcing, conforme variante da CPU
+    status: extraido
+    source: {page: 684, location: A.4.2 Digital outputs (Table A-48), excerpt: "Type Relay, dry contact / Solid state - MOSFET (sourcing)"}
+  grau_protecao:
+    value: IP20
+    status: extraido
+    source: {page: 661, location: A.1 Degree of protection, excerpt: "IP20 Mechanical Protection, EN 60529"}
+  certificacoes:
+    value: CE, cULus (UL 508, CSA C22.2 No. 142), FM Class I Div 2, ATEX II 3 G Ex nA II T4, C-Tick, KC, aprovações marítimas
+    status: extraido
+    source: {page: 657, location: A.1 General Technical Specifications - Standards compliance (p. 657-659), excerpt: "CE approval; cULus approval; FM approval; ATEX approval"}

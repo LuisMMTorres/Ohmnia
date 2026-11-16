@@ -1,0 +1,36 @@
+# Fonte: Oriental Motor, Product Catalog 2018/2019, 5-Phase Stepper Motors PKP Series (páginas A-80 a A-85).
+part_number: PKP
+category: motor.stepper
+schema_version: '1.0'
+manufacturer: Oriental Motor
+family: PKP Series (5 fases)
+lifecycle: desconhecido
+notes:
+- 'Valores da série; o catálogo traz apenas ângulo de passo, tamanhos de carcaça, codificação e preços. Especificações elétricas (corrente, torque, resistência, inércia) estão no site do fabricante e não neste PDF (p. 5).'
+- 'Ângulo de passo: 0,72° (tipo padrão) e 0,36° (alta resolução); precisão de parada ±0,05° (p. 1).'
+- 'Versão com encoder de 500 P/R, saídas A, B e Z (p. 2 e 4). Requer driver dedicado (p. 1).'
+- 'Fila de transcrição: novo link do site do fabricante.'
+datasheets:
+- id: ds1
+  manufacturer: Oriental Motor
+  url: https://www.orientalmotor.com/products/pdfs/2018-2019/A/5-Phase-PKP-Series.pdf
+  sha256: 362b51418b24af2a5092730d95038daa77cd844cfc4fe595945cebc1a3beb8e1
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  step_angle:
+    min: 0.36
+    max: 0.72
+    unit: deg
+    status: extraido
+    source: {page: 1, location: Features - High Accuracy, excerpt: "step angle ... is at 0.72˚ (high-resolution type at 0.36˚)"}
+attributes:
+  tamanho:
+    value: Carcaça de 28 mm, 42 mm, 56,4 mm e 60 mm (não informado em NEMA)
+    status: extraido
+    source: {page: 2, location: Product Line - Frame Size, excerpt: "28 mm (1.10 in.) 42 mm (1.65 in.) 56.4 mm (2.22 in.) 60 mm (2.36 in.)"}
+  ligacao:
+    value: 5 fios (5 leads)
+    status: extraido
+    source: {page: 4, location: Product Number - Number of Lead Wires, excerpt: "N: 5 Leads"}

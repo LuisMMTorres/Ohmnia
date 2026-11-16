@@ -1,0 +1,80 @@
+# Fonte: Siemens, Catálogo FI 01 (2025) Temperature Measurement, SITRANS TH320 / TH420 (cópia ics-schneider.de); atualização 03/2025. Registro do SITRANS TH320 (4...20 mA, HART, universal).
+part_number: SITRANS TH320
+category: instrument.transmitter
+schema_version: '1.0'
+manufacturer: Siemens
+family: SITRANS TH320 / TH420
+package: Transmissor para cabeçote, caixa IP68, 50 g
+lifecycle: desconhecido
+notes:
+- 'Fila: sitrans th320 th420 datasheet en-US. O catálogo cobre também o TH420 (não transcrito aqui); valores abaixo da tabela Technical specifications do TH320 (págs. 6-7 do PDF).'
+- 'Entradas: RTD (Pt, Ni, Cu), termopares (B, E, J, K, L, N, R, S, T, U, W3, W5, Lr), resistência linear 0...100 kΩ, potenciômetro 10...100 kΩ e tensão -100...1700 mV (págs. 6-7). Exatidão de entrada e de saída em tabelas ("Input accuracy" / "Output accuracy"), não transcritas.'
+- 'Carga (saída em corrente): <= (VSupply - 7.5)/0,023 Ω; carga mínima em VSupply > 37 V: (Vsupply - 37 V)/23 mA. Dissipação máx. <= 850 mW (pág. 6-7).'
+- 'Faixa normal de saída programável 3,8...20,5 mA; faixa estendida 3,5...23 mA; corrente de falha 3,5...23 mA; HART 7 (pág. 7). Amortecimento programável 0...60 s.'
+- 'Temperatura ambiente de dispositivos com segurança funcional: -40...+80 °C (pág. 7). Tempo de partida < 2,75 s; aquecimento < 5 min.'
+datasheets:
+- id: ds1
+  manufacturer: Siemens
+  document_number: FI 01 (2025)
+  revision: Update 03/2025
+  url: https://www.ics-schneider.de/wp-content/uploads/2021/12/sitranst_th320_th420_fi01_en1.pdf
+  sha256: 7c1593ee70972dbdefee02cf59faa17eba7840cfcfea511b08cdf92cbff16bb2
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_out:
+    min: 3.8
+    max: 20.5
+    unit: mA
+    status: extraido
+    source: {page: 7, location: Technical specifications - Output - Normal range, excerpt: "3.8 ... 20.5 mA/20.5 ... 3.8 mA"}
+  V_iso:
+    typ: 2500
+    unit: V
+    status: extraido
+    source: {page: 6, location: Technical specifications - General - Insulation voltage, test/operation, excerpt: "2.5 kV AC/55 V AC"}
+  t_resp:
+    max: 55
+    unit: ms
+    status: extraido
+    source: {page: 6, location: Technical specifications - General - Response time, excerpt: "4 ... 20 mA: ≤ 55 ms"}
+  VS:
+    min: 7.5
+    max: 48
+    unit: V
+    status: extraido
+    source: {page: 6, location: Technical specifications - General - Supply voltage (non-Ex), excerpt: "7.5 ... 48 V DC"}
+  Top:
+    min: -50
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 7, location: Technical specifications - Operating conditions - Ambient temperature, excerpt: "‑50 ... +85 °C"}
+  Tstg:
+    min: -50
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 7, location: Technical specifications - Operating conditions - Storage temperature, excerpt: "‑50 ... +85 °C"}
+attributes:
+  entrada:
+    value: RTD (Pt, Ni, Cu), termopares, resistência linear, potenciômetro, tensão (-100...1700 mV)
+    status: extraido
+    source: {page: 6, location: Technical specifications - Input, excerpt: "Resistance thermometer (RTD)"}
+  saida:
+    value: 4...20 mA, 2 fios (3,8...20,5 mA), HART 7
+    status: extraido
+    source: {page: 7, location: Technical specifications - Output and HART communication, excerpt: "HART 7"}
+  grau_protecao:
+    value: Caixa IP68; terminais IP00
+    status: extraido
+    source: {page: 7, location: Technical specifications - Degree of protection, excerpt: "IP68"}
+  certificacoes:
+    value: ATEX, IECEx (Ex ia/ib/ic/nA/ec), CSA, FM; SIL 2/3 opcional (IEC 61508)
+    status: extraido
+    source: {page: 7, location: Certificates and approvals, excerpt: "DEKRA 17ATEX0116 X"}
+  comunicacao:
+    value: HART 7
+    status: extraido
+    source: {page: 7, location: Technical specifications - HART protocol versions, excerpt: "HART protocol versions"}

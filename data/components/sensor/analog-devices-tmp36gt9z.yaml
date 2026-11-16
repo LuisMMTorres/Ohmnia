@@ -1,0 +1,80 @@
+# Fonte: Analog Devices, Low Voltage Temperature Sensors TMP35/TMP36/TMP37, Rev. E (08/2008) (cópia no site Adafruit).
+part_number: TMP36GT9Z
+category: sensor.temperature
+schema_version: '1.0'
+manufacturer: Analog Devices
+family: TMP35/TMP36/TMP37 (versão TMP36, grau G)
+package: TO-92 (T-3), 3 pinos (versão sem chumbo "Z")
+lifecycle: desconhecido
+notes:
+- 'Documento da família TMP35/TMP36/TMP37; valores do TMP36 (escala 10 mV/°C, saída 750 mV a 25 °C) com grau G, conforme o Ordering Guide (p. 19): TMP36GT9Z, exatidão ±3,0 °C, -40 a +125 °C, TO-92 (T-3).'
+- 'Exatidão grau G (Tabela 1, p. 3): a 25 °C típ. ±1 °C, máx. ±3 °C; sobre a faixa nominal de temperatura típ. ±2 °C, máx. ±4 °C. Valores não consideram autoaquecimento (nota 1).'
+- 'Linearidade típ. 0,5 °C; regulação de carga típ. 6 m°C/uA (máx. 20) para -40 a +105 °C; saída 100 a 2000 mV; corrente de saída 0 a 50 uA; tempo de ligação típ. 0,5 ms (máx. 1 ms) (p. 3).'
+- 'Shutdown: nível alto mín. 1,8 V (VS = 2,7 V), nível baixo máx. 400 mV (VS = 5,5 V); corrente em shutdown típ. 0,01 uA, máx. 0,5 uA (p. 3). Máximos absolutos (Tabela 2, p. 4): alimentação 7 V, temperatura de operação -55 a +150 °C, armazenamento -65 a +160 °C.'
+- 'Resistência térmica do TO-92 (Tabela 3, p. 4): theta-JA = 162 °C/W, theta-JC = 120 °C/W (sem símbolo no esquema).'
+datasheets:
+- id: ds1
+  manufacturer: Analog Devices
+  revision: Rev. E, 08/2008
+  url: https://cdn-learn.adafruit.com/assets/assets/000/010/131/original/TMP35_36_37.pdf
+  sha256: 87614cd35e97e9d9a16c8626c009359e4e7c0f84bd929e06de0e74fc4e0a9692
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  range:
+    min: -40
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 19, location: Ordering Guide - TMP36GT9Z temperature range, excerpt: "TMP36GT9Z ±3.0 -40°C to +125°C TO-92 T-3"}
+  accuracy:
+    typ: 1
+    max: 3
+    unit: K
+    conditions: {TA: 25 °C}
+    status: extraido
+    source: {page: 3, location: Table 1 Specifications - Accuracy TMP35/TMP36/TMP37 (G Grade), TA = 25°C, excerpt: "(G Grade) TA = 25°C ±1 ±3 °C"}
+  accuracy@2:
+    typ: 2
+    max: 4
+    unit: K
+    status: extraido
+    source: {page: 3, location: Table 1 Specifications - Accuracy (G Grade), over rated temperature, excerpt: "(G Grade) Over rated temperature ±2 ±4 °C"}
+  sensitivity:
+    typ: 10
+    unit: mV/K
+    status: extraido
+    source: {page: 3, location: Table 1 Specifications - Scale Factor, TMP36 (-40°C to +125°C), excerpt: "Scale Factor, TMP36 -40°C ≤ TA ≤ +125°C 10 mV/°C"}
+  VS:
+    min: 2.7
+    max: 5.5
+    unit: V
+    status: extraido
+    source: {page: 3, location: Table 1 Specifications - Power supply, Supply Range, excerpt: "Supply Range VS 2.7 5.5 V"}
+  IS:
+    max: 0.05
+    unit: mA
+    status: extraido
+    source: {page: 3, location: Table 1 Specifications - Supply Current ISY (ON), unloaded, excerpt: "Supply Current ISY (ON) Unloaded 50 µA"}
+  Top:
+    min: -55
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 4, location: Table 2 Absolute maximum ratings - Operating Temperature Range, excerpt: "Operating Temperature Range -55°C to +150°C"}
+  Tstg:
+    min: -65
+    max: 160
+    unit: °C
+    status: extraido
+    source: {page: 4, location: Table 2 Absolute maximum ratings - Storage Temperature Range, excerpt: "Storage Temperature Range -65°C to +160°C"}
+attributes:
+  elemento:
+    value: CI sensor de temperatura centígrado de baixa tensão
+    status: extraido
+    source: {page: 1, location: General Description, excerpt: "low voltage, precision centigrade temperature sensors"}
+  saida:
+    value: 'Tensão analógica, 10 mV/°C com 750 mV a 25 °C'
+    status: extraido
+    source: {page: 1, location: General Description - TMP36, excerpt: "TMP36 ... provides a 750 mV output at 25°C"}

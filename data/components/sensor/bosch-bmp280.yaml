@@ -1,0 +1,66 @@
+# Fonte: Bosch Sensortec, BMP280 Data sheet, BST-BMP280-DS001-26, Revision_1.26_102021.
+part_number: BMP280
+category: sensor.pressure
+schema_version: '1.0'
+manufacturer: Bosch
+package: LGA de 8 pinos, tampa metálica, 2,0 x 2,5 mm, altura 0,95 mm
+lifecycle: desconhecido
+notes:
+- 'Sensor digital de pressão barométrica com sensor de temperatura interno (I2C até 3,4 MHz e SPI até 10 MHz; p. 2).'
+- 'Exatidão relativa ±0,12 hPa (700 a 900 hPa, 25 °C); exatidão absoluta típ. ±1 hPa (950 a 1050 hPa, 0 a 40 °C) (p. 2).'
+- 'Consumo típ. 2,7 uA a 1 Hz (p. 2); VDDIO 1,2 a 3,6 V (p. 7, Table 2).'
+- 'Tensão máxima em pino de alimentação: -0,3 a 4,25 V (p. 9, Table 3).'
+datasheets:
+- id: ds1
+  manufacturer: Bosch
+  document_number: BST-BMP280-DS001-26
+  revision: Revision_1.26_102021
+  sha256: 473ff27d9df698b4757e36b36209f83b9f637b592c999d5fabe2a9453a488da6
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  range_bar:
+    min: 300
+    max: 1100
+    unit: hPa
+    status: extraido
+    source: {page: 2, location: Key parameters - pressure range, excerpt: "Pressure range 300 … 1100 hPa"}
+  overpressure:
+    max: 20000
+    unit: hPa
+    status: extraido
+    source: {page: 9, location: Table 3 - Absolute maximum ratings - Pressure, excerpt: "Pressure 0 20 000 hPa"}
+  VS:
+    min: 1.71
+    typ: 1.8
+    max: 3.6
+    unit: V
+    status: extraido
+    source: {page: 7, location: Table 2 - Sensor supply voltage VDD, excerpt: "VDD ripple max. 50mVpp 1.71 1.8 3.6 V"}
+  IS:
+    typ: 0.0027
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Key parameters - current consumption, excerpt: "Current consumption 2.7µA @ 1 Hz sampling rate"}
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Key parameters - temperature range, excerpt: "Temperature range -40 … +85 °C"}
+  Tstg:
+    min: -45
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 9, location: Table 3 - Storage temperature, excerpt: "Storage Temperature ≤ 65% rel. H. -45 +85 °C"}
+attributes:
+  saida:
+    value: Digital I2C ou SPI (3 e 4 fios)
+    status: extraido
+    source: {page: 2, location: Key parameters - digital interfaces, excerpt: "I²C (up to 3.4 MHz) SPI (3 and 4 wire, up to 10 MHz)"}
+  principio:
+    value: Sensor de pressão barométrica digital
+    status: extraido
+    source: {page: 2, location: Title, excerpt: "BMP280 Digital Pressure Sensor"}

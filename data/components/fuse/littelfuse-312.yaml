@@ -1,0 +1,73 @@
+# Fonte: Littelfuse, 312/318 Series Lead-Free 3AG Fast-Acting Fuse (Axial Lead & Cartridge Fuses), revisado 10/09/2010 (© 2009).
+part_number: '312'
+category: fuse
+schema_version: '1.0'
+manufacturer: Littelfuse
+family: 312/318 Series (3AG, ação rápida)
+package: 3AG, corpo de vidro (cartucho 312 ou axial 318)
+lifecycle: desconhecido
+notes:
+- 'Documento cobre as séries 312 (cartucho) e 318 (axial); valores são a faixa entre os modelos.'
+- 'Tabela de modelos de 0,01 A a 35 A. Tensão 250 V até 10 A; 32 V de 12 A a 35 A.'
+- 'Capacidade de interrupção: 35 A @ 250 Vac (0,01 A a 1 A), 100 A @ 250 Vac (1,25 A a 3 A), 200 A @ 250 Vac (4 A a 10 A), 10 KA @ 125 Vac nas faixas até 10 A, 300 A @ 32 Vac (12 A a 35 A).'
+- 'Resistência a frio nominal de 177,4 ohm (10 mA) a 0,0013 ohm (35 A); I2t de fusão nominal de 0,00003 A2s (0,031 A) a 7531 A2s (35 A).'
+- 'Temperatura de operação não transcrita: texto da pág. 4 ilegível no dump.'
+datasheets:
+- id: ds1
+  manufacturer: Littelfuse
+  document_number: 312/318 Series
+  revision: Revised September 10, 2010
+  url: https://www.farnell.com/datasheets/675958.pdf
+  sha256: f6af065783b67203d3fb27640025ca653c10ef52c7962a7055079650b1002d03
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_rated:
+    min: 0.01
+    max: 35
+    unit: A
+    status: extraido
+    note: Faixa da tabela da série.
+    source: {datasheet_id: ds1, page: 2, location: Electrical Characteristic Specifications by Item - Ampere Rating, excerpt: "0.01 ... 35"}
+  V_rated:
+    min: 32
+    max: 250
+    unit: V
+    status: extraido
+    note: 250 V até 10 A; 32 V de 12 A a 35 A.
+    source: {datasheet_id: ds1, page: 2, location: Electrical Characteristic Specifications by Item - Voltage Rating, excerpt: "250 ... 32"}
+  I_break:
+    min: 35
+    max: 300
+    unit: A
+    status: extraido
+    note: 'Faixa entre os modelos: 35 A @ 250 Vac a 300 A @ 32 Vac (e 10 KA @ 125 Vac nas faixas até 10 A).'
+    source: {datasheet_id: ds1, page: 2, location: Electrical Characteristic Specifications by Item - Interrupting Rating, excerpt: "35A@250Vac ... 300A@32 Vac"}
+  I2t:
+    min: 0.00003
+    max: 7531
+    unit: A^2*s
+    status: extraido
+    note: Nominal Melting I2t; faixa entre os modelos.
+    source: {datasheet_id: ds1, page: 2, location: Electrical Characteristic Specifications by Item - Nominal Melting I2t, excerpt: "0.0000300 ... 7531"}
+  R_cold:
+    min: 0.0013
+    max: 177.4
+    unit: ohm
+    status: extraido
+    note: Resistência a frio nominal; faixa entre os modelos.
+    source: {datasheet_id: ds1, page: 2, location: Electrical Characteristic Specifications by Item - Nominal Cold Resistance, excerpt: "177.4000 ... 0.0013"}
+attributes:
+  curva:
+    value: ação rápida (fast-acting)
+    status: extraido
+    source: {page: 1, location: title, excerpt: "3AG Fast-Acting Fuse"}
+  formato:
+    value: 3AG, corpo de vidro, cartucho (312) ou axial (318)
+    status: extraido
+    source: {page: 1, location: title / features, excerpt: "cartridge and axial lead format"}
+  certificacoes:
+    value: UL 248-14, RoHS (exceto 10 mA e 31 mA), PSE e demais (tabela de agências, pág. 1)
+    status: extraido
+    source: {page: 1, location: Features / Agency Approvals}

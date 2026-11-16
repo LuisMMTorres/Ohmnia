@@ -1,0 +1,61 @@
+# Fonte: Bourns, CSS2H-2512 Series Current Sense Resistor (datasheet CSS2H-2512).
+part_number: CSS2H-2512
+category: resistor.fixed
+schema_version: '1.0'
+manufacturer: Bourns
+family: CSS2H-2512
+package: SMD 2512 (6.35 x 3.05 mm), tira metálica soldada por feixe de elétrons
+lifecycle: desconhecido
+notes:
+- 'Fila: CSS2H-2512 (série). Valores da série; faixa entre os modelos CSS2H-2512R-L300x ... CSS2H-2512K-5L00x (p.1). O modelo CSS2H-2512C-000 (jumper, < 0.1 mohm / 100 A) não entra na faixa de R.'
+- 'O texto extraído do PDF escreve a resistência como "mW"; o código de resistência do datasheet é em miliohms ("Resistance Code (milliohms)", p.1), portanto as unidades foram lidas como mohm.'
+- 'Potência nominal a 70 °C (temperatura do terminal) por modelo: L300 6 W; L500 6 W; 1L00 5 W; 1L80 5 W; 2L00 5 W; 2L30 5 W; 3L00 4 W; 3L50 4 W; 4L00 3 W; 5L00 2.5 W (p.1). P_rated registrado como a faixa da série.'
+- 'TCR da liga resistiva +-50 ppm/°C (20 ... 60 °C); incluindo terminais de cobre: +-150 (L300), +-100 (L500), +-75 ppm/°C demais (p.1). TCR registrado como o máximo da série.'
+- 'Indutância: material tipo R < 2 nH; tipo K < 5 nH (p.1). Tolerâncias disponíveis +-1 % (F) e +-5 % (J) (p.1). Dados do datasheet sem data/revisão visível no texto extraído.'
+datasheets:
+- id: ds1
+  manufacturer: Bourns
+  document_number: CSS2H-2512
+  url: https://www.bourns.com/docs/Product-Datasheets/css2h-2512.pdf
+  sha256: 7e32b223f4b0f086d9e08cd5a4fb42e9935cf119db3dd9cf3ea7969bdd643909
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  R:
+    min: 0.3
+    max: 5
+    unit: mohm
+    status: extraido
+    source: {page: 1, location: Electrical Characteristics - Resistance Range / Power Rating @70 °C, excerpt: "CSS2H-2512R-L300x 0.3 mW / 6 W ... CSS2H-2512K-5L00x 5.0 mW / 2.5 W"}
+  tol:
+    max: 5
+    unit: '%'
+    status: extraido
+    source: {page: 1, location: Electrical Characteristics - Resistance Tolerance, excerpt: "±1 %, ±5 %"}
+  P_rated:
+    min: 2.5
+    max: 6
+    unit: W
+    status: extraido
+    source: {page: 1, location: Electrical Characteristics - Resistance Range / Power Rating @70 °C (terminal temperature), excerpt: "CSS2H-2512R-L300x 0.3 mW / 6 W ... 5.0 mW / 2.5 W"}
+  TCR:
+    max: 150
+    unit: ppm/K
+    status: extraido
+    source: {page: 1, location: Electrical Characteristics - Temperature Coefficient including Copper Terminals, excerpt: "CSS2H-2512R-L300x ±150 PPM/°C"}
+  Top:
+    min: -55
+    max: 170
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Electrical Characteristics - Operating Temperature Range, excerpt: "-55 to +170 °C"}
+attributes:
+  tecnologia:
+    value: Resistor de sensoriamento de corrente SMD, tira metálica soldada por feixe de elétrons (Cu-Mn ou Fe-Cr), AEC-Q200
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "EB welded metal strip ... AEC-Q200 compliant"}
+  encapsulamento:
+    value: 2512 (6.35 ± 0.15 x 3.05 ± 0.20 mm); espessura H máx. 0.65 ... 1.65 mm conforme modelo
+    status: extraido
+    source: {page: 2, location: Product Dimensions}

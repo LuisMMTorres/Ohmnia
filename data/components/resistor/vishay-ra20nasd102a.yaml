@@ -1,0 +1,61 @@
+# Fonte: Honeywell, RA20 Series Industrial Potentiometers (lista de preços e características da Mouser, Copyright 2011 Mouser Electronics; baixado como RA20NASD102A_Vishay.pdf).
+part_number: RA20NASD102A
+category: resistor.variable
+schema_version: '1.0'
+manufacturer: Honeywell
+family: RA20
+lifecycle: desconhecido
+notes:
+- 'A fila indica Vishay, mas o documento é a folha da Mouser com potenciômetros Honeywell (várias séries); o RA20NASD102A está na tabela da série RA20 (1 kohm, tolerância ±5 %, linearidade ±10 %, comprimento do eixo 22.23 mm).'
+- 'Potência 2 W vem das características da série RA20 (elemento de fio, curva linear, rosca de bucha 9.53 mm (.375 in) x 32 NEF-2A, padrão MIL-R-19), pág. 1.'
+- O PDF tem uma só página com muitas séries; atribuição das características ao bloco RA20 deve ser conferida pelo revisor.
+datasheets:
+- id: ds1
+  manufacturer: Honeywell
+  revision: Copyright 2011 Mouser Electronics
+  url: https://allchip.ru/content/pdfs/44/1410328.pdf
+  sha256: 8cd3dae3c9a115c96ec331688efe856a753bf5d710d5fac1d787696abd693521
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  R:
+    typ: 1000
+    unit: ohm
+    status: extraido
+    source:
+      page: 1
+      location: Tabela RA20 - RA20NASD102A, Value
+      excerpt: "785-RA20NASD102A RA20NASD102A 1K ±5% ±10% 22.23"
+  tol:
+    max: 5
+    unit: '%'
+    status: extraido
+    source:
+      page: 1
+      location: Tabela RA20 - RA20NASD102A, Tolerance
+      excerpt: "RA20NASD102A 1K ±5% ±10%"
+  linearity:
+    max: 10
+    unit: '%'
+    status: extraido
+    source:
+      page: 1
+      location: Tabela RA20 - RA20NASD102A, Linearity
+      excerpt: "RA20NASD102A 1K ±5% ±10%"
+  P_rated:
+    max: 2
+    unit: W
+    status: extraido
+    source:
+      page: 1
+      location: RA20 Series Industrial Potentiometers - Features
+      excerpt: "It offers a 2 watt power rating and a wirewound element"
+attributes:
+  curva:
+    value: linear
+    status: extraido
+    source:
+      page: 1
+      location: RA20 Series Industrial Potentiometers - Features
+      excerpt: "Wirewound element Linear taper"

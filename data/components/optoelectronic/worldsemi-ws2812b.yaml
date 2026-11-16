@@ -1,0 +1,79 @@
+# Fonte: Worldsemi, datasheet WS2812B Intelligent control LED integrated light source (sem revisao indicada).
+part_number: WS2812B
+category: optoelectronic.led
+schema_version: '1.0'
+manufacturer: Worldsemi
+package: SMD 5050, 4 pinos (VDD, DOUT, VSS, DIN)
+lifecycle: desconhecido
+notes:
+- LED RGB enderecavel com controle integrado (protocolo de um fio NZR, 24 bit GRB, 800 kbps); nao ha VF/IF no documento
+- Alimentacao VDD maxima +3.5 a +5.3 V (Absolute Maximum Ratings, p. 2); condicoes eletricas com VDD 4.5 a 5.5 V, TA -20 a +70 C (p. 2-3)
+- Entrada DIN VIH min 0.7 VDD, VIL max 0.3 VDD, histerese tipica 0.35 V; atraso de transmissao DIN-DOUT max 300 ns (p. 3)
+- 'Tempos do codigo (p. 3): T0H 0.4 us, T1H 0.8 us, T0L 0.85 us, T1L 0.45 us, cada um com +/-150 ns; RES acima de 50 us'
+- Lambda e Iv sao dos chips RGB (tabela RGB IC characteristic parameter, p. 3); Top e a temperatura de juncao de operacao
+- lambda = vermelho, lambda@2 = verde, lambda@3 = azul; Iv, Iv@2, Iv@3 na mesma ordem
+datasheets:
+- id: ds1
+  manufacturer: Worldsemi
+  sha256: 670517e400d01f76e91187e173c9bb105e5470741604f81243364c5f13d37448
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  lambda:
+    min: 620
+    max: 625
+    unit: nm
+    status: extraido
+    source: {page: 3, location: RGB IC characteristic parameter - Red, excerpt: "Red 13CBAUP 620-625 390-420 2.0-2.2"}
+  lambda@2:
+    min: 522
+    max: 525
+    unit: nm
+    status: extraido
+    source: {page: 3, location: RGB IC characteristic parameter - Green, excerpt: "Green 13CGAUP 522-525 660-720 3.0-3.4"}
+  lambda@3:
+    min: 465
+    max: 467
+    unit: nm
+    status: extraido
+    source: {page: 3, location: RGB IC characteristic parameter - Blue, excerpt: "Blue 10R1MUX 465-467 180-200 3.0-3.4"}
+  Iv:
+    min: 390
+    max: 420
+    unit: mcd
+    status: extraido
+    source: {page: 3, location: RGB IC characteristic parameter - Red, excerpt: "Red 13CBAUP 620-625 390-420 2.0-2.2"}
+  Iv@2:
+    min: 660
+    max: 720
+    unit: mcd
+    status: extraido
+    source: {page: 3, location: RGB IC characteristic parameter - Green, excerpt: "Green 13CGAUP 522-525 660-720 3.0-3.4"}
+  Iv@3:
+    min: 180
+    max: 200
+    unit: mcd
+    status: extraido
+    source: {page: 3, location: RGB IC characteristic parameter - Blue, excerpt: "Blue 10R1MUX 465-467 180-200 3.0-3.4"}
+  Top:
+    min: -25
+    max: 80
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Absolute Maximum Ratings - Operation junction temperature, excerpt: "Topt -25～+80 ℃"}
+  Tstg:
+    min: -40
+    max: 105
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Absolute Maximum Ratings - Storage temperature range, excerpt: "Tstg -40~+105 ℃"}
+attributes:
+  cor:
+    value: RGB (full color, 256 niveis por cor)
+    status: extraido
+    source: {page: 1, location: Features and Benefits, excerpt: "256 brightness display, completed 16777216 color full color display"}
+  encapsulamento:
+    value: '5050'
+    status: extraido
+    source: {page: 1, location: Features and Benefits, excerpt: "integrated in a package of 5050 components"}

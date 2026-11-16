@@ -1,0 +1,80 @@
+# Fonte: Schneider Electric, Harmony GTO Advanced Optimum Panel HMIGTO3510 / HMIGTO4310 (manual/datasheet), EIO0000001133, 04/2016.
+part_number: HMIGTO4310
+category: hmi
+schema_version: '1.0'
+manufacturer: Schneider Electric
+family: Harmony GTO
+lifecycle: desconhecido
+notes:
+- 'Documento cobre HMIGTO3510 e HMIGTO4310 em colunas lado a lado; transcritos apenas os valores da coluna HMIGTO4310 (7.5", 640 x 480).'
+- 'Alimentação, consumo e dados de interface são comuns aos dois modelos no documento (p. 67, 72).'
+- 'Memória de aplicação: FLASH EPROM 96 MB, DRAM de execução 128 MB, backup SRAM 512 KB (p. 71).'
+- 'Touch resistivo analógico 1024 x 1024; relógio com precisão de ±65 s/mês (p. 71).'
+datasheets:
+- id: ds1
+  manufacturer: Schneider Electric
+  document_number: EIO0000001133
+  revision: 04/2016
+  url: https://www.mroelectric.com/static/app/product/pdfs/HMIGTO4310.pdf
+  sha256: cb2f87414b1717c1a46b62f7461d4fb911451047b01375275ef8a0b87ed33218
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 19.2
+    max: 28.8
+    typ: 24
+    unit: V
+    status: extraido
+    source: {page: 67, location: Electrical Specifications - Power Supply, excerpt: "Rated Input Voltage 24 Vdc; Input Voltage Limits 19.2...28.8 Vdc"}
+  P_cons:
+    max: 12
+    unit: W
+    status: extraido
+    source: {page: 67, location: Electrical Specifications - Power Consumption, excerpt: "Power Consumption 12 W or less"}
+  diagonal:
+    typ: 7.5
+    unit: in
+    status: extraido
+    source: {page: 70, location: Display Specifications - Display Size (coluna HMIGTO4310), excerpt: "Display Size 7.5”"}
+  res_x:
+    typ: 640
+    unit: '1'
+    status: extraido
+    source: {page: 70, location: Display Specifications - Resolution (coluna HMIGTO4310), excerpt: "640 x 480 pixels (VGA)"}
+  res_y:
+    typ: 480
+    unit: '1'
+    status: extraido
+    source: {page: 70, location: Display Specifications - Resolution (coluna HMIGTO4310), excerpt: "640 x 480 pixels (VGA)"}
+  memory:
+    typ: 96
+    unit: MB
+    status: extraido
+    source: {page: 71, location: Memory - Application Memory, excerpt: "Application Memory FLASH EPROM 96 MB"}
+  Top:
+    min: 0
+    max: 55
+    unit: °C
+    status: extraido
+    source: {page: 68, location: Environmental Specifications - Surrounding Air Temperature (coluna HMIGTO4310), excerpt: "Surrounding Air Temperature 0...55 °C"}
+  Tstg:
+    min: -20
+    max: 60
+    unit: °C
+    status: extraido
+    source: {page: 68, location: Environmental Specifications - Storage Temperature, excerpt: "Storage Temperature -20...60 °C"}
+attributes:
+  tela:
+    value: LCD TFT colorido 7.5", 65.536 cores, retroiluminação LED branca, touch resistivo analógico
+    status: extraido
+    source: {page: 70, location: Display Specifications / Touch Panel (p. 71), excerpt: "TFT Color LCD; Resistive Film (analog)"}
+  comunicacao:
+    value: COM1 RS-232C (D-Sub 9), COM2 RS-485 (RJ45), USB 2.0 Tipo A e mini-B, Ethernet 10BASE-T/100BASE-TX, slot SD (até 32 GB)
+    status: extraido
+    source: {page: 72, location: Interface Specifications, excerpt: "RS-232C; RS-485; USB 2.0 (Type A) x 1; USB 2.0 (mini-B) x 1; IEEE802.3i / IEEE802.3u"}
+  grau_protecao:
+    value: IP65f, NEMA 250 TYPE 4X/13 (painel frontal, instalado corretamente)
+    status: extraido
+    source: {page: 69, location: Structural Specifications - Structure, excerpt: "IP65f NEMA #250 TYPE 4X/13 (on the front panel"}

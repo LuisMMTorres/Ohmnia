@@ -1,0 +1,66 @@
+# Fonte: TDK Electronics, Film Capacitors - EMI Suppression Capacitors, Series/Type B3292*C/D, X2 / 305 V AC, June 2026.
+part_number: B32922 X2
+category: capacitor.fixed
+schema_version: '1.0'
+manufacturer: TDK
+family: B3292*C/D (X2 / 305 V AC, MKP)
+package: Radial com terminais paralelos; passo 15 mm (B32922)
+lifecycle: desconhecido
+notes:
+- Folha da série B32921 a B32928 (passo 10 a 52,5 mm, 0,010 a 30 uF). Valores de C, tolerância e passo são do tipo B32922 (passo 15 mm, tabela de códigos de pedido da página 6).
+- 'Tensões: 305 V AC nominal (IEC 60384-14) e 630 V DC contínuo até 85 °C (derating 1,5 %/°C até 110 °C).'
+- Faixa de temperatura mínima (-40 °C) vem da categoria climática 40/110/56 (ENEC15) ou 40/105/56 (ENEC10), não de uma linha de faixa.
+datasheets:
+- id: ds1
+  manufacturer: TDK
+  document_number: B3292*C/D
+  revision: June 2026
+  url: https://www.tdk-electronics.tdk.com/inf/20/20/db/fc_2009/X2_B32921_928.pdf
+  sha256: 241e2f31011f45e43d9f62a6655f6f9357e4317789ead2eea4750ee6c0c32f0c
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  C:
+    min: 0.033
+    max: 0.68
+    unit: uF
+    status: extraido
+    source: {page: 6, location: Ordering codes and packing units (lead spacing 15.0 mm) - CR, excerpt: "0.033 ... B32922C3333K*** ... 0.68 B32922C3684+***"}
+  tol:
+    max: 20
+    unit: '%'
+    status: extraido
+    source: {page: 6, location: Composition of ordering code - capacitance tolerance code, excerpt: "M = ±20%  K = ±10%"}
+  V_rated:
+    typ: 305
+    unit: V
+    status: extraido
+    source: {page: 11, location: Technical data - Rated AC voltage (IEC 60384-14), excerpt: "Rated AC voltage (IEC 60384-14) 305 V (50/60 Hz)"}
+  V_rated@2:
+    typ: 630
+    unit: V
+    status: extraido
+    conditions: {TA: 85 °C}
+    source: {page: 11, location: Technical data - Maximum continuous DC voltage VDC, excerpt: "630 V at Top ≤85 °C"}
+  tan_delta:
+    max: 0.001
+    unit: '1'
+    status: extraido
+    conditions: {TA: 20 °C}
+    source: {page: 11, location: Technical data - Dissipation factor tan δ (in 10-3) at 1 kHz, excerpt: "1 kHz 1.0 1.0 2.0"}
+  Top:
+    min: -40
+    max: 110
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Climatic - Max. operating temperature / Climatic category, excerpt: "Max. operating temperature: 110 °C; 40/110/56 (ENEC15)"}
+attributes:
+  dieletrico:
+    value: Polipropileno (MKP), classe X2 de supressão de interferência
+    status: extraido
+    source: {page: 2, location: Construction / Typical applications, excerpt: "Dielectric: polypropylene (MKP); X2 class"}
+  montagem:
+    value: Radial, terminais paralelos, passo 15 mm; dimensões máx. w x h x l de 5,0 x 10,5 x 18,0 mm (0,033 uF) a 11,0 x 18,5 x 18,0 mm (0,68 uF)
+    status: extraido
+    source: {page: 6, location: Ordering codes (lead spacing 15.0 mm), excerpt: "5.0 × 10.5 × 18.0 B32922C3333K***"}

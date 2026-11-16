@@ -1,0 +1,382 @@
+# Fonte: onsemi, FGA25N120ANTDTU/D, NPT Trench IGBT 1200 V, 25 A, Rev 5, November 2025.
+part_number: FGA25N120ANTD
+category: igbt.n
+schema_version: '1.0'
+manufacturer: onsemi
+family: FGA25N120ANTDTU
+package: TO-3PN (TO-3P-3, case 340BZ)
+lifecycle: obsoleto
+notes:
+- O documento traz a marca d'água de descontinuado e não recomendado para novos projetos (página 2). Código de pedido FGA25N120ANTDTU-F109, marca FGA25N120ANTD.
+- IGBT com diodo antiparalelo no mesmo encapsulamento (parâmetros IF, VF, trr e Qrr são do diodo).
+- Eon, Eoff, td(on), tr, td(off) e tf sem sufixo são do primeiro grupo de chaveamento da tabela (VCC = 600 V, IC = 25 A, RG = 10 ohm, VGE = 15 V, carga indutiva). O documento imprime TC = 125 C para os dois grupos, mas a página 1 dá Eoff típico 0,96 mJ a TC = 25 C; por isso a temperatura do primeiro grupo não foi registrada e deve ser conferida no PDF. O segundo grupo está como @hot (TC = 125 C, como impresso).
+- A tabela imprime a unidade de energia como "mj" (lido como mJ).
+datasheets:
+- id: ds1
+  manufacturer: onsemi
+  document_number: FGA25N120ANTDTU/D
+  revision: Rev 5, November 2025
+  url: https://www.onsemi.com/download/data-sheet/pdf/fga25n120antdtu-d.pdf
+  sha256: f7114782d964d8eedac741d6ff7d5bd898f88ccdbdd7dde285f150d0191c5d98
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VCES:
+    max: 1200
+    unit: V
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - VCES Collector-Emitter Voltage
+      excerpt: "VCES Collector-Emitter Voltage 1200 V"
+  VGES:
+    max: 20
+    unit: V
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - VGES Gate-Emitter Voltage (±20 V)
+      excerpt: "VGES Gate-Emitter Voltage ±20"
+  IC:
+    max: 50
+    unit: A
+    conditions:
+      TC: 25 degC
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - IC Collector Current (@TC = 25 C)
+      excerpt: "IC Collector Current (@TC = 25 °C) 50 A"
+  IC@100C:
+    max: 25
+    unit: A
+    conditions:
+      TC: 100 degC
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - IC Collector Current (@TC = 100 C)
+      excerpt: "Collector Current (@TC = 100 °C) 25"
+  ICM:
+    max: 90
+    unit: A
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - ICM Pulsed Collector Current (Note 1)
+      excerpt: "ICM Pulsed Collector Current (Note 1) 90 A"
+  IF:
+    max: 50
+    unit: A
+    conditions:
+      TC: 25 degC
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - IF Diode Continuous Forward Current (@TC = 25 C)
+      excerpt: "Diode Continuous Forward Current (@TC = 25 °C) 50 A"
+  IFM:
+    max: 150
+    unit: A
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - IFM Diode Maximum Forward Current
+      excerpt: "IFM Diode Maximum Forward Current 150 A"
+  Ptot:
+    max: 312
+    unit: W
+    conditions:
+      TC: 25 degC
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - PD Maximum Power Dissipation (@TC = 25 C)
+      excerpt: "PD Maximum Power Dissipation (@TC = 25 °C) 312 W"
+  Tj_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - TJ Operating Temperature Range
+      excerpt: "TJ Operating Temperature Range −55 to +150 °C"
+  Tj_min:
+    min: -55
+    unit: degC
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - TJ Operating Temperature Range
+      excerpt: "TJ Operating Temperature Range −55 to +150 °C"
+  Tstg_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - TSTG Storage Temperature Range
+      excerpt: "TSTG Storage Temperature Range −55 to +150 °C"
+  Rth_jc:
+    max: 0.4
+    unit: K/W
+    status: extraido
+    source:
+      page: 2
+      location: Thermal characteristics - R theta JC (IGBT)
+      excerpt: "RθJC(IGBT) Thermal Resistance, Junction to Case 0.4 °C/W"
+  Rth_jc_d:
+    max: 2.0
+    unit: K/W
+    status: extraido
+    source:
+      page: 2
+      location: Thermal characteristics - R theta JC (DIODE)
+      excerpt: "RθJC(DIODE) Thermal Resistance, Junction to Case 2.0 °C/W"
+  Rth_ja:
+    max: 40
+    unit: K/W
+    status: extraido
+    source:
+      page: 2
+      location: Thermal characteristics - R theta JA
+      excerpt: "RθJA Thermal Resistance, Junction to Ambient 40 °C/W"
+  ICES:
+    max: 3
+    unit: mA
+    conditions:
+      VCE: 1200 V
+      VGE: 0 V
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics of the IGBT - Off characteristics, ICES (VCE = VCES, VGE = 0 V)
+      excerpt: "ICES Collector Cut-Off Current VCE =VCES, VGE = 0 V 3 mA"
+  IGES:
+    max: 250
+    unit: nA
+    conditions:
+      VGE: 20 V
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics of the IGBT - Off characteristics, IGES (VGE = VGES, VCE = 0 V)
+      excerpt: "IGES G-E Leakage Current VGE =VGES, VCE = 0 V ±250 nA"
+  VGE(th):
+    min: 3.5
+    typ: 5.5
+    max: 7.5
+    unit: V
+    conditions:
+      IC: 25 mA
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics of the IGBT - On characteristics, VGE(th) (IC = 25 mA, VCE = VGE)
+      excerpt: "VGE(th) G-E Threshold Voltage IC = 25 mA, VCE = VGE 3.5 5.5 7.5 V"
+  VCE(sat):
+    typ: 2.0
+    unit: V
+    conditions:
+      IC: 25 A
+      VGE: 15 V
+      TC: 25 degC
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics of the IGBT - VCE(Sat), IC = 25 A, VGE = 15 V (TC = 25 C, ver título da tabela)
+      excerpt: "VCE(Sat) Collector to Emitter Saturation Voltage IC = 25 A, VGE = 15 V 2.0 V"
+  VCE(sat)@hot:
+    typ: 2.15
+    unit: V
+    conditions:
+      IC: 25 A
+      VGE: 15 V
+      TC: 125 degC
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics of the IGBT - VCE(Sat), IC = 25 A, VGE = 15 V, TC = 125 C
+      excerpt: "IC = 25 A, VGE = 15 V, TC = 125 °C 2.15 V"
+  Cies:
+    typ: 3700
+    unit: pF
+    conditions:
+      VCE: 30 V
+      VGE: 0 V
+      f: 1 MHz
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics of the IGBT - Dynamic characteristics, Cies
+      excerpt: "Cies Input Capacitance VCE = 30 V, VGE = 0 V, f = 1 MHz 3700 pF"
+  Coes:
+    typ: 130
+    unit: pF
+    conditions:
+      VCE: 30 V
+      VGE: 0 V
+      f: 1 MHz
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics of the IGBT - Dynamic characteristics, Coes
+      excerpt: "Coes Output Capacitance 130 pF"
+  Cres:
+    typ: 80
+    unit: pF
+    conditions:
+      VCE: 30 V
+      VGE: 0 V
+      f: 1 MHz
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics of the IGBT - Dynamic characteristics, Cres
+      excerpt: "Cres Reverse Transfer Capacitance 80 pF"
+  td(on):
+    typ: 50
+    unit: ns
+    status: extraido
+    source:
+      page: 2
+      location: Switching characteristics, primeiro grupo - Turn-On Delay Time (VCC = 600 V, IC = 25 A, RG = 10 ohm, VGE = 15 V, carga indutiva)
+      excerpt: "td(on) Turn-On Delay Time 50 ns"
+  tr:
+    typ: 60
+    unit: ns
+    status: extraido
+    source:
+      page: 2
+      location: Switching characteristics, primeiro grupo - Rise Time
+      excerpt: "tr Rise Time 60 ns"
+  td(off):
+    typ: 190
+    unit: ns
+    status: extraido
+    source:
+      page: 2
+      location: Switching characteristics, primeiro grupo - Turn-Off Delay Time
+      excerpt: "td(off) Turn-Off Delay Time 190 ns"
+  tf:
+    typ: 100
+    unit: ns
+    status: extraido
+    source:
+      page: 2
+      location: Switching characteristics, primeiro grupo - Fall Time
+      excerpt: "tf Fall Time 100 ns"
+  Eon:
+    typ: 4.1
+    unit: mJ
+    conditions:
+      VCC: 600 V
+      IC: 25 A
+    status: extraido
+    source:
+      page: 2
+      location: Switching characteristics, primeiro grupo - Eon Turn-On Switching Loss
+      excerpt: "Eon Turn-On Switching Loss 4.1 mj"
+  Eoff:
+    typ: 0.96
+    unit: mJ
+    conditions:
+      VCC: 600 V
+      IC: 25 A
+    status: extraido
+    source:
+      page: 2
+      location: Switching characteristics, primeiro grupo - Eoff Turn-Off Switching Loss
+      excerpt: "Eoff Turn-Off Switching Loss 0.96 mj"
+  Eon@hot:
+    typ: 4.3
+    unit: mJ
+    conditions:
+      VCC: 600 V
+      IC: 25 A
+      TC: 125 degC
+    status: extraido
+    source:
+      page: 2
+      location: Switching characteristics, segundo grupo (TC = 125 C) - Eon Turn-On Switching Loss
+      excerpt: "Eon Turn-On Switching Loss 4.3 mj"
+  Eoff@hot:
+    typ: 1.5
+    unit: mJ
+    conditions:
+      VCC: 600 V
+      IC: 25 A
+      TC: 125 degC
+    status: extraido
+    source:
+      page: 2
+      location: Switching characteristics, segundo grupo (TC = 125 C) - Eoff Turn-Off Switching Loss
+      excerpt: "Eoff Turn-Off Switching Loss 1.5 mj"
+  Qg:
+    typ: 200
+    unit: nC
+    conditions:
+      VCE: 600 V
+      IC: 25 A
+      VGE: 15 V
+    status: extraido
+    source:
+      page: 2
+      location: Switching characteristics - Qg Total Gate Charge
+      excerpt: "Qg Total Gate Charge VCE = 600 V, IC = 25 A, VGE = 15 V 200 nC"
+  Qge:
+    typ: 15
+    unit: nC
+    status: extraido
+    source:
+      page: 2
+      location: Switching characteristics - Qge Gate-Emitter Charge
+      excerpt: "Qge Gate-Emitter Charge 15 nC"
+  Qgc:
+    typ: 100
+    unit: nC
+    status: extraido
+    source:
+      page: 2
+      location: Switching characteristics - Qgc Gate-Collector Charge
+      excerpt: "Qgc Gate-Collector Charge 100 nC"
+  VF:
+    typ: 2.0
+    max: 3.0
+    unit: V
+    conditions:
+      IF: 25 A
+      TC: 25 degC
+    status: extraido
+    source:
+      page: 3
+      location: Electrical characteristics of the diode - VFM Diode Forward Voltage, IF = 25 A, TC = 25 C
+      excerpt: "VFM Diode Forward Voltage IF = 25 A TC = 25 °C 2.0 3.0 V"
+  trr:
+    typ: 235
+    max: 350
+    unit: ns
+    conditions:
+      IF: 25 A
+      di/dt: 100 A/us
+      TC: 25 degC
+    status: extraido
+    source:
+      page: 3
+      location: Electrical characteristics of the diode - trr, IF = 25 A, dIF/dt = 100 A/us, TC = 25 C
+      excerpt: "trr Diode Reverse Recovery Time 235 350 ns"
+  Qrr:
+    typ: 3130
+    max: 4700
+    unit: nC
+    conditions:
+      IF: 25 A
+      di/dt: 100 A/us
+      TC: 25 degC
+    status: extraido
+    source:
+      page: 3
+      location: Electrical characteristics of the diode - Qrr Diode Reverse Recovery Charge, TC = 25 C
+      excerpt: "Qrr Diode Reverse Recovery Charge 3130 4700 nC"
+attributes: {}

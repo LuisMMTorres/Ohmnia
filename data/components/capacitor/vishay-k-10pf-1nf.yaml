@@ -1,0 +1,58 @@
+# Fonte: Vishay BCcomponents, K Series - Radial Leaded Multilayer Ceramic Capacitors for General Purpose, Document Number 45171, Revision 05-Sep-2025.
+part_number: K 10pF-1nF
+category: capacitor.fixed
+schema_version: '1.0'
+manufacturer: Vishay
+family: K Series
+package: Radial, terminais retos ou curvados, passo 2,5 mm ou 5,0 mm
+lifecycle: desconhecido
+notes:
+- Registro de série (nome da fila "K 10pF-1nF"). Valores de C e V tratam o dielétrico C0G (classe 1) da série, que cobre 10 pF a 10 nF; a mesma folha gera o registro "K 100nF" (X7R).
+- A faixa de capacitância depende da tensão (C0G 50 V 10 pF a 10 nF; 500 V 33 pF a 1,8 nF).
+datasheets:
+- id: ds1
+  manufacturer: Vishay
+  document_number: '45171'
+  revision: 05-Sep-2025
+  sha256: 555cf6e7062fe1de1962ee38c5b8cfcff0c9cab469d563599ec6505b70485457
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  C:
+    min: 0.00001
+    max: 0.01
+    unit: uF
+    status: extraido
+    source: {page: 1, location: Quick reference data - Class 1 C0G Min./Max. Capacitance (pF), excerpt: "Min. 10 pF; Max. 10 000 pF (50 VDC)"}
+  tol:
+    max: 20
+    unit: '%'
+    status: extraido
+    source: {page: 1, location: Tolerance on capacitance, excerpt: "± 5 %, ± 10 %, ± 20 %"}
+  V_rated:
+    min: 50
+    max: 500
+    unit: V
+    status: extraido
+    source: {page: 1, location: Rated voltage, excerpt: "50 VDC, 100 VDC, 200 VDC, 500 VDC"}
+  tan_delta:
+    max: 0.001
+    unit: '1'
+    status: extraido
+    source: {page: 1, location: Dissipation factor - Class 1 (C >= 30 pF), excerpt: "0.1 % max. when C ≥ 30 pF"}
+  Top:
+    min: -55
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Operating temperature range, excerpt: "C0G, X7R: -55 °C to +125 °C"}
+attributes:
+  dieletrico:
+    value: C0G (classe 1)
+    status: extraido
+    source: {page: 1, location: Temperature characteristics, excerpt: "Class 1: C0G"}
+  montagem:
+    value: Radial, terminais de 0,5 mm, passo 2,5 mm ou 5,0 mm, tamanhos 10/15/20; revestimento epóxi UL 94 V-0
+    status: extraido
+    source: {page: 1, location: Design, excerpt: "lead spacing of 2.5 mm and 5.0 mm"}

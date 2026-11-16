@@ -1,0 +1,81 @@
+# Fonte: Nichicon, LGU Snap-in Terminal Type 105°C Standard, Aluminum Electrolytic Capacitors, CAT.8100M.
+part_number: LGU 470uF 400V
+category: capacitor.fixed
+schema_version: '1.0'
+manufacturer: Nichicon
+family: LGU
+package: Snap-in, φD×L 30×50 mm (código LGU2G471MELB) ou 35×40 mm (LGU2G471MELC)
+lifecycle: desconhecido
+notes:
+- 'Item da fila: LGU 470uF 400V (série LGU). Valores de C, V_rated, ripple e fuga são da linha 470 µF / 400 V (2G) da tabela da página 5.'
+- 'tan δ, tolerância, temperatura e vida são das especificações gerais da série (página 1); tan δ é o limite máximo para 160 a 420 V.'
+- 'A fuga e a corrente de ondulação vieram de colunas separadas do texto do PDF e foram associadas pela ordem dos códigos LGU2G471MELB/MELC; conferir.'
+datasheets:
+- id: ds1
+  manufacturer: Nichicon
+  document_number: CAT.8100M
+  url: https://www.nichicon.co.jp/english/series_items/catalog_pdf/e-lgu.pdf
+  sha256: ff7e07fdc3959fb4b878f97590eba3d5e5275605b76b9229e75fbbb7b9c18035
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  C:
+    typ: 470
+    unit: uF
+    status: extraido
+    source: {datasheet_id: ds1, page: 5, location: Tabela 400V (2G) - Cap. 470 µF, excerpt: "LGU2G471MELB / LGU2G471MELC"}
+  tol:
+    max: 20
+    unit: '%'
+    status: extraido
+    note: ± 20 % a 120 Hz, 20 °C.
+    source: {datasheet_id: ds1, page: 1, location: Specifications - capacitance tolerance, excerpt: "± 20% at 120Hz, 20°C"}
+  V_rated:
+    typ: 400
+    unit: V
+    status: extraido
+    source: {datasheet_id: ds1, page: 5, location: Tabela 400V (2G), excerpt: "400V (2G)"}
+  I_ripple:
+    max: 1.9
+    unit: A
+    status: extraido
+    note: 1900 mArms a 105 °C, 120 Hz (ambos os tamanhos 30×50 e 35×40).
+    source: {datasheet_id: ds1, page: 5, location: Tabela 400V (2G) - Rated ripple current (mArms) at 105°C 120Hz, excerpt: "1900"}
+  tan_delta:
+    max: 0.15
+    unit: '1'
+    status: extraido
+    conditions: {f: 120 Hz, TA: 20 °C}
+    note: Limite para 160 a 420 V.
+    source: {datasheet_id: ds1, page: 1, location: Specifications - tangent of loss angle, excerpt: "160 to 420  0.15"}
+  I_leak:
+    max: 1300
+    unit: uA
+    status: extraido
+    conditions: {TA: 20 °C}
+    note: Tabela dá 1,30 mA (após 5 min de tensão nominal).
+    source: {datasheet_id: ds1, page: 5, location: Tabela 400V (2G) - Leakage current (mA), excerpt: "1.30"}
+  life:
+    typ: 3000
+    unit: h
+    status: extraido
+    conditions: {T: 105 °C}
+    note: Endurance com tensão CC mais corrente de ondulação nominal.
+    source: {datasheet_id: ds1, page: 1, location: Specifications - Endurance, excerpt: "rated ripple current is applied for 3000 hours at 105°C"}
+  Top:
+    min: -25
+    max: 105
+    unit: °C
+    status: extraido
+    note: Faixa para 315 a 450 V.
+    source: {datasheet_id: ds1, page: 1, location: Performance Characteristics, excerpt: "- 25 to +105°C (315 to 450V)"}
+attributes:
+  dieletrico:
+    value: Eletrolítico de alumínio, terminal snap-in, padrão 105 °C
+    status: extraido
+    source: {datasheet_id: ds1, page: 1, location: Título - LGU Snap-in Terminal Type 105°C Standard}
+  montagem:
+    value: φD×L 30×50 mm (LGU2G471MELB) ou 35×40 mm (LGU2G471MELC)
+    status: extraido
+    source: {datasheet_id: ds1, page: 5, location: Tabela 400V (2G) - Size φD×L (mm)}

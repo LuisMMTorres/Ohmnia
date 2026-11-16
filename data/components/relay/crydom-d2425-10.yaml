@@ -1,0 +1,102 @@
+# Fonte: Crydom, Series 1 240 VAC (SSR de painel), Rev. 062211.
+part_number: D2425
+category: relay.solid_state
+schema_version: '1.0'
+manufacturer: Crydom
+family: Series 1 240 VAC (AC panel mount)
+lifecycle: desconhecido
+notes:
+- 'O item da fila é "D2425-10", mas o documento lista o modelo D2425 (25 A, controle 3-32 VDC); o sufixo "-10" não aparece. Valores abaixo são da coluna 25 A.'
+- 'Tensão de operação 24-280 Vrms (47-63 Hz); sobretensão transitória 600 Vpk; corrente mínima de carga 40 mArms (pág. 1).'
+- 'Entrada D (3-32 VDC): tensão de ligar máx. 3,0 VDC (4,5 VDC com opção G), tensão de desligar mín. 1,0 VDC, tensão reversa máx. -32 V, impedância nominal 1500 ohm, corrente típica 3,4-20 mA (pág. 2).'
+- 'Tempo de ligar máx. 1/2 ciclo e de desligar máx. 1/2 ciclo para controle DC (pág. 2). I2t de fusão (60 Hz, 1/2 ciclo) 259 A2s; Rjc 1,02 °C/W (pág. 1).'
+- 'Requer dissipador (curvas de derating na pág. 4, em imagem). Isolação entrada/saída/base 4000 Vrms; capacitância entrada/saída máx. 8 pF (pág. 2).'
+datasheets:
+- id: ds1
+  manufacturer: Crydom
+  document_number: Series 1 240 VAC
+  revision: Rev. 062211
+  url: https://www.elite.parts/datasheets/qrql20j1.pdf
+  sha256: fb392edc08813f60074192ff08e4746d299da5ebbdab4e7a3082c7061c8f8bef
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  V_control:
+    min: 3
+    max: 32
+    unit: V
+    status: extraido
+    note: Controle DC (prefixo D).
+    source: {datasheet_id: ds1, page: 2, location: Input specifications - Control Voltage Range, excerpt: "3-32 VDC"}
+  I_control:
+    min: 3.4
+    max: 20
+    unit: mA
+    status: extraido
+    note: Corrente de entrada típica (faixa).
+    source: {datasheet_id: ds1, page: 2, location: Input specifications - Typical Input Current, excerpt: "3.4-20 mA"}
+  V_load:
+    min: 24
+    max: 280
+    unit: V
+    status: extraido
+    note: Vrms, 47-63 Hz.
+    source: {datasheet_id: ds1, page: 1, location: Output specifications - Operating Voltage, excerpt: "24-280"}
+  I_load:
+    max: 25
+    unit: A
+    status: extraido
+    note: Arms, com dissipador.
+    source: {datasheet_id: ds1, page: 1, location: Output specifications - Maximum Load Current, excerpt: "Maximum Load Current (3) [Arms] 25"}
+  I_surge:
+    max: 250
+    unit: A
+    status: extraido
+    note: 1 ciclo, 60 Hz, Apk (239 A a 50 Hz).
+    source: {datasheet_id: ds1, page: 1, location: Output specifications - Maximum 1 Cycle Surge Current (60Hz), excerpt: "250"}
+  V_drop:
+    max: 1.6
+    unit: V
+    status: extraido
+    note: Vpk na corrente nominal.
+    source: {datasheet_id: ds1, page: 1, location: Output specifications - Maximum On-State Voltage Drop, excerpt: "1.6"}
+  I_off:
+    max: 10
+    unit: mA
+    status: extraido
+    note: mArms na tensão nominal.
+    source: {datasheet_id: ds1, page: 1, location: Output specifications - Maximum Off-State Leakage Current, excerpt: "10"}
+  V_iso:
+    max: 4000
+    unit: V
+    status: extraido
+    note: Vrms, entrada/saída/base, 50/60 Hz.
+    source: {datasheet_id: ds1, page: 2, location: General specifications - Dielectric Strength, excerpt: "4000 Vrms"}
+  dv_dt:
+    min: 500
+    unit: V/us
+    status: extraido
+    note: Mínimo, desligado, na tensão máxima nominal.
+    source: {datasheet_id: ds1, page: 1, location: Output specifications - Minimum Off-State dv/dt, excerpt: "500"}
+  Top:
+    min: -40
+    max: 80
+    unit: °C
+    status: extraido
+    source: {datasheet_id: ds1, page: 2, location: General specifications - Ambient Operating Temperature Range, excerpt: "-40 to 80 °C"}
+  Tstg:
+    min: -40
+    max: 125
+    unit: °C
+    status: extraido
+    source: {datasheet_id: ds1, page: 2, location: General specifications - Ambient Storage Temperature Range, excerpt: "-40 to 125 °C"}
+attributes:
+  comutacao:
+    value: saída SCR (AC), passagem por zero (cargas resistivas) ou disparo aleatório (indutivas), conforme versão
+    status: extraido
+    source: {page: 1, location: features, excerpt: "Zero-crossing (resistive loads) or random-fire (inductive loads) output"}
+  certificacoes:
+    value: UL/CSA/VDE, CE conforme EN60950-1
+    status: extraido
+    source: {page: 1, location: features, excerpt: "UL/CSA/VDE Approved, CE Compliant to EN60950-1"}

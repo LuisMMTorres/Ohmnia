@@ -1,0 +1,65 @@
+# Fonte: Maxim Integrated / Analog Devices, MAX481/MAX483/MAX485/MAX487-MAX491/MAX1487 Low-Power, Slew-Rate-Limited RS-485/RS-422 Transceivers, 19-0122 Rev 9, 9/09 (cópia RS).
+part_number: MAX485
+category: ic.interface
+schema_version: '1.0'
+manufacturer: Analog Devices
+family: MAX481/MAX483/MAX485/MAX487-MAX491/MAX1487
+package: 8 pinos (DIP, SO, uMAX, CERDIP)
+lifecycle: desconhecido
+notes:
+- 'Fila: MAX485. Documento da família; valores da tabela de seleção (pág. 1) correspondem à linha MAX485.'
+- 'Tabela de seleção MAX485 (pág. 1): half duplex, 2,5 Mbps, sem limitação de slew rate, sem shutdown, com habilitação de receptor/driver, corrente quiescente 300 uA, 32 receptores no barramento, 8 pinos.'
+- 'Temperatura de operação (pág. 2): MAX4xxC 0 a +70 °C; MAX4xxE -40 a +85 °C; MAX4xxMJ -55 a +125 °C. Registrado o grau E.'
+- 'Tabelas DC/switching (págs. 2-3) com colunas embaralhadas no texto extraído; não transcritas.'
+datasheets:
+- id: ds1
+  manufacturer: Analog Devices
+  document_number: 19-0122
+  revision: Rev 9, 9/09
+  url: https://docs.rs-online.com/a0d8/0900766b810e2699.pdf
+  sha256: 3ca55979c52b02c9ca088d252e1e82d01b8586d3f391642b6c80cf04c14cde3e
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 4.75
+    max: 5.25
+    unit: V
+    status: extraido
+    source: {page: 2, location: DC electrical characteristics header, excerpt: "VCC = 5V +-5%"}
+  V_load:
+    max: 12
+    unit: V
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - Supply Voltage (VCC), excerpt: "Supply Voltage (VCC) ... 12V"}
+  f_max:
+    max: 2500
+    unit: kHz
+    status: extraido
+    source: {page: 1, location: Selection table - MAX485 data rate, excerpt: "MAX485 Half 2.5 No No Yes 300 32 8"}
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - Operating temperature ranges (grau E), excerpt: "MAX4__E__ ... -40C to +85C"}
+  Tstg:
+    min: -65
+    max: 160
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - Storage temperature range, excerpt: "Storage Temperature Range -65C to +160C"}
+attributes:
+  funcao:
+    value: transceptor RS-485/RS-422 half duplex, baixo consumo
+    status: extraido
+    source: {page: 1, location: Title and selection table, excerpt: "Low-Power, Slew-Rate-Limited RS-485/RS-422 Transceivers"}
+  interface:
+    value: RS-485/RS-422, até 32 transceptores no barramento
+    status: extraido
+    source: {page: 1, location: Selection table - number of receivers on bus, excerpt: "MAX485 Half 2.5 ... 32 8"}
+  encapsulamento:
+    value: 8 pinos (DIP, SO, uMAX, CERDIP)
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - power dissipation list, excerpt: "8-Pin Plastic DIP ... 8-Pin SO ... 8-Pin uMAX"}

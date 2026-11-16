@@ -1,0 +1,81 @@
+# Fonte: Omron, V Miniature Basic Switch (família V-10/V-15/V-16/V-21/V-21(IN)), catálogo de 16 páginas, sem número/revisão visível nas páginas lidas.
+part_number: V-15-1C25
+category: switch.mechanical
+schema_version: '1.0'
+manufacturer: Omron
+family: V Miniature Basic Switch (V-15)
+lifecycle: desconhecido
+notes:
+- 'V-15-1C25 decodificado pela legenda: 15 A a 250 VAC, atuador pin plunger, contato SPDT, terminais quick-connect #250, força máx. de operação 1,96 N {200 gf}, resistência a calor padrão (80 C).'
+- 'Cargas DC (V-15): 0,6 A a 125 VDC e 0,3 A a 250 VDC (carga resistiva).'
+- 'Faixa de temperatura de operação: colunas da tabela de características estavam embaralhadas no texto; atribuída ao V-15 padrão (-25 a 105 C; versão resistente a calor -25 a 150 C). Conferir no PDF.'
+- 'Dielétrico informado é entre terminais de mesma polaridade (1 min, com separador), comum a todos os modelos da tabela.'
+datasheets:
+- id: ds1
+  manufacturer: Omron
+  sha256: b14f1a220454e10514c96e9991b82df2fbc29286f9d203bd062a140bd7ac308c
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_rated:
+    max: 15
+    unit: A
+    conditions: {V: 250 V}
+    status: extraido
+    source: {page: 10, location: Contact specifications - ratings (resistive load), excerpt: "V-15 AC250V 15 A"}
+  V_rated:
+    max: 250
+    unit: V
+    status: extraido
+    source: {page: 10, location: Contact specifications - ratings, excerpt: "V-15 AC250V 15 A; DC250V 0.3 A"}
+  R_contact:
+    max: 15
+    unit: mohm
+    status: extraido
+    source: {page: 10, location: Characteristics - contact resistance (initial value), excerpt: "Contact resistance (initial value) 15mΩ max."}
+  R_iso:
+    min: 100
+    unit: Mohm
+    conditions: {V: 500 V}
+    status: extraido
+    source: {page: 10, location: Characteristics - insulation resistance, excerpt: "100MΩ min. (at 500 VDC with insulation tester)"}
+  V_diel:
+    max: 1000
+    unit: V
+    conditions: {t: 1 min}
+    status: extraido
+    source: {page: 10, location: Characteristics - dielectric strength between terminals of the same polarity, excerpt: "AC1,000V 50/60Hz 1min"}
+  life:
+    min: 50000000
+    unit: '1'
+    status: extraido
+    source: {page: 10, location: Characteristics - durability, mechanical, excerpt: "Mechanical 50,000,000 operations min. (60 operations/min)"}
+  force:
+    max: 1.96
+    unit: N
+    status: extraido
+    source: {page: 1, location: Model number legend - maximum operating force (code 5), excerpt: "5: 1.96 N {200 gf}"}
+  Top:
+    min: -25
+    max: 105
+    unit: °C
+    status: extraido
+    source: {page: 10, location: Characteristics - ambient operating temperature, excerpt: "-25 to 105°C (Heat resistive: -25 to 150°C)"}
+attributes:
+  tipo:
+    value: Microchave miniatura (basic switch), atuador pin plunger
+    status: extraido
+    source: {page: 1, location: Title and model number legend, excerpt: "Miniature Basic Switch ... Actuator None: Pin plunger"}
+  contatos:
+    value: SPDT
+    status: extraido
+    source: {page: 1, location: Model number legend - contact form, excerpt: "1: SPDT"}
+  grau_protecao:
+    value: IEC IP40
+    status: extraido
+    source: {page: 10, location: Characteristics - degree of protection, excerpt: "Degree of protection IEC IP40"}
+  certificacoes:
+    value: UL (UL1054)/CSA (C22.2 No.55), VDE (EN61058-1)
+    status: extraido
+    source: {page: 10, location: Approved standards, excerpt: "UL (UL1054)/CSA (CSA C22.2 No.55) VDE (EN61058-1)"}

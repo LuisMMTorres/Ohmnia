@@ -1,0 +1,67 @@
+# Fonte: Siemens, Data sheet 7MF1565-3BE10-1AA1 (SITRANS P200), 6/13/2025.
+part_number: 7MF1565-3BE10-1AA1
+category: sensor.pressure
+schema_version: '1.0'
+manufacturer: Siemens
+family: SITRANS P200
+package: Conexão ao processo G1/2 macho (EN 837-1), conector DIN EN 175301-803-A
+lifecycle: desconhecido
+notes:
+- 'Fila: sitrans p200 datasheet en-US. Folha de 1 página com a descrição do modelo 7MF1565-3BE10-1AA1; só os dados do texto de descrição constam no documento.'
+- 'Não linearidade 0,25 % (tipicamente). Materiais: partes molhadas cerâmica e aço inox; vedação Viton (FPM) entre sensor e caixa (p. 1).'
+datasheets:
+- id: ds1
+  manufacturer: Siemens
+  document_number: 7MF1565-3BE10-1AA1
+  revision: 6/13/2025
+  url: https://docs.rs-online.com/fb73/A700000015101181.pdf
+  sha256: d09761b320119dacf77b21f918d4b76192c93bcd6c02bc4c6badd14eab7a8a2e
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  range_bar:
+    min: 0
+    max: 4
+    unit: bar
+    status: extraido
+    source: {page: 1, location: Descrição - Measuring range for gauge, excerpt: "Measuring range for gauge: 0 to 4 bar"}
+  overpressure:
+    max: 10
+    unit: bar
+    status: extraido
+    source: {page: 1, location: Descrição - Overload pressure, excerpt: "Overload- pressure 10 bar"}
+  accuracy:
+    typ: 0.25
+    unit: '%'
+    status: extraido
+    source: {page: 1, location: Descrição - Non-linearity, excerpt: "Non-linearity: 0,25 percent (typically)"}
+  V_out:
+    min: 0
+    max: 10
+    unit: V
+    status: extraido
+    source: {page: 1, location: Descrição - Output signal, excerpt: "Output signal: 0 to 10 V; three-wire connection"}
+  VS:
+    min: 12
+    max: 33
+    unit: V
+    status: extraido
+    source: {page: 1, location: Descrição - power supply, excerpt: "power supply DC 12 to 33 V without explosion protection"}
+attributes:
+  saida:
+    value: 0 a 10 V, três fios
+    status: extraido
+    source: {page: 1, location: Descrição - Output signal}
+  conexao:
+    value: Conector DIN EN 175301-803-A, rosca para prensa-cabo M16
+    status: extraido
+    source: {page: 1, location: Descrição - Electrical connection}
+  invólucro:
+    value: Partes não molhadas em aço inox; molhadas em cerâmica e aço inox; conexão G1/2 macho
+    status: extraido
+    source: {page: 1, location: Descrição - wetted parts material / Process connection}
+  principio:
+    value: Pressão manométrica com sensor cerâmico
+    status: extraido
+    source: {page: 1, location: Descrição - Measuring range for gauge, wetted parts material ceramics}

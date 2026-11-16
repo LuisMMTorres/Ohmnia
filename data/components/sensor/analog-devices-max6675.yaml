@@ -1,0 +1,85 @@
+# Fonte: Analog Devices (Maxim Integrated), MAX6675 Cold-Junction-Compensated K-Thermocouple-to-Digital Converter (0°C to +1024°C), 19-2235; Rev 1; 3/02 (cópia no site Adafruit).
+part_number: MAX6675
+category: sensor.temperature
+schema_version: '1.0'
+manufacturer: Analog Devices
+family: MAX6675
+package: 8-pin SO (MAX6675ISA)
+lifecycle: desconhecido
+notes:
+- 'O documento traz a marca Maxim Integrated; a fila nomeia Analog Devices como fabricante.'
+- 'Conversor termopar tipo K para digital com compensação de junta fria; a medição é feita pelo termopar externo (não incluído). Faixa de leitura 0 a +1024 °C (título, p. 1); precisão do termopar de 8 LSB para 0 a +700 °C (p. 1).'
+- 'Erro de temperatura (Tabela, p. 2), TA = +25 °C: em +700 °C, -5/+5 LSB (VCC = 3,3 V) e -6/+6 LSB (VCC = 5 V); em 0 a +700 °C, -8/+8 LSB (3,3 V) e -9/+9 LSB (5 V); em +700 a +1000 °C, -17/+17 LSB (3,3 V) e -19/+19 LSB (5 V). Erro de compensação de junta fria: -3,0 a +3,0 °C (TA = -20 a +85 °C).'
+- 'Constante de conversão do termopar 10,25 uV/LSB; resolução 0,25 °C; impedância de entrada do termopar 60 kohm (p. 2). Para termopar tipo K a tensão varia 41 uV/°C (p. 4).'
+- 'Interface serial SPI (somente leitura, saída de 12 bits): fSCL máx. 4,3 MHz; VIL máx. 0,3 VCC; VIH mín. 0,7 VCC; VOL máx. 0,4 V (ISINK = 1,6 mA); VOH mín. VCC - 0,4 V (ISOURCE = 1,6 mA) (p. 2-3). Tensão de qualquer pino -0,3 V a VCC + 0,3 V.'
+- 'Máximos absolutos (p. 2): VCC -0,3 a +6 V; dissipação contínua 471 mW (SO, TA = +70 °C); junção +150 °C. Temperatura de operação -20 a +85 °C (também na Ordering Information, p. 1).'
+datasheets:
+- id: ds1
+  manufacturer: Analog Devices (Maxim Integrated)
+  document_number: 19-2235
+  revision: Rev 1, 3/02
+  url: https://cdn-shop.adafruit.com/datasheets/MAX6675.pdf
+  sha256: f354adbf8b44b2b4d90840bf67c810386c717d80e943d828404f1add0c286bf9
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  range:
+    min: 0
+    max: 1024
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Title - temperature range, excerpt: "Cold-Junction-Compensated K-Thermocouple-to-Digital Converter (0°C to +1024°C)"}
+  accuracy:
+    max: 2
+    unit: K
+    status: extraido
+    source: {page: 1, location: General Description - thermocouple accuracy 8 LSB for 0°C to +700°C (8 LSB x 0,25 °C = 2 °C, valor calculado), excerpt: "accuracy of 8LSBs for temperatures ranging from 0°C to +700°C"}
+  bits:
+    typ: 12
+    unit: bit
+    status: extraido
+    source: {page: 1, location: Features - resolution, excerpt: "12-Bit, 0.25°C Resolution"}
+  t_resp:
+    min: 0.17
+    max: 0.22
+    unit: s
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - Conversion Time, excerpt: "Conversion Time (Note 2) 0.17 0.22 s"}
+  VS:
+    min: 3.0
+    max: 5.5
+    unit: V
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - Supply Voltage VCC, excerpt: "Supply Voltage VCC 3.0 5.5 V"}
+  IS:
+    typ: 0.7
+    max: 1.5
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - Supply Current ICC, excerpt: "Supply Current ICC 0.7 1.5 mA"}
+  Top:
+    min: -20
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - Operating Temperature Range, excerpt: "Operating Temperature Range -20°C to +85°C"}
+  Tstg:
+    min: -65
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - Storage Temperature Range, excerpt: "Storage Temperature Range -65°C to +150°C"}
+attributes:
+  elemento:
+    value: Conversor termopar tipo K para digital com compensação de junta fria
+    status: extraido
+    source: {page: 1, location: General Description, excerpt: "performs cold-junction compensation and digitizes the signal from a type-K thermocouple"}
+  saida:
+    value: 'Digital SPI (somente leitura), 12 bits'
+    status: extraido
+    source: {page: 1, location: General Description, excerpt: "12-bit resolution, SPI-compatible, read-only format"}
+  ligacao:
+    value: 'Termopar nos pinos T+ e T-'
+    status: extraido
+    source: {page: 1, location: Pin Configuration / Typical Application Circuit, excerpt: "T+ T- (thermocouple inputs)"}

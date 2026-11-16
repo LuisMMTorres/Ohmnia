@@ -1,0 +1,58 @@
+# Fonte: Pulse Electronics, THT Current Sense Transformers & Inductors, P578.D (04/17).
+part_number: PE-63587NL
+category: magnetic.transformer
+schema_version: '1.0'
+manufacturer: Pulse
+family: PE-635xx / PE-516xx / PE-644xx (THT current sense)
+package: THT (terminais para furo passante)
+lifecycle: desconhecido
+notes:
+- 'Documento de família; linha do PE-63587NL: transformador com primário de 1 espira (esquema 1A), 100 espiras no secundário (pág. 1, tabela Electrical Specifications).'
+- 'Sem símbolo no esquema: indutância do secundário mín 20.0 mH (teste 1.0 V, 15.75 kHz), RS 1.40 ohm máx, RT 100 ohm máx (resistência terminadora), rating do primário 300 A·us unipolar e 600 A·us bipolar (máx); corrente de pico de sensação com 1 espira primária 20 A (nota 5).'
+- 'Rating máx especificado com a resistência terminadora nominal do secundário e 1 espira no primário (nota 1). Temperatura máxima de operação 105 °C (ambiente mais elevação), nota 3.'
+- Aprovação VDE e isolação conforme IEC950 declaradas na pág. 1, sem tensão de isolação numérica.
+datasheets:
+- id: ds1
+  manufacturer: Pulse
+  document_number: P578.D
+  revision: 04/17
+  url: https://static.chipdip.ru/lib/335/DOC012335817.pdf
+  sha256: 98a4d67934811326971c713c89bcca704d64ec1ddd60640f81d874a382168a48
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  ratio:
+    typ: 100
+    unit: '1'
+    status: extraido
+    source:
+      page: 1
+      location: Electrical Specifications - Turns Ns (secundário), PE-63587NL
+      excerpt: "PE-63587NL 1A PE-51687NL 2A 100 20.0 1.0 1.40 100 300 600"
+  f:
+    min: 20000
+    max: 200000
+    unit: Hz
+    status: extraido
+    source:
+      page: 1
+      location: cabeçalho - Frequency range
+      excerpt: "Frequency range from 20kHz to 200kHz"
+  Top:
+    min: -40
+    max: 125
+    unit: °C
+    status: extraido
+    source:
+      page: 1
+      location: Electrical Specifications @ 25°C - Operating Temperature
+      excerpt: "Operating Temperature -40°C to +125°C"
+attributes:
+  aplicacao:
+    value: transformador de corrente (sensor de corrente) para fontes chaveadas
+    status: extraido
+    source:
+      page: 1
+      location: cabeçalho - THT Current Sense Transformers
+      excerpt: "Designed for switching power supply applications"

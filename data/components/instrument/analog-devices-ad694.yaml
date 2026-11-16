@@ -1,0 +1,69 @@
+# Fonte: Analog Devices, AD694 4-20 mA Transmitter, REV. B, 2002.
+part_number: AD694
+category: instrument.transmitter
+schema_version: '1.0'
+manufacturer: Analog Devices
+package: CERDIP 16 pinos, SOIC plástico 16 pinos e DIP plástico 16 pinos
+lifecycle: desconhecido
+notes:
+- Transmissor monolítico tensão-corrente 4-20 mA / 0-20 mA; entradas pré-calibradas 0 a 2 V e 0 a 10 V (pág. 1).
+- Especificações a +25 °C, RL = 250 ohm, VS = +24 V (pág. 3). Modelos AD694JN/AQ/AR e AD694BQ/BR; valores abaixo são os da coluna JN/AQ/AR (mais folgada).
+- Faixa de operação da corrente 0 a 23 mA; desempenho especificado 4 a 20 mA; impedância de saída 40 a 50 Mohm típ. (pág. 3).
+- Erro de função de transferência ±0,1% do span típ. (0,3% máx.) e não linearidade ±0,005% típ. (0,015% máx.), JN/AQ/AR (pág. 3). A exatidão abaixo é o máximo do erro de função de transferência.
+- Faixa de operação (Top) AQ/BQ/AR/BR -55 a +125 °C; AD694JN -40 a +85 °C (pág. 3). Faixa especificada AQ/BQ/AR/BR -40 a +85 °C; JN 0 a +70 °C.
+- Armazenamento, AD694Q -65 a +150 °C; AD694N, R -65 a +125 °C (pág. 4); aqui usada a faixa comum -65 a +125 °C.
+- Alimentação máxima absoluta 36 V; compliance de saída até VS - 2 V (pág. 3 e 4).
+datasheets:
+- id: ds1
+  manufacturer: Analog Devices
+  revision: REV. B
+  url: https://pf.unikeyic.com/datasheet/fc/ce/4090/fcce4090d3f5f68c4c602b0ece0d1054.pdf
+  sha256: 020e498d1913bd571d0b4366ebff120ee2d3b92df9f78f9aafce33a5e48fe542
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_out:
+    min: 4
+    max: 20
+    unit: mA
+    status: extraido
+    source: {page: 3, location: Output characteristics - specified performance, excerpt: "Specified Performance 4 20 mA"}
+  accuracy:
+    max: 0.3
+    unit: '%'
+    status: extraido
+    source: {page: 3, location: Span and zero accuracy - transfer function error from nominal, excerpt: "Transfer Function Error from Nom ±0.1 0.3 % of Span"}
+  VS:
+    min: 12.5
+    max: 36
+    unit: V
+    status: extraido
+    source: {page: 3, location: Power requirements - operating range (2 V, 10 V FS), excerpt: "2 V, 10 V FS, VREF = 2 V, 10 V 12.5 36 V"}
+  IS:
+    typ: 1.5
+    max: 2.0
+    unit: mA
+    status: extraido
+    source: {page: 3, location: Power requirements - quiescent current 4 mA off, excerpt: "Quiescent Current, 4 mA Off 1.5 2.0 mA"}
+  Top:
+    min: -55
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 3, location: Temperature range - operating AD694AQ/BQ/AR/BR, excerpt: "Operating AD694AQ/BQ/AR/BR -55 +125 °C"}
+  Tstg:
+    min: -65
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 4, location: Absolute maximum ratings - storage temperature range, excerpt: "AD694N, R -65°C to +125°C"}
+attributes:
+  entrada:
+    value: tensão 0 a 2 V ou 0 a 10 V (pré-calibradas por pinos); referência de 2,000 V ou 10,000 V
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "Precalibrated Input Ranges: 0 V to 2 V, 0 V to 10 V"}
+  saida:
+    value: corrente 4-20 mA ou 0-20 mA, com alarme de laço aberto (coletor aberto)
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "4–20 mA, 0–20 mA Output Ranges; Open-Loop Alarm"}

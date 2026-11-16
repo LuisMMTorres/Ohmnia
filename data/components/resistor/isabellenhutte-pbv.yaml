@@ -1,0 +1,54 @@
+# Fonte: Isabellenhütte, PBV (2317) ISA-PLAN Precision Resistor, Issue 12-February-2026.
+part_number: PBV
+category: resistor.fixed
+schema_version: '1.0'
+manufacturer: Isabellenhütte
+family: PBV
+lifecycle: desconhecido
+notes:
+- 'Valores da série PBV (resistor shunt de precisão, 4 terminais); faixa entre os modelos.'
+- 'Potência 3 W sem dissipador e 10 W com dissipador (pág. 1); pulso 2 J por 10 ms (pág. 1).'
+- 'TCR (20-60 C): <30 ppm/K para >=10 mohm e <75 ppm/K para <10 mohm (pág. 1). Indutância <10 nH, rigidez dielétrica 500 V AC (pág. 1).'
+- 'Tolerâncias 0.5 / 1 / 5 %; valores padrão de R0005 a 1R00 (pág. 3).'
+datasheets:
+- id: ds1
+  manufacturer: Isabellenhütte
+  revision: Issue 12-February-2026
+  url: https://www.isabellenhuette.com/hubfs/Files/Data-sheets/PBV.pdf
+  sha256: 330f436439c1412f3a27866ec77fb7ed5463f50f0f20672eca525bcab16eb81a
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  R:
+    min: 0.0005
+    max: 1
+    unit: ohm
+    status: extraido
+    source: {page: 1, location: Technical data, Resistance values, excerpt: "Resistance values Ohm 0.0005 to 1"}
+  tol:
+    max: 5
+    unit: '%'
+    status: extraido
+    source: {page: 1, location: Technical data, Tolerance, excerpt: "Tolerance % 0.5 / 1 / 5"}
+  P_rated:
+    max: 10
+    unit: W
+    status: extraido
+    source: {page: 1, location: Technical data, Power rating, excerpt: "Power rating W 3 / 10 (on a heatsink)"}
+  TCR:
+    max: 75
+    unit: ppm/K
+    status: extraido
+    source: {page: 1, location: Technical data, Temperature coefficient (20-60 °C), excerpt: "<30 for >=10 mΩ; <75 for <10 mΩ"}
+  Top:
+    min: -55
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Technical data, Applicable temperature range, excerpt: "°C -55 to +125"}
+attributes:
+  tecnologia:
+    value: resistor shunt de precisão (MANGANIN/ZERANIN), 4 terminais
+    status: extraido
+    source: {page: 3, location: Temperature dependence of the electrical resistance}

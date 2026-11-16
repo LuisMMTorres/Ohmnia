@@ -1,0 +1,95 @@
+# Fonte: Texas Instruments, SNx4HC595 8-Bit Shift Registers With 3-State Output Registers, SCLS041J, December 1982 - Revised October 2021.
+part_number: 74HC595
+category: ic.digital
+schema_version: '1.0'
+manufacturer: TI
+family: SN54HC595 / SN74HC595
+lifecycle: desconhecido
+notes:
+- 'Registrador de deslocamento de 8 bits, entrada serial e saída paralela com saídas 3-state (p. 1).'
+- 'Valores de VIH, VIL e VOH/VOL na coluna SN74HC595 (faixa -40 a 85 °C); VIH e VIL dados para VCC = 4,5 V (p. 4 e 5).'
+- 'Corrente de saída contínua máxima ±35 mA por saída; ±70 mA contínuos em VCC ou GND (p. 4).'
+- 'Frequência de clock (fclock) tem tabela própria por VCC em Timing Requirements (p. 6), não transcrita como f_max por ambiguidade das colunas.'
+datasheets:
+- id: ds1
+  manufacturer: TI
+  document_number: SCLS041J
+  revision: October 2021
+  sha256: 5a6a5aeecc79a2d4bf4e15aae681e0f99cb13b54d6524be253a6844c898eeb0d
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 2
+    typ: 5
+    max: 6
+    unit: V
+    status: extraido
+    source: {page: 4, location: 6.3 Recommended Operating Conditions - Supply voltage, excerpt: "VCC Supply voltage 2 5 6 V"}
+  VIH:
+    min: 3.15
+    unit: V
+    conditions: {VCC: 4.5 V}
+    status: extraido
+    source: {page: 4, location: 6.3 Recommended Operating Conditions - High-level input voltage, excerpt: "VCC = 4.5 V 3.15"}
+  VIL:
+    max: 1.35
+    unit: V
+    conditions: {VCC: 4.5 V}
+    status: extraido
+    source: {page: 4, location: 6.3 Recommended Operating Conditions - Low-level input voltage, excerpt: "VCC = 4.5 V 1.35"}
+  VOH:
+    min: 3.84
+    unit: V
+    conditions: {VCC: 4.5 V, IOH: -6 mA}
+    status: extraido
+    source: {page: 5, location: 6.5 Electrical Characteristics - VOH (SN74HC595, QA-QH), excerpt: "QA – QH, IOH = –6 mA 3.98 4.3 3.7 3.84"}
+  VOL:
+    max: 0.33
+    unit: V
+    conditions: {VCC: 4.5 V, IOL: 6 mA}
+    status: extraido
+    source: {page: 5, location: 6.5 Electrical Characteristics - VOL (SN74HC595, QA-QH), excerpt: "QA – QH, IOL = 6 mA 0.17 0.26 0.4 0.33"}
+  IOH:
+    max: 35
+    unit: mA
+    status: extraido
+    source: {page: 4, location: 6.1 Absolute Maximum Ratings - Continuous output current, excerpt: "IO Continuous output current VO = 0 to VCC ±35 mA"}
+  IOL:
+    max: 35
+    unit: mA
+    status: extraido
+    source: {page: 4, location: 6.1 Absolute Maximum Ratings - Continuous output current, excerpt: "IO Continuous output current VO = 0 to VCC ±35 mA"}
+  tpd:
+    typ: 13
+    unit: ns
+    status: extraido
+    source: {page: 1, location: 1 Features, excerpt: "tpd = 13 ns (typical)"}
+  ICC:
+    max: 80
+    unit: uA
+    conditions: {VCC: 6 V}
+    status: extraido
+    source: {page: 5, location: 6.5 Electrical Characteristics - ICC (SN74HC595), excerpt: "ICC VI = VCC or 0, IO = 0 6 V 8 160 80 µA"}
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 4, location: 6.3 Recommended Operating Conditions - SN74HC595 TA, excerpt: "TA Operating free-air temperature –55 125 –40 85 °C"}
+  Tstg:
+    min: -65
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 4, location: 6.1 Absolute Maximum Ratings - Storage temperature, excerpt: "Tstg Storage temperature –65 150 °C"}
+attributes:
+  familia:
+    value: 74HC (SN74HC595)
+    status: extraido
+    source: {page: 1, location: Title, excerpt: "SNx4HC595 8-Bit Shift Registers"}
+  funcao:
+    value: Registrador de deslocamento de 8 bits, serial-in/paralelo-out, saídas 3-state
+    status: extraido
+    source: {page: 1, location: 1 Features, excerpt: "8-bit serial-in, parallel-out shift"}

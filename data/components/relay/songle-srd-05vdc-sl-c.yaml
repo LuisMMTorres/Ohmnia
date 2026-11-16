@@ -1,0 +1,102 @@
+# Fonte: Songle, folha de dados SRD (sem número de documento) - modelo SRD-05VDC-SL-C, 2 páginas, sem revisão/data visível.
+part_number: SRD-05VDC-SL-C
+category: relay.electromechanical
+schema_version: '1.0'
+manufacturer: Songle
+family: SRD
+lifecycle: desconhecido
+notes:
+- 'Código de pedido (pág. 1, item 3): SRD / 05 VDC / S = selado / L = sensibilidade 0,36 W / C = 1 forma C (SPDT).'
+- 'Valores de bobina da linha SRD (High Sensitivity) com código 05, tabela 6 da pág. 2 (a 20 °C).'
+- 'Pull-in: 75 % máx. da tensão nominal; drop-out: 10 % mín. da tensão nominal; tensão máxima admissível da bobina: 120 % (pág. 2, tabela 6). Não convertidos em volts por não constarem em V.'
+- 'Contatos forma C (pág. 2, tabela 7): resistiva 7 A 28 VDC, 10 A 125 VAC, 7 A 240 VAC; indutiva (cosPhi=0,4 L/R=7 ms) 3 A 120 VAC, 3 A 28 VDC. Potência máx. de comutação 800 VA / 240 W. Material AgCdO.'
+- 'Resistência de contato 100 mOhm máx.; resistência de isolamento 100 MOhm mín. (500 VDC); rigidez entre contatos 1000 VAC 50/60 Hz 1 min; peso aprox. 10 g (pág. 2, item 8).'
+- A nota da fila dizia que o código não aparece nas 3 primeiras páginas; o código de pedido SRD XX VDC S L C aparece na pág. 1 e a tabela cobre o modelo.
+- 'Parâmetros com @2: I_contact = 10 A vale para 125 VAC e 7 A para 28 VDC (carga resistiva); V_contact = 250 V é AC e 110 V é DC.'
+datasheets:
+- id: ds1
+  manufacturer: Songle
+  sha256: 9967e9a62db84c578fc8dc55f0d76fd95777a4c84ad1f2754477f43dac515e46
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  V_coil:
+    typ: 5
+    unit: V
+    status: extraido
+    source: {page: 2, location: 6. Coil data chart - SRD (High Sensitivity) code 05 nominal voltage, excerpt: "05 05 71.4 70 abt. 0.36W"}
+  R_coil:
+    typ: 70
+    unit: ohm
+    status: extraido
+    source: {page: 2, location: 6. Coil data chart - SRD (High Sensitivity) 05 coil resistance, excerpt: "05 05 71.4 70"}
+  P_coil:
+    typ: 0.36
+    unit: W
+    status: extraido
+    source: {page: 2, location: 6. Coil data chart - power consumption SRD High Sensitivity, excerpt: "abt. 0.36W"}
+  I_contact:
+    max: 10
+    unit: A
+    status: extraido
+    source: {page: 2, location: 7. Contact rating - FORM C resistive load, excerpt: "7A 28VDC 10A 125VAC 7A 240VAC"}
+  I_contact@2:
+    max: 7
+    unit: A
+    status: extraido
+    source: {page: 2, location: 7. Contact rating - FORM C resistive load, excerpt: "7A 28VDC 10A 125VAC 7A 240VAC"}
+  V_contact:
+    max: 250
+    unit: V
+    status: extraido
+    source: {page: 2, location: 7. Contact rating - max. allowable voltage, excerpt: "250VAC/110VDC"}
+  V_contact@2:
+    max: 110
+    unit: V
+    status: extraido
+    source: {page: 2, location: 7. Contact rating - max. allowable voltage, excerpt: "250VAC/110VDC"}
+  t_on:
+    max: 10
+    unit: ms
+    status: extraido
+    source: {page: 2, location: 8. Performance - operation time, excerpt: "Operation Time 10msec Max."}
+  t_off:
+    max: 5
+    unit: ms
+    status: extraido
+    source: {page: 2, location: 8. Performance - release time, excerpt: "Release Time 5msec Max."}
+  life_mech:
+    min: 10000000
+    unit: '1'
+    status: extraido
+    source: {page: 2, location: 8. Performance - life expectancy mechanically, excerpt: "operations. Min. (no load)"}
+  life_el:
+    min: 100000
+    unit: '1'
+    status: extraido
+    source: {page: 2, location: 8. Performance - life expectancy electrically, excerpt: "operations. Min. (at rated coil voltage)"}
+  V_iso:
+    max: 1500
+    unit: V
+    status: extraido
+    source: {page: 2, location: 8. Performance - dielectric strength between coil & contact, excerpt: "1500VAC 50/60HZ (1 minute)"}
+  Top:
+    min: -25
+    max: 70
+    unit: °C
+    status: extraido
+    source: {page: 2, location: 8. Performance - ambient temperature, excerpt: "-25°C to +70°C"}
+attributes:
+  contatos:
+    value: 1 forma C (SPDT)
+    status: extraido
+    source: {page: 1, location: 3. Ordering information - contact form, excerpt: "C:1 form C"}
+  montagem:
+    value: PCB
+    status: extraido
+    source: {page: 1, location: 1. Main features, excerpt: "high density P.C. board"}
+  certificacoes:
+    value: UL/CUL E167996; TUV R9933789; CCC CH0052885-2000 e CH0036746-99
+    status: extraido
+    source: {page: 1, location: 4. Rating, excerpt: "UL /CUL FILE NUMBER: E167996"}

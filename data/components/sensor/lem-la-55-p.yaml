@@ -1,0 +1,111 @@
+# Fonte: LEM, Current Transducer LA 55-P (N° 97.13.25.000.0), Version 19, 6 jul 2023.
+part_number: LA 55-P
+category: sensor.current
+schema_version: '1.0'
+manufacturer: LEM
+package: PCB, 3 pinos (0,6 x 0,7 mm), furo primário 12,7 x 7 mm
+lifecycle: desconhecido
+notes:
+- 'Fila: la 55-p e. Fonte do nome: Current Transducer LA 55-P.'
+- 'Resistor de medida RM depende da alimentação e de TA: com ±12 V @ ±50 A max, TA=70 °C: 10 a 100 ohm (TA=85 °C: 60 a 95); com ±15 V @ ±50 A max: 50 a 160 ohm (TA=85 °C: 135 a 155). Ver pág. 1.'
+- 'Offset é em corrente (não em mV): IO E max ±0,2 mA (IP=0, TA=25 °C); IO T typ ±0,1 / max ±0,6 mA de -25 a +85 °C (pág. 1).'
+- 'Consumo IC @ ±15 V: min 8+IS, typ 10+IS, max 12+IS mA (pág. 1).'
+- 'Exatidão ±0,65 % @ ±15 V (±5 %); ±0,90 % @ ±12...15 V (±5 %), IP N, TA=25 °C (pág. 1).'
+- 'Tempo de atraso a 10 %: < 500 ns; a 90 %: < 1 us para degrau de IP N, di/dt = 200 A/us (pág. 1).'
+- 'Isolação: impulso 1,2/50 us 5,7 kV; distância de escoamento e folga 5 mm min (pág. 2). Massa 18 g (pág. 3).'
+datasheets:
+- id: ds1
+  manufacturer: LEM
+  document_number: N° 97.13.25.000.0
+  revision: Version 19 (6 jul 2023)
+  url: https://www.lem.com/sites/default/files/products_datasheets/la_55-p_v19.pdf
+  sha256: 6a02e8f1049a032aea6dec2382cc0c61d9f1e12a65522a0f858938c682caf7f3
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_PN:
+    typ: 50
+    unit: A
+    status: extraido
+    source: {page: 1, location: Electrical data - IP N, excerpt: "IP N Primary nominal RMS current 50 A"}
+  I_PM:
+    max: 70
+    unit: A
+    status: extraido
+    source: {page: 1, location: Electrical data - IP M, excerpt: "Primary current, measuring range 0 … ±70 A"}
+  I_SN:
+    typ: 50
+    unit: mA
+    status: extraido
+    source: {page: 1, location: Electrical data - IS N, excerpt: "Secondary nominal RMS current 50 mA"}
+  ratio:
+    typ: 1000
+    unit: '1'
+    status: extraido
+    source: {page: 1, location: Electrical data - NP/NS, excerpt: "Turns ratio 1 : 1000"}
+  R_M:
+    min: 10
+    max: 100
+    unit: ohm
+    conditions: {UC: 12 V, TA: 70 °C, IP: 50 A}
+    status: extraido
+    source: {page: 1, location: Electrical data - RM measuring resistance, excerpt: "with ±12 V @ ±50 A max 10 100"}
+  accuracy:
+    max: 0.65
+    unit: '%'
+    conditions: {TA: 25 °C, UC: 15 V, IP: 50 A}
+    status: extraido
+    source: {page: 1, location: Accuracy - Dynamic performance data, excerpt: "Error @ IP N, TA = 25 °C @ ±15 V (±5 %) ±0.65 %"}
+  linearity:
+    max: 0.15
+    unit: '%'
+    status: extraido
+    source: {page: 1, location: Accuracy - Dynamic performance data, excerpt: "εL Linearity error < 0.15 %"}
+  bandwidth:
+    max: 200
+    unit: kHz
+    status: extraido
+    source: {page: 1, location: Accuracy - Dynamic performance data, excerpt: "Frequency bandwidth (−1 dB) DC … 200 kHz"}
+  t_resp:
+    max: 1
+    unit: us
+    conditions: {IP: 50 A}
+    status: extraido
+    source: {page: 1, location: Accuracy - Dynamic performance data tD 90, excerpt: "Delay time to 90 % of the final output value < 1 µs"}
+  V_iso:
+    max: 2500
+    unit: V
+    status: extraido
+    source: {page: 2, location: Insulation coordination - Ud, excerpt: "RMS voltage for AC insulation test, 50 Hz/1 min 2.5 kV"}
+  VS:
+    min: 12
+    max: 15
+    unit: V
+    status: extraido
+    source: {page: 1, location: Electrical data - UC, excerpt: "Supply voltage (±5 %) ±12 ... 15 V"}
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 1, location: General data - TA, excerpt: "Ambient operating temperature −40 … +85 °C"}
+  Tstg:
+    min: -40
+    max: 90
+    unit: °C
+    status: extraido
+    source: {page: 1, location: General data - TA st, excerpt: "Ambient storage temperature −40 … +90 °C"}
+attributes:
+  principio:
+    value: Hall malha fechada (compensado)
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "Closed loop (compensated) current transducer using the Hall effect"}
+  saida:
+    value: Corrente (secundária 50 mA nominal, relação 1:1000)
+    status: extraido
+    source: {page: 1, location: Electrical data - IS N and NP/NS}
+  montagem:
+    value: PCB, 3 pinos, furo primário 12,7 x 7 mm
+    status: extraido
+    source: {page: 3, location: Mechanical characteristics, excerpt: "Primary through-hole 12.7 × 7 mm; 3 pins 0.6 × 0.7 mm"}

@@ -1,0 +1,77 @@
+# Fonte: WIMA, catálogo MKS 2 Metallized Polyester (PET) Capacitors, edição 03.26 (páginas 34-35 do catálogo).
+part_number: MKS2
+category: capacitor.fixed
+schema_version: '1.0'
+manufacturer: WIMA
+family: MKS 2
+package: Caixa plástica com resina epóxi, PCM 5 mm
+lifecycle: desconhecido
+notes:
+- Valores da série; faixas entre os modelos (capacitância, tensões nominais e tolerâncias).
+- O texto do PDF perdeu o símbolo µ (aparece "0.01 F to 4.7 F"); o catálogo é de capacitores em µF (0,01 a 4,7 µF).
+- tan δ do catálogo é dado em 10^-3 (8 x 10^-3 a 1 kHz para C até 1,0 µF; 10 x 10^-3 para C maior que 1,0 µF).
+datasheets:
+- id: ds1
+  manufacturer: WIMA
+  document_number: MKS 2 (catálogo)
+  revision: '03.26'
+  sha256: 2a64392db00b639b6d0fca1d9e1a3aa38c1a5138ca6796a713914a9918d05fe9
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  C:
+    min: 0.01
+    max: 4.7
+    unit: uF
+    status: extraido
+    source: {datasheet_id: ds1, page: 1, location: Electrical Data - Capacitance range, excerpt: "0.01 F to 4.7 F (E12-values on request)"}
+  tol:
+    max: 20
+    unit: '%'
+    status: extraido
+    note: Tolerâncias disponíveis ±20 %, ±10 %, ±5 %.
+    source: {datasheet_id: ds1, page: 1, location: Electrical Data - Capacitance tolerances, excerpt: "±20%, ±10%, ±5%"}
+  V_rated:
+    min: 63
+    max: 630
+    unit: V
+    status: extraido
+    note: Tensões nominais CC 63, 100, 250, 400 e 630 V.
+    source: {datasheet_id: ds1, page: 1, location: Electrical Data - Rated voltages, excerpt: "63 VDC 100 VDC, 250 VDC, 400 VDC, 630 VDC"}
+  tan_delta:
+    max: 0.008
+    unit: '1'
+    status: extraido
+    conditions: {f: 1 kHz, TA: 20 °C}
+    note: 8 x 10^-3 a 1 kHz para C até 1,0 µF (10 x 10^-3 para C > 1,0 µF).
+    source: {datasheet_id: ds1, page: 1, location: Electrical Data - Dissipation factors at +20 °C, excerpt: "1 kHz 8 x 10-3 8 x 10-3 10 x 10-3"}
+  tan_delta@2:
+    max: 0.015
+    unit: '1'
+    status: extraido
+    conditions: {f: 10 kHz, TA: 20 °C}
+    note: 15 x 10^-3 a 10 kHz para C até 1,0 µF; 30 x 10^-3 a 100 kHz para C até 0,1 µF.
+    source: {datasheet_id: ds1, page: 1, location: Electrical Data - Dissipation factors at +20 °C, excerpt: "10 kHz 15 x 10-3"}
+  life:
+    typ: 300000
+    unit: h
+    status: extraido
+    conditions: {T: 40 °C}
+    note: Vida operacional com 0,5 x Ur e 40 °C; taxa de falha 2 fit; +125 °C permitido por no máximo 1000 h.
+    source: {datasheet_id: ds1, page: 1, location: Reliability, excerpt: "Operational life 300 000 hours"}
+  Top:
+    min: -55
+    max: 125
+    unit: °C
+    status: extraido
+    source: {datasheet_id: ds1, page: 1, location: Electrical Data - Operating temperature range, excerpt: "–55° C to +125° C"}
+attributes:
+  dieletrico:
+    value: Filme de poliéster (PET, polietileno tereftalato) metalizado, autorregenerante
+    status: extraido
+    source: {datasheet_id: ds1, page: 1, location: Construction - Dielectric; Special Features}
+  montagem:
+    value: Terminais de fio estanhado, passo (PCM) 5 mm, caixa plástica UL 94 V-0 com selo epóxi
+    status: extraido
+    source: {datasheet_id: ds1, page: 1, location: Construction - Encapsulation, Terminations; título}

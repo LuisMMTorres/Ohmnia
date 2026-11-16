@@ -1,0 +1,80 @@
+# Fonte: Littelfuse, PPTC Datasheet RXEF Series Radial Leaded, Revised GD. 09/21/22.
+part_number: RXEF110
+category: thermistor.ptc
+schema_version: '1.0'
+manufacturer: Littelfuse
+family: RXEF
+package: radial com terminais (0.520 mm2 / 20 AWG)
+lifecycle: desconhecido
+notes:
+- 'Documento da série RXEF; linha do RXEF110 (ordering RF2623-000) na tabela Electrical Characteristics da pág. 2 (grupo RXEF - 72V).'
+- 'Sem símbolo no esquema: PD típico 1.50 W (estado desarmado, ar parado a 20 °C), RMIN 0.15 ohm, RMAX 0.25 ohm e R1MAX 0.38 ohm (resistências a 20 °C, R1MAX uma hora após o disparo), pág. 2.'
+- 'Tensão máxima 72 VDC e 72 VAC RMS; falta máxima 40 A DC e 40 A AC RMS (pág. 2). Características elétricas determinadas a 25 °C, IH e IT em ar parado a 20 °C (notas, pág. 1 e 2).'
+datasheets:
+- id: ds1
+  manufacturer: Littelfuse
+  revision: Revised GD. 09/21/22
+  url: https://store.comet.bg/download-file.php?id=28452
+  sha256: ac4f96627a34877763b69e8d54c8c203335907200b39e0a5b452e582574314ae
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_hold:
+    max: 1.1
+    unit: A
+    status: extraido
+    source:
+      page: 2
+      location: Electrical Characteristics (Cont'd) - RXEF110, IH
+      excerpt: "RXEF110 RF2623-000 1.10 2.20 72 72 40 40 1.50 5.50 8.2"
+  I_trip:
+    min: 2.2
+    unit: A
+    status: extraido
+    source:
+      page: 2
+      location: Electrical Characteristics (Cont'd) - RXEF110, IT
+      excerpt: "RXEF110 RF2623-000 1.10 2.20 72 72 40 40 1.50 5.50 8.2"
+  V_max:
+    max: 72
+    unit: V
+    status: extraido
+    source:
+      page: 2
+      location: Electrical Characteristics (Cont'd) - RXEF110, VMAX (VDC)
+      excerpt: "RXEF110 ... 1.10 2.20 72 72 40 40"
+  I_max:
+    max: 40
+    unit: A
+    status: extraido
+    source:
+      page: 2
+      location: Electrical Characteristics (Cont'd) - RXEF110, IMAX (A DC)
+      excerpt: "RXEF110 ... 72 72 40 40 1.50"
+  t_trip:
+    max: 8.2
+    unit: s
+    conditions: {I: 5.5 A}
+    status: extraido
+    source:
+      page: 2
+      location: Electrical Characteristics (Cont'd) - RXEF110, Max Time-to-trip
+      excerpt: "RXEF110 ... 1.50 5.50 8.2 0.15 0.25 0.38"
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source:
+      page: 4
+      location: Physical Specifications - Operation Temperature
+      excerpt: "Operation Temperature -40°C~85°C"
+attributes:
+  aplicacao:
+    value: proteção contra sobrecorrente rearmável (PPTC radial)
+    status: extraido
+    source:
+      page: 1
+      location: Description / Features & Benefits
+      excerpt: "Resettable and single-use overcurrent devices"

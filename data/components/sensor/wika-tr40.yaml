@@ -1,0 +1,44 @@
+# Fonte: WIKA, data sheet TE 60.40 (Cable resistance thermometer, mineral-insulated cable, model TR40), 10/2021.
+part_number: TR40
+category: sensor.temperature
+schema_version: '1.0'
+manufacturer: WIKA
+family: TR40
+package: Sonda com cabo MI e cabo de ligação
+lifecycle: desconhecido
+notes:
+- 'Fila: ds te6040 en co (WIKA TE 60.40).'
+- 'Corrente de medição: 0,1 ... 1,0 mA (pág. 4). Pt1000 só em filme fino.'
+- 'Classes de exatidão EN 60751 (pág. 4): Classe B -196...+600 °C (fio enrolado), -196...+450 °C e -50...+500 °C / -50...+250 °C (filme fino, conforme a tabela), Classe A -100...+450 °C / -30...+300 °C, Classe AA -50...+250 °C / 0...150 °C.'
+- 'Versões de baixa temperatura estendem o limite ambiente inferior a -60 °C, com máximo +120 °C (pág. 5).'
+- 'Máximos: caixa de ligação 80 °C, conector 80 °C, massa de vedação na transição 250 °C, versões resistentes a vibração 200 °C (pág. 5).'
+datasheets:
+- id: ds1
+  manufacturer: WIKA
+  document_number: TE 60.40
+  revision: 10/2021
+  url: https://www.wika.com/media/Data-sheets/Temperature/Resistance-thermometers/ds_te6040_en_co.pdf
+  sha256: 13941d4b62da408319bc0397c770a25bb1ad26ae5e265c3cdf58234014ded6b8
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  range:
+    min: -196
+    max: 600
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Special features - sensor ranges, excerpt: "Sensor ranges from -196 ... +600 °C"}
+attributes:
+  elemento:
+    value: Pt100 ou Pt1000 (Pt1000 só filme fino), simples ou duplo
+    status: extraido
+    source: {page: 4, location: Sensor - Measuring element, excerpt: "Pt100, Pt1000 1) (measuring current: 0.1 ... 1.0 mA)"}
+  ligacao:
+    value: 2, 3 ou 4 fios (simples); 2 x 2, 2 x 3, 2 x 4 fios (duplo)
+    status: extraido
+    source: {page: 4, location: Connection method, excerpt: "1 x 2-wire 1 x 3-wire 1 x 4-wire"}
+  certificacoes:
+    value: EU (EMC, RoHS), ATEX/IECEx/EAC/INMETRO/CCC (opção), SIL 2 com transmissor T32
+    status: extraido
+    source: {page: 2, location: Approvals, excerpt: "EMC directive; RoHS directive; ATEX directive (option)"}

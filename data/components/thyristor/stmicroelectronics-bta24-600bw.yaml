@@ -1,0 +1,153 @@
+# Fonte: STMicroelectronics, BTA24, BTB24, BTA25, BTA26, BTB26, T25 25 A standard and Snubberless triacs, Rev 10, July 2007 (cópia no distribuidor Farnell).
+part_number: BTA24-600BW
+category: thyristor.triac
+schema_version: '1.0'
+manufacturer: STMicroelectronics
+family: BTA24, BTB24, BTA25, BTA26, BTB26, T25
+package: TO-220AB isolado (BTA24, aba isolada 2500 VRMS)
+lifecycle: desconhecido
+notes:
+- 'Documento da série. Pelo esquema de pedidos (p. 6): BTA = isolado, 24 = 25 A em TO-220AB, 600 = 600 V, BW = 50 mA Snubberless (3 quadrantes). Valores de IGT, IH, IL, dV/dt e (dI/dt)c são os da coluna BW da Tabela 3 (p. 2).'
+- 'IT(RMS) 25 A com Tc = 75 °C para TO-220AB isolado (Tabela 2, p. 2).'
+- 'IL: 80 mA nos quadrantes I-III e 100 mA no quadrante II (coluna BW). (dI/dt)c mín. 22 A/ms sem snubber, Tj = 125 °C (Tabela 3): sem símbolo no esquema.'
+- 'Vt0 máx. 0,85 V e Rd máx. 16 mohm a Tj = 125 °C; IDRM/IRRM máx. 5 uA (Tj = 25 °C) e 3 mA (Tj = 125 °C) (Tabela 5, p. 3). VDSM/VRSM = VDRM/VRRM + 100 V (p. 2).'
+- 'Nota do documento (Tabela 1): a versão 600 V só está disponível com IGT = 50 mA (Snubberless e Standard).'
+datasheets:
+- id: ds1
+  manufacturer: STMicroelectronics
+  revision: Rev 10, July 2007
+  url: https://www.farnell.com/datasheets/1723975.pdf
+  sha256: 91e179585745382dca193d3ac11c75ac90b44d9682be76fb566ef5f5cde1f923
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VDRM:
+    max: 600
+    unit: V
+    status: extraido
+    source: {page: 6, location: Ordering information scheme - BTA24-600BW-RG (600 = 600 V), excerpt: "BT A 24 - 600 BW RG ... 600 = 600 V"}
+  VRRM:
+    max: 600
+    unit: V
+    status: extraido
+    source: {page: 6, location: Ordering information scheme - BTA24-600BW-RG (600 = 600 V), excerpt: "BT A 24 - 600 BW RG ... 600 = 600 V"}
+  IT(RMS):
+    max: 25
+    unit: A
+    conditions: {TC: 75 degC}
+    status: extraido
+    source: {page: 2, location: Table 2 Absolute maximum ratings - RMS on-state current, TO-220AB Ins., excerpt: "IT(RMS) TO-220AB Ins. Tc = 75° C 25 A"}
+  ITSM:
+    max: 250
+    unit: A
+    conditions: {t_pulse: 20 ms}
+    status: extraido
+    source: {page: 2, location: Table 2 Absolute maximum ratings - Non repetitive surge peak on-state current (F = 50 Hz), excerpt: "ITSM F = 50 Hz t = 20 ms 250 A"}
+  ITSM@2:
+    max: 260
+    unit: A
+    conditions: {t_pulse: 16.7 ms}
+    status: extraido
+    source: {page: 2, location: Table 2 Absolute maximum ratings - Non repetitive surge peak on-state current (F = 60 Hz), excerpt: "F = 60 Hz t = 16.7 ms 260 A"}
+  I2t:
+    max: 340
+    unit: A**2*s
+    conditions: {t_pulse: 10 ms}
+    status: extraido
+    source: {page: 2, location: Table 2 Absolute maximum ratings - I2t value for fusing, excerpt: "I²t Value for fusing tp = 10 ms 340 A²s"}
+  di/dt:
+    max: 50
+    unit: A/us
+    status: extraido
+    source: {page: 2, location: Table 2 Absolute maximum ratings - Critical rate of rise of on-state current (IG = 2 x IGT, F = 120 Hz, Tj = 125 °C), excerpt: "dI/dt F = 120 Hz Tj = 125° C 50 A/µs"}
+  IGM:
+    max: 4
+    unit: A
+    status: extraido
+    source: {page: 2, location: Table 2 Absolute maximum ratings - Peak gate current (tp = 20 us, Tj = 125 °C), excerpt: "IGM Peak gate current tp = 20 µs 4 A"}
+  PG(AV):
+    max: 1
+    unit: W
+    status: extraido
+    source: {page: 2, location: Table 2 Absolute maximum ratings - Average gate power dissipation (Tj = 125 °C), excerpt: "PG(AV) Tj = 125° C 1 W"}
+  Tj_max:
+    max: 125
+    unit: degC
+    status: extraido
+    source: {page: 2, location: Table 2 Absolute maximum ratings - Operating junction temperature range, excerpt: "Operating junction temperature range - 40 to + 125 ° C"}
+  Tj_min:
+    min: -40
+    unit: degC
+    status: extraido
+    source: {page: 2, location: Table 2 Absolute maximum ratings - Operating junction temperature range, excerpt: "Operating junction temperature range - 40 to + 125 ° C"}
+  Tstg_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source: {page: 2, location: Table 2 Absolute maximum ratings - Storage junction temperature range, excerpt: "Storage junction temperature range - 40 to + 150 ° C"}
+  V(ISO):
+    min: 2500
+    unit: V
+    status: extraido
+    source: {page: 1, location: Applications - BTA series insulated tab, excerpt: "The BTA series provides an insulated tab (rated at 2500 VRMS)"}
+  Rth_jc:
+    max: 1.7
+    unit: K/W
+    status: extraido
+    source: {page: 3, location: Table 6 Thermal resistance - Junction to case (AC), TO-220AB Insulated, excerpt: "Rth(j-c) Junction to case (AC) TO-220AB Insulated 1.7 ° C/W"}
+  Rth_ja:
+    max: 60
+    unit: K/W
+    status: extraido
+    source: {page: 3, location: Table 6 Thermal resistance - Junction to ambient, TO-220AB / TO-220AB Insulated, excerpt: "Rth(j-a) TO-220AB / TO-220AB Insulated 60 ° C/W"}
+  IDRM:
+    max: 5
+    unit: uA
+    conditions: {Tj: 25 degC}
+    status: extraido
+    source: {page: 3, location: Table 5 Static characteristics - IDRM / IRRM (VDRM = VRRM), excerpt: "IDRM IRRM VDRM = VRRM Tj = 25° C MAX. 5 µA"}
+  IDRM@2:
+    max: 3
+    unit: mA
+    conditions: {Tj: 125 degC}
+    status: extraido
+    source: {page: 3, location: Table 5 Static characteristics - IDRM / IRRM (VDRM = VRRM), excerpt: "Tj = 125° C 3 mA"}
+  VTM:
+    max: 1.55
+    unit: V
+    conditions: {ITM: 35 A}
+    status: extraido
+    source: {page: 3, location: Table 5 Static characteristics - VTM (ITM = 35 A, tp = 380 us, Tj = 25 °C), excerpt: "VTM ITM = 35 A tp = 380 µs MAX. 1.55 V"}
+  IGT:
+    max: 50
+    unit: mA
+    conditions: {VD: 12 V}
+    status: extraido
+    source: {page: 2, location: Table 3 Electrical characteristics Snubberless (3 quadrants) - IGT quadrantes I-II-III, coluna BW, excerpt: "IGT VD = 12 V RL = 33 Ω I - II - III MAX. 35 35 50 mA (BW = 50)"}
+  VGT:
+    max: 1.3
+    unit: V
+    conditions: {VD: 12 V}
+    status: extraido
+    source: {page: 2, location: Table 3 Electrical characteristics Snubberless (3 quadrants) - VGT, excerpt: "VGT I - II - III MAX. 1.3 V"}
+  VGD:
+    min: 0.2
+    unit: V
+    status: extraido
+    source: {page: 2, location: Table 3 Electrical characteristics Snubberless (3 quadrants) - VGD (VD = VDRM, RL = 3.3 kohm, Tj = 125 °C), excerpt: "VGD MIN. 0.2 V"}
+  IH:
+    max: 75
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Table 3 Electrical characteristics Snubberless (3 quadrants) - IH (IT = 500 mA), coluna BW, excerpt: "IH IT = 500 mA MAX. 50 50 75 mA (BW = 75)"}
+  IL:
+    max: 100
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Table 3 Electrical characteristics Snubberless (3 quadrants) - IL (IG = 1.2 IGT) quadrante II, coluna BW, excerpt: "IL II 80 80 100 mA (BW = 100); I-III: 80 mA"}
+  dv/dt:
+    min: 1000
+    unit: V/us
+    status: extraido
+    source: {page: 2, location: Table 3 Electrical characteristics Snubberless (3 quadrants) - dV/dt (VD = 67% VDRM, gate open, Tj = 125 °C), coluna BW, excerpt: "dV/dt MIN. 500 500 1000 V/µs (BW = 1000)"}

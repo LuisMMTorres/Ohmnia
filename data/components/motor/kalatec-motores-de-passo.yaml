@@ -1,0 +1,80 @@
+# Fonte: Kalatec, Catálogo Motores de Passo Kalatec (catálogo de série KTC, NEMA 17/23/34), sem revisão/data no documento.
+part_number: Motores de Passo
+category: motor.stepper
+schema_version: '1.0'
+manufacturer: Kalatec
+family: Motores de Passo KTC (NEMA 17, 23 e 34)
+lifecycle: desconhecido
+notes:
+- 'Valores da série; faixas entre os modelos KTC-5017/5023/5034, 42HS, HT23, HT34 e KML (inclui versões com redutor e IP65).'
+- 'Todos os modelos com passo de 1,8° e isolamento classe B (130 °C) (p. 3 e demais).'
+- 'Corrente por fase: faixa entre as ligações bipolar série, bipolar paralelo e unipolar; mín. 0,11 A (KTC-5017-008, p. 3) e máx. 9,00 A (KTC-HT34-487-R:10 paralelo, p. 26).'
+- 'Alimentação (V_rated) só aparece em alguns modelos NEMA 17 (p. 6 a 10): 2,75 V a 10 V.'
+- 'Torque máx. 12,7 Nm é o impresso para KTC-HT34-487 (p. 2 e 26); na p. 25 o texto está corrompido e o título do modelo diz "6Nm". Conferir no PDF.'
+- 'Massa máx. 9,1 kg é do conjunto motor mais redutor (p. 26). Faixa de temperatura -20 a +50 °C na maioria; modelos IP65 -10 a +80 °C (p. 22 e 28).'
+- 'Fila de transcrição: novo link do site do fabricante.'
+datasheets:
+- id: ds1
+  manufacturer: Kalatec
+  url: https://www.kalatec.com.br/wp-content/uploads/2019/09/Catalogo-Motores-de-Passo-Kalatec.pdf
+  sha256: 2784e37185611b0f31091879ee8c5ec5b8a42851a0c62e3f41c6dd9ef6ed57c9
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  step_angle:
+    typ: 1.8
+    unit: deg
+    status: extraido
+    source: {page: 3, location: Modelo KTC-5017-008 - Passo em Angulo, excerpt: "1,8°"}
+  I_phase:
+    min: 0.11
+    max: 9
+    unit: A
+    status: extraido
+    source: {page: 26, location: KTC-HT34-487-R:10 - Corrente Bipolar Paralelo (máx.); mín. na p. 3 KTC-5017-008, excerpt: "9,00A/fase"}
+  V_rated:
+    min: 2.75
+    max: 10
+    unit: V
+    status: extraido
+    source: {page: 9, location: KTC-42H48-1004-YAL8 - Alimentação (máx.); mín. na p. 6 KTC-42HS40-1704, excerpt: "10V"}
+  T_hold:
+    min: 0.14
+    max: 12.7
+    unit: N*m
+    status: extraido
+    source: {page: 2, location: Lista de modelos - Torque Estático Bipolar (KTC-5017-008 a KTC-HT34-487), excerpt: "KTC-5017-008 - Torque: 0,14Nm; KTC-HT34-487 - Torque: 12,7Nm"}
+  J_rotor:
+    min: 35
+    max: 4400
+    unit: g*cm^2
+    status: extraido
+    source: {page: 25, location: KTC-HT34-487 - Inercia (máx.); mín. na p. 3 KTC-5017-008, excerpt: "4400g.cm²"}
+  mass:
+    min: 0.21
+    max: 9.1
+    unit: kg
+    status: extraido
+    source: {page: 26, location: KTC-HT34-487-R:10 - Peso do conjunto (máx.); mín. na p. 5 KTC-5017-033, excerpt: "9,1Kg"}
+  length:
+    min: 40
+    max: 112
+    unit: mm
+    status: extraido
+    source: {page: 20, location: KTC-HT23-402.8 - Comprimento da carcaça (máx.); mín. 40 mm na p. 6, excerpt: "112mm"}
+  Top:
+    min: -20
+    max: 80
+    unit: °C
+    status: extraido
+    source: {page: 22, location: KTC-HT23-IP65 - Temperatura de Operação (máx.); mín. -20 °C nos demais modelos (p. 3), excerpt: "-10 a + 80 °C"}
+attributes:
+  tamanho:
+    value: NEMA 17, NEMA 23 e NEMA 34
+    status: extraido
+    source: {page: 2, location: Lista de modelos por NEMA, excerpt: "Nema 17 / Nema 23 / Nema 34"}
+  ligacao:
+    value: Unipolar, Bipolar Série e Bipolar Paralelo (conforme o modelo)
+    status: extraido
+    source: {page: 11, location: KTC-5023-019 - Ligações possíveis, excerpt: "Unipolar, Bipolar Serie e Bipolar Paralelo"}

@@ -1,0 +1,59 @@
+# Fonte: WIKA, data sheet TE 60.01 (Measuring insert for resistance thermometer, model TR10-A), 02/2026.
+part_number: TR10-A
+category: sensor.temperature
+schema_version: '1.0'
+manufacturer: WIKA
+family: TR10-A
+package: Measuring insert (cabo MI, diâmetros 3, 6, 8 mm)
+lifecycle: desconhecido
+notes:
+- 'Fila: ds te6001 en co (WIKA TE 60.01).'
+- 'Corrente de medição do Pt100: 0,1 ... 1,0 mA (pág. 4, Measuring element).'
+- 'Classes de exatidão EN 60751 (validade, pág. 4): fio enrolado Classe B -196...+600 °C, Classe A -100...+450 °C, Classe AA -50...+250 °C; filme fino Classe B -50...+500 °C, Classe A -30...+300 °C, Classe AA 0...150 °C.'
+- 'Temperatura ambiente e de armazenamento -60 (versão especial sob consulta) / -40 ... +80 °C (pág. 7).'
+datasheets:
+- id: ds1
+  manufacturer: WIKA
+  document_number: TE 60.01
+  revision: 02/2026
+  url: https://www.wika.com/media/Data-sheets/Temperature/Resistance-thermometers/ds_te6001_en_co.pdf
+  sha256: 8a89f10f91d2bb9c0f2ced02f42a2904b95d75a294f9087d05b655b24033c5ce
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  range:
+    min: -196
+    max: 600
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Special features - sensor ranges, excerpt: "Sensor ranges from -196 ... +600 °C"}
+  Top:
+    min: -40
+    max: 80
+    unit: °C
+    status: extraido
+    source: {page: 7, location: Operating conditions - Ambient and storage temperature, excerpt: "-60 1) / -40 ... +80 °C"}
+  Tstg:
+    min: -40
+    max: 80
+    unit: °C
+    status: extraido
+    source: {page: 7, location: Operating conditions - Ambient and storage temperature, excerpt: "-60 1) / -40 ... +80 °C"}
+attributes:
+  elemento:
+    value: Pt100 (fio enrolado ou filme fino), simples ou duplo
+    status: extraido
+    source: {page: 4, location: Sensor - Measuring element, excerpt: "Pt100 (measuring current: 0.1 ... 1.0 mA)"}
+  ligacao:
+    value: 2, 3 ou 4 fios (elemento simples); 2 x 2, 2 x 3, 2 x 4 fios (duplo)
+    status: extraido
+    source: {page: 4, location: Connection method, excerpt: "1 x 2-wire 1 x 3-wire 1 x 4-wire"}
+  saida:
+    value: Resistência (Pt100); opcional transmissor 4 ... 20 mA / HART
+    status: extraido
+    source: {page: 5, location: Output signal 4 ... 20 mA, HART protocol, excerpt: "Output signal 4 ... 20 mA, HART® protocol"}
+  grau_protecao:
+    value: IP00
+    status: extraido
+    source: {page: 7, location: Operating conditions - Ingress protection, excerpt: "IP00 per IEC/EN 60529"}

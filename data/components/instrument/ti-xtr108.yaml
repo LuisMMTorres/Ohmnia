@@ -1,0 +1,61 @@
+# Fonte: Texas Instruments, XTR108 4-20mA, Two-Wire Transmitter "Smart" Programmable with Signal Conditioning, SBOS187C, out/2001, rev. jul/2005.
+part_number: XTR108
+category: instrument.transmitter
+schema_version: '1.0'
+manufacturer: Texas Instruments
+package: SSOP-24 (DBQ)
+lifecycle: desconhecido
+notes:
+- 'Fila: XTR108. Transmissor 4-20 mA a 2 fios programável (calibração digital via SPI, EEPROM externa), para RTD e sensores em ponte; também saída em tensão 0,5 V a 4,5 V. Equação: IO = VIN (Span) + 4 mA (p. 2).'
+- 'Máximos absolutos (p. 2): VS externa (ref. IRET) +5,5 V; tensão de entrada do multiplexador 0 V a VS; TJ +165 °C; solda +300 °C (10 s). Tensão da malha depende do FET externo.'
+- 'Condições de teste: VPS = 24 V, FET externo Supertex DN2540; VLOOP = 7,5 V a 24 V nos testes de rejeição (p. 2).'
+- 'Sub-regulador VS para o próprio XTR: 4,8 / 5,1 / 5,4 V (mín./típ./máx.) (p. 3). Limite de sobre-escala selecionável 21 a 28,5 mA; sub-escala 2,2 a 3,6 mA, conforme NAMUR NE43 (p. 2).'
+- 'Erro de zero não ajustado +-50 uA máx.; span inicial +-1 %, deriva 40 ppm/°C; não linearidade 0,01 % (VIN fundo de escala 50 mV) (p. 2).'
+datasheets:
+- id: ds1
+  manufacturer: Texas Instruments
+  document_number: SBOS187C
+  revision: julho 2005
+  url: https://www.ti.com/lit/ds/symlink/xtr108.pdf
+  sha256: f8ee0f7b0288f019ab2bc3cd9030cbc77347481f436739eb213ecd2d6f54c697
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_out:
+    min: 4
+    max: 20
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Electrical Characteristics - Output specified range, excerpt: "Output Specified Range 4 20 mA"}
+  V_out:
+    min: 0.5
+    max: 4.5
+    unit: V
+    status: extraido
+    source: {page: 1, location: Features - voltage output, excerpt: "VOLTAGE OUTPUT (0.5V to 4.5V)"}
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Package/Ordering Information - specified temperature range, excerpt: "XTR108EA SSOP-24 DBQ –40°C to +85°C"}
+  Tstg:
+    min: -55
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Absolute Maximum Ratings - Storage Temperature Range, excerpt: "Storage Temperature Range .........................................–55°C to +125°C"}
+attributes:
+  entrada:
+    value: "Multiplexador com 6 entradas V/I e PGA (ganho 6,25 a 400 V/V); duas fontes de corrente programáveis para RTD e pontes"
+    status: extraido
+    source: {page: 1, location: Description, excerpt: "input multiplexer, autozeroed programmable-gain instrumentation amplifier, dual programmable current sources"}
+  saida:
+    value: "4-20 mA a 2 fios; ou tensão 0,5 V a 4,5 V"
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "TWO-WIRE, 4-20mA OUTPUT; VOLTAGE OUTPUT (0.5V to 4.5V)"}
+  comunicacao:
+    value: "SPI (calibração digital, EEPROM externa)"
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "SERIAL SPI BUS INTERFACE"}

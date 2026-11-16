@@ -1,0 +1,184 @@
+# Fonte: Texas Instruments, LM7905, LM7912, LM7915 - LM79XX Series 3-Terminal Negative Regulators, SNOSBQ7C, June 1999 - revised May 2013.
+part_number: LM7912
+category: regulator.negative
+schema_version: '1.0'
+manufacturer: Texas Instruments
+family: LM79XX (LM7905, LM7912, LM7915)
+package: TO-220 (NDE0003B)
+lifecycle: desconhecido
+notes:
+- Regulador negativo fixo de -12 V, 1,5 A; valores em módulo, coluna LM7912C da página 3 (condições IOUT = 500 mA, CIN = 2,2 uF, COUT = 1 uF, 0 a 125 C, VIN = -19 V).
+- Rth_ja tipico 60 K/W; a tabela da página 4 traz também o valor 40 na coluna Max de θJA (menor que o típico, provável erro do documento), por isso só o típico foi transcrito.
+- Regline é o da faixa -30 V a -14,5 V (TJ = 25 C); Regload é com 5 mA a 1,5 A (TJ = 25 C).
+- Tj_max é o limite superior da faixa de junção em operação, 0 a 125 C (página 2).
+datasheets:
+- id: ds1
+  manufacturer: Texas Instruments
+  document_number: SNOSBQ7C
+  revision: Revised May 2013
+  sha256: 392f4584b1435508c4ea2cbb98fdfe0b36bb25b33bf21e593621749567aa0913
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VO:
+    min: 11.5
+    typ: 12
+    max: 12.5
+    unit: V
+    conditions:
+      TJ: 25 °C
+    status: extraido
+    source:
+      page: 3
+      location: Electrical Characteristics - Output Voltage, TJ = 25C, coluna LM7912C (-12 V)
+      excerpt: "Output Voltage TJ = 25°C -11.5 -12.0 -12.5"
+  VO_band:
+    min: 11.4
+    max: 12.6
+    unit: V
+    status: extraido
+    source:
+      page: 3
+      location: Electrical Characteristics - Output Voltage, 5mA <= IOUT <= 1A, P <= 15W, (-27 <= VIN <= -14.5)
+      excerpt: "5mA ≤IOUT ≤1A, -11.4 -12.6 P ≤15W (-27 ≤VIN ≤-14.5)"
+  VI_reg_min:
+    min: 14.5
+    unit: V
+    status: extraido
+    source:
+      page: 3
+      location: Electrical Characteristics - Output Voltage band, menor |VIN| da faixa (-27 <= VIN <= -14.5)
+      excerpt: "(-27 ≤VIN ≤-14.5)"
+  VI_max:
+    max: 35
+    unit: V
+    status: extraido
+    source:
+      page: 2
+      location: Absolute Maximum Ratings - Input Voltage (VO = -12 V e -15 V), em módulo
+      excerpt: "Input Voltage (Vo = −12V and −15V) −35V"
+  VIO_max:
+    max: 30
+    unit: V
+    status: extraido
+    source:
+      page: 2
+      location: Absolute Maximum Ratings - Input-Output Differential (VO = -12 V e -15 V)
+      excerpt: "Input-Output Differential (Vo = −12V and −15V) 30V"
+  IO_max:
+    max: 1.5
+    unit: A
+    status: extraido
+    source:
+      page: 1
+      location: Features - 1.5A Output Current
+      excerpt: "1.5A Output Current"
+  Ipk:
+    typ: 2.2
+    unit: A
+    status: extraido
+    source:
+      page: 3
+      location: Electrical Characteristics - IOMAX Peak Output Current, TJ = 25C
+      excerpt: "Peak Output Current TJ = 25°C 2.2 2.2 A"
+  Vdo:
+    typ: 1.1
+    unit: V
+    conditions:
+      IO: 1 A
+    status: extraido
+    source:
+      page: 3
+      location: Electrical Characteristics - Dropout Voltage, TJ = 25C, IOUT = 1A
+      excerpt: "Dropout Voltage TJ = 25°C, IOUT = 1A 1.1 1.1 V"
+  IQ:
+    typ: 1.5
+    max: 3
+    unit: mA
+    conditions:
+      TJ: 25 °C
+    status: extraido
+    source:
+      page: 3
+      location: Electrical Characteristics - IQ Quiescent Current, TJ = 25C
+      excerpt: "Quiescent Current TJ = 25°C 1.5 3 1.5 3 mA"
+  Regline:
+    typ: 5
+    max: 80
+    unit: mV
+    status: extraido
+    source:
+      page: 3
+      location: Electrical Characteristics - Line Regulation, TJ = 25C, (-30 <= VIN <= -14.5) V
+      excerpt: "Line Regulation TJ = 25°C, (1) 5 80 5 100 mV"
+  Regload:
+    typ: 15
+    max: 200
+    unit: mV
+    status: extraido
+    source:
+      page: 3
+      location: Electrical Characteristics - Load Regulation, TJ = 25C, 5mA <= IOUT <= 1.5A
+      excerpt: "Load Regulation TJ = 25°C, 5mA ≤IOUT ≤1.5A 15 200 15 200 mV"
+  RR:
+    min: 54
+    typ: 70
+    unit: dB
+    conditions:
+      f: 120 Hz
+    status: extraido
+    source:
+      page: 3
+      location: Electrical Characteristics - Ripple Rejection, f = 120 Hz, (-25 <= VIN <= -15) V
+      excerpt: "Ripple Rejection f = 120 Hz 54 70 54 70 dB"
+  Cin_app:
+    typ: 2.2
+    unit: uF
+    status: extraido
+    source:
+      page: 3
+      location: Electrical Characteristics - condições, CIN = 2.2 uF
+      excerpt: "IOUT = 500mA, CIN = 2.2μF, COUT = 1μF"
+  Co_app:
+    typ: 1
+    unit: uF
+    status: extraido
+    source:
+      page: 3
+      location: Electrical Characteristics - condições, COUT = 1 uF (capacitor de saída necessário)
+      excerpt: "IOUT = 500mA, CIN = 2.2μF, COUT = 1μF"
+  Rth_ja:
+    typ: 60
+    unit: K/W
+    status: extraido
+    source:
+      page: 4
+      location: Design Considerations - tabela de resistência térmica, TO-220, theta JA Typ
+      excerpt: "Package θJC θJC θJA θJA TO-220 3.0 5.0 60 40"
+  Rth_jc:
+    typ: 3
+    max: 5
+    unit: K/W
+    status: extraido
+    source:
+      page: 4
+      location: Design Considerations - tabela de resistência térmica, TO-220, theta JC Typ e Max
+      excerpt: "TO-220 3.0 5.0 60 40"
+  Tj_max:
+    max: 125
+    unit: degC
+    status: extraido
+    source:
+      page: 2
+      location: Absolute Maximum Ratings - Operating Junction Temperature Range
+      excerpt: "Operating Junction Temperature Range 0°C to +125°C"
+  Tstg_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 2
+      location: Absolute Maximum Ratings - Storage Temperature Range
+      excerpt: "Storage Temperature Range −65°C to +150°C"
+attributes: {}

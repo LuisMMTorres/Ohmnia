@@ -1,0 +1,99 @@
+# Fonte: Finder, 40 SERIES PCB/Plug-in relays 8 - 10 - 12 - 16 A (catálogo VIII-2026), tipo 40.52.
+part_number: 40.52.9.012.0000
+category: relay.electromechanical
+schema_version: '1.0'
+manufacturer: Finder
+family: 40 Series, tipo 40.52
+package: Relé para PCB ou soquete série 95, passo de pinos 5,0 mm, 2 contatos reversíveis (2 CO)
+lifecycle: desconhecido
+notes:
+- 'Código decodificado pela pág. 5: 40.52 = 2 polos; 9 = bobina DC padrão 0,65 W; 012 = 12 V; contatos 0 = AgNi, 0 = CO, 0 = pinos 5,2 mm, 0 = versão padrão.'
+- 'Dados de bobina de 12 V DC da tabela "DC coil data 0.65 W standard" (pág. 9): código 9.012, Umin 8,8 V, Umax 18 V, R 220 Ω, corrente 55 mA a UN. Faixa de operação DC (0,73...1,5) UN; tensão de retenção 0,4 UN; tensão de desoperação 0,1 UN (pág. 3).'
+- 'Contatos 40.52 (pág. 3): corrente nominal/pico 8/15 A (com AgSnO2 o pico no contato NA é 60 A, 5 ms); carga AC1 2000 VA; AC15 (230 V) 750 VA; motor monofásico 230 V 0,37 kW; capacidade DC1 em 24/110/220 V: 8/0,6/0,25 A; carga mínima 300 mW (5 V/5 mA); contato AgNi.'
+- 'Isolação bobina-contatos reforçada (8 mm), impulso 6 kV (1,2/50 µs), rigidez 4000 V AC (pág. 6). Entre contatos abertos 1000 V AC/1,5 kV (pág. 6). Proteção ambiental RT II (pág. 3).'
+datasheets:
+- id: ds1
+  manufacturer: Finder
+  document_number: 40 SERIES
+  revision: VIII-2026
+  sha256: 6b79746957d82d1aeca0ce2bd7d8c91643e067a0e50d3ee00853ebe642341657
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  V_coil:
+    typ: 12
+    unit: V
+    status: extraido
+    note: Bobina DC padrão (código 9.012).
+    source: {datasheet_id: ds1, page: 9, location: DC coil data - 0.65 W standard, excerpt: "12 | 9.012 | 8.8 | 18 | 220 | 55"}
+  R_coil:
+    typ: 220
+    unit: ohm
+    status: extraido
+    source: {datasheet_id: ds1, page: 9, location: DC coil data - Resistance R, excerpt: "12 | 9.012 | 8.8 | 18 | 220 | 55"}
+  P_coil:
+    typ: 0.65
+    unit: W
+    status: extraido
+    source: {datasheet_id: ds1, page: 3, location: Coil specification - Rated power AC/DC/sensitive DC, excerpt: "VA (50 Hz)/W/W 1.2/0.65/0.5"}
+  V_pickup:
+    max: 8.8
+    unit: V
+    status: extraido
+    note: Umin da faixa de operação (0,73 UN).
+    source: {datasheet_id: ds1, page: 9, location: DC coil data - Operating range Umin, excerpt: "12 | 9.012 | 8.8 | 18 | 220 | 55"}
+  I_contact:
+    max: 8
+    unit: A
+    status: extraido
+    note: Corrente nominal; pico máximo 15 A.
+    source: {datasheet_id: ds1, page: 3, location: Contact specification - Rated current/Maximum peak current, excerpt: "A 12*/20 8/15** 16/30**"}
+  V_contact:
+    max: 400
+    unit: V
+    status: extraido
+    note: Tensão máxima de comutação (V AC); tensão nominal 250 V AC.
+    source: {datasheet_id: ds1, page: 3, location: Contact specification - Rated voltage/Maximum switching voltage, excerpt: "V AC 250/400"}
+  t_on:
+    max: 7
+    unit: ms
+    status: extraido
+    source: {datasheet_id: ds1, page: 3, location: Technical data - Operate/release time, excerpt: "ms 7/3 (12/4 sensitive)"}
+  t_off:
+    max: 3
+    unit: ms
+    status: extraido
+    source: {datasheet_id: ds1, page: 3, location: Technical data - Operate/release time, excerpt: "ms 7/3 (12/4 sensitive)"}
+  life_mech:
+    min: 20000000
+    unit: '1'
+    status: extraido
+    source: {datasheet_id: ds1, page: 3, location: Technical data - Mechanical life, excerpt: "cycles 10 · 10^6 | 20 · 10^6 | 10 · 10^6"}
+  life_el:
+    min: 100000
+    unit: '1'
+    status: extraido
+    note: Na carga nominal AC1.
+    source: {datasheet_id: ds1, page: 3, location: Technical data - Electrical life at rated load AC1, excerpt: "cycles 200 · 10^3 | 100 · 10^3 | 100 · 10^3"}
+  V_iso:
+    max: 4000
+    unit: V
+    status: extraido
+    note: Rigidez dielétrica bobina-contatos, V AC.
+    source: {datasheet_id: ds1, page: 6, location: Insulation between coil and contact set - Dielectric strength, excerpt: "Dielectric strength V AC 4000"}
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {datasheet_id: ds1, page: 3, location: Technical data - Ambient temperature range, excerpt: "°C –40…+85"}
+attributes:
+  contatos:
+    value: 2 CO (DPDT), AgNi
+    status: extraido
+    source: {page: 3, location: Contact specification - Contact configuration}
+  montagem:
+    value: PCB ou soquete série 95 (passo de pinos 5,0 mm)
+    status: extraido
+    source: {page: 3, location: Type 40.52 - 2 CO 8 A (5.0 mm pin pitch)}

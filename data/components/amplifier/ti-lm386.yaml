@@ -1,0 +1,133 @@
+# Fonte: Texas Instruments, LM386 Low Voltage Audio Power Amplifier, SNAS545D, May 2004 - revised August 2023.
+part_number: LM386
+category: amplifier.audio
+schema_version: '1.0'
+manufacturer: Texas Instruments
+family: LM386 (N-1, N-3, N-4, M-1, MM-1)
+package: PDIP-8 (P), SOIC-8 (D), VSSOP-8 (DGK)
+lifecycle: desconhecido
+notes:
+- 'Valores da série. VS e VS_max cobrem as duas faixas: VS 4 a 12 V (N-1, N-3, M-1, MM-1) e 5 a 18 V (N-4); VS_max 15 V (N-1/-3, M-1) e 22 V (N-4), página 4.'
+- 'Po, Po@2 e Po@3 são das variantes N-1/M-1/MM-1, N-3 e N-4, respectivamente (página 5); Pd, Pd@2 e Pd@3 são para LM386N, LM386M e LM386MM-1 (página 4).'
+- 'Ganho 26 dB (pinos 1 e 8 abertos) e 46 dB (10 uF entre os pinos 1 e 8), VS = 6 V, f = 1 kHz (página 5). O datasheet também lista ganhos de 20 a 200 em Features (página 1).'
+- 'Fora do esquema (página 5, VS = 6 V): PSRR típ. 50 dB (f = 1 kHz, CBYPASS = 10 uF), corrente de polarização de entrada típ. 250 nA, entrada máxima +-0,4 V.'
+datasheets:
+- id: ds1
+  manufacturer: Texas Instruments
+  document_number: SNAS545D
+  revision: Revised August 2023
+  sha256: 69fc35afb00c6e254b15916dc245702562e4d13ac4c17d7210321e97a7e606d9
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 4
+    max: 12
+    unit: V
+    status: extraido
+    source: {page: 5, location: 6.5 Electrical Characteristics - VS Operating Supply Voltage (N-1, N-3, M-1, MM-1), excerpt: "LM386N-1, -3, LM386M-1, LM386MM-1 4 12 V"}
+  VS@2:
+    min: 5
+    max: 18
+    unit: V
+    status: extraido
+    source: {page: 5, location: 6.5 Electrical Characteristics - VS Operating Supply Voltage (LM386N-4), excerpt: "LM386N-4 5 18"}
+  VS_max:
+    max: 15
+    unit: V
+    status: extraido
+    source: {page: 4, location: 6.1 Absolute Maximum Ratings - Supply Voltage VCC (LM386N-1/-3, M-1), excerpt: "Supply Voltage, VCC LM386N-1/-3, LM386M-1 15 V"}
+  VS_max@2:
+    max: 22
+    unit: V
+    status: extraido
+    source: {page: 4, location: 6.1 Absolute Maximum Ratings - Supply Voltage VCC (LM386N-4), excerpt: "LM386N-4 22"}
+  Po:
+    min: 0.25
+    typ: 0.325
+    unit: W
+    conditions: {VS: 6 V, RL: 8 ohm, THD: 10 %}
+    status: extraido
+    source: {page: 5, location: 6.5 Electrical Characteristics - POUT (LM386N-1, M-1, MM-1), excerpt: "VS = 6 V, RL = 8 Ω, THD = 10% 250 325 mW"}
+  Po@2:
+    min: 0.5
+    typ: 0.7
+    unit: W
+    conditions: {VS: 9 V, RL: 8 ohm, THD: 10 %}
+    status: extraido
+    source: {page: 5, location: 6.5 Electrical Characteristics - POUT (LM386N-3), excerpt: "VS = 9 V, RL = 8 Ω, THD = 10% (LM386N-3) 500 700"}
+  Po@3:
+    min: 0.7
+    typ: 1.0
+    unit: W
+    conditions: {VS: 16 V, RL: 32 ohm, THD: 10 %}
+    status: extraido
+    source: {page: 5, location: 6.5 Electrical Characteristics - POUT (LM386N-4), excerpt: "VS = 16 V, RL = 32 Ω, THD = 10% (LM386N-4) 700 1000"}
+  Av:
+    typ: 26
+    unit: dB
+    conditions: {VS: 6 V, f: 1 kHz}
+    status: extraido
+    source: {page: 5, location: 6.5 Electrical Characteristics - AV Voltage Gain, pinos 1 e 8 abertos, excerpt: "AV Voltage Gain VS = 6 V, f = 1 kHz 26 dB"}
+  Av@2:
+    typ: 46
+    unit: dB
+    conditions: {VS: 6 V, f: 1 kHz}
+    status: extraido
+    source: {page: 5, location: 6.5 Electrical Characteristics - AV Voltage Gain, 10 uF entre pinos 1 e 8, excerpt: "10 µF from Pin 1 to 8 46"}
+  RL:
+    min: 4
+    unit: ohm
+    status: extraido
+    source: {page: 4, location: 6.3 Recommended Operating Conditions - Speaker Impedance, excerpt: "Speaker Impedance 4 Ω"}
+  THD:
+    typ: 0.2
+    unit: "%"
+    conditions: {VS: 6 V, RL: 8 ohm, f: 1 kHz}
+    status: extraido
+    source: {page: 5, location: 6.5 Electrical Characteristics - THD, POUT = 125 mW, pinos 1 e 8 abertos, excerpt: "THD ... POUT = 125 mW f = 1 kHz 0.2%"}
+  BW:
+    typ: 300
+    unit: kHz
+    conditions: {VS: 6 V}
+    status: extraido
+    source: {page: 5, location: 6.5 Electrical Characteristics - BW Bandwidth, pinos 1 e 8 abertos, excerpt: "BW Bandwidth VS = 6 V, Pins 1 and 8 Open 300 kHz"}
+  IQ:
+    typ: 4
+    max: 8
+    unit: mA
+    conditions: {VS: 6 V}
+    status: extraido
+    source: {page: 5, location: 6.5 Electrical Characteristics - IQ Quiescent Current, VIN = 0, excerpt: "IQ Quiescent Current VS = 6 V, VIN = 0 4 8 mA"}
+  Rin:
+    typ: 50
+    unit: kohm
+    status: extraido
+    source: {page: 5, location: 6.5 Electrical Characteristics - RIN Input Resistance, excerpt: "RIN Input Resistance 50 kΩ"}
+  Pd:
+    max: 1.25
+    unit: W
+    status: extraido
+    source: {page: 4, location: 6.1 Absolute Maximum Ratings - Package Dissipation LM386N, excerpt: "Package Dissipation LM386N 1.25 W"}
+  Pd@2:
+    max: 0.73
+    unit: W
+    status: extraido
+    source: {page: 4, location: 6.1 Absolute Maximum Ratings - Package Dissipation LM386M, excerpt: "LM386M 0.73"}
+  Pd@3:
+    max: 0.595
+    unit: W
+    status: extraido
+    source: {page: 4, location: 6.1 Absolute Maximum Ratings - Package Dissipation LM386MM-1, excerpt: "LM386MM-1 0.595"}
+  Top:
+    min: 0
+    max: 70
+    unit: °C
+    status: extraido
+    source: {page: 4, location: 6.3 Recommended Operating Conditions - TA Operating free-air temperature, excerpt: "TA Operating free-air temperature 0 70 °C"}
+attributes:
+  encapsulamento:
+    value: PDIP-8 (P), SOIC-8 (D), VSSOP-8 (DGK)
+    status: extraido
+    source: {page: 4, location: 6.4 Thermal Information - colunas D (SOIC), DGK (VSSOP), P (PDIP), excerpt: "D (SOIC) DGK (VSSOP) P (PDIP) 8 8 8"}

@@ -1,0 +1,73 @@
+# Fonte: Bourns, 4600X Series - Thick Film Conformal SIPs, REV. 10/1/20.
+part_number: 4608X
+category: resistor.fixed
+schema_version: '1.0'
+manufacturer: Bourns
+family: 4600X Series
+package: SIP conformal baixo perfil, 8 pinos (4608X)
+lifecycle: desconhecido
+notes:
+- Valores da serie 4600X (rede de resistores SIP); 4608X e a versao de 8 pinos
+- Potencia do pacote 4608X a 70 C 1.00 W (tabela Package Power Ratings, p. 1)
+- 'Potencia por resistor a 70 C: 0.30 W no circuito isolado 102; 0.20 W nos circuitos bussed 101 e dual terminator 104 (p. 2); P_rated = circuito 101, P_rated@2 = circuito 102'
+- 'Tolerancia (p. 2): 10 a 49 ohm +/-1 ohm; 50 ohm a 5 Mohm +/-2 % (F = +/-1 % de 100 ohm a 5 Mohm); acima de 5 Mohm +/-5 %; tol abaixo = +/-2 %'
+- 'TCR (p. 1): +/-100 ppm/C de 50 ohm a 2.2 Mohm; +/-250 ppm/C abaixo de 50 ohm e acima de 2.2 Mohm; rastreamento 50 ppm/C maximo'
+- Tensao maxima de operacao 100 V; rigidez dieletrica 200 Vrms; resistencia de isolacao min 10000 Mohm
+datasheets:
+- id: ds1
+  manufacturer: Bourns
+  document_number: 4600X Series
+  revision: REV. 10/1/20
+  sha256: 36da6e1ae18f53a75e9fac254962133de9195b7f188ba9930ccd0970629348bb
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  R:
+    min: 10
+    max: 10000000
+    unit: ohm
+    status: extraido
+    source: {page: 1, location: Product Characteristics - Resistance Range, excerpt: "Resistance Range 10 ohms to 10 megohms"}
+  tol:
+    max: 2
+    unit: '%'
+    status: extraido
+    source: {page: 2, location: Resistance Tolerance, excerpt: "50 ohms to 5 megohms ±2 %"}
+  P_rated:
+    max: 0.2
+    unit: W
+    status: extraido
+    conditions: {TA: 70 °C}
+    source: {page: 2, location: Bussed Resistors (101 Circuit) - Power Rating per Resistor, excerpt: "At 70 °C 0.20 watt"}
+  P_rated@2:
+    max: 0.3
+    unit: W
+    status: extraido
+    conditions: {TA: 70 °C}
+    source: {page: 2, location: Isolated Resistors (102 Circuit) - Power Rating per Resistor, excerpt: "At 70 °C 0.30 watt"}
+  V_max:
+    max: 100
+    unit: V
+    status: extraido
+    source: {page: 1, location: Product Characteristics - Maximum Operating Voltage, excerpt: "Maximum Operating Voltage 100 V"}
+  TCR:
+    max: 100
+    unit: ppm/K
+    status: extraido
+    source: {page: 1, location: Product Characteristics - Temperature Coefficient (50 ohm a 2.2 Mohm), excerpt: "50 Ω to 2.2 megohms ±100 ppm/°C"}
+  Top:
+    min: -55
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Product Characteristics - Operating Temperature, excerpt: "-55 °C to +125 °C"}
+attributes:
+  tecnologia:
+    value: Filme espesso (thick film), rede SIP conformal
+    status: extraido
+    source: {page: 1, location: Titulo, excerpt: "4600X Series - Thick Film Conformal SIPs"}
+  encapsulamento:
+    value: SIP baixo perfil, passo 2.54 mm, corpo epoxi; 8 pinos no 4608X
+    status: extraido
+    source: {page: 1, location: Product Dimensions / Physical Characteristics, excerpt: "2.54 ± .07 (.100 ± .003*) TYP.; Body Material Epoxy resin"}

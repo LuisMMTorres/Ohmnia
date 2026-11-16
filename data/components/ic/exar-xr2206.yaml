@@ -1,0 +1,111 @@
+# Fonte: Exar Corporation, XR-2206 Monolithic Function Generator, Rev. 1.04, February 2008 (cópia distribuída pela SparkFun).
+part_number: XR2206
+category: ic.oscillator
+schema_version: '1.0'
+manufacturer: Exar
+family: XR-2206 (P, CP, D)
+package: PDIP-16 300 mil (P, CP), SOIC-16 JEDEC 300 mil (D)
+lifecycle: desconhecido
+notes:
+- 'Gerador de funções monolítico (seno, quadrada, triangular, rampa, pulso). Condições de teste: VCC = 12 V, TA = 25 C, C = 0,01 uF, R1 = 100 kohm (página 4).'
+- 'Dois graus: XR-2206P (-40 a 85 C) e XR-2206CP/D (0 a 70 C). Parâmetros sem sufixo são do XR-2206P; os com @2 são do XR-2206CP/D.'
+- 'f: mínimo é a frequência mais baixa prática (típ., C = 50 uF, R1 = 2 Mohm); máximo é a frequência máxima de operação típica de 1 MHz (mín. garantido 0,5 MHz, C = 1000 pF, R1 = 1 kohm), página 4.'
+- 'V_out: saída máxima típica 6 Vp-p (valor pico a pico), impedância de saída 600 ohm; amplitude senoidal 40 a 80 mV/kohm de R3 (típ. 60) e triangular 160 mV/kohm, página 4.'
+- 'THD: senoide com ajuste, típ. 0,4 % e máx. 1,0 % (XR-2206P) ou típ. 0,5 % e máx. 1,5 % (CP/D); sem ajuste típ. 2,5 % com R1 = 30 kohm (página 4).'
+- 'Fora do esquema: tensão de referência (pino 10) 2,9/3,1/3,3 V (P) e 2,5/3/3,5 V (CP/D), saída quadrada 12 Vp-p, tempo de subida 250 ns e de descida 50 ns (CL = 10 pF), precisão de frequência +-1 % típ. (página 5); fonte dividida +-5 a +-13 V; resistores de temporização 1 kohm a 2 Mohm; capacitor 0,001 a 100 uF (página 4). Máximos absolutos: potência 750 mW (derating 5 mW/C), corrente total de temporização 6 mA, armazenamento -65 a 150 C (página 5).'
+datasheets:
+- id: ds1
+  manufacturer: Exar
+  document_number: XR-2206
+  revision: Rev. 1.04, February 2008
+  sha256: fc8e96fcc735012bf082d622288d7f5956fad3e41564c8c9ac7a76c0ee03f92a
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 10
+    max: 26
+    unit: V
+    status: extraido
+    source: {page: 4, location: DC Electrical Characteristics - General Characteristics, Single Supply Voltage, excerpt: "Single Supply Voltage 10 26 10 26 V"}
+  VS_max:
+    max: 26
+    unit: V
+    status: extraido
+    source: {page: 5, location: Absolute Maximum Ratings - Power Supply, excerpt: "Power Supply 26V"}
+  f:
+    min: 0.01
+    max: 1000000
+    unit: Hz
+    status: extraido
+    source: {page: 4, location: Oscillator Section - Lowest Practical Frequency 0,01 Hz e Max. Operating Frequency 1 MHz (típ.), excerpt: "Max. Operating Frequency 0.5 1 MHz; Lowest Practical Frequency 0.01 Hz"}
+  sweep:
+    min: 1000
+    typ: 2000
+    unit: '1'
+    status: extraido
+    source: {page: 4, location: Oscillator Section - Sweep Range (XR-2206P), excerpt: "Sweep Range 1000:1 2000:1 fH = fL"}
+  THD:
+    typ: 0.4
+    max: 1.0
+    unit: "%"
+    status: extraido
+    source: {page: 4, location: Sine Wave Distortion - With Adjustment (XR-2206P), excerpt: "With Adjustment 0.4 1.0 %"}
+  THD@2:
+    typ: 0.5
+    max: 1.5
+    unit: "%"
+    status: extraido
+    source: {page: 4, location: Sine Wave Distortion - With Adjustment (XR-2206CP/D), excerpt: "With Adjustment 0.4 1.0 0.5 1.5 %"}
+  V_out:
+    typ: 6
+    unit: V
+    status: extraido
+    source: {page: 4, location: Triangle Sine Wave Output - Max. Output Swing (Vp-p), excerpt: "Max. Output Swing 6 6 Vp-p"}
+  drift:
+    typ: 10
+    max: 50
+    unit: ppm/K
+    conditions: {TA: 0 °C a 70 °C}
+    status: extraido
+    source: {page: 4, location: Oscillator Section - Temperature Stability Frequency (XR-2206P), excerpt: "Temperature Stability Frequency +-10 +-50 ppm/°C"}
+  drift@2:
+    typ: 20
+    unit: ppm/K
+    conditions: {TA: 0 °C a 70 °C}
+    status: extraido
+    source: {page: 4, location: Oscillator Section - Temperature Stability Frequency (XR-2206CP/D), excerpt: "Temperature Stability Frequency +-20 ppm/°C"}
+  IS:
+    typ: 12
+    max: 17
+    unit: mA
+    status: extraido
+    source: {page: 4, location: General Characteristics - Supply Current (XR-2206P), R1 >= 10 kohm, excerpt: "Supply Current 12 17 14 20 mA R1 >= 10k"}
+  IS@2:
+    typ: 14
+    max: 20
+    unit: mA
+    status: extraido
+    source: {page: 4, location: General Characteristics - Supply Current (XR-2206CP/D), R1 >= 10 kohm, excerpt: "Supply Current 12 17 14 20 mA R1 >= 10k"}
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Ordering Information - XR-2206P, Operating Temperature Range, excerpt: "XR-2206P 16 Lead 300 Mil PDIP -40°C to +85°C"}
+  Top@2:
+    min: 0
+    max: 70
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Ordering Information - XR-2206CP e XR-2206D, Operating Temperature Range, excerpt: "XR-2206CP 16 Lead 300 Mil PDIP 0°C to +70°C"}
+attributes:
+  formas_de_onda:
+    value: Seno, quadrada, triangular, rampa e pulso
+    status: extraido
+    source: {page: 1, location: General Description, excerpt: "sine, square, triangle, ramp and pulse waveforms"}
+  encapsulamento:
+    value: PDIP-16 300 mil (P, CP), SOIC-16 JEDEC 300 mil (D)
+    status: extraido
+    source: {page: 1, location: Ordering Information, excerpt: "XR-2206D 16 Lead 300 Mil JEDEC SOIC"}

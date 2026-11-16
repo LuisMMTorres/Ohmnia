@@ -1,0 +1,117 @@
+# Fonte: onsemi, BC327 PNP Epitaxial Silicon Transistor, BC327-FCS/D, Rev. 2, January 2024.
+part_number: BC327
+category: bjt.pnp
+schema_version: '1.0'
+manufacturer: onsemi
+package: TO-92 3, case 135AN (TO-92 3 LF, case 135AR)
+lifecycle: desconhecido
+notes:
+- 'PNP: tensões e correntes em módulo (o datasheet usa sinal negativo). Faixas hFE dos grupos -25 e -40 são citadas só como código de marcação.'
+- 'Não transcritos por falta de símbolo no esquema: VCES (50 V) e BVCES (50 V).'
+datasheets:
+- id: ds1
+  manufacturer: onsemi
+  document_number: BC327-FCS/D
+  revision: Rev. 2, January 2024
+  sha256: afffb7b0264c2a1d3a55dd2876b37e84e865c27ca2867cb1d049da4849ae8ac9
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VCEO:
+    max: 45
+    unit: V
+    status: extraido
+    source: {page: 1, location: Absolute maximum ratings - VCEO, excerpt: "VCEO Collector-Emitter Voltage -45 V"}
+  VEBO:
+    max: 5
+    unit: V
+    status: extraido
+    source: {page: 1, location: Absolute maximum ratings - VEBO, excerpt: "VEBO Emitter-Base Voltage -5 V"}
+  IC:
+    max: 800
+    unit: mA
+    status: extraido
+    source: {page: 1, location: Absolute maximum ratings - Collector Current (DC), excerpt: "IC Collector Current (DC) -800 mA"}
+  Ptot:
+    max: 625
+    unit: mW
+    conditions: {TA: 25 degC}
+    status: extraido
+    source: {page: 1, location: Thermal characteristics - PD Power Dissipation, excerpt: "PD Power Dissipation 625 mW (TA = 25C, PCB FR-4 Note 1)"}
+  Ptot_derating:
+    max: 5.0
+    unit: mW/K
+    status: extraido
+    source: {page: 1, location: Thermal characteristics - Derate Above 25C, excerpt: "Derate Above 25C 5.0 mW/C"}
+  Rth_ja:
+    max: 200
+    unit: K/W
+    status: extraido
+    source: {page: 1, location: Thermal characteristics - Thermal Resistance Junction to Ambient, excerpt: "RthJA Junction to Ambient 200 C/W"}
+  Tj_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source: {page: 1, location: Absolute maximum ratings - Junction Temperature, excerpt: "TJ Junction Temperature 150 C"}
+  Tstg_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source: {page: 1, location: Absolute maximum ratings - Storage Temperature, excerpt: "TSTG Storage Temperature -55 to +150 C"}
+  V(BR)CEO:
+    min: 45
+    unit: V
+    conditions: {IC: 10 mA}
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - BVCEO, excerpt: "BVCEO IC = -10 mA, IB = 0 Min -45 V"}
+  V(BR)EBO:
+    min: 5
+    unit: V
+    conditions: {IE: 10 uA}
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - BVEBO, excerpt: "BVEBO IE = -10 uA, IC = 0 Min -5 V"}
+  ICES:
+    typ: 2
+    max: 100
+    unit: nA
+    conditions: {VCE: 45 V}
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - Collector Cut-Off Current, excerpt: "ICES VCE = -45 V, IB = 0  Typ -2  Max -100 nA"}
+  hFE:
+    min: 100
+    max: 630
+    unit: dimensionless
+    conditions: {IC: 100 mA, VCE: 1 V}
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - DC Current Gain hFE1, excerpt: "hFE1 VCE = -1 V, IC = -100 mA  Min 100  Max 630"}
+  hFE@2:
+    min: 60
+    unit: dimensionless
+    conditions: {IC: 300 mA, VCE: 1 V}
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - DC Current Gain hFE2, excerpt: "hFE2 VCE = -1 V, IC = -300 mA  Min 60"}
+  VCE(sat):
+    max: 0.7
+    unit: V
+    conditions: {IC: 500 mA, IB: 50 mA}
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - Collector-Emitter Saturation Voltage, excerpt: "VCE(sat) IC = -500 mA, IB = -50 mA  Max -0.7 V"}
+  VBE(on):
+    max: 1.2
+    unit: V
+    conditions: {IC: 300 mA, VCE: 1 V}
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - Base-Emitter On Voltage, excerpt: "VBE(on) VCE = -1 V, IC = -300 mA  Max -1.2 V"}
+  fT:
+    typ: 100
+    unit: MHz
+    conditions: {IC: 10 mA, VCE: 5 V}
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - Current Gain Bandwidth Product, excerpt: "fT VCE = -5 V, IC = -10 mA, f = 20 MHz  Typ 100 MHz"}
+  Cobo:
+    typ: 12
+    unit: pF
+    conditions: {VCB: 10 V}
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - Output Capacitance Cob, excerpt: "Cob VCB = -10 V, IE = 0, f = 1 MHz  Typ 12 pF"}

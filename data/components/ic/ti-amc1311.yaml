@@ -1,0 +1,73 @@
+# Fonte: Texas Instruments, AMC1311x High-Impedance, 2-V Input, Reinforced Isolated Amplifiers, SBAS786C, dezembro 2017, revisado junho 2022.
+part_number: AMC1311
+category: ic.interface
+schema_version: '1.0'
+manufacturer: Texas Instruments
+family: AMC1311 / AMC1311B
+package: DWV (SOIC, 8 pinos)
+lifecycle: desconhecido
+notes:
+- 'Fila: AMC1311. Amplificador isolado reforçado de entrada de alta impedância (2 V, ganho 1) para medição isolada de tensão; categoria ic.interface escolhida por falta de categoria própria (sensor.voltage exige V_PN, que o datasheet não declara). Valores cobrem AMC1311 e AMC1311B.'
+- 'Entrada: faixa linear especificada -0.1 ... 2 V, clipping em 2.516 V, resistência de entrada 1 Gohm típ., ganho nominal 1 V/V, saída diferencial (VCMout 1.39 ... 1.49 V) (p.6, p.10).'
+- 'AMC1311: alimentação alto lado VDD1 4.5 ... 5.5 V; AMC1311B: VDD1 3 ... 5.5 V (p.6). Erro de ganho: 1311 +-1 % máx., 1311B +-0.2 % máx.; offset: 1311 +-9.9 mV, 1311B +-1.5 mV máx. (p.10).'
+- 'Banda de saída: AMC1311 100 mín./220 típ. kHz; AMC1311B 220 mín./275 típ. kHz (p.10). CMTI: 1311 15 mín./30 típ. kV/us; 1311B 100 mín./150 típ. kV/us (p.10).'
+- 'Isolação: 5000 VRMS por 1 min (UL1577), reforçada até 7000 VPK (VDE 0884-17), tensão de trabalho até 1500 VRMS (p.1, p.3).'
+- 'Corrente de alimentação: IDD1 7.1 típ./9.7 mA máx. (4.5 ... 5.5 V, SHTDN baixo); IDD2 5.9 típ./8.1 mA máx. (p.11). Faixa Top: AMC1311 -40 ... 125 °C; AMC1311B -55 ... 125 °C (p.6).'
+datasheets:
+- id: ds1
+  manufacturer: Texas Instruments
+  document_number: SBAS786C
+  revision: 'dezembro 2017, revisado junho 2022'
+  url: https://www.ti.com/lit/ds/symlink/amc1311.pdf
+  sha256: 4a80cec704b1f432d03456356464691761809852cd071aca4fab60d784c33f57
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 3
+    max: 5.5
+    unit: V
+    status: extraido
+    source: {page: 6, location: 7.3 Recommended Operating Conditions - Power supply (VDD1 AMC1311B and VDD2), excerpt: "VDD1 AMC1311B 3 5 5.5 V; VDD2 3 3.3 5.5 V"}
+  ICC:
+    max: 9.7
+    unit: mA
+    status: extraido
+    source: {page: 11, location: 7.9 Electrical Characteristics - Power supply IDD1, excerpt: "4.5 V < VDD1 < 5.5 V, SHTDN = low 7.1 9.7 mA"}
+  f_max:
+    min: 100
+    typ: 220
+    unit: kHz
+    status: extraido
+    source: {page: 10, location: 7.9 Electrical Characteristics - Analog output BW (AMC1311), excerpt: "BW Output bandwidth AMC1311 100 220 kHz"}
+  channels:
+    typ: 1
+    unit: '1'
+    status: extraido
+    source: {page: 5, location: 6 Pin Configuration - single input IN and differential output OUTP/OUTN}
+  Top:
+    min: -55
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 6, location: 7.3 Recommended Operating Conditions - Specified ambient temperature TA, excerpt: "AMC1311 -40 125; AMC1311B -55 125 °C"}
+  Tstg:
+    min: -65
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 6, location: 7.1 Absolute Maximum Ratings - Storage Tstg, excerpt: "Storage, Tstg -65 150 °C"}
+attributes:
+  funcao:
+    value: Amplificador isolado reforçado, entrada de alta impedância 2 V, ganho fixo 1 V/V, saída diferencial, entrada de shutdown
+    status: extraido
+    source: {page: 1, location: 1 Features, excerpt: "2-V, high-impedance input voltage range ... Fixed gain: 1"}
+  interface:
+    value: Saída analógica diferencial (OUTP/OUTN) e entrada digital SHTDN; sem interface digital serial
+    status: extraido
+    source: {page: 5, location: Table 6-1 Pin Functions}
+  encapsulamento:
+    value: DWV (SOIC, 8 pinos)
+    status: extraido
+    source: {page: 5, location: Figure 6-1 DWV Package, 8-Pin SOIC}

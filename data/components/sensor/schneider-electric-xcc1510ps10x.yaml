@@ -1,0 +1,98 @@
+# Fonte: Schneider Electric (Telemecanique Sensors), Product data sheet XCC1510PS10X, Jul 30, 2024.
+part_number: XCC1510PS10X
+category: sensor.encoder
+schema_version: '1.0'
+manufacturer: Schneider Electric
+family: OsiSense XCC
+package: Ø 58 mm, eixo maciço 10 mm, carcaça Zamak
+lifecycle: desconhecido
+notes:
+- 'Encoder óptico incremental, 1000 pontos, 3 canais, estágio de saída tipo X (driver 5 V RS422) (p.1).'
+- 'Corrente de saída máxima 40 mA; nível baixo 0,5 V máx. a 20 mA; nível alto 4,5 V mín. a 20 mA (p.1).'
+- 'Proteção contra curto-circuito e inversão de polaridade (p.1).'
+datasheets:
+- id: ds1
+  manufacturer: Schneider Electric
+  url: https://downloads.telemecaniquesensors.com/dam/datasheets/en/XCC1510PS10X_EN.pdf
+  sha256: 90cfc1933d718d3ed2d44e176889e3b91e4c4a15656f39588e33a4d2755e5f88
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  resolution:
+    typ: 1000
+    unit: '1'
+    status: extraido
+    source: {page: 1, location: Main - resolution, excerpt: "1000 points"}
+  f_max:
+    max: 300
+    unit: kHz
+    status: extraido
+    source: {page: 1, location: Complementary - output frequency, excerpt: "300 kHz"}
+  speed:
+    max: 9000
+    unit: rpm
+    status: extraido
+    source: {page: 1, location: Complementary - maximum revolution speed, excerpt: "9000 rpm"}
+  IL:
+    max: 40
+    unit: mA
+    status: extraido
+    source: {page: 1, location: Complementary - maximum output current, excerpt: "40 mA"}
+  shaft:
+    typ: 10
+    unit: mm
+    status: extraido
+    source: {page: 1, location: Main - shaft diameter, excerpt: "10 mm"}
+  VS:
+    min: 4.75
+    max: 30
+    unit: V
+    status: extraido
+    source: {page: 1, location: Main - rated supply voltage, excerpt: "4.75...30 V DC"}
+  IS:
+    max: 75
+    unit: mA
+    status: extraido
+    source: {page: 1, location: Complementary - current consumption, excerpt: "0...75 mA no-load"}
+  Top:
+    min: -30
+    max: 100
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Environment - ambient air temperature for operation, excerpt: "-30…100 °C"}
+  Tstg:
+    min: -30
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Environment - ambient air temperature for storage, excerpt: "-30…85 °C"}
+attributes:
+  tipo:
+    value: Incremental, 3 canais
+    status: extraido
+    source: {page: 1, location: Main - encoder type, excerpt: "Incremental encoder"}
+  interface:
+    value: Driver 5 V RS422 (estágio de saída tipo X)
+    status: extraido
+    source: {page: 1, location: Main - type of output stage, excerpt: "Driver 5V, RS422"}
+  saida:
+    value: RS422 diferencial, 5 V
+    status: extraido
+    source: {page: 1, location: Main - output stage, excerpt: "Driver 5V, RS422"}
+  conexao:
+    value: 1 conector macho M23 radial de 12 pinos
+    status: extraido
+    source: {page: 1, location: Main - electrical connection, excerpt: "1 male connector M23 radial 12 pins"}
+  invólucro:
+    value: Zamak; base de alumínio; eixo em aço inox
+    status: extraido
+    source: {page: 1, location: Complementary - materials, excerpt: "Zamak"}
+  grau_protecao:
+    value: IP65 conforme IEC 60529
+    status: extraido
+    source: {page: 1, location: Environment - IP degree of protection, excerpt: "IP65 conforming to IEC 60529"}
+  certificacoes:
+    value: CE
+    status: extraido
+    source: {page: 1, location: Environment - marking, excerpt: "CE"}

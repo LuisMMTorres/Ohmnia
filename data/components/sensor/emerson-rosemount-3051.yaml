@@ -1,0 +1,85 @@
+# Fonte: Emerson, Rosemount 3051 Pressure Transmitter, Product Data Sheet 00813-0100-4001, Rev. WH, July 2026.
+part_number: Rosemount 3051
+category: sensor.pressure
+schema_version: '1.0'
+manufacturer: Emerson
+family: Rosemount 3051 (3051C, 3051T, 3051L, 3051CA)
+lifecycle: desconhecido
+notes:
+- 'Fila: product-data-sheet-rosemount-3051-coplanar-pressure-transmitter-en-79964. Valores da família; faixas entre os modelos 3051C/CD/CG/CA/T/L e as faixas (ranges) 0 a 6.'
+- 'Exatidão de referência 0,04 % do span (faixas 2-4 do 3051C), 0,065 % na faixa 5; estabilidade 0,2 % do URL em 10 anos (p. 2, 76, 83).'
+- 'Alimentação 4-20 mA HART: 10,5 a 42,4 V DC sem carga; resistência máx. de laço = 43,5 x (tensão - 10,5); comunicação exige mínimo 250 ohm (p. 82). Versões Fieldbus/PROFIBUS PA: 9,0 a 32,0 V DC (p. 84-85).'
+- 'Limite de sobrepressão varia de 51,71 bar (3051CA faixa 1) a 1654,74 bar (3051TG/TA faixa 6) (p. 87). Temperatura de processo depende do modelo/fluido de enchimento (-60 a +149 C com flange, p. 90).'
+- 'Faixa de pressão: limite superior (URL) até 1378,95 bar (3051T faixa 6); limite inferior de manométrica -1,01 bar (p. 82).'
+datasheets:
+- id: ds1
+  manufacturer: Emerson
+  document_number: 00813-0100-4001
+  revision: Rev. WH, July 2026
+  url: https://www.emerson.com/is/content/emerson/en/measurement-instrumentation-msol/technical/products/pressure/documents/doc-rosemount-3051-00813-0105-4001.pdf
+  sha256: c3b6af83bab4cd263d5da9bab4dc11ca921fd286fbe3e10e2f3f94522433ee1b
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  range_bar:
+    min: -1.01
+    max: 1378.95
+    unit: bar
+    status: extraido
+    source: {page: 82, location: Functional specifications - Range and sensor limits, 3051T range 6, excerpt: "20000.00 psi (1378.95 bar) ... –14.70 psig (–1.01 bar)"}
+  overpressure:
+    max: 1654.74
+    unit: bar
+    status: extraido
+    source: {page: 87, location: Overpressure limits - Rosemount 3051TG/TA, Range 6, excerpt: "Range 6: 24,000 psi (1654.74 bar)"}
+  accuracy:
+    typ: 0.04
+    unit: '%'
+    status: extraido
+    source: {page: 2, location: Setting the standard - Reference accuracy, excerpt: "Reference accuracy 0.04 percent of span"}
+  VS:
+    min: 10.5
+    max: 42.4
+    unit: V
+    status: extraido
+    source: {page: 82, location: Functional specifications - Power supply, 4-20 mA HART, excerpt: "operates on 10.5–42.4 Vdc with no load"}
+  I_out:
+    min: 4
+    max: 20
+    unit: mA
+    status: extraido
+    source: {page: 82, location: Functional specifications - 4–20 mA HART (output code A)}
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 89, location: Temperature limits - Ambient, excerpt: "–40 - +185 °F (–40 - +85 °C)"}
+  Tstg:
+    min: -60
+    max: 110
+    unit: °C
+    status: extraido
+    source: {page: 89, location: Temperature limits - Storage, excerpt: "–76 - +230 °F (–60 - +110 °C)"}
+attributes:
+  saida:
+    value: 4-20 mA HART; opcionais 1-5 V DC HART (baixa potência), FOUNDATION Fieldbus, PROFIBUS PA, WirelessHART
+    status: extraido
+    source: {page: 82, location: Functional specifications - Output; Low power output; Wireless (output code X)}
+  comunicacao:
+    value: HART, WirelessHART, FOUNDATION Fieldbus, PROFIBUS PA, Bluetooth
+    status: extraido
+    source: {page: 3, location: Bluetooth technology; Functional specifications - output codes}
+  conexao:
+    value: Conduíte 1/2-14 NPT, G1/2 ou M20 x 1,5
+    status: extraido
+    source: {page: 91, location: Physical specifications, excerpt: "½–14 NPT, G½, and M20 x 1.5 conduit"}
+  certificacoes:
+    value: SIL 2/3 (IEC 61508); aprovações de áreas classificadas conforme código de pedido
+    status: extraido
+    source: {page: 2, location: Setting the standard - SIL 2/3 certified (IEC 61508)}
+  principio:
+    value: Transmissor de pressão com plataforma Coplanar (diferencial, manométrica, absoluta, em linha)
+    status: extraido
+    source: {page: 2, location: Setting the standard - Coplanar platform}

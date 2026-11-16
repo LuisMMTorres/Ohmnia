@@ -1,0 +1,74 @@
+# Fonte: NOVUS, TxRail-USB Temperature Transmitter - User Manual V2.0x F (em inglês), cópia ep-solutions.mk.
+part_number: TxRail-USB
+category: instrument.transmitter
+schema_version: '1.0'
+manufacturer: Novus
+family: TxRail
+lifecycle: desconhecido
+notes:
+- 'Fila: manual txrail usb portugues (o arquivo é o manual em inglês). Transmissor de temperatura programável por USB, montagem em trilho DIN.'
+- 'Exatidão (tabela 2, % da faixa): Pt100/Pt1000 -150 a 400 °C 0,10 % típ. / 0,12 % máx.; -200 a 650 °C 0,13 % / 0,19 %; termopares 0,1 % / 0,15 % (+ compensação de junta fria < ±1 °C); mV 0,1 % / 0,15 %; NTC 0,3 °C / 0,7 °C.'
+- 'Carga máxima (saída 4-20 mA): RL(máx.) = (Vdc - 10) / 0,02 ohm. Alimentação 10 a 30 Vdc (saída 4-20 mA) e 12 a 30 Vdc (saída 0-10 Vdc).'
+- 'Sem isolação elétrica entre entrada e saída. Efeito da temperatura < ±0,16 % / 25 °C. Resolução de saída 2 µA (4-20 mA), 0,0025 V (12 bits, 0-10 V).'
+datasheets:
+- id: ds1
+  manufacturer: Novus
+  document_number: TxRail-USB manual V2.0x F
+  url: https://ep-solutions.mk/uploads/documents/manual-txrail-usb-transmitter-4-20ma-v20x-f-en.pdf
+  sha256: a4bdf0610b28595e6d58d119307b76d69fe91d4bc8c6f76b08434b19b3f96947
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_out:
+    min: 4
+    max: 20
+    unit: mA
+    status: extraido
+    source: {page: 1, location: Specifications - Output (4-20 mA), excerpt: "Output (4-20 mA): 4-20 mA or 20-4 mA current, 2-wired"}
+  V_out:
+    min: 0
+    max: 10
+    unit: V
+    status: extraido
+    source: {page: 1, location: Specifications - Output (0-10 Vdc), excerpt: "Output (0-10 Vdc): 0-10 Vdc or 10-0 Vdc voltage"}
+  accuracy:
+    typ: 0.1
+    max: 0.19
+    unit: '%'
+    status: extraido
+    source: {page: 1, location: Table 2 - Calibration error, excerpt: "Pt100 / Pt1000 (-200 to 650 °C) 0.13 % 0.19 %"}
+  t_resp:
+    typ: 1600
+    unit: ms
+    status: extraido
+    source: {page: 1, location: Specifications - Response time, excerpt: "Response time: Typical 1.6 s."}
+  VS:
+    min: 10
+    max: 30
+    unit: V
+    status: extraido
+    source: {page: 1, location: Specifications - Power supply, excerpt: "Power supply: 10 to 30 Vdc (output 4-20 mA)"}
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Specifications - Operating temperature, excerpt: "Operating temperature: -40 to 85 °C"}
+attributes:
+  entrada:
+    value: Termopares J, K, R, S, T, N, E, B; Pt100; Pt1000; NTC 10 kΩ; 0-50 mV e 0-100 mV
+    status: extraido
+    source: {page: 1, location: Specifications - Sensor input, excerpt: "Thermocouples: Types J, K, R, S, T, N, E and B"}
+  saida:
+    value: 4-20 mA (2 fios) ou 0-10 Vdc, configurável por software
+    status: extraido
+    source: {page: 1, location: Introduction, excerpt: "The output can be configured via software for 4-20 mA or 0-10 Vdc."}
+  comunicacao:
+    value: USB (configuração)
+    status: extraido
+    source: {page: 1, location: Introduction, excerpt: "accepts configuration via USB"}
+  certificacoes:
+    value: CE, UKCA
+    status: extraido
+    source: {page: 1, location: Specifications - Certification, excerpt: "Certification: CE, UKCA"}

@@ -1,0 +1,94 @@
+# Fonte: WIKA, data sheet PE 81.61 (Pressure transmitter model S-20, for demanding industrial applications), edição 02/2026.
+part_number: S-20
+category: sensor.pressure
+schema_version: '1.0'
+manufacturer: WIKA
+family: S-20
+lifecycle: desconhecido
+notes:
+- 'Fila: "ds pe8161 en co" (nome de arquivo); produto real: transmissor de pressão modelo S-20, WIKA PE 81.61. Valores da série; faixa entre as variantes configuráveis.'
+- 'Faixas de medição 0 ... 0.4 até 0 ... 1,600 bar (p.1 Description); faixas de vácuo/absolutas conforme p.3-4 (não transcritas).'
+- 'Não-linearidade <= +-0.5 / +-0.25 / +-0.125 % do span conforme classe (p.2); não-repetibilidade <= 0.1 % do span; deriva de longo prazo <= +-0.1 % (p.2).'
+- 'Carga RL: corrente (2 fios) <= (alimentação - 7.5 V)/0.023 A; tensão (3 fios) > sinal máx./1 mA; ratiométrico > 4.5k (p.7). Fórmulas, não registradas em RL.'
+- 'Faixa de alimentação por sinal (p.7): 4...20 mA 8...36 V; 0...10 V 12...36 V; ratiométrico 5 V +-10 %; com cULus limitado a 35 V. Dissipação 828 mW (2 fios), 432 mW (3 fios).'
+- 'Temperatura ambiente/meio dependem de conexão e vedação (p.11); Top registrado é a primeira linha da tabela (-30 ... +100 °C); outras versões vão de -40 a +200 °C (meio, com elemento de refrigeração), -20 ... +60 °C versão oxigênio.'
+- 'Sobrepressão e faixas dependem da conexão de processo (p.5-6); não registradas como número único.'
+datasheets:
+- id: ds1
+  manufacturer: WIKA
+  document_number: PE 81.61
+  revision: '02/2026'
+  url: https://www.wika.com/media/Data-sheets/Pressure/Pressure-sensors/ds_pe8161_en_co.pdf
+  sha256: 00c7d55b243a1c6fd37b33e7dd354796e4f0e0faced01afc9c6fb8bd932f405c
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  range_bar:
+    min: 0
+    max: 1600
+    unit: bar
+    status: extraido
+    source: {page: 1, location: Description, excerpt: "measuring ranges from 0 ... 0.4 to 0 ... 1,600 bar"}
+  accuracy:
+    max: 0.5
+    unit: '%'
+    status: extraido
+    source: {page: 2, location: Accuracy specifications - Non-linearity (classes 0.5 / 0.25 / 0.125 % of span), excerpt: "Non-linearity ≤ ±0.5 % of span"}
+  VS:
+    min: 8
+    max: 36
+    unit: V
+    status: extraido
+    source: {page: 7, location: Voltage supply - Auxiliary power, excerpt: "Output signal 4 ... 20 mA DC 8 ... 36 V"}
+  IS:
+    max: 12
+    unit: mA
+    status: extraido
+    source: {page: 7, location: Voltage supply - Current supply, excerpt: "Voltage (3-wire) Max. 12 mA"}
+  I_out:
+    min: 4
+    max: 20
+    unit: mA
+    status: extraido
+    source: {page: 7, location: Output signal - Signal type, excerpt: "Current (2-wire) 4 ... 20 mA"}
+  V_out:
+    min: 0
+    max: 10
+    unit: V
+    status: extraido
+    source: {page: 7, location: Output signal - Voltage (3-wire), excerpt: "DC 0 ... 10 V"}
+  t_resp:
+    typ: 3
+    unit: ms
+    status: extraido
+    source: {page: 8, location: Further details on output signal - Settling time, excerpt: "Current (2-wire) 3 ms (500 Hz) / 1 ms (1,000 Hz)"}
+  Top:
+    min: -30
+    max: 100
+    unit: °C
+    status: extraido
+    source: {page: 11, location: Operating conditions - Ambient temperature limit (first row), excerpt: "-30 ... +100 °C [-22 ... +212 °F]"}
+  Tstg:
+    min: -40
+    max: 70
+    unit: °C
+    status: extraido
+    source: {page: 12, location: Further details on operating conditions - Storage temperature limit, excerpt: "-40 ... +70 °C [-40 ... +158 °F]"}
+attributes:
+  saida:
+    value: 4 ... 20 mA e 20 ... 4 mA (2 fios); DC 0 ... 10 V, 0 ... 5 V, 1 ... 5 V, 0.5 ... 4.5 V, 1 ... 6 V, 10 ... 0 V (3 fios); 0.5 ... 4.5 V ratiométrico
+    status: extraido
+    source: {page: 7, location: Output signal - Signal type}
+  conexao:
+    value: Conector DIN EN 175301-803, M12 x 1 e saída de cabo (versões IP65, IP67, IP68, IP6K9K)
+    status: extraido
+    source: {page: 8, location: Electrical connection table}
+  grau_protecao:
+    value: IP65 / IP67 conforme conexão; IP68 e IP6K9K opcionais
+    status: extraido
+    source: {page: 1, location: Description, excerpt: "delivered with IP68 and IP6K9K ingress protection"}
+  principio:
+    value: Pressão manométrica/absoluta; célula seca (> 25 bar) ou óleo sintético (<= 25 bar)
+    status: extraido
+    source: {page: 11, location: Material - Pressure transmission medium}

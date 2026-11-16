@@ -1,0 +1,125 @@
+# Fonte: Vishay Siliconix, 2N7000/2N7002, VQ1000J/P, BS170, documento 70226, S-04279-Rev. F, 16-Jul-01.
+part_number: 2N7000
+category: mosfet.n
+schema_version: '1.0'
+manufacturer: Vishay Siliconix
+package: TO-226AA (TO-92)
+lifecycle: desconhecido
+notes:
+- Datasheet compartilhado com 2N7002, VQ1000J/P e BS170; valores transcritos para a coluna 2N7000.
+- 'Colunas de limites conferidas na imagem da página 2 (coluna 2N7000: típ., mín., máx.).'
+datasheets:
+- id: ds1
+  manufacturer: Vishay Siliconix
+  document_number: '70226'
+  revision: S-04279-Rev. F, 16-Jul-01
+  sha256: dce5e8b79baaf31453db65604ebc4cdb65a3d3eeaba12823e1a3c22f7fdaecad
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VDS:
+    max: 60
+    unit: V
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - drain-source voltage, excerpt: "Drain-Source Voltage VDS 60"}
+  VGS:
+    max: 20
+    unit: V
+    note: Contínua
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - gate-source voltage continuous, excerpt: "Gate-Source Voltage-Continuous VGS 20"}
+  ID:
+    max: 0.2
+    unit: A
+    conditions: {TA: 25 degC}
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - continuous drain current TA=25C (TJ=150C), excerpt: "Continuous Drain Current TA= 25C 0.2"}
+  ID@100C:
+    max: 0.13
+    unit: A
+    conditions: {TA: 100 degC}
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - continuous drain current TA=100C, excerpt: "TA= 100C ID 0.13"}
+  IDM:
+    max: 0.5
+    unit: A
+    note: 'Nota a: largura de pulso limitada pela Tj máxima'
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - pulsed drain current, excerpt: "Pulsed Drain Currenta IDM 0.5"}
+  Ptot:
+    max: 0.4
+    unit: W
+    conditions: {TA: 25 degC}
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - power dissipation TA=25C, excerpt: "TA= 25C 0.4"}
+  Rth_ja:
+    max: 312.5
+    unit: K/W
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - thermal resistance junction-to-ambient, excerpt: "RthJA 312.5"}
+  Tj_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - operating junction and storage temperature, excerpt: "-55 to 150"}
+  Tj_min:
+    min: -55
+    unit: degC
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - operating junction and storage temperature, excerpt: "-55 to 150"}
+  V(BR)DSS:
+    typ: 70
+    min: 60
+    unit: V
+    conditions: {ID: 10 uA, VGS: 0 V}
+    status: extraido
+    source: {page: 2, location: Specifications static - drain-source breakdown voltage, excerpt: "VGS = 0 V, ID = 10 A  60"}
+  VGS(th):
+    min: 0.8
+    max: 3
+    unit: V
+    conditions: {ID: 1 mA}
+    status: extraido
+    source: {page: 2, location: Specifications static - gate-threshold voltage, excerpt: "VDS = VGS, ID = 1 mA 0.8 3"}
+  IGSS:
+    max: 10
+    unit: nA
+    conditions: {VGS: 15 V}
+    status: extraido
+    source: {page: 2, location: Specifications static - gate-body leakage, excerpt: "VDS = 0 V, VGS = 15 V 10"}
+  RDS(on):
+    typ: 2.4
+    max: 5
+    unit: ohm
+    conditions: {VGS: 10 V, ID: 0.5 A}
+    status: extraido
+    source: {page: 2, location: Specifications static - drain-source on-resistance, excerpt: "VGS = 10 V, ID = 0.5 A 2.4 5 7.5"}
+  gfs:
+    min: 100
+    unit: mS
+    conditions: {VDS: 10 V, ID: 0.2 A}
+    status: extraido
+    source: {page: 2, location: Specifications static - forward transconductance, excerpt: "VDS = 10 V, ID = 0.2 A 100"}
+  Ciss:
+    typ: 22
+    max: 60
+    unit: pF
+    conditions: {VDS: 25 V}
+    status: extraido
+    source: {page: 2, location: Specifications dynamic - input capacitance, excerpt: "Input Capacitance Ciss 22 60 50"}
+  Coss:
+    typ: 11
+    max: 25
+    unit: pF
+    conditions: {VDS: 25 V}
+    status: extraido
+    source: {page: 2, location: Specifications dynamic - output capacitance, excerpt: "Coss VDS = 25 V, VGS = 0 V f = 1 MHz 11 25 25"}
+  Crss:
+    typ: 2
+    max: 5
+    unit: pF
+    conditions: {VDS: 25 V}
+    status: extraido
+    source: {page: 2, location: Specifications dynamic - reverse transfer capacitance, excerpt: "Crss f = 1 MHz 2 5 5"}
+attributes: {}

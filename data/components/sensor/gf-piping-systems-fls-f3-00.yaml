@@ -1,0 +1,74 @@
+# Fonte: GF Piping Systems, FLS F3.00 Paddlewheel Flow Sensor - Instruction Manual (seção Technical data).
+part_number: FLS F3.00
+category: sensor.flow
+schema_version: '1.0'
+manufacturer: GF Piping Systems
+family: FLS F3.00 (F3.00.H, F3.00.C, F3.00.P)
+lifecycle: desconhecido
+notes:
+- "Nome na fila: fls-f3-00-paddlewheel-flow-sensor-datasheet-en. Manual de instruções com seção Technical data (p. 2-4); valores como faixa entre as versões F3.00.H (5 a 24 VDC, NPN coletor aberto), F3.00.C (3 a 5 VDC ou bateria de lítio 3,6 V) e F3.00.P (12 a 24 VDC, push-pull)."
+- "P_max e T_process correspondem ao corpo em aço inox das versões H e P (25 bar a 120 °C), p. 4. Tolerância de alimentação ±10 % regulada nas versões H e P (p. 2-3); não incluída nos limites de VS."
+- "IS: versões H e P < 30 mA a 24 VDC; versão C < 10 µA máx. (p. 2-3)."
+- "Faixa de velocidade 0,15 a 8 m/s (0,5 a 25 ft/s) (p. 2); não há faixa de vazão volumétrica no texto. Linearidade ±0,75 % do fundo de escala e repetibilidade ±0,5 % do fundo de escala (p. 2)."
+- "Saída em onda quadrada, 45 Hz por m/s nominal (13,7 Hz por ft/s) (p. 2-3)."
+- "T_process: máximo do corpo em aço inox: 25 bar a 120 °C (H/P) ou 100 °C (C); corpo CPVC 1,5 bar a 80 °C; corpo PVDF 2,5 bar a 100 °C; 10 bar a 25 °C para CPVC e PVDF (p. 4)."
+- "Vida útil de 25 anos informada para os limites de pressão/temperatura (p. 4). Cabo padrão 8 m, máx. 300 m (H, P) ou 16 m (C)."
+datasheets:
+- id: ds1
+  manufacturer: GF Piping Systems
+  document_number: FLS F3.00
+  url: https://ebora.nl/resize/f300_en_manual_17538762615718.pdf/fls-f300-manual-en-pdf.pdf
+  sha256: 8f59852e750baf43f71e1e14b797fa320a4a065656714fa2ca036981dd340883
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 3
+    max: 24
+    unit: V
+    status: extraido
+    source: {page: 2, location: Technical data - Specific for F3.00.H / F3.00.C / F3.00.P - Supply voltage, excerpt: "F3.00.C: 3 to 5 VDC; F3.00.H: 5 to 24 VDC ±10 %"}
+  IS:
+    max: 30
+    unit: mA
+    conditions: {VS: 24 V}
+    status: extraido
+    source: {page: 2, location: Technical data - Specific for F3.00.H - Supply current, excerpt: "Supply current: < 30 mA @ 24 VDC"}
+  DN:
+    min: 15
+    max: 600
+    unit: mm
+    status: extraido
+    source: {page: 2, location: Technical data - General - Pipe Size Range, excerpt: "Pipe Size Range: DN15 to DN600 (0.5” to 24”)"}
+  P_max:
+    max: 25
+    unit: bar
+    status: extraido
+    source: {page: 4, location: Maximum Operating Pressure / Temperature - F3.00.H or F3.00.P - SS body, excerpt: "SS body: 25 bar (363 psi) @ 120°C (248°F)"}
+  T_process:
+    max: 120
+    unit: °C
+    status: extraido
+    source: {page: 4, location: Maximum Operating Pressure / Temperature - F3.00.H or F3.00.P - SS body, excerpt: "25 bar (363 psi) @ 120°C (248°F)"}
+attributes:
+  saida:
+    value: "Onda quadrada, 45 Hz por m/s; H: transistor NPN coletor aberto (máx. 10 mA); P: push-pull (máx. 20 mA); C: sem driver (impedância de entrada mín. 100 kΩ)"
+    status: extraido
+    source: {page: 2, location: Technical data - Specific for F3.00.H / F3.00.C / F3.00.P - Output signal}
+  principio:
+    value: "Roda de pás (paddlewheel), saída em frequência"
+    status: extraido
+    source: {page: 2, location: Description, excerpt: "paddlewheel flow sensor ... frequency output signal"}
+  invólucro:
+    value: "Corpo CPVC, PVDF ou aço inox 316L; rotor ECTFE (Halar); o-rings EPDM ou FPM"
+    status: extraido
+    source: {page: 2, location: Technical data - General - Wetted Materials}
+  grau_protecao:
+    value: IP68 ou IP65
+    status: extraido
+    source: {page: 2, location: Technical data - General - Enclosure, excerpt: "Enclosure: IP68 or IP65"}
+  certificacoes:
+    value: ISO 9001; ISO 14001; CE; RoHS; GOST R
+    status: extraido
+    source: {page: 3, location: Standards & Approvals}

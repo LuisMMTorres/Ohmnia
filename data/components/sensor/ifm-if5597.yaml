@@ -1,0 +1,98 @@
+# Fonte: ifm electronic, Détecteur inductif IF5597 (IF-2004-FRKG/PH), fiche technique FR-FR IF5597-00, 13.04.2023.
+part_number: IF5597
+category: sensor.proximity
+schema_version: '1.0'
+manufacturer: ifm
+family: IF5597 (IF-2004-FRKG/PH)
+package: boîtier fileté M12 x 1, L = 71 mm
+lifecycle: desconhecido
+notes:
+- "Nome na fila: IF5597. Documento em francês, sensor indutivo PNP/NPN, saída NA/NF selecionável (p. 1)."
+- "Vdrop é a queda de tensão máxima da saída DC (4,6 V); Ir é a corrente residual máxima (0,5 mA); IL é a corrente de saída contínua (400 mA); corrente mínima de saída 4 mA (p. 1)."
+- "Alcance real Sr 4 mm ±10 %; alcance de trabalho 0 a 3,25 mm (p. 1). Deriva do ponto de comutação -10 a 10 % de Sr (p. 2)."
+- "Fator de correção: aço 1, inox 0,7, latão 0,4, alumínio 0,3, cobre 0,2 (p. 1). MTTF 1815 anos (p. 2)."
+- "Proteções: inversão de polaridade, curto-circuito (pulsado), sobrecarga (p. 1). Classe de proteção II (p. 1). Indicação: 1 LED amarelo (p. 2)."
+datasheets:
+- id: ds1
+  manufacturer: ifm
+  document_number: IF5597-00
+  revision: '13.04.2023'
+  url: https://docs.rs-online.com/1c9e/A700000015249008.pdf
+  sha256: 3354f73b32bbab7f3eabdbe5d66ff54cea44fd17f14b15e5b42fe5786e5a4a64
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  sn:
+    typ: 4
+    unit: mm
+    status: extraido
+    source: {page: 1, location: Caractéristiques du produit - Portée, excerpt: "Portée [mm] 4"}
+  sr:
+    typ: 4
+    unit: mm
+    status: extraido
+    source: {page: 1, location: Zone de détection - Portée réelle Sr, excerpt: "Portée réelle Sr [mm] 4 ± 10 %"}
+  hysteresis:
+    min: 1
+    max: 15
+    unit: '%'
+    status: extraido
+    source: {page: 2, location: Exactitude / déviations - Hystérésis, excerpt: "Hystérésis [% de Sr] 1...15"}
+  VS:
+    min: 10
+    max: 55
+    unit: V
+    status: extraido
+    source: {page: 1, location: Données électriques - Tension d'alimentation, excerpt: "Tension d'alimentation [V] 10...55 DC"}
+  IL:
+    max: 400
+    unit: mA
+    status: extraido
+    source: {page: 1, location: Sorties - Courant de sortie (au maintien), excerpt: "Courant de sortie ... [mA] 400"}
+  Vdrop:
+    max: 4.6
+    unit: V
+    status: extraido
+    source: {page: 1, location: Sorties - Chute de tension max. sortie de commutation DC, excerpt: "Chute de tension max. ... [V] 4,6"}
+  f_sw:
+    max: 1500
+    unit: Hz
+    status: extraido
+    source: {page: 1, location: Sorties - Fréquence de commutation DC, excerpt: "Fréquence de commutation DC [Hz] 1500"}
+  Ir:
+    max: 0.5
+    unit: mA
+    status: extraido
+    source: {page: 1, location: Sorties - Courant résiduel max., excerpt: "Courant résiduel max. [mA] 0,5"}
+  Top:
+    min: -25
+    max: 80
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Conditions d'utilisation - Température ambiante, excerpt: "Température ambiante [°C] -25...80"}
+attributes:
+  saida:
+    value: PNP/NPN, normalmente aberto / normalmente fechado (selecionável)
+    status: extraido
+    source: {page: 1, location: Sorties - Technologie / Fonction de sortie}
+  conexao:
+    value: "Cabo 2 m, PUR/PVC, 2 x 0,34 mm²"
+    status: extraido
+    source: {page: 2, location: Raccordement électrique, excerpt: "Câble: 2 m, PUR / PVC; 2 x 0,34 mm²"}
+  invólucro:
+    value: "Rosqueado M12 x 1, L = 71 mm, PBT"
+    status: extraido
+    source: {page: 2, location: Données mécaniques - Boîtier / Matières}
+  grau_protecao:
+    value: IP 67
+    status: extraido
+    source: {page: 2, location: Conditions d'utilisation - Indice de protection, excerpt: "IP 67"}
+  certificacoes:
+    value: "CEM EN 60947-5-2"
+    status: extraido
+    source: {page: 2, location: Tests / homologations - CEM, excerpt: "EN 60947-5-2"}
+  montagem:
+    value: Não faceável (non encastrable)
+    status: extraido
+    source: {page: 2, location: Données mécaniques - Type de montage, excerpt: "non encastrable"}

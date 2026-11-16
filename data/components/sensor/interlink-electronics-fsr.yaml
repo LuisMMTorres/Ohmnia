@@ -1,0 +1,39 @@
+# Fonte: Interlink Electronics, FSR Integration Guide and Evaluation Parts Catalog (guia distribuído pela SparkFun, fsrguide.pdf).
+part_number: FSR (Force Sensing Resistor), partes de avaliação 400, 402, 406, 408
+category: sensor.force
+schema_version: '1.0'
+manufacturer: Interlink Electronics
+family: FSR
+lifecycle: desconhecido
+notes:
+- 'Fila: fsrguide. Guia de integração com parâmetros típicos gerais de FSR (pág. 14 do PDF, "General FSR Characteristics", valores típicos; o dispositivo é personalizável).'
+- 'Faixa de sensibilidade à força: < 100 g a > 10 kg, dependente da mecânica; capacity usa 10 kg como limite superior citado, não como capacidade nominal garantida.'
+- 'Repetibilidade peça a peça ±15% a ±25% da resistência nominal; peça única ±2% a ±5%; resolução melhor que 0,5% do fundo de escala; força de ativação 20 g a 100 g (pág. 14).'
+- 'Resistência em repouso (stand-off) > 1 MΩ; tempo de subida 1-2 ms (mecânico); vida > 10 milhões de acionamentos; corrente máxima 1 mA/cm² de força aplicada (pág. 14).'
+- 'Sensor FSR não é extensômetro, célula de carga nem transdutor de pressão (pág. 8); sem excitação em mV/V.'
+datasheets:
+- id: ds1
+  manufacturer: Interlink Electronics
+  document_number: FSR Integration Guide and Evaluation Parts Catalog
+  url: https://www.sparkfun.com/datasheets/Sensors/Pressure/fsrguide.pdf
+  sha256: 602ddc908f59fe203daf44008cedcc513c01d67cf7d397e030fa33a48e6852ed
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  capacity:
+    max: 10
+    unit: kg
+    status: extraido
+    source: {page: 14, location: General FSR Characteristics - Force Sensitivity Range, excerpt: "< 100 g to > 10 kg"}
+  Top:
+    min: -30
+    max: 70
+    unit: °C
+    status: extraido
+    source: {page: 14, location: General FSR Characteristics - Temperature Range, excerpt: "-30ºC to +70°C"}
+attributes:
+  tipo:
+    value: Resistor sensível à força (película polimérica), disco, quadrado ou tira
+    status: extraido
+    source: {page: 14, location: General FSR Characteristics, excerpt: "Size Range Max = 20” x 24” Min = 0.2” x 0.2”"}

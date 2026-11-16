@@ -1,0 +1,67 @@
+# Fonte: Littelfuse, Teccor brand Thyristors - Standard Bidirectional SIDACs Kxxxzy SIDAC, Revised 03/25/16.
+part_number: K1050E70
+category: thyristor.diac
+schema_version: '1.0'
+manufacturer: Littelfuse
+family: Kxxxzy SIDAC
+package: TO-92 (lead form Type 70)
+lifecycle: desconhecido
+notes:
+- Dispositivo SIDAC (chave bilateral disparada por tensão), registrado em thyristor.diac por ser a categoria mais próxima do catálogo; K1050E70 é o K1050y no encapsulamento TO-92 (E), lead form Type 70 (Product Selector).
+- 'Sem símbolo no esquema: VDRM 90 V (pág. 1); IT(RMS) 1 A, IDRM máx 5 uA, VTM máx 1.5 V a IT = 1 A (Kxxx0y), IH máx 150 mA, ITSM 20 A a 60 Hz, dv/dt 1500 V/us, di/dt 150 A/us (pág. 2).'
+- 'Resistência térmica TO-92: junção-caixa 35 °C/W e junção-ambiente 95 °C/W (pág. 2).'
+- IB registra a corrente de fuga IDRM (V = VDRM = 90 V), a corrente de fuga abaixo do disparo.
+datasheets:
+- id: ds1
+  manufacturer: Littelfuse
+  revision: Revised 03/25/16
+  url: https://datasheet.lcsc.com/datasheet/pdf/e9a3e408b7af8db7294497f8c2d97e10.pdf
+  sha256: 048b8dea3488c9fc0759f296c2d3bdedb8db478f17cf9098d3a56fb825a14d0b
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VBO:
+    min: 95
+    max: 113
+    unit: V
+    conditions: {TJ: 25 °C}
+    status: extraido
+    source:
+      page: 1
+      location: Electrical Specifications - VBO Breakover/Trigger Voltage K1050y
+      excerpt: "K1050y 95 113 V"
+  IBO:
+    max: 10
+    unit: uA
+    status: extraido
+    source:
+      page: 2
+      location: Electrical Specifications - IBO Breakover Current
+      excerpt: "IBO Breakover Current 50/60Hz Sine Wave 10 uA"
+  IB:
+    max: 5
+    unit: uA
+    conditions: {VB: 90 V}
+    status: extraido
+    source:
+      page: 2
+      location: Electrical Specifications - IDRM Repetitive Peak Off-state Current
+      excerpt: "IDRM V = VDRM 50/60Hz Sine Wave 5 uA"
+  ITRM:
+    max: 80
+    unit: A
+    conditions: {tp: 10 us, f: 60 Hz}
+    status: extraido
+    source:
+      page: 2
+      location: Electrical Specifications - ITRM Peak Repetitive Pulse Current
+      excerpt: "ITRM tp = 10us 60Hz 80 A 5Hz 160"
+  Tj_max:
+    max: 125
+    unit: °C
+    status: extraido
+    source:
+      page: 2
+      location: Electrical Specifications - TJ Junction Temperature Range
+      excerpt: "TJ Junction Temperature Range -40 125 C"

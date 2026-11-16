@@ -1,0 +1,83 @@
+# Fonte: Littelfuse, 217 Series 5x20 mm Fast-acting Fuse (Axial Lead & Cartridge Fuses), revisado 02/05/19.
+part_number: '217'
+category: fuse
+schema_version: '1.0'
+manufacturer: Littelfuse
+family: 217 Series (5x20 mm, ação rápida)
+package: 5x20 mm, corpo de vidro (cartucho ou axial)
+lifecycle: desconhecido
+notes:
+- 'Valores da série: a corrente nominal vai de 0,032 A a 15 A; o limite de interrupção varia conforme o modelo (tabela, pág. 2).'
+- 'Tensão nominal de 250 V em todos os modelos da tabela (pág. 2); capacidade de interrupção de 35 A @ 250 VAC (0,032 A) até 150 A @ 250 VAC (15 A).'
+- 'Resistência a frio nominal de 262,2 ohm (0,032 A) a 0,0040 ohm (15 A); I2t de fusão nominal de 0,00008 A2s a 607,135 A2s (pág. 2).'
+- 'Dissipação máxima a 1,5 In: 1,6 W (até 2,5 A), 2,5 W (3,15 A a 6,3 A), 4 W (8 A a 15 A) (pág. 2).'
+datasheets:
+- id: ds1
+  manufacturer: Littelfuse
+  document_number: 217 Series
+  revision: Revised 02/05/19
+  url: https://www.farnell.com/datasheets/3097901.pdf
+  sha256: a74ee799ae441d07b2ae8ff97b330ff14f2d0a78a17088be947446e2691ba3e3
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_rated:
+    min: 0.032
+    max: 15
+    unit: A
+    status: extraido
+    note: Faixa da série.
+    source: {datasheet_id: ds1, page: 2, location: Electrical Characteristic Specifications by Item - Amp Rating, excerpt: "0.032 ... 15 (Amp Rating (A))"}
+  V_rated:
+    max: 250
+    unit: V
+    status: extraido
+    source: {datasheet_id: ds1, page: 2, location: Electrical Characteristic Specifications by Item - Voltage Rating, excerpt: "250"}
+  I_break:
+    min: 35
+    max: 150
+    unit: A
+    status: extraido
+    note: 'Faixa entre os modelos: 35 A @ 250 VAC (0,032 A) a 150 A @ 250 VAC (15 A).'
+    source: {datasheet_id: ds1, page: 2, location: Electrical Characteristic Specifications by Item - Interrupting Rating, excerpt: "35A @ 250VAC ... 150A @ 250VAC"}
+  I2t:
+    min: 0.00008
+    max: 607.135
+    unit: A^2*s
+    status: extraido
+    note: Nominal Melting I2t; faixa entre os modelos.
+    source: {datasheet_id: ds1, page: 2, location: Electrical Characteristic Specifications by Item - Nominal Melting I2t, excerpt: "0.00008 ... 607.13500"}
+  R_cold:
+    min: 0.004
+    max: 262.2
+    unit: ohm
+    status: extraido
+    note: Resistência a frio nominal; faixa entre os modelos.
+    source: {datasheet_id: ds1, page: 2, location: Electrical Characteristic Specifications by Item - Nominal Cold Resistance, excerpt: "262.2000 ... 0.0040"}
+  P_diss:
+    min: 1.6
+    max: 4
+    unit: W
+    status: extraido
+    note: Dissipação máxima a 1,5 In; faixa entre os modelos.
+    source: {datasheet_id: ds1, page: 2, location: Electrical Characteristic Specifications by Item - Maximum Power Dissipation At 1.5In (W), excerpt: "1.6 ... 4"}
+  Top:
+    min: -55
+    max: 125
+    unit: °C
+    status: extraido
+    source: {datasheet_id: ds1, page: 3, location: Product Characteristics - Operating Temperature, excerpt: "-55OC to +125OC"}
+attributes:
+  curva:
+    value: ação rápida (fast-acting), IEC 60127-2 folha 2
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "Meets the IEC 60127-2, Sheet 2 specification for fast-acting fuses"}
+  formato:
+    value: 5x20 mm, corpo de vidro, versões cartucho e axial
+    status: extraido
+    source: {page: 1, location: Description / Features, excerpt: "5x20mm fast-acting glass body cartridge fuse"}
+  certificacoes:
+    value: RoHS, PSE e demais aprovações de agências (tabela de agências na pág. 1)
+    status: extraido
+    source: {page: 1, location: Agency Approvals table}

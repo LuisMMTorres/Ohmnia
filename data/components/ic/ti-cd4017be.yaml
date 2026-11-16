@@ -1,0 +1,151 @@
+# Fonte: Texas Instruments, CD4017B, CD4022B CMOS Counter/Dividers, SCHS027C, revisado em fevereiro de 2004.
+part_number: CD4017BE
+category: ic.digital
+schema_version: '1.0'
+manufacturer: Texas Instruments
+family: CD4017B / CD4022B
+package: DIP-16 (sufixo E), conforme o texto da pág. 1
+lifecycle: desconhecido
+notes:
+- Documento SCHS027C cobre CD4017B (contador de década) e CD4022B (octal); valores transcritos só do CD4017B. Série "B" de 20 V.
+- 'As páginas 2 a 6 do PDF são imagens digitalizadas (sem camada de texto): os valores foram lidos nas imagens das págs. 1, 3 e 4; o validador não consegue conferi-los por texto.'
+- 'Limites absolutos (pág. 3): VDD -0,5 a +20 V; tensão de entrada -0,5 V a VDD + 0,5 V; corrente de entrada ±10 mA; dissipação por encapsulamento 500 mW (-55 a +100 °C); 100 mW por transistor de saída.'
+- 'Corrente de saída mínima a 25 °C com VDD = 5 V (pág. 3): IOL mín. 0,51 mA (VO = 0,4 V) e IOH mín. -0,51 mA (VO = 4,6 V); sem símbolo equivalente no esquema (IOL/IOH são limites máximos).'
+- 'Para VDD de 5, 10 e 15 V: VIL máx. 1,5/3/4 V, VIH mín. 3,5/7/11 V, tpd típ. 325/135/85 ns, fCL típ. 5/10/11 MHz (págs. 3-4); aqui só os valores a 5 V.'
+- Frequência máxima de clock medida em relação à saída de carry (nota da pág. 4); tpd de reset 265 ns típ. (5 V).
+- 'Condições recomendadas (pág. 1): fCL máx. 2,5 MHz a 5 V; largura do pulso de clock 200 ns mín. (5 V).'
+datasheets:
+- id: ds1
+  manufacturer: Texas Instruments
+  document_number: SCHS027C
+  revision: Revised February 2004
+  sha256: bbb6f63e1110f9053191d091b179f0032becac857b4e1469a0c4e6616ad74bd5
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 3
+    max: 18
+    unit: V
+    status: extraido
+    source:
+      page: 1
+      location: Recommended operating conditions - supply-voltage range (TA = full package-temperature range)
+      excerpt: VDD 3 18 V
+  VIL:
+    max: 1.5
+    unit: V
+    status: extraido
+    conditions:
+      VDD: 5 V
+    source:
+      page: 3
+      location: Static electrical characteristics - input low voltage VIL max, VDD = 5 V
+      excerpt: VIL Max. 5 1.5
+  VIH:
+    min: 3.5
+    unit: V
+    status: extraido
+    conditions:
+      VDD: 5 V
+    source:
+      page: 3
+      location: Static electrical characteristics - input high voltage VIH min, VDD = 5 V
+      excerpt: VIH Min. 5 3.5
+  VOL:
+    max: 0.05
+    unit: V
+    status: extraido
+    conditions:
+      VDD: 5 V
+    source:
+      page: 3
+      location: Static electrical characteristics - output voltage low-level VOL max, VDD = 5 V
+      excerpt: VOL Max. 5 0.05
+  VOH:
+    min: 4.95
+    unit: V
+    status: extraido
+    conditions:
+      VDD: 5 V
+    source:
+      page: 3
+      location: Static electrical characteristics - output voltage high-level VOH min, VDD = 5 V
+      excerpt: VOH Min. 5 4.95
+  tpd:
+    typ: 325
+    max: 650
+    unit: ns
+    status: extraido
+    conditions:
+      VDD: 5 V
+      TA: 25 °C
+    source:
+      page: 4
+      location: Dynamic electrical characteristics - propagation delay, clocked operation, decode out, VDD = 5 V, TA = 25 C
+      excerpt: tPHL, tPLH Decode Out 5 V 325 650
+  f_max:
+    min: 2.5
+    typ: 5
+    unit: MHz
+    status: extraido
+    conditions:
+      VDD: 5 V
+      TA: 25 °C
+    source:
+      page: 4
+      location: Dynamic electrical characteristics - maximum clock input frequency, VDD = 5 V, TA = 25 C
+      excerpt: fCL 5 V 2.5 5
+  ICC:
+    typ: 0.04
+    max: 5
+    unit: uA
+    status: extraido
+    conditions:
+      VDD: 5 V
+      TA: 25 °C
+    source:
+      page: 3
+      location: Static electrical characteristics - quiescent device current IDD max, VDD = 5 V, TA = 25 C
+      excerpt: IDD Max. 5 0.04 5
+  Top:
+    min: -55
+    max: 125
+    unit: °C
+    status: extraido
+    source:
+      page: 3
+      location: Maximum ratings - operating-temperature range
+      excerpt: OPERATING-TEMPERATURE RANGE (TA) -55 C to +125 C
+  Tstg:
+    min: -65
+    max: 150
+    unit: °C
+    status: extraido
+    source:
+      page: 3
+      location: Maximum ratings - storage temperature range
+      excerpt: STORAGE TEMPERATURE RANGE -65 C to +150 C
+attributes:
+  familia:
+    value: CD4000 (CMOS série B, 20 V)
+    status: extraido
+    source:
+      page: 1
+      location: Título
+      excerpt: CMOS Counter/Dividers - High-Voltage Types (20-Volt Rating)
+  funcao:
+    value: Contador de década Johnson com 10 saídas decodificadas (CD4017B)
+    status: extraido
+    source:
+      page: 1
+      location: Descrição
+      excerpt: CD4017B-Decade Counter with 10 Decoded Outputs
+  encapsulamento:
+    value: DIP-16 (E), SOIC-16 (M, M96), SOP-16 (NSR), TSSOP-16 (PW, PWR), CDIP-16 (F3A)
+    status: extraido
+    source:
+      page: 1
+      location: Descrição
+      excerpt: 16-lead dual-in-line plastic package (E suffix)

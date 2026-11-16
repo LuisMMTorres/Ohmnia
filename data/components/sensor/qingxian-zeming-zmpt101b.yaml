@@ -1,0 +1,55 @@
+# Fonte: Qingxian Zeming Langxi Electronic, ZMPT101B Current-type Voltage Transformer (especificação do fabricante), sem revisão indicada.
+part_number: ZMPT101B
+category: sensor.voltage
+schema_version: '1.0'
+manufacturer: Qingxian Zeming
+package: Epoxy (caixa ABS), montagem em PCB
+lifecycle: desconhecido
+notes:
+- 'Transformador de tensão tipo corrente: entrada pelos pinos 1,2 e saída pelos 3,4 (ou o inverso); corrente nominal de entrada 2 mA (pág. 1, tabela de parâmetros).'
+- 'Linearidade ≤0,2% (20% a 120% da corrente nominal) e erro de ângulo de fase ≤20 minutos (entrada 2 mA, resistor de amostragem 100 ohm) (pág. 1). Não há tensão primária nominal declarada.'
+- 'Faixa de operação 0 a 1000 V corresponde a 0 a 10 mA com resistor de amostragem 100 ohm (pág. 1).'
+datasheets:
+- id: ds1
+  manufacturer: Qingxian Zeming
+  url: https://5nrorwxhmqqijik.leadongcdn.com/ZMPT101B+specification-aidijBqoKomRilSqqokpjkp.pdf
+  sha256: 980aea21717463aca9f23067ab772aec1d47a40e24fb1dd7d200336e79c749de
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  V_PM:
+    max: 1000
+    unit: V
+    status: extraido
+    source: {page: 1, location: Tabela de parâmetros - operating range, excerpt: "operating range 0~1000V"}
+  ratio:
+    typ: 1
+    unit: '1'
+    status: extraido
+    source: {page: 1, location: Tabela de parâmetros - turns ratio, excerpt: "turns ratio 1000:1000"}
+  I_SN:
+    typ: 2
+    unit: mA
+    status: extraido
+    source: {page: 1, location: Tabela de parâmetros - rated output current, excerpt: "Rated output current 2mA"}
+  V_iso:
+    max: 4000
+    unit: V
+    status: extraido
+    source: {page: 1, location: Tabela de parâmetros - isolation voltage, excerpt: "isolation voltage 4000V"}
+  Top:
+    min: -40
+    max: 60
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Tabela de parâmetros - operating temperature, excerpt: "Operating temperature -40℃~+60℃"}
+attributes:
+  principio:
+    value: Transformador de corrente de precisão (tipo corrente), entrada e saída 1000:1000
+    status: extraido
+    source: {page: 1, location: Título e relação de espiras, excerpt: "Current-type Voltage Transformer ... turns ratio 1000:1000"}
+  saida:
+    value: Corrente 2 mA nominal (0 a 10 mA com resistor de amostragem 100 ohm)
+    status: extraido
+    source: {page: 1, location: Tabela de parâmetros - rated output current / operating range}

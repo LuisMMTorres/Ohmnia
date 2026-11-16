@@ -1,0 +1,93 @@
+# Fonte: Microchip, MCP3422/3/4 18-Bit, Multi-Channel Delta-Sigma Analog-to-Digital Converter with I2C Interface and On-Board Reference, DS22088C, 2009.
+part_number: MCP3422/3/4
+category: ic.adc
+schema_version: '1.0'
+manufacturer: Microchip
+family: MCP342x
+package: DFN-8 (2x3), MSOP-8 e SOIC-8 (resistências térmicas, p. 7); o MCP3424 tem mais pinos
+lifecycle: desconhecido
+notes:
+- 'Fila: DS22088C. O documento cobre MCP3422 e MCP3423 (2 canais diferenciais) e MCP3424 (4 canais diferenciais); as propriedades elétricas são as mesmas (p. 1-2).'
+- 'Número de canais transcrito para o MCP3424 (máximo da família).'
+- 'ADC delta-sigma com referência interna de 2,048 V, PGA de ganho 1, 2, 4 ou 8 e interface I2C (p. 1).'
+- 'Taxa de dados: 3,75 SPS (18 bits), 15 SPS (16 bits), 60 SPS (14 bits), 240 SPS (12 bits) (p. 1 e p. 5).'
+- 'INL: 10 ppm do fundo de escala típ., 35 ppm máx. (p. 5); unidade ppm do FSR, sem símbolo equivalente no esquema.'
+- 'Especificações a VDD = 5 V, TA = -40 a +85 °C (p. 5).'
+datasheets:
+- id: ds1
+  manufacturer: Microchip
+  document_number: DS22088C
+  revision: '2009'
+  url: https://ww1.microchip.com/downloads/en/DeviceDoc/22088c.pdf
+  sha256: 3850891a8c0460ab51c26a104892f5d73c77c4a9d8834f72e427c66fbf73d3c3
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  bits:
+    typ: 18
+    unit: bit
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "18-bit ΔΣ ADC with Differential Inputs"}
+  fs:
+    max: 0.24
+    unit: kHz
+    status: extraido
+    source: {page: 1, location: Features - Programmable data rate options, excerpt: "240 SPS (12 bits)"}
+  channels:
+    typ: 4
+    unit: '1'
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "4 channels: MCP3424"}
+  VS:
+    min: 2.7
+    max: 5.5
+    unit: V
+    status: extraido
+    source: {page: 6, location: Electrical Characteristics - Power requirements voltage range, excerpt: "Voltage Range VDD 2.7 5.5 V"}
+  VREF:
+    typ: 2.048
+    unit: V
+    status: extraido
+    source: {page: 5, location: Electrical Characteristics - Internal reference voltage, excerpt: "Internal Reference Voltage VREF 2.048 V"}
+  V_in:
+    min: -0.3
+    max: 5.8
+    unit: V
+    conditions: {VDD: 5 V}
+    status: extraido
+    source: {page: 5, location: Electrical Characteristics - Maximum input voltage range, excerpt: "Maximum Input Voltage Range VSS-0.3 VDD+0.3 V"}
+  gain_err:
+    typ: 0.05
+    max: 0.35
+    unit: '%'
+    conditions: {PGA: 1}
+    status: extraido
+    source: {page: 5, location: Electrical Characteristics - Gain error, excerpt: "Gain Error 0.05 0.35 % PGA = 1, DR = 3.75 SPS"}
+  IS:
+    typ: 0.145
+    max: 0.18
+    unit: mA
+    status: extraido
+    source: {page: 6, location: Power Requirements - Supply current during conversion, excerpt: "IDDA 145 180 µA VDD = 5.0V"}
+  Top:
+    min: -40
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 7, location: Temperature Characteristics - Operating temperature range, excerpt: "Operating Temperature Range TA -40 +125 °C"}
+  Tstg:
+    min: -65
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 7, location: Temperature Characteristics - Storage temperature range, excerpt: "Storage Temperature Range TA -65 +150 °C"}
+attributes:
+  interface:
+    value: I2C (padrão, rápido e alta velocidade)
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "I2C Interface: Standard, Fast and High Speed Modes"}
+  arquitetura:
+    value: Delta-sigma com PGA e referência interna
+    status: extraido
+    source: {page: 1, location: Description, excerpt: "18-Bit delta-sigma (ΔΣ A/D) converter"}

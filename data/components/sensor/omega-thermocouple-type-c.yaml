@@ -1,0 +1,31 @@
+# Fonte: Omega, tabela de referência de termopar tipo C (NIST Monograph 175, revisada para ITS-90, Z-239), tabela em °C.
+part_number: Thermocouple type C (reference table Z-239)
+category: sensor.temperature
+schema_version: '1.0'
+manufacturer: Omega
+family: Thermocouple type C
+lifecycle: desconhecido
+notes:
+- 'Fila: thermocouple-type-c-celsius. Documento é tabela de referência (tensão termoelétrica em mV por °C, junta de referência a 0 °C), não folha de dados de um produto.'
+- 'Limites de erro (pág. 1): padrão 4,5 °C a 425 °C e 1,0% até 2320 °C (o maior); especial: não estabelecido. Grau de extensão 0 a 870 °C. Ambiente: vácuo, inerte, hidrogênio; não para atmosfera oxidante.'
+datasheets:
+- id: ds1
+  manufacturer: Omega
+  document_number: Z-239
+  url: https://assets.omega.com/pdf/tables_and_graphs/thermocouple-type-c-celsius.pdf
+  sha256: 163d1e1f935d5972fac9a36b96638401ac3caac7dbccc6933dc0a89c004bb154
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  range:
+    min: 0
+    max: 2320
+    unit: °C
+    status: extraido
+    source: {page: 1, location: MAXIMUM TEMPERATURE RANGE - Thermocouple Grade, excerpt: "-0 to 2320°C"}
+attributes:
+  elemento:
+    value: Tungstênio-5% rênio (+) vs. tungstênio-26% rênio (-), tipo C
+    status: extraido
+    source: {page: 1, location: Thermocouple Grade, excerpt: "Tungsten- 5% Rhenium vs. Tungsten- 26% Rhenium"}

@@ -1,0 +1,89 @@
+# Fonte: Analog Devices, AD5421 16-Bit, Serial Input, Loop-Powered, 4 mA to 20 mA DAC Data Sheet, Rev. H (cópia Chipsmall).
+part_number: AD5421
+category: ic.dac
+schema_version: '1.0'
+manufacturer: Analog Devices
+package: TSSOP 28 pinos ou LFCSP 32 pinos
+lifecycle: desconhecido
+notes:
+- 'DAC de 16 bits alimentado pelo próprio laço 4-20 mA; faixas selecionáveis por pino 4-20 mA, 3,8-21 mA e 3,2-24 mA (pág. 2).'
+- 'Especificações com tensão de laço 24 V, REFIN 2,5 V externo, RL = 250 ohm, NMOS externo (pág. 6). Valores de TUE e INL dependem do grau (A, B, C) e do RSET interno/externo; INL do grau C (RSET interno) ±0,0035 % FSR máx. e do grau A ±0,024 % FSR (pág. 6); INL em % FSR não cabe no símbolo INL (LSB).'
+- 'TUE máx. ±0,126 % FSR (grau C), ±0,18 % (B), ±0,27 % (A) com RSET interno; 0,05 % máx. citado nas Features do grau C com RSET externo (pág. 2 e 6).'
+- 'Tensão de laço 5,5 V a 52 V (pág. 2). Compliance de saída LOOP- + 5,5 V (REGOUT < 5,5 V) ou LOOP- + 12,5 V (REGOUT = 12 V) com 24 mA (pág. 7).'
+- 'Corrente quiescente 260 uA típ., 300 uA máx.; IODVDD 1,71 a 5,5 V (pág. 9).'
+- 'Tempo de acomodação da corrente de laço 50 us até 0,1 % FSR com CIN aberto; slew 400 uA/us (pág. 11).'
+- 'Correntes de alarme: abaixo da escala 3,2 mA; acima 22,8 mA ou 24 mA (pág. 2).'
+datasheets:
+- id: ds1
+  manufacturer: Analog Devices
+  revision: Rev. H
+  url: https://datasheet.chipsmall.com/AD5421ACPZ-REEL7/540563.pdf
+  sha256: c5df347943fdf5ae0dab447054f1f8aec537945a9328dc2e21766116a62b93a3
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  bits:
+    typ: 16
+    unit: bit
+    status: extraido
+    source: {page: 6, location: Table 1 - Accuracy internal RSET - Resolution, excerpt: "Resolution 16 Bits"}
+  t_settle:
+    typ: 50
+    unit: us
+    status: extraido
+    source: {page: 11, location: Table 3 - Dynamic performance - loop current settling time, excerpt: "Loop Current Settling Time 50 µs To 0.1% FSR"}
+  channels:
+    typ: 1
+    unit: '1'
+    status: extraido
+    source: {page: 2, location: Features / General description, excerpt: "16-bit resolution and monotonicity"}
+  VS:
+    min: 5.5
+    max: 52
+    unit: V
+    status: extraido
+    source: {page: 2, location: Features - loop voltage range, excerpt: "Loop voltage range: 5.5 V to 52 V"}
+  VREF:
+    typ: 2.5
+    unit: V
+    status: extraido
+    source: {page: 7, location: Table 1 - Reference input (REFIN) - reference input voltage, excerpt: "Reference Input Voltage 2.5 V"}
+  I_out:
+    min: 3.2
+    max: 24
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Features - pin selectable NAMUR-compliant ranges, excerpt: "4 mA to 20 mA; 3.8 mA to 21 mA; 3.2 mA to 24 mA"}
+  DNL:
+    max: 1
+    unit: '1'
+    status: extraido
+    source: {page: 6, location: Table 1 - Accuracy - differential nonlinearity, excerpt: "Differential Nonlinearity (DNL) -1 +1 LSB"}
+  IS:
+    typ: 0.26
+    max: 0.3
+    unit: mA
+    status: extraido
+    source: {page: 9, location: Table 1 - Power requirements - quiescent current, excerpt: "Quiescent Current 260 300 µA"}
+  Top:
+    min: -40
+    max: 105
+    unit: °C
+    status: extraido
+    source: {page: 13, location: Absolute maximum ratings - operating temperature range, excerpt: "Industrial -40°C to +105°C"}
+  Tstg:
+    min: -65
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 13, location: Absolute maximum ratings - storage temperature range, excerpt: "Storage Temperature Range -65°C to +150°C"}
+attributes:
+  interface:
+    value: SPI 3 fios compatível, até 30 MHz
+    status: extraido
+    source: {page: 2, location: General description, excerpt: "operating at 30 MHz ... SPI-compatible, 3-wire interface"}
+  encapsulamento:
+    value: TSSOP 28 pinos e LFCSP 32 pinos
+    status: extraido
+    source: {page: 2, location: General description, excerpt: "28-lead TSSOP and a 32-lead LFCSP"}

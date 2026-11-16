@@ -1,0 +1,71 @@
+# Fonte: Yageo, Data Sheet Cement Resistors High Power Axial Lead SQP/NSP Series, Product specification V.5, April 10, 2026.
+part_number: SQP 5W
+category: resistor.fixed
+schema_version: '1.0'
+manufacturer: Yageo
+family: SQP / NSP
+lifecycle: desconhecido
+notes:
+- Valores da série SQP/NSP (1 W a 40 W); faixas entre os modelos. O item da fila é "SQP 5W" (SQP500 / SQP5WS = 5 W a 40 °C), mas a folha cobre toda a série.
+- 'Potência: 1-2 W a 70 °C; 3-10 W a 40 °C; 15-40 W a 25 °C. Tensão máxima de trabalho dos SQP: 200 V a 1000 V (NSP: raiz de P x R).'
+- 'Faixa de resistência: fio 0,015 ohm a 1 kohm; filme 30 ohm a 1 Mohm (SQP). Tolerância F = 1 % (fio), J = 5 %.'
+datasheets:
+- id: ds1
+  manufacturer: Yageo
+  revision: V.5 (Apr. 10, 2026)
+  url: https://www.yageogroup.com/content/datasheet/asset/file/YAGEO-SQP_NSP_datasheet
+  sha256: 5097d4247b4cf47ff76ee11e076e5613a9410c46fe7495a8e5c5267422575120
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  R:
+    min: 0.015
+    max: 1000000
+    unit: ohm
+    status: extraido
+    source: {page: 5, location: Electrical characteristics - Resistance Range (Wirewound) SQP300-SQP500 min / Film max, excerpt: "0.015Ω ~ 68Ω ... Film 150Ω ~ 1MΩ"}
+  tol:
+    max: 5
+    unit: '%'
+    status: extraido
+    source: {page: 2, location: Ordering information (3) Tolerance, excerpt: "F = ±1% (Wirewound) J = ±5%"}
+  P_rated:
+    min: 1
+    max: 40
+    unit: W
+    status: extraido
+    conditions: {TA: 70 °C}
+    source: {page: 5, location: Electrical characteristics - Power Rating (1W/2W at 70 °C; 3W-10W at 40 °C; 15W-40W at 25 °C), excerpt: "Power Rating at 70 °C 1W 2W; at 40 °C 3W 5W 5W 7W 10W; at 25 °C 15W ... 40W"}
+  V_max:
+    min: 200
+    max: 1000
+    unit: V
+    status: extraido
+    source: {page: 5, location: Electrical characteristics - Maximum Working Voltage (SQP), excerpt: "Maximum Working Voltage 200V 250V 350V ... 1000V"}
+  V_overload:
+    min: 500
+    max: 2000
+    unit: V
+    status: extraido
+    source: {page: 5, location: Electrical characteristics - Maximum Overload Voltage (SQP), excerpt: "Maximum Overload Voltage 500V ... 2000V"}
+  TCR:
+    max: 300
+    unit: ppm/K
+    status: extraido
+    source: {page: 5, location: Electrical characteristics - Temperature Coefficient, excerpt: "Wirewound :±100ppm/°C , ±300ppm/°C, Film: ±300ppm/°C"}
+  Top:
+    min: -55
+    max: 155
+    unit: °C
+    status: extraido
+    source: {page: 5, location: Electrical characteristics - Operating Temp. Range, excerpt: "- 55°C to +155°C"}
+attributes:
+  tecnologia:
+    value: Resistor de cimento axial de alta potência (fio ou filme de óxido metálico); NSP = não indutivo
+    status: extraido
+    source: {page: 2, location: Ordering information (1) Series, excerpt: "SQP Series = General purpose, NSP Series = Non inductive"}
+  encapsulamento:
+    value: Axial, caixa cerâmica; ex. SQP500 L 22 mm, W 9,5 mm, H 9,0 mm, fio 0,8 mm
+    status: extraido
+    source: {page: 3, location: Dimensions table (SQP500), excerpt: "SQP500 NSP500 22±1.5 9.5±1.0 9.0±1.0 0.8±0.05"}

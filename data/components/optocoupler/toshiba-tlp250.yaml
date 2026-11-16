@@ -1,0 +1,100 @@
+# Fonte: Toshiba, TLP250 Photocoupler GaAlAs Ired & Photo-IC (IGBT / Power MOS FET gate drive), 2005-08-18.
+part_number: TLP250
+category: optocoupler
+schema_version: '1.0'
+manufacturer: Toshiba
+package: DIP-8 (8-lead DIP, 11-10C4)
+lifecycle: desconhecido
+notes:
+- Fotoacoplador com LED GaAlAs e fotodetector IC com saída totem-pole para acionar gate de IGBT / MOSFET de potência (pág. 1).
+- 'Sem símbolo no esquema: corrente de limiar de entrada IFLH máx 5 mA, tpLH e tpHL típico 0.15 us e máx 0.5 us (pág. 3 e 4), ICC máx 11 mA (pág. 3), corrente de pico de saída IOPH/IOPL 1.5 A, imunidade a transitório de modo comum 5000 V/us (pág. 4).'
+- 'IC registra a corrente de pico de saída (PW <= 2.5 us, f <= 15 kHz), 1.5 A; V_iso é 2500 Vrms, 1 min, UR <= 60 % (pág. 2).'
+- Tempos tr e tf são dados no documento só como "―" (sem valor), por isso omitidos. VS máx cai de 35 V a Ta <= 70 °C para 24 V a Ta = 85 °C (pág. 2).
+datasheets:
+- id: ds1
+  manufacturer: Toshiba
+  revision: '2005-08-18'
+  url: https://www.electrokit.com/upload/product/40300/40300270/4256.pdf
+  sha256: 10b56971013dabc7b1d07f951061f0409907fbea4b6cdf58e541375ad3b4fdc9
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  IF:
+    max: 20
+    unit: mA
+    status: extraido
+    source:
+      page: 2
+      location: Maximum Ratings - LED, Forward current
+      excerpt: "Forward current IF 20 mA"
+  VF:
+    typ: 1.6
+    max: 1.8
+    unit: V
+    conditions:
+      IF: 10 mA
+      Ta: 25 °C
+    status: extraido
+    source:
+      page: 3
+      location: Electrical Characteristics - Input forward voltage
+      excerpt: "VF IF = 10 mA, Ta = 25°C 1.6 1.8 V"
+  IC:
+    max: 1.5
+    unit: A
+    status: extraido
+    source:
+      page: 2
+      location: Maximum Ratings - peak output current IOPH / IOPL
+      excerpt: "IOPH peak output current (PW <= 2.5us, f <= 15kHz) 1.5 A"
+  V_iso:
+    max: 2500
+    unit: V
+    status: extraido
+    source:
+      page: 2
+      location: Maximum Ratings - Isolation voltage (AC, 1 min., R.H. <= 60%)
+      excerpt: "Isolation voltage BVS 2500 Vrms"
+  VS:
+    min: 10
+    max: 35
+    unit: V
+    status: extraido
+    source:
+      page: 1
+      location: Features - Supply voltage (VCC)
+      excerpt: "Supply voltage (VCC): 10-35V"
+  Top:
+    min: -20
+    max: 85
+    unit: °C
+    status: extraido
+    source:
+      page: 2
+      location: Maximum Ratings - Operating temperature range
+      excerpt: "Operating temperature range Topr -20~85 °C"
+  Tstg:
+    min: -55
+    max: 125
+    unit: °C
+    status: extraido
+    source:
+      page: 2
+      location: Maximum Ratings - Storage temperature range
+      excerpt: "Storage temperature range Tstg -55~125 °C"
+attributes:
+  saida:
+    value: driver de gate (fotodetector IC com saída totem-pole)
+    status: extraido
+    source:
+      page: 1
+      location: Description - TLP250 suitable for gate driving circuit of IGBT or power MOS FET
+      excerpt: "TLP250 is suitable for gate driving circuit of IGBT or power MOS FET"
+  canais:
+    value: '1'
+    status: extraido
+    source:
+      page: 1
+      location: Pin Configuration - single LED (pins 2 and 3), one output
+      excerpt: "2 : Anode 3 : Cathode 6 : VO (Output)"

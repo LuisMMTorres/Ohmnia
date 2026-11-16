@@ -1,0 +1,71 @@
+# Fonte: Texas Instruments, INA219 Zero-Drift, Bidirectional Current/Power Monitor With I2C Interface, SBOS448G, agosto 2008, revisado dezembro 2015.
+part_number: INA219
+category: ic.energy_meter
+schema_version: '1.0'
+manufacturer: Texas Instruments
+family: INA219 (graus A e B)
+package: SOIC-8 (3,91 x 4,90 mm) e SOT-23-8 (1,63 x 2,90 mm)
+lifecycle: desconhecido
+notes:
+- 'Pág. 4: faixa de temperatura ambiente recomendada TA de -25 a 85 °C; a faixa registrada em Top (-40 a 125 °C) é a de operação da tabela de limites absolutos.'
+- 'Pág. 1: grau B tem exatidão de 0,5 % máx. sobre a temperatura; a tabela da pág. 5 dá erro de medição de corrente de +/-0,2 % típico e +/-0,5 % máx. a 25 °C.'
+- 'Pág. 5: faixa de tensão de shunt a plena escala +/-40, +/-80, +/-160 ou +/-320 mV conforme o PGA; tensão de barramento 0 a 32 V (BRNG = 1) ou 0 a 16 V (BRNG = 0); resolução do A/D de 12 bits, 1 LSB = 10 uV (shunt) e 4 mV (barramento).'
+- 'Pág. 6: corrente quiescente de 6 uA típico, 15 uA máx. no modo power-down.'
+datasheets:
+- id: ds1
+  manufacturer: Texas Instruments
+  document_number: SBOS448G
+  revision: G (dezembro 2015)
+  sha256: 58004eda854d07478e6fc6f4398c114f60a3bcf18d4877471c7c1a306d1fa1cb
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 3
+    max: 5.5
+    unit: V
+    status: extraido
+    source: {page: 6, location: Electrical characteristics - Power supply, Operating supply range, excerpt: "Operating supply range 3 5.5 V"}
+  V_in:
+    max: 26
+    unit: V
+    status: extraido
+    source: {page: 4, location: 7.1 Absolute maximum ratings - Analog inputs, Differential (VIN+ - VIN-), excerpt: "Differential (VIN+ – VIN–) –26 26 V"}
+  accuracy:
+    max: 0.5
+    unit: '%'
+    status: extraido
+    source: {page: 5, location: DC accuracy - Current measurement error, excerpt: "Current measurement error ±0.2% ±0.5%"}
+  bits:
+    typ: 12
+    unit: bit
+    status: extraido
+    source: {page: 5, location: DC accuracy - ADC basic resolution, excerpt: "ADC basic resolution 12 12 bits"}
+  IS:
+    typ: 0.7
+    max: 1
+    unit: mA
+    status: extraido
+    source: {page: 6, location: Electrical characteristics - Power supply, Quiescent current, excerpt: "Quiescent current 0.7 1 mA"}
+  Top:
+    min: -40
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 4, location: 7.1 Absolute maximum ratings - Operating temperature, excerpt: "Operating temperature –40 125 °C"}
+  Tstg:
+    min: -65
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 4, location: 7.1 Absolute maximum ratings - Storage temperature, excerpt: "Tstg Storage temperature –65 150 °C"}
+attributes:
+  grandezas:
+    value: Tensão de shunt, tensão de barramento (0 a 26 V), corrente e potência
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "Senses Bus Voltages from 0 to 26 V; Reports Current, Voltage, and Power"}
+  interface:
+    value: I2C ou SMBus, 16 endereços programáveis
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "16 Programmable Addresses; I2C- or SMBUS-compatible interface"}

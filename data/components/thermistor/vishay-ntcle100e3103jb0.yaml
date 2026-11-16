@@ -1,0 +1,69 @@
+# Fonte: Vishay BCcomponents, NTCLE100E3 - NTC Thermistors, Radial Leaded, Standard Precision, Document Number 29049, Revision 07-May-2025.
+part_number: NTCLE100E3103JB0
+category: thermistor.ntc
+schema_version: '1.0'
+manufacturer: Vishay
+family: NTCLE100E3
+package: Radial com terminais, revestimento cinza com ponto azul
+lifecycle: desconhecido
+notes:
+- 'Documento da série NTCLE100E3; a peça 103JB0 é a linha de 10 000 Ω, tolerância J = 5% (nota 1, pág. 2), B25/85 = 3977 K com tolerância ±0,75% (pág. 2, tabela Electrical data).'
+- 'Faixa de operação -40 a +125 °C contínuo com dissipação zero, até 150 °C por períodos curtos (pág. 1). Tensão sobre o NTC deve ser sempre inferior a 50 VDC (pág. 2).'
+- 'Tempo de resposta em óleo aprox. 1,2 s; massa aprox. 0,3 g; cULus E148885 (pág. 1). Fator de dissipação informado como 7 mW/K (8,5 mW/K para R25 ≤ 680 Ω).'
+datasheets:
+- id: ds1
+  manufacturer: Vishay
+  document_number: '29049'
+  revision: 07-May-2025
+  sha256: f9d6153738198dc705ed681c3b55e70a6571f8fee13a4ed7b2b41e49973cb9c9
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  R25:
+    typ: 10000
+    unit: ohm
+    status: extraido
+    source: {datasheet_id: ds1, page: 2, location: Electrical data and ordering information - R25, excerpt: "10 000 | 2, 3, 5 | 3977 | 0.75 | 103*B0"}
+  tol:
+    max: 5
+    unit: '%'
+    status: extraido
+    note: Sufixo J do código = 5% (a linha de 10 kΩ oferece 2, 3 ou 5%).
+    source: {datasheet_id: ds1, page: 2, location: Notes (1) - Replace * in SAP by J for 5 %, excerpt: "J for 5 %, H for 3 %, G for 2 %"}
+  B:
+    typ: 3977
+    unit: K
+    status: extraido
+    note: B25/85 (entre 25 °C e 85 °C), tolerância ±0,75%.
+    source: {datasheet_id: ds1, page: 2, location: Electrical data - B25/85, excerpt: "10 000 | 2, 3, 5 | 3977 | 0.75"}
+  P_max:
+    max: 0.5
+    unit: W
+    status: extraido
+    conditions: {TA: 55 °C}
+    source: {datasheet_id: ds1, page: 1, location: Quick reference data - Maximum power dissipation at 55 °C, excerpt: "Maximum power dissipation at 55 °C 500 mW"}
+  tau:
+    typ: 15
+    unit: s
+    status: extraido
+    note: Apenas para informação.
+    source: {datasheet_id: ds1, page: 1, location: Quick reference data - Thermal time constant, excerpt: "Thermal time constant τ (for information only) 15 s"}
+  dissipation:
+    typ: 7
+    unit: mW/K
+    status: extraido
+    note: Apenas para informação; 8,5 mW/K para R25 ≤ 680 Ω.
+    source: {datasheet_id: ds1, page: 1, location: Quick reference data - Dissipation factor, excerpt: "Dissipation factor δ (for information only) 7 mW/K"}
+  Top:
+    min: -40
+    max: 125
+    unit: °C
+    status: extraido
+    note: Contínuo, com dissipação zero; até 150 °C por períodos curtos.
+    source: {datasheet_id: ds1, page: 1, location: Quick reference data - Operating temperature range, excerpt: "At zero power dissipation; continuously -40 to +125"}
+attributes:
+  aplicacao:
+    value: medição, compensação, sensoriamento e controle de temperatura
+    status: extraido
+    source: {page: 1, location: Applications}

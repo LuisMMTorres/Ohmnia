@@ -1,0 +1,68 @@
+# Fonte: CR Magnetics, True RMS AC Voltage Transducer CR4510/CR4511/CR4520 (série CR4500, catálogo p. 40-41), cópia Chipdip.
+part_number: CR4500
+category: sensor.voltage
+schema_version: '1.0'
+manufacturer: CR Magnetics
+family: CR4500 Series
+lifecycle: desconhecido
+notes:
+- 'Fila: CR4500. Valores da série (CR4510, CR4511, CR4520 monofásicos; CR4550-CR4580 trifásicos).'
+- 'Faixas de entrada 50, 150, 250, 500 VAC, até 600 VAC (pág. 1). Saídas 0-5 VDC, 0-10 VDC ou 4-20 mADC. Carga: 4-20 mA 0 a 300 Ω; 0-5 V 2 kΩ ou mais (pág. 2).'
+- 'Alimentação 24 Vdc ±10%. Corrente típ./máx.: CR4510 15/25 mA; CR4520 25/40 mA; CR4550/70 20/60 mA; CR4560/80 55/110 mA (pág. 2). Deriva térmica 500 PPM/°C.'
+datasheets:
+- id: ds1
+  manufacturer: CR Magnetics
+  url: https://static.chipdip.ru/lib/610/DOC011610508.pdf
+  sha256: 36de9b9d07039238cadcd58b48b40af851119618666e0c9450f6f20499718c2b
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  V_PN:
+    min: 1
+    max: 600
+    unit: V
+    status: extraido
+    source: {page: 1, location: Título - Input Range, excerpt: "1.0 to 600 VAC Input Range"}
+  accuracy:
+    max: 0.5
+    unit: '%'
+    status: extraido
+    source: {page: 2, location: Specifications - Basic Accuracy, excerpt: "Basic Accuracy:........................ 0.5%"}
+  bandwidth:
+    min: 0.02
+    max: 5
+    unit: kHz
+    status: extraido
+    source: {page: 2, location: Specifications - Frequency Range, excerpt: "Frequency Range:................... 20 Hz - 5 KHz"}
+  V_iso:
+    typ: 2500
+    unit: V
+    status: extraido
+    source: {page: 2, location: Specifications - Insulation Voltage, excerpt: "Insulation Voltage:.................... 2500 Vdc"}
+  VS:
+    typ: 24
+    unit: V
+    status: extraido
+    source: {page: 2, location: Specifications - Supply Voltage, excerpt: "Supply Voltage:........................ 24 Vdc ±10%"}
+  IS:
+    min: 15
+    max: 110
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Specifications - Supply Current, excerpt: "CR4510:........................ Typical 15mA      Max 25mA"}
+  Top:
+    min: 0
+    max: 60
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Specifications - Operating Temperature, excerpt: "Operating Temperature:...........  0°C to +60°C"}
+attributes:
+  principio:
+    value: Transdutor de tensão CA True RMS, saídas isoladas das entradas
+    status: extraido
+    source: {page: 1, location: Título e features, excerpt: "Outputs isolated from inputs"}
+  saida:
+    value: 0-5 VDC, 0-10 VDC ou 4-20 mADC conforme o modelo
+    status: extraido
+    source: {page: 1, location: Part numbers, excerpt: "Single element with 0 - 10 VDC output"}

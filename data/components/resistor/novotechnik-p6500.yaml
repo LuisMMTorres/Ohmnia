@@ -1,0 +1,68 @@
+# Fonte: Novotechnik, Standard Potentiometers Series P6500, Art.-Nr. 062 708, © 05/2010.
+part_number: P6500
+category: resistor.variable
+schema_version: '1.0'
+manufacturer: Novotechnik
+family: P6500 (P6501)
+package: Servo size 20, caixa em duas partes (flange de alumínio anodizado), fixação com 3 garras Z 1-31
+lifecycle: desconhecido
+notes:
+- 'Fila: P6500 e. Potenciômetro de precisão (transdutor de deslocamento angular), rotação contínua, elemento de plástico condutivo.'
+- 'Valores de resistência disponíveis: 1, 2 e 5 kohm (P6501 A102, A202, A502); versões adicionais com cursos elétricos de 60°, 90° e 180° e R = 1 e 2,5 kohm (pág. 2).'
+- 'Coeficiente de temperatura efetivo da razão tensão de saída/tensão aplicada: típ. 5 ppm/K; repetibilidade 0,002 % (0,007°) (pág. 2).'
+- 'Corrente de wiper recomendada <= 1 uA; máx. em caso de falha 10 mA; resistência de isolação >= 10 Mohm (500 VDC); rigidez dielétrica <= 100 uA (500 VAC, 50 Hz) (pág. 2).'
+- 'Velocidade máxima 10000 min-1; torque <= 0,15 Ncm; carga no eixo 45 N; massa 80 g; proteção IP 40 (pág. 2).'
+- 'Curso mecânico 360° contínuo; vibração 5...2000 Hz, 20 g; choque 50 g, 11 ms (pág. 2).'
+datasheets:
+- id: ds1
+  manufacturer: Novotechnik
+  document_number: Art.-Nr. 062 708
+  revision: 05/2010
+  url: https://www.novotechnik.de/wp-content/uploads/P-6500_e.pdf
+  sha256: 455364bbd808f1635df66cc0f4634ab2d7bbf6d85dfda1cf935b26287e368670
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  R:
+    min: 1
+    max: 5
+    unit: kohm
+    status: extraido
+    source: {page: 2, location: Electrical Data - Available resistance values, excerpt: "Available resistance values 1; 2; 5 kΩ"}
+  tol:
+    max: 20
+    unit: '%'
+    status: extraido
+    source: {page: 2, location: Electrical Data - Resistance tolerance, excerpt: "Resistance tolerance ±20 %"}
+  V_max:
+    max: 42
+    unit: V
+    status: extraido
+    source: {page: 2, location: Electrical Data - Max. permissible applied voltage, excerpt: "Max. permissible applied voltage 42 V"}
+  rotation:
+    typ: 355
+    unit: deg
+    status: extraido
+    source: {page: 2, location: Electrical Data - Actual electrical travel, excerpt: "Actual electrical travel 355 ±2 °"}
+  life:
+    min: 100000000
+    unit: '1'
+    status: extraido
+    source: {page: 2, location: Environmental Data - Life, excerpt: "Life >100 x 10^6 rev."}
+  linearity:
+    max: 0.05
+    unit: '%'
+    status: extraido
+    source: {page: 2, location: Electrical Data - Independent linearity, excerpt: "Independent linearity ±0.05 %"}
+  Top:
+    min: -40
+    max: 100
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Environmental Data - Temperature range, excerpt: "Temperature range -40...+100 °C"}
+attributes:
+  tipo:
+    value: Rotativo de precisão, rotação contínua (curso mecânico 360°)
+    status: extraido
+    source: {page: 2, location: Mechanical Data - Mechanical travel, excerpt: "Mechanical travel 360, continuous °"}

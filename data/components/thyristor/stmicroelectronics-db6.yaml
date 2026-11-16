@@ -1,0 +1,78 @@
+# Fonte: Micro Commercial Components (MCC), DB3/DC34 and DB4/DB6 Silicon Bidirectional DIAC, Revision 6, 2008/02/01 (documento baixado como DB6_STMicro.pdf).
+part_number: DB6
+category: thyristor.diac
+schema_version: '1.0'
+manufacturer: Micro Commercial Components
+family: DB3 / DC34 / DB4 / DB6
+package: DO-35G
+lifecycle: desconhecido
+notes:
+- A fila indica STMicroelectronics, mas o documento é da Micro Commercial Components (MCC); valores da coluna DB6 conforme a tabela da página 1.
+- 'Tj_max não é dado; só há faixa de temperatura de operação -40 a +110 °C e armazenamento -40 a +125 °C (pág. 1, Maximum Ratings).'
+- 'Tensão de saída de pulso Vo(min) = 5 V e tempo de subida Tr = 1.5 us (pág. 1, nota 2): sem símbolo no esquema; dV (fold-back) não é dado.'
+datasheets:
+- id: ds1
+  manufacturer: Micro Commercial Components
+  revision: Revision 6, 2008/02/01
+  url: https://mm.digikey.com/Volume0/opasdata/d220001/medias/docus/1/DB3,DC34,DB4,DB6.pdf
+  sha256: 7f2ffd413af822c9727ae5bc8c679e72de3a3e21a63cc50c3b0ca39d6942daaf
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VBO:
+    min: 56
+    typ: 60
+    max: 70
+    unit: V
+    conditions: {C: 22 nF}
+    status: extraido
+    source:
+      page: 1
+      location: Electrical characteristics - Breakover Voltage DB6
+      excerpt: "DB6 VBO 56 60 70V C=22nF"
+  dVBO:
+    max: 4
+    unit: V
+    conditions: {C: 22 nF}
+    status: extraido
+    source:
+      page: 1
+      location: Electrical characteristics - Breakover Voltage Symmetry
+      excerpt: "DB6 ±4V C=22nF"
+  IBO:
+    max: 100
+    unit: uA
+    conditions: {C: 22 nF}
+    status: extraido
+    source:
+      page: 1
+      location: Electrical characteristics - Breakover Current IBO(max)
+      excerpt: "IBO(max) 100uA C=22nF"
+  IB:
+    max: 10
+    unit: uA
+    conditions: {VB: 35 V}
+    status: extraido
+    source:
+      page: 1
+      location: Electrical characteristics - Leakage Current IB(max)
+      excerpt: "IB(max) 10uA VB=0.5VBO(max)"
+  ITRM:
+    max: 16
+    unit: A
+    conditions: {tp: 10 us, f: 100 Hz}
+    status: extraido
+    source:
+      page: 1
+      location: Electrical characteristics - Repetitive Peak on-state Current DB6
+      excerpt: "DB6 ITRM 16A tp=10us,f=100Hz"
+  Ptot:
+    max: 150
+    unit: mW
+    conditions: {TA: 50 °C}
+    status: extraido
+    source:
+      page: 1
+      location: Electrical characteristics - Power dissipation on Printed Circuit (l=10mm)
+      excerpt: "PC 150mW TA=50oC"

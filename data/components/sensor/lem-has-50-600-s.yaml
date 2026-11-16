@@ -1,0 +1,108 @@
+# Fonte: LEM, Current Transducer HAS 50 ... 600-S, Version 16 (22 September 2022).
+part_number: HAS 50...600-S
+category: sensor.current
+schema_version: '1.0'
+manufacturer: LEM
+family: HAS-S
+lifecycle: desconhecido
+notes:
+- Documento da série HAS 50-S a HAS 600-S (IP N 50, 100, 200, 300, 400, 500, 600 A); valores são faixas entre os modelos.
+- "I_PM (faixa de medição, pico): ±150 A (HAS 50-S), ±300 A (100-S), ±600 A (200-S), ±900 A (300-S a 600-S) (p. 1). Operar com UC entre ±12 e ±15 V reduz a faixa de medição."
+- Tensão de saída Uout ±4 V a ±IP N, RL = 10 kohm, TA = 25 °C (p. 1); resistência interna de saída aprox. 100 ohm.
+- "V_offset: < ±40 mV para HAS 50-S e < ±20 mV para HAS 100...600-S (p. 1); lançado o maior. Coeficiente de temperatura do offset < ±2 mV/K (50-S) e < ±1 mV/K (100...600-S); TC de Uout < ±0,1 %/K."
+- Alimentação ±15 V (±5 %); consumo ±15 mA (p. 1). Banda DC...50 kHz (-3 dB, pequenos sinais). Massa aprox. 60 g (p. 1).
+- "Isolação: 3,6 kV RMS 50 Hz 1 min; impulso 1,2/50 us > 6,6 kV; isolação básica 600 V, reforçada 300 V (p. 2)."
+datasheets:
+- id: ds1
+  manufacturer: LEM
+  revision: Version 16, 22 September 2022
+  url: https://www.lem.com/sites/default/files/products_datasheets/has_50_600-s_v16.pdf
+  sha256: c7ed3f6d946bbc3f4b78e86537b9bd99a8007e844fe382d97dbd94e1143eab0e
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_PN:
+    min: 50
+    max: 600
+    unit: A
+    status: extraido
+    source: {page: 1, location: Electrical data - Primary nominal RMS current IP N, excerpt: "HAS 50-S 50 ... HAS 600-S 600"}
+  I_PM:
+    min: 150
+    max: 900
+    unit: A
+    status: extraido
+    source: {page: 1, location: Electrical data - Primary current measuring range IP M, excerpt: "HAS 50-S 50 ±150 ... HAS 600-S 600 ±900"}
+  R_M:
+    min: 1
+    unit: kohm
+    status: extraido
+    source: {page: 1, location: Electrical data - RL Load resistance, excerpt: "RL Load resistance > 1 kΩ"}
+  accuracy:
+    max: 1
+    unit: '%'
+    conditions: {TA: 25 °C}
+    status: extraido
+    source: {page: 1, location: Accuracy - Total error at IP N excluding offset, excerpt: "εtot Total error @ IP N, TA = 25 °C (excluding offset) < ±1 % of IP N"}
+  linearity:
+    max: 1
+    unit: '%'
+    status: extraido
+    source: {page: 1, location: Accuracy - Linearity error (0 ... ±IP N), excerpt: "εL Linearity error (0 ... ±IP N) < ±1 % of IP N"}
+  V_offset:
+    max: 40
+    unit: mV
+    conditions: {TA: 25 °C}
+    status: extraido
+    source: {page: 1, location: Accuracy - Electrical offset voltage UO E, excerpt: "HAS 50-S < ±40 mV; HAS 100 ... 600-S < ±20 mV"}
+  bandwidth:
+    typ: 50
+    unit: kHz
+    status: extraido
+    source: {page: 1, location: Accuracy - Frequency bandwidth (-3 dB), excerpt: "BW Frequency bandwidth (−3 dB) DC ... 50 kHz"}
+  t_resp:
+    max: 3
+    unit: us
+    status: extraido
+    source: {page: 1, location: Accuracy - Delay time to 90 % for IP N step, excerpt: "tD 90 Delay time to 90 % of the final output value < 3 µs"}
+  V_iso:
+    max: 3600
+    unit: V
+    status: extraido
+    source: {page: 2, location: Insulation coordination - RMS voltage for AC insulation test 50 Hz 1 min, excerpt: "Ud RMS voltage for AC insulation test, 50 Hz, 1 min 3.6 kV"}
+  VS:
+    typ: 15
+    unit: V
+    status: extraido
+    source: {page: 1, location: Electrical data - UC Supply voltage (±5 %), excerpt: "UC Supply voltage (±5 %) ±15 V"}
+  IS:
+    typ: 15
+    unit: mA
+    status: extraido
+    source: {page: 1, location: Electrical data - IC Current consumption, excerpt: "IC Current consumption ±15 mA"}
+  Top:
+    min: -10
+    max: 80
+    unit: °C
+    status: extraido
+    source: {page: 1, location: General data - TA Ambient operating temperature, excerpt: "−10 ... +80 °C"}
+  Tstg:
+    min: -25
+    max: 80
+    unit: °C
+    status: extraido
+    source: {page: 1, location: General data - TA st Ambient storage temperature, excerpt: "−25 ... +80 °C"}
+attributes:
+  principio:
+    value: Efeito Hall (medição galvanicamente isolada de CC, CA e pulsada)
+    status: extraido
+    source: {page: 1, location: Features / descrição, excerpt: "Hall effect measuring principle"}
+  saida:
+    value: Tensão analógica, ±4 V em ±IP N (RL = 10 kohm, TA = 25 °C); conector secundário Molex 2501P04V00A
+    status: extraido
+    source: {page: 1, location: Electrical data - Uout; p. 3 Mechanical characteristics, excerpt: "Uout Output voltage (Analog) @ ±IP N ±4 V"}
+  montagem:
+    value: 1 furo Ø 4,5 mm, parafuso de aço M4, torque recomendado 0,75 N·m (±10 %)
+    status: extraido
+    source: {page: 3, location: Mechanical characteristics - Transducer fastening, excerpt: "1 hole ⌀ 4.5 mm; 1 M4 steel screw; 0.75 N·m"}

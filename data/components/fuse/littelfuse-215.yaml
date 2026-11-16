@@ -1,0 +1,99 @@
+# Fonte: Littelfuse, Fuse Datasheet 215 Series 5x20 mm Time-Lag Fuse, Revised GD. 11/30/21.
+part_number: '215'
+category: fuse
+schema_version: '1.0'
+manufacturer: Littelfuse
+family: 215 Series
+package: cartucho cerâmico 5x20 mm (também versão com terminais axiais)
+lifecycle: desconhecido
+notes:
+- 'Documento da série 215 (retardado, 125 mA a 20 A); os valores são a faixa entre os modelos, não de um único item. Série fornecida como cartucho e com terminais (pig-tail).'
+- 'Capacidade de interrupção (pág. 2): 1500 A a 250 VAC para 0.125 A a 12 A, 500 A a 250 VAC para 15 A, 400 A a 250 VAC para 20 A; há exceções por aprovação (nota + da tabela: 1 A a 2 A: 100 A a 500 VAC; 4 A a 6.3 A: 100 A a 305 VAC e 1000 A a 72 VDC; 10 A: 1000 A a 300 VAC para cURus).'
+- 'I2t nominal de fusão medido a 10x a corrente nominal (pág. 2); queda de tensão máxima (mV) e dissipação máxima a 1.5 In (1.6 W, 2.5 W ou 4 W conforme a faixa) estão na tabela, sem símbolo equivalente no esquema.'
+- 'Tempo de abertura (pág. 1): a 150 % da corrente nominal mín 60 min (30 min para 8 A a 20 A); a 210 % máx 30 min; a 275 % 0.25 s a 80 s (0.75 s mín para 1 A em diante); a 400 % 0.05 a 5 s; a 1000 % 0.005 a 0.150 s (mínimo varia por faixa).'
+datasheets:
+- id: ds1
+  manufacturer: Littelfuse
+  revision: Revised GD. 11/30/21
+  url: https://static.chipdip.ru/lib/198/DOC043198391.pdf
+  sha256: 13b1b4f4a73988a73be03f72c48c183d19273790f458883f2bbfa0b9cef19400
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_rated:
+    min: 0.125
+    max: 20
+    unit: A
+    status: extraido
+    source:
+      page: 2
+      location: Electrical Characteristic Specifications by Item - Amp Rating
+      excerpt: "0.125 ... 20 (Amp Rating)"
+  V_rated:
+    max: 250
+    unit: V
+    status: extraido
+    source:
+      page: 2
+      location: Electrical Characteristic Specifications by Item - Voltage Rating (V)
+      excerpt: "Voltage Rating (V) 250"
+  I_break:
+    min: 400
+    max: 1500
+    unit: A
+    conditions: {V: 250 V}
+    status: extraido
+    source:
+      page: 2
+      location: Electrical Characteristic Specifications by Item - Interrupting Rating
+      excerpt: "1500 A @ 250 VAC ... 500 A @ 250Vac ... 400 A @ 250Vac"
+  I2t:
+    min: 0.0330
+    max: 2600
+    unit: A^2*s
+    status: extraido
+    source:
+      page: 2
+      location: Electrical Characteristic Specifications by Item - Nominal Melting I2t (A2 sec)
+      excerpt: ".125 A 0.0330 ... 020 A 2600.0"
+  R_cold:
+    min: 0.0023
+    max: 11.4455
+    unit: ohm
+    status: extraido
+    source:
+      page: 2
+      location: Electrical Characteristic Specifications by Item - Nominal Cold Resistance (Ohms)
+      excerpt: ".125 A 11.4455 ... 020 A 0.0023"
+  Top:
+    min: -55
+    max: 125
+    unit: °C
+    status: extraido
+    source:
+      page: 2
+      location: Materials/Characteristics - Operating Temperature
+      excerpt: "Operating Temperature -55ºC to +125ºC"
+attributes:
+  curva:
+    value: retardado (time-lag), resistente a surtos
+    status: extraido
+    source:
+      page: 1
+      location: Description - 215 Series
+      excerpt: "5x20mm Time-lag, surge-withstand, ceramic body cartridge fuse"
+  formato:
+    value: 5x20 mm
+    status: extraido
+    source:
+      page: 1
+      location: Title - 215 Series 5x20 mm, Time-Lag Fuse
+      excerpt: "215 Series 5×20 mm, Time-Lag Fuse"
+  certificacoes:
+    value: EN/IEC 60127-1 e -2, UL/CSA/NMX 248-1 e 248-14, GB 9364.1 e 9364.2, marca CE, RoHS
+    status: extraido
+    source:
+      page: 1
+      location: Features
+      excerpt: "Conforms to EN/IEC/K/J 60127-1 and 60127-2; Recognized to UL/CSA/NMX 248-1"

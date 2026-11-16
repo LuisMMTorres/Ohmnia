@@ -1,0 +1,74 @@
+# Fonte: Burr-Brown (Texas Instruments), RCV420 Precision 4mA to 20mA Current Loop Receiver, PDS-837E, SBVS019, October 1997.
+part_number: RCV420
+category: instrument.transmitter
+schema_version: '1.0'
+manufacturer: Texas Instruments
+package: DIP plástico de 16 pinos (RCV420KP, RCV420JP) (p. 3)
+lifecycle: desconhecido
+notes:
+- 'Receptor de laço de corrente: converte 4-20 mA em 0-5 V (ganho inicial 0,3125 V/mA), com resistores de sensor internos de 75 ohm e referência de 10 V (p. 1 e p. 2).'
+- 'Faixa de entrada em corrente (4 a 20 mA) registrada em in_range; a unidade do parâmetro no esquema é adimensional (p. 1).'
+- 'Alimentação nominal ±15 V; faixa de ±11,4 V a ±18 V (valores em módulo; nota 6: IO Ref = 5 mA, IO Rcv = 2 mA) (p. 2).'
+- 'Especificações a TA = +25 °C e VS = ±15 V (p. 2); faixa de especificação 0 a +70 °C (p. 2).'
+- 'Precisão total de conversão de 0,1% (p. 1); erro de ganho inicial 0,05% típ. e 0,15% máx. do span (p. 2).'
+datasheets:
+- id: ds1
+  manufacturer: Burr-Brown (Texas Instruments)
+  document_number: PDS-837E
+  revision: October 1997
+  url: https://www.ti.com/lit/ds/symlink/rcv420.pdf
+  sha256: 855d57073d5f96038529336ec276ae250ad853d4f890f34ffcf96dab8818dca7
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  in_range:
+    min: 4
+    max: 20
+    unit: '1'
+    status: extraido
+    source: {page: 1, location: Description - input signal (valores em mA), excerpt: "convert a 4–20mA input signal into a 0–5V output signal"}
+  V_out:
+    min: 0
+    max: 5
+    unit: V
+    status: extraido
+    source: {page: 1, location: Description - output signal, excerpt: "convert a 4–20mA input signal into a 0–5V output signal"}
+  accuracy:
+    typ: 0.1
+    unit: '%'
+    status: extraido
+    source: {page: 1, location: Features - overall conversion accuracy, excerpt: "0.1% OVERALL CONVERSION ACCURACY"}
+  VS:
+    min: 11.4
+    max: 18
+    unit: V
+    status: extraido
+    source: {page: 2, location: Specifications - Power supply voltage range (módulo, simétrica), excerpt: "Voltage Range(6) –5, +11.4 ±18 V"}
+  IS:
+    typ: 3
+    max: 4
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Specifications - Power supply quiescent current, excerpt: "Quiescent Current (VO = 0V) 3 4 mA"}
+  Top:
+    min: -25
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Specifications - Temperature range, Operation, excerpt: "Operation –25 +85 °C"}
+  Tstg:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Specifications - Temperature range, Storage, excerpt: "Storage –40 +85 °C"}
+attributes:
+  entrada:
+    value: Corrente 4-20 mA (resistores de sensor internos de 75 ohm), tensão de modo comum de ±40 V
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "±40V COMMON-MODE INPUT RANGE"}
+  saida:
+    value: Tensão 0-5 V, mais referência de precisão de 10 V
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "PRECISION 10V REFERENCE"}

@@ -1,0 +1,67 @@
+# Fonte: Cirrus Logic, CS5463 Single Phase, Bi-directional Power/Energy IC, DS678F3, abril de 2011 (histórico de revisões p.46).
+part_number: CS5463
+category: ic.energy_meter
+schema_version: '1.0'
+manufacturer: Cirrus Logic
+package: 24-pin SSOP
+lifecycle: desconhecido
+notes:
+- 'Dois conversores A/D, motor de cálculo de potência, conversor energia-pulso e interface serial de 3 fios (p.1). Ordenação: CS5463-ISZ, 24-pin SSOP (p.45).'
+- 'Alimentação: VA+ = 5 V; VD+ = 3,3 V a 5 V (p.1). Faixa recomendada VD+ 3,135 a 5,25 V, VA+ 4,75 a 5,25 V (p.7).'
+- 'Correntes (estado ativo, p.8): IA+ 1,1 mA; ID+ 2,9 mA (VD+ = 5 V) ou 1,7 mA (VD+ = 3,3 V). Consumo ativo 21 mW (típ.), máx. 29 mW; stand-by 11,6 mW; sleep 8 uW (colunas mín/típ/máx não separáveis no texto, ver PDF).'
+- 'Entrada de corrente: faixa diferencial 500 mVp-p (ganho 10) ou 100 mVp-p (ganho 50); entrada de tensão 500 mVp-p (p.7-8).'
+- 'Referência interna 2,5 V (25 ppm/°C típ., 60 máx.) (p.9). Erro de ganho da tensão e corrente antes da calibração: +-0,4 % e +-3,0 % conforme canal (p.7-8) - verificar no PDF a que canal pertence cada valor.'
+- 'Precisão: potência ativa +-0,1 %, potência reativa média +-0,2 %, IRMS +-0,2 % (0,2 a 100 %), VRMS +-0,1 % (5 a 100 %) (p.7). Linearidade de energia +-0,1 % da leitura em 1000:1 (p.1). Taxa de saída OWR = DCLK/1024; MCLK típ. 4,096 MHz (p.9).'
+datasheets:
+- id: ds1
+  manufacturer: Cirrus Logic
+  document_number: DS678F3
+  revision: F3 (abril de 2011)
+  url: https://statics.cirrus.com/pubs/proDatasheet/CS5463_F3.pdf
+  sha256: edb588789bfd80b5bff73c54ccbe617a416f81f47b5f303d26d63244a22eb1d1
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 4.75
+    max: 5.25
+    unit: V
+    status: extraido
+    source: {page: 7, location: Recommended operating conditions - positive analog power supply VA+, excerpt: "Positive Analog Power Supply"}
+  V_in:
+    max: 0.5
+    unit: V
+    status: extraido
+    source: {page: 8, location: Analog inputs (voltage channel) - differential input range (500 mVp-p), excerpt: "Differential Input Range"}
+  accuracy:
+    typ: 0.1
+    unit: '%'
+    status: extraido
+    source: {page: 7, location: Analog characteristics - accuracy, active power, input range 0.1 % - 100 %, excerpt: "Input Range 0.1% - 100%"}
+  dynamic_range:
+    typ: 1000
+    unit: '1'
+    status: extraido
+    source: {page: 1, location: Features - energy data linearity over dynamic range, excerpt: "over 1000:1 Dynamic Range"}
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 7, location: Recommended operating conditions - specified temperature range, excerpt: "Specified Temperature Range"}
+  Tstg:
+    min: -65
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 13, location: Absolute maximum ratings - storage temperature, excerpt: "Storage Temperature"}
+attributes:
+  grandezas:
+    value: Tensão e corrente instantâneas, VRMS, IRMS, potência aparente, reativa e ativa, fator de potência, frequência de linha, temperatura
+    status: extraido
+    source: {page: 1, location: Features - on-chip functions, excerpt: "Instantaneous Voltage, Current, and Power"}
+  interface:
+    value: Serial de 3 fios bidirecional; saída energia-pulso programável; auto-boot de E2PROM serial
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "Simple Three-wire Digital Serial Interface"}

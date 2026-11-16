@@ -1,0 +1,43 @@
+# Fonte: Rockwell Automation, Compact 5000 I/O Modules and EtherNet/IP Adapters Technical Data, 5069-TD001L-EN-P, October 2020.
+part_number: 5069 (Compact 5000 I/O)
+category: plc
+schema_version: '1.0'
+manufacturer: Rockwell Automation
+family: Compact 5000 I/O (5069)
+lifecycle: desconhecido
+notes:
+- 'Fila: 5069-td001 -en-p. Documento de dados técnicos de uma família de módulos de E/S digitais, analógicos, de segurança, contador rápido, serial e adaptadores EtherNet/IP (5069-IA16, IB16, OB16, IF8, AENTR etc.); não é uma CPU.'
+- 'Só foram transcritos valores comuns verificados no módulo 5069-IA16 (pág. 7); os demais módulos têm tabelas próprias (pág. 3 em diante) e devem ser registrados individualmente.'
+- 'Os módulos exigem bloco de terminais removível (RTB) pedido à parte (pág. 1).'
+datasheets:
+- id: ds1
+  manufacturer: Rockwell Automation
+  document_number: 5069-TD001L-EN-P
+  revision: October 2020
+  url: https://store.klinkmann.com/wp-content/uploads/5069_SpecificationSheet.pdf
+  sha256: 29c75b8bca03100b37ce9b9132201f98a627a5d9a2f4bf73b427c5ba3b28c83a
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  Top:
+    min: 0
+    max: 60
+    unit: °C
+    status: extraido
+    source: {page: 7, location: Environmental specifications - 5069-IA16, temperature operating, excerpt: "0 C < Ta < +60 C (+32 F < Ta < +140 F)"}
+  Tstg:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 7, location: Environmental specifications - 5069-IA16, temperature nonoperating, excerpt: "-40...+85 C (-40...+185 F)"}
+attributes:
+  comunicacao:
+    value: EtherNet/IP (adaptadores 5069-AENTR, 5069-AENTRK, 5069-AEN2TR); módulos E/S em CompactLogix 5380 e Compact GuardLogix 5380
+    status: extraido
+    source: {page: 1, location: Introdução e lista de catálogos, excerpt: "5069-AENTR, 5069-AENTRK, 5069-AEN2TR"}
+  grau_protecao:
+    value: nenhum (open-style)
+    status: extraido
+    source: {page: 7, location: Specifications - 5069-IA16, enclosure type rating, excerpt: "Enclosure type rating None (open-style)"}

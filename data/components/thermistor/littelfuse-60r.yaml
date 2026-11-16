@@ -1,0 +1,75 @@
+# Fonte: Littelfuse, POLY-FUSE Resettable PTCs Datasheet, 60R Series Radial Leaded, Revised GD. 08/22/23.
+part_number: 60R
+category: thermistor.ptc
+schema_version: '1.0'
+manufacturer: Littelfuse
+family: 60R Series (POLYFUSE radial, rearmável)
+package: radial com fios
+lifecycle: desconhecido
+notes:
+- 'Valores da série: 16 modelos de 60R010X a 60R375X; faixas abaixo são entre os modelos.'
+- 'Condições de I hold e I trip: ar parado a 20 °C (definições, pág. 1). R1max medida 1 hora após disparo ou refusão de solda (260 °C por 20 s).'
+- 'Tempo máximo de disparo (Maximum Time To Trip) dado a corrente de 5 x I hold, de 0,50 A (60R010X) a 18,75 A (60R375X), com tempos de 2,2 s a 8,2 s ou mais conforme o modelo (pág. 1).'
+- 'Dissipação típica no estado disparado Pd de 0,38 W a 3,20 W (pág. 1). Resistência mínima Rmin de 0,030 a 2,500 ohm e R1max de 0,080 a 8,000 ohm.'
+- 'Temperatura máxima de superfície do dispositivo disparado: 125 °C (pág. 3). A pág. 2 traz a tabela de corrente de hold de -40 °C a 85 °C por modelo.'
+datasheets:
+- id: ds1
+  manufacturer: Littelfuse
+  document_number: 60R Series Radial Leaded
+  revision: Revised GD. 08/22/23
+  url: https://media.onlinecomponents.com/productfiles/mf-lf/60r110xmr-littelfuse-datasheet-170904498.pdf
+  sha256: 6cbbf9d9ccf32b5b07439e53127dc650d45ee83d9ea257d7972a88e9c2753431
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_hold:
+    min: 0.1
+    max: 3.75
+    unit: A
+    status: extraido
+    note: Faixa entre os modelos, a 20 °C em ar parado.
+    source: {datasheet_id: ds1, page: 1, location: Electrical Characteristics table - I hold (A), excerpt: "60R010X 0.10 ... 60R375X 3.75"}
+  I_trip:
+    min: 0.2
+    max: 7.5
+    unit: A
+    status: extraido
+    note: Faixa entre os modelos, a 20 °C em ar parado.
+    source: {datasheet_id: ds1, page: 1, location: Electrical Characteristics table - I trip (A), excerpt: "60R010X 0.20 ... 60R375X 7.50"}
+  V_max:
+    max: 60
+    unit: V
+    status: extraido
+    note: Tensão contínua (Vdc).
+    source: {datasheet_id: ds1, page: 1, location: Electrical Characteristics table - V max (Vdc), excerpt: "60"}
+  I_max:
+    max: 40
+    unit: A
+    status: extraido
+    source: {datasheet_id: ds1, page: 1, location: Electrical Characteristics table - I max (A), excerpt: "40"}
+  R25:
+    min: 0.03
+    max: 2.5
+    unit: ohm
+    status: extraido
+    note: Resistência mínima inicial (Rmin, antes da soldagem); faixa entre os modelos. R1max vai de 0,080 a 8,000 ohm.
+    source: {datasheet_id: ds1, page: 1, location: Electrical Characteristics table - R min (ohm), excerpt: "2.500 ... 0.030"}
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    note: Operação e armazenamento (faixa única no documento).
+    source: {datasheet_id: ds1, page: 3, location: Environmental Specifications - Operating/Storage Temperature, excerpt: "-40°C to +85°C"}
+  Tstg:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {datasheet_id: ds1, page: 3, location: Environmental Specifications - Operating/Storage Temperature, excerpt: "-40°C to +85°C"}
+attributes:
+  aplicacao:
+    value: proteção contra sobrecorrente rearmável (60 V ou menos) onde espaço não é restrição; USB, IEEE1394, motores, controles industriais, automotivo
+    status: extraido
+    source: {page: 1, location: Description / Applications, excerpt: "overcurrent protection for (≤60V) applications"}

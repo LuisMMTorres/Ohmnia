@@ -1,0 +1,102 @@
+# Fonte: Schneider Electric (Telemecanique Sensors), Product data sheet XS112B3PAM12, 11/10/2026.
+part_number: XS112B3PAM12
+category: sensor.proximity
+schema_version: '1.0'
+manufacturer: Schneider Electric
+family: XS1 (Telemecanique Inductive proximity sensors XS, General purpose)
+package: M12 x 1, cilíndrico
+lifecycle: desconhecido
+notes:
+- Sensor indutivo M12, latão, Sn 4 mm, PNP NA, 12...24 V DC, faceado, 3 fios (título, p. 1).
+- Faixa de distância sensora "> 2,5...4 mm" (p. 1). Tensão nominal 12...24 V DC com proteção contra inversão de polaridade (p. 1).
+- Corrente de comutação <= 200 mA com proteção contra sobrecarga e curto-circuito (p. 1). Atraso de resposta 0,2 ms (p. 1).
+datasheets:
+- id: ds1
+  manufacturer: Schneider Electric
+  revision: 11/10/2026
+  url: https://pdf.telemecaniquesensors.com/datasheet?ref=XS112B3PAM12&lang=en
+  sha256: c4e383a7819358933dd2b8ff5ddffe288486bf1e9036b1f48de54d1eb41abba4
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  sn:
+    typ: 4
+    unit: mm
+    status: extraido
+    source: {page: 1, location: Main - Sn nominal sensing distance, excerpt: "[Sn] nominal sensing distance 4 mm"}
+  sr:
+    min: 2.5
+    max: 4
+    unit: mm
+    status: extraido
+    source: {page: 1, location: Complementary - Sensing range, excerpt: "Sensing range > 2.5...4 mm"}
+  hysteresis:
+    min: 1
+    max: 15
+    unit: '%'
+    status: extraido
+    source: {page: 2, location: Complementary - Differential travel, excerpt: "Differential travel 1...15 % of Sr"}
+  VS:
+    min: 10
+    max: 36
+    unit: V
+    status: extraido
+    source: {page: 1, location: Complementary - Supply voltage limits, excerpt: "Supply voltage limits 10-36 V DC"}
+  IS:
+    max: 10
+    unit: mA
+    status: extraido
+    source: {page: 1, location: Complementary - Current consumption, excerpt: "<= 10 mA no-load"}
+  IL:
+    max: 200
+    unit: mA
+    status: extraido
+    source: {page: 1, location: Complementary - Switching capacity in mA, excerpt: "<= 200 mA with overload and short-circuit protection"}
+  Vdrop:
+    max: 2
+    unit: V
+    status: extraido
+    source: {page: 1, location: Complementary - Voltage drop, excerpt: "<2 V (closed)"}
+  f_sw:
+    max: 2500
+    unit: Hz
+    status: extraido
+    source: {page: 2, location: Complementary - Switching frequency, excerpt: "<= 2500 Hz"}
+  Top:
+    min: -25
+    max: 70
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Environment - Ambient air temperature for operation, excerpt: "-25…70 °C"}
+  Tstg:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Environment - Ambient air temperature for storage, excerpt: "-40…85 °C"}
+attributes:
+  saida:
+    value: PNP, NA (1 NO), 3 fios, DC
+    status: extraido
+    source: {page: 2, location: Complementary - Discrete output type / function, excerpt: "PNP; 1 NO"}
+  conexao:
+    value: Conector macho M12, 4 pinos
+    status: extraido
+    source: {page: 1, location: Complementary - Electrical connection, excerpt: "Male connector M12, 4 pins"}
+  invólucro:
+    value: Latão niquelado, M12 x 1, comprimento 50 mm, face PPS
+    status: extraido
+    source: {page: 1, location: Main - Enclosure material / Thread type, excerpt: "Nickel plated brass; M12 x 1"}
+  grau_protecao:
+    value: IP65 e IP67 (IEC 60529)
+    status: extraido
+    source: {page: 2, location: Environment - IP degree of protection, excerpt: "IP65 conforming to IEC 60529, IP67 conforming to IEC 60529"}
+  certificacoes:
+    value: CSA, UL, CE
+    status: extraido
+    source: {page: 1, location: Main - Product certifications / Marking, excerpt: "CSA E2 UL; Marking CE"}
+  montagem:
+    value: Faceado
+    status: extraido
+    source: {page: 1, location: Main - Detector flush mounting acceptance, excerpt: "Flush mountable"}

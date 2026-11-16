@@ -1,0 +1,33 @@
+# Fonte: WIKA, data sheet TE 65.80 (Thermocouple straight version per DIN 50446, TC80 model series), 11/2020.
+part_number: TC80
+category: sensor.temperature
+schema_version: '1.0'
+manufacturer: WIKA
+family: TC80
+package: Termopar reto com tubo de proteção (aço resistente ao calor ou cerâmica), conforme DIN 50446
+lifecycle: desconhecido
+notes:
+- 'Fila: ds te6580 en co (WIKA TE 65.80).'
+- 'Faixas de validade por tipo (pág. 2): K/N classe 1 -40...+1000 °C, classe 2 -40...+1200 °C; J -40...+750 °C; E classe 1 -40...+800 °C, classe 2 -40...+900 °C; R/S 0...1600 °C; B 600...1700 °C (IEC 60584-1).'
+- 'A faixa de aplicação é limitada também pelo material do tubo de proteção. Ponto de medição isolado salvo indicação (pág. 2). Conexão ao processo estanque a gás até 1 bar (pág. 2).'
+datasheets:
+- id: ds1
+  manufacturer: WIKA
+  document_number: TE 65.80
+  revision: 11/2020
+  url: https://www.wika.com/media/Data-sheets/Temperature/Thermocouples/ds_te6580_en_co.pdf
+  sha256: 1c6e1541bc5d9c40ac8e7bab1cc5137d7f9b563dbc92993ab7a9c4287d327579
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  range:
+    max: 1700
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Special features - application ranges, excerpt: "Application ranges up to max. 1,700 °C"}
+attributes:
+  elemento:
+    value: Termopar tipos K, N, J, E, R, S, B (IEC 60584-1 / ASTM E230), simples ou duplo
+    status: extraido
+    source: {page: 2, location: Sensor - Sensor types, excerpt: "Listed models are available both as single or dual thermocouples"}

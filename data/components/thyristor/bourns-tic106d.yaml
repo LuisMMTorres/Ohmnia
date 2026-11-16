@@ -1,0 +1,218 @@
+# Fonte: Bourns, TIC106 SERIES Silicon Controlled Rectifiers, April 1971 - revised September 2002.
+part_number: TIC106D
+category: thyristor.scr
+schema_version: '1.0'
+manufacturer: Bourns
+family: TIC106 (D, M, S, N)
+package: TO-220 (pino 2 em contato elétrico com a base de fixação)
+lifecycle: obsoleto
+notes:
+- Documento da série TIC106; VDRM e VRRM são os da coluna TIC106D (página 1). Os demais valores são comuns à série.
+- O documento marca a série como obsoleta e não recomendada para novos projetos (página 1).
+- Tj_max não é dado; o datasheet só especifica faixa de temperatura de operação da cápsula, -40 a +110 C, e armazenamento -40 a +125 C.
+- ITSM é dado para meio ciclo senoidal de 50 Hz (t_pulse = 10 ms é a duração desse meio ciclo). VDRM e IT(RMS) valem com RGK = 1 kohm.
+- Valores de VGT e IH dependem da temperatura; os sem sufixo são os de 25 C e os com @2 são os de -40 C.
+datasheets:
+- id: ds1
+  manufacturer: Bourns
+  document_number: TIC106 SERIES
+  revision: Revised September 2002
+  url: https://media.digikey.com/pdf/Data%20Sheets/Bourns%20PDFs/TIC106_Series.pdf
+  sha256: 88a77860abe0e0368da84d56e4b95777d4d54ae753c904cffd2ce645ea6becd2
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VDRM:
+    max: 400
+    unit: V
+    conditions:
+      RGK: 1 kohm
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - Repetitive peak off-state voltage, TIC106D, Note 1 (RGK = 1 kohm)
+      excerpt: "Repetitive peak off-state voltage (see Note 1) TIC106D VDRM 400 V"
+  VRRM:
+    max: 400
+    unit: V
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - Repetitive peak reverse voltage, TIC106D
+      excerpt: "Repetitive peak reverse voltage TIC106D VRRM 400 V"
+  IT(RMS):
+    max: 5
+    unit: A
+    conditions:
+      TC: 80 degC
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - Continuous on-state current at (or below) 80 C case temperature (Note 2)
+      excerpt: "Continuous on-state current at (or below) 80°C case temperature IT(RMS) 5 A"
+  IT(AV):
+    max: 3.2
+    unit: A
+    conditions:
+      TC: 80 degC
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - Average on-state current (180 conduction angle) at (or below) 80 C case temperature (Note 3)
+      excerpt: "Average on-state current (180° conduction angle) ... IT(AV) 3.2 A"
+  ITSM:
+    max: 30
+    unit: A
+    conditions:
+      t_pulse: 10 ms
+      TC: 25 degC
+    note: meio ciclo senoidal 50 Hz (Note 4)
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - Surge on-state current at (or below) 25 C (Note 4, one 50 Hz half-sine-wave)
+      excerpt: "Surge on-state current at (or below) 25°C ITSM 30 A"
+  IGM:
+    max: 0.2
+    unit: A
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - Peak positive gate current (pulse width <= 300 us)
+      excerpt: "Peak positive gate current (pulse width ≤ 300 µs) IGM 0.2 A"
+  PGM:
+    max: 1.3
+    unit: W
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - Peak gate power dissipation (pulse width <= 300 us)
+      excerpt: "Peak gate power dissipation (pulse width ≤ 300 µs) PGM 1.3 W"
+  PG(AV):
+    max: 0.3
+    unit: W
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - Average gate power dissipation (Note 5)
+      excerpt: "Average gate power dissipation (see Note 5) PG(AV) 0.3 W"
+  Tstg_max:
+    max: 125
+    unit: degC
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - Storage temperature range
+      excerpt: "Storage temperature range Tstg -40 to +125 °C"
+  IDRM:
+    max: 400
+    unit: uA
+    conditions:
+      TC: 110 degC
+    note: VD = VDRM nominal, RGK = 1 kohm
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics - IDRM Repetitive peak off-state current, VD = rated VDRM, RGK = 1 kohm, TC = 110 C
+      excerpt: "IDRM Repetitive peak off-state current VD = rated VDRM RGK = 1 kΩ TC = 110°C 400 µA"
+  VTM:
+    max: 1.7
+    unit: V
+    conditions:
+      ITM: 5 A
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics - VT Peak on-state voltage, IT = 5 A (Note 6)
+      excerpt: "VT Peak on-state voltage IT = 5 A (See Note 6) 1.7 V"
+  IGT:
+    typ: 5
+    max: 200
+    unit: uA
+    conditions:
+      VD: 12 V
+      RL: 100 ohm
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics - IGT Gate trigger current, VAA = 12 V, RL = 100 ohm, tp(g) >= 20 us
+      excerpt: "IGT Gate trigger current VAA = 12 V RL = 100 Ω tp(g) ≥ 20 µs 5 200 µA"
+  VGT:
+    min: 0.4
+    typ: 0.6
+    max: 1
+    unit: V
+    conditions:
+      VD: 12 V
+      RL: 100 ohm
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics - VGT Gate trigger voltage, VAA = 12 V, RL = 100 ohm, RGK = 1 kohm (25 C)
+      excerpt: "VGT Gate trigger voltage 0.4 0.6 1 V"
+  VGT@2:
+    max: 1.2
+    unit: V
+    conditions:
+      VD: 12 V
+      RL: 100 ohm
+      TC: -40 degC
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics - VGT Gate trigger voltage, TC = -40 C
+      excerpt: "VGT Gate trigger voltage TC = -40°C 1.2 V"
+  VGD:
+    min: 0.2
+    unit: V
+    note: mínimo a TC = 110 C, VAA = 12 V, RL = 100 ohm, RGK = 1 kohm (tensão de porta abaixo da qual não dispara)
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics - VGT Gate trigger voltage, linha TC = 110 C, mínimo 0.2 V
+      excerpt: "VGT Gate trigger voltage TC = 110°C 0.2"
+  IH:
+    max: 5
+    unit: mA
+    note: VAA = 12 V, RGK = 1 kohm, IT inicial 10 mA, 25 C
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics - IH Holding current, VAA = 12 V, RGK = 1 kohm, initiating IT = 10 mA
+      excerpt: "IH Holding current VAA = 12 V Initiating IT = 10 mA RGK = 1 kΩ 5 mA"
+  IH@2:
+    max: 8
+    unit: mA
+    note: TC = -40 C
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics - IH Holding current, TC = -40 C
+      excerpt: "IH Holding current TC = -40°C 8 mA"
+  dv/dt:
+    typ: 10
+    unit: V/us
+    note: VD = VDRM nominal, RGK = 1 kohm, TC = 110 C
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics - dv/dt Critical rate of rise of off-state voltage, TC = 110 C
+      excerpt: "dv/dt Critical rate of rise of off-state voltage VD = rated VD RGK = 1 kΩ TC = 110°C 10 V/µs"
+  Rth_jc:
+    max: 3.5
+    unit: K/W
+    status: extraido
+    source:
+      page: 2
+      location: Thermal characteristics - R theta JC Junction to case thermal resistance
+      excerpt: "RθJC Junction to case thermal resistance 3.5 °C/W"
+  Rth_ja:
+    max: 62.5
+    unit: K/W
+    status: extraido
+    source:
+      page: 2
+      location: Thermal characteristics - R theta JA Junction to free air thermal resistance
+      excerpt: "RθJA Junction to free air thermal resistance 62.5 °C/W"
+attributes: {}

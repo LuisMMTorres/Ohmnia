@@ -1,0 +1,85 @@
+# Fonte: Gefran, Solid State Relays (catálogo Sprecher+Schuh SSNA2014, páginas G88-G102; cópia RS), séries GQ/GTS/GTZ. Registro da série GTS (monofásico, trilho DIN).
+part_number: GTS
+category: relay.solid_state
+schema_version: '1.0'
+manufacturer: Gefran
+family: GTS
+lifecycle: desconhecido
+notes:
+- 'Fila: dts gts en. Valores da série GTS (GTS-15 a GTS-120); faixas entre os modelos de 15 A a 120 A.'
+- 'Controle CC 6-32 V (sufixo D) ou CA/CC 20-260 V (sufixo A), pág. 16. Tensão máxima da saída 20...660 V AC (pág. 16). Frequência 50/60 Hz.'
+- 'Tensão não repetitiva: 500 Vp (modelos 230 V), 1200 Vp (modelos 480 V), pág. 16. Corrente de comando com controle CA: <= 8 mA a 260 V.'
+- 'Modelos de 120 A exigem ventilador VEN-90 (230 V) ou VEN-91 (115 V), pág. 2. Dissipação: curvas de corrente x temperatura, pág. 16.'
+- 'O catálogo também cobre as séries GQ e GTZ, não transcritas aqui.'
+datasheets:
+- id: ds1
+  manufacturer: Gefran
+  document_number: SSNA2014
+  url: https://nonprod.docs.rs-online.com/627f/0900766b813c07ba.pdf
+  sha256: 51580bcafe74624e2d2c0e64df70e218537e04678948563901432628ab6074f1
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_load:
+    min: 15
+    max: 120
+    unit: A
+    status: extraido
+    conditions: {TA: 40 °C}
+    source: {page: 16, location: Technical Information - Rated Current @ 40ºC (continuous service), excerpt: "Rated Current @ 40ºC (continuous service) [A rms] 15 25 40 50 60 75 90 120"}
+  I_surge:
+    min: 400
+    max: 1500
+    unit: A
+    status: extraido
+    source: {page: 16, location: Technical Information - Non-repetitive overcurrent (t = 20 ms), excerpt: "Non-repetitive overcurrent (t = 20 ms) [A] 400 400 600 1150 1150 1300 1500 1500"}
+  V_control:
+    min: 6
+    max: 32
+    unit: V
+    status: extraido
+    source: {page: 16, location: Input - DC Control - Voltage Range, excerpt: "DC Control Voltage Range 6 - 32V DC"}
+  I_control:
+    max: 10
+    unit: mA
+    status: extraido
+    conditions: {V_control: 32 V}
+    source: {page: 16, location: Input - DC Control - Consumption, excerpt: "Consumption ≤ 10mA @ 32V"}
+  V_load:
+    min: 24
+    max: 600
+    unit: V
+    status: extraido
+    source: {page: 16, location: Output - Nominal Voltage, excerpt: "Nominal Voltage 24…600V AC"}
+  dv_dt:
+    min: 1000
+    unit: V/us
+    status: extraido
+    source: {page: 16, location: Technical Information - dV/dt critical with output deactivated, excerpt: "dV/dt critical with output deactiviated [V/µs] 1000"}
+  V_iso:
+    min: 4000
+    unit: V
+    status: extraido
+    source: {page: 16, location: Isolation - Rated voltage input/output, excerpt: "Rated voltage input/output [V ac] ≥ 4000"}
+  Top:
+    min: 0
+    max: 80
+    unit: °C
+    status: extraido
+    source: {page: 16, location: Ambient Conditions - Ambient temperature, excerpt: "0º…+80ºC [32º…+176ºF] according to dissipation curves"}
+  Tstg:
+    min: -20
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 16, location: Ambient Conditions - Storage temperature, excerpt: "-20…+85ºC"}
+attributes:
+  comutacao:
+    value: Passagem por zero (zero voltage turn-on), proteção MOV interna
+    status: extraido
+    source: {page: 1, location: Output Circuit Features, excerpt: "feature zero voltage turn-on"}
+  certificacoes:
+    value: cULus, CE (GTS, trilho DIN)
+    status: extraido
+    source: {page: 2, location: Approvals, excerpt: "cULus Listed"}

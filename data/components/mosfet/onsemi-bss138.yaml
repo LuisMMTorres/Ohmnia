@@ -1,0 +1,196 @@
+# Fonte: onsemi, BSS138/D 'N-Channel Logic Level Enhancement Mode Field Effect Transistor', Rev. 7, April 2024.
+part_number: BSS138
+category: mosfet.n
+schema_version: '1.0'
+manufacturer: onsemi
+package: SOT-23-3, CASE 318-08
+lifecycle: desconhecido
+notes:
+- 'Valores a TA = 25 °C, exceto onde indicado (p. 2).'
+- 'RDS(on) = 6,0 ohm máx. a VGS = 4,5 V, ID = 0,22 A (p. 2); chave de nível lógico.'
+datasheets:
+- id: ds1
+  manufacturer: onsemi
+  document_number: BSS138/D
+  revision: Rev. 7, April 2024
+  sha256: b526741d458af7ca894050acbeae22f21006a0409b5e42a37757af7f4d599a0e
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VDS:
+    max: 50
+    unit: V
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - drain-source voltage, excerpt: "VDSS Drain−Source Voltage 50 V"}
+  VGS:
+    max: 20
+    unit: V
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - gate-source voltage, excerpt: "VGSS Gate−Source Voltage ±20"}
+  ID:
+    max: 0.22
+    unit: A
+    conditions: {TA: 25 degC}
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - drain current continuous, excerpt: "ID Drain Current – Continuous (Note 1) 0.22 A"}
+  IDM:
+    max: 0.88
+    unit: A
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - drain current pulsed, excerpt: "Drain Current – Pulsed (Note 1) 0.88"}
+  Ptot:
+    max: 0.36
+    unit: W
+    conditions: {TA: 25 degC}
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - maximum power dissipation, excerpt: "PD Maximum Power Dissipation (Note 1) 0.36 W"}
+  Ptot_derating:
+    max: 0.0028
+    unit: W/K
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - derate above 25 C, excerpt: "Derate Above 25°C 2.8 mW/°C"}
+  Tj_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - operating and storage junction temperature, excerpt: "TJ, TSTG ... −55 to +150 °C"}
+  Tj_min:
+    min: -55
+    unit: degC
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - operating and storage junction temperature, excerpt: "TJ, TSTG ... −55 to +150 °C"}
+  Rth_ja:
+    max: 350
+    unit: K/W
+    status: extraido
+    source: {page: 2, location: Thermal characteristics - junction-to-ambient, excerpt: "RθJA Thermal Resistance, Junction−to−Ambient (Note 1) 350 °C/W"}
+  V(BR)DSS:
+    min: 50
+    unit: V
+    conditions: {ID: 250 uA, VGS: 0 V}
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - BVDSS, excerpt: "BVDSS VGS = 0 V, ID = 250 µA 50"}
+  VGS(th):
+    min: 0.8
+    typ: 1.3
+    max: 1.5
+    unit: V
+    conditions: {ID: 1 mA}
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - gate threshold voltage, excerpt: "VGS(th) VDS = VGS, ID = 1 mA 0.8 1.3 1.5 V"}
+  IGSS:
+    max: 100
+    unit: nA
+    conditions: {VGS: 20 V}
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - gate-body leakage, excerpt: "IGSS VGS = ±20 V, VDS = 0 V ±100"}
+  IDSS:
+    max: 0.5
+    unit: uA
+    conditions: {VDS: 50 V}
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - zero gate voltage drain current, excerpt: "IDSS VDS = 50 V, VGS = 0 V 0.5 µA"}
+  RDS(on):
+    typ: 0.7
+    max: 3.5
+    unit: ohm
+    conditions: {VGS: 10 V, ID: 0.22 A}
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - static drain-source on-resistance, excerpt: "RDS(on) VGS = 10 V, ID = 0.22 A 0.7 3.5"}
+  "RDS(on)@2":
+    typ: 1.0
+    max: 6.0
+    unit: ohm
+    conditions: {VGS: 4.5 V, ID: 0.22 A}
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - static drain-source on-resistance, excerpt: "VGS = 4.5 V, ID = 0.22 A 1.0 6.0"}
+  gfs:
+    min: 0.12
+    typ: 0.5
+    unit: S
+    conditions: {VDS: 10 V, ID: 0.22 A}
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - forward transconductance, excerpt: "gFS VDS = 10 V, ID = 0.22 A 0.12 0.5"}
+  Ciss:
+    typ: 27
+    unit: pF
+    conditions: {VDS: 25 V}
+    status: extraido
+    source: {page: 2, location: Dynamic characteristics - input capacitance, excerpt: "Ciss VDS = 25 V, VGS = 0 V, f = 1.0 MHz 27 pF"}
+  Coss:
+    typ: 13
+    unit: pF
+    conditions: {VDS: 25 V}
+    status: extraido
+    source: {page: 2, location: Dynamic characteristics - output capacitance, excerpt: "Coss Output Capacitance 13 pF"}
+  Crss:
+    typ: 6
+    unit: pF
+    conditions: {VDS: 25 V}
+    status: extraido
+    source: {page: 2, location: Dynamic characteristics - reverse transfer capacitance, excerpt: "Crss Reverse Transfer Capacitance 6 pF"}
+  Qg:
+    typ: 1.7
+    max: 2.4
+    unit: nC
+    conditions: {VGS: 10 V, ID: 0.22 A}
+    status: extraido
+    source: {page: 3, location: Switching characteristics - total gate charge, excerpt: "Qg VDS = 25 V, ID = 0.22 A, VGS = 10 V 1.7 2.4 nC"}
+  Qgs:
+    typ: 0.1
+    unit: nC
+    conditions: {VGS: 10 V, ID: 0.22 A}
+    status: extraido
+    source: {page: 3, location: Switching characteristics - gate-source charge, excerpt: "Qgs Gate–Source Charge 0.1 nC"}
+  Qgd:
+    typ: 0.4
+    unit: nC
+    conditions: {VGS: 10 V, ID: 0.22 A}
+    status: extraido
+    source: {page: 3, location: Switching characteristics - gate-drain charge, excerpt: "Qgd Gate–Drain Charge 0.4 nC"}
+  td(on):
+    typ: 2.5
+    max: 5
+    unit: ns
+    conditions: {ID: 0.29 A}
+    status: extraido
+    source: {page: 3, location: Switching characteristics - turn-on delay time, excerpt: "td(on) VDD = 30 V, ID = 0.29 A, VGS = 10 V 2.5 5 ns"}
+  tr:
+    typ: 9
+    max: 18
+    unit: ns
+    conditions: {ID: 0.29 A}
+    status: extraido
+    source: {page: 3, location: Switching characteristics - turn-on rise time, excerpt: "tr Turn–On Rise Time 9 18 ns"}
+  td(off):
+    typ: 20
+    max: 36
+    unit: ns
+    conditions: {ID: 0.29 A}
+    status: extraido
+    source: {page: 3, location: Switching characteristics - turn-off delay time, excerpt: "td(off) Turn–Off Delay Time 20 36 ns"}
+  tf:
+    typ: 7
+    max: 14
+    unit: ns
+    conditions: {ID: 0.29 A}
+    status: extraido
+    source: {page: 3, location: Switching characteristics - turn-off fall time, excerpt: "tf Turn–Off Fall Time 7 14 ns"}
+  Rg:
+    typ: 9
+    unit: ohm
+    status: extraido
+    source: {page: 2, location: Dynamic characteristics - gate resistance, excerpt: "RG Gate Resistance VGS = 15 mV, f = 1.0 MHz 9"}
+  IS:
+    max: 0.22
+    unit: A
+    status: extraido
+    source: {page: 3, location: Drain-source diode characteristics - continuous forward current, excerpt: "IS Maximum Continuous Drain–Source Diode Forward Current 0.22 A"}
+  VSD:
+    typ: 0.8
+    max: 1.4
+    unit: V
+    conditions: {IS: 0.44 A}
+    status: extraido
+    source: {page: 3, location: Drain-source diode characteristics - forward voltage, excerpt: "VSD VGS = 0 V, IS = 0.44 A (Note 2) 0.8 1.4 V"}

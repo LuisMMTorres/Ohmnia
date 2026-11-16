@@ -1,0 +1,63 @@
+# Fonte: WEG, Soft-Starter SSW-08 User Manual, documento 10000008521 / 09, 09/2024 (inglês, espanhol e português).
+part_number: SSW08
+category: drive.soft_starter
+schema_version: '1.0'
+manufacturer: WEG
+family: SSW-08
+lifecycle: desconhecido
+notes:
+- 'Valores da série SSW-08 (modelos 17 A a 412 A); faixas entre os modelos. Numeração de páginas = páginas do PDF; o PDF repete o conteúdo em três idiomas (usada a seção em inglês).'
+- 'Potência do motor por modelo não transcrita (tabelas 8.1 e 8.2 não consultadas).'
+- 'Partidas por hora (sem ventilação): 10 (modelos 17 A a 30 A e 255 A a 412 A) e 3 (45 A a 200 A); com kit de ventilação 10 (45 A a 200 A) (p. 58).'
+- 'Capacidade de partida: 3 x In durante 20 s (p. 58). Entradas digitais 3, em corrente alternada (nível alto mín. 93 Vac), 2 relés NA 240 Vac 1 A (p. 58).'
+- 'Alimentação de controle: 110 a 240 Vac (modelos 17 A a 200 A); 110 a 130 Vac ou 208 a 240 Vac (255 A a 412 A) (p. 58).'
+- 'Fila de transcrição: novo link do site do fabricante.'
+datasheets:
+- id: ds1
+  manufacturer: WEG
+  document_number: 10000008521 / 09
+  revision: 09/2024
+  url: https://static.weg.net/medias/downloadcenter/h45/h15/WEG-SSW08-users-manual-10000008521-en-es-pt.pdf
+  sha256: 74fa7759e6fa1ecbedb335bd160974b880b226701baca26152fe41d514077574
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_rated:
+    min: 17
+    max: 412
+    unit: A
+    status: extraido
+    source: {page: 13, location: How to specify the SSW-08 model - Nominal Current, excerpt: "0017 = 17 A ... 0412 = 412 A"}
+  V_line:
+    min: 220
+    max: 575
+    unit: V
+    status: extraido
+    source: {page: 58, location: 8.3 Power data - Power Voltage, excerpt: "(220 to 575) Vac (-15 % to +10 %)"}
+  V_ctrl:
+    min: 110
+    max: 240
+    unit: V
+    status: extraido
+    source: {page: 58, location: 8.4 Electronics data - Control voltage (A1, A2), excerpt: "(110 to 240) Vac (-15 % to +10 %), or (94 to 264) Vac"}
+  starts_h:
+    max: 10
+    unit: '1'
+    status: extraido
+    source: {page: 58, location: 8.3 Power data - Maximum number of starts per hour, excerpt: "10 (1 every 6 minutes; models from 17 A to 30 A and 255 A to 412 A)"}
+  Top:
+    min: 0
+    max: 55
+    unit: °C
+    status: extraido
+    source: {page: 15, location: Allowed environmental conditions - Surrounding air temperature, excerpt: "0 ºC to 55 ºC (32 ºF to 131 ºF) - nominal conditions"}
+attributes:
+  controle:
+    value: Rampa de tensão e limitação de corrente; contator de bypass
+    status: extraido
+    source: {page: 58, location: 8.4 Electronics data - Control Method / Protections (By-pass), excerpt: "Voltage ramp; Current limitation."}
+  grau_protecao:
+    value: IP20 (17 A a 85 A) e IP00 (130 A a 412 A)
+    status: extraido
+    source: {page: 13, location: How to specify the SSW-08 model - standard product, excerpt: "IP20 from 17 A to 85 A and IP00 from 130 A to 412 A."}

@@ -1,0 +1,81 @@
+# Fonte: Balluff, catálogo série BCS GlobalProx (sensores capacitivos M12/M18/M30), cópia do distribuidor Audin, sem data/revisão visível.
+part_number: BCS00P7
+category: sensor.proximity
+schema_version: '1.0'
+manufacturer: Balluff
+family: BCS GlobalProx
+package: M12 x 1
+lifecycle: desconhecido
+notes:
+- "Nome da fila 'DS BCS00P7 EN' é nome de arquivo; o código de pedido BCS00P7 corresponde a BCS M12B4E2-NOC80H-S04K (p. 6: linha NPN NC, não faceado, M12 x 1, conector M12 4 pinos A, carcaça V2A)."
+- Dados elétricos da p. 2 valem para a série capacitiva BCS. Faixa de distância sensora nominal 1...8 mm (p. 6), ajustável por potenciômetro.
+- Deriva de temperatura de sn (-5 a +55 °C) 20 %; tensão de isolação nominal Ui 75 V DC; proteção contra inversão de polaridade e curto-circuito (p. 2).
+- "Saída NC: o contato fica conduzindo no estado desativado (p. 2). Indicadores LED verde (alimentação) e amarelo (saída) (p. 2)."
+datasheets:
+- id: ds1
+  manufacturer: Balluff
+  url: https://static.chipdip.ru/lib/799/DOC028799615.pdf
+  sha256: cf6258549bbd90ed94fcf879f852b0adf94b78118b259f267aee6c5c09293eb2
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  sn:
+    min: 1
+    max: 8
+    unit: mm
+    status: extraido
+    source: {page: 6, location: Level detection - Rated switching distance sn (coluna BCS00P7), excerpt: "Rated switching distance sn 1…8 mm"}
+  VS:
+    min: 10
+    max: 30
+    unit: V
+    status: extraido
+    source: {page: 2, location: Capacitive Sensors - Operating voltage UO, excerpt: "Operating voltage UO 10…30 V DC"}
+  IS:
+    max: 15
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Capacitive Sensors - No-load supply current I0 max., excerpt: "No-load supply current I0 max. ≤ 15 mA"}
+  IL:
+    max: 100
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Capacitive Sensors - Output current max., excerpt: "Output current max. 100 mA"}
+  Vdrop:
+    max: 1.5
+    unit: V
+    status: extraido
+    source: {page: 2, location: Capacitive Sensors - Voltage drop Ud at Ie, excerpt: "Voltage drop Ud at Ie ≤ 1.5 V"}
+  f_sw:
+    max: 100
+    unit: Hz
+    status: extraido
+    source: {page: 2, location: Capacitive Sensors - Switching frequency f, excerpt: "Switching frequency f 100 Hz"}
+  Top:
+    min: -25
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Capacitive Sensors - Ambient temperature range Ta, excerpt: "Ambient temperature range Ta –25…+85 °C"}
+attributes:
+  saida:
+    value: NPN, NF (normalmente fechado)
+    status: extraido
+    source: {page: 6, location: Level detection - NPN NC (coluna BCS00P7), excerpt: "NPN NC Ordering code BCS00P7 BCS M12B4E2-NOC80H-S04K"}
+  conexao:
+    value: Conector M12, 4 pinos, codificação A
+    status: extraido
+    source: {page: 6, location: Level detection - Connection, excerpt: "M12 connector, 4-pin, A-coded"}
+  invólucro:
+    value: M12 x 1; carcaça V2A, face sensora PBT, tampa PA 12/PBT
+    status: extraido
+    source: {page: 6, location: Level detection - Material, excerpt: "Housing V2A; Sensing face PBT; Cover PA 12/PBT"}
+  grau_protecao:
+    value: IP 67 (IEC 60529)
+    status: extraido
+    source: {page: 2, location: Capacitive Sensors - Degree of protection, excerpt: "Degree of protection as per IEC 60529 IP 67"}
+  montagem:
+    value: Não faceado (non-flush), para detecção de nível
+    status: extraido
+    source: {page: 6, location: Level detection - Mounting, excerpt: "Mounting Non-flush"}

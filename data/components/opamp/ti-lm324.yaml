@@ -1,0 +1,176 @@
+# Fonte: Texas Instruments, LM124/LM224/LM324/LM2902 (LMx24), SLOS066AE, August 1975 - Revised September 2025.
+part_number: LM324
+category: opamp
+schema_version: '1.0'
+manufacturer: Texas Instruments
+family: LMx24 / LM2902 (ampop quádruplo)
+package: 14 pinos (SOIC D, SSOP DB, PDIP N, SO NS, TSSOP PW, WQFN RTE, LCCC FK, CDIP J, CFP W)
+lifecycle: desconhecido
+notes:
+- Folha SLOS066AE (agosto 1975, revisada setembro 2025) cobre LM124/224/324/2902 e variantes B, K, A.
+- Valores transcritos da seção 6.7 (LM324, LM324K), coluna LM324, e dos limites absolutos da coluna LM324xx (32 V).
+- Ampop quádruplo; ICC do documento (0,7 típ. / 1,2 máx. mA, VO = 2,5 V, sem carga; faixa completa) é para os quatro amplificadores, por isso IQ por amplificador não foi transcrito.
+- 'VIO, IIO, IIB: ib e ios em módulo (o documento dá IIB negativa: -20 típ. / -250 máx. nA).'
+- 'Faixa de temperatura de operação LM324xx: 0 a 70 °C (seção 6.3).'
+datasheets:
+- id: ds1
+  manufacturer: Texas Instruments
+  document_number: SLOS066AE
+  revision: AUGUST 1975 - REVISED SEPTEMBER 2025
+  sha256: 8161ad748420ae0594ad1919a34b34acd4858b822c04a8066b5fc95ddbda8963
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS_total_max:
+    max: 32
+    unit: V
+    note: Coluna LM324xx, LM224xx, LM124x (as variantes B têm 40 V)
+    status: extraido
+    source:
+      page: 5
+      location: Absolute maximum ratings - supply voltage VCC, coluna LM324xx
+      excerpt: Supply voltage, VCC (2) 40 26 32 V
+  VID_max:
+    max: 32
+    unit: V
+    status: extraido
+    source:
+      page: 5
+      location: Absolute maximum ratings - differential input voltage, coluna LM324xx
+      excerpt: Differential input voltage, VID (3) ±40 ±26 ±32 V
+  VI_max:
+    max: 32
+    unit: V
+    status: extraido
+    source:
+      page: 5
+      location: Absolute maximum ratings - input voltage (either input), coluna LM324xx
+      excerpt: Input voltage, VI (either input) -0.3 40 -0.3 26 -0.3 32
+  Tj_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 5
+      location: Absolute maximum ratings - operating virtual junction temperature
+      excerpt: Operating virtual junction temperature, TJ 150
+  Tstg_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 5
+      location: Absolute maximum ratings - storage temperature
+      excerpt: Storage temperature, Tstg -65 150
+  Vos:
+    typ: 3
+    max: 7
+    unit: mV
+    conditions: &id001
+      TA: 25 degC
+    status: extraido
+    source:
+      page: 11
+      location: Electrical characteristics 6.7 - input offset voltage VIO, LM324
+      excerpt: VIO Input offset voltage 25°C 3 7 mV
+  Ios:
+    typ: 2
+    max: 50
+    unit: nA
+    conditions: *id001
+    status: extraido
+    source:
+      page: 11
+      location: Electrical characteristics 6.7 - input offset current IIO, LM324
+      excerpt: IIO Input offset current VO = 1.4V 25°C 2 50 nA
+  Ib:
+    typ: 20
+    max: 250
+    unit: nA
+    conditions: *id001
+    note: Em módulo; o documento dá -20 (típ.) e -250 (máx.)
+    status: extraido
+    source:
+      page: 11
+      location: Electrical characteristics 6.7 - input bias current IIB, LM324 (valores negativos no documento)
+      excerpt: IIB Input bias current 25°C -20 -250 nA
+  Avol:
+    min: 25
+    typ: 100
+    unit: V/mV
+    conditions:
+      RL: 2 kohm
+    status: extraido
+    source:
+      page: 11
+      location: Electrical characteristics 6.7 - large-signal differential voltage amplification AVD, LM324
+      excerpt: VCC+ = 15V, VO = 1V to 11V, RL ≥ 2kΩ 25°C 25 100 V/mV
+  CMRR:
+    min: 65
+    typ: 80
+    unit: dB
+    status: extraido
+    source:
+      page: 11
+      location: Electrical characteristics 6.7 - common-mode rejection ratio, LM324
+      excerpt: CMRR VIC = VICRmin 25°C 65 80 dB
+  PSRR:
+    min: 65
+    typ: 100
+    unit: dB
+    status: extraido
+    source:
+      page: 11
+      location: Electrical characteristics 6.7 - supply-voltage rejection ratio kSVR, LM324
+      excerpt: kSVR (ΔVCC/ΔVIO) 25°C 65 100 dB
+  Isc:
+    typ: 40
+    max: 60
+    unit: mA
+    note: Em módulo; o documento dá ±40 e ±60
+    status: extraido
+    source:
+      page: 11
+      location: Electrical characteristics 6.7 - short-circuit output current IOS, LM324
+      excerpt: IOS Short-circuit output current ±40 ±60 mA
+  VOL_drop:
+    typ: 5
+    max: 20
+    unit: mV
+    conditions:
+      VS: 5 V
+      RL: 10 kohm
+    note: Faixa completa de temperatura (0 a 70 °C para LM324)
+    status: extraido
+    source:
+      page: 11
+      location: Electrical characteristics 6.7 - low-level output voltage VOL, LM324 (faixa completa de temperatura)
+      excerpt: VOL Low-level output voltage RL ≤ 10kΩ 5 20 mV
+  SR:
+    typ: 0.5
+    unit: V/us
+    status: extraido
+    source:
+      page: 13
+      location: Operating conditions 6.10 - slew rate at unity gain
+      excerpt: SR Slew rate at unity gain RL = 1MΩ, CL = 30pF, VI = ±10V 0.5 V/μs
+  GBW:
+    typ: 1.2
+    unit: MHz
+    status: extraido
+    source:
+      page: 13
+      location: Operating conditions 6.10 - unity-gain bandwidth B1
+      excerpt: B1 Unity-gain bandwidth RL = 1MΩ, CL = 20pF 1.2 MHz
+  en:
+    typ: 35
+    unit: nV/Hz**0.5
+    conditions:
+      f: 1 kHz
+    status: extraido
+    source:
+      page: 13
+      location: Operating conditions 6.10 - equivalent input noise voltage Vn
+      excerpt: Vn Equivalent input noise voltage RS = 100Ω, VI = 0V, f = 1kHz 35 nV/√Hz
+attributes: {}

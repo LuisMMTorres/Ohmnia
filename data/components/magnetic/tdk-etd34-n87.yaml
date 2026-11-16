@@ -1,0 +1,85 @@
+# Fonte: TDK Electronics, Ferrites and accessories, ETD 34/17/11 core and accessories, Series/Type B66361, B66362, October 2022.
+part_number: ETD34 N87
+category: magnetic.core
+schema_version: '1.1'
+manufacturer: TDK
+family: ETD 34/17/11 (B66361)
+package: Par de metades ETD 34/17/11 (conjunto), material N87
+lifecycle: desconhecido
+tags:
+- shape:ETD
+- size:ETD34/17/11
+- material:N87
+notes:
+- Conjunto sem entreferro, material N87, código B66361G0000X187. Dados magnéticos são por conjunto (set).
+- 'O documento não traz Bsat, Curie, nem as cotas do desenho no texto; não foram transcritos. O Bsat do N87 não consta (campo obrigatório do esquema fica ausente).'
+- 'AL do N87 ungapped: 2600 nH com tolerância +30/-20 %. Há também linhas com entreferro (AL@2, g = 0,2 mm); outras de 0,1 a 2,5 mm na tabela.'
+- Massa aproximada 40 g por conjunto (set).
+datasheets:
+- id: ds1
+  manufacturer: TDK
+  document_number: B66361, B66362 (ETD 34/17/11)
+  revision: October 2022
+  sha256: 0ebca254f0485d5b2c4d8ef87420c9d36c8e31a84fbc6f5ad7039ad3de08137a
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  C1:
+    typ: 0.81
+    unit: 1/mm
+    status: extraido
+    source: {datasheet_id: ds1, page: 2, location: Magnetic characteristics (per set) - Σl/A, excerpt: "Σl/A = 0.81 mm–1"}
+  le:
+    typ: 78.6
+    unit: mm
+    status: extraido
+    source: {datasheet_id: ds1, page: 2, location: Magnetic characteristics (per set) - le, excerpt: "le = 78.6 mm"}
+  Ae:
+    typ: 97.1
+    unit: mm**2
+    status: extraido
+    source: {datasheet_id: ds1, page: 2, location: Magnetic characteristics (per set) - Ae, excerpt: "Ae = 97.1 mm2"}
+  Amin:
+    typ: 91.6
+    unit: mm**2
+    status: extraido
+    source: {datasheet_id: ds1, page: 2, location: Magnetic characteristics (per set) - Amin, excerpt: "Amin = 91.6 mm2"}
+  Ve:
+    typ: 7630
+    unit: mm**3
+    status: extraido
+    source: {datasheet_id: ds1, page: 2, location: Magnetic characteristics (per set) - Ve, excerpt: "Ve = 7630 mm3"}
+  mass:
+    typ: 40
+    unit: g
+    status: extraido
+    note: Massa aproximada por conjunto (set).
+    source: {datasheet_id: ds1, page: 2, location: Magnetic characteristics (per set) - Approx. weight, excerpt: "Approx. weight 40 g/set"}
+  AL:
+    typ: 2600
+    unit: nH
+    status: extraido
+    conditions: {gap: 0 mm}
+    note: Tolerância +30/-20 %, sem entreferro, N87.
+    source: {datasheet_id: ds1, page: 2, location: Tabela Ungapped - N87 AL value, excerpt: "N87 2600 +30/–20%"}
+  AL@2:
+    typ: 482
+    unit: nH
+    status: extraido
+    conditions: {gap: 0.2 mm}
+    note: Valor aproximado com entreferro g = 0,20 ± 0,02 mm (código B66361G0200X187), N87.
+    source: {datasheet_id: ds1, page: 2, location: Tabela Gapped - N87 g = 0.20 mm, excerpt: "N87 0.20 ±0.02 482 310"}
+  mu_e:
+    typ: 1670
+    unit: dimensionless
+    status: extraido
+    note: Permeabilidade efetiva do conjunto sem entreferro (coluna µe).
+    source: {datasheet_id: ds1, page: 2, location: Tabela Ungapped - N87 µe, excerpt: "N87 2600 +30/–20% 1670"}
+  Pcore:
+    max: 4.0
+    unit: W
+    status: extraido
+    conditions: {f: 100 kHz, B: 200 mT, T: 100 degC}
+    note: Perdas máximas por conjunto (PV, W/set).
+    source: {datasheet_id: ds1, page: 2, location: Tabela Ungapped - N87 PV, excerpt: "< 4.00 (200 mT, 100 kHz, 100 °C)"}

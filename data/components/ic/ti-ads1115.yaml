@@ -1,0 +1,96 @@
+# Fonte: Texas Instruments, ADS1113, ADS1114, ADS1115 Ultra-Small, Low-Power, I2C-Compatible, 860SPS, 16-Bit ADCs, SBAS444E, May 2009 - Revised December 2024.
+part_number: ADS1115
+category: ic.adc
+schema_version: '1.0'
+manufacturer: TI
+family: ADS111x
+package: X2QFN-10 (2 x 1,5 x 0,4 mm), SOT-10 (2,9 x 2,8 x 0,6 mm) e VSSOP-10 (p. 1 e p. 4)
+lifecycle: desconhecido
+notes:
+- 'O documento cobre ADS1113, ADS1114 e ADS1115; o ADS1115 tem quatro entradas single-ended ou duas diferenciais, com comparador e PGA (p. 1).'
+- 'Taxa de dados programável de 8 a 860 SPS (p. 1 e 5); 860 SPS = 0,86 kSPS.'
+- 'Faixa de fundo de escala (FSR) programável de ±0,256 V a ±6,144 V; tensão nos pinos analógicos limitada a VDD + 0,3 V (p. 4).'
+- 'Características elétricas a VDD = 3,3 V, 8 SPS, FSR = ±2,048 V (p. 5).'
+datasheets:
+- id: ds1
+  manufacturer: TI
+  document_number: SBAS444E
+  revision: December 2024
+  sha256: eefff4d412ce2dcd7e659f47238edc9b2fa02e5971f2625af730502033701834
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  bits:
+    typ: 16
+    unit: bit
+    status: extraido
+    source: {page: 5, location: 5.5 Electrical Characteristics - Resolution (no missing codes), excerpt: "Resolution (no missing codes) 16 Bits"}
+  fs:
+    max: 0.86
+    unit: kHz
+    status: extraido
+    source: {page: 1, location: 1 Features - programmable data rate, excerpt: "Programmable data rate: 8SPS to 860SPS"}
+  channels:
+    typ: 4
+    unit: '1'
+    status: extraido
+    source: {page: 1, location: 1 Features - family of devices, excerpt: "ADS1115: four single-ended or two differential inputs"}
+  VS:
+    min: 2
+    max: 5.5
+    unit: V
+    status: extraido
+    source: {page: 4, location: 5.3 Recommended Operating Conditions - Power supply, excerpt: "Power supply (VDD to GND) 2 5.5 V"}
+  V_in:
+    min: -6.144
+    max: 6.144
+    unit: V
+    status: extraido
+    source: {page: 4, location: 5.3 Recommended Operating Conditions - Full-scale input voltage range, excerpt: "FSR ±0.256 ±6.144 V"}
+  INL:
+    max: 1
+    unit: '1'
+    conditions: {FSR: 2.048 V}
+    status: extraido
+    source: {page: 5, location: 5.5 Electrical Characteristics - INL, excerpt: "INL Integral nonlinearity DR = 8SPS, FSR = ±2.048V 1 LSB"}
+  offset:
+    max: 3
+    unit: '1'
+    conditions: {FSR: 2.048 V}
+    status: extraido
+    source: {page: 5, location: 5.5 Electrical Characteristics - Offset error, differential inputs, excerpt: "Offset error FSR = ±2.048V, differential inputs –3 ±1 3 LSB"}
+  gain_err:
+    max: 0.15
+    unit: '%'
+    conditions: {TA: 25 °C, FSR: 2.048 V}
+    status: extraido
+    source: {page: 5, location: 5.5 Electrical Characteristics - Gain error, excerpt: "Gain error FSR = ±2.048V, TA = 25°C 0.01% 0.15%"}
+  IS:
+    typ: 0.15
+    max: 0.3
+    unit: mA
+    conditions: {TA: 25 °C}
+    status: extraido
+    source: {page: 6, location: 5.5 Electrical Characteristics (continued) - Supply current operating, excerpt: "Operating TA = 25°C 150 200 300 µA"}
+  Top:
+    min: -40
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 4, location: 5.3 Recommended Operating Conditions - Operating ambient temperature, excerpt: "TA Operating ambient temperature –40 125 °C"}
+  Tstg:
+    min: -60
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 4, location: 5.1 Absolute Maximum Ratings - Storage, excerpt: "Storage, Tstg –60 150"}
+attributes:
+  interface:
+    value: I2C, quatro endereços selecionáveis por pino; até 3,4 MHz em modo high-speed
+    status: extraido
+    source: {page: 1, location: 1 Features, excerpt: "I2C interface: four pin-selectable addresses"}
+  arquitetura:
+    value: Conversor de 16 bits com referência interna, oscilador interno, PGA e comparador programável
+    status: extraido
+    source: {page: 1, location: Title, excerpt: "16-Bit ADCs with Internal Reference, Oscillator, and Programmable Comparator"}

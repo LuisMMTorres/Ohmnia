@@ -1,0 +1,61 @@
+# Fonte: ROHM, Metal plate shunt resistors / ultra-low resistance, PMR e PMR HZP7 Series Lineup (japonês), 2026.09 - Rev.002.
+part_number: PMR
+category: resistor.fixed
+schema_version: '1.0'
+manufacturer: ROHM
+family: PMR (PMR01, 03, 10, 18, 25, 50, 100) e PMR HZP7
+package: Chip 1005 (0402) a 6432 (2512)
+lifecycle: desconhecido
+notes:
+- 'Fila: PMR (série). Resistor shunt de chapa metálica para detecção de corrente; valores da série PMR (PMR01 a PMR100), faixa entre os modelos (tabela da pág. 1, lida na imagem; texto em japonês).'
+- 'Potência nominal: PMR01 0,2 W e PMR03 0,25 W a 70 °C de temperatura ambiente; demais modelos de 1 a 3 W definidos pela temperatura de terminal (80 a 130 °C conforme o modelo e a faixa de resistência).'
+- 'Tolerância F (±1 %) e J (±5 %). TCR: 0 a +200 ppm/°C (PMR01), 0 a +150 ppm/°C (PMR03), ±75, ±100 ou ±150 ppm/°C nos demais. Faixa de uso -55 a +155 °C ou -65 a +175 °C. Compatível AEC-Q200.'
+- 'PMR100HZP7 (pág. 2): 6432 (2512), 8 W, 0,5 a 1,5 mΩ, F (±1 %), TCR -75 a 0 ppm/°C, -65 a +175 °C; não incluído nos parâmetros da série.'
+datasheets:
+- id: ds1
+  manufacturer: ROHM
+  document_number: PMR, PMR HZP7 Series Lineup
+  revision: 2026.09 - Rev.002
+  url: https://fscdn.rohm.com/jp/products/databook/datasheet/passive/resistor/chip_resistor/pmr-j.pdf
+  sha256: 53f8fa0775ee69a5a27fcbb0524a4afaef33f4934d7aa243734375d2c753948e
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  R:
+    min: 1
+    max: 10
+    unit: mohm
+    status: extraido
+    source: {page: 1, location: PMR 製品一覧表 - 抵抗値範囲 (mΩ), excerpt: "3, 4, 5, 6, 7, 8, 9, 10"}
+  tol:
+    max: 5
+    unit: '%'
+    status: extraido
+    source: {page: 1, location: 製品一覧表 - 抵抗値許容差, excerpt: "J (±5%)"}
+  P_rated:
+    min: 0.2
+    max: 3
+    unit: W
+    status: extraido
+    source: {page: 1, location: 製品一覧表 - 定格電力 (W), excerpt: "0.25"}
+  TCR:
+    max: 200
+    unit: ppm/K
+    status: extraido
+    source: {page: 1, location: 製品一覧表 - 抵抗温度係数 (ppm/°C), excerpt: "0~+200"}
+  Top:
+    min: -65
+    max: 175
+    unit: °C
+    status: extraido
+    source: {page: 1, location: 製品一覧表 - 使用温度範囲 (°C), excerpt: "-65〜+175"}
+attributes:
+  tecnologia:
+    value: Resistor shunt de chapa metálica (liga especial), sem trimming, para detecção de corrente
+    status: extraido
+    source: {page: 1, location: PMRシリーズ 特長, excerpt: "AEC-Q200"}
+  encapsulamento:
+    value: Chip 1005, 1608, 2012, 3216, 3225, 5025, 6432 (mm)
+    status: extraido
+    source: {page: 1, location: 製品一覧表 - サイズ, excerpt: "6432"}

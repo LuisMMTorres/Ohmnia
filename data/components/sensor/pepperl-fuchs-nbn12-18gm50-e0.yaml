@@ -1,0 +1,99 @@
+# Fonte: Pepperl+Fuchs, folha de dados NBN12-18GM50-E0 (Inductive sensor), release date 2020-03-20, date of issue 2020-03-30.
+part_number: NBN12-18GM50-E0
+category: sensor.proximity
+schema_version: '1.0'
+manufacturer: Pepperl+Fuchs
+package: M18 x 1, latão niquelado, cabo PVC 2 m
+lifecycle: desconhecido
+notes:
+- 'Fila: 087777 eng (arquivo 087777_eng.pdf).'
+- 'Fatores de redução rAl 0,5; rCu 0,4; r304 0,7 (pág. 1). MTTFd 1500 a (pág. 2).'
+datasheets:
+- id: ds1
+  manufacturer: Pepperl+Fuchs
+  document_number: 087777_eng
+  revision: 'date of issue 2020-03-30'
+  url: https://files.pepperl-fuchs.com/webcat/navi/productInfo/pds/087777_eng.pdf
+  sha256: b6c024ba6764704a08bc599ca0e1febdcc695a2ea51c38279c32ccb1b935ff38
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  sn:
+    typ: 12
+    unit: mm
+    status: extraido
+    source: {page: 1, location: General specifications - rated operating distance, excerpt: "Rated operating distance sn 12 mm"}
+  sr:
+    min: 0
+    max: 9.72
+    unit: mm
+    status: extraido
+    source: {page: 1, location: General specifications - assured operating distance, excerpt: "Assured operating distance sa 0 ... 9.72 mm"}
+  VS:
+    min: 10
+    max: 30
+    unit: V
+    status: extraido
+    source: {page: 1, location: Nominal ratings - operating voltage, excerpt: "Operating voltage UB 10 ... 30 V"}
+  f_sw:
+    max: 200
+    unit: Hz
+    status: extraido
+    source: {page: 2, location: Technical Data - switching frequency, excerpt: "Switching frequency f 0 ... 200 Hz"}
+  hysteresis:
+    typ: 5
+    unit: '%'
+    status: extraido
+    source: {page: 2, location: Technical Data - hysteresis, excerpt: "Hysteresis H typ. 5%"}
+  Vdrop:
+    max: 3
+    unit: V
+    status: extraido
+    source: {page: 2, location: Technical Data - voltage drop, excerpt: "Voltage drop Ud ≤ 3 V"}
+  IL:
+    max: 200
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Technical Data - operating current, excerpt: "Operating current IL 0 ... 200 mA"}
+  Ir:
+    max: 0.5
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Technical Data - off-state current, excerpt: "Off-state current Ir 0 ... 0.5 mA"}
+  IS:
+    max: 10
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Technical Data - no-load supply current, excerpt: "No-load supply current I0 ≤ 10 mA"}
+  Top:
+    min: -25
+    max: 70
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Ambient conditions - ambient temperature, excerpt: "-25 ... 70 °C (-13 ... 158 °F)"}
+attributes:
+  saida:
+    value: NPN, NA, 3 fios DC
+    status: extraido
+    source: {page: 1, location: General specifications, excerpt: "Normally open (NO); Output type NPN"}
+  conexao:
+    value: Cabo PVC 2 m, 0,34 mm²
+    status: extraido
+    source: {page: 2, location: Mechanical specifications - connection type, excerpt: "cable PVC , 2 m"}
+  invólucro:
+    value: M18 x 1, latão niquelado, face sensora PBT
+    status: extraido
+    source: {page: 2, location: Mechanical specifications, excerpt: "Housing material brass, nickel-plated"}
+  grau_protecao:
+    value: IP67
+    status: extraido
+    source: {page: 2, location: Mechanical specifications - degree of protection, excerpt: "Degree of protection IP67"}
+  certificacoes:
+    value: cULus Listed e cCSAus Listed (General Purpose); EN/IEC 60947-5-2
+    status: extraido
+    source: {page: 2, location: Approvals and certificates, excerpt: "cULus Listed, General Purpose"}
+  montagem:
+    value: não faceado (non-flush)
+    status: extraido
+    source: {page: 1, location: General specifications - installation, excerpt: "Installation non-flush"}

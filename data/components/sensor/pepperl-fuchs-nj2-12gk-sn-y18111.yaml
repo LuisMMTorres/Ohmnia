@@ -1,0 +1,75 @@
+# Fonte: Pepperl+Fuchs, folha de dados NJ2-12GK-SN-Y18111 (Inductive sensor), release date 2014-09-17, date of issue 2014-09-17.
+part_number: NJ2-12GK-SN-Y18111
+category: sensor.proximity
+schema_version: '1.0'
+manufacturer: Pepperl+Fuchs
+package: M12 x 1, PBT-GF20, cabo silicone 2 m
+lifecycle: desconhecido
+notes:
+- 'Fila: 106635 eng (arquivo 106635_eng.pdf).'
+- 'Saída NAMUR 2 fios: Uo 8 V; consumo com placa não detectada ≥ 3 mA, detectada ≤ 1 mA (pág. 1). Categoria 2G, ATEX PTB 00 ATEX 2049 X, II 2G Ex ia IIC T6 Gb; Ci ≤ 50 nF, Li ≤ 150 µH (pág. 2).'
+- 'Fatores de redução rAl 0,4; rCu 0,3; r304 0,85 (pág. 1). MTTFd 7660 a. Abaixo de -20 °C proteger de impactos com carcaça adicional (pág. 2).'
+datasheets:
+- id: ds1
+  manufacturer: Pepperl+Fuchs
+  document_number: 106635_eng
+  revision: 'date of issue 2014-09-17'
+  url: https://files.pepperl-fuchs.com/webcat/navi/productInfo/pds/106635_eng.pdf
+  sha256: 53c2c1687c5f9ba0bc612e86798590cf77076e3a6502a8e45e69b1600a2bbc91
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  sn:
+    typ: 2
+    unit: mm
+    status: extraido
+    source: {page: 1, location: General specifications - rated operating distance, excerpt: "Rated operating distance sn 2 mm"}
+  sr:
+    min: 0
+    max: 1.62
+    unit: mm
+    status: extraido
+    source: {page: 1, location: General specifications - assured operating distance, excerpt: "Assured operating distance sa 0 ... 1.62 mm"}
+  VS:
+    min: 5
+    max: 25
+    unit: V
+    status: extraido
+    source: {page: 1, location: Nominal ratings - operating voltage, excerpt: "Operating voltage UB 5 ... 25 V"}
+  f_sw:
+    max: 2000
+    unit: Hz
+    status: extraido
+    source: {page: 1, location: Nominal ratings - switching frequency, excerpt: "Switching frequency f 0 ... 2000 Hz"}
+  Top:
+    min: -40
+    max: 100
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Ambient conditions - ambient temperature, excerpt: "-40 ... 100 °C (-40 ... 212 °F)"}
+attributes:
+  saida:
+    value: NAMUR, NF, 2 fios
+    status: extraido
+    source: {page: 1, location: General specifications, excerpt: "Switching element function NAMUR, NC"}
+  conexao:
+    value: Cabo silicone 2 m, 0,34 mm²
+    status: extraido
+    source: {page: 1, location: Mechanical specifications - connection type, excerpt: "cable silicone , 2 m"}
+  invólucro:
+    value: M12 x 1, PBT-GF20
+    status: extraido
+    source: {page: 1, location: Mechanical specifications, excerpt: "Housing material PBT-GF20"}
+  grau_protecao:
+    value: IP68
+    status: extraido
+    source: {page: 1, location: Mechanical specifications - degree of protection, excerpt: "Degree of protection IP68"}
+  certificacoes:
+    value: ATEX PTB 00 ATEX 2049 X (II 2G Ex ia IIC T6 Gb); cULus; cCSAus; NAMUR EN 60947-5-6
+    status: extraido
+    source: {page: 2, location: ATEX 2G, excerpt: "EC-Type Examination Certificate PTB 00 ATEX 2049 X"}
+  montagem:
+    value: faceado (flush)
+    status: extraido
+    source: {page: 1, location: General specifications - installation, excerpt: "Installation flush"}

@@ -153,3 +153,31 @@ aquecedor e planta de bombeamento; cinco exemplos, incluindo o bombeamento com p
 Ficaram para depois: motor de indução, inversor V/f, soft-starter, motor de passo, os exemplos de
 partida de motor e de posicionamento, termopar, e o esquema de categoria no catálogo. Detalhes em
 `docs/validacao/microcontroladores-clp.md`.
+
+## D13. Catálogo de dispositivos reais além da eletrônica de potência (pedido do usuário em 2026-11-16) **IMPLEMENTADA na Fase 12 (aguardando revisão)**
+
+Pedido do usuário: "verifique todos, busque os datasheet e cadastre eles no sistema"; e, quando
+não houver datasheet, "procure por manuais. O importante é ter o dispositivo cadastrado no sistema,
+com suas especificações reais, para que eu possa simular e projetar circuitos com aplicações reais".
+
+Decisões tomadas na implementação (para a sua revisão):
+
+- **Esquemas novos (53, depois também UJT e microcontrolador):** passivos (resistor fixo e variável, capacitor, indutor, transformador,
+  NTC, PTC, varistor, fusível), eletromecânicos (relé, SSR, chave), optoeletrônica (LED,
+  optoacoplador), CIs (digital, interface, A/D, D/A, medidor de energia, controlador PWM,
+  oscilador, amplificador de áudio, microcontrolador), placas, sensores (temperatura, umidade,
+  luz, inercial, proximidade, Hall, fotoelétrico, força, posição, encoder, nível, pressão, vazão,
+  corrente, tensão), instrumentos (transmissor, controlador), atuadores (válvula, elétrico),
+  automação (CLP, IHM) e acionamentos (inversor, soft-starter, motor de passo, driver, motor CA),
+  além de JFET e MOSFET canal P e regulador chaveado.
+- **Atributos em texto:** o registro ganhou `attributes` (valor em texto, página, status) para
+  especificações qualitativas: tipo de saída, protocolo, grau IP, material.
+- **Faixas:** uma faixa do documento ("10 ... 30 V") é mín. e máx. de um símbolo; num documento de
+  série, os valores são a faixa da série, dito nas notas do registro.
+- **Datasheet sem link:** permitido quando o PDF é a cópia local do usuário registrada na fila
+  pelo SHA-256 (o teste de rastreabilidade confere).
+- **Documento substituto:** manual, informação técnica ou catálogo do fabricante quando não há
+  datasheet; cópia de distribuidor ou de terceiros quando o fabricante bloqueia o download,
+  marcada na nota da fila.
+- Todo registro novo é **rascunho**, "Claude (transcrição assistida)": nada entra na seleção
+  automática antes da sua revisão (regra 5).

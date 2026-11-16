@@ -1,0 +1,67 @@
+# Fonte: WEG, Soft-Starter SSW-07 User Manual, documento 0899.5832 / 16, 06/2024 (inglês, espanhol e português).
+part_number: SSW07
+category: drive.soft_starter
+schema_version: '1.0'
+manufacturer: WEG
+family: SSW-07
+lifecycle: desconhecido
+notes:
+- 'Valores da série SSW-07 (modelos 17 A a 412 A); faixas entre os modelos. Numeração de páginas = páginas do PDF; o PDF repete o conteúdo em três idiomas (usada a seção em inglês).'
+- 'Potência do motor por modelo não transcrita (tabelas 8.1 e 8.2 não consultadas).'
+- 'Partidas por hora (sem ventilação): 10 (modelos 17 A a 30 A), 3 (45 A a 200 A) e 10 (255 A a 412 A); com kit de ventilação 10 (45 A a 200 A) (p. 57).'
+- 'Capacidade de partida: 3 x In durante 30 s (p. 57). Entradas digitais 3, em corrente alternada (nível alto mín. 93 Vac), 2 relés NA 240 Vac 1 A (p. 57).'
+- 'Alimentação de controle: 110 a 240 Vac (modelos 17 A a 200 A); 110 a 130 Vac ou 208 a 240 Vac (255 A a 412 A) (p. 57).'
+- 'Fila de transcrição: novo link de site agregador (conferir).'
+datasheets:
+- id: ds1
+  manufacturer: WEG
+  document_number: 0899.5832 / 16
+  revision: 06/2024
+  url: https://www.nuvair.com/manuals/WEG-SSW07-User-Manual.pdf
+  sha256: e8f09dce77e1b8352110e66572ec147e2c3c1ed01dc453176d7ec78ea5a7f727
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_rated:
+    min: 17
+    max: 412
+    unit: A
+    status: extraido
+    source: {page: 11, location: How to specify the SSW-07 model - Nominal Current, excerpt: "0017 = 17 A ... 0412 = 412 A"}
+  V_line:
+    min: 220
+    max: 575
+    unit: V
+    status: extraido
+    source: {page: 57, location: 8.3 Power data - Power Voltage, excerpt: "(220 to 575) Vac (-15 % to +10 %)"}
+  V_ctrl:
+    min: 110
+    max: 240
+    unit: V
+    status: extraido
+    source: {page: 57, location: 8.4 Electronics data - Control voltage (A1, A2), excerpt: "(110 to 240) Vac (-15 % to +10 %), models from 17 A to 200 A"}
+  starts_h:
+    max: 10
+    unit: '1'
+    status: extraido
+    source: {page: 57, location: 8.3 Power data - Maximum number of starts per hour, excerpt: "10 (1 every 6 minutes; models from 17 A to 30 A)"}
+  Top:
+    min: 0
+    max: 55
+    unit: °C
+    status: extraido
+    source: {page: 13, location: 3.1 Allowed environmental conditions - Surrounding air temperature, excerpt: "0 ºC to 55 ºC (32 ºF to 131 ºF) - nominal conditions"}
+attributes:
+  controle:
+    value: Rampa de tensão e limitação de corrente; contator de bypass
+    status: extraido
+    source: {page: 57, location: 8.4 Electronics data - Control Method / Protections (By-pass), excerpt: "Voltage ramp; Current limitation."}
+  comunicacao:
+    value: Kit plug-in opcional RS-485; cabo RS-232 opcional
+    status: extraido
+    source: {page: 55, location: Chapter 7 - Optional kits, excerpt: "Plug-in Kit for RS-485 Communication; 10 m RS-232 Connection Cable"}
+  grau_protecao:
+    value: IP20 (17 A a 85 A) e IP00 (130 A a 412 A); kit IP20 opcional
+    status: extraido
+    source: {page: 11, location: How to specify the SSW-07 model - standard product, excerpt: "IP20 from 17 A to 85 A and IP00 from 130 A to 412 A."}

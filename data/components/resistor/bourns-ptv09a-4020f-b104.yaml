@@ -1,0 +1,63 @@
+# Fonte: Bourns, PTV09 Series - 9 mm Potentiometer (datasheet).
+part_number: PTV09A-4020F-B104
+category: resistor.variable
+schema_version: '1.0'
+manufacturer: Bourns
+family: PTV09
+package: PTV09A, 9 mm, sem bucha horizontal (terminal 4), eixo isolado plano 20 mm, sem detente
+lifecycle: desconhecido
+notes:
+- 'Decodificação pelo How To Order: B = taper linear, 104 = 100000 ohm. Demais valores são da série PTV09 (potência e tensão válidas para linear e audio).'
+datasheets:
+- id: ds1
+  manufacturer: Bourns
+  sha256: 411cdb6a62e61f9c5bc2df76ed64ee21d7bcfbee035c1ba36beff08c43f28558
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  R:
+    typ: 100000
+    unit: ohm
+    status: extraido
+    source: {page: 1, location: Standard Resistance Table, excerpt: "100000 (código 104)"}
+  tol:
+    max: 20
+    unit: '%'
+    status: extraido
+    source: {page: 1, location: Electrical Characteristics - Standard Resistance Tolerance, excerpt: "±20 %"}
+  P_rated:
+    max: 0.05
+    unit: W
+    status: extraido
+    source: {page: 1, location: Environmental Characteristics - Power Rating, excerpt: "(Linear and Audio) 0.05 watt"}
+  V_max:
+    max: 20
+    unit: V
+    status: extraido
+    source: {page: 1, location: Environmental Characteristics - Maximum Operating Voltage, excerpt: "20 VDC, 50 VAC"}
+  rotation:
+    typ: 280
+    unit: deg
+    status: extraido
+    source: {page: 1, location: Mechanical Characteristics - Mechanical Angle, excerpt: "280 ° ±10 °"}
+  life:
+    min: 10000
+    unit: '1'
+    status: extraido
+    source: {page: 1, location: Mechanical Characteristics - Rotational Life, excerpt: "10,000 cycles"}
+  Top:
+    min: -10
+    max: 50
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Environmental Characteristics - Operating Temperature, excerpt: "-10 °C to +50 °C"}
+attributes:
+  curva:
+    value: Linear (B)
+    status: extraido
+    source: {page: 4, location: B Series Tapers / How To Order Resistance Taper, excerpt: "B Series Tapers"}
+  tipo:
+    value: Rotativo 9 mm, elemento de carbono, eixo isolado
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "Carbon element, Insulated shaft"}

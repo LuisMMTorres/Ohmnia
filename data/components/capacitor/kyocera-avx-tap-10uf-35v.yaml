@@ -1,0 +1,80 @@
+# Fonte: Kyocera AVX, TAP Series Solid Tantalum Resin Dipped Capacitors, TDS-PTNO-0026 Rev 2 (páginas 225-227 do catálogo).
+part_number: TAP 10uF 35V
+category: capacitor.fixed
+schema_version: '1.0'
+manufacturer: Kyocera AVX
+family: TAP
+package: Radial com revestimento de resina, caixa F (H máx. 11,5 mm, D máx. 6,0 mm)
+lifecycle: desconhecido
+notes:
+- 'Item da fila: TAP 10uF 35V (série TAP). Valores de C, V_rated, DCL, DF e ESR são da linha TAP 106(*)035 (caixa F) da tabela da página 3.'
+- Tensão 35 V vale até 85 °C; a 125 °C a tensão de categoria é 23 V.
+datasheets:
+- id: ds1
+  manufacturer: Kyocera AVX
+  document_number: TDS-PTNO-0026
+  revision: Rev 2
+  sha256: eca2050b3c46f8cf1504a72840e4b8ef86408edc76582d15f6a38d11e168ee8a
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  C:
+    typ: 10
+    unit: uF
+    status: extraido
+    source: {datasheet_id: ds1, page: 3, location: Ratings and part number reference - 35 volt, excerpt: "TAP 106(*)035|F|10|2.8|8|2.0"}
+  tol:
+    max: 20
+    unit: '%'
+    status: extraido
+    note: Padrão ±20 % (M); também ±10 % (K) e ±5 % (J, sob consulta).
+    source: {datasheet_id: ds1, page: 2, location: Technical Data - Capacitance Tolerance, excerpt: "±20%; ±10% (±5% consult your representative for details)"}
+  V_rated:
+    typ: 35
+    unit: V
+    status: extraido
+    conditions: {TA: 85 °C}
+    note: 23 V a 125 °C (tensão de categoria).
+    source: {datasheet_id: ds1, page: 3, location: Ratings and part number reference - 35 volt @ 85°C (23 volt @ 125°C), excerpt: "35 volt @ 85°C (23 volt @ 125°C)"}
+  V_surge:
+    max: 46
+    unit: V
+    status: extraido
+    conditions: {TA: 85 °C}
+    note: Tensão de surto 28 V a 125 °C.
+    source: {datasheet_id: ds1, page: 2, location: Technical Data - Surge Voltage (VS) at ≤ +85 °C, excerpt: "8 13 20 26 33 46 65 (coluna 35 V)"}
+  ESR:
+    max: 2.0
+    unit: ohm
+    status: extraido
+    conditions: {f: 100 kHz}
+    source: {datasheet_id: ds1, page: 3, location: Ratings and part number reference - ESR Max. (Ω) @ 100 kHz, excerpt: "TAP 106(*)035|F|10|2.8|8|2.0"}
+  tan_delta:
+    max: 0.08
+    unit: '1'
+    status: extraido
+    conditions: {TA: 25 °C}
+    note: DF máx. 8 % (tabela, linha TAP 106(*)035); especificação geral 0,08 para 10 a 68 µF.
+    source: {datasheet_id: ds1, page: 2, location: Technical Data - Dissipation Factor, excerpt: "≤0.08 for CR 10-68μF"}
+  I_leak:
+    max: 2.8
+    unit: uA
+    status: extraido
+    conditions: {TA: 25 °C}
+    source: {datasheet_id: ds1, page: 3, location: Ratings and part number reference - DCL Max. (μA), excerpt: "TAP 106(*)035|F|10|2.8|8|2.0"}
+  Top:
+    min: -55
+    max: 125
+    unit: °C
+    status: extraido
+    source: {datasheet_id: ds1, page: 2, location: Technical Data - Temperature Range, excerpt: "-55°C to +125°C"}
+attributes:
+  dieletrico:
+    value: Tântalo sólido, revestido por resina (dipped), retardante de chama
+    status: extraido
+    source: {datasheet_id: ds1, page: 1, location: Título - Solid Tantalum Resin Dipped Capacitors}
+  montagem:
+    value: Radial com terminais de fio; caixa F, dimensões máximas H 11,5 mm, D 6,0 mm
+    status: extraido
+    source: {datasheet_id: ds1, page: 1, location: Maximum case dimensions - case F}

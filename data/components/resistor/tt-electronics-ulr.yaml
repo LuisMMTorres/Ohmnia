@@ -1,0 +1,63 @@
+# Fonte: TT Electronics, Metal Element Current Sense Resistors ULR Series (datasheet ULR.pdf), 10.26.
+part_number: ULR
+category: resistor.fixed
+schema_version: '1.0'
+manufacturer: TT Electronics
+family: ULR
+package: Tamanhos 1206, 2010, 1020, 2512 e 1225 (p. 1)
+lifecycle: desconhecido
+notes:
+- 'Valores da série ULR (resistor de medição de corrente, elemento metálico); faixas entre os modelos (p. 1).'
+- 'Potência: 1 W a 5 W; nominal a 80 °C nos tipos Green e a 70 °C nos tipos Black (p. 1).'
+- 'TCR varia por modelo e valor: de 50 ppm/°C a 500 ppm/°C (p. 1).'
+- 'Rigidez dielétrica (tipos Black): 200 V (p. 1); não há símbolo no esquema.'
+datasheets:
+- id: ds1
+  manufacturer: TT Electronics
+  revision: '10.26'
+  url: https://www.ttelectronics.com/TTElectronics/media/ProductFiles/Datasheet/ULR.pdf
+  sha256: cf113033be10958988aa4229afe363c3145b226f70cba1738ec760ec2c6bd756
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  R:
+    min: 0.0001
+    max: 0.01
+    unit: ohm
+    status: extraido
+    source: {page: 1, location: Features - resistance range, excerpt: "Resistance range from 0.1 to 10mΩ"}
+  tol:
+    min: 1
+    max: 5
+    unit: '%'
+    status: extraido
+    source: {page: 1, location: Electrical Data - Resistance tolerance, excerpt: "Resistance tolerance % 1, 5"}
+  P_rated:
+    min: 1
+    max: 5
+    unit: W
+    conditions: {TA: 80 °C}
+    status: extraido
+    source: {page: 1, location: Electrical Data - Power rating (Green 80 °C; Black 70 °C), excerpt: "Power rating @80°C W 1 1.5 2 ... 5"}
+  TCR:
+    min: 50
+    max: 500
+    unit: ppm/K
+    status: extraido
+    source: {page: 1, location: Electrical Data - TCR (varia por valor), excerpt: "TCR ppm/°C ... <0.2: 500"}
+  Top:
+    min: -55
+    max: 170
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Electrical Data - Ambient temperature, excerpt: "Ambient temperature °C -55 to 170"}
+attributes:
+  tecnologia:
+    value: Elemento metálico (liga de baixo TCR), SMD, medição de corrente
+    status: extraido
+    source: {page: 3, location: Construction, excerpt: "A low TCR resistance alloy plate"}
+  encapsulamento:
+    value: 1206, 2010, 1020, 2512, 1225
+    status: extraido
+    source: {page: 1, location: Electrical Data - Size, excerpt: "Size 1206 2010 1020 2512"}

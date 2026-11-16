@@ -1,0 +1,285 @@
+# Fonte: Unisonic Technologies (UTC), MCR100 'Sensitive gate silicon controlled rectifiers', QW-R301-016.I, Copyright 2020.
+part_number: MCR100-6
+category: thyristor.scr
+schema_version: '1.0'
+manufacturer: Unisonic Technologies (UTC)
+family: MCR100
+lifecycle: desconhecido
+notes:
+- O PDF baixado é da Unisonic Technologies (UTC), MCR100, e não da onsemi como constava na fila; fabricante registrado conforme o documento.
+- A folha cobre MCR100-4/-6/-8 (200/400/600 V) em SOT-223, SOT-89, SOT-23 e TO-92; VDRM/VRRM transcritos da linha MCR100-6. Rth_ja transcrito para TO-92; o encapsulamento da peça não é definido pela fila.
+- 'Colunas de IGT confirmadas na imagem da página 3: 30 é mínimo e 100 é máximo; VAK = 7 V foi registrado como VD.'
+- 'ITSM: o documento diz meio ciclo senoidal de 60 Hz sem informar a duração em ms; 8,3 ms é a duração calculada, igual à usada em I2t (t = 8,3 ms).'
+datasheets:
+- id: ds1
+  manufacturer: Unisonic Technologies (UTC)
+  document_number: QW-R301-016.I
+  revision: Copyright 2020
+  url: https://atta.szlcsc.com/upload/public/pdf/source/20211228/CA8EDEB66B0190CEC05716A57800B7D7.pdf
+  sha256: 00f03d84c0849446763c2e06f7ca2711545b278033613ee7d4349ee0c4fd3689
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VDRM:
+    max: 400
+    unit: V
+    note: TJ = -40 a 110 °C, porta aberta
+    status: extraido
+    source:
+      page: 3
+      location: Absolute maximum ratings - peak repetitive off-state voltage, MCR100-6
+      excerpt: MCR100-6 VDRM,VRRM 400 V
+  VRRM:
+    max: 400
+    unit: V
+    status: extraido
+    source:
+      page: 3
+      location: Absolute maximum ratings - peak repetitive off-state voltage, MCR100-6
+      excerpt: MCR100-6 VDRM,VRRM 400 V
+  IT(RMS):
+    max: 0.8
+    unit: A
+    conditions:
+      TC: 80 degC
+    status: extraido
+    source:
+      page: 3
+      location: Absolute maximum ratings - on-state RMS current
+      excerpt: On-State RMS Current (Tc=80°C) 180° conduction angles IT(RMS) 0.8 A
+  ITSM:
+    max: 10
+    unit: A
+    conditions:
+      t_pulse: 8.3 ms
+      Tj: 25 degC
+    note: meio ciclo senoidal de 60 Hz; 8,3 ms é a duração calculada desse meio ciclo
+    status: extraido
+    source:
+      page: 3
+      location: Absolute maximum ratings - peak non-repetitive surge current
+      excerpt: ITSM (1/2 cycle, sine wave, 60 Hz, TJ=25°C) 10 A
+  I2t:
+    max: 0.415
+    unit: A**2*s
+    conditions:
+      t_pulse: 8.3 ms
+    status: extraido
+    source:
+      page: 3
+      location: Absolute maximum ratings - circuit fusing considerations
+      excerpt: Circuit Fusing Considerations (t=8.3 ms) I2t 0.415 A2s
+  PGM:
+    max: 0.1
+    unit: W
+    status: extraido
+    source:
+      page: 3
+      location: Absolute maximum ratings - forward peak gate power
+      excerpt: Forward Peak Gate Power (TA=25°C, Pulse Width ≤1.0µs) PGM 0.1 W
+  PG(AV):
+    max: 0.01
+    unit: W
+    status: extraido
+    source:
+      page: 3
+      location: Absolute maximum ratings - forward average gate power
+      excerpt: Forward Average Gate Power (TA=25°C, t=8.3ms) PG(AV) 0.01 W
+  IGM:
+    max: 1
+    unit: A
+    status: extraido
+    source:
+      page: 3
+      location: Absolute maximum ratings - peak gate current, forward
+      excerpt: Peak Gate Current - Forward (TA=25°C, Pulse Width≤1.0µs) IGM 1 A
+  VRGM:
+    max: 5
+    unit: V
+    note: símbolo VGRM na folha
+    status: extraido
+    source:
+      page: 3
+      location: Absolute maximum ratings - peak gate voltage, reverse
+      excerpt: Peak Gate Voltage - Reverse VGRM 5 V
+  Tj_min:
+    max: -40
+    unit: degC
+    note: limite inferior da faixa de junção
+    status: extraido
+    source:
+      page: 3
+      location: Absolute maximum ratings - operating junction temperature range
+      excerpt: Operating Junction Temperature Range TJ -40 ~ +110 °C
+  Tj_max:
+    max: 110
+    unit: degC
+    status: extraido
+    source:
+      page: 3
+      location: Absolute maximum ratings - operating junction temperature range
+      excerpt: Operating Junction Temperature Range TJ -40 ~ +110 °C
+  Tstg_max:
+    max: 150
+    unit: degC
+    note: 'faixa de armazenamento: -40 a 150 °C'
+    status: extraido
+    source:
+      page: 3
+      location: Absolute maximum ratings - storage temperature range
+      excerpt: Storage Temperature Range TSTG -40 ~ +150 °C
+  Rth_ja:
+    max: 200
+    unit: K/W
+    note: 'TO-92; SOT-223: 180 °C/W; SOT-23 e SOT-89: 400 °C/W'
+    status: extraido
+    source:
+      page: 3
+      location: Thermal data - junction to ambient
+      excerpt: Junction to Ambient TO-92 θJA 200 °C/W
+  IDRM:
+    max: 10
+    unit: uA
+    conditions:
+      TC: 25 degC
+    note: com RGK = 1 kohm
+    status: extraido
+    source:
+      page: 3
+      location: Electrical characteristics - peak forward or reverse blocking current
+      excerpt: IDRM, IRRM VD=Rated VDRM and VRRM; RGK=1kΩ; TC=25°C 10 µA
+  IDRM@2:
+    max: 100
+    unit: uA
+    conditions:
+      TC: 110 degC
+    note: com RGK = 1 kohm
+    status: extraido
+    source:
+      page: 3
+      location: Electrical characteristics - peak forward or reverse blocking current
+      excerpt: IDRM, IRRM VD=Rated VDRM and VRRM; RGK=1kΩ; TC=110°C 100 µA
+  VTM:
+    max: 1.7
+    unit: V
+    conditions:
+      ITM: 1 A
+      TA: 25 degC
+    note: pulso ≤ 1,0 ms, ciclo ≤ 1 % (nota 2)
+    status: extraido
+    source:
+      page: 3
+      location: Electrical characteristics - peak forward on-state voltage
+      excerpt: VTM ITM=1A Peak @ TA=25°C 1.7 V
+  IGT:
+    min: 30
+    max: 100
+    unit: uA
+    conditions:
+      VD: 7 V
+      RL: 100 ohm
+      TC: 25 degC
+    note: não inclui RGK na medição (nota 3)
+    status: extraido
+    source:
+      page: 3
+      location: Electrical characteristics - gate trigger current (continuous DC)
+      excerpt: 'IGT VAK=7Vdc, RL=100Ω, TC=25°C: min 30, max 100 µA'
+  IH:
+    typ: 0.5
+    max: 5
+    unit: mA
+    conditions:
+      VD: 7 V
+      TC: 25 degC
+    note: corrente de disparo inicial 20 mA
+    status: extraido
+    source:
+      page: 3
+      location: Electrical characteristics - holding current, TC = 25 C
+      excerpt: 'IH VAK=7Vdc, initiating current=20mA, TC=25°C: typ 0.5, max 5 mA'
+  IH@2:
+    max: 10
+    unit: mA
+    conditions:
+      VD: 7 V
+      TC: -40 degC
+    note: corrente de disparo inicial 20 mA
+    status: extraido
+    source:
+      page: 3
+      location: Electrical characteristics - holding current, TC = -40 C
+      excerpt: 'IH VAK=7Vdc, initiating current=20mA, TC=-40°C: max 10 mA'
+  IL:
+    typ: 0.6
+    max: 10
+    unit: mA
+    conditions:
+      VD: 7 V
+      IG: 200 uA
+      TC: 25 degC
+    status: extraido
+    source:
+      page: 3
+      location: Electrical characteristics - latch current, TC = 25 C
+      excerpt: 'IL VAK=7V, Ig=200µA, TC=25°C: typ 0.6, max 10 mA'
+  IL@2:
+    max: 15
+    unit: mA
+    conditions:
+      VD: 7 V
+      IG: 200 uA
+      TC: -40 degC
+    status: extraido
+    source:
+      page: 3
+      location: Electrical characteristics - latch current, TC = -40 C
+      excerpt: 'IL VAK=7V, Ig=200µA, TC=-40°C: max 15 mA'
+  VGT:
+    typ: 0.62
+    max: 0.8
+    unit: V
+    conditions:
+      VD: 7 V
+      RL: 100 ohm
+      TC: 25 degC
+    status: extraido
+    source:
+      page: 3
+      location: Electrical characteristics - gate trigger voltage (continuous dc), TC = 25 C
+      excerpt: 'VGT VAK=7Vdc, RL=100Ω, TC=25°C: typ 0.62, max 0.8 V'
+  VGT@2:
+    max: 1.2
+    unit: V
+    conditions:
+      VD: 7 V
+      RL: 100 ohm
+      TC: -40 degC
+    status: extraido
+    source:
+      page: 3
+      location: Electrical characteristics - gate trigger voltage (continuous dc), TC = -40 C
+      excerpt: 'VGT VAK=7Vdc, RL=100Ω, TC=-40°C: max 1.2 V'
+  dv/dt:
+    min: 20
+    typ: 35
+    unit: V/us
+    conditions:
+      Tj: 110 degC
+    note: VD = VDRM nominal; RGK = 1 kohm
+    status: extraido
+    source:
+      page: 3
+      location: Dynamic characteristics - critical rate of rise of off-state voltage
+      excerpt: 'dV/dt VD=Rated VDRM, exponential waveform, RGK=1000Ω, TJ=110°C: min 20, typ 35 V/µs'
+  di/dt:
+    max: 50
+    unit: A/us
+    note: IPK = 20 A; Pw = 10 us; diG/dt = 1 A/us; IGT = 20 mA
+    status: extraido
+    source:
+      page: 3
+      location: Dynamic characteristics - critical rate of rise of on-state current
+      excerpt: di/dt IPK=20A; Pw=10µsec; diG/dt=1A/µsec, Igt=20mA 50 A/µs
+attributes: {}

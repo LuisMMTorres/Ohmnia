@@ -1,0 +1,97 @@
+# Fonte: Kingbright, datasheet WP7113QBC/D T-1 3/4 (5mm) Solid State Lamp, Spec No DSAG3481 / 1101005179, Rev V.18B, 26/03/2025.
+part_number: WP7113QBC-D
+category: optoelectronic.led
+schema_version: '1.0'
+manufacturer: Kingbright
+package: T-1 3/4 (5 mm), lente water clear
+lifecycle: desconhecido
+notes:
+- LED azul InGaN, 5 mm; part number no documento WP7113QBC/D
+- Iv a 20 mA, min 3100 mcd, tipico 4500 mcd (Selection Guide, p. 1)
+- Tolerancia de VF +/-0.1 V; dominante +/-1 nm
+datasheets:
+- id: ds1
+  manufacturer: Kingbright
+  document_number: DSAG3481 / 1101005179
+  revision: V.18B (26/03/2025)
+  sha256: ff6fcadbd0c1616d3a2db19c43754dd22731ae50bc7efdc9c3c531c13487eca5
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VF:
+    typ: 3.3
+    max: 4.0
+    unit: V
+    status: extraido
+    conditions: {IF: 20 mA, TA: 25 °C}
+    source: {page: 2, location: Electrical / Optical Characteristics - Forward Voltage, excerpt: "Forward Voltage IF = 20mA VF Blue 3.3 4.0 V"}
+  IF:
+    max: 30
+    unit: mA
+    status: extraido
+    conditions: {TA: 25 °C}
+    source: {page: 2, location: Absolute Maximum Ratings - DC Forward Current, excerpt: "DC Forward Current IF 30 mA"}
+  IF_peak:
+    max: 150
+    unit: mA
+    status: extraido
+    conditions: {pulse_width: 0.1 ms, duty: 10 %}
+    source: {page: 2, location: Absolute Maximum Ratings - Peak Forward Current (nota 1), excerpt: "IFP 150 mA; 1/10 Duty Cycle, 0.1ms Pulse Width"}
+  VR:
+    max: 5
+    unit: V
+    status: extraido
+    conditions: {TA: 25 °C}
+    source: {page: 2, location: Absolute Maximum Ratings - Reverse Voltage, excerpt: "Reverse Voltage VR 5 V"}
+  P_diss:
+    max: 120
+    unit: mW
+    status: extraido
+    conditions: {TA: 25 °C}
+    source: {page: 2, location: Absolute Maximum Ratings - Power Dissipation, excerpt: "Power Dissipation PD 120 mW"}
+  lambda:
+    typ: 465
+    unit: nm
+    status: extraido
+    conditions: {IF: 20 mA}
+    source: {page: 2, location: Electrical / Optical Characteristics - Dominant Wavelength, excerpt: "Dominant Wavelength IF = 20mA λdom Blue 465 nm"}
+  lambda@2:
+    typ: 460
+    unit: nm
+    status: extraido
+    conditions: {IF: 20 mA}
+    source: {page: 2, location: Electrical / Optical Characteristics - Peak Emission Wavelength, excerpt: "Wavelength at Peak Emission IF = 20mA λpeak Blue 460 nm"}
+  Iv:
+    min: 3100
+    typ: 4500
+    unit: mcd
+    status: extraido
+    conditions: {IF: 20 mA}
+    source: {page: 1, location: Selection Guide - Iv, excerpt: "WP7113QBC/D Blue (InGaN) Water Clear 3100 4500 20°"}
+  angle:
+    typ: 20
+    unit: deg
+    status: extraido
+    source: {page: 1, location: Selection Guide - Viewing Angle 2θ1/2, excerpt: "Water Clear 3100 4500 20°"}
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Absolute Maximum Ratings - Operating Temperature, excerpt: "Operating Temperature Top -40 to +85 °C"}
+  Tstg:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Absolute Maximum Ratings - Storage Temperature, excerpt: "Storage Temperature Tstg -40 to +85 °C"}
+attributes:
+  cor:
+    value: Azul (InGaN), lente water clear
+    status: extraido
+    source: {page: 1, location: Selection Guide, excerpt: "Blue (InGaN) Water Clear"}
+  encapsulamento:
+    value: T-1 3/4 (5 mm) Solid State Lamp
+    status: extraido
+    source: {page: 1, location: Package Dimensions, excerpt: "T-1 3/4 (5mm) Solid State Lamp"}

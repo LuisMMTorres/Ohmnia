@@ -1,0 +1,102 @@
+# Fonte: Schneider Electric, Product datasheet XMLP016BC21F (OsiSense XM, XMLP), 07.06.2019.
+part_number: XMLP016BC21V
+category: sensor.pressure
+schema_version: '1.0'
+manufacturer: Schneider Electric
+family: OsiSense XM / XMLP
+package: rosca G 1/4"A macho (DIN 3852-E), diâmetro 26 mm, comprimento 60,6 mm
+lifecycle: desconhecido
+notes:
+- "Nome na fila: XMLP016BC21V. O documento baixado é do modelo irmão XMLP016BC21F (em alemão), não do XMLP016BC21V; conferir se as características coincidem."
+- "T_process: faixa máxima entre os fluidos (ar -30-135 °C, água 0-135 °C, óleo hidráulico, gás e refrigerante -30-135 °C) (p. 1)."
+- "IS: consumo declarado como Leistungsaufnahme < 23 mA (p. 1). Tensão nominal 12-24 V DC SELV (limites 7-33 V) (p. 1)."
+- "Exatidão: Messgenauigkeit ±0,5 % da faixa; o documento também cita Genauigkeit 0.1 % da faixa (p. 2); desvios de sensibilidade e de zero ±0,02 % da faixa/K (p. 2)."
+- "Pressão de destruição 96 bar (p. 1)."
+datasheets:
+- id: ds1
+  manufacturer: Schneider Electric
+  document_number: XMLP016BC21F
+  revision: '07.06.2019'
+  url: https://docs.rs-online.com/13fd/0900766b816fdc34.pdf
+  sha256: fde25c9dac4a9aa6f98292aa47b0f4b30788e6d7ba48b5cc0054a532c6b1829f
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  range_bar:
+    min: 0
+    max: 16
+    unit: bar
+    status: extraido
+    source: {page: 1, location: Zusatzmerkmale - Einstellbereich des Drucksensors, excerpt: "Einstellbereich des Drucksensors 0-16 Bar"}
+  overpressure:
+    max: 48
+    unit: bar
+    status: extraido
+    source: {page: 1, location: Zusatzmerkmale - Maximal zulässiger akzidenteller Druck, excerpt: "Maximal zulässiger akzidentieller Druck 48 bar"}
+  VS:
+    min: 7
+    max: 33
+    unit: V
+    status: extraido
+    source: {page: 1, location: Hauptmerkmale - Nennhilfsspannung, excerpt: "12-24 V DC SELV, Spannungsgrenzen: 7-33 V"}
+  IS:
+    max: 23
+    unit: mA
+    status: extraido
+    source: {page: 1, location: Hauptmerkmale - Leistungsaufnahme, excerpt: "Leistungsaufnahme < 23 mA"}
+  I_out:
+    min: 4
+    max: 20
+    unit: mA
+    status: extraido
+    source: {page: 1, location: Hauptmerkmale - Analoge Ausgangsfunktion, excerpt: "4...20 mA, 2-drahtig"}
+  accuracy:
+    max: 0.5
+    unit: '%'
+    status: extraido
+    source: {page: 2, location: Messgenauigkeit, excerpt: "+/- 0,5 % des Messbereichs"}
+  t_resp:
+    max: 2
+    unit: ms
+    status: extraido
+    source: {page: 2, location: Reaktionszeit am Ausgang, excerpt: "<= 2 ms für 10-90 % bei Gesamtskala"}
+  T_process:
+    min: -30
+    max: 135
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Hauptmerkmale - Kontrollierte Flüssigkeit, excerpt: "Luft -30-135 °C"}
+  Top:
+    min: -30
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Umgebungstemperatur bei Betrieb, excerpt: "-30-85 °C"}
+  Tstg:
+    min: -50
+    max: 100
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Umgebungstemperatur bei Lagerung, excerpt: "-50-100 °C"}
+attributes:
+  saida:
+    value: "Analógica 4-20 mA, 2 fios"
+    status: extraido
+    source: {page: 1, location: Hauptmerkmale - Typ des Ausgangssignals / Analoge Ausgangsfunktion, excerpt: "4...20 mA, 2-drahtig"}
+  conexao:
+    value: "Conector EN 175301-803-A (ex DIN43650) 3 pólos"
+    status: extraido
+    source: {page: 1, location: Hauptmerkmale - Elektrische Verbindung}
+  invólucro:
+    value: "Processo G 1/4\"A macho (DIN 3852-E); partes molhadas aço inox AISI 316L e fluorcarbono FPM"
+    status: extraido
+    source: {page: 1, location: Prozessanschluss / Materialien in Kontakt mit Flüssigkeiten}
+  grau_protecao:
+    value: IP65
+    status: extraido
+    source: {page: 2, location: Schutzart (IP), excerpt: "IP65 entspricht EN/IEC 60529"}
+  certificacoes:
+    value: RCM; CE; cULus; EAC; NSF ANSI 61
+    status: extraido
+    source: {page: 2, location: Normen / Produktzertifizierungen}

@@ -1,0 +1,212 @@
+# Fonte: Texas Instruments, SN74HC74, SN54HC74 (SCLS094F, revisado em junho de 2021).
+part_number: 74HC74
+category: ic.digital
+schema_version: '1.0'
+manufacturer: Texas Instruments
+family: SN74HC (74HC)
+lifecycle: desconhecido
+notes:
+- Documento SN74HC74, SN54HC74 (SCLS094F, revisado em junho de 2021); folha comum às versões SN54HC (militar) e SN74HC (comercial); valores transcritos da coluna comercial SN74HC.
+- 'Colunas de temperatura: valores a 25 °C e de -40 a 85 °C; os pares com sufixo @2 repetem o símbolo com outra condição. VIH, VIL e IOH/IOL máx. valem para toda a faixa; VOH/VOL em VCC = 4,5 V.'
+- Corrente de saída contínua máx. de ±25 mA (limite absoluto) registrada em IOH e IOL; corrente por VCC ou GND ±50 mA (pág. 4).
+- Valores do ICC a 25 °C são máximos (2 uA) e a 85 °C máximos (20 uA), conforme colunas MAX da tabela.
+- 'tpd: transcrito de CLK para Q ou Q-barra (35 ns máx. a 25 °C, 44 ns máx. de -40 a 85 °C, VCC = 4,5 V); de PRE ou CLR para Q: típ. 20, máx. 46 ns a 25 °C e 58 ns de -40 a 85 °C (pág. 7).'
+- 'ICC: 4 uA máx. a 25 °C e 40 uA máx. de -40 a 85 °C (pág. 5; colunas MAX).'
+- 'Requisitos de tempo (pág. 6, VCC = 4,5 V, -40 a 85 °C): fclock máx. 25 MHz mín.; largura de pulso CLK 20 ns, PRE/CLR 25 ns; setup de dados 25 ns; hold 0 ns. O esquema não tem esses símbolos.'
+datasheets:
+- id: ds1
+  manufacturer: Texas Instruments
+  document_number: SCLS094F
+  revision: JUNE 2021
+  sha256: a4043d37d693a2997900a0542dd226b9b61285794f3c1a541adb99cc7dcb1ae2
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 2
+    typ: 5
+    max: 6
+    unit: V
+    status: extraido
+    source:
+      page: 4
+      location: Recommended operating conditions - supply voltage
+      excerpt: VCC Supply voltage 2 5 6 V
+  VIH:
+    min: 3.15
+    unit: V
+    status: extraido
+    conditions:
+      VCC: 4.5 V
+    source:
+      page: 4
+      location: Recommended operating conditions - high-level input voltage VCC = 4.5 V
+      excerpt: VIH High-level input voltage VCC = 4.5 V 3.15
+  VIL:
+    max: 1.35
+    unit: V
+    status: extraido
+    conditions:
+      VCC: 4.5 V
+    source:
+      page: 4
+      location: Recommended operating conditions - low-level input voltage VCC = 4.5 V
+      excerpt: VIL Low-level input voltage VCC = 4.5 V 1.35
+  VOH:
+    min: 4.4
+    typ: 4.499
+    unit: V
+    status: extraido
+    conditions:
+      VCC: 4.5 V
+      IOH: -20 uA
+      TA: 25 °C
+    source:
+      page: 5
+      location: Electrical characteristics - high-level output voltage, TA = 25 C, VCC = 4.5 V
+      excerpt: IOH = -20 uA 4.5 V 4.4 4.499
+  VOH@2:
+    min: 3.98
+    typ: 4.3
+    unit: V
+    status: extraido
+    conditions:
+      VCC: 4.5 V
+      IOH: -4 mA
+      TA: 25 °C
+    source:
+      page: 5
+      location: Electrical characteristics - high-level output voltage, TA = 25 C, VCC = 4.5 V
+      excerpt: IOH = -4 mA 4.5 V 3.98 4.3
+  VOL:
+    typ: 0.001
+    max: 0.1
+    unit: V
+    status: extraido
+    conditions:
+      VCC: 4.5 V
+      IOL: 20 uA
+      TA: 25 °C
+    source:
+      page: 5
+      location: Electrical characteristics - low-level output voltage, TA = 25 C, VCC = 4.5 V
+      excerpt: IOL = 20 uA 4.5 V 0.001 0.1
+  VOL@2:
+    typ: 0.17
+    max: 0.26
+    unit: V
+    status: extraido
+    conditions:
+      VCC: 4.5 V
+      IOL: 4 mA
+      TA: 25 °C
+    source:
+      page: 5
+      location: Electrical characteristics - low-level output voltage, TA = 25 C, VCC = 4.5 V
+      excerpt: IOL = 4 mA 4.5 V 0.17 0.26
+  IOH:
+    max: 25
+    unit: mA
+    status: extraido
+    source:
+      page: 4
+      location: Absolute maximum ratings - continuous output current (+-25 mA)
+      excerpt: IO Continuous output current VO = 0 to VCC +-25 mA
+  IOL:
+    max: 25
+    unit: mA
+    status: extraido
+    source:
+      page: 4
+      location: Absolute maximum ratings - continuous output current (+-25 mA)
+      excerpt: IO Continuous output current VO = 0 to VCC +-25 mA
+  tpd:
+    typ: 20
+    unit: ns
+    status: extraido
+    conditions:
+      VCC: 4.5 V
+      TA: 25 °C
+    source:
+      page: 7
+      location: Switching characteristics - propagation delay CLK to Q or Q-bar, TA = 25 C, VCC = 4.5 V
+      excerpt: CLK Q or Q 2 V 70 175 220 ns 4.5 V 20 35 44
+  tpd@2:
+    max: 44
+    unit: ns
+    status: extraido
+    conditions:
+      VCC: 4.5 V
+      TA: 85 °C
+    source:
+      page: 7
+      location: Switching characteristics - propagation delay CLK to Q or Q-bar, TA = -40 to 85 C, VCC = 4.5 V
+      excerpt: CLK Q or Q 4.5 V 20 35 44
+  ICC:
+    max: 4
+    unit: uA
+    status: extraido
+    conditions:
+      VCC: 6 V
+      TA: 25 °C
+    source:
+      page: 5
+      location: Electrical characteristics - supply current, VI = VCC or 0, VCC = 6 V, TA = 25 C
+      excerpt: ICC Supply current VI = VCC or 0 IO = 0 6 V 4 40
+  ICC@2:
+    max: 40
+    unit: uA
+    status: extraido
+    conditions:
+      VCC: 6 V
+      TA: 85 °C
+    source:
+      page: 5
+      location: Electrical characteristics - supply current, VI = VCC or 0, VCC = 6 V, TA = -40 to 85 C
+      excerpt: ICC Supply current VI = VCC or 0 IO = 0 6 V 4 40
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source:
+      page: 4
+      location: Recommended operating conditions - operating free-air temperature SN74HC
+      excerpt: SN74HC.. -40 85
+  Tstg:
+    min: -65
+    max: 150
+    unit: °C
+    status: extraido
+    source:
+      page: 4
+      location: Absolute maximum ratings - storage temperature
+      excerpt: Tstg Storage temperature
+  f_max:
+    min: 31
+    typ: 50
+    unit: MHz
+    status: extraido
+    conditions:
+      VCC: 4.5 V
+      TA: 25 °C
+    source:
+      page: 7
+      location: Switching characteristics - fmax, VCC = 4.5 V, TA = 25 C
+      excerpt: fmax 4.5 V 31 50 25
+attributes:
+  familia:
+    value: 74HC (CMOS de alta velocidade)
+    status: extraido
+    source:
+      page: 1
+      location: Features
+      excerpt: 'Wide operating voltage range: 2 V to 6 V'
+  funcao:
+    value: Dois flip-flops tipo D com disparo por borda de subida, com preset e clear
+    status: extraido
+    source:
+      page: 1
+      location: Título do documento
+      excerpt: Dois flip-flops tipo D com disparo por borda de subida, com preset e clear

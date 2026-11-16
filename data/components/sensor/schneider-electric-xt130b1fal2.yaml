@@ -1,0 +1,95 @@
+# Fonte: Schneider Electric (Telemecanique Sensors), Product data sheet XT130B1FAL2, 11/10/2026.
+part_number: XT130B1FAL2
+category: sensor.proximity
+schema_version: '1.0'
+manufacturer: Schneider Electric
+family: XT1 (sensor capacitivo)
+package: M30 x 1,5, cilíndrico
+lifecycle: desconhecido
+notes:
+- Sensor capacitivo M30, latão, Sn 10 mm, NA, cabo 2 m, 24...240 V AC, faceado, 2 fios (título, p. 1). Tensão nominal 24...240 V AC 50...60 Hz (p. 1).
+- Faixa de distância sensora "8...15 mm" ajustável por potenciômetro (p. 1). Repetibilidade < 0,1 x Sr (p. 1).
+- Histerese "< 0,2 x Sr" (p. 2) lançada como máx. 20 % de Sr (conversão simples), conferir.
+- Documento não informa temperatura de operação nem de armazenamento. Atraso de resposta 20 ms; atraso na energização 100 ms (p. 1-2).
+datasheets:
+- id: ds1
+  manufacturer: Schneider Electric
+  revision: 11/10/2026
+  url: https://pdf.telemecaniquesensors.com/datasheet?ref=XT130B1FAL2&lang=en
+  sha256: dfe7c8e784c4af0a1c6507f46da751ecffd17f825b15228a564c60861eee9f39
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  sn:
+    typ: 10
+    unit: mm
+    status: extraido
+    source: {page: 1, location: Main - Sn nominal sensing distance, excerpt: "[Sn] nominal sensing distance 10 mm"}
+  sr:
+    min: 8
+    max: 15
+    unit: mm
+    status: extraido
+    source: {page: 1, location: Complementary - Sensing range, excerpt: "Sensing range 8...15 mm"}
+  hysteresis:
+    max: 20
+    unit: '%'
+    status: extraido
+    source: {page: 2, location: Complementary - Differential travel, excerpt: "Differential travel < 0.2 x Sr"}
+  VS:
+    min: 20
+    max: 264
+    unit: V
+    status: extraido
+    source: {page: 1, location: Complementary - Supply voltage limits, excerpt: "Supply voltage limits 20-264 V AC"}
+  IS:
+    max: 3
+    unit: mA
+    status: extraido
+    source: {page: 1, location: Complementary - Current consumption, excerpt: "< 3 mA"}
+  IL:
+    max: 330
+    unit: mA
+    status: extraido
+    source: {page: 1, location: Complementary - Maximum switching current, excerpt: "Maximum switching current 330 mA"}
+  Vdrop:
+    max: 6
+    unit: V
+    status: extraido
+    source: {page: 1, location: Complementary - Voltage drop, excerpt: "<6 V (closed)"}
+  f_sw:
+    max: 25
+    unit: Hz
+    status: extraido
+    source: {page: 2, location: Complementary - Switching frequency, excerpt: "<= 25 Hz"}
+  Ir:
+    max: 5
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Complementary - Residual current, excerpt: "5 mA open state"}
+attributes:
+  saida:
+    value: NA (1 NO), 2 fios, CA
+    status: extraido
+    source: {page: 4, location: Wiring Diagram, excerpt: "2-wire AC NO Output"}
+  conexao:
+    value: Cabo PVC 2 m
+    status: extraido
+    source: {page: 1, location: Complementary - Electrical connection / Cable length, excerpt: "Cable; Cable length 2 m"}
+  invólucro:
+    value: Latão niquelado, M30 x 1,5, comprimento 70 mm
+    status: extraido
+    source: {page: 1, location: Main - Enclosure material / ISO thread, excerpt: "Nickel plated brass; M30 x 1.5"}
+  grau_protecao:
+    value: IP67 (IEC 60529 e IEC 60947-5-2)
+    status: extraido
+    source: {page: 2, location: Environment - IP degree of protection, excerpt: "IP67 conforming to IEC 60529, IP67 conforming to IEC 60947-5-2"}
+  certificacoes:
+    value: CETLus, CE
+    status: extraido
+    source: {page: 1, location: Main - Product certifications / Marking, excerpt: "CETLus; Marking CE"}
+  montagem:
+    value: Faceado
+    status: extraido
+    source: {page: 1, location: Main - Detector flush mounting acceptance, excerpt: "Flush mountable"}

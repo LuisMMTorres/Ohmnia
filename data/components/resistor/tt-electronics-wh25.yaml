@@ -1,0 +1,64 @@
+# Fonte: TT Electronics, Aluminium Housed Wirewound Resistors WH Series, datasheet (04.26).
+part_number: WH25
+category: resistor.fixed
+schema_version: '1.0'
+manufacturer: TT Electronics
+family: WH
+package: Alumínio com dissipador (WH25 A 51 mm; terminais soldáveis, WH25T com terminal faston 6,35 mm)
+lifecycle: desconhecido
+notes:
+- A folha cobre WH5 a WH300; valores abaixo são da coluna WH25. Potência medida montado em dissipador de alumínio de 544 cm2, espessura 1 mm (tabela Reference Heatsink Dimensions).
+- 'Tolerância e TCR dependem da faixa de resistência: tolerância 1 a 10 %, TCR de 25 a 75 ppm/°C conforme o valor (<10R: 75; 10R a <100R: 50; >=100R: 25).'
+- Máximo de 15 A para WH25T (nota 2 da folha).
+datasheets:
+- id: ds1
+  manufacturer: TT Electronics
+  revision: '04.26'
+  sha256: 53392272e6943ad0efea3dc9b88d430a360c5f61d25bc67616d9b9c4e9a451d1
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  R:
+    min: 0.01
+    max: 44000
+    unit: ohm
+    status: extraido
+    source: {page: 1, location: Electrical Data WH5-50 - Resistance range (coluna WH25), excerpt: "R01 to 44K"}
+  tol:
+    min: 1
+    max: 10
+    unit: '%'
+    status: extraido
+    source: {page: 1, location: Electrical Data WH5-50 - Resistance tolerance, excerpt: ">=1R0: 1, 2, 5, 10"}
+  P_rated:
+    max: 25
+    unit: W
+    status: extraido
+    conditions: {TA: 25 °C}
+    source: {page: 1, location: Electrical Data WH5-50 - Power rating @25°C (coluna WH25), excerpt: "Power rating @25°C 25"}
+  V_max:
+    max: 500
+    unit: V
+    status: extraido
+    source: {page: 1, location: Electrical Data WH5-50 - Limiting element voltage (coluna WH25), excerpt: "Limiting element voltage Vdc/acrms 500"}
+  TCR:
+    max: 75
+    unit: ppm/K
+    status: extraido
+    source: {page: 1, location: Electrical Data WH5-50 - TCR (-55 to 200°C), excerpt: "<10R: ±75  ≥10R to <100R: ±50  ≥100R: ±25"}
+  Top:
+    min: -55
+    max: 200
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Electrical Data WH5-50 - Ambient temperature range, excerpt: "-55 to 200"}
+attributes:
+  tecnologia:
+    value: Fio enrolado (wirewound) em substrato cerâmico, encapsulado em alumínio
+    status: extraido
+    source: {page: 2, location: Construction, excerpt: "The resistive element is wound onto the substrate"}
+  encapsulamento:
+    value: Alumínio, A máx 51 mm (WH25T 71,3 mm), peso 13 g
+    status: extraido
+    source: {page: 2, location: Physical Data - dimensions table, WH25, excerpt: "WH25 51 ... 13"}

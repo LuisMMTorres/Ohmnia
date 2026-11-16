@@ -1,0 +1,96 @@
+# Fonte: Phoenix Contact, extrato do catálogo online MINI MCR-SL-UI-UI-SP-NC, Order No. 2864163 (cópia RS).
+part_number: MINI MCR-SL-UI-UI-SP-NC
+category: instrument.transmitter
+schema_version: '1.0'
+manufacturer: Phoenix Contact
+family: MINI MCR-SL-UI-UI
+package: Caixa PBT 6,2 x 93,1 x 102,5 mm, trilho DIN 35 mm, conexão spring-cage
+lifecycle: desconhecido
+notes:
+- 'Item da fila: MACX MCR-SL-UI-UI. O PDF baixado é do MINI MCR-SL-UI-UI-SP-NC (art. 2864163), isolador MCR de 3 vias; o número MACX não aparece no documento (pág. 1). Conferir se é o mesmo produto.'
+- 'Entrada configurável por DIP: tensão 0-10 V, 0-5 V, 1-5 V, 2-10 V; corrente 0-20 mA, 4-20 mA; máx. 30 V / 50 mA; resistência de entrada ≈100 kohm (tensão) e ≈50 ohm (corrente) (pág. 2).'
+- 'Saída configurável: tensão 0-10 V, 0-5 V, 1-5 V, 2-10 V (carga ≥10 kohm); corrente 0-20 mA ou 4-20 mA (carga <500 ohm a 20 mA); tensão máx. ≈12,5 V e corrente máx. 28 mA (pág. 2).'
+- 'Erro de transmissão máx. ≤0,1% do valor final (<0,4% sem ajuste); coeficiente de temperatura <0,01 %/K (pág. 3). Frequência limite 3 dB ≈100 Hz (pág. 3).'
+- 'Tensão de isolação nominal 50 V AC/DC; tensão de teste entrada/saída/alimentação 1,5 kV (50 Hz, 1 min) (pág. 3).'
+datasheets:
+- id: ds1
+  manufacturer: Phoenix Contact
+  document_number: '2864163'
+  url: https://assets.rs-online.com/v1698868765/Datasheets/d3d7e4248882aaf783f9e35103e9ce98.pdf
+  sha256: c9c41277540d8b2cef37cc0f0e730880cd0c891b6bc55fec3b6d1081a8807111
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_out:
+    min: 0
+    max: 20
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Output data - Current output signal, excerpt: "0 mA ... 20 mA; 4 mA ... 20 mA"}
+  V_out:
+    min: 0
+    max: 10
+    unit: V
+    status: extraido
+    source: {page: 2, location: Output data - Voltage output signal, excerpt: "0 V ... 10 V; 0 V ... 5 V; 1 V ... 5 V; 2 V ... 10 V"}
+  accuracy:
+    max: 0.1
+    unit: '%'
+    status: extraido
+    source: {page: 3, location: General data - Maximum transmission error, excerpt: "≤ 0.1 % (of final value)"}
+  RL:
+    max: 500
+    unit: ohm
+    status: extraido
+    source: {page: 2, location: Output data - Load, current output, excerpt: "< 500 Ω (at 20 mA)"}
+  V_iso:
+    max: 1500
+    unit: V
+    status: extraido
+    source: {page: 3, location: General data - Test voltage, excerpt: "Test voltage, input/output/supply 1.5 kV (50 Hz, 1 min.)"}
+  t_resp:
+    typ: 3.2
+    unit: ms
+    status: extraido
+    source: {page: 3, location: General data - Step response, excerpt: "Step response (10-90%) Approx. 3.2 ms"}
+  VS:
+    min: 19.2
+    max: 30
+    unit: V
+    status: extraido
+    source: {page: 2, location: Power supply - Supply voltage range, excerpt: "19.2 V DC ... 30 V DC"}
+  IS:
+    max: 19
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Power supply - Max. current consumption, excerpt: "< 19 mA (Current output, at 24 V DC incl. load)"}
+  Top:
+    min: -20
+    max: 65
+    unit: °C
+    status: extraido
+    source: {page: 3, location: General data - Ambient temperature (operation), excerpt: "-20 °C ... 65 °C"}
+  Tstg:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 3, location: General data - Ambient temperature (storage/transport), excerpt: "-40 °C ... 85 °C"}
+attributes:
+  entrada:
+    value: Tensão 0-10 V, 0-5 V, 1-5 V, 2-10 V ou corrente 0-20 mA, 4-20 mA (configurável por DIP)
+    status: extraido
+    source: {page: 2, location: Input data}
+  saida:
+    value: Tensão 0-10 V, 0-5 V, 1-5 V, 2-10 V ou corrente 0-20 mA, 4-20 mA (configurável)
+    status: extraido
+    source: {page: 2, location: Output data}
+  grau_protecao:
+    value: IP20
+    status: extraido
+    source: {page: 3, location: General data - Degree of protection, excerpt: "Degree of protection IP20"}
+  certificacoes:
+    value: CE, UL 508 Recognized, cUL, GL, ATEX Ex II 3 G Ex nA IIC T4 Gc X
+    status: extraido
+    source: {page: 4, location: Conformance / Certificates}

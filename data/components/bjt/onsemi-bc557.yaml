@@ -1,0 +1,143 @@
+# Fonte: onsemi, BC556, BC557, BC558, BC559, BC560 PNP Epitaxial Silicon Transistor, BC556BTA/D, Rev. 3, June 2024.
+part_number: BC557
+category: bjt.pnp
+schema_version: '1.0'
+manufacturer: onsemi
+family: BC556, BC557, BC558, BC559, BC560
+package: TO-92-3, case 135AN / 135AR
+lifecycle: desconhecido
+notes:
+- 'PNP: tensões e correntes em módulo (o datasheet usa sinal negativo). Valores de VCBO e VCEO são os da coluna BC557 / BC560; demais valores são comuns à série.'
+- 'Ganho hFE em classes A (110-220), B (200-450) e C (420-800), não transcritas por parâmetro.'
+- 'NF (figura de ruído) não transcrita: as condições variam por subtipo (BC556-558, BC559, BC560).'
+datasheets:
+- id: ds1
+  manufacturer: onsemi
+  document_number: BC556BTA/D
+  revision: Rev. 3, June 2024
+  sha256: 436569c71b3c76ccd3e6c62421bbc4db2e78d66cae504eeac19a057c0b8319b6
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VCBO:
+    max: 50
+    unit: V
+    status: extraido
+    source: {page: 1, location: Absolute maximum ratings - Collector-Base Voltage (coluna BC557 / BC560), excerpt: "VCBO -80 / -50 / -30 V (BC556 / BC557-BC560 / BC558-BC559)"}
+  VCEO:
+    max: 45
+    unit: V
+    status: extraido
+    source: {page: 1, location: Absolute maximum ratings - Collector-Emitter Voltage (coluna BC557 / BC560), excerpt: "VCEO -65 / -45 / -30 V (BC556 / BC557-BC560 / BC558-BC559)"}
+  VEBO:
+    max: 5
+    unit: V
+    status: extraido
+    source: {page: 1, location: Absolute maximum ratings - Emitter-Base Voltage, excerpt: "Emitter-Base Voltage VEBO -5 V"}
+  IC:
+    max: 100
+    unit: mA
+    status: extraido
+    source: {page: 1, location: Absolute maximum ratings - Collector Current (DC), excerpt: "Collector Current (DC) IC -100 mA"}
+  ICM:
+    max: 200
+    unit: mA
+    status: extraido
+    source: {page: 1, location: Absolute maximum ratings - Peak Collector Current (Pulse), excerpt: "Peak Collector Current (Pulse) ICP -200 mA"}
+  IBM:
+    max: 200
+    unit: mA
+    status: extraido
+    source: {page: 1, location: Absolute maximum ratings - Peak Base Current (Pulse), excerpt: "Peak Base Current (Pulse) IBP -200 mA"}
+  Ptot:
+    max: 500
+    unit: mW
+    conditions: {TA: 25 degC}
+    status: extraido
+    source: {page: 1, location: Thermal characteristics - Total Device Dissipation, excerpt: "Total Device Dissipation PD 500 mW (TA = 25°C)"}
+  Ptot_derating:
+    max: 4.0
+    unit: mW/K
+    status: extraido
+    source: {page: 1, location: Thermal characteristics - Derate above 25°C, excerpt: "Derate above 25°C 4.0 mW/°C"}
+  Rth_ja:
+    max: 250
+    unit: K/W
+    status: extraido
+    source: {page: 1, location: Thermal characteristics - Junction-to-Ambient, excerpt: "Thermal Resistance, Junction-to-Ambient RθJA 250 °C/W"}
+  Tj_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source: {page: 1, location: Absolute maximum ratings - Junction Temperature, excerpt: "Junction Temperature TJ 150 °C"}
+  Tstg_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source: {page: 1, location: Absolute maximum ratings - Storage Temperature Range, excerpt: "TSTG -65 to +150 °C"}
+  ICBO:
+    max: 15
+    unit: nA
+    conditions: {VCB: 30 V}
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - Collector Cut-Off Current, excerpt: "ICBO VCB = -30 V, IE = 0  Max -15 nA"}
+  hFE:
+    min: 110
+    max: 800
+    unit: dimensionless
+    conditions: {IC: 2 mA, VCE: 5 V}
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - DC Current Gain, excerpt: "hFE VCE = -5 V, IC = -2 mA  Min 110  Max 800"}
+  VCE(sat):
+    typ: 90
+    max: 300
+    unit: mV
+    conditions: {IC: 10 mA, IB: 0.5 mA}
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - Collector-Emitter Saturation Voltage, excerpt: "IC = -10 mA, IB = -0.5 mA  Typ -90  Max -300 mV"}
+  VCE(sat)@2:
+    typ: 250
+    max: 650
+    unit: mV
+    conditions: {IC: 100 mA, IB: 5 mA}
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - Collector-Emitter Saturation Voltage, excerpt: "IC = -100 mA, IB = -5 mA  Typ -250  Max -650 mV"}
+  VBE(sat):
+    typ: 700
+    unit: mV
+    conditions: {IC: 10 mA, IB: 0.5 mA}
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - Base-Emitter Saturation Voltage (rotulado Collector-Base no datasheet), excerpt: "IC = -10 mA, IB = -0.5 mA  Typ -700 mV"}
+  VBE(sat)@2:
+    typ: 900
+    unit: mV
+    conditions: {IC: 100 mA, IB: 5 mA}
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - Base-Emitter Saturation Voltage, excerpt: "IC = -100 mA, IB = -5 mA  Typ -900 mV"}
+  VBE(on):
+    min: 600
+    typ: 660
+    max: 750
+    unit: mV
+    conditions: {IC: 2 mA, VCE: 5 V}
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - Base-Emitter On Voltage, excerpt: "VCE = -5 V, IC = -2 mA  Min -600  Typ -660  Max -750 mV"}
+  VBE(on)@2:
+    typ: 800
+    unit: mV
+    conditions: {IC: 10 mA, VCE: 5 V}
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - Base-Emitter On Voltage, excerpt: "VCE = -5 V, IC = -10 mA  Typ -800 mV"}
+  fT:
+    typ: 150
+    unit: MHz
+    conditions: {IC: 10 mA, VCE: 5 V}
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - Current Gain Bandwidth Product, excerpt: "VCE = -5 V, IC = -10 mA, f = 10 MHz  Typ 150 MHz"}
+  Cobo:
+    typ: 6
+    unit: pF
+    conditions: {VCB: 10 V}
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - Output Capacitance Cob, excerpt: "VCB = -10 V, IE = 0, f = 1 MHz  Typ 6 pF"}

@@ -1,0 +1,106 @@
+# Fonte: onsemi, 1N53 Series 5 Watt Surmetic 40 Zener Voltage Regulators, 1N5333B/D, Rev. 19, July 2024.
+part_number: 1N5349B
+category: diode.zener
+schema_version: '1.0'
+manufacturer: onsemi
+family: 1N53 Series (1N5333B-1N5388B)
+package: Axial lead, case 017AA
+lifecycle: desconhecido
+notes:
+- 'Datasheet da série 1N53; valores desta linha são da linha 1N5349B da tabela de características elétricas (TA = 25 °C).'
+- 'Tj_max: 200 °C é o limite da faixa de operação; a Nota 1 do datasheet limita a 150 °C em condições CC (200 °C só pulsado, baixo duty cycle).'
+- 'Ptot @ TL = 25 °C com terminais de 3/8 in. Resistência térmica junção-terminal 25 °C/W (ZθJL) não transcrita: o esquema só tem Rth_ja.'
+datasheets:
+- id: ds1
+  manufacturer: onsemi
+  document_number: 1N5333B/D
+  revision: Rev. 19, July 2024
+  sha256: 7851bed88079a7574756115bb9ae45fbbf2db993530988dd7b4e59c2cdd36b63
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VZ:
+    min: 11.4
+    typ: 12
+    max: 12.6
+    unit: V
+    conditions: {IZ: 100 mA, TA: 25 degC}
+    status: extraido
+    source: {page: 3, location: Electrical characteristics - linha 1N5349B - Zener Voltage VZ Min/Nom/Max, excerpt: "1N5349B 11.4 12 12.6"}
+  VZ_tol:
+    max: 5
+    unit: percent
+    status: extraido
+    source: {page: 2, location: Note 2 - tolerance and type number designation, excerpt: "JEDEC type numbers shown indicate a tolerance of ±5%"}
+  IZT:
+    typ: 100
+    unit: mA
+    status: extraido
+    source: {page: 3, location: Electrical characteristics - linha 1N5349B - coluna IZT, excerpt: "VZ (Volts) @ IZT ... 100 mA"}
+  IZK:
+    typ: 1
+    unit: mA
+    status: extraido
+    source: {page: 3, location: Electrical characteristics - linha 1N5349B - coluna IZK, excerpt: "ZZK @ IZK ... IZK 1 mA"}
+  ZZT:
+    max: 2.5
+    unit: ohm
+    conditions: {IZ: 100 mA}
+    status: extraido
+    source: {page: 3, location: Electrical characteristics - linha 1N5349B - Zener Impedance ZZT @ IZT, excerpt: "Maximum Zener Impedance @ IZT"}
+  ZZK:
+    max: 125
+    unit: ohm
+    conditions: {IZ: 1 mA}
+    status: extraido
+    source: {page: 3, location: Electrical characteristics - linha 1N5349B - Zener Impedance ZZK @ IZK, excerpt: "Maximum Zener Impedance @ IZK"}
+  IR:
+    max: 2
+    unit: uA
+    conditions: {VR: 9.1 V, TA: 25 degC}
+    status: extraido
+    source: {page: 3, location: Electrical characteristics - linha 1N5349B - Leakage Current IR @ VR, excerpt: "IR @ VR 2 uA 9.1 V"}
+  IZM:
+    max: 395
+    unit: mA
+    status: extraido
+    source: {page: 3, location: Electrical characteristics - linha 1N5349B - Maximum DC Zener Current IZM (Note 6), excerpt: "IZM 395 mA"}
+  IZSM:
+    max: 7.5
+    unit: A
+    conditions: {t_pulse: 8.3 ms, TA: 25 degC}
+    status: extraido
+    source: {page: 3, location: Electrical characteristics - linha 1N5349B - Surge Current IR (Note 4, PW 8.3 ms), excerpt: "Surge current ... pulse width, PW, of 8.3 ms"}
+  VF:
+    max: 1.2
+    unit: V
+    conditions: {IF: 1.0 A, TA: 25 degC}
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - header, excerpt: "VF = 1.2 V Max @ IF = 1.0 A for all types"}
+  Ptot:
+    max: 5
+    unit: W
+    conditions: {TL: 25 degC}
+    status: extraido
+    source: {page: 1, location: Maximum ratings - Max. Steady State Power Dissipation, excerpt: "@ TL = 25°C, Lead Length = 3/8 in  PD 5 W"}
+  Ptot_derating:
+    max: 40
+    unit: mW/K
+    status: extraido
+    source: {page: 1, location: Maximum ratings - Derate above 25°C, excerpt: "Derate above 25°C 40 mW/°C"}
+  Tj_max:
+    max: 200
+    unit: degC
+    status: extraido
+    source: {page: 1, location: Maximum ratings - Operating and Storage Temperature Range (Note 1), excerpt: "TJ, Tstg -65 to +200 °C"}
+  Tj_min:
+    min: -65
+    unit: degC
+    status: extraido
+    source: {page: 1, location: Maximum ratings - Operating and Storage Temperature Range, excerpt: "TJ, Tstg -65 to +200 °C"}
+  Tstg_max:
+    max: 200
+    unit: degC
+    status: extraido
+    source: {page: 1, location: Maximum ratings - Operating and Storage Temperature Range, excerpt: "TJ, Tstg -65 to +200 °C"}

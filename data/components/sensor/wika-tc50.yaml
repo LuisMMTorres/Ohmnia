@@ -1,0 +1,43 @@
+# Fonte: WIKA, data sheet TE 65.50 (Surface thermocouple, model TC50), 02/2026.
+part_number: TC50
+category: sensor.temperature
+schema_version: '1.0'
+manufacturer: WIKA
+family: TC50
+package: Sonda de superfície com bloco de contato ou cinta de aperto, cabo PVC/silicone/PTFE/fibra de vidro
+lifecycle: desconhecido
+notes:
+- 'Fila: ds te6550 en co (WIKA TE 65.50).'
+- 'Tipos K, J, E, N, T (simples ou duplo); faixas de validade das classes IEC 60584-1 / ASTM E230 na pág. 4 (ex.: K classe 2 -40...+1200 °C, classe 1 -40...+1000 °C; J -40...+750 °C; E classe 2 -40...+900 °C; T -40...+350 °C).'
+- 'Cabos de ligação (pág. 5): PVC -20...+100 °C, silicone -50...+200 °C, PTFE -50...+250 °C, fibra de vidro -50...+400 °C.'
+- 'Versão especial de baixa temperatura -60...+120 °C, só com aprovações selecionadas (pág. 5). Ponto de medição isolado (ungrounded) salvo indicação (pág. 4).'
+datasheets:
+- id: ds1
+  manufacturer: WIKA
+  document_number: TE 65.50
+  revision: 02/2026
+  url: https://www.wika.com/media/Data-sheets/Temperature/Thermocouples/ds_te6550_en_co.pdf
+  sha256: 058f5fa10d51b8bff688635c505619d59abab0a48f7cc7b4dddb654f3b94c3bc
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  range:
+    min: -40
+    max: 1200
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Special features - sensor ranges, excerpt: "Sensor ranges -40 ... +1,200 °C"}
+attributes:
+  elemento:
+    value: Termopar tipos K, J, E, N, T (IEC 60584-1 ou ASTM E230), simples ou duplo
+    status: extraido
+    source: {page: 4, location: Sensor, excerpt: "Types K, J, E, N, T (single or dual thermocouple)"}
+  grau_protecao:
+    value: até IP65 (IP67 sob consulta)
+    status: extraido
+    source: {page: 6, location: IP ingress protection, excerpt: "can be delivered with up to IP65"}
+  certificacoes:
+    value: RoHS, ATEX/IECEx/FM/CSA/EAC/INMETRO/NEPSI/KCs/PESO (opção)
+    status: extraido
+    source: {page: 2, location: Approvals, excerpt: "RoHS directive; ATEX directive (option)"}

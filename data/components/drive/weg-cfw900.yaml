@@ -1,0 +1,91 @@
+# Fonte: WEG, Catálogo CFW900 - Inversor de Frequência, 50116501 (pt).
+part_number: CFW900
+category: drive.vfd
+schema_version: '1.0'
+manufacturer: WEG
+family: CFW900
+lifecycle: desconhecido
+notes:
+- 'Valores da série CFW900; faixas entre os modelos/mecânicas (pág. 4 e 28).'
+- 'Sobrecarga: ND 110% por 60 s e 150% por 3 s a cada 5 min; HD 150% por 60 s e 200% por 3 s a cada 5 min (pág. 4). Registrado no parâmetro overload o máximo (200%, HD, 3 s).'
+- 'Tensões da série: 200-240 V (B2), 380-480 V (T4), 500-600 V (T5), 500-690 V (T6) (pág. 4 e 28). Alimentação CC 229 a 1200 Vcc (pág. 28).'
+- 'Saída analógica: 2 saídas, 0 a 10 V ou 0/4 a 20 mA (pág. 29). Saídas digitais: 2 a transistor NPN, 40 mA, 24 Vcc (pág. 29).'
+- 'Frequência de saída: mecânicas A a D 0 a 500 Hz; E a H 0 a 250 Hz (pág. 28). Frequência de chaveamento nominal 4 kHz (mec. A a D) ou 2 kHz (mec. E a H e alguns modelos T6) (pág. 28).'
+datasheets:
+- id: ds1
+  manufacturer: WEG
+  document_number: '50116501'
+  url: https://static.weg.net/medias/downloadcenter/h67/hfc/WEG-CFW900-catalogo-50116501-pt.pdf
+  sha256: b9f11dee6a67015291be6183a32fd754f72845ad2bac658827d7a7d103a82175
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  P_motor:
+    min: 1.1
+    max: 440
+    unit: kW
+    status: extraido
+    source: {page: 4, location: Faixas de potências, excerpt: "1,1 a 440 kW – 1,5 a 550 cv / 380 – 480 Vca trifásico"}
+  V_in:
+    min: 200
+    max: 690
+    unit: V
+    status: extraido
+    source: {page: 28, location: Especificações técnicas - Alimentação CA, excerpt: "200...240 V rms ... 500 a 690 V"}
+  overload:
+    max: 200
+    unit: '%'
+    status: extraido
+    source: {page: 4, location: Regime de sobrecarga pesada (HD), excerpt: "200% durante 3 segundos a cada 5 minutos"}
+  f_out:
+    min: 0
+    max: 500
+    unit: Hz
+    status: extraido
+    source: {page: 28, location: Especificações técnicas - Saída, excerpt: "Frequência de saída Mec A...D: 0 a 500 Hz"}
+  f_sw:
+    min: 2
+    max: 4
+    unit: kHz
+    status: extraido
+    source: {page: 28, location: Especificações técnicas - Frequência de chaveamento, excerpt: "Mecânicas E, F, G e H: 2 kHz"}
+  di:
+    typ: 6
+    unit: '1'
+    status: extraido
+    source: {page: 29, location: Entradas digitais, excerpt: "DI1 até DI4: 4 entradas digitais isoladas ... DI5 e DI6: 2"}
+  ai:
+    typ: 2
+    unit: '1'
+    status: extraido
+    source: {page: 29, location: Entradas analógicas, excerpt: "2 entradas analógicas diferenciais"}
+  do:
+    typ: 2
+    unit: '1'
+    status: extraido
+    source: {page: 29, location: Saídas digitais, excerpt: "2 saídas digitais a transistor (NPN)"}
+  ao:
+    typ: 2
+    unit: '1'
+    status: extraido
+    source: {page: 29, location: Saídas analógicas, excerpt: "2 saídas analógicas"}
+  Top:
+    min: -10
+    max: 50
+    unit: °C
+    status: extraido
+    source: {page: 28, location: Condições ambientais - Temperatura, excerpt: "-10 °C a 50 °C para os modelos de mecânica A até D"}
+attributes:
+  controle:
+    value: Escalar V/f, VVW, VVW+, vetorial com encoder e vetorial sensorless
+    status: extraido
+    source: {page: 28, location: Controle - Tipos de controle}
+  comunicacao:
+    value: RS485 Modbus-RTU; Ethernet dual port Modbus-TCP; USB; Bluetooth; CANopen; DeviceNet
+    status: extraido
+    source: {page: 29, location: Comunicação}
+  grau_protecao:
+    value: IP20 (padrão); IP21 ou UL Type 1 com kit
+    status: extraido
+    source: {page: 28, location: Condições ambientais - Grau de proteção}

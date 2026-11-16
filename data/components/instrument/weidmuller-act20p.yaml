@@ -1,0 +1,78 @@
+# Fonte: Weidmüller, Data sheet ACT20P-TMR-RTI-S (ordem 7760054305), catálogo de 29.06.2018, criado em 2 jul 2018.
+part_number: ACT20P
+category: instrument.transmitter
+schema_version: '1.0'
+manufacturer: Weidmüller
+family: ACT20P
+lifecycle: desconhecido
+notes:
+- 'O PDF é a folha de dados do modelo ACT20P-TMR-RTI-S (monitor de valor limite, entrada de temperatura RTD, saída a relé); valores transcritos são desse modelo da série ACT20P.'
+- 'Faixa de entrada in_range em °C (PT100: -200 a 850 °C, configurável) (p. 2). Entrada PT100 2/3/4 fios ou PTC 0...4 kΩ (p. 2).'
+- 'Saída: 2 relés (2 x 1 ou 1 x 2 contatos reversíveis), 250 Vac / 30 Vdc máx., corrente nominal 5 A; histerese ajustável 2 °C, atraso de alarme 0...10 s (p. 2).'
+- 'Isolação galvânica de 3 vias entre entrada, saída e alimentação; tensão de isolação 2 kV (entrada/saída), 1 min, 50 Hz (p. 2).'
+- 'Consumo: ≤ 100 mA @ 24 VDC, ≤ 120 mA @ 24 V AC (p. 2). Coeficiente de temperatura ≤ 100 ppm/K (p. 2).'
+- 'Fila de transcrição: novo link do distribuidor (farnell).'
+datasheets:
+- id: ds1
+  manufacturer: Weidmüller
+  document_number: '7760054305'
+  revision: Catalogue status 29.06.2018
+  url: https://www.farnell.com/datasheets/2635154.pdf
+  sha256: 84ca1fd8bc8b3259298d2577a34e57a840166896d067d56c600480a12a2a023f
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  in_range:
+    min: -200
+    max: 850
+    unit: '1'
+    status: extraido
+    source: {page: 2, location: Technical data - Input - Temperature input range (valores em °C), excerpt: "Configurable, PT100: -200°C…850 °C"}
+  accuracy:
+    max: 0.2
+    unit: '%'
+    status: extraido
+    source: {page: 2, location: Technical data - General data - Accuracy, excerpt: "0.2% FSR, ≤ 2 °C (PT100)"}
+  V_iso:
+    max: 2000
+    unit: V
+    status: extraido
+    source: {page: 2, location: Technical data - Insulation coordination - Insulation voltage, excerpt: "2 kV (Input /Output), 1 min, 50 Hz"}
+  t_resp:
+    max: 500
+    unit: ms
+    status: extraido
+    source: {page: 2, location: Technical data - General data - Step response time, excerpt: "≤ 500 ms"}
+  VS:
+    min: 20
+    max: 264
+    unit: V
+    status: extraido
+    source: {page: 2, location: Technical data - General data - Supply voltage, excerpt: "20…264 VUC"}
+  IS:
+    max: 100
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Technical data - General data - Power consumption, excerpt: "≤ 100 mA @ 24 VDC"}
+  Top:
+    min: -25
+    max: 65
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Technical data - Temperatures - Operating temperature, excerpt: "-25 °C...65 °C"}
+  Tstg:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Technical data - Temperatures - Storage temperature, excerpt: "-40 °C...85 °C"}
+attributes:
+  entrada:
+    value: PT100 2/3/4 fios ou PTC 0...4 kΩ
+    status: extraido
+    source: {page: 2, location: Technical data - Input - Sensor, excerpt: "PT100 / 2-/3-/4-wire, PTC: 0…4 kΩ"}
+  saida:
+    value: 2 saídas a relé (2 x 1 ou 1 x 2 contatos reversíveis), 250 Vac / 30 Vdc, 5 A
+    status: extraido
+    source: {page: 2, location: Technical data - Output (digital), excerpt: "2 x 1 - or 1 x 2 changeover contact relay"}

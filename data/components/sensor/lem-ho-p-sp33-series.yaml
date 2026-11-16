@@ -1,0 +1,106 @@
+# Fonte: LEM, Current Transducer HO-P/SP33 series (N° 74.54.09.033.0, 74.54.13.033.0, 74.54.19.033.0), Version 4 (Public datasheet), 16 October 2025.
+part_number: HO 6-P SP33
+category: sensor.current
+schema_version: '1.0'
+manufacturer: LEM
+family: HO-P/SP33 (HO 6-P/SP33, HO 10-P/SP33, HO 25-P/SP33)
+package: PCB, perfil extremamente baixo de 12 mm
+lifecycle: desconhecido
+notes:
+- 'Valores da série (modelos HO 6, 10 e 25 A); faixas entre os modelos. O item da fila é HO 6-P SP33 (IP N = 6 A).'
+- 'Por modelo (p.5 a 7): IP M = +-20 A (6 A), +-25 A (10 A), +-62,5 A (25 A); sensibilidade 76,67 / 46 / 18,4 mV/A; offset elétrico +-7 / +-5 / +-6 mV.'
+- 'Princípio Hall; alimentação única 3,3 V; saída em tensão com referência Uref = 1,65 V (típ.) (p.1, p.5).'
+- 'Consumo IC = 25 mA (p.5): a coluna (mín/típ/máx) não é identificável no texto extraído, por isso fica só nesta nota.'
+- 'Erro de sensibilidade +-0,85 %; linearidade +-0,5 % de IP N; soma de sensibilidade e linearidade +-1,35 % de IP N a 25 °C (p.5).'
+- 'Tempo de atraso a 90 %: 3,5 us; detecção de sobrecorrente 2,6 a 3,2 x IP N (p.5). Máx. absoluta: UC max 6,5 V (não operando) (p.3).'
+datasheets:
+- id: ds1
+  manufacturer: LEM
+  document_number: 74.54.09.033.0
+  revision: Version 4
+  url: https://www.lem.com/sites/default/files/products_datasheets/ho-p-sp-33-series-v4.pdf
+  sha256: d0676cb0426ba8fc1432b44a78ca54115273e1373f990d3d6d425f282c1cdbf9
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_PN:
+    min: 6
+    max: 25
+    unit: A
+    status: extraido
+    source: {page: 1, location: Title - IP N (série), excerpt: "IP N = 6, 10, 25 A"}
+  I_PM:
+    max: 62.5
+    unit: A
+    status: extraido
+    source: {page: 7, location: Electrical data IP N = 25 A - primary current measuring range, excerpt: "Primary current, measuring range"}
+  sensitivity:
+    min: 18.4
+    max: 76.67
+    unit: mV/A
+    status: extraido
+    source: {page: 7, location: Electrical data IP N = 25 A - nominal sensitivity SN (76,67 mV/A em 6 A, p.5), excerpt: "18.4"}
+  accuracy:
+    max: 1.35
+    unit: '%'
+    conditions: {TA: 25 °C}
+    status: extraido
+    source: {page: 5, location: Electrical data - sum of sensitivity and linearity error at IP N, excerpt: "±1.35"}
+  linearity:
+    max: 0.5
+    unit: '%'
+    status: extraido
+    source: {page: 5, location: Electrical data - linearity error 0 ... IP N (% of IP N), excerpt: "Linearity error 0 ... IP N"}
+  V_offset:
+    max: 7
+    unit: mV
+    status: extraido
+    source: {page: 5, location: Electrical data - electrical offset voltage (+-7 mV em 6 A), excerpt: "Electrical offset voltage"}
+  bandwidth:
+    typ: 250
+    unit: kHz
+    status: extraido
+    source: {page: 5, location: Electrical data - frequency bandwidth (-3 dB), excerpt: "Frequency bandwidth (−3 dB)"}
+  t_resp:
+    typ: 3.5
+    unit: us
+    status: extraido
+    source: {page: 5, location: Electrical data - delay time at 90 % of final output value, excerpt: "Delay time @ 90 % of the final output value"}
+  V_iso:
+    typ: 4300
+    unit: V
+    status: extraido
+    source: {page: 4, location: Insulation coordination - RMS voltage for AC insulation test 50 Hz 1 min (4,3 kV), excerpt: "RMS voltage for AC insulation test"}
+  VS:
+    min: 3.14
+    typ: 3.3
+    max: 3.46
+    unit: V
+    status: extraido
+    source: {page: 5, location: Electrical data - supply voltage UC, excerpt: "Supply voltage"}
+  Top:
+    min: -40
+    max: 105
+    unit: °C
+    status: extraido
+    source: {page: 4, location: Environmental characteristics - ambient operating temperature, excerpt: "Ambient operating temperature"}
+  Tstg:
+    min: -40
+    max: 105
+    unit: °C
+    status: extraido
+    source: {page: 4, location: Environmental characteristics - ambient storage temperature, excerpt: "Ambient storage temperature"}
+attributes:
+  principio:
+    value: Hall, malha aberta
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "Hall effect measuring principle"}
+  saida:
+    value: Tensão com referência interna (Uref 1,65 V típ.); alimentação única 3,3 V
+    status: extraido
+    source: {page: 5, location: Electrical data - reference voltage, excerpt: "Reference voltage"}
+  montagem:
+    value: PCB (condutor primário no layout da placa), passagem multi-faixa
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "Multirange current transducer through PCB"}

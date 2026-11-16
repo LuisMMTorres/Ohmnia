@@ -1,0 +1,83 @@
+# Fonte: Raspberry Pi Ltd, Raspberry Pi Pico Datasheet, release 21, build 03/07/2026.
+part_number: Raspberry Pi Pico
+category: board.mcu
+schema_version: '1.0'
+manufacturer: Raspberry Pi
+family: Pico (RP2040)
+package: Placa 40 pinos estilo DIP, 21x51 mm
+lifecycle: desconhecido
+notes:
+- 'Fila: part_number "Raspberry Pi Pico" / fabricante "RP2040" (campo fabricante é o nome do chip); fabricante real Raspberry Pi Ltd.'
+- 'Pág. 4: flash de 2 MB, registrada como 2048 kB.'
+- 'Pág. 12: temperatura ambiente máxima recomendada de operação 70 °C; Top transcrito é 85 °C incluindo autoaquecimento.'
+- 'Pág. 11: VBUS 5 V +/-10 %. Pág. 5: SMPS buck-boost gera 3,3 V a partir de ~1,8 a 5,5 V.'
+datasheets:
+- id: ds1
+  manufacturer: Raspberry Pi Ltd
+  revision: Release 21
+  sha256: 757ff485227493b9fcc0c2c96c4dea9de020e1d8b2b11e2aa4f9ee8b25aa89eb
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 1.8
+    max: 5.5
+    unit: V
+    status: extraido
+    source: {page: 12, location: 2.3 Recommended operating conditions - VSYS Min/Max, excerpt: "VSYS Min 1.8 V; VSYS Max 5.5 V"}
+  V_io:
+    typ: 3.3
+    unit: V
+    status: extraido
+    source: {page: 4, location: 1. About - RP2040 headline features, excerpt: "Pico IO voltage is fixed at 3.3 V"}
+  f_clk:
+    max: 133
+    unit: MHz
+    status: extraido
+    source: {page: 4, location: 1. About - headline features, excerpt: "Dual-core cortex M0+ at up to 133 MHz"}
+  flash:
+    typ: 2048
+    unit: kB
+    status: extraido
+    source: {page: 4, location: 1. About - key features, excerpt: "RP2040 microcontroller with 2 MB Flash"}
+  ram:
+    typ: 264
+    unit: kB
+    status: extraido
+    source: {page: 4, location: 1. About - headline features, excerpt: "264 kB multi-bank high performance SRAM"}
+  gpio:
+    typ: 26
+    unit: '1'
+    status: extraido
+    source: {page: 4, location: 1. About - key features, excerpt: "Exposes 26 multi-function 3.3 V General Purpose I/O (GPIO)"}
+  adc_ch:
+    typ: 3
+    unit: '1'
+    status: extraido
+    source: {page: 4, location: 1. About - key features, excerpt: "23 GPIO are digital-only and 3 are ADC capable"}
+  adc_bits:
+    typ: 12
+    unit: bit
+    status: extraido
+    source: {page: 5, location: 1. About - headline features, excerpt: "12-bit 500 ksps Analogue to Digital Converter (ADC)"}
+  pwm_ch:
+    typ: 16
+    unit: '1'
+    status: extraido
+    source: {page: 5, location: 1. About - headline features, excerpt: "2 x UART, 2 x I2C, 2 x SPI, 16 x PWM channels"}
+  Top:
+    min: -20
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 11, location: 2.3 Recommended operating conditions, excerpt: "Operating Temp Max 85°C (including self-heating); Min -20°C"}
+attributes:
+  microcontrolador:
+    value: RP2040 (dual-core Arm Cortex-M0+)
+    status: extraido
+    source: {page: 4, location: 1. About Raspberry Pi Pico, excerpt: "microcontroller board based on the Raspberry Pi RP2040"}
+  comunicacao:
+    value: USB 1.1 (micro-USB B), 2x UART, 2x I2C, 2x SPI, SWD
+    status: extraido
+    source: {page: 4, location: 1. About - key and headline features (páginas 4 e 5)}

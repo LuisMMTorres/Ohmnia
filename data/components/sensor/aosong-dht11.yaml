@@ -1,0 +1,55 @@
+# Fonte: Aosong (Guangzhou) Electronics, DHT11 Product Manual (Temperature and humidity module), sem número de documento visível.
+part_number: DHT11
+category: sensor.humidity
+schema_version: '1.0'
+manufacturer: Aosong
+package: 4 pinos em linha, passo 2,54 mm, corpo 12 x 15,5 x 5,5 mm
+lifecycle: desconhecido
+notes:
+- 'Faixas de medição de umidade e temperatura não aparecem no texto das páginas de parâmetros (p. 4); campo range não preenchido.'
+- 'Resolução 16 bit em umidade e temperatura; repetibilidade ±1 %UR e ±0,2 °C (p. 4).'
+- 'Período de amostragem maior que 2 s; consumo em espera 60 uA (p. 4).'
+- 'Dimensões em mm: 12 x 15,5 x 5,5, pinos 8 mm, passo 2,54 (p. 3).'
+datasheets:
+- id: ds1
+  manufacturer: Aosong
+  url: https://playembedded.org/wp-content/uploads/2016/04/Datasheet_DHT11.pdf
+  sha256: 7e9c402a54cb9d3fdcfb08bfa5673b53fe30556bb89e0bb442f7b3b3964e56be
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  accuracy:
+    max: 5
+    unit: '%'
+    conditions: {T: 25 °C}
+    status: extraido
+    source: {page: 4, location: 5 Product parameters - Relative humidity, excerpt: "Accuracy: At 25℃ ±5% RH"}
+  T_accuracy:
+    max: 2
+    unit: K
+    conditions: {T: 25 °C}
+    status: extraido
+    source: {page: 4, location: 5 Product parameters - Temperature, excerpt: "Range: At 25℃ ±2℃"}
+  t_resp:
+    typ: 6
+    unit: s
+    conditions: {T: 25 °C}
+    status: extraido
+    source: {page: 4, location: 5 Product parameters - Relative humidity response time, excerpt: "Response time: 1 / e (63%) of 25℃ 6s"}
+  VS:
+    min: 3.5
+    max: 5.5
+    unit: V
+    status: extraido
+    source: {page: 4, location: Electrical Characteristics - power supply, excerpt: "Power supply: DC 3.5～5.5V"}
+  IS:
+    typ: 0.3
+    unit: mA
+    status: extraido
+    source: {page: 4, location: Electrical Characteristics - supply current, excerpt: "Supply Current: measurement 0.3mA standby 60μ A"}
+attributes:
+  saida:
+    value: Digital, barramento único de um fio (DATA)
+    status: extraido
+    source: {page: 5, location: 7 Serial communication instructions, excerpt: "DHT11 uses a simplified single-bus communication"}

@@ -1,0 +1,91 @@
+# Fonte: Schneider Electric, Technický produktový list XX630A1PCM12 (OsiSense XX, em tcheco), sem revisão indicada.
+part_number: XX630A1PCM12
+category: sensor.proximity
+schema_version: '1.0'
+manufacturer: Schneider Electric
+family: OsiSense XX6
+package: Cilíndrico M30 x 1,5, plástico, 35 x 35 x 85 mm
+lifecycle: desconhecido
+notes:
+- 'Fila: XX630A1PCM12. Sensor ultrassônico difuso, cilíndrico M30, Sn 1 m ajustável por botão de aprendizado, saída PNP 1 NF + 1 NA.'
+- 'Alcance de trabalho Sa 0,051 a 0,991 m (modo de aprendizado), zona cega 0 a 51 mm, frequência de transmissão 200 kHz, repetibilidade 0,9 %, ângulo do feixe 10 graus (p. 1).'
+- 'Tensão nominal 12 a 24 V DC, limites 10 a 28 V DC (p. 1).'
+datasheets:
+- id: ds1
+  manufacturer: Schneider Electric
+  url: https://www.emas.cz/files/244840/Uvw4xMak/elcifo0361751.pdf
+  sha256: 4a7961f66d2a30053b966ee484017cb9c143237e0fc9de4adfbc5613a5714cb2
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  sn:
+    typ: 1000
+    unit: mm
+    status: extraido
+    source: {page: 1, location: Hlavní parametry - Sn jmenovitý dosah snímání, excerpt: "1 m nastavitelný s učícím tlačítkem"}
+  sr:
+    min: 51
+    max: 991
+    unit: mm
+    status: extraido
+    source: {page: 1, location: Hlavní parametry - Sa pracovní rozsah, excerpt: "0,051...0,991 m (režim učení)"}
+  VS:
+    min: 10
+    max: 28
+    unit: V
+    status: extraido
+    source: {page: 1, location: Hlavní parametry - Meze napájecího napětí, excerpt: "10...28 V DC"}
+  IS:
+    max: 50
+    unit: mA
+    status: extraido
+    source: {page: 1, location: Hlavní parametry - Spotřeba proudu, excerpt: "Spotřeba proudu 50 mA"}
+  IL:
+    max: 100
+    unit: mA
+    status: extraido
+    source: {page: 1, location: Hlavní parametry - Maximální spínací proud, excerpt: "100 mA s ochrana obvodu proti přetížení a zkratu"}
+  Vdrop:
+    max: 1
+    unit: V
+    status: extraido
+    source: {page: 1, location: Hlavní parametry - Úbytek napětí, excerpt: "Úbytek napětí < 1 V"}
+  f_sw:
+    max: 10
+    unit: Hz
+    status: extraido
+    source: {page: 1, location: Hlavní parametry - Spínací frekvence, excerpt: "Spínací frekvence <= 10 Hz"}
+  Top:
+    min: 0
+    max: 60
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Životní prostředí - teplota okolního vzduchu pro provoz, excerpt: "0...60 °C"}
+  Tstg:
+    min: -40
+    max: 80
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Životní prostředí - teplota okolí pro uskladnění, excerpt: "-40...80 °C"}
+attributes:
+  saida:
+    value: PNP, 1 NF + 1 NA (discreta)
+    status: extraido
+    source: {page: 1, location: Hlavní parametry - Typ diskrétního výstupu / Funkce diskrétního výstupu, excerpt: "1 V + 1 Z"}
+  conexao:
+    value: Conector M12 macho, 4 pinos
+    status: extraido
+    source: {page: 1, location: Hlavní parametry - Elektrické připojení, excerpt: "Konektor (samec) M12 4 piny"}
+  invólucro:
+    value: Cilíndrico M30 x 1,5, plástico (ULTEM), face de silicone
+    status: extraido
+    source: {page: 1, location: Hlavní parametry - Materiál rozvaděče / Materiál čela / Typ vývodky}
+  grau_protecao:
+    value: IP67 (IEC 60529)
+    status: extraido
+    source: {page: 1, location: Hlavní parametry - Stupeň krytí IP}
+  certificacoes:
+    value: CE, CCSAus, UL, IEC 60947-5-2
+    status: extraido
+    source: {page: 2, location: Životní prostředí - standardy / certifikace výrobku}

@@ -1,0 +1,82 @@
+# Fonte: ABB, Softstarters Type PSTX and PSTB Catalog, 1SFC132009C0201, Rev D, February 2015.
+part_number: PSTX
+category: drive.soft_starter
+schema_version: '1.0'
+manufacturer: ABB
+family: PSTX (PSTX30 ... PSTX370)
+lifecycle: desconhecido
+notes:
+- 'Valores da série PSTX30 a PSTX370; o catálogo cobre também a série PSTB470 a PSTB1050 (coluna separada na tabela de dados técnicos), não transcrita aqui.'
+- 'Potência do motor: faixa para partida normal, ligação em linha, 400 V (p. 6 e 7): 15 kW (PSTX30) a 200 kW (PSTX370). Com ligação inside-delta a corrente chega a 640 A (p. 4).'
+- 'Corrente em A é a corrente nominal operacional Ie (IEC).'
+- 'Temperatura ambiente acima de 40 °C: reduzir a corrente nominal em 0,8 % por °C (p. 14, nota 2).'
+- 'Fila de transcrição: novo link do site do fabricante.'
+datasheets:
+- id: ds1
+  manufacturer: ABB
+  document_number: 1SFC132009C0201
+  revision: Rev D, February 2015
+  url: https://library.e.abb.com/public/4a8af01f2f0d2f85c1257dee0034e0b5/1SFC132009C0201.pdf
+  sha256: 9b86dd1faebd2567eb157958774717afb47d903381a2bb06b5b17ee0292f05bd
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_rated:
+    min: 30
+    max: 370
+    unit: A
+    status: extraido
+    source: {page: 4, location: Introduction - PSTX rated operational current, excerpt: "PSTX rated operational current: 30 to 370 A"}
+  P_motor:
+    min: 15
+    max: 200
+    unit: kW
+    status: extraido
+    source: {page: 6, location: Overview - Normal start, in-line, (400 V) kW (PSTX30 a PSTX370 na p. 7), excerpt: "(400 V) kW 15 ... PSTX370 200"}
+  V_line:
+    min: 208
+    max: 690
+    unit: V
+    status: extraido
+    source: {page: 14, location: Technical data - Rated operational voltage Ue, excerpt: "208...600 V, 208...690V + 10% / -15%, 50/60Hz ±5%"}
+  V_ctrl:
+    min: 100
+    max: 250
+    unit: V
+    status: extraido
+    source: {page: 14, location: Technical data - Rated control supply voltage Us, excerpt: "100...250 V +10% / -15%, 50/60Hz ±5%"}
+  starts_h:
+    max: 10
+    unit: '1'
+    status: extraido
+    source: {page: 14, location: Technical data - Number of starts per hour, excerpt: "10 1)"}
+  Top:
+    min: -25
+    max: 60
+    unit: °C
+    status: extraido
+    source: {page: 14, location: Technical data - Ambient temperature during operation, excerpt: "-25...+60 ºC, (-13...+140 F)"}
+  Tstg:
+    min: -40
+    max: 70
+    unit: °C
+    status: extraido
+    source: {page: 14, location: Technical data - Ambient temperature during storage, excerpt: "-40...+70 ºC, (-40...+158 F)"}
+attributes:
+  controle:
+    value: Trifásico (três fases controladas), bypass integrado, rampa de tensão e controle de torque na partida e parada
+    status: extraido
+    source: {page: 4, location: Introduction - Three-phase controlled; Built-in bypass; Technical data p. 14 Start and stop functions, excerpt: "Three-phase controlled ... Built-in bypass for energy saving"}
+  comunicacao:
+    value: Modbus RTU integrado; conexão para Anybus e FieldBusPlug (com adaptador)
+    status: extraido
+    source: {page: 14, location: Technical data - Field bus connection, excerpt: "Built-in Modbus RTU Yes; Connection for Anybus Yes"}
+  grau_protecao:
+    value: IP20 (circuitos de alimentação e controle); teclado removível IP66
+    status: extraido
+    source: {page: 14, location: Technical data - Degree of protection, excerpt: "IP20 ... IP66 (Type 1, 4X, 12)"}
+  certificacoes:
+    value: CE, cULus, CCC, EAC, ANCE, C-tick; EN 60947-4-2, UL 508, CSA C22.2 No 14
+    status: extraido
+    source: {page: 23, location: Certifications and approvals / Directives and standards, excerpt: "EN 60947-4-2 AC semiconductor motor controllers and starters"}

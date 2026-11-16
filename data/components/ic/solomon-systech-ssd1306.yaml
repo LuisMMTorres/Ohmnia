@@ -1,0 +1,69 @@
+# Fonte: Solomon Systech, SSD1306 128 x 64 Dot Matrix OLED/PLED Segment/Common Driver with Controller, Rev 1.1, Apr 2008 (Advance Information).
+part_number: SSD1306
+category: ic.interface
+schema_version: '1.0'
+manufacturer: Solomon Systech
+lifecycle: desconhecido
+notes:
+- 'Controlador/driver de display OLED 128 x 64 (128 segmentos, 64 comuns). VS = VDD (lógica); V_load = VCC (painel).'
+- 'V_load: máximo absoluto 16 V (p. 47); faixa de operação VCC 7 V a 15 V (p. 48).'
+- 'Corrente máxima por segmento 100 uA e por comum 15 mA (p. 6, Features).'
+- 'Corrente de sono: ICC,SLEEP e IDD,SLEEP máx. 10 uA cada (p. 48, display OFF, sem painel).'
+datasheets:
+- id: ds1
+  manufacturer: Solomon Systech
+  revision: Rev 1.1, Apr 2008
+  sha256: d55f875357de96d8c0e92153a389acc57e8bab4db7a0687f2e0bd3362f0036f6
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 1.65
+    max: 3.3
+    unit: V
+    status: extraido
+    source: {page: 48, location: Table 12-1 DC Characteristics - VDD Logic Supply Voltage, excerpt: "VDD Logic Supply Voltage 1.65 - 3.3 V"}
+  V_load:
+    max: 16
+    unit: V
+    status: extraido
+    source: {page: 47, location: Table 11-1 Maximum Ratings - VCC supply voltage, excerpt: "VCC Supply Voltage 0 to 16 V"}
+  I_out:
+    max: 0.1
+    unit: mA
+    status: extraido
+    source: {page: 6, location: Features - Segment maximum source current, excerpt: "Segment maximum source current: 100uA"}
+  ICC:
+    typ: 0.43
+    max: 0.78
+    unit: mA
+    conditions: {VDD: 2.8 V, VCC: 12 V, IREF: 12.5 uA}
+    status: extraido
+    source: {page: 48, location: Table 12-1 DC Characteristics - ICC VCC Supply Current (Display ON, All ON, no loading), excerpt: "ICC VCC Supply Current 430 780 uA"}
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 47, location: Table 11-1 Maximum Ratings - Operating Temperature, excerpt: "TA Operating Temperature -40 to +85 ºC"}
+  Tstg:
+    min: -65
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 47, location: Table 11-1 Maximum Ratings - Storage Temperature Range, excerpt: "Tstg Storage Temperature Range -65 to +150 ºC"}
+  channels:
+    typ: 128
+    unit: '1'
+    status: extraido
+    source: {page: 6, location: General Description / Features - 128 segments, 64 commons, excerpt: "128 segments and 64commons"}
+attributes:
+  funcao:
+    value: Driver/controlador de display OLED/PLED matricial 128 x 64 com RAM e oscilador internos
+    status: extraido
+    source: {page: 6, location: General Description, excerpt: "single-chip CMOS OLED/PLED driver with controller"}
+  interface:
+    value: Paralela 6800/8080 de 8 bits, SPI de 3/4 fios ou I2C (selecionável por pinos)
+    status: extraido
+    source: {page: 6, location: Features - Pin selectable MCU Interfaces, excerpt: "8-bit 6800/8080-series parallel interface; 3/4 wire SPI; I2C"}

@@ -1,0 +1,130 @@
+# Fonte: onsemi, TIP41A / TIP41B / TIP41C NPN Epitaxial Silicon Transistor, TIP41C/D, Rev. 2, November 2017.
+part_number: TIP41C
+category: bjt.npn
+schema_version: '1.0'
+manufacturer: onsemi
+family: TIP41A, TIP41B, TIP41C
+package: TO-220 3L
+lifecycle: desconhecido
+notes:
+- 'A fila nomeia o fabricante como STMicroelectronics, mas o PDF é o datasheet da onsemi (TIP41C/D), série TIP41A/B/C.'
+- 'Valores de VCBO, VCEO, VCEO(sus) e ICES são os da coluna TIP41C (TIP41A = 60 V, TIP41B = 80 V, TIP41C = 100 V).'
+- 'Complemento: série TIP42 (p. 1). Teste de pulso: pw <= 300 us, ciclo de trabalho <= 2%.'
+datasheets:
+- id: ds1
+  manufacturer: onsemi
+  document_number: TIP41C/D
+  revision: Rev. 2, November 2017
+  url: https://www.onsemi.com/pdf/datasheet/tip41c-d.pdf
+  sha256: 2b04aa9a040f5d7d1de6e23d45e69e63bec334e4fda5f778ea4edd6ac2311fe6
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VCBO:
+    max: 100
+    unit: V
+    status: extraido
+    source: {page: 1, location: Absolute maximum ratings - Collector-Base Voltage (TIP41C), excerpt: "VCBO Collector-Base Voltage TIP41A 60 / TIP41B 80 / TIP41C 100 V"}
+  VCEO:
+    max: 100
+    unit: V
+    status: extraido
+    source: {page: 1, location: Absolute maximum ratings - Collector-Emitter Voltage (TIP41C), excerpt: "VCEO Collector-Emitter Voltage TIP41A 60 / TIP41B 80 / TIP41C 100 V"}
+  VEBO:
+    max: 5
+    unit: V
+    status: extraido
+    source: {page: 1, location: Absolute maximum ratings - Emitter-Base Voltage, excerpt: "VEBO Emitter-Base Voltage 5 V"}
+  IC:
+    max: 6
+    unit: A
+    status: extraido
+    source: {page: 1, location: Absolute maximum ratings - Collector Current (DC), excerpt: "IC Collector Current (DC) 6 A"}
+  ICM:
+    max: 10
+    unit: A
+    status: extraido
+    source: {page: 1, location: Absolute maximum ratings - Collector Current (Pulse), excerpt: "ICP Collector Current (Pulse) 10 A"}
+  IB:
+    max: 2
+    unit: A
+    status: extraido
+    source: {page: 1, location: Absolute maximum ratings - Base Current, excerpt: "IB Base Current 2 A"}
+  Ptot:
+    max: 65
+    unit: W
+    conditions: {TC: 25 degC}
+    status: extraido
+    source: {page: 2, location: Thermal characteristics - Collector Dissipation (TC = 25°C), excerpt: "PC Collector Dissipation (TC = 25°C) 65 W"}
+  Ptot@2:
+    max: 2
+    unit: W
+    conditions: {TA: 25 degC}
+    status: extraido
+    source: {page: 2, location: Thermal characteristics - Collector Dissipation (TA = 25°C), excerpt: "PC Collector Dissipation (TA = 25°C) 2 W"}
+  Tj_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source: {page: 1, location: Absolute maximum ratings - Junction Temperature, excerpt: "TJ Junction Temperature 150 °C"}
+  Tstg_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source: {page: 1, location: Absolute maximum ratings - Storage Temperature Range, excerpt: "TSTG Storage Temperature Range -65 to 150 °C"}
+  VCEO(sus):
+    min: 100
+    unit: V
+    conditions: {IC: 30 mA}
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - Collector-Emitter Sustaining Voltage (TIP41C), excerpt: "IC = 30 mA, IB = 0  TIP41A 60 / TIP41B 80 / TIP41C 100 V"}
+  ICEO:
+    max: 0.7
+    unit: mA
+    conditions: {VCE: 60 V}
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - Collector Cut-Off Current (TIP41B / TIP41C), excerpt: "TIP41B / TIP41C VCE = 60 V, IB = 0  0.7 mA"}
+  ICES:
+    max: 400
+    unit: uA
+    conditions: {VCE: 100 V}
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - Collector Cut-Off Current TIP41C, excerpt: "TIP41C VCE = 100 V, VEB = 0  400 uA"}
+  IEBO:
+    max: 1
+    unit: mA
+    conditions: {VEB: 5 V}
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - Emitter Cut-Off Current, excerpt: "VEB = 5 V, IC = 0  1 mA"}
+  hFE:
+    min: 30
+    unit: dimensionless
+    conditions: {IC: 0.3 A, VCE: 4 V}
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - DC Current Gain, excerpt: "VCE = 4 V, IC = 0.3 A  30"}
+  hFE@2:
+    min: 15
+    max: 75
+    unit: dimensionless
+    conditions: {IC: 3 A, VCE: 4 V}
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - DC Current Gain, excerpt: "VCE = 4 V, IC = 3 A  15  75"}
+  VCE(sat):
+    max: 1.5
+    unit: V
+    conditions: {IC: 6 A, IB: 600 mA}
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - Collector-Emitter Saturation Voltage, excerpt: "IC = 6 A, IB = 600 mA  1.5 V"}
+  VBE(on):
+    max: 2.0
+    unit: V
+    conditions: {IC: 6 A, VCE: 4 V}
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - Base-Emitter On Voltage, excerpt: "VCE = 4 V, IC = 6 A  2.0 V"}
+  fT:
+    min: 3.0
+    unit: MHz
+    conditions: {IC: 500 mA, VCE: 10 V}
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - Current Gain Bandwidth Product, excerpt: "VCE = 10 V, IC = 500 mA, f = 1 MHz  3.0 MHz"}

@@ -1,0 +1,72 @@
+# Fonte: Yageo, DATA SHEET Cement Resistors High Power, Axial Lead, SQP Series / NSP Series, Product specification April 10, 2026 V.5.
+part_number: SQP10A
+category: resistor.fixed
+schema_version: '1.0'
+manufacturer: Yageo
+family: SQP Series (cement, axial)
+package: Axial, corpo 48 x 9.5 x 9.0 mm
+lifecycle: desconhecido
+notes:
+- 'Item da fila: SQP 10W; corresponde ao codigo de potencia 10A = 10W (p. 2); valores da coluna SQP10A da tabela Electrical Characteristics (p. 5)'
+- 'Potencia nominal de 10 W vale a 40 C (curva de derating p. 4: 100 % ate 40 C, 0 % a 275 C)'
+- 'Faixa de resistencia: fio (wirewound) 0.08 a 510 ohm; filme 560 ohm a 100 kohm (p. 5)'
+- 'TCR (p. 5): fio +/-100 ou +/-300 ppm/C; filme +/-300 ppm/C; TCR do schema = maior valor'
+- 'Tolerancia (p. 2): F = +/-1 % so em fio; J = +/-5 %'
+datasheets:
+- id: ds1
+  manufacturer: Yageo
+  document_number: SQP / NSP Series
+  revision: Apr. 10, 2026 V.5
+  url: https://www.yageogroup.com/content/datasheet/asset/file/YAGEO-SQP_NSP_datasheet
+  sha256: 5097d4247b4cf47ff76ee11e076e5613a9410c46fe7495a8e5c5267422575120
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  R:
+    min: 0.08
+    max: 100000
+    unit: ohm
+    status: extraido
+    source: {page: 5, location: Electrical Characteristics - Resistance Range Wirewound e Film (SQP10A), excerpt: "0.08Ω ~ 510Ω; 560Ω ~ 100KΩ"}
+  tol:
+    max: 5
+    unit: '%'
+    status: extraido
+    source: {page: 2, location: Ordering information - Tolerance, excerpt: "F = ±1% (Wirewound)  J = ±5%"}
+  P_rated:
+    max: 10
+    unit: W
+    status: extraido
+    conditions: {TA: 40 °C}
+    source: {page: 5, location: Electrical Characteristics - Power Rating at 40 C (SQP10A), excerpt: "Power Rating at 40 °C 3W 5W 5W 7W 10W"}
+  V_max:
+    max: 500
+    unit: V
+    status: extraido
+    source: {page: 5, location: Electrical Characteristics - Maximum Working Voltage (SQP10A), excerpt: "Maximum Working Voltage ... 500V 500V"}
+  V_overload:
+    max: 1000
+    unit: V
+    status: extraido
+    source: {page: 5, location: Electrical Characteristics - Maximum Overload Voltage (SQP10A), excerpt: "Maximum Overload Voltage ... 1000V 1000V"}
+  TCR:
+    max: 300
+    unit: ppm/K
+    status: extraido
+    source: {page: 5, location: Electrical Characteristics - Temperature Coefficient, excerpt: "Wirewound :±100ppm/°C , ±300ppm/°C, Film: ±300ppm/°C"}
+  Top:
+    min: -55
+    max: 155
+    unit: °C
+    status: extraido
+    source: {page: 5, location: Electrical Characteristics - Operating Temp. Range, excerpt: "- 55°C to +155°C"}
+attributes:
+  tecnologia:
+    value: Cimento (cement), elemento fio ou filme, caixa ceramica antichama
+    status: extraido
+    source: {page: 2, location: Features / Ordering information, excerpt: "Flameproof ceramic case; wirewound or metal oxide or fiberglass element"}
+  encapsulamento:
+    value: Axial, L 48 ± 1.5 x W 9.5 ± 1.0 x H 9.0 ± 1.0 mm, terminal 0.8 mm
+    status: extraido
+    source: {page: 3, location: Dimensions SQP10A, excerpt: "SQP10A NSP10A 48±1.5 9.5±1.0 9.0±1.0 0.8±0.05"}

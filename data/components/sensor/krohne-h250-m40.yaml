@@ -1,0 +1,97 @@
+# Fonte: KROHNE, Technical Datasheet H250 M40, 4000685607 TD H250-M40 R07, 09/2022.
+part_number: H250 M40
+category: sensor.flow
+schema_version: '1.0'
+manufacturer: KROHNE
+family: H250 M40 (medidor de vazão de área variável com flutuador)
+lifecycle: desconhecido
+notes:
+- 'Item da fila: "TD H250M40 en 210426 4001025607 R08". O PDF baixado é a revisão R07 (09/2022), 4000685607.'
+- 'Medidor de vazão de líquidos, gases e vapores por flutuador; indicador M40 mecânico (sem alimentação) ou com módulos eletrônicos ESK4A (4-20 mA HART 7), ESK4-T, ESK4-FF (FOUNDATION Fieldbus), ESK4-PA (PROFIBUS PA) (p.8).'
+- 'Os valores elétricos abaixo valem para o módulo ESK4A (p.15). ESK4-FF e ESK4-PA: alimentação de barramento 9 a 32 VDC, corrente nominal 16 mA, corrente de erro 23 mA (p.16).'
+- 'Exatidão: máx. erro permitido 1,5 % do fundo de escala (H250/RR, /HC, /F) e 2,0 % (H250/C, H250H, H250U, 100:1, Low Flow); repetibilidade 0,25 % ou 0,5 % (p.8).'
+- 'Temperatura do produto depende da versão: -196 a +300 °C (H250/RR e /HC), até +70 °C com liner PTFE, etc. (p.8 e p.11). Temperatura ambiente -40 a +70 °C (p.11-12).'
+- 'Pressão máxima de operação depende da versão (placa de identificação) (p.9). Aquecimento do cone: DN15-50 PS = 40 barg, DN80-100 PS = 25 barg a 300 °C (p.9). Conexões roscadas fêmea soldadas >= 50 barg (p.14).'
+- 'Saída em corrente: 4,00 a 20,00 mA = 0 a 100 % da vazão; alarme >21 mA (alterável para 3,6 mA); limite superior 20,24 a 20,56 mA; carga máx. 650 ohm a 30 VDC; carga mín. para HART 250 ohm (p.15-16). Influência da temperatura < 5 uA/K (p.15).'
+datasheets:
+- id: ds1
+  manufacturer: KROHNE
+  document_number: 4000685607 TD H250-M40
+  revision: R07, 09/2022
+  url: https://cdn.krohne.com/pick2/tagged_docs/TD_H250-M40_en_220927_4000685607_R07.pdf
+  sha256: e799cfccdb27f20e547f4378a5ce6c8248ead35d07cbcf2131ab1a284e1f9246
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  DN:
+    min: 15
+    max: 100
+    unit: mm
+    status: extraido
+    source: {page: 9, location: Pressure/temperature of heating of measuring cone - nominal sizes, excerpt: "DN80...DN100"}
+  accuracy:
+    min: 1.5
+    max: 2
+    unit: '%'
+    status: extraido
+    source: {page: 8, location: Measurement accuracy - max. permissible error (% of full scale range), excerpt: "1.5% of full scale range"}
+  VS:
+    min: 14
+    max: 32
+    unit: V
+    status: extraido
+    source: {page: 15, location: Current output ESK4A - power supply (12 a 32 V sem ESK4-T), excerpt: "14...32"}
+  I_out:
+    min: 4
+    max: 20
+    unit: mA
+    status: extraido
+    source: {page: 15, location: Current output ESK4A - measuring signal, excerpt: "4.00...20.00"}
+  RL:
+    max: 650
+    unit: ohm
+    conditions: {VS: 30 V}
+    status: extraido
+    source: {page: 15, location: Current output ESK4A - max. external resistance / load, excerpt: "650"}
+  T_process:
+    min: -196
+    max: 300
+    unit: °C
+    status: extraido
+    source: {page: 8, location: Operating conditions - max. operating temperature TS, excerpt: "-196...+300"}
+  Top:
+    min: -40
+    max: 70
+    unit: °C
+    status: extraido
+    source: {page: 12, location: Temperatures for devices with electrical components - ambient (ESK4A, ESK4-FF, ESK4-PA), excerpt: "-40...+70"}
+attributes:
+  saida:
+    value: 4-20 mA 2 fios com HART 7 (ESK4A); chaves de limite NAMUR/PNP/reed opcionais; FOUNDATION Fieldbus ou PROFIBUS PA (opções)
+    status: extraido
+    source: {page: 8, location: Table 2-1 - abbreviations, excerpt: "2-wire current output 4…20"}
+  conexao:
+    value: Prensa-cabos M20x1,5 (poliamida; opcional latão niquelado ou aço inox); bornes 2,5 mm2
+    status: extraido
+    source: {page: 10, location: Electrical connections - cable glands, excerpt: "M20x1.5"}
+  invólucro:
+    value: Indicador M40 em alumínio com pintura a pó; M40R em aço inox 1.4408 / CF8M
+    status: extraido
+    source: {page: 10, location: Indicators, excerpt: "Aluminium, two-layer powder coating"}
+  grau_protecao:
+    value: IP66/68 (M40, M40R); IP69K (M40R)
+    status: extraido
+    source: {page: 9, location: Ingress protection, excerpt: "IP66/68"}
+  certificacoes:
+    value: Ex-i, Ex-ec, Ex-d, Ex-t; SIL 2; NAMUR NE21, NE43, NE107
+    status: extraido
+    source: {page: 4, location: Highlights, excerpt: "SIL"}
+  comunicacao:
+    value: HART 7.4 (ESK4A); FOUNDATION Fieldbus H1 (ESK4-FF); PROFIBUS PA perfil 3.02 (ESK4-PA)
+    status: extraido
+    source: {page: 15, location: ESK4A HART configuration, excerpt: "HART 7.4"}
+  principio:
+    value: Área variável com flutuador (float measuring principle)
+    status: extraido
+    source: {page: 8, location: Measuring system - function / measuring principle, excerpt: "Float measuring principle"}

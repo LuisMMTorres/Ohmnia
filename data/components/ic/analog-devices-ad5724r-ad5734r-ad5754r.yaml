@@ -1,0 +1,97 @@
+# Fonte: Analog Devices, AD5724R/AD5734R/AD5754R Complete, Quad, 12-/14-/16-Bit, Serial Input, Unipolar/Bipolar Voltage Output DACs, Rev. G, 2009-2017.
+part_number: AD5724R-AD5734R-AD5754R
+category: ic.dac
+schema_version: '1.0'
+manufacturer: Analog Devices
+family: AD5724R/AD5734R/AD5754R
+package: TSSOP 24 pinos
+lifecycle: desconhecido
+notes:
+- 'Documento da série: AD5724R (12 bits), AD5734R (14 bits) e AD5754R (16 bits); bits dá a faixa 12 a 16 (pág. 4).'
+- 'INL por modelo: AD5754R ±16 LSB, AD5734R ±4 LSB, AD5724R ±1 LSB (pág. 4); aqui o máximo da série (±16 LSB). DNL ±1 LSB máx. em todos, monotônico.'
+- 'Especificações com AVDD 4,5 a 16,5 V, AVSS -4,5 a -16,5 V ou 0 V, REFIN 2,5 V externa, DVCC 2,7 a 5,5 V, RLOAD 2 kohm, CLOAD 200 pF (pág. 4).'
+- 'Faixas de saída programáveis por software +5 V, +10 V, +10,8 V, ±5 V, ±10 V, ±10,8 V (pág. 1); tensão de saída até ±10,8 V com AVDD/AVSS = ±11,7 V min e REFIN 2,5 V (pág. 4).'
+- 'Corrente AIDD máx. 2,5 mA por canal (saídas sem carga) (pág. 5). TUE máx. ±0,1 % FSR na faixa ±10 V (pág. 4).'
+- 'Tempo de acomodação 10 us típ. (12 us máx.) para degrau de 20 V a ±0,03 % FSR; 7,5 us típ. para 10 V (pág. 6).'
+datasheets:
+- id: ds1
+  manufacturer: Analog Devices
+  revision: Rev. G
+  url: https://www.datasheetcafe.com/wp-content/uploads/2022/05/AD5724R.pdf
+  sha256: 2b273fb87fdb4fc0eae00004cbfb49edf509f6c5f7568186d6e6d26228550ea3
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  bits:
+    min: 12
+    max: 16
+    unit: bit
+    status: extraido
+    source: {page: 4, location: Table 2 - Accuracy - Resolution, excerpt: "AD5754R 16 Bits; AD5734R 14 Bits; AD5724R 12 Bits"}
+  t_settle:
+    typ: 10
+    max: 12
+    unit: us
+    status: extraido
+    source: {page: 6, location: Table 3 - Dynamic performance - output voltage settling time, excerpt: "20 V step to ±0.03 % FSR 10 12 µs"}
+  channels:
+    typ: 4
+    unit: '1'
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "Complete, quad, 12-/14-/16-bit DACs"}
+  VS:
+    min: 4.5
+    max: 16.5
+    unit: V
+    status: extraido
+    source: {page: 4, location: Table 2 - condições de especificação, excerpt: "AVDD = 4.5 V to 16.5 V, AVSS = -4.5 V to -16.5 V or 0 V"}
+  VREF:
+    min: 2
+    typ: 2.5
+    max: 3
+    unit: V
+    status: extraido
+    source: {page: 4, location: Table 2 - Reference input - reference range, excerpt: "Reference Range 2 3 V"}
+  V_out:
+    min: -10.8
+    max: 10.8
+    unit: V
+    status: extraido
+    source: {page: 4, location: Table 2 - Output characteristics - output voltage range, excerpt: "Output Voltage Range -10.8 +10.8 V"}
+  INL:
+    max: 16
+    unit: '1'
+    status: extraido
+    source: {page: 4, location: Table 2 - Integral nonlinearity AD5754R, excerpt: "AD5754R -16 +16 LSB"}
+  DNL:
+    max: 1
+    unit: '1'
+    status: extraido
+    source: {page: 4, location: Table 2 - Differential nonlinearity, excerpt: "Differential Nonlinearity (DNL) -1 +1 LSB"}
+  IS:
+    max: 2.5
+    unit: mA
+    status: extraido
+    source: {page: 5, location: Table 2 - Power requirements - AIDD per channel, excerpt: "AIDD 2.5 mA/channel Outputs unloaded"}
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 9, location: Absolute maximum ratings - operating temperature range, excerpt: "Industrial -40°C to +85°C"}
+  Tstg:
+    min: -65
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 9, location: Absolute maximum ratings - storage temperature range, excerpt: "Storage Temperature Range -65°C to +150°C"}
+attributes:
+  interface:
+    value: serial compatível com DSP/microcontrolador, até 30 MHz
+    status: extraido
+    source: {page: 1, location: General description, excerpt: "serial interface that operates at clock rates up to 30 MHz"}
+  encapsulamento:
+    value: TSSOP 24 pinos
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "24-lead TSSOP"}

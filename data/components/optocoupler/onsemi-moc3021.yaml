@@ -1,0 +1,67 @@
+# Fonte: onsemi, MOC3010M/MOC3011M/MOC3012M/MOC3020M/MOC3021M/MOC3022M/MOC3023M - 6-Pin DIP Random-Phase Triac Driver Output Optocoupler (250/400 V Peak), Publication Order Number MOC3023M/D, June 2023 - Rev. 3.
+part_number: MOC3021
+category: optocoupler
+schema_version: '1.0'
+manufacturer: onsemi
+family: MOC301xM / MOC302xM
+package: PDIP6 8.51x6.35, 2.54P (6 pinos)
+lifecycle: desconhecido
+notes:
+- Driver de TRIAC de fase aleatória (sem detecção de cruzamento por zero); o documento chama a peça de MOC3021M.
+- 'VCEO abaixo é a tensão de bloqueio de pico VDRM do detector: 400 V para MOC302xM (250 V para MOC301xM).'
+- 'IFT (corrente de disparo do LED) do MOC3021M: máx. 15 mA (Vmain = 3 V); não há símbolo IFT no esquema.'
+- Rigidez dielétrica VISO é rating interno de ruptura com pinos 1-2 comuns e 4-5-6 comuns.
+datasheets:
+- id: ds1
+  manufacturer: onsemi
+  document_number: MOC3023M/D
+  revision: Rev. 3, June 2023
+  sha256: 293b3d919111224ffefade728d5ee8e73510445e0fabdd282139a8973509d763
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  IF:
+    max: 60
+    unit: mA
+    status: extraido
+    source: {page: 3, location: Absolute maximum ratings - Emitter - continuous forward current, excerpt: "IF Continuous Forward Current All 60 mA"}
+  VF:
+    typ: 1.15
+    max: 1.5
+    unit: V
+    conditions: {IF: 10 mA, TA: 25 °C}
+    status: extraido
+    source: {page: 4, location: Electrical characteristics - Emitter - input forward voltage, excerpt: "VF Input Forward Voltage IF = 10 mA All 1.15 1.50 V"}
+  VCEO:
+    max: 400
+    unit: V
+    status: extraido
+    source: {page: 3, location: Absolute maximum ratings - Detector - VDRM off-state output terminal voltage, excerpt: "VDRM ... MOC3020M, MOC3021M, MOC3022M, MOC3023M 400 V"}
+  V_iso:
+    max: 4170
+    unit: V
+    conditions: {t: 1 min}
+    status: extraido
+    source: {page: 4, location: Isolation characteristics - VISO, excerpt: "VISO Isolation Voltage t = 1 Minute All 4170 VACRMS"}
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 3, location: Absolute maximum ratings - total device - operating temperature, excerpt: "TOPR Operating Temperature All -40 to 85 °C"}
+  Tstg:
+    min: -40
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 3, location: Absolute maximum ratings - total device - storage temperature, excerpt: "TSTG Storage Temperature All -40 to 125 °C"}
+attributes:
+  saida:
+    value: TRIAC (chave bilateral de silício fotoativada), fase aleatória
+    status: extraido
+    source: {page: 1, location: Title and description, excerpt: "6-Pin DIP Random-Phase Triac Driver Output Optocoupler"}
+  canais:
+    value: '1'
+    status: extraido
+    source: {page: 1, location: Figure 1 schematic, excerpt: "ANODE CATHODE ... MAIN TERM."}

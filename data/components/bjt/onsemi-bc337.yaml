@@ -1,0 +1,151 @@
+# Fonte: onsemi, BC337, BC337-25, BC337-40 Amplifier Transistors NPN Silicon, BC337/D, Rev. 8, November 2013.
+part_number: BC337
+category: bjt.npn
+schema_version: '1.0'
+manufacturer: onsemi
+family: BC337, BC337-25, BC337-40
+package: TO-92, case 29, style 17
+lifecycle: desconhecido
+notes:
+- 'Valores da coluna BC337 (sem sufixo de ganho). Os grupos -25 e -40 têm hFE em faixas mais estreitas (não transcritas).'
+- 'Não transcrito por falta de símbolo no esquema: V(BR)CES (50 V mín.) e a derating de Ptot @ TC (12 mW/°C).'
+datasheets:
+- id: ds1
+  manufacturer: onsemi
+  document_number: BC337/D
+  revision: Rev. 8, November 2013
+  url: https://www.farnell.com/datasheets/1789499.pdf
+  sha256: db3f84b5921f0116cf33eac7a32c34690af140104402dfb680a37602a39842ba
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VCEO:
+    max: 45
+    unit: V
+    status: extraido
+    source: {page: 1, location: Maximum ratings - Collector-Emitter Voltage, excerpt: "Collector-Emitter Voltage VCEO 45 Vdc"}
+  VCBO:
+    max: 50
+    unit: V
+    status: extraido
+    source: {page: 1, location: Maximum ratings - Collector-Base Voltage, excerpt: "Collector-Base Voltage VCBO 50 Vdc"}
+  VEBO:
+    max: 5.0
+    unit: V
+    status: extraido
+    source: {page: 1, location: Maximum ratings - Emitter-Base Voltage, excerpt: "Emitter-Base Voltage VEBO 5.0 Vdc"}
+  IC:
+    max: 800
+    unit: mA
+    status: extraido
+    source: {page: 1, location: Maximum ratings - Collector Current Continuous, excerpt: "Collector Current - Continuous IC 800 mAdc"}
+  Ptot:
+    max: 625
+    unit: mW
+    conditions: {TA: 25 degC}
+    status: extraido
+    source: {page: 1, location: Maximum ratings - Total Device Dissipation @ TA = 25°C, excerpt: "PD 625 mW, derate above 25°C 5.0 mW/°C"}
+  Ptot@2:
+    max: 1.5
+    unit: W
+    conditions: {TC: 25 degC}
+    status: extraido
+    source: {page: 1, location: Maximum ratings - Total Device Dissipation @ TC = 25°C, excerpt: "PD 1.5 W, derate above 25°C 12 mW/°C"}
+  Ptot_derating:
+    max: 5.0
+    unit: mW/K
+    status: extraido
+    source: {page: 1, location: Maximum ratings - Derate above 25°C (TA), excerpt: "Derate above 25°C 5.0 mW/°C"}
+  Tj_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source: {page: 1, location: Maximum ratings - Operating and Storage Junction Temperature Range, excerpt: "TJ, Tstg -55 to +150 °C"}
+  Tj_min:
+    min: -55
+    unit: degC
+    status: extraido
+    source: {page: 1, location: Maximum ratings - Operating and Storage Junction Temperature Range, excerpt: "TJ, Tstg -55 to +150 °C"}
+  Tstg_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source: {page: 1, location: Maximum ratings - Operating and Storage Junction Temperature Range, excerpt: "TJ, Tstg -55 to +150 °C"}
+  Rth_ja:
+    max: 200
+    unit: K/W
+    status: extraido
+    source: {page: 1, location: Thermal characteristics - Junction-to-Ambient, excerpt: "Thermal Resistance, Junction-to-Ambient RθJA 200 °C/W"}
+  Rth_jc:
+    max: 83.3
+    unit: K/W
+    status: extraido
+    source: {page: 1, location: Thermal characteristics - Junction-to-Case, excerpt: "Thermal Resistance, Junction-to-Case RθJC 83.3 °C/W"}
+  V(BR)CEO:
+    min: 45
+    unit: V
+    conditions: {IC: 10 mA}
+    status: extraido
+    source: {page: 2, location: Off characteristics - Collector-Emitter Breakdown Voltage, excerpt: "(IC = 10 mA, IB = 0) V(BR)CEO 45 Vdc"}
+  V(BR)EBO:
+    min: 5.0
+    unit: V
+    conditions: {IE: 10 uA}
+    status: extraido
+    source: {page: 2, location: Off characteristics - Emitter-Base Breakdown Voltage, excerpt: "(IE = 10 µA, IC = 0) V(BR)EBO 5.0 Vdc"}
+  ICBO:
+    max: 100
+    unit: nA
+    conditions: {VCB: 30 V}
+    status: extraido
+    source: {page: 2, location: Off characteristics - Collector Cutoff Current, excerpt: "(VCB = 30 V, IE = 0) ICBO 100 nAdc"}
+  ICES:
+    max: 100
+    unit: nA
+    conditions: {VCE: 45 V}
+    status: extraido
+    source: {page: 2, location: Off characteristics - Collector Cutoff Current, excerpt: "(VCE = 45 V, VBE = 0) ICES 100 nAdc"}
+  IEBO:
+    max: 100
+    unit: nA
+    conditions: {VEB: 4.0 V}
+    status: extraido
+    source: {page: 2, location: Off characteristics - Emitter Cutoff Current, excerpt: "(VEB = 4.0 V, IC = 0) IEBO 100 nAdc"}
+  hFE:
+    min: 100
+    max: 630
+    unit: dimensionless
+    conditions: {IC: 100 mA, VCE: 1.0 V}
+    status: extraido
+    source: {page: 2, location: On characteristics - DC Current Gain (BC337), excerpt: "(IC = 100 mA, VCE = 1.0 V) hFE BC337 100 ... 630"}
+  hFE@2:
+    min: 60
+    unit: dimensionless
+    conditions: {IC: 300 mA, VCE: 1.0 V}
+    status: extraido
+    source: {page: 2, location: On characteristics - DC Current Gain, excerpt: "(IC = 300 mA, VCE = 1.0 V) hFE 60"}
+  VBE(on):
+    max: 1.2
+    unit: V
+    conditions: {IC: 300 mA, VCE: 1.0 V}
+    status: extraido
+    source: {page: 2, location: On characteristics - Base-Emitter On Voltage, excerpt: "(IC = 300 mA, VCE = 1.0 V) VBE(on) 1.2 Vdc"}
+  VCE(sat):
+    max: 0.7
+    unit: V
+    conditions: {IC: 500 mA, IB: 50 mA}
+    status: extraido
+    source: {page: 2, location: On characteristics - Collector-Emitter Saturation Voltage, excerpt: "(IC = 500 mA, IB = 50 mA) VCE(sat) 0.7 Vdc"}
+  Cobo:
+    typ: 15
+    unit: pF
+    conditions: {VCB: 10 V}
+    status: extraido
+    source: {page: 2, location: Small-signal characteristics - Output Capacitance, excerpt: "(VCB = 10 V, IE = 0, f = 1.0 MHz) Cob 15 pF"}
+  fT:
+    typ: 210
+    unit: MHz
+    conditions: {IC: 10 mA, VCE: 5.0 V}
+    status: extraido
+    source: {page: 2, location: Small-signal characteristics - Current-Gain Bandwidth Product, excerpt: "(IC = 10 mA, VCE = 5.0 V, f = 100 MHz) fT 210 MHz"}

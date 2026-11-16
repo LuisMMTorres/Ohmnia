@@ -1,0 +1,72 @@
+# Fonte: Zhejiang Jianfu Electronics Co., Ltd, Specification SP-2013091201, Rev. B, 2013-09-12, modelo SS-12D00-G5.
+part_number: SS-12D00
+category: switch.mechanical
+schema_version: '1.0'
+manufacturer: Zhejiang Jianfu Electronics
+family: SS-12D00
+lifecycle: desconhecido
+notes:
+- 'Atenção: o PDF é a especificação da Zhejiang Jianfu para o modelo SS-12D00-G5 (chave deslizante 1P2T); a fila indicava CK SS-12D00. Conferir correspondência.'
+- 'Resistência de isolação: o texto em inglês diz 100 V DC e o texto em chinês diz 500 V DC; condição de tensão não transcrita.'
+datasheets:
+- id: ds1
+  manufacturer: Zhejiang Jianfu Electronics
+  document_number: SP-2013091201
+  revision: Rev. B, 2013-09-12
+  url: https://akizukidenshi.com/goodsaffix/SS-12D00-G5_spec.pdf
+  sha256: b7a9f72b44ff5624019fd517c9a3026f8adb8feed866614104734d50789198d0
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_rated:
+    max: 0.5
+    unit: A
+    status: extraido
+    source: {page: 1, location: Item 1 - rating, excerpt: "Rating: DC 50V 0.5A"}
+  V_rated:
+    max: 50
+    unit: V
+    status: extraido
+    source: {page: 1, location: Item 1 - rating, excerpt: "Rating: DC 50V 0.5A"}
+  R_contact:
+    max: 30
+    unit: mohm
+    status: extraido
+    source: {page: 1, location: Item 4.1 - contact resistance, excerpt: "30mΩ Max"}
+  R_iso:
+    min: 100
+    unit: Mohm
+    status: extraido
+    source: {page: 1, location: Item 4.2 - insulation resistance, excerpt: "100MΩ Min"}
+  V_diel:
+    max: 500
+    unit: V
+    conditions: {t: 1 min}
+    status: extraido
+    source: {page: 1, location: Item 4.3 - dielectric strength, excerpt: "AC 500V (50Hz-60Hz) for 1 Min"}
+  life:
+    min: 10000
+    unit: '1'
+    status: extraido
+    source: {page: 2, location: Item 6.1 - life test without load, excerpt: "subject to 10,000 cycles at a speed of 15 to 18 cycles"}
+  force:
+    typ: 180
+    unit: gf
+    status: extraido
+    source: {page: 2, location: Item 5.1 - operating force, excerpt: "180 ± 50 gf"}
+  Top:
+    min: -16
+    max: 60
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Item 5.4 - practical temperature range, excerpt: "-16℃~+60℃"}
+attributes:
+  tipo:
+    value: Chave deslizante, 1P2T
+    status: extraido
+    source: {page: 1, location: Item 2 - function, excerpt: "Function: 1P2T"}
+  contatos:
+    value: 1P2T, não-curto (non-shorting)
+    status: extraido
+    source: {page: 1, location: Items 2 and 3, excerpt: "Function: 1P2T; Timing: Non-Shorting"}

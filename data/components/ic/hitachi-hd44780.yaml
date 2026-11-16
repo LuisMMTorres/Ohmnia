@@ -1,0 +1,73 @@
+# Fonte: Hitachi, HD44780U (LCD-II) Dot Matrix Liquid Crystal Display Controller/Driver, ADE-207-272(Z), Rev. 0.0, '99.9.
+part_number: HD44780
+category: ic.interface
+schema_version: '1.0'
+manufacturer: Hitachi
+family: HD44780U (LCD-II)
+lifecycle: desconhecido
+notes:
+- 'Controlador/driver de LCD matricial; interface com microprocessador de 4 ou 8 bits (p. 1).'
+- 'Driver de LCD 16 comuns x 40 segmentos; RAM de display 80 x 8 bits (p. 2).'
+- 'Tensão do driver de LCD (VCC-V5) 3,0 a 11,0 V (p. 1 e p. 48); faixa elétrica DC da p. 48 é para VCC = 2,7 a 4,5 V; barramento rápido 2 MHz com VCC = 5 V (p. 1).'
+- 'Corrente de alimentação típ. 150 uA, máx. 300 uA a VCC = 3 V, fOSC = 270 kHz (p. 48).'
+datasheets:
+- id: ds1
+  manufacturer: Hitachi
+  document_number: ADE-207-272(Z)
+  revision: Rev. 0.0, '99.9
+  sha256: 4324d67ec14fc8e7ba8cf7db7256749c9b80b94b3f8bedfa614a0d2839c7dea9
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 2.7
+    max: 5.5
+    unit: V
+    status: extraido
+    source: {page: 1, location: Description / Features - low power supply, excerpt: "The low power supply (2.7V to 5.5V) of the HD44780U"}
+  V_load:
+    min: 3.0
+    max: 11.0
+    unit: V
+    status: extraido
+    source: {page: 48, location: DC Characteristics - LCD voltage VLCD1, excerpt: "LCD voltage VLCD1 3.0 — 11.0 V VCC–V5, 1/5 bias"}
+  f_max:
+    max: 2000
+    unit: kHz
+    conditions: {VCC: 5 V}
+    status: extraido
+    source: {page: 1, location: Features - high speed MPU bus interface, excerpt: "high speed MPU bus interface 2 MHz (when VCC = 5V)"}
+  channels:
+    typ: 40
+    unit: '1'
+    status: extraido
+    source: {page: 2, location: Features - LCD driver, excerpt: "16-common × 40-segment liquid crystal display driver"}
+  ICC:
+    typ: 0.15
+    max: 0.3
+    unit: mA
+    conditions: {VCC: 3 V}
+    status: extraido
+    source: {page: 48, location: DC Characteristics - power supply current, excerpt: "Power supply current ICC — 150 300 µA"}
+  Top:
+    min: -30
+    max: 75
+    unit: °C
+    status: extraido
+    source: {page: 47, location: Absolute Maximum Ratings - operating temperature, excerpt: "Operating temperature Topr –30 to +75 °C"}
+  Tstg:
+    min: -55
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 47, location: Absolute Maximum Ratings - storage temperature, excerpt: "Storage temperature Tstg –55 to +125 °C"}
+attributes:
+  funcao:
+    value: Controlador e driver de display LCD matricial (alfanumérico e kana)
+    status: extraido
+    source: {page: 1, location: Description, excerpt: "dot-matrix liquid crystal display controller and driver LSI"}
+  interface:
+    value: Barramento de microprocessador de 4 ou 8 bits
+    status: extraido
+    source: {page: 1, location: Description, excerpt: "under the control of a 4- or 8-bit microprocessor"}

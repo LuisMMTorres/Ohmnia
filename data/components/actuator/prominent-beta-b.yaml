@@ -1,0 +1,62 @@
+# Fonte: ProMinent, beta b Solenoid Diaphragm Metering Pump (flyer/catálogo, 2 páginas).
+part_number: beta b (BT4b / BT5b)
+category: actuator.electric
+schema_version: '1.0'
+manufacturer: ProMinent
+family: beta b
+lifecycle: desconhecido
+notes:
+- "Nome na fila: PI Beta 4 5 EN. O documento baixado é o flyer da bomba dosadora de diafragma solenoide beta b (modelos BT4b e BT5b), não o PI original; valores como faixa entre os modelos."
+- "Vazão 0,16 a 8,45 gph (0,59 a 32 l/h) e pressão até 363 psi (25 bar) (p. 1). Reprodutibilidade de dosagem ±2 % (p. 2)."
+- "Frequência de pulsos 180 cursos/min; potência média consumida 7,2 a 19,2 W conforme o modelo (tabela p. 2). Dados calculados com água a 20 °C."
+- "Classe de isolação F (p. 2). Tensão de alimentação não aparece no texto."
+datasheets:
+- id: ds1
+  manufacturer: ProMinent
+  document_number: Flyer-beta-en
+  url: https://www.prominent.com/resources/BrochureFlyer/English/28345/Flyer-beta-en.pdf
+  sha256: 2457f6f29dc4b9a0fe990b7f2972417035804ddfe413c1f897e8bb49d1121ee4
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  P_rated:
+    min: 7.2
+    max: 19.2
+    unit: W
+    status: extraido
+    source: {page: 2, location: Technical Data - Average power consumption (W), excerpt: "BT4b 1000 ... 7.2; BT5b 0232 ... 19.2"}
+  flow:
+    min: 0.59
+    max: 32
+    unit: L/h
+    status: extraido
+    source: {page: 1, location: Texto de abertura, excerpt: "flows from 0.16 to 8.45 gph (0.59 to 32 l/h)"}
+  P_max:
+    max: 25
+    unit: bar
+    status: extraido
+    source: {page: 1, location: Texto de abertura, excerpt: "pressures to 363 psi (25 bar)"}
+  Top:
+    min: -10
+    max: 45
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Notas da tabela - Permissible ambient temperature, excerpt: "14 … 113 °F (–10 °C to +45 °C)"}
+attributes:
+  tipo:
+    value: Bomba dosadora de diafragma solenoide, controlada por microprocessador
+    status: extraido
+    source: {page: 1, location: Texto de abertura, excerpt: "microprocessor-based diaphragm solenoid metering pump"}
+  comando:
+    value: "Contatos livres de potencial com multiplicação/divisão de pulsos (64:1 a 1:64); opcional 4-20 mA com contatos livres (32:1 a 1:32)"
+    status: extraido
+    source: {page: 1, location: Features and Benefits}
+  grau_protecao:
+    value: IP 66
+    status: extraido
+    source: {page: 2, location: Notas da tabela, excerpt: "Degree of protection: IP 66, insulation class F"}
+  certificacoes:
+    value: NSF/ANSI 61 (cabeças de acrílico ou PVDF)
+    status: extraido
+    source: {page: 1, location: Features and Benefits, excerpt: "Certified to NSF/ANSI 61"}

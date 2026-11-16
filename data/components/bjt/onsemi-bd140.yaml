@@ -1,0 +1,113 @@
+# Fonte: onsemi, BD136 / BD138 / BD140 PNP Epitaxial Silicon Transistor, BD136/D, Rev. 2, May 2024.
+part_number: BD140
+category: bjt.pnp
+schema_version: '1.0'
+manufacturer: onsemi
+family: BD136, BD138, BD140
+package: TO-126, case 340AS
+lifecycle: desconhecido
+notes:
+- 'A fila nomeia o fabricante como STMicroelectronics, mas o PDF é o datasheet da onsemi (BD136/D), série BD136/BD138/BD140.'
+- 'PNP: tensões e correntes em módulo (o datasheet usa sinal negativo). VCBO, VCEO e VCEO(sus) são os da coluna BD140 (BD136 = 45 V, BD138 = 60 V, BD140 = 80 V).'
+- 'hFE2 (IC = 150 mA): faixa 63 a 250 entre as classes -10 (63-160) e -16 (100-250). hFE1 (5 mA) mín. 25 e hFE3 (500 mA) mín. 25 não transcritos por parâmetro separado.'
+- 'Dissipação Ptot: 12,5 W com TC = 25 °C e 1,25 W com TA = 25 °C (p. 1). Teste de pulso das características: PW = 350 us, ciclo de trabalho 2%.'
+datasheets:
+- id: ds1
+  manufacturer: onsemi
+  document_number: BD136/D
+  revision: Rev. 2, May 2024
+  url: https://www.onsemi.com/pdf/datasheet/bd136-d.pdf
+  sha256: d6e6a803f2d3645a295c910748227df851a9eabbdea0b7f4b5f032dc682c8d27
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VCBO:
+    max: 80
+    unit: V
+    status: extraido
+    source: {page: 1, location: Absolute maximum ratings - Collector-Base Voltage (coluna BD140), excerpt: "VCBO -45 / -60 / -80 V (BD136 / BD138 / BD140)"}
+  VCEO:
+    max: 80
+    unit: V
+    status: extraido
+    source: {page: 1, location: Absolute maximum ratings - Collector-Emitter Voltage (coluna BD140), excerpt: "VCEO -45 / -60 / -80 V (BD136 / BD138 / BD140)"}
+  VEBO:
+    max: 5
+    unit: V
+    status: extraido
+    source: {page: 1, location: Absolute maximum ratings - Emitter-Base Voltage, excerpt: "Emitter-Base Voltage VEBO -5 V"}
+  IC:
+    max: 1.5
+    unit: A
+    status: extraido
+    source: {page: 1, location: Absolute maximum ratings - Collector Current (DC), excerpt: "Collector Current (DC) IC -1.5 A"}
+  ICM:
+    max: 3.0
+    unit: A
+    status: extraido
+    source: {page: 1, location: Absolute maximum ratings - Collector Current (Pulse), excerpt: "Collector Current (Pulse) ICP -3.0 A"}
+  IB:
+    max: 0.5
+    unit: A
+    status: extraido
+    source: {page: 1, location: Absolute maximum ratings - Base Current, excerpt: "Base Current IB -0.5 A"}
+  Ptot:
+    max: 12.5
+    unit: W
+    conditions: {TC: 25 degC}
+    status: extraido
+    source: {page: 1, location: Thermal characteristics - Collector Dissipation, excerpt: "Collector Dissipation PC 12.5 W"}
+  Ptot@2:
+    max: 1.25
+    unit: W
+    conditions: {TA: 25 degC}
+    status: extraido
+    source: {page: 1, location: Thermal characteristics - Collector Dissipation (TA = 25°C), excerpt: "Collector Dissipation (TA = 25°C) PC 1.25 W"}
+  Tj_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source: {page: 1, location: Thermal characteristics - Junction Temperature, excerpt: "Junction Temperature TJ 150 °C"}
+  Tstg_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source: {page: 1, location: Thermal characteristics - Storage Temperature Range, excerpt: "TSTG -55~150 °C"}
+  VCEO(sus):
+    min: 80
+    unit: V
+    conditions: {IC: 30 mA}
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - Collector-Emitter Sustaining Voltage (BD140), excerpt: "IC = -30 mA, IB = 0  -45 / -60 / -80 V"}
+  ICBO:
+    max: 0.1
+    unit: uA
+    conditions: {VCB: 30 V}
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - Collector Cut-off Current, excerpt: "VCB = -30 V, IE = 0  -0.1"}
+  IEBO:
+    max: 10
+    unit: uA
+    conditions: {VEB: 5 V}
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - Emitter Cut-off Current, excerpt: "VEB = -5 V, IC = 0  -10"}
+  hFE:
+    min: 63
+    max: 250
+    unit: dimensionless
+    conditions: {IC: 150 mA, VCE: 2 V}
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - hFE2 (classes -10 e -16), excerpt: "VCE = -2 V, IC = -150 mA  63 ... 160 / 100 ... 250"}
+  VCE(sat):
+    max: 0.5
+    unit: V
+    conditions: {IC: 500 mA, IB: 50 mA}
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - Collector-Emitter Saturation Voltage, excerpt: "IC = 500 mA, IB = 50 mA  -0.5 V"}
+  VBE(on):
+    max: 1
+    unit: V
+    conditions: {IC: 500 mA, VCE: 2 V}
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - Base-Emitter ON Voltage, excerpt: "VCE = -2 V, IC = -0.5 A  -1 V"}

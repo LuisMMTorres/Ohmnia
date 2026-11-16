@@ -1,0 +1,60 @@
+# Fonte: Triad Magnetics, VPT24-1040 (Power Transformer, Chassis Mount, Toroidal World Series), publicado em 12/10/2021.
+part_number: VPT24-1040
+category: magnetic.transformer
+schema_version: '1.0'
+manufacturer: Triad Magnetics
+family: Toroidal World Series
+package: Toroidal, montagem em chassi
+lifecycle: desconhecido
+notes:
+- 'Primário e secundário podem ser ligados em série ou paralelo (não devem ser usados independentes) (pág. 1). Série: entrada 230 VAC, saída 24 VAC CT a 1,04 A; paralelo: entrada 115 VAC, saída 12,0 VAC a 2,08 A.'
+- 'Regulação de tensão 12% TÍP. (plena carga a vazio); elevação de temperatura 30 °C TÍP.; rendimento 87% TÍP. a plena carga; Hipot 4000 VAC primário-secundário; isolação Classe B (130 °C); massa 0,4 kg (pág. 1).'
+datasheets:
+- id: ds1
+  manufacturer: Triad Magnetics
+  document_number: VPT24-1040
+  revision: Publish Date 2021-10-12
+  sha256: 31bb681e022955d7adae44137fe40dd63af6ad757738d736a42a02e6bdc52900
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  S_rated:
+    max: 25
+    unit: VA
+    status: extraido
+    source: {datasheet_id: ds1, page: 1, location: Electrical Specifications - Maximum Power, excerpt: "Maximum Power: 25VA"}
+  V_pri:
+    typ: 230
+    unit: V
+    status: extraido
+    note: Ligação série.
+    source: {datasheet_id: ds1, page: 1, location: Electrical Specifications - Input Voltage, excerpt: "Series: 230VAC, 50/60Hz"}
+  V_pri@2:
+    typ: 115
+    unit: V
+    status: extraido
+    note: Ligação paralelo.
+    source: {datasheet_id: ds1, page: 1, location: Electrical Specifications - Input Voltage, excerpt: "Parallel: 115VAC, 50/60Hz"}
+  V_sec:
+    typ: 24
+    unit: V
+    status: extraido
+    note: Ligação série.
+    source: {datasheet_id: ds1, page: 1, location: Electrical Specifications - Output Voltage, excerpt: "Series: 24VAC CT @ 1.04A"}
+  V_sec@2:
+    typ: 12
+    unit: V
+    status: extraido
+    note: Ligação paralelo.
+    source: {datasheet_id: ds1, page: 1, location: Electrical Specifications - Output Voltage, excerpt: "Parallel: 12.0VAC @ 2.08A"}
+  V_iso:
+    max: 4000
+    unit: V
+    status: extraido
+    source: {datasheet_id: ds1, page: 1, location: Electrical Specifications - Hipot, excerpt: "Hipot: 4000VAC, Primary to Secondary"}
+attributes:
+  aplicacao:
+    value: força (transformador toroidal de potência, chassi)
+    status: extraido
+    source: {page: 1, location: título - POWER TRANSFORMER CHASSIS MOUNT TOROIDAL}

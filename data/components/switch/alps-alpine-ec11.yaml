@@ -1,0 +1,113 @@
+# Fonte: Alps Alpine, EC11 Series - Basic information, 11 mm Size Metal Shaft Type EC11 (catálogo online, 2018/9/5); página do modelo EC11E1534408.
+part_number: EC11
+category: switch.mechanical
+schema_version: '1.0'
+manufacturer: Alps Alpine
+family: EC11
+package: eixo metálico 11 mm, montagem vertical
+lifecycle: desconhecido
+notes:
+- 'O documento descreve o modelo EC11E1534408 (vertical, eixo plano de 20 mm, sem detente, 15 pulsos, com chave de pressão); os valores são desse modelo, não de toda a série EC11.'
+- 'Encoder incremental de duas fases A e B (pág. 1). Vida mecânica 15.000 ciclos (rotação) e 20.000 vezes (chave de pressão, após vida útil, pág. 2).'
+- 'Chave de pressão: SPST, curso 1.5±0.5 mm, 0.1 A 5 V DC (mínimo 500 uA 5 V DC), resistência de contato inicial 100 mohm máx (pág. 1). Torque de rotação 7 (+3, -4) mN·m; ruído de deslizamento a R = 5 kohm: chattering 3 ms máx, bounce 2 ms máx (pág. 3).'
+- Corrente de operação máx/mín (carga resistiva) 10 mA / 1 mA; rigidez dielétrica 300 V AC por 1 min ou 360 V AC por 2 s (pág. 1).
+datasheets:
+- id: ds1
+  manufacturer: Alps Alpine
+  revision: 2018/9/5
+  url: https://static.chipdip.ru/lib/498/DOC013498332.pdf
+  sha256: 10feea81b99e99a3b035004a41ba3b5f7eeb9ce2c895ac5d493592c81953919f
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_rated:
+    max: 10
+    unit: mA
+    conditions: {V: 5 V}
+    status: extraido
+    source:
+      page: 1
+      location: Electrical performance - Ratings (encoder)
+      excerpt: "Ratings 10mA 5V DC"
+  V_rated:
+    max: 5
+    unit: V
+    status: extraido
+    source:
+      page: 1
+      location: Electrical performance - Ratings (encoder)
+      excerpt: "Ratings 10mA 5V DC"
+  R_contact:
+    max: 100
+    unit: mohm
+    status: extraido
+    source:
+      page: 1
+      location: Push-on switch specifications - Contact resistance (Initial)
+      excerpt: "Contact resistance (Initial) 100mΩ max./200mΩ max."
+  R_iso:
+    min: 100
+    unit: Mohm
+    conditions: {V: 250 V}
+    status: extraido
+    source:
+      page: 1
+      location: Electrical performance - Insulation resistance
+      excerpt: "Insulation resistance 100MΩ min. 250V DC"
+  V_diel:
+    max: 300
+    unit: V
+    status: extraido
+    source:
+      page: 1
+      location: Electrical performance - Voltage proof
+      excerpt: "Voltage proof 300V AC for 1 minute or 360V AC for 2s"
+  life:
+    min: 15000
+    unit: '1'
+    status: extraido
+    source:
+      page: 1
+      location: Structure - Operating life
+      excerpt: "Operating life 15,000 cycles"
+  force:
+    typ: 4
+    unit: N
+    status: extraido
+    source:
+      page: 1
+      location: Push-on switch specifications - Operating force
+      excerpt: "Operating force 4±2N"
+  pulses:
+    typ: 15
+    unit: '1'
+    status: extraido
+    source:
+      page: 1
+      location: Structure - Number of pulse
+      excerpt: "Number of pulse 15"
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source:
+      page: 1
+      location: Structure - Operating temperature range
+      excerpt: "Operating temperature range -40℃ to +85℃"
+attributes:
+  tipo:
+    value: encoder incremental rotativo com chave de pressão
+    status: extraido
+    source:
+      page: 1
+      location: Title and Structure - Push-on switch With
+      excerpt: "EC11 Series ... Push-on switch With"
+  contatos:
+    value: saída de duas fases A e B; chave de pressão SPST
+    status: extraido
+    source:
+      page: 1
+      location: Output signal / Contact arrangement
+      excerpt: "Output signal Two phase A and B; Single pole single throw (Push-on)"

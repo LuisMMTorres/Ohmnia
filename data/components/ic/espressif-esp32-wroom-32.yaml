@@ -1,0 +1,88 @@
+# Fonte: Espressif, ESP32-WROOM-32 Datasheet, Version 3.8 (NRND).
+part_number: ESP32-WROOM-32
+category: ic.mcu
+schema_version: '1.0'
+manufacturer: Espressif
+family: ESP32-WROOM
+package: Módulo 18 × 25,5 × 3,1 mm (p. 3)
+lifecycle: nrnd
+notes:
+- 'O PDF da fila (ESP32-DevKitC) é o datasheet do módulo ESP32-WROOM-32; a placa ESP32-DevKitC usa este módulo. Registro do módulo, não da placa.'
+- 'Módulo com chip ESP32-D0WDQ6 (Xtensa LX6 dual-core), cristal de 40 MHz e flash SPI de 4 MB integrados (p. 2). Documento marcado "Not Recommended For New Designs (NRND)" (p. 1).'
+- 'Níveis de E/S (Tabela 14, 3,3 V, 25 °C, p. 26): VIH = 0,75×VDD1 a VDD1+0,3 V; VIL = -0,3 V a 0,25×VDD1; VOH min 0,8×VDD1; VOL max 0,1×VDD1 (VDD1 = tensão do domínio de alimentação do pino).'
+- 'Correntes (p. 26-27): fonte IOH típ. 40 mA (domínios VDD3P3_CPU e VDD3P3_RTC, VOH >= 2,64 V, drive máximo) e 20 mA (domínio VDD_SDIO); sumidouro IOL típ. 28 mA (VOL = 0,495 V); corrente de entrada IIH/IIL máx. 50 nA; pull-up/pull-down internos típ. 45 kΩ.'
+- 'Corrente de saída acumulada de E/S: máx. 1100 mA (Tabela 12, p. 26). Corrente mínima da fonte externa: 0,5 A (Tabela 13, p. 26).'
+- 'ADC (Tabela 9, p. 24): DNL ±7 LSB, INL ±12 LSB, taxa de amostragem máx. 200 ksps (controlador RTC). Dois DACs de 8 bits (p. 23).'
+- 'Além dos 16 canais LEDC, há PWM de controle de motor com 3 timers (p. 19-20).'
+datasheets:
+- id: ds1
+  manufacturer: Espressif
+  revision: Version 3.8
+  sha256: fe7dced2f6077f983dcd7df0e72b6f6c8b7b77fd6de2ff1a0efceffe3fd1e1fa
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 3.0
+    typ: 3.3
+    max: 3.6
+    unit: V
+    status: extraido
+    source: {page: 26, location: 5.2 Recommended Operating Conditions - VDD33 (Tabela 13), excerpt: "VDD33 Power supply voltage 3.0 3.3 3.6 V"}
+  f_clk:
+    max: 240
+    unit: MHz
+    status: extraido
+    source: {page: 2, location: 1.1 Features - CPU and On-Chip Memory, excerpt: "Xtensa dual-core 32-bit LX6 microprocessor, up to 240 MHz"}
+  flash:
+    typ: 4096
+    unit: kB
+    status: extraido
+    source: {page: 2, location: 1.1 Features - Integrated Components on Module, excerpt: "4 MB SPI flash"}
+  ram:
+    typ: 520
+    unit: kB
+    status: extraido
+    source: {page: 2, location: 1.1 Features - CPU and On-Chip Memory, excerpt: "520 KB SRAM"}
+  gpio:
+    max: 32
+    unit: '1'
+    status: extraido
+    source: {page: 2, location: 1.1 Features - Peripherals, excerpt: "Up to 32 GPIOs"}
+  adc_ch:
+    max: 18
+    unit: '1'
+    status: extraido
+    source: {page: 23, location: 4 Peripherals - Analog-to-Digital Converter (ADC), excerpt: "two 12-bit SAR ADCs and supports measurements on 18 channels"}
+  adc_bits:
+    typ: 12
+    unit: bit
+    status: extraido
+    source: {page: 23, location: 4 Peripherals - Analog-to-Digital Converter (ADC), excerpt: "two 12-bit SAR ADCs"}
+  pwm_ch:
+    typ: 16
+    unit: '1'
+    status: extraido
+    source: {page: 19, location: 4 Peripherals - LED PWM Controller, excerpt: "Sixteen independent PWM generators"}
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 2, location: 1.1 Features - Operating Conditions, excerpt: "Operating ambient temperature: -40 ~ 85 °C"}
+  Tstg:
+    min: -40
+    max: 105
+    unit: °C
+    status: extraido
+    source: {page: 26, location: 5.1 Absolute Maximum Ratings - Tstore (Tabela 12), excerpt: "Tstore Storage temperature -40 105 °C"}
+attributes:
+  microcontrolador:
+    value: ESP32-D0WDQ6 (Xtensa LX6 dual-core de 32 bits)
+    status: extraido
+    source: {page: 2, location: 1.1 Features - CPU and On-Chip Memory, excerpt: "ESP32-D0WDQ6 embedded, Xtensa dual-core 32-bit LX6 microprocessor"}
+  comunicacao:
+    value: Wi-Fi 802.11 b/g/n, Bluetooth V4.2 BR/EDR e LE, UART, SPI, SDIO, I2C, I2S, TWAI (CAN 2.0)
+    status: extraido
+    source: {page: 2, location: 1.1 Features - Wi-Fi, Bluetooth, Peripherals}

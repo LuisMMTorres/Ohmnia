@@ -1,0 +1,78 @@
+# Fonte: Littelfuse, 313/315 Series Lead-Free 3AG Slo-Blo Fuse (Axial Lead & Cartridge Fuses), revisado December 6, 2012.
+part_number: '313'
+category: fuse
+schema_version: '1.0'
+manufacturer: Littelfuse
+family: 313/315 Series (3AG, retardado Slo-Blo)
+package: 3AG, corpo de vidro (cartucho 313 ou axial 315)
+lifecycle: desconhecido
+notes:
+- 'Documento cobre as séries 313 (cartucho) e 315 (axial); valores são a faixa entre os modelos.'
+- 'Tabela de modelos de 0,01 A a 30 A. Tensão 250 V até 8 A (e 10 A versão 250 V); 32 V de 10 A a 30 A; 15 A também em 125 V (pág. 2).'
+- 'Capacidade de interrupção: 35 A @ 250 Vac (0,01 A a 1 A), 100 A @ 250 Vac (1,2 A a 3,2 A), 200 A @ 250 Vac (4 A a 8 A), 10 KA @ 125 Vac nessas faixas, 300 A @ 32 Vac (10 A a 30 A).'
+- 'Resistência a frio nominal de 4300 ohm (10 mA) a 0,0012 ohm (30 A); I2t de fusão nominal de 0,000121 A2s a 26900 A2s (pág. 2).'
+datasheets:
+- id: ds1
+  manufacturer: Littelfuse
+  document_number: 313/315 Series
+  revision: Revised December 6, 2012
+  url: https://www.farnell.com/datasheets/1682138.pdf
+  sha256: 66e8f615b9d74a3afb1332e42efbb76194debca42944b8006612bf69a19bbfe0
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_rated:
+    min: 0.01
+    max: 30
+    unit: A
+    status: extraido
+    note: Faixa da tabela da série.
+    source: {datasheet_id: ds1, page: 2, location: Electrical Characteristic Specifications by Item - Ampere Rating, excerpt: "0.01 ... 30"}
+  V_rated:
+    min: 32
+    max: 250
+    unit: V
+    status: extraido
+    note: 250 V até 8 A; 32 V de 10 A a 30 A (15 A também 125 V).
+    source: {datasheet_id: ds1, page: 2, location: Electrical Characteristic Specifications by Item - Voltage Rating, excerpt: "250 ... 32"}
+  I_break:
+    min: 35
+    max: 300
+    unit: A
+    status: extraido
+    note: 'Faixa entre os modelos: 35 A @ 250 Vac a 300 A @ 32 Vac (e 10 KA @ 125 Vac nas faixas até 8 A).'
+    source: {datasheet_id: ds1, page: 2, location: Electrical Characteristic Specifications by Item - Interrupting Rating, excerpt: "35A@250Vac ... 300A@32Vac"}
+  I2t:
+    min: 0.000121
+    max: 26900
+    unit: A^2*s
+    status: extraido
+    note: Nominal Melting I2t; faixa entre os modelos.
+    source: {datasheet_id: ds1, page: 2, location: Electrical Characteristic Specifications by Item - Nominal Melting I2t, excerpt: "0.000121 ... 26900"}
+  R_cold:
+    min: 0.0012
+    max: 4300
+    unit: ohm
+    status: extraido
+    note: Resistência a frio nominal; faixa entre os modelos.
+    source: {datasheet_id: ds1, page: 2, location: Electrical Characteristic Specifications by Item - Nominal Cold Resistance, excerpt: "4300.0000 ... 0.0012"}
+  Top:
+    min: -55
+    max: 125
+    unit: °C
+    status: extraido
+    source: {datasheet_id: ds1, page: 4, location: Product Characteristics - Operating Temperature, excerpt: "-55ºC to +125ºC"}
+attributes:
+  curva:
+    value: retardado (time-lag, Slo-Blo)
+    status: extraido
+    source: {page: 1, location: title, excerpt: "3AG Slo-Blo Fuse"}
+  formato:
+    value: 3AG, corpo de vidro, cartucho (313) ou axial (315)
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "Available in cartridge and axial lead format"}
+  certificacoes:
+    value: UL 248-14, RoHS, PSE e demais (tabela de agências, pág. 1)
+    status: extraido
+    source: {page: 1, location: Features / Agency Approvals}

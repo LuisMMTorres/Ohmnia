@@ -1,0 +1,175 @@
+# Fonte: Texas Instruments, OP07, OP07C, OP07D Precision Operational Amplifiers, SLOS099H, September 1983 - Revised March 2023.
+part_number: OP07
+category: opamp
+schema_version: '1.0'
+manufacturer: Texas Instruments
+family: OP07 / OP07C / OP07D (ampop de precisão)
+package: SOIC D (8), PDIP P (8)
+lifecycle: desconhecido
+notes:
+- Folha SLOS099H (setembro 1983, revisada março 2023). Ampop de precisão com baixo offset.
+- As especificações da seção 6.5 (VS = ±15 V, TA = 25 °C, RL = 2 kΩ) valem para OP07C e OP07D (nota 1 do documento); transcrita a coluna OP07C. OP07D tem limites maiores (por exemplo VOS ±150 µV, IB ±12 nA, IOS ±6 nA).
+- O texto extraído do PDF não separa as colunas; os valores foram lidos na imagem das páginas 5 e 6.
+- 'Faixa de temperatura de operação: 0 a 70 °C (seção 6.3).'
+- PSRR dado em µV/V (7 típ., 32 máx.), não em dB; não transcrito.
+datasheets:
+- id: ds1
+  manufacturer: Texas Instruments
+  document_number: SLOS099H
+  revision: SEPTEMBER 1983 - REVISED MARCH 2023
+  sha256: 7c60ae82015fc93918d5fcd97f8507976f46c76f68b6124e33469b7023a26669
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS_max:
+    max: 22
+    unit: V
+    note: Alimentação simétrica ±22 V
+    status: extraido
+    source:
+      page: 4
+      location: Absolute maximum ratings - supply voltage, dual supply
+      excerpt: VS Supply voltage Dual supply ±22 V
+  VS_total_max:
+    max: 44
+    unit: V
+    status: extraido
+    source:
+      page: 4
+      location: Absolute maximum ratings - supply voltage, single supply
+      excerpt: VS Supply voltage Single supply 44 V
+  VID_max:
+    max: 30
+    unit: V
+    status: extraido
+    source:
+      page: 4
+      location: Absolute maximum ratings - input voltage, differential
+      excerpt: Input voltage Differential ±30 V
+  VI_max:
+    max: 22
+    unit: V
+    note: 'Nota 4: nunca deve exceder a tensão de alimentação nem 15 V, o que for menor'
+    status: extraido
+    source:
+      page: 4
+      location: Absolute maximum ratings - input voltage, single-ended
+      excerpt: Input voltage Single-ended ±22 V
+  Tj_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 4
+      location: Absolute maximum ratings - operating junction temperature
+      excerpt: TJ Operating junction temperature -55 150 °C
+  Tstg_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 4
+      location: Absolute maximum ratings - storage temperature
+      excerpt: Tstg Storage temperature -65 150 °C
+  Vos:
+    typ: 60
+    unit: uV
+    conditions: &id001
+      TA: 25 degC
+    note: 'Valor típico em módulo (±60 µV); com TA = 0 a 70 °C: ±85 µV'
+    status: extraido
+    source:
+      page: 5
+      location: Electrical characteristics 6.5 - input offset voltage, OP07C
+      excerpt: VOS Input offset voltage OP07C ±60 µV
+  Ib:
+    typ: 1.8
+    unit: nA
+    conditions: *id001
+    note: 'Valor típico em módulo (±1.8 nA); com TA = 0 a 70 °C: ±2.2 nA'
+    status: extraido
+    source:
+      page: 5
+      location: Electrical characteristics 6.5 - input bias current, OP07C
+      excerpt: IB Input bias current OP07C ±1.8 nA
+  Ios:
+    typ: 0.8
+    unit: nA
+    conditions: *id001
+    note: 'Valor típico em módulo (±0.8 nA); com TA = 0 a 70 °C: ±1.6 nA'
+    status: extraido
+    source:
+      page: 5
+      location: Electrical characteristics 6.5 - input offset current, OP07C
+      excerpt: IOS Input offset current OP07C ±0.8 nA
+  Rin:
+    min: 7
+    typ: 33
+    unit: Mohm
+    status: extraido
+    source:
+      page: 5
+      location: Electrical characteristics 6.5 - input resistance
+      excerpt: rI Input resistance 7 33 MΩ
+  Avol:
+    min: 100
+    typ: 400
+    unit: V/mV
+    conditions:
+      RL: 500 kohm
+    status: extraido
+    source:
+      page: 5
+      location: Electrical characteristics 6.5 - open-loop voltage gain, OP07C
+      excerpt: AOL 1.4 V < VO < 11.4 V, RL = 500 kΩ OP07C 100 400 V/mV
+  CMRR:
+    min: 100
+    typ: 120
+    unit: dB
+    status: extraido
+    source:
+      page: 5
+      location: Electrical characteristics 6.5 - common-mode rejection ratio, OP07C
+      excerpt: CMRR OP07C VCM = ±13 V 100 120 dB
+  en:
+    typ: 9.8
+    unit: nV/Hz**0.5
+    conditions:
+      f: 1 kHz
+    status: extraido
+    source:
+      page: 5
+      location: Electrical characteristics 6.5 - input voltage noise density, f = 1 kHz
+      excerpt: eN Input voltage noise density f = 1 kHz 9.8 nV/√Hz
+  GBW:
+    min: 0.4
+    typ: 0.6
+    unit: MHz
+    status: extraido
+    source:
+      page: 6
+      location: Electrical characteristics 6.5 (continued) - unity gain bandwidth
+      excerpt: Unity gain bandwidth 0.4 0.6 MHz
+  SR:
+    typ: 0.3
+    unit: V/us
+    status: extraido
+    source:
+      page: 6
+      location: Electrical characteristics 6.5 (continued) - slew rate
+      excerpt: SR Slew rate VS = 5 V, RL = 2 kΩ 0.3 V/μs
+  Vom:
+    min: 11.5
+    typ: 12.8
+    unit: V
+    conditions:
+      VS: 15 V
+      RL: 2 kohm
+    note: Em módulo; o documento dá ±11.5 (mín.) e ±12.8 (típ.)
+    status: extraido
+    source:
+      page: 6
+      location: 'Electrical characteristics 6.5 (continued) - voltage output swing (condições padrão do cabeçalho: VS = ±15 V, RL = 2 kΩ)'
+      excerpt: Voltage output swing ±11.5 ±12.8 V
+attributes: {}

@@ -1,0 +1,82 @@
+# Fonte: Baumer, Datasheet IWFM 08U9501 Inductive distance measuring sensors (arquivo Baumer_IWFM-08U9501-S35A_EN_20221116_DS), data impressa no PDF 28/3/2017.
+part_number: IWFM 08U9501
+category: sensor.position
+schema_version: '1.0'
+manufacturer: Baumer
+family: IWFM
+package: Retangular 8 mm x 16 mm, zinco fundido niquelado, cabo de 2 m
+lifecycle: desconhecido
+notes:
+- 'Nome na fila: Baumer IWFM-08U9501-S35A EN 20221116 DS; o PDF recebido é a folha do modelo base IWFM 08U9501 (cópia de distribuidor), não traz o sufixo S35A.'
+- 'Sensor indutivo de medição de distância, montagem quase-embutida, saída analógica em tensão 0 a 10 VDC (p. 1).'
+- 'Erro de linearidade: ± 100 um (p. 1); desvio de temperatura ± 5 % (fundo de escala); tempo de resposta < 1 ms (p. 1). Linearidade não transcrita como parâmetro (schema usa % e o documento dá valor em um).'
+- 'Temperatura de operação impressa como "10 ... +60 °C" no PDF (sinal de menos aparentemente ausente); não transcrita para não inventar o limite inferior.'
+- 'Resolução: < 0,001 mm (estática) e < 0,005 mm (dinâmica) (p. 1). Carga: resistência de carga > 3000 ohm; proteção contra curto-circuito e polaridade invertida (p. 1).'
+datasheets:
+- id: ds1
+  manufacturer: Baumer
+  revision: '28/3/2017 (data impressa)'
+  url: https://pyramidimaging.com/uploads/Media/9222.pdf
+  sha256: fd8c92be6c67bf4d273b0ccf7b292f86e05de3ee31aba3031332461668da5519
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  range:
+    min: 0
+    max: 2
+    unit: mm
+    status: extraido
+    source: {page: 1, location: general data - measuring distance Sd, excerpt: "measuring distance Sd 0 ... 2 mm"}
+  resolution:
+    max: 0.001
+    unit: mm
+    status: extraido
+    source: {page: 1, location: general data - resolution (estática), excerpt: "resolution < 0,001 mm (stat.)"}
+  repeatability:
+    max: 0.02
+    unit: mm
+    status: extraido
+    source: {page: 1, location: general data - repeat accuracy, excerpt: "repeat accuracy < 0,02 mm"}
+  VS:
+    min: 15
+    max: 30
+    unit: V
+    status: extraido
+    source: {page: 1, location: electrical data - voltage supply range +Vs, excerpt: "voltage supply range +Vs 15 ... 30 VDC"}
+  IS:
+    max: 10
+    unit: mA
+    status: extraido
+    source: {page: 1, location: electrical data - current consumption max. (no load), excerpt: "current consumption max. (no load) 10 mA"}
+  V_out:
+    min: 0
+    max: 10
+    unit: V
+    status: extraido
+    source: {page: 1, location: electrical data - output signal, excerpt: "output signal 0 ... 10 VDC"}
+attributes:
+  saida:
+    value: Tensão analógica 0 a 10 VDC, resistência de carga > 3000 ohm
+    status: extraido
+    source: {page: 1, location: electrical data - output circuit / output signal / load resistance, excerpt: "voltage output; 0 ... 10 VDC; > 3000 Ohm"}
+  conexao:
+    value: Cabo de 2 m (BN +Vs, BK saída, BU 0 V)
+    status: extraido
+    source: {page: 1, location: mechanical data - connection types / connection diagram, excerpt: "connection types cable, 2 m"}
+  invólucro:
+    value: Retangular, zinco fundido niquelado, 8 mm de largura, 16 mm de comprimento
+    status: extraido
+    source: {page: 1, location: mechanical data, excerpt: "rectangular; die-cast zinc nickel plated; dimension 8 mm; housing length 16 mm"}
+  grau_protecao:
+    value: IP 67
+    status: extraido
+    source: {page: 1, location: ambient conditions - protection class, excerpt: "protection class IP 67"}
+  certificacoes:
+    value: CE, cULus (UL listed), EAC (logotipos no documento)
+    status: extraido
+    source: {page: 1, location: marcas de aprovação ao lado do diagrama de conexão, excerpt: "logotipos CE, cULus, EAC"}
+  principio:
+    value: Indutivo (medição de distância)
+    status: extraido
+    source: {page: 1, location: Título, excerpt: "Inductive distance measuring sensors"}

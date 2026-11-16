@@ -1,0 +1,103 @@
+# Fonte: Schneider Electric (Telemecanique Sensors), Product data sheet XS618B1MAL2, 11/10/2026.
+part_number: XS618B1MAL2
+category: sensor.proximity
+schema_version: '1.0'
+manufacturer: Schneider Electric
+family: XS6 (Telemecanique Inductive proximity sensors XS, General purpose)
+package: M18 x 1, cilíndrico
+lifecycle: desconhecido
+notes:
+- Sensor indutivo M18, latão, Sn 8 mm, cabo 2 m, 24...240 V AC/DC, 2 fios, NA (título, p. 1).
+- Faixa de distância sensora "> 4...8 mm" (p. 1). Capacidade de comutação 5...200 mA DC e 5...300 mA AC (p. 1); IL lançado com o valor DC.
+- Frequência de comutação <= 1000 Hz em DC e <= 25 Hz em AC (p. 2). Corrente residual 0,8 mA em estado aberto lançada como máximo (documento não diz típico ou máximo), conferir.
+- Atraso de resposta 0,5 ms; atraso na energização 25 ms (p. 1-2). Massa 0,12 kg (p. 2).
+datasheets:
+- id: ds1
+  manufacturer: Schneider Electric
+  revision: 11/10/2026
+  url: https://pdf.telemecaniquesensors.com/datasheet?ref=XS618B1MAL2&lang=en
+  sha256: d1377cedef35f5cb046c9c2d1251a501643171afd6c24ee45778eca7b70a7b6f
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  sn:
+    typ: 8
+    unit: mm
+    status: extraido
+    source: {page: 1, location: Main - Sn nominal sensing distance, excerpt: "[Sn] nominal sensing distance 8 mm"}
+  sr:
+    min: 4
+    max: 8
+    unit: mm
+    status: extraido
+    source: {page: 1, location: Complementary - Sensing range, excerpt: "Sensing range > 4...8 mm"}
+  hysteresis:
+    min: 1
+    max: 15
+    unit: '%'
+    status: extraido
+    source: {page: 2, location: Complementary - Differential travel, excerpt: "Differential travel 1...15 % of Sr"}
+  VS:
+    min: 20
+    max: 264
+    unit: V
+    status: extraido
+    source: {page: 1, location: Complementary - Supply voltage limits, excerpt: "Supply voltage limits 20-264 V AC/DC"}
+  IL:
+    max: 200
+    unit: mA
+    status: extraido
+    source: {page: 1, location: Complementary - Switching capacity in mA, excerpt: "5...200 mA DC, 5...300 mA AC"}
+  Vdrop:
+    max: 5.5
+    unit: V
+    status: extraido
+    source: {page: 2, location: Complementary - Voltage drop, excerpt: "<5.5 V (closed)"}
+  f_sw:
+    max: 1000
+    unit: Hz
+    status: extraido
+    source: {page: 2, location: Complementary - Switching frequency (DC), excerpt: "<= 1000 Hz DC, <= 25 Hz AC"}
+  Ir:
+    max: 0.8
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Complementary - Residual current, excerpt: "0.8 mA open state"}
+  Top:
+    min: -25
+    max: 70
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Environment - Ambient air temperature for operation, excerpt: "-25…70 °C"}
+  Tstg:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Environment - Ambient air temperature for storage, excerpt: "-40…85 °C"}
+attributes:
+  saida:
+    value: NA (1 NO), 2 fios, CA/CC (24...240 V AC/DC 50/60 Hz)
+    status: extraido
+    source: {page: 2, location: Complementary - Output circuit type / Discrete output function, excerpt: "AC/DC; 1 NO"}
+  conexao:
+    value: Cabo PVC 2 m, 2 x 0,34 mm²
+    status: extraido
+    source: {page: 1, location: Complementary - Electrical connection / Cable composition, excerpt: "Cable; 2 m; 2 x 0.34 mm²"}
+  invólucro:
+    value: Latão niquelado, M18 x 1, comprimento 62 mm, face PPS
+    status: extraido
+    source: {page: 1, location: Main - Enclosure material / Thread type, excerpt: "Nickel plated brass; M18 x 1"}
+  grau_protecao:
+    value: IP68 dupla isolação (IEC 60529) e IP69K (DIN 40050)
+    status: extraido
+    source: {page: 2, location: Environment - IP degree of protection, excerpt: "IP68 double insulation conforming to IEC 60529, IP69K conforming to DIN 40050"}
+  certificacoes:
+    value: CSA, UL, CE
+    status: extraido
+    source: {page: 1, location: Main - Product certifications / Marking, excerpt: "CSA UL; Marking CE"}
+  montagem:
+    value: Faceado
+    status: extraido
+    source: {page: 1, location: Main - Detector flush mounting acceptance, excerpt: "Flush mountable"}

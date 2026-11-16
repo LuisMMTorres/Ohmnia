@@ -1,0 +1,85 @@
+# Fonte: Honeywell, SS39ET/SS49E/SS59ET Series Linear Hall-effect Sensor ICs, datasheet (product sheet 005850-3-EN).
+part_number: SS39ET/SS49E/SS59ET
+category: sensor.magnetic
+schema_version: '1.0'
+manufacturer: Honeywell
+family: SS39ET/SS49E/SS59ET Series
+package: SOT-23 (SS39ET), TO-92 plano (SS49E, SS49E-L, SS49E-F), SOT-89B (SS59ET)
+lifecycle: desconhecido
+notes:
+- 'Fila: ss39et-ss49e-ss59et-series-product-sheet-005850-3-en. Valores da série; Tabela 1 com Vs = 5,0 V, TA = -40 a 85 °C salvo indicação (pág. 3).'
+- 'Sensibilidade e faixa magnética convertidas de Gauss para mT (1 mT = 10 G): 1,0/1,4/1,75 mV/G = 10/14/17,5 mV/mT; ±650/±1000 G = ±65/±100 mT.'
+- 'Linearidade típ. -0,7 % do span; tempo de resposta típ. 3 us (pág. 3). Corrente de saída 1,0/1,5/1,5 mA com Vs > 3,0 V (pág. 3).'
+- 'Máximos absolutos: Vs -5,0 a 8,0 Vdc; corrente de saída 10 mA (pág. 3). ESD classe 3.'
+- 'Deriva de nulo e de sensibilidade em %/°C na Tabela 1 (pág. 3).'
+datasheets:
+- id: ds1
+  manufacturer: Honeywell
+  document_number: 005850-3-EN
+  url: https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/siot/en-us/products/sensors/magnetic-sensors/linear-and-angle-sensor-ics/common/documents/sps-siot-ss39et-ss49e-ss59et-product-sheet-005850-3-en-ciid-50359.pdf
+  sha256: f7379dd7c53c098935c60b30c43d1333e051cf1163ffa5e9c3fd4cf4c3036734
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  sensitivity:
+    min: 10
+    typ: 14
+    max: 17.5
+    unit: mV/mT
+    conditions: {TA: 25 °C, Vs: 5 V}
+    status: extraido
+    source: {page: 3, location: Table 1 - Sensitivity, excerpt: "Sensitivity 25 °C 1.0 1.4 1.75 mV/Gauss"}
+  B_range:
+    min: 65
+    typ: 100
+    unit: mT
+    status: extraido
+    source: {page: 3, location: Table 1 - Magnetic range, excerpt: "Magnetic range ±650 ±1000 Gauss"}
+  V_q:
+    min: 2.25
+    typ: 2.5
+    max: 2.75
+    unit: V
+    conditions: {TA: 25 °C, B: 0 mT, Vs: 5 V}
+    status: extraido
+    source: {page: 3, location: Table 1 - Null, excerpt: "Null 0 Gauss, 25 °C 2.25 2.50 2.75 Vdc"}
+  VS:
+    min: 2.7
+    max: 6.5
+    unit: V
+    status: extraido
+    source: {page: 3, location: Table 1 - Supply voltage, excerpt: "Supply voltage 2.7 6.5 Vdc"}
+  IS:
+    typ: 6
+    max: 10
+    unit: mA
+    conditions: {TA: 25 °C}
+    status: extraido
+    source: {page: 3, location: Table 1 - Supply current, excerpt: "Supply current 25 °C 6 10 mA"}
+  IL:
+    max: 10
+    unit: mA
+    status: extraido
+    source: {page: 3, location: Table 2 Absolute Maximum Ratings - Output current, excerpt: "Output current 10 mA"}
+  Top:
+    min: -40
+    max: 100
+    unit: °C
+    status: extraido
+    source: {page: 3, location: Table 1 - Operating temperature, excerpt: "Operating temperature -40 100 °C"}
+  Tstg:
+    min: -55
+    max: 165
+    unit: °C
+    status: extraido
+    source: {page: 3, location: Table 2 - Storage temperature, excerpt: "Storage temperature -55 °C to 165 °C"}
+attributes:
+  saida:
+    value: Linear analógica, fonte de corrente (sourcing), ratiométrica
+    status: extraido
+    source: {page: 3, location: Table 1 - Output type, excerpt: "Output type linear, sourcing"}
+  encapsulamento:
+    value: SOT-23 (SS39ET), TO-92 plano (SS49E), SOT-89B (SS59ET)
+    status: extraido
+    source: {page: 2, location: Description - package styles}

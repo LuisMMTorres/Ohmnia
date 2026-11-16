@@ -1,0 +1,391 @@
+# Fonte: Infineon (International Rectifier), IRF640N/S/LPbF, Rev. 2.1, 2026-07-27.
+part_number: IRF640N
+category: mosfet.n
+schema_version: '1.0'
+manufacturer: Infineon
+package: TO-220AB (também D2-Pak e TO-262 nas variantes S/L)
+lifecycle: desconhecido
+notes:
+- Folha 'IRF640N/S/LPbF' (HEXFET de 5a geração), Rev. 2.1, 2026-07-27, conforme impresso; valores referidos à versão TO-220.
+datasheets:
+- id: ds1
+  manufacturer: Infineon
+  revision: Rev. 2.1, 2026-07-27
+  sha256: 266d6b55ffa23d0d81072a3586fbe4a47c32fe0fc7e9b36dcaa524c52aaf1a35
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VDS:
+    max: 200
+    unit: V
+    status: extraido
+    source:
+      page: 1
+      location: Features table - V(BR)DSS
+      excerpt: V(BR)DSS 200V
+  VGS:
+    max: 20
+    unit: V
+    note: Limite simétrico ±20 V
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - gate-to-source voltage
+      excerpt: VGS Gate-to-Source Voltage ± 20 V
+  ID:
+    max: 18
+    unit: A
+    conditions:
+      TC: 25 degC
+      VGS: 10 V
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - continuous drain current TC=25C
+      excerpt: ID @ TC = 25°C Continuous Drain Current, VGS @ 10V 18 A
+  ID@100C:
+    max: 13
+    unit: A
+    conditions:
+      TC: 100 degC
+      VGS: 10 V
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - continuous drain current TC=100C
+      excerpt: ID @ TC = 100°C Continuous Drain Current, VGS @ 10V 13
+  IDM:
+    max: 72
+    unit: A
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - pulsed drain current
+      excerpt: IDM Pulsed Drain Current 72
+  Ptot:
+    max: 150
+    unit: W
+    conditions:
+      TC: 25 degC
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - power dissipation
+      excerpt: PD @TC = 25°C 150 W
+  Ptot_derating:
+    max: 1.0
+    unit: W/K
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - linear derating factor
+      excerpt: Linear Derating Factor 1.0 W/°C
+  IAR:
+    max: 18
+    unit: A
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - avalanche current
+      excerpt: IAR Avalanche Current 18 A
+  EAR:
+    max: 15
+    unit: mJ
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - repetitive avalanche energy
+      excerpt: EAR Repetitive Avalanche Energy 15 mJ
+  dv/dt:
+    max: 8.1
+    unit: V/ns
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - peak diode recovery dv/dt
+      excerpt: dv/dt Peak Diode Recovery dv/dt 8.1 V/ns
+  EAS:
+    max: 247
+    unit: mJ
+    note: Início TJ = 25 °C, L = 4.2 mH, RG = 25 Ω, IAS = 11 A
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - single pulse avalanche energy
+      excerpt: EAS Single Pulse Avalanche Energy 247 mJ
+  Tj_max:
+    max: 175
+    unit: degC
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - operating junction and storage temperature
+      excerpt: TJ -55 to + 175
+  Tj_min:
+    min: -55
+    unit: degC
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - operating junction and storage temperature
+      excerpt: TJ -55 to + 175
+  Rth_jc:
+    max: 1.0
+    unit: K/W
+    status: extraido
+    source:
+      page: 2
+      location: Thermal resistance - junction-to-case
+      excerpt: RθJC Junction-to-Case 1.0 °C/W
+  Rth_cs:
+    typ: 0.5
+    unit: K/W
+    status: extraido
+    source:
+      page: 2
+      location: Thermal resistance - case-to-sink, flat, greased surface
+      excerpt: Case-to-Sink, Flat, Greased Surface 0.50
+  Rth_ja:
+    max: 62
+    unit: K/W
+    status: extraido
+    source:
+      page: 2
+      location: Thermal resistance - junction-to-ambient
+      excerpt: Junction-to-Ambient 62
+  V(BR)DSS:
+    min: 200
+    unit: V
+    conditions:
+      ID: 250 uA
+      VGS: 0 V
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics - drain-to-source breakdown voltage
+      excerpt: V(BR)DSS 200 V VGS = 0V, ID = 250µA
+  RDS(on):
+    max: 0.15
+    unit: ohm
+    conditions:
+      VGS: 10 V
+      ID: 11 A
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics - static drain-to-source on-resistance
+      excerpt: RDS(on) 0.15 VGS = 10V, ID = 11A
+  VGS(th):
+    min: 2.0
+    max: 4.0
+    unit: V
+    conditions:
+      ID: 250 uA
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics - gate threshold voltage
+      excerpt: VGS(th) 2.0 4.0 V VDS = VGS, ID = 250µA
+  gfs:
+    min: 6.8
+    unit: S
+    conditions:
+      VDS: 50 V
+      ID: 11 A
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics - forward transconductance
+      excerpt: gfs 6.8 S VDS = 50V, ID = 11A
+  IDSS:
+    max: 25
+    unit: uA
+    conditions:
+      VDS: 200 V
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics - drain-to-source leakage current
+      excerpt: IDSS 25 µA VDS = 200V, VGS = 0V
+  IGSS:
+    max: 100
+    unit: nA
+    conditions:
+      VGS: 20 V
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics - gate-to-source forward leakage
+      excerpt: IGSS 100 nA VGS = 20V
+  Qg:
+    max: 67
+    unit: nC
+    conditions:
+      VGS: 10 V
+      ID: 11 A
+      VDS: 160 V
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics - total gate charge
+      excerpt: Qg Total Gate Charge 67 nC
+  Qgs:
+    max: 11
+    unit: nC
+    conditions:
+      VGS: 10 V
+      ID: 11 A
+      VDS: 160 V
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics - gate-to-source charge
+      excerpt: Qgs 11 nC
+  Qgd:
+    max: 33
+    unit: nC
+    conditions:
+      VGS: 10 V
+      ID: 11 A
+      VDS: 160 V
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics - gate-to-drain charge
+      excerpt: Qgd 33 nC
+  td(on):
+    typ: 10
+    unit: ns
+    conditions:
+      ID: 11 A
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics - turn-on delay time
+      excerpt: td(on) 10 ns
+  tr:
+    typ: 19
+    unit: ns
+    conditions:
+      ID: 11 A
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics - rise time
+      excerpt: tr 19 ns
+  td(off):
+    typ: 23
+    unit: ns
+    conditions:
+      ID: 11 A
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics - turn-off delay time
+      excerpt: td(off) 23 ns
+  tf:
+    typ: 5.5
+    unit: ns
+    conditions:
+      ID: 11 A
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics - fall time
+      excerpt: tf 5.5 ns
+  LD:
+    typ: 4.5
+    unit: nH
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics - internal drain inductance
+      excerpt: LD 4.5 nH
+  LS:
+    typ: 7.5
+    unit: nH
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics - internal source inductance
+      excerpt: LS 7.5 nH
+  Ciss:
+    typ: 1160
+    unit: pF
+    conditions:
+      VDS: 25 V
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics - input capacitance
+      excerpt: Ciss 1160 pF VGS = 0V VDS = 25V
+  Coss:
+    typ: 185
+    unit: pF
+    conditions:
+      VDS: 25 V
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics - output capacitance
+      excerpt: Coss 185
+  Crss:
+    typ: 53
+    unit: pF
+    conditions:
+      VDS: 25 V
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics - reverse transfer capacitance
+      excerpt: Crss 53
+  IS:
+    max: 18
+    unit: A
+    status: extraido
+    source:
+      page: 2
+      location: Source-drain ratings - continuous source current
+      excerpt: IS Continuous Source Current 18 A
+  ISM:
+    max: 72
+    unit: A
+    status: extraido
+    source:
+      page: 2
+      location: Source-drain ratings - pulsed source current
+      excerpt: ISM Pulsed Source Current 72
+  VSD:
+    max: 1.3
+    unit: V
+    conditions:
+      IS: 11 A
+    status: extraido
+    source:
+      page: 2
+      location: Source-drain ratings - diode forward voltage
+      excerpt: VSD 1.3 V TJ = 25°C, IS = 11A, VGS = 0V
+  trr:
+    typ: 167
+    max: 251
+    unit: ns
+    conditions:
+      IF: 11 A
+    status: extraido
+    source:
+      page: 2
+      location: Source-drain ratings - reverse recovery time
+      excerpt: trr 167 251 ns IF = 11A
+  Qrr:
+    typ: 929
+    max: 1394
+    unit: nC
+    conditions:
+      IF: 11 A
+    status: extraido
+    source:
+      page: 2
+      location: Source-drain ratings - reverse recovery charge
+      excerpt: Qrr 929 1394 nC di/dt = 100A/µs
+attributes: {}

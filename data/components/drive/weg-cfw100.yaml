@@ -1,0 +1,76 @@
+# Fonte: WEG, Guia de Instalação Rápida CFW100 Micro Drive, documento 10005873788 / 00.
+part_number: CFW100
+category: drive.vfd
+schema_version: '1.0'
+manufacturer: WEG
+family: CFW100
+package: IP20, mecânicas A, B e C
+lifecycle: desconhecido
+notes:
+- 'Valores da série CFW100 (Tabela 9, pág. 2): modelos 1,6 A / 0,25 CV (0,18 kW), 2,6 A / 0,5 CV (0,37 kW) e 4,2 A / 1 CV (0,75 kW); faixa entre os modelos.'
+- 'Modelos monofásicos de 110...127 Vac (1,6 e 2,6 A) e 200...240 Vac (1,6; 2,6 e 4,2 A) (Tabela 9, pág. 2).'
+- 'Controle vetorial (VVW) ou escalar (V/f); funções de CLP via SoftPLC integrado (pág. 1, seção 4).'
+- 'Redução de corrente de 2 % por grau acima de 50 C (limite +10 C); altitude até 1000 m nominal (pág. 1, seção 8.1). Umidade relativa 5 % a 95 % sem condensação.'
+datasheets:
+- id: ds1
+  manufacturer: WEG
+  document_number: 10005873788 / 00
+  url: https://static.weg.net/medias/downloadcenter/h8e/h39/WEG-CFW100-guia-de-instalacao-rapida-10005873788-pt.pdf
+  sha256: 23d0677826b93087e5855a3a478719439fec6ff5ec4bcdcccadcddb586271d47
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  P_motor:
+    min: 0.18
+    max: 0.75
+    unit: kW
+    status: extraido
+    source: {page: 2, location: Tabela 9, Motor Máximo, excerpt: "0.25/0.18 ... 1/0.75 [HP/kW]"}
+  V_in:
+    min: 110
+    max: 240
+    unit: V
+    status: extraido
+    source: {page: 2, location: Tabela 9, Tensão Nominal de Alimentação, excerpt: "110...127 Vac; 200...240 Vac"}
+  phases_in:
+    typ: 1
+    unit: '1'
+    status: extraido
+    source: {page: 2, location: Tabela 9, N° de Fases de Alimentação, excerpt: "CFW100A01P6S120G2 | 1 | 110...127 Vac"}
+  I_out:
+    min: 1.6
+    max: 4.2
+    unit: A
+    status: extraido
+    source: {page: 2, location: Tabela 9, Corrente Nominal de Saída, excerpt: "1.6 ... 2.6 ... 4.2 [Arms]"}
+  f_sw:
+    typ: 5
+    unit: kHz
+    status: extraido
+    source: {page: 2, location: Tabela 9, Frequência de Chaveamento Nominal, excerpt: "5 [kHz]"}
+  Top:
+    min: 0
+    max: 50
+    unit: °C
+    status: extraido
+    source: {page: 1, location: 8.1 Condições ambientais, excerpt: "Temperatura ao redor do inversor: de 0 ºC a 50 ºC – IP20"}
+  Tstg:
+    min: -25
+    max: 60
+    unit: °C
+    status: extraido
+    source: {page: 1, location: 6 Recebimento e armazenamento, excerpt: "temperatura entre -25 °C e 60 °C"}
+attributes:
+  controle:
+    value: vetorial (VVW) ou escalar (V/f)
+    status: extraido
+    source: {page: 1, location: 4 Sobre o CFW100}
+  grau_protecao:
+    value: IP20
+    status: extraido
+    source: {page: 1, location: 5 Nomenclatura, Grau de Proteção}
+  certificacoes:
+    value: UL 508C, UL 61800-5-1, EN 61800-5-1 (normas de segurança, Tabela 8)
+    status: extraido
+    source: {page: 2, location: Tabela 8, Normas consideradas}

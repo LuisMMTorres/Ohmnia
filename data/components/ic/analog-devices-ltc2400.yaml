@@ -1,0 +1,77 @@
+# Fonte: Analog Devices (Linear Technology), LTC2400 24-Bit µPower No Latency ΔΣ ADC in SO-8, folha de dados (cópia do distribuidor); sem revisão/data legível.
+part_number: LTC2400
+category: ic.adc
+schema_version: '1.0'
+manufacturer: Analog Devices
+package: SO-8 (S8)
+lifecycle: desconhecido
+notes:
+- 'Fabricante original do documento: Linear Technology (marca LTC), registrada em nome da Analog Devices pela fila.'
+- 'Faixa de entrada: -0.125 x VREF a 1.125 x VREF (p. 2); tensão de referência 0.1 V até VCC (p. 2). Não transcritas como V_in por serem relativas a VREF.'
+- 'Linearidade, offset e ganho estão em ppm de VREF (INL 4 ppm típ., 15 ppm máx. com VREF = 5 V; offset 0.5 ppm típ.; erro de fundo de escala 4 ppm típ., p. 2), fora da unidade LSB do esquema; não transcritos nos parâmetros.'
+- 'Tempo de conversão 133.33 ms típ. com FO = 0 V (rejeição de 60 Hz) e 160 ms com FO = VCC (50 Hz) (p. 4); taxa de amostragem não transcrita como fs.'
+- 'Rejeição de modo normal 60 Hz/50 Hz: 110 dB mín., 130 dB típ. (p. 2); não transcrita como SNR.'
+- 'Corrente de alimentação em modo conversão 200 µA típ., 300 µA máx.; em modo sleep 20 µA típ., 30 µA máx. (p. 3).'
+- 'Temperatura: LTC2400C 0 a 70 °C; LTC2400I -40 a 85 °C (p. 2); Top registra a faixa mais ampla (versão I).'
+- 'Fila de transcrição: novo link do distribuidor (farnell).'
+datasheets:
+- id: ds1
+  manufacturer: Analog Devices
+  url: https://www.farnell.com/datasheets/82382.pdf
+  sha256: 0663826375c0d85a833401a1ab404f5b463da676edb4cb082f32c051c32e30e1
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  bits:
+    typ: 24
+    unit: bit
+    status: extraido
+    source: {page: 2, location: Converter characteristics - Resolution (No Missing Codes), excerpt: "Resolution (No Missing Codes) ... 24 Bits"}
+  channels:
+    typ: 1
+    unit: '1'
+    status: extraido
+    source: {page: 1, location: Typical application / pinout - single input VIN, excerpt: "VIN"}
+  VS:
+    min: 2.7
+    max: 5.5
+    unit: V
+    status: extraido
+    source: {page: 3, location: Power requirements - Supply Voltage, excerpt: "VCC Supply Voltage 2.7 5.5 V"}
+  VREF:
+    min: 0.1
+    unit: V
+    status: extraido
+    source: {page: 2, location: Analog input and reference - Reference Voltage Range (máximo = VCC), excerpt: "Reference Voltage Range 0.1 VCC V"}
+  IS:
+    typ: 0.2
+    max: 0.3
+    unit: mA
+    status: extraido
+    source: {page: 3, location: Power requirements - Supply Current, Conversion Mode (CS = 0V), excerpt: "Conversion Mode CS = 0V 200 300 µA"}
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - Operating Temperature Range, excerpt: "LTC2400I ... –40°C to 85°C"}
+  Tstg:
+    min: -65
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - Storage Temperature Range, excerpt: "Storage Temperature Range ... –65°C to 150°C"}
+attributes:
+  interface:
+    value: SPI / MICROWIRE de 3 fios
+    status: extraido
+    source: {page: 1, location: Description, excerpt: "flexible 3-wire digital interface which is compatible with SPI and MICROWIRE"}
+  arquitetura:
+    value: Delta-sigma (ΔΣ), sem latência
+    status: extraido
+    source: {page: 1, location: Description, excerpt: "It uses delta-sigma technology"}
+  encapsulamento:
+    value: SO-8 plástico (S8)
+    status: extraido
+    source: {page: 2, location: Package/order information, excerpt: "S8 PACKAGE 8-LEAD PLASTIC SO"}

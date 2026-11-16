@@ -1,0 +1,85 @@
+# Fonte: Texas Instruments, DAC7760, DAC8760 (DACx760) Single-Channel, 12- and 16-Bit Programmable Current and Voltage Output DACs for 4-mA to 20-mA Current-Loop Applications, SBAS528D, June 2013 - Revised December 2021.
+part_number: DAC8760
+category: ic.dac
+schema_version: '1.0'
+manufacturer: Texas Instruments
+family: DACx760
+package: VQFN-40 (RHA, 6 x 6 mm) e HTSSOP-24 (PWP, 7,8 x 4,4 mm) (p. 1)
+lifecycle: desconhecido
+notes:
+- 'O documento cobre DAC7760 (12 bits) e DAC8760 (16 bits); valores para o DAC8760 (p. 1 e p. 6).'
+- 'Saída em corrente: 4 a 20 mA, 0 a 20 mA ou 0 a 24 mA; saída em tensão: 0 a 5 V, 0 a 10 V, ±5 V, ±10 V, com 10% de sobrefaixa (até ±11 V) (p. 1 e p. 6-7).'
+- 'Alimentação AVDD de 10 a 36 V (AVDD + |AVSS| <= 36 V), AVSS de -18 a 0 V; DVDD de 2,7 a 5,5 V com regulador interno desabilitado (p. 5).'
+- 'Referência interna de 5 V (máx. 10 ppm/°C) e saída de alimentação interna de 4,6 V (p. 1 e p. 9).'
+- 'Corrente de alimentação analógica AIDD (3 a 4,6 mA conforme o modo) e AISS na p. 10; não transcrita como IS por causa da ambiguidade de colunas mín./típ./máx. no texto extraído.'
+datasheets:
+- id: ds1
+  manufacturer: Texas Instruments
+  document_number: SBAS528D
+  revision: December 2021
+  url: https://www.ti.com/lit/ds/symlink/dac8760.pdf
+  sha256: 8118e387cabe18653c2d20eb5c7929ee86562a0bfba7f22414ed280163849fb2
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  bits:
+    typ: 16
+    unit: bit
+    status: extraido
+    source: {page: 6, location: 7.5 Electrical Characteristics - Resolution, excerpt: "Resolution DAC8760 16 Bits"}
+  channels:
+    typ: 1
+    unit: '1'
+    status: extraido
+    source: {page: 1, location: Title, excerpt: "DACx760 Single-Channel, 12- and 16-Bit Programmable Current and Voltage Output"}
+  VS:
+    min: 10
+    max: 36
+    unit: V
+    status: extraido
+    source: {page: 5, location: 7.3 Recommended Operating Conditions - AVDD, excerpt: "AVDD (AVDD + |AVSS| ≤ 36 V) 10 36 V"}
+  VREF:
+    min: 4.95
+    max: 5.05
+    unit: V
+    status: extraido
+    source: {page: 5, location: 7.3 Recommended Operating Conditions - Reference input voltage, excerpt: "Reference input voltage 4.95 5.05 V"}
+  V_out:
+    min: -11
+    max: 11
+    unit: V
+    status: extraido
+    source: {page: 6, location: 7.5 Electrical Characteristics - Voltage output range (overrange mode), excerpt: "AVSS ≤ –11.5 V, AVDD ≥ 11.5 V –11 11"}
+  I_out:
+    min: 0
+    max: 24
+    unit: mA
+    status: extraido
+    source: {page: 7, location: 7.5 Electrical Characteristics - Output current ranges, excerpt: "RANGE bits = 111 0 24 mA"}
+  DNL:
+    max: 1
+    unit: '1'
+    status: extraido
+    source: {page: 6, location: 7.5 Electrical Characteristics - DNL (tensão), excerpt: "Differential nonlinearity, DNL Monotonic ±1 LSB"}
+  Top:
+    min: -40
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 5, location: 7.3 Recommended Operating Conditions - Specified performance temperature, excerpt: "Specified performance temperature –40 125 °C"}
+  Tstg:
+    min: -65
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 5, location: 7.1 Absolute Maximum Ratings - Storage temperature, excerpt: "Storage temperature, Tstg –65 150 °C"}
+attributes:
+  interface:
+    value: SPI (SCLK, DIN, SDO, LATCH), com CRC e watchdog
+    status: extraido
+    source: {page: 1, location: 1 Features / Block Diagram, excerpt: "CRC check and watchdog timer"}
+  encapsulamento:
+    value: VQFN-40 (6 x 6 mm), HTSSOP-24
+    status: extraido
+    source: {page: 1, location: 1 Features - Packages, excerpt: "6-mm × 6-mm 40-pin VQFN and 24-pin HTSSOP"}

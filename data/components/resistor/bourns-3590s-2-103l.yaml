@@ -1,0 +1,73 @@
+# Fonte: Bourns, 3590 - Precision Potentiometer (datasheet).
+part_number: 3590S-2-103L
+category: resistor.variable
+schema_version: '1.0'
+manufacturer: Bourns
+family: '3590'
+package: Montagem em bucha, terminais solder lug (versão S)
+lifecycle: desconhecido
+notes:
+- 10 000 ohm conforme tabela Recommended Part Numbers (resolução 0,020 %). Demais valores são da série 3590.
+- Coeficiente de temperatura ±50 ppm/°C máx. por unidade (página 1; parâmetro TCR não existe em resistor.variable).
+- Potência 2 W a 40 °C e 0 W a 125 °C; tensão limitada pela dissipação ou 450 VAC, o que for menor.
+datasheets:
+- id: ds1
+  manufacturer: Bourns
+  sha256: 18a28fbd2c9ac088d0d2fa1e031f475d9b7ea64b1a2f5ec874b16fa9aba2192e
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  R:
+    typ: 10000
+    unit: ohm
+    status: extraido
+    source: {page: 3, location: Recommended Part Numbers (3590S-2-103L), excerpt: "3590S-2-103L ... 10,000 .020"}
+  tol:
+    max: 5
+    unit: '%'
+    status: extraido
+    source: {page: 1, location: Electrical Characteristics - Total Resistance Tolerance, excerpt: "±5 %"}
+  P_rated:
+    max: 2
+    unit: W
+    status: extraido
+    conditions: {TA: 40 °C}
+    source: {page: 1, location: Electrical Characteristics - Power Rating, excerpt: "+40 °C ... 2 watts"}
+  V_max:
+    max: 450
+    unit: V
+    status: extraido
+    source: {page: 1, location: Electrical Characteristics - Power Rating, excerpt: "Voltage Limited By Power Dissipation or 450 VAC, Whichever is Less"}
+  rotation:
+    typ: 3600
+    unit: deg
+    status: extraido
+    source: {page: 1, location: Electrical Characteristics - Effective Electrical Angle, excerpt: "3600 ° +10 °, -0 °"}
+  life:
+    min: 1000000
+    unit: '1'
+    status: extraido
+    source: {page: 1, location: Environmental Characteristics - Rotational Life (No Load), excerpt: "1,000,000 shaft revolutions"}
+  linearity:
+    max: 0.25
+    unit: '%'
+    status: extraido
+    source: {page: 1, location: Electrical Characteristics - Independent Linearity, excerpt: "±0.25 %"}
+  Top:
+    min: -40
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Environmental Characteristics - Operating Temperature Range, excerpt: "-40 °C to +125 °C"}
+  Tstg:
+    min: -55
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Environmental Characteristics - Storage Temperature Range, excerpt: "-55 °C to +125 °C"}
+attributes:
+  tipo:
+    value: Potenciômetro rotativo de precisão, fio (wirewound), 10 voltas, montagem em bucha
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "Bushing mount ... Wirewound"}

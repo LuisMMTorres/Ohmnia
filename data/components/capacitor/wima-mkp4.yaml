@@ -1,0 +1,77 @@
+# Fonte: WIMA, catálogo MKP 4 Metallized Polypropylene (PP) Capacitors, edição 03.26 (páginas 46-47 do catálogo).
+part_number: MKP4
+category: capacitor.fixed
+schema_version: '1.0'
+manufacturer: WIMA
+family: MKP 4
+package: Caixa plástica com resina epóxi, PCM 7.5 mm a 37.5 mm
+lifecycle: desconhecido
+notes:
+- Valores da série; faixas entre os modelos (capacitância, tensões nominais e tolerâncias).
+- O texto do PDF perdeu o símbolo µ (aparece "0.01 F to 68 F"); o catálogo é de capacitores em µF (0,01 a 68 µF).
+- tan δ do catálogo é dado em 10^-4 (6 x 10^-4 a 1 kHz) para C até 0,1 µF; para C maiores há limites distintos na tabela.
+datasheets:
+- id: ds1
+  manufacturer: WIMA
+  document_number: MKP 4 (catálogo)
+  revision: '03.26'
+  sha256: 0ed7b6f614910b8375a84639d14ae995fa58c80ec614b3e129ca32ee3a7753f7
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  C:
+    min: 0.01
+    max: 68
+    unit: uF
+    status: extraido
+    source: {datasheet_id: ds1, page: 1, location: Electrical Data - Capacitance range, excerpt: "0.01 F to 68 F"}
+  tol:
+    max: 20
+    unit: '%'
+    status: extraido
+    note: Tolerâncias disponíveis ± 20 %, ± 10 %, ± 5 %.
+    source: {datasheet_id: ds1, page: 1, location: Electrical Data - Capacitance tolerances, excerpt: "± 20%, ± 10%, ± 5%"}
+  V_rated:
+    min: 100
+    max: 1250
+    unit: V
+    status: extraido
+    note: Tensões nominais CC 100, 250, 400, 630, 1000 e 1250 V.
+    source: {datasheet_id: ds1, page: 1, location: Electrical Data - Rated voltages, excerpt: "100 VDC, 250 VDC, 400 VDC, 630 VDC, 1000 VDC, 1250 VDC"}
+  tan_delta:
+    max: 0.0006
+    unit: '1'
+    status: extraido
+    conditions: {f: 1 kHz, TA: 20 °C}
+    note: 6 x 10^-4 a 1 kHz (para todas as faixas de C da tabela).
+    source: {datasheet_id: ds1, page: 1, location: Electrical Data - Dissipation factors at +20 °C, excerpt: "1 kHz 6 x 10-4"}
+  tan_delta@2:
+    max: 0.0008
+    unit: '1'
+    status: extraido
+    conditions: {f: 10 kHz, TA: 20 °C}
+    note: 8 x 10^-4 a 10 kHz para C até 1,0 µF; 25 x 10^-4 a 100 kHz para C até 0,1 µF.
+    source: {datasheet_id: ds1, page: 1, location: Electrical Data - Dissipation factors at +20 °C, excerpt: "10 kHz 8 x 10-4"}
+  life:
+    typ: 300000
+    unit: h
+    status: extraido
+    conditions: {T: 40 °C}
+    note: Vida operacional com 0,5 x Ur e 40 °C; taxa de falha 2 fit.
+    source: {datasheet_id: ds1, page: 1, location: Reliability, excerpt: "Operational life 300 000 hours ... (0.5 x Ur and 40° C)"}
+  Top:
+    min: -55
+    max: 105
+    unit: °C
+    status: extraido
+    source: {datasheet_id: ds1, page: 1, location: Electrical Data - Operating temperature range, excerpt: "–55° C to +105° C"}
+attributes:
+  dieletrico:
+    value: Filme de polipropileno (PP) metalizado, autorregenerante
+    status: extraido
+    source: {datasheet_id: ds1, page: 1, location: Construction - Dielectric; Special Features}
+  montagem:
+    value: Terminais de fio estanhado, passo (PCM) 7,5 mm a 37,5 mm, caixa plástica UL 94 V-0 com selo epóxi
+    status: extraido
+    source: {datasheet_id: ds1, page: 1, location: Construction - Encapsulation, Terminations; título}

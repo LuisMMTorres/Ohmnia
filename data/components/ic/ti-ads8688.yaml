@@ -1,0 +1,111 @@
+# Fonte: Texas Instruments, ADS8684, ADS8688 ADS868x 16-Bit, 500-kSPS, 4- and 8-Channel, Single-Supply, SAR ADCs with Bipolar Input Ranges, SBAS582C, July 2014 - Revised April 2015.
+part_number: ADS8688
+category: ic.adc
+schema_version: '1.0'
+manufacturer: Texas Instruments
+family: ADS868x
+package: TSSOP-38 (DBT, 9,7 x 4,4 mm) (p. 1 e p. 6)
+lifecycle: desconhecido
+notes:
+- 'O documento cobre ADS8684 (4 canais) e ADS8688 (8 canais); valores transcritos para o ADS8688 (p. 1).'
+- 'Especificações a AVDD = 5 V, DVDD = 3 V, VREF = 4,096 V (interna) e 500 kSPS; mín./máx. de -40 °C a 125 °C (p. 7).'
+- 'Faixas de entrada programáveis por canal: bipolares ±10,24 V, ±5,12 V, ±2,56 V; unipolares 10,24 V e 5,12 V (p. 1); entrada com proteção contra sobretensão até ±20 V (p. 1 e 7).'
+- 'Impedância de entrada de 1 MΩ constante (p. 1); canal auxiliar AUX_IN com faixa de 0 a VREF (p. 9).'
+- 'Erro de offset em mV (±0,5 mV típ. a ±2 mV máx. conforme a faixa, p. 8); sem símbolo em LSB, não transcrito como parâmetro.'
+datasheets:
+- id: ds1
+  manufacturer: Texas Instruments
+  document_number: SBAS582C
+  revision: April 2015
+  url: https://www.ti.com/lit/ds/symlink/ads8688.pdf
+  sha256: c776e2307a48d547c394e1b778dcec2433b8c485a88cd6796da963bd2514eb6a
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  bits:
+    typ: 16
+    unit: bit
+    status: extraido
+    source: {page: 8, location: 7.5 Electrical Characteristics - System performance, excerpt: "Resolution 16 Bits"}
+  fs:
+    max: 500
+    unit: kHz
+    status: extraido
+    source: {page: 8, location: 7.5 Electrical Characteristics - Sampling dynamics, excerpt: "Maximum throughput rate without latency 500 kSPS"}
+  channels:
+    typ: 8
+    unit: '1'
+    status: extraido
+    source: {page: 1, location: 1 Features, excerpt: "4-, 8-Channel MUX with Auto and Manual Scan"}
+  VS:
+    min: 4.75
+    max: 5.25
+    unit: V
+    status: extraido
+    source: {page: 6, location: 7.3 Recommended Operating Conditions - AVDD, excerpt: "AVDD Analog supply voltage 4.75 5 5.25 V"}
+  VREF:
+    typ: 4.096
+    unit: V
+    status: extraido
+    source: {page: 1, location: 1 Features - on-chip reference, excerpt: "On-Chip, 4.096-V Reference with Low Drift"}
+  V_in:
+    min: -10.24
+    max: 10.24
+    unit: V
+    status: extraido
+    source: {page: 1, location: 1 Features - input ranges, excerpt: "Bipolar: ±10.24 V, ±5.12 V, ±2.56 V"}
+  INL:
+    max: 2
+    unit: '1'
+    status: extraido
+    source: {page: 8, location: 7.5 Electrical Characteristics - INL (endpoint), excerpt: "INL Integral nonlinearity -2 ±0.75 2 LSB"}
+  DNL:
+    min: -0.99
+    max: 1.5
+    unit: '1'
+    status: extraido
+    source: {page: 8, location: 7.5 Electrical Characteristics - DNL, excerpt: "DNL Differential nonlinearity –0.99 ±0.5 1.5 LSB"}
+  gain_err:
+    max: 0.05
+    unit: '%'
+    conditions: {TA: 25 °C}
+    status: extraido
+    source: {page: 8, location: 7.5 Electrical Characteristics - Gain error, excerpt: "Gain error At TA = 25°C, all input ranges ±0.02 ±0.05 %FSR"}
+  SNR:
+    min: 87.5
+    max: 92
+    unit: dB
+    status: extraido
+    source: {page: 9, location: 7.5 Electrical Characteristics - Dynamic characteristics SNR (min por faixa; típ. 89 a 92), excerpt: "Input range = ±2.5 × VREF 90 92 dB"}
+  IS:
+    typ: 13
+    max: 16
+    unit: mA
+    status: extraido
+    source: {page: 10, location: 7.5 Power-supply requirements - IAVDD_DYN ADS8688, excerpt: "For the ADS8688; AVDD = 5 V, fS = maximum 13 16 mA"}
+  Top:
+    min: -40
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 6, location: 7.1 Absolute Maximum Ratings - Operating temperature, excerpt: "Operating temperature, TA –40 125 °C"}
+  Tstg:
+    min: -65
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 6, location: 7.1 Absolute Maximum Ratings - Tstg, excerpt: "Storage temperature, Tstg –65 150 °C"}
+attributes:
+  interface:
+    value: SPI (SDI, SDO, SCLK, CS), com modo daisy-chain
+    status: extraido
+    source: {page: 1, location: Functional block diagram / Pin Functions, excerpt: "SDO Digital output Data output for serial communication"}
+  arquitetura:
+    value: SAR com multiplexador e front-end analógico integrado
+    status: extraido
+    source: {page: 1, location: 3 Description, excerpt: "based on a 16-bit successive approximation (SAR) analog-to-digital converter"}
+  encapsulamento:
+    value: TSSOP-38 (DBT)
+    status: extraido
+    source: {page: 6, location: 7.4 Thermal Information, excerpt: "DBT (TSSOP) 38 PINS"}

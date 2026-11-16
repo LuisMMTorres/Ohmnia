@@ -1,0 +1,77 @@
+# Fonte: Arduino, User Manual Arduino UNO R3 (SKU A000066), modificado 13/11/2026.
+part_number: Arduino Uno R3
+category: board.mcu
+schema_version: '1.0'
+manufacturer: Arduino
+family: UNO R3
+lifecycle: desconhecido
+notes:
+- 'Fila: part_number "Arduino Uno" / fabricante "R3" (campos trocados); fabricante real Arduino, SKU A000066.'
+- Microcontrolador principal ATmega328P; coprocessador USB ATmega16U2 (pág. 1).
+- 'Pág. 5: VIN pode chegar a 20 V como máximo absoluto, não recomendado; consumo máximo da placa vem como "xx" no documento (não transcrito).'
+- 'Pág. 2: o manual cita também alimentação 2.7-5.5 V na seção do ATmega16U2; não é a alimentação da placa.'
+datasheets:
+- id: ds1
+  manufacturer: Arduino
+  document_number: A000066
+  sha256: 7f65af3cfa63c602fbab3a44551df533d1934149dff9404121d5f63ca460d496
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 7
+    max: 12
+    unit: V
+    status: extraido
+    source: {page: 5, location: 2.2 Power Consumption - VIN DC Barrel Jack Voltage Range, excerpt: "VIN DC Barrel Jack Voltage Range 7 - 12 V"}
+  V_io:
+    typ: 5
+    unit: V
+    status: extraido
+    source: {page: 10, location: 5.1 JANALOG - pin 2 IOREF, excerpt: "Reference for digital logic V - connected to 5V"}
+  f_clk:
+    max: 16
+    unit: MHz
+    status: extraido
+    source: {page: 2, location: Features - ATMega328P Processor, excerpt: "AVR CPU at up to 16 MHz"}
+  flash:
+    typ: 32
+    unit: kB
+    status: extraido
+    source: {page: 2, location: Features - ATMega328P Memory, excerpt: "32 kB Flash"}
+  ram:
+    typ: 2
+    unit: kB
+    status: extraido
+    source: {page: 2, location: Features - ATMega328P Memory, excerpt: "2 kB SRAM"}
+  gpio:
+    typ: 14
+    unit: '1'
+    status: extraido
+    source: {page: 4, location: 1.1 Application Examples, excerpt: "14 digital input/output pins, 6 analog inputs"}
+  adc_ch:
+    typ: 6
+    unit: '1'
+    status: extraido
+    source: {page: 4, location: 1.1 Application Examples, excerpt: "14 digital input/output pins, 6 analog inputs"}
+  pwm_ch:
+    typ: 6
+    unit: '1'
+    status: extraido
+    source: {page: 2, location: Features - ATMega328P Peripherals, excerpt: "Six PWM channels"}
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 5, location: 2.1 Recommended Operating Conditions, excerpt: "Conservative thermal limits for the whole board: -40 °C 85 °C"}
+attributes:
+  microcontrolador:
+    value: ATmega328P (processador principal) e ATmega16U2 (ponte USB)
+    status: extraido
+    source: {page: 1, location: Description, excerpt: "equipped with the well-known ATmega328P and the ATMega 16U2 Processor"}
+  comunicacao:
+    value: USB tipo B, UART, SPI, I2C
+    status: extraido
+    source: {page: 2, location: Features - Peripherals; página 6 conector X2 USB B, excerpt: "1x USART ... 1x SPI ... 1x Dual mode controller/peripheral I2C"}

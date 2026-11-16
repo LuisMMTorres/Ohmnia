@@ -1,0 +1,69 @@
+# Fonte: JUMO, Data Sheet 902030 - Screw-in RTD temperature probe with terminal head form J (exemplo 90203000T10Z002K000), V3.00/EN/00311469, 2020-11-18.
+part_number: '902030'
+category: sensor.temperature
+schema_version: '1.0'
+manufacturer: JUMO
+family: 902030 (sonda RTD de rosquear com cabeçote forma J)
+lifecycle: desconhecido
+notes:
+- 'Nome na fila: t90.2003en; código de configuração mostrado no documento: 90203000T10Z002K000.'
+- 'Valores da série (tipos básicos 902030/10, /11, /20, /21); faixa de operação depende do código escolhido: -20 a +150, -50 a +200, -50 a +260 ou -50 a +400 °C (p. 4).'
+- 'Tempos de resposta variam por diâmetro e meio: t0.9 de 2 s (água, Ø 6 reduzido a Ø 3.5) a 110 s (ar, Ø 6); t0.5 = 1 s a 40 s (p. 2). Valor de t_resp é a faixa de t0.9 entre as variantes.'
+- 'Top refere-se à temperatura ambiente do cabeçote (forma J); com transmissor a faixa é reduzida (folha 707030).'
+- 'Classe B (-50 a +500 °C) padrão, classe A (-30 a +300 °C) opcional (p. 4).'
+datasheets:
+- id: ds1
+  manufacturer: JUMO
+  document_number: Data Sheet 902030
+  revision: V3.00/EN/00311469/2020-11-18
+  url: https://enapart.bg/storage/product_docs/jumo/17288/90203000T10Z002K000.pdf
+  sha256: f9451fa07305d07ca66ac9aa1233fd5bd49d5aa370c52089696ec1260d87bfeb
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  range:
+    min: -50
+    max: 400
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Titulo - lista de características, excerpt: "For temperatures from -50 to +400 °C"}
+  R0:
+    typ: 100
+    unit: ohm
+    status: extraido
+    source: {page: 1, location: Brief description - elemento de medição padrão, excerpt: "measuring insert is fitted with a Pt100 temperature sensor"}
+  alpha:
+    typ: 0.00385
+    unit: 1/K
+    status: extraido
+    source: {page: 1, location: Brief description, excerpt: "temperature coefficient α = 3.850 × 10-3 °C-1"}
+  t_resp:
+    min: 2
+    max: 110
+    unit: s
+    status: extraido
+    source: {page: 2, location: Technical data - Response times (t0.9), excerpt: "t0.9 = 5 s, in water 0.4 m/s, Ø 6 stepped down to Ø 3.5 mm"}
+  Top:
+    min: -40
+    max: 100
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Technical data - Terminal head, excerpt: "Ambient temperature -40 to +100 °C"}
+attributes:
+  elemento:
+    value: Pt100 conforme DIN EN 60751:2009 / IEC 60751:2008, classe B (padrão); Pt500 ou Pt1000 também possíveis; classe A opcional
+    status: extraido
+    source: {page: 1, location: Brief description, excerpt: "Pt100 ... class B, in two-wire circuit. Versions with Pt500 or Pt1000 are also possible"}
+  ligacao:
+    value: 2 fios (padrão); 3 e 4 fios opcionais
+    status: extraido
+    source: {page: 1, location: Brief description, excerpt: "Connection is also possible in a three-wire and four-wire circuit"}
+  saida:
+    value: Resistiva (RTD); transmissor analógico opcional com saída 4 a 20 mA (folha 707030)
+    status: extraido
+    source: {page: 2, location: Technical data - Transmitter, excerpt: "Analog transmitter, 4 to 20 mA output, data sheet 707030"}
+  grau_protecao:
+    value: IP65
+    status: extraido
+    source: {page: 1, location: Titulo - lista de características, excerpt: "Protection type IP65"}

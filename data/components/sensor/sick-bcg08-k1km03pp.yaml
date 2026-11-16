@@ -1,0 +1,87 @@
+# Fonte: SICK, Data sheet BCG08-K1KM03PP (EcoLine, Wire draw encoders), SICK ID 6039747, impresso 2026-08-27.
+part_number: BCG08-K1KM03PP
+category: sensor.position
+schema_version: '1.0'
+manufacturer: SICK
+family: EcoLine BCG08 (encoder de fio / wire draw)
+lifecycle: desconhecido
+notes:
+- 'Item da fila: BCG08-A1KM03PP; o PDF baixado é do BCG08-K1KM03PP (mesmo ID 6039747).'
+- 'Encoder de fio com encoder absoluto ACM36 e saída analógica em corrente 4...20 mA (p.2, p.5).'
+- 'Curso real do fio 3,2 m; força da mola 3,3 a 4,4 N; vida típica 1.000.000 ciclos; aceleração do fio 10 m/s2 (p.3).'
+- 'Resolução (fio + encoder) 0,08 mm; histerese <= 0,4 mm; linearidade <= +-2 mm (p.2; schema pede % e o valor está em mm).'
+datasheets:
+- id: ds1
+  manufacturer: SICK
+  document_number: '6039747'
+  url: https://www.sick.com/media/pdf/5/85/385/dataSheet_BCG08-K1KM03PP_6039747_en.pdf
+  sha256: b89f9a2301fde9c0e45b016bc993c99fe1120c7a652a120b508cca36426bf16e
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  range:
+    min: 0
+    max: 3000
+    unit: mm
+    status: extraido
+    source: {page: 2, location: Performance - measurement range, excerpt: "0 m ... 3 m"}
+  resolution:
+    typ: 0.08
+    unit: mm
+    status: extraido
+    source: {page: 2, location: Performance - resolution (wire draw + encoder), excerpt: "0.08 mm"}
+  repeatability:
+    max: 0.2
+    unit: mm
+    status: extraido
+    source: {page: 2, location: Performance - repeatability, excerpt: "≤ 0.2 mm"}
+  speed:
+    max: 6
+    unit: m/s
+    status: extraido
+    source: {page: 3, location: Mechanics - operating speed, excerpt: "6 m/s"}
+  VS:
+    min: 19
+    max: 33
+    unit: V
+    status: extraido
+    source: {page: 2, location: Electronics - supply voltage, excerpt: "19 V DC ... 33 V DC"}
+  IS:
+    max: 80
+    unit: mA
+    status: extraido
+    source: {page: 3, location: Electronics - operating current, excerpt: "≤ 80 mA"}
+  I_out:
+    min: 4
+    max: 20
+    unit: mA
+    status: extraido
+    source: {page: 5, location: Diagrams multiturn current output, excerpt: "Power output 4 ... 20 mA"}
+  Top:
+    min: -30
+    max: 70
+    unit: °C
+    status: extraido
+    source: {page: 3, location: Ambient data - operating temperature range, excerpt: "–30 °C ... +70 °C"}
+attributes:
+  saida:
+    value: Analógica em corrente (4...20 mA)
+    status: extraido
+    source: {page: 2, location: Interfaces - signal type, excerpt: "Analog (current)"}
+  conexao:
+    value: Cabo radial de 1,5 m (verde +24 V, branco saída, marrom 0 V)
+    status: extraido
+    source: {page: 2, location: Electronics - connection type, excerpt: "Cable, radial, 1.5 m"}
+  invólucro:
+    value: Mecanismo de fio em plástico Noryl; fio de aço inox 1.4401 de 0,55 mm
+    status: extraido
+    source: {page: 3, location: Mechanics, excerpt: "Plastic, Noryl"}
+  grau_protecao:
+    value: IP50 (mecanismo de fio), IP65 (encoder)
+    status: extraido
+    source: {page: 3, location: Ambient data - enclosure rating, excerpt: "IP65, Encoder"}
+  principio:
+    value: Encoder de fio com encoder absoluto multivoltas ACM36
+    status: extraido
+    source: {page: 3, location: Mechanics - mounted encoder, excerpt: "ACM36, ACM36-K1K0-K01, 6039751"}

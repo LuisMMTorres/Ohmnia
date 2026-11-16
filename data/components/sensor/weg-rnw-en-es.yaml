@@ -1,0 +1,66 @@
+# Fonte: WEG, Catálogo Relés Eletrônicos (temporizadores, protetores e de nível), cód. 50009830, Rev. 15, 05/2021.
+part_number: RNW-EN / RNW-ES
+category: sensor.level
+schema_version: '1.0'
+manufacturer: WEG
+family: RNW
+package: Módulo para trilho, invólucro IP20
+lifecycle: desconhecido
+notes:
+- 'Fila: WEG-reles-de-nivel-snr-manual-portugues-br. O PDF é o catálogo geral de relés eletrônicos; registrado apenas o relé de controle de nível RNW (p. 20 a 25): RNW-EN-E09 (enchimento) e RNW-ES-E09 (esvaziamento).'
+- 'Relé de nível por eletrodos para líquidos condutivos; sensibilidade ajustável de 0 a 100 kohm; tensão no eletrodo 7 V ca, corrente no eletrodo 0,05 mA (p. 24).'
+- 'Faixa de operação da alimentação 0,85 a 1,1 x Us (p. 24). Consumo máx. 2 VA / 1 W (p. 24). Contato 1 SPDT: AC-12 250 V ca 5 A; AC-15 230 V ca 3 A; DC-13 24 V cc 1 A; corrente térmica 10 A (CA); fusível gL/gG 4 A; vida mecânica 30 x 10^6 manobras (p. 24).'
+datasheets:
+- id: ds1
+  manufacturer: WEG
+  document_number: '50009830'
+  revision: Rev. 15, 05/2021
+  url: https://static.weg.net/medias/downloadcenter/hb4/h1d/WEG-reles-temporizadores-protetores-e-de-nivel-50009830-catalogo-portugues-br-dc.pdf
+  sha256: 6bae52f023a21b1b8d36fdb9c17cd2678f35d343471bdf492f847682f62c0691
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 100
+    max: 240
+    unit: V
+    status: extraido
+    source: {page: 24, location: Dados Técnicos - Entradas - Alimentação (Us) A1-A2, excerpt: "100-240 V ca (50/60 Hz) / V cc"}
+  Top:
+    min: -5
+    max: 60
+    unit: °C
+    status: extraido
+    source: {page: 24, location: Dados Técnicos - Características - Temperatura ambiente, Em operação, excerpt: "-5 a +60 °C"}
+  Tstg:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 24, location: Dados Técnicos - Características - Temperatura ambiente, Armazenado, excerpt: "-40 a +85 °C"}
+attributes:
+  saida:
+    value: 1 contato reversor (SPDT) 15-16/18
+    status: extraido
+    source: {page: 24, location: Dados Técnicos - Saídas - Contatos, excerpt: "15 - 16 / 18 1 SPDT"}
+  conexao:
+    value: Bornes de parafuso M3, 1 x (0,5 a 2,5) mm2
+    status: extraido
+    source: {page: 24, location: Dados Técnicos - Características - Seção dos fios / Parafusos dos terminais}
+  invólucro:
+    value: Módulo para trilho, peso 0,08 kg
+    status: extraido
+    source: {page: 24, location: Dados Técnicos - Características - Peso}
+  grau_protecao:
+    value: Invólucro IP20 / terminais IP20
+    status: extraido
+    source: {page: 24, location: Dados Técnicos - Características - Grau de proteção}
+  certificacoes:
+    value: Comunidade Europeia, Canadá e EUA, Argentina (normas IEC/EN 60947, UL 508)
+    status: extraido
+    source: {page: 24, location: Dados Técnicos - Certificações}
+  principio:
+    value: Medição da resistência elétrica do líquido por eletrodos submersos (haste EHW ou pêndulo EPW)
+    status: extraido
+    source: {page: 23, location: Funcionamento}

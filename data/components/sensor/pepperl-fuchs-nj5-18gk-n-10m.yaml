@@ -1,0 +1,69 @@
+# Fonte: Pepperl+Fuchs, folha de dados NJ5-18GK-N-10M (Inductive sensor), release date 2020-12-15, date of issue 2020-12-15.
+part_number: NJ5-18GK-N-10M
+category: sensor.proximity
+schema_version: '1.0'
+manufacturer: Pepperl+Fuchs
+package: M18 x 1, PBT/PPS, cabo PVC 10 m
+lifecycle: desconhecido
+notes:
+- 'Fila: 106445 eng (arquivo 106445_eng.pdf).'
+- 'Saída NAMUR 2 fios: Uo 8,2 V (Ri aprox. 1 kΩ); consumo de corrente com placa não detectada mín. 3 mA, detectada ≤ 1 mA (pág. 1). A folha não traz UB nem IL.'
+- 'Fatores de redução rAl 0,4; rCu 0,3; r304 0,85 (pág. 1). Utilizável até SIL 2 (IEC 61508). Histerese: valor em branco na folha (typ. %).'
+datasheets:
+- id: ds1
+  manufacturer: Pepperl+Fuchs
+  document_number: 106445_eng
+  revision: 'date of issue 2020-12-15'
+  url: https://files.pepperl-fuchs.com/webcat/navi/productInfo/pds/106445_eng.pdf
+  sha256: cdb1037076e765867466a44a2effd8ef9d4f73a713b3abc888d7d9159aa97d14
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  sn:
+    typ: 5
+    unit: mm
+    status: extraido
+    source: {page: 1, location: General specifications - rated operating distance, excerpt: "Rated operating distance sn 5 mm"}
+  sr:
+    min: 0
+    max: 4.05
+    unit: mm
+    status: extraido
+    source: {page: 1, location: General specifications - assured operating distance, excerpt: "Assured operating distance sa 0 ... 4.05 mm"}
+  f_sw:
+    max: 500
+    unit: Hz
+    status: extraido
+    source: {page: 1, location: Nominal ratings - switching frequency, excerpt: "Switching frequency f 0 ... 500 Hz"}
+  Top:
+    min: -25
+    max: 100
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Ambient conditions - ambient temperature, excerpt: "-25 ... 100 °C (-13 ... 212 °F)"}
+attributes:
+  saida:
+    value: NAMUR, NF, 2 fios
+    status: extraido
+    source: {page: 1, location: General specifications, excerpt: "Normally closed (NC); Output type NAMUR"}
+  conexao:
+    value: Cabo PVC 10 m, 0,75 mm²
+    status: extraido
+    source: {page: 2, location: Mechanical specifications - cable, excerpt: "Length L 10 m"}
+  invólucro:
+    value: M18 x 1, PBT/PPS, face sensora PBT
+    status: extraido
+    source: {page: 2, location: Mechanical specifications, excerpt: "Housing material PBT/PPS"}
+  grau_protecao:
+    value: IP66 / IP68
+    status: extraido
+    source: {page: 2, location: Mechanical specifications - degree of protection, excerpt: "Degree of protection IP66 / IP68"}
+  certificacoes:
+    value: IECEx PTB 11.0037X; ATEX PTB 00 ATEX 2048 X; EAC TR CU 012/2011; FM; cULus; cCSAus; CCC; NEPSI GYJ16.1393X; NAMUR EN 60947-5-6
+    status: extraido
+    source: {page: 2, location: Approvals and certificates, excerpt: "ATEX approval PTB 00 ATEX 2048 X"}
+  montagem:
+    value: faceado (flush)
+    status: extraido
+    source: {page: 1, location: General specifications - installation, excerpt: "Installation flush"}

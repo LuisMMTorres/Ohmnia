@@ -1,0 +1,109 @@
+# Fonte: Allegro MicroSystems, ACS712 Fully Integrated Hall-Effect-Based Linear Current Sensor IC, ACS712-DS Rev. 22, 13 de fevereiro de 2024.
+part_number: ACS712
+category: sensor.current
+schema_version: '1.0'
+manufacturer: Allegro MicroSystems
+family: ACS712 (05B, 20A, 30A)
+package: SOIC-8 (sufixo LC)
+lifecycle: desconhecido
+notes:
+- 'Valores da série; faixas entre as variantes ELC-05B (+/-5 A, 185 mV/A), ELC-20A (+/-20 A, 100 mV/A) e ELC-30A (+/-30 A, 66 mV/A) (pág. 2).'
+- 'I_PN registrado como faixa de corrente medida (+/-5 a +/-30 A) entre as variantes; o datasheet não declara corrente nominal eficaz.'
+- 'Pág. 1: lista de características cita tempo de subida de 5 us; a tabela da pág. 5 dá 3,5 us típico (IP = IP(max), TA = 25 °C); registrado o da tabela.'
+- 'Pág. 5: tensão de saída com corrente zero VIOUT(Q) = VCC x 0,5 (bidirecional); saída ratiométrica à alimentação.'
+- 'Pág. 2: tolerância a sobrecorrente transitória 100 A (1 pulso, 100 ms); junção máx. 165 °C; não destinado a aplicações automotivas (pág. 1).'
+datasheets:
+- id: ds1
+  manufacturer: Allegro MicroSystems
+  document_number: ACS712-DS
+  revision: Rev. 22 (13/02/2024)
+  sha256: 21b345f7a98d36947d5562218b0bc730b80609b614e9fc4374f56993011466b9
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_PN:
+    min: 5
+    max: 30
+    unit: A
+    status: extraido
+    source: {page: 2, location: Selection guide - Current Sensing Range IP, excerpt: "ACS712ELCTR-05B-T ±5; -20A ±20; -30A ±30"}
+  sensitivity:
+    min: 66
+    max: 185
+    unit: mV/A
+    status: extraido
+    source: {page: 1, location: Features and benefits, excerpt: "66 to 185 mV/A output sensitivity"}
+  accuracy:
+    typ: 1.5
+    unit: '%'
+    conditions: {TA: 25 °C}
+    status: extraido
+    source: {page: 1, location: Features and benefits, excerpt: "Total output error 1.5% at TA = 25°C"}
+  linearity:
+    typ: 1.5
+    unit: '%'
+    status: extraido
+    source: {page: 5, location: Common operating characteristics - Nonlinearity ELIN, excerpt: "Nonlinearity ELIN Over full range of IP - 1.5 -"}
+  bandwidth:
+    typ: 80
+    unit: kHz
+    conditions: {TA: 25 °C}
+    status: extraido
+    source: {page: 5, location: Common operating characteristics - Frequency Bandwidth, excerpt: "-3 dB, TA = 25°C; IP is 10 A peak-to-peak - 80 - kHz"}
+  t_resp:
+    typ: 3.5
+    unit: us
+    conditions: {TA: 25 °C}
+    status: extraido
+    source: {page: 5, location: Common operating characteristics - Rise Time tr, excerpt: "IP = IP(max), TA = 25°C, COUT = open - 3.5 - μs"}
+  R_primary:
+    typ: 1.2
+    unit: mohm
+    conditions: {TA: 25 °C}
+    status: extraido
+    source: {page: 5, location: Common operating characteristics - Primary Conductor Resistance, excerpt: "RPRIMARY TA = 25°C - 1.2 - mΩ"}
+  V_iso:
+    max: 2400
+    unit: V
+    status: extraido
+    source: {page: 3, location: Isolation characteristics - Withstand Voltage VISO, excerpt: "Agency rated for 60 seconds per UL 62368-1 2400 VRMS"}
+  VS:
+    min: 4.5
+    typ: 5.0
+    max: 5.5
+    unit: V
+    status: extraido
+    source: {page: 5, location: Electrical characteristics - Supply Voltage VCC, excerpt: "Supply Voltage VCC 4.5 5.0 5.5 V"}
+  IS:
+    typ: 10
+    max: 13
+    unit: mA
+    conditions: {VCC: 5.0 V}
+    status: extraido
+    source: {page: 5, location: Electrical characteristics - Supply Current ICC, excerpt: "ICC VCC = 5.0 V, output open - 10 13 mA"}
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - Nominal Operating Ambient Temperature, excerpt: "TA Range E –40 to 85 °C"}
+  Tstg:
+    min: -65
+    max: 170
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - Storage Temperature, excerpt: "Tstg –65 to 170 °C"}
+attributes:
+  principio:
+    value: Hall, malha aberta (circuito Hall linear com condutor de cobre integrado)
+    status: extraido
+    source: {page: 1, location: Description, excerpt: "linear Hall circuit with a copper conduction path located near the surface of the die"}
+  saida:
+    value: Tensão analógica proporcional à corrente (ratiométrica à alimentação), VIOUT(Q) = VCC x 0,5
+    status: extraido
+    source: {page: 5, location: Common operating characteristics - Zero Current Output Voltage, excerpt: "VIOUT(Q) Bidirectional; IP = 0 A, TA = 25°C - VCC × 0.5 -"}
+  montagem:
+    value: SMD SOIC-8
+    status: extraido
+    source: {page: 1, location: Cabeçalho, excerpt: "PACKAGE: 8-Lead SOIC (suffix LC)"}

@@ -1,0 +1,142 @@
+# Fonte: onsemi, BS170/D 'Small Signal MOSFET 500 mA, 60 Volts', Rev. 7, November 2017.
+part_number: BS170
+category: mosfet.n
+schema_version: '1.0'
+manufacturer: onsemi
+package: TO-92 (TO-226), CASE 29
+lifecycle: desconhecido
+notes:
+- Folha 'BS170 Small Signal MOSFET 500 mA, 60 V', Rev. 7, novembro de 2017.
+- ID máx. 0,5 A (página 1, Maximum Ratings) não tem condição de temperatura no documento; por isso não foi transcrito como parâmetro ID (o schema exige TC ou TA).
+datasheets:
+- id: ds1
+  manufacturer: onsemi
+  document_number: BS170/D
+  revision: Rev. 7, November 2017
+  url: https://www.onsemi.com/download/data-sheet/pdf/bs170-d.pdf
+  sha256: 8a3e818513852800fd2405cd01e9ae24781f54dcbcb67b654e5bf0c1394a0861
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VDS:
+    max: 60
+    unit: V
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings - drain-source voltage
+      excerpt: Drain-Source Voltage VDS 60 Vdc
+  VGS:
+    max: 20
+    unit: V
+    note: Contínua; não repetitiva (tp ≤ 50 µs) ±40 V
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings - gate-source voltage continuous
+      excerpt: VGS ±20 Vdc
+  Ptot:
+    max: 0.35
+    unit: W
+    conditions:
+      TA: 25 degC
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings - total device dissipation
+      excerpt: PD 350 mW @ TA = 25°C
+  Tj_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings - operating and storage junction temperature
+      excerpt: TJ, Tstg -55 to +150 °C
+  Tj_min:
+    min: -55
+    unit: degC
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings - operating and storage junction temperature
+      excerpt: TJ, Tstg -55 to +150 °C
+  IGSS:
+    typ: 0.01
+    max: 10
+    unit: nA
+    conditions:
+      VGS: 15 V
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics - gate reverse current
+      excerpt: VGS = 15 Vdc, VDS = 0 IGSS 0.01 10 nAdc
+  V(BR)DSS:
+    min: 60
+    typ: 90
+    unit: V
+    conditions:
+      ID: 100 uA
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics - drain-source breakdown voltage
+      excerpt: VGS = 0, ID = 100 µAdc V(BR)DSS 60 90
+  VGS(th):
+    min: 0.8
+    typ: 2.0
+    max: 3.0
+    unit: V
+    conditions:
+      ID: 1 mA
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics - gate threshold voltage
+      excerpt: VDS = VGS, ID = 1.0 mAdc 0.8 2.0 3.0
+  RDS(on):
+    typ: 1.8
+    max: 5.0
+    unit: ohm
+    conditions:
+      VGS: 10 V
+      ID: 200 mA
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics - static drain-source on resistance
+      excerpt: VGS = 10 Vdc, ID = 200 mAdc 1.8 5.0
+  IDSS:
+    max: 0.5
+    unit: uA
+    conditions:
+      VDS: 25 V
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics - drain cutoff current
+      excerpt: VDS = 25 Vdc, VGS = 0 Vdc ID(off) 0.5
+  gfs:
+    typ: 200
+    unit: mS
+    conditions:
+      VDS: 10 V
+      ID: 250 mA
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics - forward transconductance
+      excerpt: VDS = 10 Vdc, ID = 250 mAdc gfs 200 mmhos
+  Ciss:
+    max: 60
+    unit: pF
+    conditions:
+      VDS: 10 V
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics - input capacitance
+      excerpt: VDS = 10 Vdc, VGS = 0, f = 1.0 MHz Ciss 60 pF
+attributes: {}

@@ -1,0 +1,89 @@
+# Fonte: WEG, SSW-05 Plus Installation and Operation Manual (guia rápido), 0899.4668 /5, versão de software 2.0X.
+part_number: SSW05
+category: drive.soft_starter
+schema_version: '1.0'
+manufacturer: WEG
+family: SSW-05 Plus
+lifecycle: desconhecido
+notes:
+- 'O PDF é o guia SSW-05 Plus (0899.4668 /5); a nota da fila cita o manual 0899.5119. Dados técnicos na seção 4 (p. 4) e tabelas das p. 5 e 6; os valores são da série (modelos 3 A a 85 A).'
+- 'Potência do motor: faixa entre as colunas de tensão da tabela da p. 5 (0,55 kW a 220...240 V, modelo 3 A; 55 kW a 525 V, modelo 85 A).'
+- 'Ajuste de corrente do motor: 30...100 % IN (p. 4); capacidade de partida 3 x IN durante 10 s (p. 4).'
+- 'Entradas digitais (90...250 Vac, 6 mA), duas saídas a relé (1 A, 250 Vac), interface serial RS232C (p. 4).'
+- 'Altitude: 0...1000 m; até 4000 m com redução de 10 % da corrente de saída por 1000 m (p. 4).'
+- 'Fila de transcrição: novo link do distribuidor (wolfautomation).'
+datasheets:
+- id: ds1
+  manufacturer: WEG
+  document_number: 0899.4668 /5
+  revision: Software Version 2.0X
+  url: https://www.wolfautomation.com/content/weg-softstart-sswzerofive-usermanual.pdf
+  sha256: 80876f814ebb2182fec3d8c59af36653163bd5e679a3fbeecef6be00911d8b7e
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_rated:
+    min: 3
+    max: 85
+    unit: A
+    status: extraido
+    source: {page: 5, location: 6. Table of powers / currents - Rated Current, excerpt: "SSW-05.3 ... SSW-05.85 Rated Current 3A ... 85A"}
+  P_motor:
+    min: 0.55
+    max: 55
+    unit: kW
+    status: extraido
+    source: {page: 5, location: 6. Table of powers / currents (220V...240V kW e 525V kW), excerpt: "220V...240V* HP kW 0.75 0.55 ... 525V** kW ... 55"}
+  V_line:
+    min: 220
+    max: 575
+    unit: V
+    status: extraido
+    source: {page: 4, location: 4. Technical data - AC input power, excerpt: "220 ...460 Vac (+10%,-15%) ... 460 ... 575 Vac (+10%,-15%)"}
+  V_ctrl:
+    min: 90
+    max: 250
+    unit: V
+    status: extraido
+    source: {page: 4, location: 4. Technical data - Control voltage (A1 and A2), excerpt: "90 ... 250Vac 50/60 Hz (+/- 6Hz)"}
+  t_ramp:
+    min: 1
+    max: 20
+    unit: s
+    status: extraido
+    source: {page: 4, location: 4. Technical data - Settings, Acceleration Time, excerpt: "1 ... 20 s"}
+  V_start:
+    min: 30
+    max: 80
+    unit: '%'
+    status: extraido
+    source: {page: 4, location: 4. Technical data - Settings, Pedestal Voltage, excerpt: "30 ... 80% UN"}
+  starts_h:
+    max: 4
+    unit: '1'
+    status: extraido
+    source: {page: 4, location: 4. Technical data - Maximum number of starts per hour, excerpt: "4 ( 1 start every 15 minutes)"}
+  Top:
+    min: 0
+    max: 55
+    unit: °C
+    status: extraido
+    source: {page: 4, location: 4. Technical data - Temperature Ambient, excerpt: "0 ... 55°C (32...131°F)"}
+attributes:
+  controle:
+    value: Alimentação trifásica; relé de bypass interno
+    status: extraido
+    source: {page: 4, location: 4. Technical data - AC input power (3φ) and Diagnostics (Internal By-pass Relay), excerpt: "50/60 Hz (+/- 5Hz) 3φ ... Internal By-pass Relay"}
+  comunicacao:
+    value: Interface serial RS232C
+    status: extraido
+    source: {page: 4, location: 4. Technical data - Communication, excerpt: "Serial Interface (RS232C)"}
+  grau_protecao:
+    value: IP 00 (chassi)
+    status: extraido
+    source: {page: 4, location: 4. Technical data - Degree of Protection, excerpt: "IP 00 (Chassis)"}
+  certificacoes:
+    value: UL 508 / IEC 60947-4-2
+    status: extraido
+    source: {page: 4, location: 4. Technical data - Standards, excerpt: "UL 508 / IEC 60947-4-2"}

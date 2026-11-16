@@ -1,0 +1,61 @@
+# Fonte: WEG, Guía de Instalación Rápida MW500, 10003693248 (es).
+part_number: MW500
+category: drive.vfd
+schema_version: '1.0'
+manufacturer: WEG
+family: MW500
+package: IP66 / Nema 4X, descentralizado (montagem no motor ou na parede)
+lifecycle: desconhecido
+notes:
+- 'Valores da série MW500; faixas entre os modelos das Tabelas 1 e 2 (pág. 1). Tamanhos A, B e C.'
+- 'Alimentação monofásica 200...240 V (S, 2) e trifásica 380...480 V (T, 4) (pág. 1, Tabla 2).'
+- 'Etiqueta de exemplo (modelo MW500B10P0T4DB66C2DS) indica saída 0-300 Hz, 10 A, entrada 3~ 12,2 A, 50/60 Hz (pág. 1, Figura 1). Não é uma especificação geral da série.'
+- 'Temperatura ambiente: 0 a 40 °C na parede, 0 a 50 °C integrado ao motor; acima disso redução de corrente de 2% por °C (pág. 1, item 9.1). Armazenamento -25 a 60 °C (pág. 1, item 7).'
+- 'Altitude até 1000 m sem redução; até 4000 m com redução de corrente de 1% a cada 100 m (pág. 1, item 9.1).'
+datasheets:
+- id: ds1
+  manufacturer: WEG
+  document_number: '10003693248'
+  url: https://static.weg.net/medias/downloadcenter/h4b/h60/WEG-guia-de-instalacion-rapida-10003693248-es.pdf
+  sha256: 4ec9ec27e08b26865b705216250784a925c1bca6136e2a4d139f4585707a169b
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  V_in:
+    min: 200
+    max: 480
+    unit: V
+    status: extraido
+    source: {page: 1, location: Tabla 2 - tensión nominal, excerpt: "2 = 200...240 V ... 4 = 380...480 V"}
+  I_out:
+    min: 1.3
+    max: 16
+    unit: A
+    status: extraido
+    source: {page: 1, location: Tabla 2 - corriente nominal de salida, excerpt: "01P3 = 1,3 A ... 16P0 = 16 A"}
+  Top:
+    min: 0
+    max: 50
+    unit: °C
+    status: extraido
+    source: {page: 1, location: 9.1 Condiciones ambientales, excerpt: "desde 0 ºC hasta: 40 ºC ... 50 ºC (montado integrado al motor)"}
+  Tstg:
+    min: -25
+    max: 60
+    unit: °C
+    status: extraido
+    source: {page: 1, location: 7 Almacenamiento, excerpt: "temperatura entre - 25 °C y 60 °C"}
+attributes:
+  controle:
+    value: Vetorial (VVW) e escalar (V/f)
+    status: extraido
+    source: {page: 1, location: 4 Sobre el MW500, excerpt: "control vectorial (VVW) y escalar (V/f)"}
+  grau_protecao:
+    value: IP66 / Nema 4X
+    status: extraido
+    source: {page: 1, location: 4 Sobre el MW500, excerpt: "grado de protección contra agua y polvo IP66"}
+  frenagem:
+    value: Frenagem dinâmica opcional (DB)
+    status: extraido
+    source: {page: 1, location: Tabla 1 - nomenclatura, excerpt: "DB = con frenado dinámico"}

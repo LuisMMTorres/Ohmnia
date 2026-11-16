@@ -1,0 +1,49 @@
+# Fonte: NEC/Schott SEFUSE thermal cutoffs (Limitor GmbH), séries SF/E e SF/K, agosto 2007.
+part_number: SF-E
+category: fuse
+schema_version: '1.0'
+manufacturer: Schott
+family: SF/E (NEC/Schott SEFUSE, corte térmico)
+package: 'Axial, corpo de 4,2 mm de diâmetro, fios de 20/35 mm (SF/E) ou 35/35 mm (SF/E-1)'
+lifecycle: desconhecido
+notes:
+- 'Corte térmico não rearmável (one shot), não é fusível de corrente; o schema fuse é a categoria mais próxima. Documento: Limitor GmbH, agosto 2007; cobre também SF/K, SM/A, SM/B e SM/G (somente a série SF/E foi transcrita).'
+- 'Modelos SF/E (pág. 1): SF70E a SF240E; temperatura de abertura Tf de 73 °C (SF70E) a 240 °C (SF240E); temperatura de manutenção Th de 58 °C a 200 °C; Tmax de 150 °C a 375 °C, conforme o modelo.'
+- 'Aprovações (pág. 1): VDE AC250 V 10 A + 15 A carga resistiva; UL AC120 V 20 A resistiva e 15 A indutiva, AC250 V 17 A e 277 V 15 A resistiva; CSA AC250 V 15 A resistiva e indutiva.'
+- 'Contato interno em AgCuO (pág. 1). SF169E, SF188E, SF214E, SF226E e SF240E aprovados no UL Conductive Heat Aging Test (CHAT).'
+datasheets:
+- id: ds1
+  manufacturer: Schott (NEC/Schott SEFUSE, Limitor GmbH)
+  document_number: SF/E and SF/K series
+  revision: August 2007
+  url: https://static.chipdip.ru/lib/800/DOC028800181.pdf
+  sha256: 048698b78acf7e7455e93490b08c4ddf8fcaa71b62be57932a4d530628250fe9
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_rated:
+    max: 15
+    unit: A
+    status: extraido
+    note: Máx. de carga resistiva aprovada pelo VDE/CSA a 250 VAC; o UL aprova até 20 A a 120 VAC resistiva.
+    source: {datasheet_id: ds1, page: 1, location: approval ratings (SF/E), excerpt: "VDE: AC250V 10A + 15A resistive load"}
+  V_rated:
+    max: 250
+    unit: V
+    status: extraido
+    note: AC 250 V (VDE, CSA); UL também AC 277 V 15 A resistiva.
+    source: {datasheet_id: ds1, page: 1, location: approval ratings (SF/E), excerpt: "VDE: AC250V 10A + 15A resistive load"}
+attributes:
+  curva:
+    value: corte térmico não rearmável (one shot), temperatura de abertura 73 a 240 °C conforme o modelo
+    status: extraido
+    source: {page: 1, location: tabela part no. Tf / TF opening temp (SF70E ... SF240E)}
+  formato:
+    value: 'axial, corpo de 4,2 mm de diâmetro, fios de 20/35 mm (SF/E-1: 35/35 mm)'
+    status: extraido
+    source: {page: 1, location: SF/E series measures 4.2mm in body diameter; lead wire length}
+  certificacoes:
+    value: VDE, UL, CSA, BEAB, PSE (Japão); RoHS desde 2003
+    status: extraido
+    source: {page: 1, location: The SF/E series carries worldwide approvals}

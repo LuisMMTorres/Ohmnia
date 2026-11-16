@@ -1,0 +1,70 @@
+# Fonte: Texas Instruments, XTR111 Precision Voltage-to-Current Converter and Transmitter, SBOS375D, out/2006, rev. out/2024.
+part_number: XTR111
+category: instrument.transmitter
+schema_version: '1.0'
+manufacturer: Texas Instruments
+package: HVSSOP-10 (DGQ) e VSON-10 (DRC)
+lifecycle: desconhecido
+notes:
+- 'Fila: XTR111. Conversor tensão-corrente de precisão (0-20 mA, 4-20 mA, 5-25 mA), com MOSFET P externo; corrente ajustada por RSET: IOUT = 10 x VVIN / RSET (p. 5).'
+- 'Máximos absolutos (p. 4): VVSP 44 V; TA operação -55 a 125 °C; Tstg -65 a 150 °C (o registro usa a faixa recomendada em Top).'
+- 'Corrente de saída especificada 0,1 a 25 mA; desempenho degradado de 0 a 32 mA; limite de corrente 41 +-9 mA (p. 5). Entrada VVIN 0 a 12 V (p. 4).'
+- 'Regulador REGF ajustável 3 V a 15 V (p. 1); referência de 3,0 V (2,85 a 3,15 V), até 5 mA (p. 5). Não linearidade 0,002 % típ. / 0,02 % máx.; erro de span 0,015 % típ. / 0,1 % máx. (p. 5).'
+datasheets:
+- id: ds1
+  manufacturer: Texas Instruments
+  document_number: SBOS375D
+  revision: outubro 2024
+  url: https://www.ti.com/lit/ds/symlink/xtr111.pdf
+  sha256: 589c49c0a32be555af3535ad393176633354f40bf8d81f0356b82af56cdcdc77
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_out:
+    min: 0.1
+    max: 25
+    unit: mA
+    status: extraido
+    source: {page: 5, location: 5.5 Electrical Characteristics - IOUT specified output current, excerpt: "IOUT Specified output current Specified performance 0.1 25 mA"}
+  VS:
+    min: 8
+    max: 40
+    unit: V
+    status: extraido
+    source: {page: 4, location: 5.3 Recommended Operating Conditions - VVSP, excerpt: "VVSP Power supply voltage 8 40 V"}
+  IS:
+    typ: 0.45
+    max: 0.55
+    unit: mA
+    status: extraido
+    conditions: {IOUT: 0 mA}
+    source: {page: 5, location: 5.5 Electrical Characteristics - Power supply IQ quiescent current, excerpt: "IQ Quiescent current IOUT = 0mA 450 550 μA"}
+  accuracy:
+    typ: 0.015
+    max: 0.1
+    unit: '%'
+    status: extraido
+    conditions: {TA: 25 °C}
+    source: {page: 5, location: 5.5 Electrical Characteristics - Span error IOUT/ISET (% of span), excerpt: "Span Error IOUT = 0.1mA to 25mA 0.015 0.1 % of Span"}
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 4, location: 5.3 Recommended Operating Conditions - Specified ambient temperature, excerpt: "TA Specified ambient temperature –40 85 °C"}
+  Tstg:
+    min: -65
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 4, location: 5.1 Absolute Maximum Ratings - Tstg, excerpt: "Tstg Storage temperature –65 150 °C"}
+attributes:
+  entrada:
+    value: "Tensão VIN 0 a 12 V (corrente definida por RSET)"
+    status: extraido
+    source: {page: 4, location: 5.3 Recommended Operating Conditions, excerpt: "VVIN Input voltage 0 12 V"}
+  saida:
+    value: "Corrente 0-20 mA, 4-20 mA ou 5-25 mA (fonte até 32 mA); flag de erro EF e desabilitação OD"
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "0mA-20mA, 4mA-20mA, 5mA-25mA"}

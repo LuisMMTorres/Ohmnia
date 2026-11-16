@@ -1,0 +1,56 @@
+# Fonte: Bourns, 3296 - 3/8" Square Trimpot Trimming Potentiometer (datasheet).
+part_number: 3296W-1-103LF
+category: resistor.variable
+schema_version: '1.0'
+manufacturer: Bourns
+family: '3296'
+package: 3296W (trimpot quadrado 3/8")
+lifecycle: desconhecido
+notes:
+- Código 103 = 10 000 ohm (tabela Standard Resistance Table da folha). Demais valores são da série 3296.
+- A folha lista a potência 0,5 W a 70 °C e 0 W a 125 °C (derating), máx. 300 V.
+datasheets:
+- id: ds1
+  manufacturer: Bourns
+  sha256: 8492a5d67ee2785d4716ec3131b8fa6f9aaef9fa9e9eff65999b1d1a50d9baef
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  R:
+    typ: 10000
+    unit: ohm
+    status: extraido
+    source: {page: 1, location: Standard Resistance Table (código 103), excerpt: "10,000 103"}
+  tol:
+    max: 10
+    unit: '%'
+    status: extraido
+    source: {page: 1, location: Electrical Characteristics - Resistance Tolerance, excerpt: "±10 % std."}
+  P_rated:
+    max: 0.5
+    unit: W
+    status: extraido
+    conditions: {TA: 70 °C}
+    source: {page: 1, location: Environmental Characteristics - Power Rating, excerpt: "70 °C ... 0.5 watt"}
+  V_max:
+    max: 300
+    unit: V
+    status: extraido
+    source: {page: 1, location: Environmental Characteristics - Power Rating (300 volts max.), excerpt: "Power Rating (300 volts max.)"}
+  life:
+    min: 200
+    unit: '1'
+    status: extraido
+    source: {page: 1, location: Environmental Characteristics - Rotational Life, excerpt: "Rotational Life 200 cycles"}
+  Top:
+    min: -55
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Environmental Characteristics - Temperature Range, excerpt: "-55 °C to +125 °C"}
+attributes:
+  tipo:
+    value: Trimpot multivoltas, cermet, selado, 25 voltas nominais
+    status: extraido
+    source: {page: 1, location: Features / Electrical Characteristics - Effective Travel, excerpt: "Multiturn / Cermet / Industrial / Sealed; Effective Travel 25 turns nom."}

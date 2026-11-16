@@ -1,0 +1,87 @@
+# Fonte: Analog Devices (Maxim Integrated), DS18B20 Programmable Resolution 1-Wire Digital Thermometer, REV: 042208 (cópia no site Adafruit).
+part_number: DS18B20
+category: sensor.temperature
+schema_version: '1.0'
+manufacturer: Analog Devices
+family: DS18B20
+package: 3-pin TO-92; também 8-pin SO (150 mils) e 8-pin uSOP (DS18B20Z, DS18B20U)
+lifecycle: desconhecido
+notes:
+- 'O documento traz a marca Maxim Integrated ("MAXIM 18B20"); a fila nomeia Analog Devices como fabricante.'
+- 'Condições da Tabela DC (p. 19): -55 a +125 °C e VDD = 3,0 a 5,5 V. Alimentação local (VDD) ou "parasite power" pela linha DQ (VPU 3,0 a 5,5 V; VDD deve ser aterrado no modo parasita).'
+- 'Corrente em espera IDDS típ. 750 nA e máx. 1000 nA (até +70 °C; típ. 3 uA a +125 °C); corrente ativa IDD (conversão ou escrita na EEPROM, VDD = 5 V) típ. 1 mA e máx. 1,5 mA (p. 19). IS máx. transcrito é o valor ativo.'
+- 'Resolução programável de 9 a 12 bits (incrementos de 0,5 / 0,25 / 0,125 / 0,0625 °C); padrão 12 bits; conversão em até 750 ms a 12 bits (p. 1 e 3). Deriva: ±0,2 °C em 1000 h a +125 °C, VDD = 5,5 V (p. 19).'
+- 'Níveis lógicos do DQ (p. 19): VIL máx. 0,8 V; VIH mín. 2,2 V (alimentação local); corrente de sumidouro mín. 4,0 mA com VI/O = 0,4 V. Faixa absoluta de tensão em qualquer pino: -0,5 V a +6,0 V.'
+- 'Cada dispositivo tem código serial único de 64 bits; barramento 1-Wire; alarme com limites não voláteis TH e TL (p. 1).'
+datasheets:
+- id: ds1
+  manufacturer: Analog Devices (Maxim Integrated)
+  document_number: DS18B20
+  revision: REV 042208
+  url: https://cdn-shop.adafruit.com/datasheets/DS18B20.pdf
+  sha256: 39d191cd1fb657e43eac061f605bbd375d3c42dc40e7839c17fa0675bb0404d8
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  range:
+    min: -55
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Features - Measures Temperatures, excerpt: "Measures Temperatures from -55°C to +125°C"}
+  accuracy:
+    max: 0.5
+    unit: K
+    status: extraido
+    source: {page: 19, location: DC electrical characteristics - Thermometer Error tERR, excerpt: "Thermometer Error tERR -10°C to +85°C ±0.5 °C"}
+  accuracy@2:
+    max: 2
+    unit: K
+    status: extraido
+    source: {page: 19, location: DC electrical characteristics - Thermometer Error tERR, excerpt: "Thermometer Error tERR -55°C to +125°C ±2 °C"}
+  bits:
+    min: 9
+    max: 12
+    unit: bit
+    status: extraido
+    source: {page: 1, location: Features - Thermometer Resolution, excerpt: "Thermometer Resolution is User Selectable from 9 to 12 Bits"}
+  t_resp:
+    max: 0.75
+    unit: s
+    status: extraido
+    source: {page: 1, location: Features - conversion time, excerpt: "Converts Temperature to 12-Bit Digital Word in 750ms (Max)"}
+  VS:
+    min: 3.0
+    max: 5.5
+    unit: V
+    status: extraido
+    source: {page: 19, location: DC electrical characteristics - Supply Voltage VDD local power, excerpt: "Supply Voltage VDD Local Power +3.0 +5.5 V"}
+  IS:
+    typ: 1
+    max: 1.5
+    unit: mA
+    conditions: {VDD: 5 V}
+    status: extraido
+    source: {page: 19, location: DC electrical characteristics - Active Current IDD, excerpt: "Active Current IDD VDD = 5V 1 1.5 mA"}
+  Top:
+    min: -55
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 19, location: Absolute maximum ratings - Operating Temperature Range, excerpt: "Operating Temperature Range -55°C to +125°C"}
+  Tstg:
+    min: -55
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 19, location: Absolute maximum ratings - Storage Temperature Range, excerpt: "Storage Temperature Range -55°C to +125°C"}
+attributes:
+  elemento:
+    value: CI termômetro digital
+    status: extraido
+    source: {page: 1, location: Description, excerpt: "The DS18B20 digital thermometer provides 9-bit to 12-bit Celsius temperature measurements"}
+  saida:
+    value: 'Digital 1-Wire (pino DQ, dreno aberto)'
+    status: extraido
+    source: {page: 2, location: Pin description - DQ, excerpt: "DQ Data Input/Output. Open-drain 1-Wire interface pin."}

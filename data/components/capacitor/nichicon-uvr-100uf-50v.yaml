@@ -1,0 +1,80 @@
+# Fonte: Nichicon, UVR Miniature Sized, Standard series for entertainment electronics, Aluminum Electrolytic Capacitors, CAT.8100M.
+part_number: UVR 100uF 50V
+category: capacitor.fixed
+schema_version: '1.0'
+manufacturer: Nichicon
+family: UVR
+package: Radial, φD×L 8×11.5 mm (UVR1H101MPD)
+lifecycle: desconhecido
+notes:
+- 'Item da fila: UVR 100uF 50V (série UVR). C, V_rated, tan δ, fuga e corrente de ondulação são da linha 100 µF / 50 V (código 1H) da tabela da página 3.'
+- Tolerância, temperatura e vida são das especificações gerais da série (página 1).
+datasheets:
+- id: ds1
+  manufacturer: Nichicon
+  document_number: CAT.8100M
+  url: https://www.nichicon.co.jp/english/series_items/catalog_pdf/e-uvr.pdf
+  sha256: 77ade7b9c76bb6e81b6233502327d29e0f8500ef624494000079148ec407db76
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  C:
+    typ: 100
+    unit: uF
+    status: extraido
+    source: {datasheet_id: ds1, page: 3, location: Tabela - 50 V (1H), excerpt: "100|8×11.5|0.12|150|50|260|UVR1H101MPD"}
+  tol:
+    max: 20
+    unit: '%'
+    status: extraido
+    note: ± 20 % a 120 Hz, 20 °C.
+    source: {datasheet_id: ds1, page: 1, location: Specifications - capacitance tolerance, excerpt: "± 20% at 120Hz, 20˚C"}
+  V_rated:
+    typ: 50
+    unit: V
+    status: extraido
+    source: {datasheet_id: ds1, page: 3, location: Tabela - Rated voltage 50 V (1H), excerpt: "UVR1H101MPD"}
+  I_ripple:
+    max: 0.26
+    unit: A
+    status: extraido
+    conditions: {TA: 85 °C, f: 120 Hz}
+    note: 260 mArms.
+    source: {datasheet_id: ds1, page: 3, location: Tabela - Rated ripple (mArms) 85 °C/120 Hz, excerpt: "260"}
+  tan_delta:
+    max: 0.12
+    unit: '1'
+    status: extraido
+    conditions: {f: 120 Hz, TA: 20 °C}
+    source: {datasheet_id: ds1, page: 3, location: Tabela - tan δ, excerpt: "100|8×11.5|0.12"}
+  I_leak:
+    max: 150
+    unit: uA
+    status: extraido
+    conditions: {TA: 20 °C}
+    note: Após 1 minuto de tensão nominal (regra 0,03 CV); após 2 minutos o limite é 50 µA (0,01 CV).
+    source: {datasheet_id: ds1, page: 3, location: Tabela - Leakage current (µA) after 1 minute, excerpt: "150"}
+  life:
+    typ: 2000
+    unit: h
+    status: extraido
+    conditions: {T: 85 °C}
+    note: Endurance com tensão nominal aplicada.
+    source: {datasheet_id: ds1, page: 1, location: Specifications - Endurance, excerpt: "rated voltage is applied for 2000 hours at 85°C"}
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    note: Faixa para 6,3 a 400 V (450 V, -25 a +85 °C).
+    source: {datasheet_id: ds1, page: 1, location: Specifications - Category Temperature Range, excerpt: "–40 to +85˚C (6.3V to 400V)"}
+attributes:
+  dieletrico:
+    value: Eletrolítico de alumínio, miniatura, série padrão 85 °C para eletrônica de entretenimento
+    status: extraido
+    source: {datasheet_id: ds1, page: 1, location: Título - Miniature Sized, Standard series for entertainment electronics}
+  montagem:
+    value: Radial com terminais; φD×L 8×11.5 mm
+    status: extraido
+    source: {datasheet_id: ds1, page: 3, location: Tabela - Case size φD×L (mm)}

@@ -1,0 +1,99 @@
+# Fonte: Schneider Electric (Telemecanique Sensors), Product data sheet XUB5BPANL2, impresso em 11/11/2026.
+part_number: XUB5BPANL2
+category: sensor.photoelectric
+schema_version: '1.0'
+manufacturer: Schneider Electric
+family: Telemecanique XU (XUB)
+package: Cilíndrico M18, latão niquelado, comprimento 76 mm
+lifecycle: desconhecido
+notes:
+- 'Fila: XUB5BPANL2. Fotoelétrico difuso, infravermelho, M18, cabo 2 m, saída PNP NA (pág. 1-2).'
+- 'Distância nominal Sn 0,6 m (difuso); distância máxima 0,8 m; faixa de detecção "> 0,3...1 m" (pág. 1). range usa typ = Sn e max = distância máxima.'
+- 'Tensão nominal 12...24 V DC com proteção contra polaridade reversa; limites 10-36 V DC (pág. 1).'
+- 'Tempo de resposta (delay response) 1 ms; atraso na energização 15 ms; atraso de recuperação 1 ms (pág. 1-2).'
+- 'Capacidade de comutação <= 100 mA com proteção contra sobrecarga e curto-circuito; queda de tensão < 1,5 V (estado fechado); consumo 35 mA em vazio (pág. 1).'
+datasheets:
+- id: ds1
+  manufacturer: Schneider Electric
+  document_number: XUB5BPANL2
+  revision: impresso em 11/11/2026
+  url: https://pdf.telemecaniquesensors.com/datasheet?ref=XUB5BPANL2&lang=en
+  sha256: a49c69f07741c7feae9ef5e63bc243d8729ddaac71628b00e6ca9982d5a9b99a
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  range:
+    typ: 0.6
+    max: 0.8
+    unit: m
+    status: extraido
+    source: {page: 1, location: Main - Sn nominal sensing distance / Maximum sensing distance, excerpt: "[Sn] 0.6-0.6 m diffuse; Maximum sensing distance 0.8 m diffuse"}
+  t_resp:
+    typ: 1
+    unit: ms
+    status: extraido
+    source: {page: 1, location: Main - Delay response, excerpt: "Delay response 1 ms"}
+  VS:
+    min: 10
+    max: 36
+    unit: V
+    status: extraido
+    source: {page: 1, location: Complementary - Supply voltage limits, excerpt: "Supply voltage limits 10-36 V DC"}
+  IS:
+    max: 35
+    unit: mA
+    status: extraido
+    source: {page: 1, location: Complementary - Current consumption, excerpt: "Current consumption 35 mA no-load"}
+  IL:
+    max: 100
+    unit: mA
+    status: extraido
+    source: {page: 1, location: Complementary - Switching capacity in mA, excerpt: "Switching capacity in mA <= 100 mA"}
+  Vdrop:
+    max: 1.5
+    unit: V
+    status: extraido
+    source: {page: 1, location: Complementary - Maximum voltage drop, excerpt: "Maximum voltage drop <1.5 V (closed state)"}
+  f_sw:
+    max: 500
+    unit: Hz
+    status: extraido
+    source: {page: 2, location: Complementary - Switching frequency, excerpt: "Switching frequency 500 Hz"}
+  Top:
+    min: -25
+    max: 55
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Environment - Ambient air temperature for operation, excerpt: "-25…55 °C"}
+  Tstg:
+    min: -40
+    max: 70
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Environment - Ambient air temperature for storage, excerpt: "-40…70 °C"}
+attributes:
+  saida:
+    value: PNP, 1 NA, estado sólido, 3 fios
+    status: extraido
+    source: {page: 2, location: Complementary - Discrete output type / function}
+  conexao:
+    value: Cabo de 2 m
+    status: extraido
+    source: {page: 1, location: Complementary - Electrical connection}
+  invólucro:
+    value: Cilíndrico M18, latão niquelado; lente PMMA
+    status: extraido
+    source: {page: 1, location: Main - Enclosure material}
+  grau_protecao:
+    value: IP67 e IP65 (IEC 60529), dupla isolação
+    status: extraido
+    source: {page: 2, location: Environment - IP degree of protection}
+  principio:
+    value: Difuso
+    status: extraido
+    source: {page: 1, location: Main - Detection system}
+  luz:
+    value: Infravermelho
+    status: extraido
+    source: {page: 2, location: Emission, excerpt: "Infrared diffuse"}

@@ -1,0 +1,69 @@
+# Fonte: TDK (EPCOS), Power line chokes, current-compensated ring core double chokes, Series/Type B82721A/J/K, July 2015.
+part_number: B82721
+category: inductor.fixed
+schema_version: '1.0'
+manufacturer: TDK
+family: B82721A/J/K
+package: Caixa plástica com potting, terminais 0,7 x 0,7 mm; versões horizontal (A) e vertical (J, K)
+lifecycle: desconhecido
+notes:
+- Valores da série; faixa entre os modelos (0,2 a 47 mH, 0,3 a 6 A). Choke de modo comum (duplo, compensado em corrente) para 250 V CA.
+- Indutância por enrolamento. No texto do PDF os cabeçalhos "µH" e "mΩ" aparecem corrompidos (PH, m:); a coluna Rtyp é a resistência típica em mΩ.
+- O catálogo não dá corrente de saturação nem SRF; só a queda de indutância menor que 10 % com a corrente nominal.
+datasheets:
+- id: ds1
+  manufacturer: TDK
+  document_number: B82721A/J/K
+  revision: July 2015
+  url: https://www.farnell.com/datasheets/2015768.pdf
+  sha256: 93548e2f425184b0c742cbc550fd9493ed4495ca8ffe20e9f5c2a42dc5efd38e
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  L:
+    min: 0.2
+    max: 47
+    unit: mH
+    status: extraido
+    note: Rated inductance por enrolamento; medida a 100 kHz (L até 1 mH) ou 10 kHz (L acima de 1 mH).
+    source: {datasheet_id: ds1, page: 2, location: Cabeçalho - Rated inductance, excerpt: "Rated inductance 0.2 ... 47 mH"}
+  tol:
+    max: 30
+    unit: '%'
+    status: extraido
+    conditions: {TA: 20 °C}
+    source: {datasheet_id: ds1, page: 4, location: Technical data - Inductance tolerance, excerpt: "±30% at +20 °C"}
+  I_rms:
+    min: 0.3
+    max: 6
+    unit: A
+    status: extraido
+    note: Corrente nominal a 50 Hz na temperatura nominal TR de +40, +50, +60 ou +70 °C conforme o modelo.
+    source: {datasheet_id: ds1, page: 2, location: Cabeçalho - Rated current, excerpt: "Rated current 0.3 ... 6 A / +40 °C, +50 °C, +60 °C, +70 °C"}
+  DCR:
+    min: 0.015
+    max: 2.2
+    unit: ohm
+    status: extraido
+    note: Valor típico por enrolamento, 15 a 2200 mΩ conforme o modelo (a +20 °C).
+    source: {datasheet_id: ds1, page: 5, location: Tabela - Rtyp (mΩ), excerpt: "0.3|47|500|2200 ... 6.0|0.2|2.5|15"}
+  Top:
+    min: -40
+    max: 125
+    unit: °C
+    status: extraido
+    note: Derivado da categoria climática 40/125/56 (IEC 60068-1); corrente reduz com a temperatura acima de TR.
+    source: {datasheet_id: ds1, page: 4, location: Technical data - Climatic category, excerpt: "40/125/56 (to IEC 60068-1)"}
+  Tstg:
+    min: -25
+    max: 40
+    unit: °C
+    status: extraido
+    note: Armazenamento da peça embalada, umidade relativa até 75 %.
+    source: {datasheet_id: ds1, page: 4, location: Technical data - Storage conditions (packaged), excerpt: "–25 °C … +40 °C, d75% RH"}
+attributes:
+  nucleo:
+    value: Núcleo toroidal de ferrite com revestimento epóxi, duplo choke compensado em corrente (modo comum), enrolamento em setores
+    status: extraido
+    source: {datasheet_id: ds1, page: 2, location: Construction}

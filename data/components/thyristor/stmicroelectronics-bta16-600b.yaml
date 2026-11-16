@@ -1,0 +1,164 @@
+# Fonte: STMicroelectronics, BTA16, BTB16, T1610, T1635 16 A Snubberless, logic level and standard Triacs, Doc ID 7471 Rev 9, March 2010 (cópia no distribuidor Farnell).
+part_number: BTA16-600B
+category: thyristor.triac
+schema_version: '1.0'
+manufacturer: STMicroelectronics
+family: BTA16, BTB16, T1610, T1635
+package: TO-220AB (BTA = versão com aba isolada, 2500 VRMS)
+lifecycle: desconhecido
+notes:
+- 'Documento da série; o código "BTA16-600B" não aparece no texto: pelo esquema de pedidos (p. 9) BTA16-xxxyzRG, xxx = tensão (600) e y = sensibilidade (B). Valores de IGT, IH, IL, dV/dt e (dV/dt)c são os da coluna B da Tabela 4 (padrão, 4 quadrantes, p. 3).'
+- 'IT(RMS) 16 A com Tc = 100 °C para D2PAK/TO-220AB e Tc = 86 °C para TO-220AB isolado (BTA) (p. 2); como BTA16 é isolado, usado Tc = 86 °C.'
+- 'IGT quadrantes I-II-III máx. 50 mA e quadrante IV máx. 100 mA (coluna B); IL quadrante II máx. 120 mA (I-III-IV: 60 mA). VDSM/VRSM = VDRM/VRRM + 100 V (p. 2).'
+- 'Rth(j-c) CA: 1,2 °C/W (D2PAK/TO-220AB) e 2,1 °C/W (TO-220AB isolado); Vto máx. 0,85 V e Rd máx. 25 mohm a Tj = 125 °C (Tabela 5, p. 3); IDRM/IRRM máx. 5 uA (Tj = 25 °C) e 2 mA (Tj = 125 °C).'
+datasheets:
+- id: ds1
+  manufacturer: STMicroelectronics
+  document_number: Doc ID 7471
+  revision: Rev 9, March 2010
+  url: https://www.farnell.com/datasheets/1699992.pdf
+  sha256: 480666ad30d719e75e0ac124566b1e425f4c0f4f20dfb0b7b4d73d15ab0a6126
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VDRM:
+    max: 600
+    unit: V
+    status: extraido
+    source: {page: 1, location: Table 1 Device summary - BTA16 VDRM/VRRM (600 do código da peça, BTA16-600B), excerpt: "VDRM/VRRM Repetitive peak off-state voltage 600/800"}
+  VRRM:
+    max: 600
+    unit: V
+    status: extraido
+    source: {page: 1, location: Table 1 Device summary - BTA16 VDRM/VRRM (600 do código da peça, BTA16-600B), excerpt: "VDRM/VRRM Repetitive peak off-state voltage 600/800"}
+  IT(RMS):
+    max: 16
+    unit: A
+    conditions: {TC: 86 degC}
+    status: extraido
+    source: {page: 2, location: Table 2 Absolute maximum ratings - On-state rms current, TO-220AB insulated, excerpt: "IT(RMS) TO-220AB insulated Tc = 86 °C 16 A"}
+  ITSM:
+    max: 160
+    unit: A
+    conditions: {t_pulse: 20 ms}
+    status: extraido
+    source: {page: 2, location: Table 2 Absolute maximum ratings - Non repetitive surge peak on-state current (F = 50 Hz), excerpt: "ITSM F = 50 Hz t = 20 ms 160 A"}
+  ITSM@2:
+    max: 168
+    unit: A
+    conditions: {t_pulse: 16.7 ms}
+    status: extraido
+    source: {page: 2, location: Table 2 Absolute maximum ratings - Non repetitive surge peak on-state current (F = 60 Hz), excerpt: "F = 60 Hz t = 16.7 ms 168 A"}
+  I2t:
+    max: 144
+    unit: A**2*s
+    conditions: {t_pulse: 10 ms}
+    status: extraido
+    source: {page: 2, location: Table 2 Absolute maximum ratings - I2t value for fusing, excerpt: "I²t value for fusing tp = 10 ms 144 A²s"}
+  di/dt:
+    max: 50
+    unit: A/us
+    status: extraido
+    source: {page: 2, location: Table 2 Absolute maximum ratings - Critical rate of rise of on-state current (IG = 2 x IGT, F = 120 Hz, Tj = 125 °C), excerpt: "dI/dt F = 120 Hz Tj = 125 °C 50 A/µs"}
+  IGM:
+    max: 4
+    unit: A
+    status: extraido
+    source: {page: 2, location: Table 2 Absolute maximum ratings - Peak gate current (tp = 20 us, Tj = 125 °C), excerpt: "IGM Peak gate current tp = 20 µs 4 A"}
+  PG(AV):
+    max: 1
+    unit: W
+    status: extraido
+    source: {page: 2, location: Table 2 Absolute maximum ratings - Average gate power dissipation (Tj = 125 °C), excerpt: "PG(AV) Tj = 125 °C 1 W"}
+  Tj_max:
+    max: 125
+    unit: degC
+    status: extraido
+    source: {page: 2, location: Table 2 Absolute maximum ratings - Maximum operating junction temperature, excerpt: "Tj Maximum operating junction temperature -40 to + 125"}
+  Tj_min:
+    min: -40
+    unit: degC
+    status: extraido
+    source: {page: 2, location: Table 2 Absolute maximum ratings - Maximum operating junction temperature, excerpt: "Tj Maximum operating junction temperature -40 to + 125"}
+  Tstg_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source: {page: 2, location: Table 2 Absolute maximum ratings - Storage temperature range, excerpt: "Tstg Storage temperature range -40 to + 150"}
+  V(ISO):
+    min: 2500
+    unit: V
+    status: extraido
+    source: {page: 1, location: Features - Insulated tab (BTA series), excerpt: "Insulated tab (BTA series, rated at 2500 VRMS)"}
+  Rth_jc:
+    max: 2.1
+    unit: K/W
+    status: extraido
+    source: {page: 3, location: Table 6 Thermal resistance - Junction to case (AC), TO-220AB insulated, excerpt: "Rth(j-c) Junction to case (AC) TO-220AB insulated 2.1 °C/W"}
+  Rth_ja:
+    max: 60
+    unit: K/W
+    status: extraido
+    source: {page: 3, location: Table 6 Thermal resistance - Junction to ambient, TO-220AB insulated, excerpt: "Rth(j-a) TO-220AB / TO-220AB insulated 60 °C/W"}
+  IDRM:
+    max: 5
+    unit: uA
+    conditions: {Tj: 25 degC}
+    status: extraido
+    source: {page: 3, location: Table 5 Static characteristics - IDRM / IRRM (VDRM = VRRM), excerpt: "IDRM IRRM VDRM = VRRM Tj = 25 °C Max. 5 µA"}
+  IDRM@2:
+    max: 2
+    unit: mA
+    conditions: {Tj: 125 degC}
+    status: extraido
+    source: {page: 3, location: Table 5 Static characteristics - IDRM / IRRM (VDRM = VRRM), excerpt: "Tj = 125 °C 2 mA"}
+  VTM:
+    max: 1.55
+    unit: V
+    conditions: {ITM: 22.5 A}
+    status: extraido
+    source: {page: 3, location: Table 5 Static characteristics - VT (ITM = 22.5 A, tp = 380 us, Tj = 25 °C), excerpt: "VT ITM = 22.5 A tp = 380 µs Max. 1.55 V"}
+  IGT:
+    max: 50
+    unit: mA
+    conditions: {VD: 12 V}
+    status: extraido
+    source: {page: 3, location: Table 4 Electrical characteristics standard (4 quadrants) - IGT quadrantes I-II-III, coluna B, excerpt: "IGT VD = 12 V RL = 33 Ω I - II - III Max. 25 (C) 50 (B) mA"}
+  IGT@2:
+    max: 100
+    unit: mA
+    conditions: {VD: 12 V}
+    status: extraido
+    source: {page: 3, location: Table 4 Electrical characteristics standard (4 quadrants) - IGT quadrante IV, coluna B, excerpt: "IGT quadrante IV Max. 50 (C) 100 (B) mA"}
+  VGT:
+    max: 1.3
+    unit: V
+    conditions: {VD: 12 V}
+    status: extraido
+    source: {page: 3, location: Table 4 Electrical characteristics standard (4 quadrants) - VGT (todos os quadrantes), excerpt: "VGT ALL Max. 1.3 V"}
+  VGD:
+    min: 0.2
+    unit: V
+    status: extraido
+    source: {page: 3, location: Table 4 Electrical characteristics standard (4 quadrants) - VGD (VD = VDRM, RL = 3.3 kohm, Tj = 125 °C), excerpt: "VGD ALL Min. 0.2 V"}
+  IH:
+    max: 50
+    unit: mA
+    status: extraido
+    source: {page: 3, location: Table 4 Electrical characteristics standard (4 quadrants) - IH (IT = 500 mA), coluna B, excerpt: "IH IT = 500 mA Max. 25 (C) 50 (B) mA"}
+  IL:
+    max: 60
+    unit: mA
+    status: extraido
+    source: {page: 3, location: Table 4 Electrical characteristics standard (4 quadrants) - IL (IG = 1.2 IGT) quadrantes I-III-IV, coluna B, excerpt: "IL I - III - IV Max. 40 (C) 60 (B) mA"}
+  dv/dt:
+    min: 400
+    unit: V/us
+    status: extraido
+    source: {page: 3, location: Table 4 Electrical characteristics standard (4 quadrants) - dV/dt (VD = 67% VDRM, gate open, Tj = 125 °C), coluna B, excerpt: "dV/dt Min. 200 (C) 400 (B) V/µs"}
+  dv/dt(c):
+    min: 10
+    unit: V/us
+    status: extraido
+    source: {page: 3, location: Table 4 Electrical characteristics standard (4 quadrants) - (dV/dt)c ((dI/dt)c = 7 A/ms, Tj = 125 °C), coluna B, excerpt: "(dV/dt)c Min. 5 (C) 10 (B) V/µs"}

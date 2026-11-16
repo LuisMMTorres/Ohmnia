@@ -1,0 +1,81 @@
+# Fonte: Texas Instruments, LM35 Precision Centigrade Temperature Sensors, SNIS159H, agosto 1999, revisado dezembro 2017.
+part_number: LM35DZ
+category: sensor.temperature
+schema_version: '1.0'
+manufacturer: Texas Instruments
+family: LM35 (grau LM35D)
+package: TO-92 (LP), 3 pinos
+lifecycle: desconhecido
+notes:
+- 'Documento da família LM35 (SNIS159H); os valores abaixo são as colunas do grau LM35D (0 a 100 °C), tabela 6.7 da pág. 8, com VS = 5 V e ILOAD = 50 uA.'
+- 'Pág. 23 (orderable): LM35DZ/LFT1 em TO-92 (LP), com coluna de temperatura "-55 to 150" nessa tabela, diferente de 0 a 100 °C do LM35D na pág. 4; usada a faixa do LM35D, revisar.'
+- 'Pág. 1: erro de não linearidade típico de +/-1/4 °C; autoaquecimento de 0,08 °C em ar parado; impedância de saída 0,1 ohm para 1 mA de carga.'
+- 'Pág. 8 (LM35D): erro de linearidade típico +/-0,2 °C (limite +/-0,5 °C); a precisão máxima declarada a 25 °C é +/-1,5 °C (limite testado).'
+datasheets:
+- id: ds1
+  manufacturer: Texas Instruments
+  document_number: SNIS159H
+  revision: H (dezembro 2017)
+  sha256: 1f870e659a86c45a6a86d1750f29a17a9655ab23a8f5ee4a5172f4df71fe7608
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  range:
+    min: 0
+    max: 100
+    unit: °C
+    status: extraido
+    source: {page: 4, location: 6.3 Recommended operating conditions - Specified operating temperature LM35D, excerpt: "LM35D 0 100 °C"}
+  accuracy:
+    typ: 0.6
+    max: 1.5
+    unit: K
+    conditions: {TA: 25 °C}
+    status: extraido
+    source: {page: 8, location: 6.7 Electrical characteristics LM35D - Accuracy LM35D, excerpt: "Accuracy, LM35D TA = 25°C ±0.6 ±1.5 °C"}
+  sensitivity:
+    min: 9.8
+    typ: 10
+    max: 10.2
+    unit: mV/K
+    status: extraido
+    source: {page: 8, location: 6.7 Electrical characteristics - Sensor gain (average slope), excerpt: "Sensor gain (average slope) 10 9.8 10.2 mV/°C"}
+  VS:
+    min: 4
+    max: 30
+    unit: V
+    status: extraido
+    source: {page: 4, location: 6.3 Recommended operating conditions - Supply Voltage (+VS), excerpt: "Supply Voltage (+VS) 4 30 V"}
+  IS:
+    typ: 0.056
+    max: 0.08
+    unit: mA
+    conditions: {VS: 5 V, TA: 25 °C}
+    status: extraido
+    source: {page: 8, location: 6.7 Electrical characteristics - Quiescent current, excerpt: "Quiescent current VS = 5 V, 25°C 56 80 µA"}
+  Top:
+    min: 0
+    max: 100
+    unit: °C
+    status: extraido
+    source: {page: 4, location: 6.3 Recommended operating conditions - Specified operating temperature LM35D, excerpt: "LM35D 0 100 °C"}
+  Tstg:
+    min: -60
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 4, location: 6.1 Absolute maximum ratings - Storage Temperature, excerpt: "TO-CAN, TO-92 Package –60 150 °C"}
+attributes:
+  elemento:
+    value: CI de temperatura LM35D (escala centígrada calibrada)
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "Calibrated Directly in Celsius (Centigrade); Linear + 10-mV/°C Scale Factor"}
+  saida:
+    value: Tensão analógica linear, 10 mV/°C (0 mV + 10,0 mV/°C)
+    status: extraido
+    source: {page: 1, location: Features e esquema, excerpt: "Linear + 10-mV/°C Scale Factor"}
+  ligacao:
+    value: 3 terminais (+VS, VOUT, GND)
+    status: extraido
+    source: {page: 3, location: 5 Pin Configuration and Functions - Pin Functions, excerpt: "VOUT; GND; +VS"}

@@ -1,0 +1,47 @@
+# Fonte: SICK, Data sheet TMS22E-PKH090S02 (TMS/TMM22 Inclination sensors), SICK ID 1125894, impresso 2026-07-28.
+part_number: TMS22E-PKH090S02
+category: sensor.inertial
+schema_version: '1.0'
+manufacturer: SICK
+family: TMS/TMM22
+package: Plástico PA12 reforçado, 38,8 x 30 x 10,4 mm
+lifecycle: desconhecido
+notes:
+- 'Item da fila: TMS22-PKH090; o PDF baixado é do TMS22E-PKH090S02 (dispositivo especial, ID 1125894).'
+- 'Sensor de inclinação de 1 eixo, faixa de medição 90 graus (p.2), resolução <= 0,03 graus (p.2).'
+- 'Exatidão estática típ. 0,25 graus, máx. 0,4 graus; coeficiente de temperatura do zero +-0,03 graus/K (p.2).'
+- 'Frequência limite 5 Hz, taxa de amostragem 400 Hz (p.2). Saída em corrente 3 a 21 mA, carga 200 a 900 ohm a 24 V (p.3).'
+- 'Consumo < 30 mA (+ Iloop) a 24 V (p.3). O schema sensor.inertial não tem símbolo para faixa angular nem para a saída em corrente.'
+datasheets:
+- id: ds1
+  manufacturer: SICK
+  document_number: '1125894'
+  url: https://www.sick.com/media/pdf/3/63/263/dataSheet_TMS22E-PKH090S02_1125894_en.pdf
+  sha256: 5196a0b98540f3daacde17844426602835bd4ee8881c24edaa5ed9b8e44ee5b8
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 12
+    max: 30
+    unit: V
+    status: extraido
+    source: {page: 3, location: Electronics - supply voltage, excerpt: "12 V DC ... 30 V DC"}
+  Top:
+    min: -40
+    max: 80
+    unit: °C
+    status: extraido
+    source: {page: 3, location: Ambient data - operating temperature range, excerpt: "–40 °C ... +80 °C"}
+  Tstg:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 3, location: Ambient data - storage temperature range, excerpt: "–40 °C ... +85 °C"}
+attributes:
+  interface:
+    value: Analógica em corrente, 3 mA ... 21 mA
+    status: extraido
+    source: {page: 3, location: Interfaces - current output, excerpt: "3 mA ... 21 mA"}

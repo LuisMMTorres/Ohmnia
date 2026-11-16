@@ -1,0 +1,109 @@
+# Fonte: Siemens, Pressure transmitters for applications with advanced requirements SITRANS P320/P420 - Technical reference, Siemens FI 01, 2023 (páginas 1/95 em diante do catálogo).
+part_number: SITRANS P320/P420
+category: sensor.pressure
+schema_version: '1.0'
+manufacturer: Siemens
+family: SITRANS P320 / SITRANS P420 (HART)
+lifecycle: desconhecido
+notes:
+- 'Item da fila: "sitrans p320 p420 datasheet en-US". Transmissores digitais de pressão manométrica, absoluta, diferencial, nível e vazão, com HART (p.1-2).'
+- 'Valores abaixo são da versão de pressão manométrica (gauge pressure, pressure series), p.12-15. O documento tem ainda as versões de pressão diferencial, absoluta, nível etc. com outros dados; ver o PDF.'
+- 'Exatidão (erro de conformidade, p.13): P320 <= 0,075 % e P420 <= 0,065 % para r <= 1,25 (célula de 250 mbar); para células de 1 bar a 160 bar com r <= 5: P320 <= 0,065 %, P420 <= 0,04 %. Fórmulas dependentes de r (relação de faixa) para r maiores.'
+- 'Tempo de resposta a degrau T63 <= 0,105 s sem amortecimento elétrico (p.13); p.2 cita 105 ms para pressão e 135 ms para pressão diferencial.'
+- 'Saturação inferior 3,55 mA (ajustada de fábrica em 3,8 mA); superior até 22,8 mA (ajustada de fábrica em 20,5 mA ou 22,0 mA); sinal de falha 3,55 a 22,8 mA (p.12-13). Sem HART: R = (UH - 10,5 V)/22,8 mA (p.13).'
+- 'Alimentação: 10,5 a 45 V DC; 10,5 a 30 V DC em modo intrinsecamente seguro; ripple <= 0,2 Vpp (p.15). Faixas de medição em pressão manométrica: 250 mbar a 700 bar, conforme a célula (p.12).'
+- 'Ex: II 1/2 G Ex ia IIC T4/T5/T6 Ga (p.5); diagnóstico NAMUR NE107, SIL conforme IEC 61508 (p.2).'
+datasheets:
+- id: ds1
+  manufacturer: Siemens
+  document_number: Siemens FI 01
+  revision: '2023'
+  url: https://cache.industry.siemens.com/dl/files/052/109765052/att_1159019/v1/sitransp_p320_p420_fi01_en.pdf
+  sha256: 41db92b4b0d8a41110378e457be7e408461639e4b41027dd337785ec513c273c
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  range_bar:
+    min: 0.01
+    max: 700
+    unit: bar
+    status: extraido
+    source: {page: 2, location: Application - measuring span (infinitely adjustable) gauge pressure with HART, excerpt: "0.01 bar to 700 bar"}
+  accuracy:
+    min: 0.04
+    max: 0.075
+    unit: '%'
+    conditions: {TA: 25 °C}
+    status: extraido
+    source: {page: 13, location: Measuring accuracy - conformity error, r <= 5 / r <= 1.25, excerpt: "≤ 0.075% (SITRANS P320)"}
+  VS:
+    min: 10.5
+    max: 45
+    unit: V
+    status: extraido
+    source: {page: 15, location: Auxiliary power UH - terminal voltage on pressure transmitter, excerpt: "10.5 ... 45 V DC"}
+  I_out:
+    min: 4
+    max: 20
+    unit: mA
+    status: extraido
+    source: {page: 12, location: Output HART - output signal, excerpt: "4 ... 20 mA"}
+  RL:
+    min: 230
+    max: 1100
+    unit: ohm
+    status: extraido
+    source: {page: 13, location: Load - with HART communication, excerpt: "R = 230 … 1100"}
+  t_resp:
+    max: 105
+    unit: ms
+    status: extraido
+    source: {page: 13, location: Measuring accuracy - step response time T63 (sem amortecimento elétrico), excerpt: "≤ 0.105 s"}
+  T_process:
+    min: -40
+    max: 100
+    unit: °C
+    status: extraido
+    source: {page: 14, location: Operating conditions - medium temperature, measuring cell with silicone oil, excerpt: "-40 ... +100 °C"}
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 14, location: Ambient conditions - ambient temperature/enclosure, silicone oil filling, excerpt: "-40 ... +85 °C"}
+  Tstg:
+    min: -50
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 14, location: Ambient conditions - storage temperature, excerpt: "-50 ... +85 °C"}
+attributes:
+  saida:
+    value: 4-20 mA com HART; saturação 3,55 a 22,8 mA
+    status: extraido
+    source: {page: 12, location: Output HART, excerpt: "4 ... 20 mA"}
+  conexao:
+    value: Prensa-cabo M20 x 1,5 ou 1/2-14 NPT; plugue Han 7D/Han 8D ou M12
+    status: extraido
+    source: {page: 15, location: Electrical connection, excerpt: "M20 × 1.5"}
+  invólucro:
+    value: Alumínio fundido ou aço inox; conexão ao processo G1/2A (EN 837-1), 1/2-14 NPT ou flange oval; partes molhadas aço inox 316L ou Alloy C22/C276
+    status: extraido
+    source: {page: 14, location: Structural design - material, excerpt: "Stainless steel, material no. 1.4404/316L"}
+  grau_protecao:
+    value: IP66, IP68; NEMA 4X
+    status: extraido
+    source: {page: 14, location: Ambient conditions - degree of protection, excerpt: "IP66, IP68"}
+  certificacoes:
+    value: Ex ia IIC (II 1/2 G); NAMUR NE107; SIL IEC 61508; IEC 61326 e NAMUR NE 21
+    status: extraido
+    source: {page: 5, location: Design - certification label (Ex), excerpt: "Ex ia IIC"}
+  comunicacao:
+    value: HART
+    status: extraido
+    source: {page: 1, location: Overview, excerpt: "HART interface"}
+  principio:
+    value: Célula de medição com diafragma de vedação e óleo de enchimento (silicone, inerte ou FDA)
+    status: extraido
+    source: {page: 14, location: Operating conditions - medium temperature, measuring cell with silicone oil filling, excerpt: "Measuring cell with silicone oil filling"}

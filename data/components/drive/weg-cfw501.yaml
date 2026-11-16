@@ -1,0 +1,92 @@
+# Fonte: WEG, CFW501 User's Manual, 10001991016/05 (trilíngue EN/ES/PT), Capítulo 8 e Apêndice B (Tabelas B.1 e B.2).
+part_number: CFW501
+category: drive.vfd
+schema_version: '1.0'
+manufacturer: WEG
+family: CFW501
+package: mecânicas A a D, IP20 (Nema1/IP20 com kit)
+lifecycle: desconhecido
+notes:
+- 'Valores da série CFW501 (Tabela B.1, pág. 138): de CFW501A01P0T4 (1,0 A, 0,25 HP / 0,18 kW) a CFW501D31P0T4 (31 A, 20 HP / 15 kW); faixa entre os modelos.'
+- 'Linhas de tensão: 200...240 V (T2) e 380...480 V (T4) (nomenclatura, pág. 11). Tolerância de tensão -15 % a +10 %, 50/60 Hz (pág. 43).'
+- 'Frequência de saída 0 a 500 Hz, resolução 0,015 Hz; V/f com função de economia de energia ou VVW (Tabela 8.1, pág. 43).'
+- 'Entradas/saídas consideradas com o plug-in CFW500-CRS485 (pág. 44, nota (*)): 2 AI, 4 DI, 1 AO, 2 relés 240 Vca 0,5 A, 1 saída a transistor; fonte 24 Vcc 150 mA; RS485 Modbus-RTU, BACnet ou N2 até 38,4 kbps.'
+- 'Temperatura nominal ao redor do inversor 50 C (122 F), coluna adicional 40 C (104 F), Tabela B.2 (pág. 139).'
+datasheets:
+- id: ds1
+  manufacturer: WEG
+  document_number: 10001991016/05
+  revision: '05'
+  url: https://www.wolfautomation.com/content/weg-cfw501-userman-21.pdf
+  sha256: 15f31e9c05502073b96780132a8a319c1fa8fb56137b47071a41eee05c3d7b28
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  P_motor:
+    min: 0.18
+    max: 15
+    unit: kW
+    status: extraido
+    source: {page: 138, location: Tabela B.1, Maximum Motor, excerpt: "CFW501D31P0T4 | 31 | 20/15"}
+  V_in:
+    min: 200
+    max: 480
+    unit: V
+    status: extraido
+    source: {page: 11, location: Nomenclatura, tensão, excerpt: "2 = 200...240 V ... 4 = 380...480 V"}
+  I_out:
+    min: 1
+    max: 31
+    unit: A
+    status: extraido
+    source: {page: 138, location: Tabela B.1, Output Rated Current, excerpt: "CFW501A01P0T4 | 380...480 | A | 1.0"}
+  f_out:
+    min: 0
+    max: 500
+    unit: Hz
+    status: extraido
+    source: {page: 43, location: Tabela 8.1, Output frequency, excerpt: "0 to 500 Hz, resolution of 0.015 Hz."}
+  f_sw:
+    typ: 5
+    unit: kHz
+    status: extraido
+    source: {page: 139, location: Tabela B.2, Rated Carrier Frequency, excerpt: "CFW501A01P6T2|1.6|1.8|2.4|5|50/122"}
+  efficiency:
+    min: 97
+    unit: '%'
+    status: extraido
+    source: {page: 43, location: 8.1 Power data, excerpt: "Typical efficiency: ≥ 97 %."}
+  di:
+    typ: 4
+    unit: '1'
+    status: extraido
+    source: {page: 43, location: Tabela 8.1, Inputs Digital, excerpt: "4 insulated inputs."}
+  ai:
+    typ: 2
+    unit: '1'
+    status: extraido
+    source: {page: 43, location: Tabela 8.1, Inputs Analog, excerpt: "2 insulated inputs."}
+  do:
+    typ: 2
+    unit: '1'
+    status: extraido
+    source: {page: 44, location: Tabela 8.1, Outputs Relay, excerpt: "2 relays with NA/NF contact."}
+  ao:
+    typ: 1
+    unit: '1'
+    status: extraido
+    source: {page: 43, location: Tabela 8.1, Outputs Analog, excerpt: "1 insulated output."}
+attributes:
+  controle:
+    value: V/f (escalar) com economia de energia ou VVW (vetorial de tensão)
+    status: extraido
+    source: {page: 43, location: Tabela 8.1, Type of control}
+  comunicacao:
+    value: RS485 isolada, Modbus-RTU, BACnet ou N2, até 38,4 kbps
+    status: extraido
+    source: {page: 44, location: Tabela 8.1, Communication interface RS485}
+  grau_protecao:
+    value: IP20 (Nema1/IP20 com kit Nema1)
+    status: extraido
+    source: {page: 44, location: Tabela 8.1, Enclosure}

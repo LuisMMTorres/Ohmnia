@@ -1,0 +1,85 @@
+# Fonte: Phoenix Contact, Data sheet do catálogo online, MACX MCR-VDC-PT, art. 2906243, 30/04/2017 (cópia Chipsmall; a página 1 do PDF é folha de rosto do distribuidor).
+part_number: MACX MCR-VDC-PT
+category: sensor.voltage
+schema_version: '1.0'
+manufacturer: Phoenix Contact
+family: MACX MCR
+package: 22,5 x 99 x 114,5 mm (L x A x P), trilho DIN
+lifecycle: desconhecido
+notes:
+- 'Fila: MACX MCR-VDC-PT (art. 2906243; o link anterior citava 2906242). Transdutor de tensão CC com isolação de 3 vias, faixas ajustáveis.'
+- 'Faixas de entrada selecionáveis de -24...24 V DC até -550...550 V DC, com resistências de entrada de 540 kΩ a 5500 kΩ (pág. 3 do PDF); tensão nominal ±660 V DC.'
+- 'Saída em tensão -10...10 V (máx. <= 11 V, carga > 10 kΩ, ondulação 50 mV) ou em corrente -20...20 mA (máx. <= 22 mA, carga < 500 Ω), pág. 3.'
+- 'Erro máx. < 1 % do fim de faixa; coeficiente de temperatura < 0,015 %/K; ajuste de zero e span ±20 %; resposta ao degrau 10-90 % < 16 ms (pág. 4).'
+- 'Tensão nominal de alimentação 24 V DC (-20 % ... +25 %). Corrente de consumo máx. < 60 mA. Tensão de isolação nominal 300 V DC.'
+datasheets:
+- id: ds1
+  manufacturer: Phoenix Contact
+  document_number: '2906243'
+  revision: 30/04/2017
+  url: https://datasheet.chipsmall.com/2906243/526485.pdf
+  sha256: 72786fd5195c427a7ab9c67cf04325a82061f0a3657737b795b2d2f2a2760e6d
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  V_PN:
+    min: 24
+    max: 550
+    unit: V
+    status: extraido
+    source: {page: 3, location: Input data - Input voltage range, excerpt: "-550 V DC ... 550 V DC"}
+  V_PM:
+    max: 660
+    unit: V
+    status: extraido
+    source: {page: 3, location: Input data - Nom. voltage, excerpt: "± 660 V DC"}
+  V_out:
+    min: -10
+    max: 10
+    unit: V
+    status: extraido
+    source: {page: 3, location: Output data - Voltage output signal, excerpt: "-10 V ... 10 V"}
+  accuracy:
+    max: 1
+    unit: '%'
+    status: extraido
+    source: {page: 4, location: General - Maximum transmission error, excerpt: "< 1 % (of measuring range end value)"}
+  V_iso:
+    typ: 5300
+    unit: V
+    status: extraido
+    conditions: {t: 1 min, f: 50 Hz}
+    source: {page: 4, location: General - Test voltage, excerpt: "5.3 kV AC (50 Hz, 1 min.)"}
+  VS:
+    min: 19.2
+    max: 30
+    unit: V
+    status: extraido
+    source: {page: 3, location: Power supply - Supply voltage range, excerpt: "19.2 V DC ... 30 V DC"}
+  IS:
+    max: 60
+    unit: mA
+    status: extraido
+    source: {page: 3, location: Power supply - Max. current consumption, excerpt: "< 60 mA"}
+  Top:
+    min: -25
+    max: 60
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Ambient conditions - operation, excerpt: "-25 °C ... 60 °C"}
+  Tstg:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Ambient conditions - storage/transport, excerpt: "-40 °C ... 85 °C (non-condensing)"}
+attributes:
+  principio:
+    value: Transdutor de tensão CC com isolação de 3 vias
+    status: extraido
+    source: {page: 2, location: Why buy this product, excerpt: "3-way isolation"}
+  saida:
+    value: -10...10 V ou -20...20 mA
+    status: extraido
+    source: {page: 3, location: Output data, excerpt: "-20 mA ... 20 mA"}

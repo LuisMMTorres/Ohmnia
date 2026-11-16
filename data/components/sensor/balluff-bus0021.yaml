@@ -1,0 +1,76 @@
+# Fonte: Balluff, folha de dados BUS0021 (BUS R06K1-PPX-02/007-S75G), BUS0021_0.1_2017-05-03.
+part_number: BUS0021
+category: sensor.level
+schema_version: '1.0'
+manufacturer: Balluff
+family: BUS R06K1
+package: Housing R06K1, ABS, parafuso M3
+lifecycle: desconhecido
+notes:
+- 'Fila: DS BUS0021 EN. Código completo BUS R06K1-PPX-02/007-S75G. Sensor ultrassônico (documento em polonês).'
+- 'Corrente de saída máx. 200 mA (p. 1, Electrical data); frequência de comutação 250 Hz; frequência ultrassônica 380 kHz; histerese máx. 2 mm; repetibilidade ±0,15 % FS; resolução <= 0,056 mm; alcance nominal Sn 70 mm (p. 2).'
+datasheets:
+- id: ds1
+  manufacturer: Balluff
+  document_number: BUS0021
+  revision: 0.1 (2017-05-03)
+  url: https://www.automatyka24.pl/file/15617,BUS0021.pdf
+  sha256: ee8954b0cc1932837698bfe30fa8d78aaeec00bf8ea68bf6497ad2d3d9ea4e0b
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  range_m:
+    min: 20
+    max: 100
+    unit: mm
+    status: extraido
+    source: {page: 1, location: Range/Distance - Zakres pomiarowy, excerpt: "Zakres pomiarowy 20…100 mm"}
+  VS:
+    min: 20
+    max: 30
+    unit: V
+    status: extraido
+    source: {page: 1, location: Electrical data - Napięcie robocze Ub, excerpt: "Napięcie robocze Ub 20…30 VDC"}
+  IS:
+    max: 30
+    unit: mA
+    status: extraido
+    source: {page: 1, location: Electrical data - Pobór prądu maks., excerpt: "Pobór prądu maks. 30 mA"}
+  Top:
+    min: -25
+    max: 70
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Environmental conditions - Temperatura otoczenia, excerpt: "Temperatura otoczenia -25…70 °C"}
+  Tstg:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Environmental conditions - Temperatura składowania, excerpt: "Temperatura składowania -40…85 °C"}
+attributes:
+  saida:
+    value: PNP, NA/NF (NO/NC)
+    status: extraido
+    source: {page: 1, location: Output/Interface - Wyjście przełącznikowe, excerpt: "PNP styk zwierny/styk rozwierny (NO/NC)"}
+  conexao:
+    value: Conector M8x1, 4 pinos
+    status: extraido
+    source: {page: 1, location: Electrical connection - Przyłącze, excerpt: "Wtyczka M8x1, 4-styk."}
+  invólucro:
+    value: ABS; superfície ativa de espuma PU, resina epóxi e vidro
+    status: extraido
+    source: {page: 1, location: Material}
+  grau_protecao:
+    value: IP67
+    status: extraido
+    source: {page: 1, location: Environmental conditions - Stopień ochrony}
+  certificacoes:
+    value: CE
+    status: extraido
+    source: {page: 1, location: General data - Dopuszczenie / zgodność}
+  principio:
+    value: Ultrassônico (380 kHz), modos barreira de reflexão / tecla refletiva
+    status: extraido
+    source: {page: 1, location: Electrical data - Częstotliwość ultradźwiękowa; General data - Tryb pracy}

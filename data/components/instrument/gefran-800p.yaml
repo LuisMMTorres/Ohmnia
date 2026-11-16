@@ -1,0 +1,46 @@
+# Fonte: Gefran, Automation Controllers, Programmers (catálogo COD. 81131D - 10/2015), guia de seleção, séries PERFORMANCE 800 / 800V / 800P.
+part_number: 800P
+category: instrument.controller
+schema_version: '1.0'
+manufacturer: Gefran
+family: 800 / 800V / 800P (PERFORMANCE)
+package: 48x48 mm (1/16 DIN)
+lifecycle: desconhecido
+notes:
+- 'Fila: dts 800p en. Catálogo geral (guia de seleção); a coluna 800 / 800V / 800P agrupa os três modelos, 800P = programador de setpoint.'
+- 'Os rótulos das linhas estão nas páginas 8 e 10 e as colunas do 800 nas páginas 9 e 11: a associação foi feita pela posição das linhas; conferir no PDF.'
+- 'Coluna 800P (pág. 11): X (mod. P) no programador de setpoint, 4 programas e 16 passos conforme linhas ao lado; 4 contadores de comutação de saída.'
+- 'Seção de apresentação (pág. 5): modelos V controlam válvulas motorizadas; modelos P gerenciam perfis de setpoint variável; entradas e saídas isoladas galvanicamente.'
+datasheets:
+- id: ds1
+  manufacturer: Gefran
+  document_number: COD. 81131D
+  revision: 10/2015
+  url: https://nonprod.docs.rs-online.com/47a9/0900766b81492384.pdf
+  sha256: 23a092dcbcc874e627f8d32ed5ce87d7efdde4309977e484ca5d9f888aee5d86
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  outputs:
+    max: 6
+    unit: '1'
+    status: extraido
+    source: {page: 9, location: Guia de seleção, coluna 800 / 800V / 800P - última linha (Total no. of outputs, max, rótulo na pág. 8), excerpt: "6"}
+attributes:
+  entrada:
+    value: Universal para sensores de temperatura (TC, RTD), 1 malha de controle
+    status: extraido
+    source: {page: 4, location: Textos da série PERFORMANCE/VALUE, excerpt: "Universal input for temperature sensors"}
+  controle:
+    value: PID com auto-sintonia; modelo P com programador de setpoint
+    status: extraido
+    source: {page: 2, location: A complete line of controllers, excerpt: "All models offer advanced PID control algorithms and automatic tuning functions"}
+  comunicacao:
+    value: RS 485 Modbus RTU (conforme coluna 800 na pág. 11; conferir)
+    status: extraido
+    source: {page: 10, location: Selection guide - Serial interface, excerpt: "RS 485 Modbus RTU protocol"}
+  certificacoes:
+    value: CE, UL (linhas CERTIFICATIONS marcadas na coluna 800; conferir)
+    status: extraido
+    source: {page: 10, location: Selection guide - Certifications, excerpt: "CE"}
