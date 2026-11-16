@@ -27,6 +27,7 @@ from circuitos.cosim.controllers import (
     ControllerSpec,
 )
 from circuitos.cosim.plc import IO_BOOL_IN, IO_REAL_IN, PlcRuntime
+from circuitos.schematic.values import try_parse
 from circuitos.simulation.results import Plot, Vector
 
 MAX_TRACE = 200_000
@@ -185,6 +186,53 @@ class PlcAdapter(_Adapter):
         return 1.0 if self.outputs.get(role) else 0.0
 
 
+class StepperDriverAdapter(_Adapter):
+    """Step counter of a STEP/DIR driver: rising edges on STEP move the current vector.
+
+    The edges are seen at the accepted points of ngspice, so a STEP pulse must last at least
+    one time step (the run limits the step to 20 µs with a driver in the circuit).
+    """
+
+    def __init__(self, spec: ControllerSpec, session: CoSession):
+        self.spec = spec
+        self.session = session
+        p = spec.params
+        self.ifull = float(try_parse(p.get("ifull", "1.5") or "1.5") or 1.5)
+        self.micro = max(int(p.get("micro", "1") or 1), 1)
+        self.vth = float(try_parse(p.get("vth", "1.65") or "1.65") or 1.65)
+        self.steps = 0
+        self.high = False
+        self.trace_t, self.trace = [], {}
+        self.ia = self.ib = 0.0
+        self._update(True)
+
+    def _v(self, pin: str) -> float:
+        return self.session.v(self.spec.pins[pin]) - self.session.v(self.spec.reference)
+
+    def _update(self, enabled: bool) -> None:
+        # electrical angle: 45° at home, 90°/micro per step (full step: both phases at 70,7 %)
+        theta = math.pi / 4 + self.steps * (math.pi / 2) / self.micro
+        k = self.ifull if enabled else 0.0
+        self.ia, self.ib = k * math.cos(theta), k * math.sin(theta)
+
+    def tick(self, t: float) -> None:
+        level = self._v("STEP") > self.vth
+        if level and not self.high:
+            self.steps += 1 if self._v("DIR") > self.vth else -1
+        self.high = level
+        self._update(self._v("EN") < self.vth)
+        ref = self.spec.ref
+        self._record(t, {f"{ref}.steps": float(self.steps), f"{ref}.ia_ref": self.ia,
+                         f"{ref}.ib_ref": self.ib})  # fmt: skip
+
+    def value(self, role: str, t: float) -> float:
+        if role == "ia":
+            return self.ia
+        if role == "ib":
+            return self.ib
+        return 0.0
+
+
 class CoSession:
     """Shared by the ngspice callbacks of one run."""
 
@@ -196,9 +244,13 @@ class CoSession:
         self.sources: dict[str, tuple[_Adapter, str]] = {}
         self.adapters: list[_Adapter] = []
         for spec in specs:
-            adapter: _Adapter = (
-                PlcAdapter(spec, self) if spec.kind == "plc" else McuAdapter(spec, self)
-            )
+            adapter: _Adapter
+            if spec.kind == "plc":
+                adapter = PlcAdapter(spec, self)
+            elif spec.kind == "stepper_driver":
+                adapter = StepperDriverAdapter(spec, self)
+            else:
+                adapter = McuAdapter(spec, self)
             self.adapters.append(adapter)
             for src, role in spec.sources.items():
                 self.sources[src.lower()] = (adapter, role)
@@ -262,4 +314,6 @@ class CoSession:
     def _volt_names(a: _Adapter) -> set[str]:
         if isinstance(a, PlcAdapter):
             return {"AQ0"}
+        if isinstance(a, StepperDriverAdapter):
+            return set()
         return {p.upper() for p in a.spec.outputs}

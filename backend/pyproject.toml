@@ -94,6 +94,7 @@ source_modules = [
     "circuitos.thermal",
     "circuitos.magnetics",
     "circuitos.devices",
+    "circuitos.machines",
     "circuitos.schematic",
     "circuitos.reports",
     "circuitos.datasheets",
