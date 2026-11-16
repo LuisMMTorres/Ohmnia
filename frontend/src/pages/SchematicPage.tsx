@@ -227,6 +227,13 @@ function SchematicWorkspace() {
       setError((e as Error).message);
     }
   };
+  const exportKicad = async () => {
+    try {
+      download(await schematicApi.kicad(sch), `${slug(sch.title)}.net`);
+    } catch (e) {
+      setError((e as Error).message);
+    }
+  };
 
   if (!library)
     return (
@@ -284,6 +291,13 @@ function SchematicWorkspace() {
         </button>
         <button className="secondary" onClick={() => void exportNetlist()}>
           Exportar netlist
+        </button>
+        <button
+          className="secondary"
+          onClick={() => void exportKicad()}
+          title="Netlist para o KiCad (Pcbnew: Arquivo → Importar → Netlist)"
+        >
+          KiCad
         </button>
         <button className="secondary" onClick={undo} disabled={!past.length} title="Ctrl+Z">
           Desfazer

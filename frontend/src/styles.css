@@ -1003,3 +1003,49 @@ pre.spice {
 label.block {
   display: block;
 }
+
+/* ---------------------------------------------------------------- projects and exports (Fase 9) */
+.project-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.project-bar .project-name {
+  flex: 1 1 200px;
+}
+.dialog {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 10vh;
+  z-index: 50;
+}
+.dialog-body {
+  background: var(--panel);
+  color: var(--text);
+  border-radius: 8px;
+  padding: 16px;
+  width: min(760px, 92vw);
+  max-height: 75vh;
+  overflow: auto;
+}
+.bom-tab input.num {
+  width: 80px;
+}
+.bom-tab td.ok {
+  color: #15803d;
+}
+.bom-tab td.atencao {
+  color: #b45309;
+}
+.bom-tab td.violado {
+  color: #b91c1c;
+  font-weight: 600;
+}
