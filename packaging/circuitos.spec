@@ -12,6 +12,7 @@ NGSPICE = Path(os.environ["CIRCUITOS_BUNDLE_NGSPICE"])  # staged by the build sc
 datas = [
     (str(ROOT / "frontend" / "dist"), "frontend"),
     (str(ROOT / "data" / "components"), "data/components"),
+    (str(ROOT / "data" / "datasheet-queue.yaml"), "data"),
     (str(NGSPICE), "ngspice"),
 ]
 # YAML schemas, report templates, KaTeX, alias table…

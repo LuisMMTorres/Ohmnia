@@ -364,6 +364,25 @@ export interface ImportJob {
   created_at: string;
   updated_at: string;
 }
+export interface QueueItem {
+  index: number;
+  grupo: string;
+  arquivo: string;
+  part_number: string;
+  fabricante: string;
+  tipo: "peça" | "série";
+  categoria: string | null;
+  sem_categoria: string | null;
+  url: string | null;
+  link: {
+    situacao: "ok" | "bloqueado" | "quebrado" | "indisponivel";
+    verificado_em: string;
+    nota: string;
+  } | null;
+  local: { caminho: string; sha256: string; situacao: "ok" | "invalido"; nota: string } | null;
+  importable: boolean;
+  no_catalogo: string[];
+}
 export interface ImportSummary {
   id: string;
   filename: string;
@@ -472,6 +491,9 @@ export const imports = {
     tolerance = 60,
   ) =>
     post<[number, number][]>(`/datasheets/${sha}/pages/${page}/trace`, { rect, colour, tolerance }),
+  queue: () => request<QueueItem[]>("/datasheet-queue"),
+  importQueued: (index: number, use_llm: boolean) =>
+    post<ImportJob>(`/datasheet-queue/${index}/import`, { use_llm }),
   addCurve: (componentId: string, body: CurveIn) =>
     post<ComponentDetail>(`/components/${componentId}/curves`, body),
   deleteCurve: (componentId: string, curveId: string) =>

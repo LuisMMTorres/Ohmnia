@@ -169,3 +169,58 @@ def test_vector_paths_endpoint(client):
     red = [p for p in res.json() if p["colour"] == [1.0, 0.0, 0.0]]
     assert len(red) == 1 and len(red[0]["points"]) > 10
     assert math.isfinite(red[0]["bbox"][0])
+
+
+def test_datasheet_queue_lists_links_and_status(client):
+    items = client.get(f"{API}/datasheet-queue").json()
+    assert len(items) >= 80
+    statuses = {i["link"]["situacao"] for i in items if i["link"]}
+    assert statuses <= {"ok", "bloqueado", "quebrado", "indisponivel"}
+    assert all(i["link"] or i["local"] for i in items)  # a link, a local PDF, or both
+    bd139 = next(i for i in items if i["part_number"] == "BD139")
+    assert bd139["categoria"] == "bjt.npn" and bd139["fabricante"] == "STMicroelectronics"
+    # items without a category say why
+    assert all(i["categoria"] or i["sem_categoria"] for i in items)
+    assert client.post(f"{API}/datasheet-queue/9999/import", json={}).status_code == 404
+
+
+def test_queue_imports_a_local_pdf_without_network(client, tmp_path, monkeypatch):
+    import hashlib
+
+    pdf = tmp_path / "TESTE-D1_Teste.pdf"
+    data = rectifier_pdf()
+    pdf.write_bytes(data)
+    html = tmp_path / "QUEBRADO_Teste.pdf"
+    html.write_text("<!doctype html><title>Access denied</title>", encoding="utf-8")
+    queue = tmp_path / "fila.yaml"
+    queue.write_text(
+        "datasheets:\n"
+        "- grupo: 01_Teste\n  arquivo: TESTE-D1_Teste.pdf\n  part_number: TESTE-D1\n"
+        "  fabricante: Teste\n  categoria: diode.rectifier\n"
+        f"  local: {{caminho: '{pdf}', sha256: {hashlib.sha256(data).hexdigest()}, "
+        "situacao: ok, nota: PDF local}\n"
+        "- grupo: 01_Teste\n  arquivo: QUEBRADO_Teste.pdf\n  part_number: QUEBRADO\n"
+        "  fabricante: Teste\n  sem_categoria: teste\n"
+        f"  local: {{caminho: '{html}', sha256: '0', situacao: invalido, nota: HTML}}\n",
+        encoding="utf-8",
+    )
+    monkeypatch.setenv("CIRCUITOS_DATASHEET_QUEUE", str(queue))
+    items = client.get(f"{API}/datasheet-queue").json()
+    assert [i["importable"] for i in items] == [True, False]
+    job = client.post(f"{API}/datasheet-queue/0/import", json={}).json()
+    assert job["meta"]["part_number"] == "TESTE-D1" and job["meta"]["category"] == "diode.rectifier"
+    assert any(c["key"] == "VRRM" for c in job["candidates"])
+    bad = client.post(f"{API}/datasheet-queue/1/import", json={})
+    assert bad.status_code == 422
+
+
+def test_queue_matches_exact_part_or_declared_family_only() -> None:
+    from circuitos.api.imports import _same_part
+    from circuitos.components.models import ComponentRecord
+
+    lm358p = ComponentRecord.model_construct(part_number="LM358P", family="LM358")
+    irf540n = ComponentRecord.model_construct(part_number="IRF540N", family=None)
+    assert _same_part(lm358p, "LM358")
+    assert _same_part(lm358p, "lm358p")
+    assert _same_part(irf540n, "IRF540N")
+    assert not _same_part(irf540n, "IRF540")  # different part, not an ordering suffix

@@ -21,6 +21,7 @@ def configure() -> None:
     base = _bundle_dir()
     os.environ.setdefault("CIRCUITOS_FRONTEND_DIST", str(base / "frontend"))
     os.environ.setdefault("CIRCUITOS_CATALOG_DIR", str(base / "data" / "components"))
+    os.environ.setdefault("CIRCUITOS_DATASHEET_QUEUE", str(base / "data" / "datasheet-queue.yaml"))
     exe = base / "ngspice" / "bin" / "ngspice_con.exe"
     dll = base / "ngspice" / "dll" / "ngspice.dll"
     if exe.exists():
