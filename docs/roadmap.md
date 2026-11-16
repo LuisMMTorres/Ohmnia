@@ -169,7 +169,7 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 - ✅ Editor de programa com diagrama ladder, monitor serial, protoboard dos exemplos
 - Validação: `docs/validacao/microcontroladores-clp.md`; manual: `docs/manual/08-microcontroladores-clp.md`
 
-## Fase 12 👀 Catálogo de dispositivos reais: instrumentação, automação, passivos (decisão D13, pedido em 2026-11-16; aguardando revisão)
+## Fase 12 ✅ Catálogo de dispositivos reais: instrumentação, automação, passivos (aprovada em 2026-11-16; decisão D13)
 
 - ✅ Busca dos datasheets que faltavam (3 rodadas; manuais e catálogos quando não há datasheet): 457 de 510 itens com PDF
 - ✅ Atributos em texto no registro; 53 esquemas de categoria novos (77 no total)

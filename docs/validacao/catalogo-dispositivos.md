@@ -1,6 +1,6 @@
 # Validação: catálogo de dispositivos reais (Fase 12, decisão D13)
 
-Data: 2026-11-16. Status: aguardando revisão do usuário.
+Data: 2026-11-16. Status: aprovada em 2026-11-16 (os registros novos seguem como rascunho até a revisão de cada um).
 
 Pedido: buscar os datasheets que faltavam e cadastrar os dispositivos com as especificações reais,
 usando manuais quando não houver datasheet, para simular e projetar com peças reais.

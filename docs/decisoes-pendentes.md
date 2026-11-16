@@ -154,7 +154,7 @@ Ficaram para depois: motor de indução, inversor V/f, soft-starter, motor de pa
 partida de motor e de posicionamento, termopar, e o esquema de categoria no catálogo. Detalhes em
 `docs/validacao/microcontroladores-clp.md`.
 
-## D13. Catálogo de dispositivos reais além da eletrônica de potência (pedido do usuário em 2026-11-16) **IMPLEMENTADA na Fase 12 (aguardando revisão)**
+## D13. Catálogo de dispositivos reais além da eletrônica de potência (pedido do usuário em 2026-11-16) **IMPLEMENTADA na Fase 12 (aprovada em 2026-11-16)**
 
 Pedido do usuário: "verifique todos, busque os datasheet e cadastre eles no sistema"; e, quando
 não houver datasheet, "procure por manuais. O importante é ter o dispositivo cadastrado no sistema,
