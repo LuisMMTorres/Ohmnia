@@ -1,0 +1,296 @@
+# Fonte: Philips Semiconductors, C106D 'Thyristors logic level', Product specification, Rev 1.000, July 2001.
+part_number: C106D
+category: thyristor.scr
+schema_version: '1.0'
+manufacturer: Philips Semiconductors
+package: 'SOT32 (TO-126); 3 pinos: 1 catodo, 2 anodo, 3 porta'
+lifecycle: desconhecido
+notes:
+- O PDF baixado é da Philips Semiconductors (July 2001, Rev 1.000), não da onsemi como constava na fila; fabricante registrado conforme o documento.
+- 'IT(RMS) = 4 A (''all conduction angles'', página 2) não foi transcrito como parâmetro: a tabela não dá temperatura e o esquema exige TC ou TA.'
+- VDRM e VRRM de 400 V; VDM = 67 % de 400 V = 268 V usado nas condições de dv/dt e tq (cálculo a partir do texto).
+- Temperatura mínima de junção não é dada.
+datasheets:
+- id: ds1
+  manufacturer: Philips Semiconductors
+  document_number: C106D, Rev 1.000
+  revision: July 2001
+  url: https://static.chipdip.ru/lib/333/DOC030333203.pdf
+  sha256: 5bea9bc14f2cdd07a62340cd4406e93835b2247f0c2b98c41c3499e3543a5823
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VDRM:
+    max: 400
+    unit: V
+    note: 'nota 1: tensões até 800 V podem ser aplicadas sem dano, mas o tiristor pode disparar'
+    status: extraido
+    source:
+      page: 2
+      location: Limiting values - VDRM, VRRM repetitive peak off-state voltages
+      excerpt: VDRM, VRRM Repetitive peak off-state voltages 400 V
+  VRRM:
+    max: 400
+    unit: V
+    status: extraido
+    source:
+      page: 2
+      location: Limiting values - VDRM, VRRM repetitive peak off-state voltages
+      excerpt: VDRM, VRRM Repetitive peak off-state voltages 400 V
+  IT(AV):
+    max: 2.5
+    unit: A
+    conditions:
+      TC: 113 degC
+    note: Tmb (base de montagem) usada como TC
+    status: extraido
+    source:
+      page: 2
+      location: Limiting values - average on-state current
+      excerpt: IT(AV) Average on-state current half sine wave; Tmb ≤ 113 ˚C 2.5 A
+  ITSM:
+    max: 35
+    unit: A
+    conditions:
+      t_pulse: 10 ms
+      Tj: 25 degC
+    status: extraido
+    source:
+      page: 2
+      location: Limiting values - non-repetitive peak on-state current
+      excerpt: ITSM half sine wave; Tj = 25 ˚C prior to surge; t = 10 ms 35 A
+  ITSM@2:
+    max: 38
+    unit: A
+    conditions:
+      t_pulse: 8.3 ms
+      Tj: 25 degC
+    status: extraido
+    source:
+      page: 2
+      location: Limiting values - non-repetitive peak on-state current
+      excerpt: t = 8.3 ms 38 A
+  I2t:
+    max: 6.1
+    unit: A**2*s
+    conditions:
+      t_pulse: 10 ms
+    status: extraido
+    source:
+      page: 2
+      location: Limiting values - I2t for fusing
+      excerpt: I2t I2t for fusing t = 10 ms 6.1 A2s
+  di/dt:
+    max: 50
+    unit: A/us
+    note: com ITM = 10 A, IG = 50 mA, dIG/dt = 50 mA/µs
+    status: extraido
+    source:
+      page: 2
+      location: Limiting values - repetitive rate of rise of on-state current
+      excerpt: dIT/dt ITM = 10 A; IG = 50 mA; dIG/dt = 50 mA/µs 50 A/µs
+  IGM:
+    max: 2
+    unit: A
+    status: extraido
+    source:
+      page: 2
+      location: Limiting values - peak gate current
+      excerpt: IGM Peak gate current 2 A
+  VGM:
+    max: 5
+    unit: V
+    status: extraido
+    source:
+      page: 2
+      location: Limiting values - peak gate voltage
+      excerpt: VGM Peak gate voltage 5 V
+  VRGM:
+    max: 5
+    unit: V
+    status: extraido
+    source:
+      page: 2
+      location: Limiting values - peak reverse gate voltage
+      excerpt: VRGM Peak reverse gate voltage 5 V
+  PGM:
+    max: 5
+    unit: W
+    status: extraido
+    source:
+      page: 2
+      location: Limiting values - peak gate power
+      excerpt: PGM Peak gate power 5 W
+  PG(AV):
+    max: 0.5
+    unit: W
+    status: extraido
+    source:
+      page: 2
+      location: Limiting values - average gate power over any 20 ms period
+      excerpt: PG(AV) Average gate power over any 20 ms period 0.5 W
+  Tj_max:
+    max: 125
+    unit: degC
+    note: 'nota 2: acima de 110 °C pode ser necessário resistor porta-catodo de 1 kohm ou menos'
+    status: extraido
+    source:
+      page: 2
+      location: Limiting values - operating junction temperature
+      excerpt: Tj Operating junction temperature 125 ˚C
+  Tstg_max:
+    max: 150
+    unit: degC
+    note: 'faixa de armazenamento: -40 a 150 °C'
+    status: extraido
+    source:
+      page: 2
+      location: Limiting values - storage temperature
+      excerpt: Tstg Storage temperature -40 150 ˚C
+  Rth_jc:
+    max: 2.5
+    unit: K/W
+    note: junção-base de montagem (Rth j-mb)
+    status: extraido
+    source:
+      page: 3
+      location: Thermal resistances - junction to mounting base
+      excerpt: Rth j-mb Thermal resistance junction to mounting base 2.5 K/W
+  Rth_ja:
+    max: 95
+    unit: K/W
+    status: extraido
+    source:
+      page: 3
+      location: Thermal resistances - junction to ambient in free air
+      excerpt: Rth j-a Thermal resistance junction to ambient in free air 95 K/W
+  IGT:
+    typ: 15
+    max: 200
+    unit: uA
+    conditions:
+      VD: 12 V
+      IT: 0.1 A
+      Tj: 25 degC
+    status: extraido
+    source:
+      page: 3
+      location: Static characteristics - gate trigger current
+      excerpt: 'IGT Gate trigger current VD = 12 V; IT = 0.1 A: typ 15, max 200 µA'
+  IL:
+    typ: 0.17
+    max: 10
+    unit: mA
+    conditions:
+      VD: 12 V
+      IG: 0.1 A
+      Tj: 25 degC
+    status: extraido
+    source:
+      page: 3
+      location: Static characteristics - latching current
+      excerpt: 'IL Latching current VD = 12 V; IGT = 0.1 A: typ 0.17, max 10 mA'
+  IH:
+    typ: 0.1
+    max: 6
+    unit: mA
+    conditions:
+      VD: 12 V
+      Tj: 25 degC
+    note: a folha cita IGT = 0,1 A nas condições
+    status: extraido
+    source:
+      page: 3
+      location: Static characteristics - holding current
+      excerpt: 'IH Holding current VD = 12 V; IGT = 0.1 A: typ 0.10, max 6 mA'
+  VTM:
+    typ: 1.23
+    max: 1.8
+    unit: V
+    conditions:
+      ITM: 5 A
+      Tj: 25 degC
+    status: extraido
+    source:
+      page: 3
+      location: Static characteristics - on-state voltage
+      excerpt: 'VT On-state voltage IT = 5 A: typ 1.23, max 1.8 V'
+  VGT:
+    typ: 0.4
+    max: 1.5
+    unit: V
+    conditions:
+      VD: 12 V
+      IT: 0.1 A
+      Tj: 25 degC
+    status: extraido
+    source:
+      page: 3
+      location: Static characteristics - gate trigger voltage
+      excerpt: 'VGT Gate trigger voltage VD = 12 V; IT = 0.1 A: typ 0.4, max 1.5 V'
+  VGT@2:
+    min: 0.1
+    typ: 0.2
+    unit: V
+    conditions:
+      VD: 400 V
+      IT: 0.1 A
+      Tj: 110 degC
+    note: VD = VDRM(max) = 400 V
+    status: extraido
+    source:
+      page: 3
+      location: Static characteristics - gate trigger voltage at Tj = 110 C
+      excerpt: 'VD = VDRM(max); IT = 0.1 A; Tj = 110 ˚C: min 0.1, typ 0.2 V'
+  IDRM:
+    typ: 0.1
+    max: 0.5
+    unit: mA
+    conditions:
+      VD: 400 V
+      Tj: 125 degC
+    note: ID e IR têm os mesmos valores
+    status: extraido
+    source:
+      page: 3
+      location: Static characteristics - off-state leakage current
+      excerpt: 'ID, IR Off-state leakage current VD = VDRM(max); VR = VRRM(max); Tj = 125 ˚C: typ 0.1, max 0.5 mA'
+  dv/dt:
+    typ: 50
+    unit: V/us
+    conditions:
+      VD: 268 V
+      Tj: 125 degC
+    note: VDM = 67 % de VDRM(max); RGK = 100 ohm
+    status: extraido
+    source:
+      page: 3
+      location: Dynamic characteristics - critical rate of rise of off-state voltage
+      excerpt: 'dVD/dt VDM = 67% VDRM(max); Tj = 125 ˚C; RGK = 100 Ω: typ 50 V/µs'
+  tgt:
+    typ: 2
+    unit: us
+    conditions:
+      ITM: 10 A
+      VD: 400 V
+      IG: 5 mA
+    status: extraido
+    source:
+      page: 3
+      location: Dynamic characteristics - gate controlled turn-on time
+      excerpt: 'tgt ITM = 10 A; VD = VDRM(max); IG = 5 mA; dIG/dt = 0.2 A/µs: typ 2 µs'
+  tq:
+    typ: 100
+    unit: us
+    conditions:
+      VD: 268 V
+      Tj: 125 degC
+      ITM: 8 A
+    note: RGK = 1 kohm; dITM/dt = 10 A/µs; dVD/dt = 2 V/µs
+    status: extraido
+    source:
+      page: 3
+      location: Dynamic characteristics - circuit commutated turn-off time
+      excerpt: 'tq VD = 67% VDRM(max); Tj = 125 ˚C; ITM = 8 A; VR = 10 V: typ 100 µs'
+attributes: {}

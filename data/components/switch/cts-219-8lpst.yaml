@@ -1,0 +1,73 @@
+# Fonte: CTS, Series 219 SMD DIP Switch, 2025-11-20 Rev. D.
+part_number: 219-8LPST
+category: switch.mechanical
+schema_version: '1.0'
+manufacturer: CTS
+family: Series 219
+package: SMD DIP, 8 posições, atuador low profile (flush), top tape seal
+lifecycle: desconhecido
+notes:
+- Valores da série 219 (ficha comum a 2 a 12 posições); 219-8LPST decodificado pelo código de pedido (8 posições, LP = atuador low profile, S = selo inferior, T = top tape seal).
+- 'Resistência de contato: 25 mohm inicial e 50 mohm no fim da vida (o valor abaixo é o inicial).'
+- 'Corrente e tensão nominais abaixo são a classificação sem comutação (Nonswitching Rating: 100 mA ou 50 VDC); com comutação a vida de 2000 ciclos é para 100 mA @ 20 VDC ou 0,1 mA @ 5 VDC (dry circuit).'
+datasheets:
+- id: ds1
+  manufacturer: CTS
+  revision: 2025-11-20 Rev. D
+  sha256: 295865d1f06f93ecde67625b4cfcbb4c8f54cc855423c85b6d0c95c442bedb05
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_rated:
+    max: 100
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Electrical specifications - nonswitching rating, excerpt: "Nonswitching Rating 100 or 50 mA or VDC"}
+  V_rated:
+    max: 50
+    unit: V
+    status: extraido
+    source: {page: 2, location: Electrical specifications - nonswitching rating, excerpt: "Nonswitching Rating 100 or 50 mA or VDC"}
+  R_contact:
+    max: 25
+    unit: mohm
+    status: extraido
+    source: {page: 2, location: Electrical specifications - contact resistance (initial), excerpt: "Contact Resistance Initial 25 milliohms"}
+  R_iso:
+    min: 1000
+    unit: Mohm
+    status: extraido
+    source: {page: 2, location: Electrical specifications - insulation resistance, excerpt: "Insulation Resistance Between insulated terminals 1000 megohms"}
+  V_diel:
+    max: 500
+    unit: V
+    conditions: {t: 1 min}
+    status: extraido
+    source: {page: 2, location: Electrical specifications - dielectric strength, excerpt: "Dielectric Strength 500 VAC between adjacent switches 1 minute"}
+  life:
+    min: 2000
+    unit: '1'
+    status: extraido
+    source: {page: 2, location: Electrical specifications - actuation life, excerpt: "Actuation Life 100mA @ 20 VDC 2,000 cycles"}
+  Top:
+    min: -55
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Mechanical and environmental - operating temperature range, excerpt: "Operating Temperature Range -55°C to +85°C"}
+  Tstg:
+    min: -55
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Mechanical and environmental - storage temperature range, excerpt: "Storage Temperature Range -55°C to +85°C"}
+attributes:
+  tipo:
+    value: Chave DIP SMD (SPST por posição), atuador deslizante
+    status: extraido
+    source: {page: 1, location: Title and features, excerpt: "Series 219 SMD DIP Switch ... SPST configuration available"}
+  contatos:
+    value: SPST, 8 posições (código 8)
+    status: extraido
+    source: {page: 1, location: Ordering information - number of switch positions, excerpt: "8 8 positions"}

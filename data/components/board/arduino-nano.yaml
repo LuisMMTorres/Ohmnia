@@ -1,0 +1,103 @@
+# Fonte: Arduino, Arduino Nano User Manual, SKU A000005.
+part_number: Arduino Nano
+category: board.mcu
+schema_version: '1.0'
+manufacturer: Arduino
+family: Arduino Nano
+lifecycle: desconhecido
+notes:
+- 'Manual de usuário Arduino Nano (SKU A000005), 14 páginas, "Modified: 13/11/2026". O nome da fila era "Arduino"/"Nano" (campos trocados); part_number corrigido para Arduino Nano.'
+- 'Alimentação: USB mini-B, 7-15 V não regulados no pino 30 ou 5 V regulados no pino 27 (pág. 2); o VIN passa por LDO e a tensão fica limitada a 5 V; há outro regulador de 3,3 V (pág. 7).'
+- Seção 2.1 (condições recomendadas) e 2.2 (consumo) do documento só trazem a faixa térmica de -40 a 85 °C; consumo marcado "TBC". Não há corrente por pino nem resolução do A/D no texto extraído.
+- Comunicação serial UART TTL (5 V), I2C (TWI) e SPI (pág. 7); EEPROM de 1 kB; 16 MIPS a 16 MHz (pág. 2).
+datasheets:
+- id: ds1
+  manufacturer: Arduino
+  document_number: A000005
+  revision: 'Modified: 13/11/2026'
+  sha256: 96c7bf83154dfc48bfc5f139d6394e2ce52203a96f1cfaac88d2a86402c7ca3a
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 7
+    max: 15
+    unit: V
+    status: extraido
+    source:
+      page: 2
+      location: 'Features - power: unregulated external supply (pin 30)'
+      excerpt: 7-15V unregulated external power supply (pin 30)
+  f_clk:
+    typ: 16
+    unit: MHz
+    status: extraido
+    source:
+      page: 1
+      location: Description - microcontroller clock
+      excerpt: ATmega328 microcontroller clocked at a frequency of 16 MHz
+  flash:
+    typ: 32
+    unit: kB
+    status: extraido
+    source:
+      page: 2
+      location: Features - ATmega328 program memory (2 kB used by bootloader)
+      excerpt: 32 kB of which 2 KB used by bootloader
+  ram:
+    typ: 2
+    unit: kB
+    status: extraido
+    source:
+      page: 2
+      location: Features - internal SRAM
+      excerpt: 2 kB internal SRAM
+  gpio:
+    typ: 20
+    unit: '1'
+    status: extraido
+    source:
+      page: 2
+      location: Features - I/O digital
+      excerpt: I/O 20 Digital
+  adc_ch:
+    typ: 8
+    unit: '1'
+    status: extraido
+    source:
+      page: 2
+      location: Features - I/O analog
+      excerpt: 8 Analog
+  pwm_ch:
+    typ: 6
+    unit: '1'
+    status: extraido
+    source:
+      page: 2
+      location: Features - I/O PWM output
+      excerpt: 6 PWM Output
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source:
+      page: 5
+      location: Ratings - recommended operating conditions, conservative thermal limits for the whole board
+      excerpt: 'Conservative thermal limits for the whole board: -40 C 85 C'
+attributes:
+  microcontrolador:
+    value: ATmega328 (8 bits)
+    status: extraido
+    source:
+      page: 1
+      location: Description
+      excerpt: ATmega328 microcontroller clocked at a frequency of 16 MHz
+  comunicacao:
+    value: USB mini-B, UART TTL (5 V), I2C (TWI), SPI
+    status: extraido
+    source:
+      page: 7
+      location: 3.2 Processor
+      excerpt: UART TTL (5V), I2C (TWI) and SPI

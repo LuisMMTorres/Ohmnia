@@ -1,0 +1,81 @@
+# Fonte: Vishay (Zener Diode 3.3-12V, DO-35, Document Number 85504 segundo a fila), cópia Farnell/SPC Multicomp "Zener Diode" V1.1, 27/12/10.
+part_number: 1N746A
+category: diode.zener
+schema_version: '1.0'
+manufacturer: Vishay
+package: DO-35 (JEDEC), vidro
+lifecycle: desconhecido
+notes:
+- 'O PDF é a cópia do distribuidor Farnell (SPC Multicomp, V1.1, 27/12/10), sem o nome Vishay nem o número 85504 impressos; fabricante e número vêm da fila de download.'
+- 'Tabela do datasheet traz apenas a linha 1N746A (3,3 V). Tolerância padrão ±5%.'
+datasheets:
+- id: ds1
+  manufacturer: Farnell (SPC Multicomp)
+  document_number: V1.1 (85504 segundo a fila)
+  revision: 27/12/10
+  url: https://www.farnell.com/datasheets/1239076.pdf
+  sha256: e54578cff1a2b17ccb1364b8ce25e8e7637a539cfec3e633f9f1a832c2ae9032
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VZ:
+    typ: 3.3
+    unit: V
+    conditions: {IZ: 20 mA, Tj: 25 degC}
+    status: extraido
+    source: {page: 2, location: Tabela de tipos - VZnom, excerpt: "1N746A 3.3 20 28 10 1 110"}
+  VZ_tol:
+    max: 5
+    unit: percent
+    status: extraido
+    source: {page: 2, location: Nota 1 - tolerância e designação de tensão, excerpt: "standard tolerance of ±5% on the nominal zener voltage"}
+  IZT:
+    typ: 20
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Tabela de tipos - IZT for ZZT, excerpt: "1N746A 3.3 20 28 10 1 110"}
+  ZZT:
+    max: 28
+    unit: ohm
+    conditions: {IZ: 20 mA}
+    status: extraido
+    source: {page: 2, location: Tabela de tipos - ZZT, excerpt: "1N746A 3.3 20 28 10 1 110"}
+  IR:
+    max: 10
+    unit: uA
+    conditions: {VR: 1 V, Tj: 25 degC}
+    status: extraido
+    source: {page: 2, location: Tabela de tipos - IR at VR, excerpt: "1N746A 3.3 20 28 10 1 110"}
+  IZM:
+    max: 110
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Tabela de tipos - IZM (Nota 2), excerpt: "1N746A 3.3 20 28 10 1 110"}
+  VF:
+    max: 1.5
+    unit: V
+    conditions: {IF: 200 mA, Tj: 25 degC}
+    status: extraido
+    source: {page: 1, location: Electrical Characteristics - Forward Voltage, excerpt: "Forward Voltage IF = 200mA VF 1.5 V"}
+  Ptot:
+    max: 500
+    unit: mW
+    conditions: {TA: 75 degC}
+    status: extraido
+    source: {page: 1, location: Absolute Maximum Ratings - Power dissipation, excerpt: "Power dissipation Tamb ≤75°C Pv 500 mW"}
+  Rth_ja:
+    max: 300
+    unit: K/W
+    status: extraido
+    source: {page: 1, location: Maximum Thermal Resistance - Junction ambient, excerpt: "l = 9.5mm (3/8 inches) TL = constant RthJA 300 K/W"}
+  Tj_max:
+    max: 200
+    unit: degC
+    status: extraido
+    source: {page: 1, location: Absolute Maximum Ratings - Junction temperature, excerpt: "Junction temperature Tj 200 °C"}
+  Tstg_max:
+    max: 200
+    unit: degC
+    status: extraido
+    source: {page: 1, location: Absolute Maximum Ratings - Storage temperature range, excerpt: "Tstg -65 to +200"}

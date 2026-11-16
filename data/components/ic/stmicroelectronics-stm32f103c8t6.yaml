@@ -1,0 +1,95 @@
+# Fonte: STMicroelectronics, STM32F103x8 / STM32F103xB Medium-density performance line Arm-based 32-bit MCU, datasheet DS5319 Rev 20, July 2025 (cópia no distribuidor Farnell).
+part_number: STM32F103C8T6
+category: ic.mcu
+schema_version: '1.0'
+manufacturer: STMicroelectronics
+family: STM32F103x8, STM32F103xB (linha medium-density)
+package: LQFP48 7 x 7 mm (sufixo T = LQFP, C = 48 pinos); sufixo 6 = -40 a +85 °C
+lifecycle: ativo
+notes:
+- 'Documento da série STM32F103x8/xB. Valores de memória, E/S e canais ADC são da variante C8 (48 pinos, 64 KB de flash): Tabela 2 (p. 10) coluna STM32F103Cx e Tabela 1 (p. 1), onde STM32F103C8 pertence ao grupo x8.'
+- 'Rótulo de ciclo de vida: o rodapé da p. 1 diz "This is information on a product in full production" (jul/2025).'
+- 'Sufixo 6 de temperatura (T6): Top -40 a +85 °C (Tabela 9, p. 38); com sufixo 7, até +105 °C. Tj de operação -40 a +105 °C (sufixo 6).'
+- 'Níveis de saída (Tabela 37, p. 64): VOL máx. 0,4 V e VOH mín. VDD-0,4 V com IIO = 8 mA (2,7 V < VDD < 3,6 V). Pinos 5 V tolerantes (FT): VIN até 5,5 V com 2 V < VDD <= 3,6 V (Tabela 9, p. 38).'
+- 'Consumo em Run a 72 MHz, todos os periféricos habilitados: máx. 50,0 mA a 85 °C (Tabela 13, p. 41). Soma das correntes em VDD: máx. 150 mA (Tabela 7, p. 37). Tensão de backup VBAT 1,8 a 3,6 V (Tabela 9, p. 38).'
+- 'ADC (Tabela 47, p. 74): VDDA 2,4 a 3,6 V quando o ADC é usado; fADC 0,6 a 14 MHz; taxa de amostragem 0,05 a 1 MHz; entrada 0 a VREF+; RAIN máx. 50 kohm.'
+- 'pwm_ch não transcrito: o datasheet descreve três timers de uso geral de 16 bits com até 4 canais IC/OC/PWM cada e um timer avançado (controle de motor) (p. 1), sem somar canais para a variante C8.'
+datasheets:
+- id: ds1
+  manufacturer: STMicroelectronics
+  document_number: DS5319
+  revision: Rev 20, July 2025
+  url: https://www.farnell.com/datasheets/4595259.pdf
+  sha256: 1e54ce18e6c34c5b4a78986f26e245e143748c721009fc9af5953795c30686bc
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 2.0
+    max: 3.6
+    unit: V
+    status: extraido
+    source: {page: 38, location: Table 9 General operating conditions - VDD standard operating voltage, excerpt: "VDD Standard operating voltage 2 3.6 V"}
+  V_io:
+    min: 2.0
+    max: 3.6
+    unit: V
+    status: extraido
+    source: {page: 1, location: Features - Clock, reset and supply management, excerpt: "2.0 to 3.6 V application supply and I/Os"}
+  I_io:
+    max: 25
+    unit: mA
+    status: extraido
+    source: {page: 37, location: Table 7 Current characteristics - output current sunk/sourced by any I/O, excerpt: "IIO Output current sunk by any I/O and control pin 25 / source -25"}
+  f_clk:
+    max: 72
+    unit: MHz
+    status: extraido
+    source: {page: 1, location: Features - Arm 32-bit Cortex-M3 CPU core, excerpt: "72 MHz maximum frequency"}
+  flash:
+    typ: 64
+    unit: kB
+    status: extraido
+    source: {page: 10, location: Table 2 device features - Flash (STM32F103Cx, variante 64 KB do C8), excerpt: "Flash - Kbytes 64 128 ... STM32F103C8 em x8 (Table 1)"}
+  ram:
+    typ: 20
+    unit: kB
+    status: extraido
+    source: {page: 1, location: Features - Memories, excerpt: "20 Kbytes of SRAM"}
+  gpio:
+    max: 37
+    unit: '1'
+    status: extraido
+    source: {page: 10, location: Table 2 device features - GPIOs (STM32F103Cx), excerpt: "GPIOs 26 37 51 80 (Tx Cx Rx Vx)"}
+  adc_ch:
+    max: 10
+    unit: '1'
+    status: extraido
+    source: {page: 10, location: Table 2 device features - 12-bit synchronized ADC number of channels (STM32F103Cx), excerpt: "Number of channels 2 10 channels 2 10 channels"}
+  adc_bits:
+    typ: 12
+    unit: bit
+    status: extraido
+    source: {page: 1, location: Features - ADCs, excerpt: "2x 12-bit, 1 µs A/D converters (up to 16 channels)"}
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 38, location: Table 9 General operating conditions - TA ambient temperature for 6 suffix version, excerpt: "TA Ambient temperature for 6 suffix version -40 85 °C"}
+  Tstg:
+    min: -65
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 37, location: Table 8 Thermal characteristics - storage temperature range, excerpt: "TSTG Storage temperature range -65 to +150 °C"}
+attributes:
+  microcontrolador:
+    value: Arm Cortex-M3 de 32 bits, até 72 MHz
+    status: extraido
+    source: {page: 1, location: Features - Arm 32-bit Cortex-M3 CPU core, excerpt: "Arm® 32-bit Cortex®-M3 CPU core - 72 MHz maximum frequency"}
+  comunicacao:
+    value: 'USB 2.0 full-speed, CAN 2.0B, 2 SPI, 2 I2C, 3 USART (variante C, Table 2)'
+    status: extraido
+    source: {page: 10, location: Table 2 device features - Communication (STM32F103Cx), excerpt: "SPI 2, I2C 2, USART 3, USB 1, CAN 1"}

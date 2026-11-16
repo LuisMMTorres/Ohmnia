@@ -1,0 +1,91 @@
+# Fonte: Analog Devices, AD5410/AD5420 Data Sheet (Single-Channel, 12-/16-Bit, Serial Input, 4 mA to 20 mA, Current Source DAC, HART Connectivity), Rev. H, 2009-2015 (cópia Farnell).
+part_number: AD5420
+category: ic.dac
+schema_version: '1.0'
+manufacturer: Analog Devices
+family: AD5410/AD5420
+package: 24-lead TSSOP_EP ou 40-lead LFCSP
+lifecycle: desconhecido
+notes:
+- 'O datasheet cobre AD5410 (12 bits) e AD5420 (16 bits); os valores abaixo são do AD5420 (pág. 1 e 4).'
+- 'AVDD 10,8 V a 40 V nos modelos AREZ (TSSOP) e 10,8 V a 60 V nos ACPZ (LFCSP) (pág. 1); as especificações da Tabela 1 valem para AVDD 10,8 a 26,4 V (pág. 4).'
+- 'Saída em corrente programável 4-20 mA, 0-20 mA ou 0-24 mA; conformidade de saída até AVDD - 2,5 V (pág. 1).'
+- 'INL do AD5420 é ±0,024 % FSR (RSET interno) e ±0,012 % FSR (RSET externo); DNL ±1 LSB, monotônico (pág. 4); INL em % FSR não cabe no símbolo INL (LSB).'
+- 'Erro total não ajustado (TUE) do AD5420: ±0,3 % FSR (RSET interno) a -40..+85 °C (pág. 4).'
+- 'Corrente AIDD: 3 mA com saída desabilitada e 4 mA com saída habilitada (pág. 5); a coluna (mín/típ/máx) não ficou clara no texto, registrado 4 mA como valor máximo.'
+datasheets:
+- id: ds1
+  manufacturer: Analog Devices
+  revision: H
+  url: https://www.farnell.com/datasheets/1923244.pdf
+  sha256: 6fe76e617ac3c4517886fc3658fca3b8e4429af054cbb926abc0f72c8b9c9c5d
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  bits:
+    typ: 16
+    unit: bit
+    status: extraido
+    source: {page: 4, location: Table 1 - Accuracy, internal RSET - Resolution, excerpt: "Resolution 16 Bits AD5420"}
+  t_settle:
+    typ: 10
+    unit: us
+    status: extraido
+    source: {page: 6, location: Table 2 - Output Current Settling Time, excerpt: "16 mA step, to 0.1% FSR  10 µs"}
+  channels:
+    typ: 1
+    unit: '1'
+    status: extraido
+    source: {page: 1, location: Título, excerpt: "Single-Channel, 12-/16-Bit"}
+  VS:
+    min: 10.8
+    max: 40
+    unit: V
+    status: extraido
+    source: {page: 1, location: Features - Power supply (AVDD) range, excerpt: "10.8 V to 40 V; AD5410AREZ/AD5420AREZ"}
+  VREF:
+    min: 4.95
+    typ: 5
+    max: 5.05
+    unit: V
+    status: extraido
+    source: {page: 5, location: Reference Input - Reference Input Voltage, excerpt: "Reference Input Voltage 4.95 5 5.05 V"}
+  I_out:
+    min: 0
+    max: 24
+    unit: mA
+    status: extraido
+    source: {page: 4, location: Table 1 - Output Current Ranges, excerpt: "0 24 mA; 0 20 mA; 4 20 mA"}
+  DNL:
+    min: -1
+    max: 1
+    unit: '1'
+    status: extraido
+    source: {page: 4, location: Table 1 - Differential Nonlinearity (DNL), excerpt: "-1 +1 LSB Guaranteed monotonic"}
+  IS:
+    max: 4
+    unit: mA
+    status: extraido
+    source: {page: 5, location: Power Requirements - AIDD, excerpt: "AIDD 4 mA Output enabled"}
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 8, location: Table 4 - Operating Temperature Range, excerpt: "Industrial -40°C to +85°C"}
+  Tstg:
+    min: -65
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 8, location: Table 4 - Storage Temperature Range, excerpt: "-65°C to +150°C"}
+attributes:
+  interface:
+    value: Serial SPI, MICROWIRE, QSPI e compatível com DSP (modo de 3 fios disponível)
+    status: extraido
+    source: {page: 1, location: General Description, excerpt: "SPI, MICROWIRE™, QSPI™, and DSP compatible"}
+  encapsulamento:
+    value: 24-lead TSSOP_EP e 40-lead LFCSP
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "24-lead TSSOP and 40-lead LFCSP packages"}

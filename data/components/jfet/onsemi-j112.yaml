@@ -1,0 +1,82 @@
+# Fonte: onsemi, J111, J112 JFET Chopper Transistors N-Channel Depletion, J111/D, Rev. 2, March 2006.
+part_number: J112
+category: jfet.n
+schema_version: '1.0'
+manufacturer: onsemi
+family: J111, J112
+package: TO-92, case 29-11, style 5
+lifecycle: desconhecido
+notes:
+- 'JFET de chaveamento (chopper). Tensões em módulo (o datasheet usa sinal negativo). Valores específicos de subtipo são os da linha J112.'
+- "O texto extraído troca µ por m (a corrente de teste de V(BR)GSS aparece como mAdc); por isso a condição de V(BR)GSS não foi transcrita."
+- 'Não transcritos por falta de símbolo no esquema: rDS(on) máx. (50 ohm, VDS = 0,1 V), ID(off) máx. 1,0 nA, Cdg(on)+Csg(on) máx. 28 pF, Cdg(off) e Csg(off) máx. 5,0 pF, tempos de chaveamento (só gráficos).'
+datasheets:
+- id: ds1
+  manufacturer: onsemi
+  document_number: J111/D
+  revision: Rev. 2, March 2006
+  sha256: 26966aed1bfb7aeb353fd83f157b09afb78c9ae2627b8b7884e3cb14de528d34
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VDG:
+    max: 35
+    unit: V
+    status: extraido
+    source: {page: 1, location: Maximum ratings - Drain-Gate Voltage, excerpt: "Drain-Gate Voltage VDG -35 Vdc"}
+  VGSR:
+    max: 35
+    unit: V
+    status: extraido
+    source: {page: 1, location: Maximum ratings - Gate-Source Voltage, excerpt: "Gate-Source Voltage VGS -35 Vdc"}
+  IG:
+    max: 50
+    unit: mA
+    status: extraido
+    source: {page: 1, location: Maximum ratings - Gate Current, excerpt: "Gate Current IG 50 mAdc"}
+  Ptot:
+    max: 350
+    unit: mW
+    conditions: {TA: 25 degC}
+    status: extraido
+    source: {page: 1, location: Maximum ratings - Total Device Dissipation @ TA = 25°C, excerpt: "PD 350 mW"}
+  Ptot_derating:
+    max: 2.8
+    unit: mW/K
+    status: extraido
+    source: {page: 1, location: Maximum ratings - Derate above 25°C, excerpt: "Derate above = 25°C 2.8 mW/°C"}
+  Tj_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source: {page: 1, location: Maximum ratings - Operating and Storage Junction Temperature Range, excerpt: "TJ, Tstg -65 to +150 °C"}
+  Tstg_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source: {page: 1, location: Maximum ratings - Operating and Storage Junction Temperature Range, excerpt: "TJ, Tstg -65 to +150 °C"}
+  V(BR)GSS:
+    min: 35
+    unit: V
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - Gate-Source Breakdown Voltage, excerpt: "V(BR)GSS Min 35 Vdc"}
+  IGSS:
+    max: 1.0
+    unit: nA
+    conditions: {VGS: -15 V}
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - Gate Reverse Current, excerpt: "(VGS = -15 Vdc) IGSS Max -1.0 nAdc"}
+  VGS(off):
+    min: 1.0
+    max: 5.0
+    unit: V
+    conditions: {VDS: 5.0 V}
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - Gate Source Cutoff Voltage linha J112, excerpt: "(VDS = 5.0 Vdc, ID = 1.0 mAdc) J112 Min -1.0 Max -5.0 Vdc"}
+  IDSS:
+    min: 5.0
+    unit: mA
+    conditions: {VDS: 15 V}
+    status: extraido
+    source: {page: 2, location: Electrical characteristics - Zero-Gate-Voltage Drain Current linha J112, excerpt: "(VDS = 15 Vdc) J112 IDSS Min 5.0 mAdc"}

@@ -1,0 +1,31 @@
+# Fonte: Omega, tabela de referência de termopar tipo E (NIST Monograph 175, revisada para ITS-90, Z-206), tabela em °C.
+part_number: Thermocouple type E (reference table Z-206)
+category: sensor.temperature
+schema_version: '1.0'
+manufacturer: Omega
+family: Thermocouple type E
+lifecycle: desconhecido
+notes:
+- 'Fila: thermocouple-type-e-celsius. Documento é tabela de referência (tensão termoelétrica em mV por °C, junta de referência a 0 °C), não folha de dados de um produto.'
+- 'Limites de erro (pág. 1): padrão 1,7 °C ou 0,5% acima de 0 °C e 1,7 °C ou 1,0% abaixo de 0 °C (o maior); especial 1,0 °C ou 0,4%. Grau de extensão 0 a 200 °C. Ambiente oxidante ou inerte; maior variação de FEM por grau.'
+datasheets:
+- id: ds1
+  manufacturer: Omega
+  document_number: Z-206
+  url: https://assets.omega.com/pdf/tables_and_graphs/thermocouple-type-e-celsius.pdf
+  sha256: f8aebca7e322dfac24377a0680d22d922af87c2d6c4719b03f8697445c51979f
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  range:
+    min: -200
+    max: 900
+    unit: °C
+    status: extraido
+    source: {page: 1, location: MAXIMUM TEMPERATURE RANGE - Thermocouple Grade, excerpt: "200 to 900°C"}
+attributes:
+  elemento:
+    value: Níquel-cromo (+) vs. cobre-níquel (-), tipo E
+    status: extraido
+    source: {page: 1, location: Thermocouple Grade, excerpt: "Nickel-Chromium vs. Copper-Nickel"}

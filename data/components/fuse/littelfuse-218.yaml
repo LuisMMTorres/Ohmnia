@@ -1,0 +1,83 @@
+# Fonte: Littelfuse, 218 Series 5x20 mm Time-Lag (Slo-Blo) Fuse (Axial Lead & Cartridge Fuses), revisado 02/23/15.
+part_number: '218'
+category: fuse
+schema_version: '1.0'
+manufacturer: Littelfuse
+family: 218 Series (5x20 mm, retardado Slo-Blo)
+package: 5x20 mm, corpo de vidro (cartucho ou axial)
+lifecycle: desconhecido
+notes:
+- 'Valores da série: a corrente nominal vai de 0,032 A a 16 A; o limite de interrupção varia conforme o modelo (pág. 2).'
+- 'Tensão nominal de 250 V em todos os modelos da tabela (pág. 2); capacidade de interrupção de 35 A @ 250 VAC (0,032 A) a 100 A @ 250 VAC (10 A e 15 A); 63 A @ 250 VAC em 6,3 A, 12,5 A e 16 A.'
+- 'Resistência a frio nominal de 48,258 ohm (0,032 A) a 0,0021 ohm (16 A); I2t de fusão nominal de 0,011 A2s a 1955 A2s (pág. 2).'
+- 'Queda de tensão máxima na corrente nominal: de 5000 mV (0,032 A) a 100 mV (3,15 A a 16 A); dissipação máxima a 1,5 In de 1,6 W a 4 W (pág. 2).'
+datasheets:
+- id: ds1
+  manufacturer: Littelfuse
+  document_number: 218 Series
+  revision: Revised 02/23/15
+  url: https://static.chipdip.ru/lib/009/DOC021009082.pdf
+  sha256: 874bc8fcad7aed4e24b079dab0f3301d48e6ee51190e4a0d67b90a3fd12e54a9
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_rated:
+    min: 0.032
+    max: 16
+    unit: A
+    status: extraido
+    note: Faixa da série.
+    source: {datasheet_id: ds1, page: 2, location: Electrical Characteristics table - Amp Rating, excerpt: "0.032 ... 16 (Amp Rating (A))"}
+  V_rated:
+    max: 250
+    unit: V
+    status: extraido
+    source: {datasheet_id: ds1, page: 2, location: Electrical Characteristics table - Voltage Rating, excerpt: "250"}
+  I_break:
+    min: 35
+    max: 100
+    unit: A
+    status: extraido
+    note: 'Faixa entre os modelos: 35 A @ 250 VAC (0,032 A) a 100 A @ 250 VAC (10 A, 15 A).'
+    source: {datasheet_id: ds1, page: 2, location: Electrical Characteristics table - Interrupting Rating, excerpt: "35 A @ 250 VAC ... 100 A @ 250 VAC"}
+  I2t:
+    min: 0.011
+    max: 1955
+    unit: A^2*s
+    status: extraido
+    note: Nominal Melting I2t; faixa entre os modelos.
+    source: {datasheet_id: ds1, page: 2, location: Electrical Characteristics table - Nominal Melting I2t, excerpt: "0.01100 ... 1955.00"}
+  R_cold:
+    min: 0.0021
+    max: 48.258
+    unit: ohm
+    status: extraido
+    note: Resistência a frio nominal; faixa entre os modelos.
+    source: {datasheet_id: ds1, page: 2, location: Electrical Characteristics table - Nominal Cold Resistance, excerpt: "48.2580 ... 0.0021"}
+  P_diss:
+    min: 1.6
+    max: 4
+    unit: W
+    status: extraido
+    note: Dissipação máxima a 1,5 In; faixa entre os modelos.
+    source: {datasheet_id: ds1, page: 2, location: Electrical Characteristics table - Maximum Power Dissipation At 1.5In (W), excerpt: "1.6 ... 4"}
+  Top:
+    min: -55
+    max: 125
+    unit: °C
+    status: extraido
+    source: {datasheet_id: ds1, page: 3, location: Product Characteristics - Operating Temperature, excerpt: "-55ºC to +125ºC"}
+attributes:
+  curva:
+    value: retardado (time-lag, Slo-Blo), IEC 60127-2 folha 3
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "Meets the IEC 60127-2, Sheet 3 specification for Time-Lag fuses"}
+  formato:
+    value: 5x20 mm, corpo de vidro, versões cartucho e axial
+    status: extraido
+    source: {page: 1, location: Description, excerpt: "5x20mm Time-Lag glass body cartridge fuse"}
+  certificacoes:
+    value: RoHS, PSE e demais aprovações de agências (tabela de agências na pág. 1)
+    status: extraido
+    source: {page: 1, location: Agency Approvals table}

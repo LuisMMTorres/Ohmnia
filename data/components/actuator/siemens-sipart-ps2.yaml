@@ -1,0 +1,66 @@
+# Fonte: Siemens, SIPART PS2 6DR50..-6DR59.. with 4 to 20 mA/HART, Operating Instructions A5E00074631-AF, 10/2020 (cap. 12 Technical data).
+part_number: SIPART PS2
+category: actuator.valve
+schema_version: '1.0'
+manufacturer: Siemens
+family: SIPART PS2 6DR50..-6DR59.. (4 a 20 mA/HART)
+lifecycle: desconhecido
+notes:
+- "Nome na fila: sipart ps2 datasheet en-US. Manual de instruções do posicionador eletropneumático SIPART PS2 para válvulas de controle; valores do capítulo 12 (p. 249-257)."
+- "P_max: pressão de ar de alimentação 1,4 a 7 bar (p. 249); não é pressão de processo da válvula."
+- "Top: -30 a +80 °C (padrão); com código -Z M40: -40 a +80 °C (p. 249). Em áreas explosivas vale a classe de temperatura (T4 até +80 °C, T6 até +50 °C) (p. 255)."
+- "Alimentação auxiliar 18 a 35 V DC apenas nas versões 3/4 fios (6DR52../6DR53..) (p. 257); a versão 2 fios é alimentada pelo laço 4 a 20 mA, tensão de carga típica 6,36 V (6DR50.., sem proteção Ex) (p. 256). Sem símbolo V_coil, não transcrito como parâmetro."
+- "Curso do atuador linear 3 a 130 mm; ângulo de giro 30 a 100° (p. 250). Conversor A/D: tempo de varredura 10 ms, resolução ≤ 0,05 %, erro de transmissão ≤ 0,2 % (p. 252)."
+- "Vazão sem restrição: pressurizar 0,1 KV (4,1 Nm3/h a 2 bar); despressurizar 0,2 KV (p. 250)."
+datasheets:
+- id: ds1
+  manufacturer: Siemens
+  document_number: A5E00074631-AF
+  revision: 10/2020
+  url: https://cache.industry.siemens.com/dl/files/419/109782419/att_1034214/v1/A5E00074631-AFen_PS2HART_OI_en-US.pdf
+  sha256: 8b864ad7f10416a93aa38d6f88ec3fc66838376b33b37af0ac07cc547b66c18f
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_in:
+    min: 4
+    max: 20
+    unit: mA
+    status: extraido
+    source: {page: 256, location: 12.6 Electrical data - Current input IW - Rated signal range, excerpt: "Rated signal range 4 ... 20 mA"}
+  P_max:
+    min: 1.4
+    max: 7
+    unit: bar
+    status: extraido
+    source: {page: 249, location: 12.2 Pneumatic data - Auxiliary power (air supply) - Pressure, excerpt: "Pressure 1.4 ... 7 bar (20.3 ... 101.5 psi)"}
+  Top:
+    min: -30
+    max: 80
+    unit: °C
+    status: extraido
+    source: {page: 249, location: 12.1 Rated conditions - Ambient temperature, excerpt: "-30 ... +80 °C (-22 ... +176 °F)"}
+  Tstg:
+    min: -40
+    max: 80
+    unit: °C
+    status: extraido
+    source: {page: 249, location: 12.1 Rated conditions - Climate class - Storage, excerpt: "1K5, but -40 ... +80°C"}
+attributes:
+  tipo:
+    value: Posicionador eletropneumático (atuadores lineares e rotativos, simples ou duplo efeito)
+    status: extraido
+    source: {page: 251, location: 12.3 Construction - Versions}
+  comando:
+    value: "4-20 mA; HART nas versões 6DR51../6DR52.."
+    status: extraido
+    source: {page: 256, location: 12.6 Electrical data - 2-wire connection 6DR50.. / 6DR51.. HART}
+  grau_protecao:
+    value: IP66 / Type 4X (UL 50E)
+    status: extraido
+    source: {page: 249, location: 12.1 Rated conditions - Degree of protection, excerpt: "IP66 / Type 4X to UL 50E"}
+  certificacoes:
+    value: ATEX 205947X; IECEx TUN 17.0023X; FM 17US0053X; CSA 18CA70166848X
+    status: extraido
+    source: {page: 254, location: 12.5.2 Basic unit and optional modules - Ex marking}

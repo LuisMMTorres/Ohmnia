@@ -1,0 +1,76 @@
+# Fonte: Texas Instruments, XTR115, XTR116 4-20mA Current-Loop Transmitters (XTR11x), SBOS124C, jan/2000, rev. jan/2026.
+part_number: XTR116
+category: instrument.transmitter
+schema_version: '1.0'
+manufacturer: Texas Instruments
+family: XTR11x
+package: SOIC-8 (D)
+lifecycle: desconhecido
+notes:
+- 'Fila: XTR116. O mesmo PDF cobre XTR115 e XTR116; diferem apenas na referência VREF: XTR115 2,5 V, XTR116 4,096 V (p. 1 e 6). Este registro: XTR116, VREF 4,096 V.'
+- 'Conversor de corrente de malha 4-20 mA: IO = IIN x 100 (ganho 100 A/A); regulador de 5 V (VREG) para circuitos externos; transistor externo (TIP29C no teste); RIN = 20 kohm no teste (p. 6).'
+- 'Máximos absolutos (p. 5): V+ 40 V (referido ao pino IO); TJ 165 °C; TA operação -40 a 125 °C; solda 300 °C (10 s).'
+- 'Faixa linear de saída 0,25 a 25 mA; limite de sobre-escala 32 mA; sub-escala 0,2/0,25 mA; erro de span +-0,2 % máx. (variante U), +-0,4 % (UA); não linearidade +-0,01 % máx. (U) (p. 6).'
+- 'IQ de 200 uA típ./250 uA máx. refere-se à variante CSO SHE a 25 °C; CSO TID 165/250 uA (p. 7).'
+datasheets:
+- id: ds1
+  manufacturer: Texas Instruments
+  document_number: SBOS124C
+  revision: janeiro 2026
+  url: https://www.ti.com/lit/ds/symlink/xtr116.pdf
+  sha256: 266e9ec70b9571dc8975c0845eb33b439251bd9739d2c714585de8b9e56129ad
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_out:
+    min: 0.25
+    max: 25
+    unit: mA
+    status: extraido
+    source: {page: 6, location: 6.4 Electrical Characteristics - Output current linear range, excerpt: "Output current, linear range 0.25 25 mA"}
+  VS:
+    min: 7.5
+    typ: 24
+    max: 36
+    unit: V
+    status: extraido
+    source: {page: 5, location: 6.2 Recommended Operating Conditions - V+, excerpt: "V+ Power supply voltage 7.5 24 36 V"}
+  IS:
+    typ: 0.2
+    max: 0.25
+    unit: mA
+    status: extraido
+    conditions: {TA: 25 °C}
+    source: {page: 7, location: 6.4 Electrical Characteristics - Power supply IQ (IO = 0, CSO SHE), excerpt: "IQ Quiescent current IO = 0 CSO: SHE 200 250 μA"}
+  accuracy:
+    max: 0.2
+    unit: '%'
+    status: extraido
+    conditions: {TA: 25 °C}
+    source: {page: 6, location: 6.4 Electrical Characteristics - Span error (U variant), excerpt: "Error IOUT = 250µA to 25mA U variant ±0.05 ±0.2 %"}
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 5, location: 6.2 Recommended Operating Conditions - Specified temperature, excerpt: "TA Specified temperature –40 85 °C"}
+  Tstg:
+    min: -55
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 5, location: 6.1 Absolute Maximum Ratings - Tstg, excerpt: "Tstg Storage temperature –55 125 °C"}
+attributes:
+  entrada:
+    value: "Corrente IIN (RIN externo, IO = 100 x IIN); referência VREF 4,096 V"
+    status: extraido
+    source: {page: 1, location: Description, excerpt: "XTR116: 4.096V"}
+  saida:
+    value: "4-20 mA, 2 fios (faixa linear 0,25 a 25 mA)"
+    status: extraido
+    source: {page: 6, location: 6.4 Electrical Characteristics, excerpt: "Output current, linear range 0.25 25 mA"}
+  comunicacao:
+    value: "Compatível com modem HART"
+    status: extraido
+    source: {page: 1, location: Applications, excerpt: "Compatible with HART modem"}

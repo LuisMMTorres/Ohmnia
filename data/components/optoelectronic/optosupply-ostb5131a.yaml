@@ -1,0 +1,95 @@
+# Fonte: OptoSupply, datasheet OSTB5131A 5mm Red & Blue & Pure Green LED (sem revisao indicada).
+part_number: OSTB5131A
+category: optoelectronic.led
+schema_version: '1.0'
+manufacturer: OptoSupply
+package: 5 mm, lente transparente (water clear)
+lifecycle: desconhecido
+notes:
+- LED 5 mm piscante (flashing) tricolor vermelho/verde puro/azul com oscilador interno de 0.8 Hz
+- Alimentacao Vdd 4.5 a 6.0 V (tipico 5.0 V); corrente de operacao Iop tipica 10 mA, max 40 mA; corrente quiescente Isb 1 a 5 uA; corrente de acionamento Iol tipica 25 mA (p. 1, Electrical-Optical Characteristics); schema LED nao tem simbolos para esses itens
+- Nao ha VF nem IF nos dados; Iv e lambda dados por cor a IF=20 mA (cor vermelha em lambda/Iv, verde em lambda@2/Iv@2, azul em lambda@3/Iv@3)
+datasheets:
+- id: ds1
+  manufacturer: OptoSupply
+  url: https://www.elektronik.ropla.eu/pdf/stock/ops/ostb5131a.pdf
+  sha256: c4875ac3a76ac88225aef8e3fc6aae94c8469d6d6dbb1c929749ea145f46160b
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  lambda:
+    min: 620
+    typ: 625
+    max: 630
+    unit: nm
+    status: extraido
+    conditions: {IF: 20 mA}
+    source: {page: 1, location: Electrical-Optical Characteristics - Domi. Wavelength (Red), excerpt: "λD(Red) IF=20mA 620 625 630 nm"}
+  lambda@2:
+    min: 520
+    typ: 525
+    max: 530
+    unit: nm
+    status: extraido
+    conditions: {IF: 20 mA}
+    source: {page: 1, location: Electrical-Optical Characteristics - Domi. Wavelength (Green), excerpt: "λD(Green) IF=20mA 520 525 530 nm"}
+  lambda@3:
+    min: 465
+    typ: 470
+    max: 475
+    unit: nm
+    status: extraido
+    conditions: {IF: 20 mA}
+    source: {page: 1, location: Electrical-Optical Characteristics - Domi. Wavelength (Blue), excerpt: "λD(Blue) IF=20mA 465 470 475 nm"}
+  Iv:
+    min: 2180
+    typ: 3000
+    max: 4200
+    unit: mcd
+    status: extraido
+    conditions: {IF: 20 mA}
+    source: {page: 1, location: Electrical-Optical Characteristics - Luminous Intensity (Red), excerpt: "Iv(Red) IF=20mA 2180 3000 4200 mcd"}
+  Iv@2:
+    min: 3000
+    typ: 4200
+    max: 5800
+    unit: mcd
+    status: extraido
+    conditions: {IF: 20 mA}
+    source: {page: 1, location: Electrical-Optical Characteristics - Luminous Intensity (Green), excerpt: "Iv(Green) IF=20mA 3000 4200 5800 mcd"}
+  Iv@3:
+    min: 1560
+    typ: 2180
+    max: 3000
+    unit: mcd
+    status: extraido
+    conditions: {IF: 20 mA}
+    source: {page: 1, location: Electrical-Optical Characteristics - Luminous Intensity (Blue), excerpt: "Iv(Blue) IF=20mA 1560 2180 3000 mcd"}
+  angle:
+    typ: 30
+    unit: deg
+    status: extraido
+    conditions: {IF: 20 mA}
+    source: {page: 1, location: Electrical-Optical Characteristics - 50% Power Angle, excerpt: "2θ1/2 IF=20mA - 30 - deg"}
+  Top:
+    min: -30
+    max: 80
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Absolute Maximum Rating - Operating Temperature, excerpt: "Topr -30 ~ + 80 °C"}
+  Tstg:
+    min: -30
+    max: 100
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Absolute Maximum Rating - Storage Temperature, excerpt: "Tstg -30 ~+ 100 °C"}
+attributes:
+  cor:
+    value: Vermelho / verde puro / azul, piscante (flashing)
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "Red/Pure Green/Blue Flashing LED"}
+  encapsulamento:
+    value: 5 mm, water clear
+    status: extraido
+    source: {page: 1, location: Titulo e Features, excerpt: "5mm Red & Blue & Pure Green LED; Water Clear Type"}

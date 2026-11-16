@@ -1,0 +1,72 @@
+# Fonte: Novus, TxBlock-USB Transmissor de Temperatura - Manual de Operação V1.0x H (4 páginas).
+part_number: TxBlock-USB
+category: instrument.transmitter
+schema_version: '1.0'
+manufacturer: Novus
+package: Cabeçote, 43,5 mm (diâmetro) x 20,5 mm (altura), caixa ABS UL94-HB
+lifecycle: desconhecido
+notes:
+- Transmissor de temperatura 4-20 mA a dois fios, alimentado pelo loop, configurado por USB (software TxConfig II).
+- 'Carga máxima: RL(máx.) = (Vcc - 10) / 0,02 ohm, Vcc de 10 a 35 V (pág. 1).'
+- 'Faixas máximas de medição (Tabela 1, pág. 1): Pt100 e Pt1000 -200 a 650 °C; Termopar K -150 a 1370 °C; J -100 a 760 °C; R e S -50 a 1760 °C; T -160 a 400 °C; N -270 a 1300 °C; E -90 a 720 °C; B 500 a 1820 °C; NTC -30 a 120 °C; Tensão 0 a 50 mV.'
+- 'Exatidão (Tabela 2, pág. 1): Pt100/Pt1000 -200 a 650 °C típica 0,13 % e máxima 0,19 %; mV e termopares típica 0,1 % e máxima 0,15 % (somar junta fria < ±1 °C); NTC típica 0,3 °C e máxima 0,7 °C.'
+- 'Corrente de excitação RTD 800 µA (Pt100 0,8 mA, Pt1000 0,65 mA); resolução da saída 2 µA; falha de sensor: < 3,6 mA (down-scale) ou > 22,0 mA (up-scale) (pág. 1-2).'
+- 'Parâmetro accuracy refere-se a Pt100/Pt1000 de -150 a 400 °C (percentual da faixa máxima do sensor).'
+- Sem isolação elétrica entre entrada e saída/porta USB; proteção interna contra inversão de polaridade (pág. 1-2).
+datasheets:
+- id: ds1
+  manufacturer: Novus
+  document_number: Manual TxBlock-USB
+  revision: V1.0x H
+  url: https://global.cdn.magazord.com.br/casadainstrumentacao/img/2023/02/produto/412/txblock.pdf
+  sha256: eab79dda7a1a53291d795e46bafce1cb117ac96c47cb275ff89a8b08c0aa6875
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_out:
+    min: 4
+    max: 20
+    unit: mA
+    status: extraido
+    source: {page: 1, location: Especificações - Saída, excerpt: "Corrente de 4-20 mA ou 20-4 mA, tipo 2 fios"}
+  VS:
+    min: 10
+    max: 35
+    unit: V
+    status: extraido
+    source: {page: 1, location: Especificações - Alimentação, excerpt: "Alimentação: 10 a 35 Vcc, tensão sobre o transmissor"}
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Especificações - Temperatura de Operação, excerpt: "Temperatura de Operação: -40 a 85 °C"}
+  t_resp:
+    typ: 1600
+    unit: ms
+    status: extraido
+    source: {page: 1, location: Especificações - Tempo de resposta, excerpt: "Tempo de resposta: típico 1,6 s"}
+  accuracy:
+    typ: 0.1
+    max: 0.12
+    unit: '%'
+    status: extraido
+    source: {page: 1, location: Tabela 2 - Pt100 / Pt1000 (-150 a 400 °C), excerpt: "0,10 % 0,12 %"}
+attributes:
+  entrada:
+    value: Pt100 3 fios, Pt1000 3 fios, NTC 10 kΩ, termopares J K R S T N E B, tensão 0 a 50 mV
+    status: extraido
+    source: {page: 1, location: Especificações - Entrada de sensor, Tabela 1}
+  saida:
+    value: 4-20 mA ou 20-4 mA, 2 fios, linear com a temperatura
+    status: extraido
+    source: {page: 1, location: Especificações - Saída}
+  comunicacao:
+    value: USB (apenas configuração; não isolada da entrada)
+    status: extraido
+    source: {page: 2, location: Configuração - aviso da porta USB}
+  certificacoes:
+    value: EN 61326-1:2006 (compatibilidade eletromagnética)
+    status: extraido
+    source: {page: 1, location: Especificações - Compatibilidade Eletromagnética}

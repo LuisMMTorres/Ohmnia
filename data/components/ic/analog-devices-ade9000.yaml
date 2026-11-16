@@ -1,0 +1,76 @@
+# Fonte: Analog Devices, ADE9000 High Performance, Multiphase Energy, and Power Quality Monitoring IC, Data Sheet Rev. 0, 2017 (cópia Farnell).
+part_number: ADE9000
+category: ic.energy_meter
+schema_version: '1.0'
+manufacturer: Analog Devices
+package: LFCSP 40 terminais, 6 mm x 6 mm
+lifecycle: desconhecido
+notes:
+- 'Fila: ADE9000. Especificações com VDD = 2,97 a 3,63 V, CLKIN = 24,576 MHz, TMIN a TMAX = -40 a +85 °C (pág. 5).'
+- 'Consumo VDD: PSM0 15 mA típ. / 17 mA máx.; 14,5 mA a 16,5 mA com seis ADCs; PSM3 90 nA típ. / 300 nA máx. (pág. 9). Registrado o modo normal PSM0.'
+- 'Sete ADCs; buffer de forma de onda a 32 kSPS ou 8 kSPS (pág. 1).'
+datasheets:
+- id: ds1
+  manufacturer: Analog Devices
+  document_number: ADE9000
+  revision: Rev. 0
+  url: https://www.farnell.com/datasheets/2280571.pdf
+  sha256: 5ec6069a5410ace55c307166219639b5b7750a92acdbaf7a64eb7b38152f8e43
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 2.97
+    typ: 3.3
+    max: 3.63
+    unit: V
+    status: extraido
+    source: {page: 9, location: Table 1 - Power supply VDD, excerpt: "VDD 2.97 3.3 3.63 V"}
+  V_in:
+    max: 1
+    unit: V
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "Wide input voltage range: +-1 V, 707 mV rms FS at gain = 1"}
+  accuracy:
+    typ: 0.1
+    unit: '%'
+    status: extraido
+    source: {page: 5, location: Table 1 - Accuracy, total active energy, excerpt: "Total Active Energy 0.1 % Over a dynamic range of 5000"}
+  dynamic_range:
+    typ: 10000
+    unit: '1'
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "enabling 10000:1 dynamic input range"}
+  fs:
+    typ: 32
+    unit: kHz
+    status: extraido
+    source: {page: 1, location: General description - waveform buffer, excerpt: "fixed data rate of 32 kSPS or 8 kSPS"}
+  IS:
+    typ: 15
+    max: 17
+    unit: mA
+    status: extraido
+    source: {page: 9, location: Table 1 - Supply current VDD, PSM0 normal mode, excerpt: "Power Save Mode 0 (PSM0) 15 17 mA"}
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 10, location: Table 3 - Absolute maximum ratings, operating temperature industrial range, excerpt: "Industrial Range -40C to +85C"}
+  Tstg:
+    min: -65
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 10, location: Table 3 - Absolute maximum ratings, storage temperature range, excerpt: "Storage Temperature Range -65C to +150C"}
+attributes:
+  grandezas:
+    value: energia e potência ativa, reativa e aparente (total e fundamental), IRMS, VRMS, THD, fator de potência, frequência, ângulo de fase, dip e swell; suporta TCs e bobinas de Rogowski
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "Total and fundamental active power, volt amperes reactive (VAR), volt amperes (VA)"}
+  interface:
+    value: SPI de alta velocidade (20 MHz)
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "High speed communication port: 20 MHz serial port interface (SPI)"}

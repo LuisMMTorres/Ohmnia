@@ -1,0 +1,73 @@
+# Fonte: Lumileds, DS105 LUXEON Z Color Line Product Datasheet (copia 20210112), No. E352519.
+part_number: LXZ1-PM01
+category: optoelectronic.led
+schema_version: '1.0'
+manufacturer: Lumileds
+family: LUXEON Z Color Line
+package: SMD LUXEON Z (2.2 mm2, sem domo)
+lifecycle: desconhecido
+notes:
+- LED verde InGaN de potencia; valores do LXZ1-PM01 (Green) a 500 mA, Tj=25 C
+- Fluxo luminoso 80 lm minimo e 118 lm tipico a 500 mA (Tabela 1a, p. 4); schema nao tem parametro em lm
+- Top e a temperatura de caso de operacao; o datasheet diz que o LED nao foi projetado para polarizacao reversa (sem VR)
+- Documento em chines (DS105-ZH)
+datasheets:
+- id: ds1
+  manufacturer: Lumileds
+  document_number: DS105-ZH / E352519
+  revision: '20210112'
+  url: https://lumileds.com/wp-content/uploads/files/DS105-ZH-LUXEON-Z-Color-Line-datasheet.pdf
+  sha256: fab218485cfe2cad4d68ba070e85e1a94323b5453130bbdad31d8fc7520457c8
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VF:
+    min: 2.5
+    typ: 3.27
+    max: 3.5
+    unit: V
+    status: extraido
+    conditions: {IF: 500 mA, Tj: 25 °C}
+    source: {page: 5, location: Table 3 - Forward Voltage LXZ1-PM01, excerpt: "Green LXZ1-PM01 2.50 3.27 3.50"}
+  IF:
+    max: 1000
+    unit: mA
+    status: extraido
+    conditions: {Tj: 25 °C}
+    source: {page: 6, location: Table 4a - DC Forward Current (Green/Cyan/Blue/Royal Blue), excerpt: "DC Forward Current 1000mA"}
+  IF_peak:
+    max: 1000
+    unit: mA
+    status: extraido
+    conditions: {pulse_width: 5 ms, duty: 50 %}
+    source: {page: 6, location: Table 4a - Peak Pulsed Forward Current (nota 3), excerpt: "Peak Pulsed Forward Current 1000mA; on-time <=5ms, duty <=50%"}
+  lambda:
+    min: 520
+    max: 540
+    unit: nm
+    status: extraido
+    conditions: {IF: 500 mA, Tj: 25 °C}
+    source: {page: 4, location: Table 1a - Dominant wavelength Green, excerpt: "Green 520 540 80 118 LXZ1-PM01"}
+  angle:
+    typ: 125
+    unit: deg
+    status: extraido
+    source: {page: 5, location: Table 2 - Typical Viewing Angle LXZ1-PM01, excerpt: "Green LXZ1-PM01 [5] 30 0.04 140° 125°"}
+  Top:
+    min: -40
+    max: 135
+    unit: °C
+    status: extraido
+    source: {page: 6, location: Table 4a - Operating Case Temperature, excerpt: "Operating Case Temperature -40°C to 135°C"}
+  Tstg:
+    min: -40
+    max: 135
+    unit: °C
+    status: extraido
+    source: {page: 6, location: Table 4a - LED Storage Temperature, excerpt: "LED Storage Temperature -40°C to 135°C"}
+attributes:
+  cor:
+    value: Verde (InGaN)
+    status: extraido
+    source: {page: 5, location: Table 2 nota 5, excerpt: "Green LXZ1-PM01 [5]; InGaN"}

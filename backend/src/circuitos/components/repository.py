@@ -276,6 +276,11 @@ def _record_from_dict(data: dict[str, object], origin: str) -> ComponentRecord:
     for key, raw in params.items():
         if isinstance(raw, dict):
             _normalise_parameter(str(key), raw, default_ds, params)
+    attributes = data.get("attributes") or {}
+    if isinstance(attributes, dict) and default_ds:
+        for raw in attributes.values():
+            if isinstance(raw, dict) and isinstance(raw.get("source"), dict):
+                raw["source"].setdefault("datasheet_id", default_ds)
     pinout = data.get("pinout")
     if isinstance(pinout, dict) and isinstance(pinout.get("source"), dict) and default_ds:
         pinout["source"].setdefault("datasheet_id", default_ds)

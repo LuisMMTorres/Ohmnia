@@ -1,0 +1,99 @@
+# Fonte: Phoenix Contact, Data sheet MINI MCR-2-UI-UI(-PT)(-C), 3-way signal conditioner, 106006_en_02, 2016-02-10 (ordem 2902037).
+part_number: MINI MCR-2-UI-UI
+category: instrument.transmitter
+schema_version: '1.0'
+manufacturer: Phoenix Contact
+family: MINI MCR-2-UI-UI(-PT)(-C)
+package: Carcaça PBT cinza, 6.2 mm x 110.5 mm x 120.5 mm (L/A/P)
+lifecycle: desconhecido
+notes:
+- 'Condicionador de sinal analógico de 3 vias (isolação entre entrada, saída e alimentação), configurável por chave DIP. Documento cobre as variantes 2902037 (parafuso), 2902040 (-PT push-in), 2902036 (-C) e 2902039 (-PT-C) (p. 3).'
+- 'in_range não transcrito como parâmetro (várias faixas selecionáveis em V e mA, unidade mista): entradas de 0...20 mA, 4...20 mA, -20...20 mA e tensões de 0...5 V a -30...30 V (p. 5).'
+- 'Corrente de entrada máx. 24 mA; tensão de entrada máx. 33 V; resistência de entrada: tensão > 1000 kΩ, corrente aprox. 63 Ω (p. 5).'
+- 'Saída: tensão 0...5 V, 1...5 V, -5...5 V, 0...10 V, 2...10 V, -10...10 V (carga ≥ 10 kΩ); corrente 0...20 mA e 4...20 mA (carga ≤ 600 Ω a 20 mA); corrente máx. 22 mA; tensão a vazio < 17 V; ondulação < 20 mVpp (a 600 Ω) (p. 5).'
+- 'Frequência de corte (3 dB): 30 Hz ou 5 kHz via DIP; coeficiente de temperatura máx. 0,01 %/K; erro máx. ≤ 0,1 % (≤ 0,15 % em IN 4...20 mA / OUT -10...10 V) (p. 6).'
+- 'Consumo típico 25 mA (saída em corrente, 24 V DC, com carga) e 54 mA (12 V DC); potência ≤ 800 mW (p. 5).'
+- 'Fila de transcrição: novo link do distribuidor (Digi-Key).'
+datasheets:
+- id: ds1
+  manufacturer: Phoenix Contact
+  document_number: 106006_en_02
+  revision: '2016-02-10'
+  url: https://mm.digikey.com/Volume0/opasdata/d220001/medias/docus/1211/2902037_Ds.pdf
+  sha256: f7afa3f0ba686a55e766feea3cfcb0a4dbf171cebbca5c5219150e9dd83d5a41
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_out:
+    min: 0
+    max: 20
+    unit: mA
+    status: extraido
+    source: {page: 5, location: 4 Technical data - Output - Current output signal, excerpt: "0 mA ... 20 mA (via DIP switch) / 4 mA ... 20 mA (via DIP switch)"}
+  V_out:
+    min: -10
+    max: 10
+    unit: V
+    status: extraido
+    source: {page: 5, location: 4 Technical data - Output - Voltage output signal, excerpt: "-10 V ... 10 V (via DIP switch)"}
+  accuracy:
+    max: 0.1
+    unit: '%'
+    status: extraido
+    source: {page: 6, location: General data - Maximum transmission error, excerpt: "≤ 0.1 % (of final value)"}
+  RL:
+    max: 600
+    unit: ohm
+    status: extraido
+    source: {page: 5, location: 4 Technical data - Output - Load/output load current output, excerpt: "≤ 600 Ω (at 20 mA)"}
+  V_iso:
+    max: 3000
+    unit: V
+    status: extraido
+    source: {page: 6, location: General data - Test voltage input/output/supply, excerpt: "3 kV (50 Hz, 1 min.)"}
+  t_resp:
+    max: 8.5
+    unit: ms
+    status: extraido
+    source: {page: 6, location: General data - Step response (10-90%), excerpt: "< 8.5 ms (with 30 Hz filter)"}
+  VS:
+    min: 9.6
+    max: 30
+    unit: V
+    status: extraido
+    source: {page: 5, location: 4 Technical data - Supply - Supply voltage range, excerpt: "9.6 V DC ... 30 V DC"}
+  IS:
+    typ: 25
+    unit: mA
+    status: extraido
+    source: {page: 5, location: 4 Technical data - Supply - Typical current consumption, excerpt: "25 mA (Current output, at 24 V DC incl. load)"}
+  Top:
+    min: -40
+    max: 70
+    unit: °C
+    status: extraido
+    source: {page: 6, location: Ambient conditions - Ambient temperature (operation), excerpt: "-40 °C ... 70 °C"}
+  Tstg:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 6, location: Ambient conditions - Ambient temperature (storage/transport), excerpt: "-40 °C ... 85 °C"}
+attributes:
+  entrada:
+    value: Corrente 0...20 mA, 4...20 mA, -20...20 mA; tensão de 0...5 V até -30...30 V (selecionável por DIP)
+    status: extraido
+    source: {page: 5, location: 4 Technical data - Input, excerpt: "Voltage input signal 0 V ... 5 V (via DIP switch) ... Current input signal 0 mA ... 20 mA"}
+  saida:
+    value: Tensão (0...5 V a -10...10 V) ou corrente (0...20 mA, 4...20 mA), selecionável por DIP
+    status: extraido
+    source: {page: 5, location: 4 Technical data - Output, excerpt: "Voltage output signal ... Current output signal 0 mA ... 20 mA / 4 mA ... 20 mA"}
+  grau_protecao:
+    value: IP20
+    status: extraido
+    source: {page: 6, location: General data - Degree of protection, excerpt: "IP20"}
+  certificacoes:
+    value: CE, ATEX II 3 G Ex nA IIC T4 Gc X, UL 508 Listed, UL Class I Div. 2 / Zone 2, DNV GL
+    status: extraido
+    source: {page: 6, location: Conformance / approvals, excerpt: "ATEX II 3 G Ex nA IIC T4 Gc X ... UL 508 Listed"}

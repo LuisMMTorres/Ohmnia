@@ -1,0 +1,177 @@
+# Fonte: Texas Instruments, LM237, LM337 - LMx37 3-Terminal Adjustable Regulators, SLVS047L, November 1981 - revised January 2015.
+part_number: LM337
+category: regulator.negative
+schema_version: '1.0'
+manufacturer: Texas Instruments
+family: LMx37 (LM237, LM337)
+package: TO-220 (KC/KCS), TO-263 (KTT), TO-252 (KVU), KTE, KTP
+lifecycle: desconhecido
+notes:
+- Regulador ajustável negativo, -1,2 V a -37 V, 1,5 A. Valores transcritos em módulo, na coluna LM337 (grau comercial, TJ 0 a 125 °C).
+- Rth_ja e Rth_jc são do encapsulamento KCS (TO-220), RθJC(top); outros encapsulamentos têm outros valores na página 4.
+datasheets:
+- id: ds1
+  manufacturer: Texas Instruments
+  document_number: SLVS047L
+  revision: Revised January 2015
+  sha256: 9314cd867e85589c17f6a6007396863f2dd2e7622d8e480570d119b09632a4db
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  Vref:
+    min: 1.2
+    typ: 1.25
+    max: 1.3
+    unit: V
+    status: extraido
+    source:
+      page: 5
+      location: Electrical Characteristics 7.5 - Reference voltage (OUTPUT to ADJUSTMENT), TJ = MIN to MAX, valores em módulo (negativos no datasheet)
+      excerpt: "Reference voltage ... TJ = MIN to MAX -1.2 -1.25 -1.3 V"
+  IAdj:
+    typ: 65
+    max: 100
+    unit: uA
+    status: extraido
+    source:
+      page: 5
+      location: Electrical Characteristics 7.5 - ADJUSTMENT current
+      excerpt: "ADJUSTMENT current 65 100 uA"
+  VIO_max:
+    max: 40
+    unit: V
+    status: extraido
+    source:
+      page: 4
+      location: Absolute Maximum Ratings - VI - VO Input-to-output differential voltage (-40 V, em módulo)
+      excerpt: "VI - VO Input-to-output differential voltage -40 V"
+  VIO_min:
+    min: 2.5
+    unit: V
+    status: extraido
+    source:
+      page: 4
+      location: Recommended Operating Conditions - VI - VO Input-to-output differential voltage (-2.5 a -37 V, em módulo)
+      excerpt: "VI-VO Input-to-output differential voltage -2.5 -37"
+  IO_max:
+    max: 1.5
+    unit: A
+    status: extraido
+    source:
+      page: 4
+      location: Recommended Operating Conditions - IO Output current, |VI - VO| <= 40 V, P <= 15 W (10 a 1500 mA)
+      excerpt: "IO Output current ... 10 1500 mA"
+  ISC:
+    min: 1.5
+    typ: 2.2
+    unit: A
+    note: condição do datasheet |VI - VO| <= 15 V (corrente de saída de pico); VI na condição representa essa diferença
+    conditions:
+      VI: 15 V
+    status: extraido
+    source:
+      page: 5
+      location: Electrical Characteristics 7.5 - Peak output current, |VI - VO| <= 15 V
+      excerpt: "|VI - VO| <= 15 V 1.5 2.2 A"
+  ISC@2:
+    min: 0.15
+    typ: 0.4
+    unit: A
+    note: condição do datasheet |VI - VO| <= 40 V, TJ = 25 °C; VI na condição representa essa diferença
+    conditions:
+      VI: 40 V
+      TJ: 25 °C
+    status: extraido
+    source:
+      page: 5
+      location: Electrical Characteristics 7.5 - Peak output current, |VI - VO| <= 40 V, TJ = 25C
+      excerpt: "|VI - VO| <= 40 V, TJ = 25C 0.15 0.4"
+  IL_min:
+    typ: 2.5
+    max: 10
+    unit: mA
+    status: extraido
+    source:
+      page: 5
+      location: Electrical Characteristics 7.5 - Minimum output current to maintain regulation, |VI - VO| <= 40 V
+      excerpt: "|VI - VO| <= 40 V 2.5 5 2.5 10 mA"
+  Regline_pct:
+    typ: 0.02
+    max: 0.07
+    unit: percent/V
+    status: extraido
+    source:
+      page: 5
+      location: Electrical Characteristics 7.5 - Input regulation, VI - VO = -3 V to -40 V, TJ = MIN to MAX
+      excerpt: "TJ = MIN to MAX 0.02 0.05 0.02 0.07 %/V"
+  Regload_pct:
+    typ: 0.3
+    max: 1
+    unit: percent
+    status: extraido
+    source:
+      page: 5
+      location: Electrical Characteristics 7.5 - Output regulation, IO = 10 mA to 1.5 A, TJ = 25C, |VO| >= 5 V
+      excerpt: "|VO| >= 5 V 0.3% 0.5% 0.3% 1%"
+  RR:
+    min: 66
+    typ: 77
+    unit: dB
+    conditions:
+      f: 120 Hz
+    status: extraido
+    source:
+      page: 5
+      location: Electrical Characteristics 7.5 - Ripple rejection, VO = -10 V, f = 120 Hz, CADJ = 10 uF
+      excerpt: "VO = -10 V, f = 120 Hz, CADJ = 10 uF 66 77 66 77 dB"
+  Co_app:
+    min: 1
+    unit: uF
+    note: capacitor de saída usado nas medições das características elétricas (1 uF na saída, 0,1 uF na entrada)
+    status: extraido
+    source:
+      page: 5
+      location: Electrical Characteristics, nota (1) - test conditions
+      excerpt: "0.1-uF capacitor across the input and a 1-uF capacitor across the output"
+  Cin_app:
+    typ: 0.1
+    unit: uF
+    status: extraido
+    source:
+      page: 5
+      location: Electrical Characteristics, nota (1) - test conditions
+      excerpt: "0.1-uF capacitor across the input and a 1-uF capacitor across the output"
+  Rth_ja:
+    typ: 24.8
+    unit: K/W
+    status: extraido
+    source:
+      page: 4
+      location: Thermal Information - R theta JA, KCS (TO-220)
+      excerpt: "RθJA Junction-to-ambient thermal resistance 24.8 24.8 23 28 25.3 30.3 °C/W"
+  Rth_jc:
+    typ: 3
+    unit: K/W
+    status: extraido
+    source:
+      page: 4
+      location: Thermal Information - R theta JC(top), KCS (TO-220)
+      excerpt: "RθJC(top) Junction-to-case (top) thermal resistance 3 3 3 19 30.3 N/A"
+  Tj_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 4
+      location: Absolute Maximum Ratings - TJ Operating virtual junction temperature
+      excerpt: "TJ Operating virtual junction temperature 150 °C"
+  Tstg_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 4
+      location: Absolute Maximum Ratings - Tstg Storage temperature range
+      excerpt: "Tstg Storage temperature range -65 150 °C"
+attributes: {}

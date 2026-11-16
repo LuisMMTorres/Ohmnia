@@ -1,0 +1,71 @@
+# Fonte: Yageo, DATA SHEET Metal Film Resistors General Purpose MFR Series, Product specification April 3, 2024 V.4.
+part_number: MFR-50
+category: resistor.fixed
+schema_version: '1.0'
+manufacturer: Yageo
+family: MFR Series
+package: Axial furo passante
+lifecycle: desconhecido
+notes:
+- Valores da coluna MFR-50 da tabela Electrical Characteristics do documento da serie MFR (p. 3)
+- 'Tolerancia por codigo no part number (p. 2): D = +/-0.5 %, F = +/-1 %, G = +/-2 %, J = +/-5 %'
+- 'TCR por codigo (p. 2): E = +/-50 ppm/C, F = +/-100 ppm/C; TCR do schema = maior valor (100)'
+- Resistencia 1 ohm a 4.7 Mohm para valores das series E24 e E96 (p. 3)
+datasheets:
+- id: ds1
+  manufacturer: Yageo
+  document_number: MFR Series
+  revision: Apr. 03, 2024 V.4
+  url: https://www.yageogroup.com/content/datasheet/asset/file/yageo-mfr_datasheet
+  sha256: b460acdb476469774e0785a8ef85aec79e2d95fe41beaa79c5a414e4e95e3fe0
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  R:
+    min: 1
+    max: 4700000
+    unit: ohm
+    status: extraido
+    source: {page: 3, location: Electrical Characteristics - Resistance Range, excerpt: "1Ω ~ 4M7Ω for E24 & E96 series value"}
+  tol:
+    max: 5
+    unit: '%'
+    status: extraido
+    source: {page: 2, location: Ordering information - Tolerance, excerpt: "D = ±0.5%  F = ±1%  G = ±2%  J = ±5%"}
+  P_rated:
+    max: 0.5
+    unit: W
+    status: extraido
+    conditions: {TA: 70 °C}
+    source: {page: 3, location: Electrical Characteristics - Power Rating at 70 C (MFR-50), excerpt: "Power Rating at 70 °C 1/2W 1/2W 1W"}
+  V_max:
+    max: 350
+    unit: V
+    status: extraido
+    source: {page: 3, location: Electrical Characteristics - Maximum Working Voltage (MFR-50), excerpt: "Maximum Working Voltage 300V 350V 400V"}
+  V_overload:
+    max: 700
+    unit: V
+    status: extraido
+    source: {page: 3, location: Electrical Characteristics - Maximum Overload Voltage (MFR-50), excerpt: "Maximum Overload Voltage 600V 700V 800V"}
+  TCR:
+    max: 100
+    unit: ppm/K
+    status: extraido
+    source: {page: 3, location: Electrical Characteristics - Temperature Coefficient, excerpt: "±50ppm/°C , ±100ppm/°C"}
+  Top:
+    min: -55
+    max: 155
+    unit: °C
+    status: extraido
+    source: {page: 3, location: Electrical Characteristics - Operating Temp. Range, excerpt: "- 55°C to +155°C"}
+attributes:
+  tecnologia:
+    value: Filme metalico, uso geral, AEC-Q200
+    status: extraido
+    source: {page: 2, location: Features, excerpt: "AEC-Q200 qualified"}
+  encapsulamento:
+    value: Axial, L 9.0 ± 0.5 mm, diametro 3.3 ± 0.3 mm
+    status: extraido
+    source: {page: 3, location: Dimensions, excerpt: "MFR-50 MFR1WS 9.0 ± 0.5 3.3 ± 0.3"}

@@ -1,0 +1,72 @@
+# Fonte: Texas Instruments, DAC161S997 16-Bit SPI-Programmable DAC for 4-20 mA Loops, SNAS621A, June 2013 - Revised December 2014.
+part_number: DAC161S997
+category: ic.dac
+schema_version: '1.0'
+manufacturer: Texas Instruments
+package: WQFN-16 (4 x 4 mm, passo 0,5 mm) (p. 1)
+lifecycle: desconhecido
+notes:
+- 'DAC sigma-delta de 16 bits para laços de corrente 4-20 mA, com referência e oscilador internos, detecção de erro de laço e interface para modulador HART (p. 1).'
+- 'Especificações a VA = VD = 3,3 V, TA = 25 °C, transistor bipolar externo 2N3904, RE = 22 ohm, C1 = C2 = C3 = 2,2 nF (p. 5).'
+- 'INL (-1,5 a 2,6 µA) e DNL (±0,2 µA) estão em µA, sem símbolo equivalente em LSB no esquema; não transcritos (p. 5).'
+- 'Corrente de erro baixa 3,375 mA e alta 21,75 mA (valores padrão) (p. 5).'
+datasheets:
+- id: ds1
+  manufacturer: Texas Instruments
+  document_number: SNAS621A
+  revision: December 2014
+  url: https://www.ti.com/lit/ds/symlink/dac161s997.pdf
+  sha256: ae9e2198a5080f9d41205f001ef2f6207ff7ba8ecf750b70163a08b383b349c4
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  bits:
+    typ: 16
+    unit: bit
+    status: extraido
+    source: {page: 5, location: 7.5 Electrical Characteristics - Resolution, excerpt: "N Resolution 16 bits"}
+  channels:
+    typ: 1
+    unit: '1'
+    status: extraido
+    source: {page: 1, location: 3 Description, excerpt: "16-bit ΣΔ digital-to-analog converter for transmitting an analog output current"}
+  VS:
+    min: 2.7
+    max: 3.6
+    unit: V
+    status: extraido
+    source: {page: 5, location: 7.5 Electrical Characteristics - Power supply VA, VD, excerpt: "VA, VD Supply voltage VA = VD 2.7 3.6 V"}
+  I_out:
+    min: 0.19
+    max: 23.95
+    unit: mA
+    status: extraido
+    source: {page: 5, location: 7.5 Electrical Characteristics - Loop current output, excerpt: "IOUTMIN 0.19 mA ... IOUTMAX 23.95 mA"}
+  IS:
+    typ: 0.1
+    max: 0.125
+    unit: mA
+    status: extraido
+    source: {page: 5, location: 7.5 Electrical Characteristics - Total supply current, excerpt: "ICC Total supply current 100 125 µA"}
+  Top:
+    min: -40
+    max: 105
+    unit: °C
+    status: extraido
+    source: {page: 4, location: 7.3 Recommended Operating Conditions - Temperature, excerpt: "TA Temperature –40 105 °C"}
+  Tstg:
+    min: -65
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 4, location: 7.1 Absolute Maximum Ratings - Storage temperature, excerpt: "Storage temperature, Tstg –65 150 °C"}
+attributes:
+  interface:
+    value: SPI de 4 fios (SCLK até 10 MHz)
+    status: extraido
+    source: {page: 6, location: 7.6 Timing Requirements - SCLK frequency, excerpt: "fCLK SCLK frequency 0 10 MHz"}
+  encapsulamento:
+    value: WQFN-16 (4 x 4 mm)
+    status: extraido
+    source: {page: 1, location: Device Information, excerpt: "DAC161S997 WQFN (16) 4.00 mm x 4.00 mm"}

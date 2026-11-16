@@ -1,0 +1,58 @@
+category: sensor.photoelectric
+schema_version: '1.0'
+description: Sensor fotoelétrico (barreira, retrorreflexivo, difuso, fibra)
+required:
+- range
+parameters:
+  range:
+    unit: m
+    kind: characteristic
+    description: Distância de detecção (faixa)
+  t_resp:
+    unit: ms
+    kind: characteristic
+    description: Tempo de resposta
+  lambda:
+    unit: nm
+    kind: characteristic
+    description: Comprimento de onda da luz emitida
+  VS:
+    unit: V
+    kind: characteristic
+    description: Tensão de alimentação (faixa)
+  IS:
+    unit: mA
+    kind: characteristic
+    description: Consumo de corrente sem carga
+  IL:
+    unit: mA
+    kind: max_rating
+    description: Corrente de carga máxima da saída
+  Vdrop:
+    unit: V
+    kind: characteristic
+    description: Queda de tensão na saída ligada
+  f_sw:
+    unit: Hz
+    kind: characteristic
+    description: Frequência máxima de comutação
+  Ir:
+    unit: mA
+    kind: characteristic
+    description: Corrente residual da saída desligada
+  Top:
+    unit: °C
+    kind: thermal
+    description: 'Temperatura de operação (faixa: mín. e máx.)'
+  Tstg:
+    unit: °C
+    kind: thermal
+    description: Temperatura de armazenamento (faixa)
+attributes:
+  saida: Tipo de saída (PNP, NPN, NA, NF, push-pull, 4-20 mA, 0-10 V, IO-Link...)
+  conexao: Conexão elétrica (cabo, conector M8/M12...)
+  invólucro: Invólucro, rosca e material
+  grau_protecao: Grau de proteção (IP) declarado
+  certificacoes: Certificações e aprovações (UL, CE, ATEX...)
+  principio: Princípio (barreira, retrorreflexivo, difuso, supressão de fundo)
+  luz: Tipo de luz (vermelha, infravermelha, laser classe)

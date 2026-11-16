@@ -1,0 +1,137 @@
+# Fonte: Texas Instruments, CD4511B CMOS BCD-to-7-Segment Latch Decoder Drivers, SCHS072B, revisado em julho de 2003.
+part_number: CD4511BE
+category: ic.digital
+schema_version: '1.0'
+manufacturer: Texas Instruments
+family: CD4511B
+package: DIP-16 (sufixo E), conforme o texto da pág. 1
+lifecycle: desconhecido
+notes:
+- Decodificador BCD para 7 segmentos com latch (CD4511B), série B de 20 V. Os valores vêm das imagens digitalizadas das págs. 1 a 3 do PDF (sem camada de texto); o validador não consegue conferi-los por
+  texto.
+- 'Limites absolutos (pág. 1): VDD -0,5 a +20 V; tensão de entrada -0,5 V a VDD + 0,5 V; corrente de entrada ±10 mA; 500 mW por encapsulamento (-55 a +100 °C); 100 mW por transistor de saída.'
+- 'IOH: o documento declara capacidade de fornecer até 25 mA nas saídas (Features, pág. 1); registrada como máximo, sem condição de VDD declarada naquele texto.'
+- 'Tensão de saída em nível alto (pág. 2) depende da corrente de carga e de VDD; não transcrita em VOH. Corrente de sumidouro IOL mín. a 25 °C (VDD = 5 V, VO = 0,4 V): 0,51 mA (pág. 2).'
+- 'Tempos (pág. 3, VDD = 5 V, 25 °C): tPLH de dados típ. 660 / máx. 1320 ns; BL: 350/700 ns (HL) e 400/800 ns (LH); LT: 250/500 e 150/300 ns; transição 40/80 ns (LH) e 125/310 ns (HL); Cin típ. 5 pF.'
+- 'Pág. 1 (condições de operação, VDD = 5 V): setup mín. 150 ns, hold 0 ns, largura do strobe mín. 400 ns.'
+datasheets:
+- id: ds1
+  manufacturer: Texas Instruments
+  document_number: SCHS072B
+  revision: Revised July 2003
+  sha256: 455358b096cbbe9e24d49173ecda0c3b0b4999daa15c63d6e41d46b732a3adeb
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 3
+    max: 18
+    unit: V
+    status: extraido
+    source:
+      page: 1
+      location: Operating conditions at TA = 25 C - supply-voltage range
+      excerpt: Supply-Voltage Range 3 18 V
+  VIL:
+    max: 1.5
+    unit: V
+    status: extraido
+    conditions:
+      VDD: 5 V
+    source:
+      page: 2
+      location: Static electrical characteristics - input low voltage VIL max, VDD = 5 V
+      excerpt: VIL Max. 5 1.5
+  VIH:
+    min: 3.5
+    unit: V
+    status: extraido
+    conditions:
+      VDD: 5 V
+    source:
+      page: 2
+      location: Static electrical characteristics - input high voltage VIH min, VDD = 5 V
+      excerpt: VIH Min. 5 3.5
+  VOL:
+    max: 0.05
+    unit: V
+    status: extraido
+    conditions:
+      VDD: 5 V
+    source:
+      page: 2
+      location: Static electrical characteristics - output voltage low-level VOL max, VDD = 5 V
+      excerpt: VOL Max. 5 0.05
+  IOH:
+    max: 25
+    unit: mA
+    status: extraido
+    source:
+      page: 1
+      location: Features - high-output-sourcing capability
+      excerpt: High-output-sourcing capability up to 25 mA
+  tpd:
+    typ: 520
+    max: 1040
+    unit: ns
+    status: extraido
+    conditions:
+      VDD: 5 V
+      TA: 25 °C
+    source:
+      page: 3
+      location: Dynamic electrical characteristics - propagation delay (data) high-to-low, VDD = 5 V, TA = 25 C
+      excerpt: tPHL (Data) 5 V 520 1040
+  ICC:
+    typ: 0.04
+    max: 5
+    unit: uA
+    status: extraido
+    conditions:
+      VDD: 5 V
+      TA: 25 °C
+    source:
+      page: 2
+      location: Static electrical characteristics - quiescent device current IDD max, VDD = 5 V, TA = 25 C
+      excerpt: IDD Max. 5 0.04 5
+  Top:
+    min: -55
+    max: 125
+    unit: °C
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings - operating-temperature range
+      excerpt: OPERATING-TEMPERATURE RANGE (TA) -55 C to +125 C
+  Tstg:
+    min: -65
+    max: 150
+    unit: °C
+    status: extraido
+    source:
+      page: 1
+      location: Maximum ratings - storage temperature range
+      excerpt: STORAGE TEMPERATURE RANGE -65 C to +150 C
+attributes:
+  familia:
+    value: CD4000 (CMOS série B, 20 V)
+    status: extraido
+    source:
+      page: 1
+      location: Título
+      excerpt: High-Voltage Types (20-Volt Rating)
+  funcao:
+    value: Decodificador BCD para 7 segmentos com latch e driver de saída
+    status: extraido
+    source:
+      page: 1
+      location: Título
+      excerpt: CMOS BCD-to-7-Segment Latch Decoder Drivers
+  encapsulamento:
+    value: DIP-16 (E), SOP-16 (NSR), TSSOP-16 (PW, PWR), CDIP-16 (F3A)
+    status: extraido
+    source:
+      page: 1
+      location: Descrição
+      excerpt: 16-lead dual-in-line plastic packages (E suffix)

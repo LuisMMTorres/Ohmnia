@@ -1,0 +1,92 @@
+# Fonte: SICK, Kapazitive Näherungssensoren Baureihe CM30, Schaltabstand 16 / 25 mm, DC 4-Leiter (folha da série, em alemão; sem data/revisão visível).
+part_number: CM30-16BNP-KC1
+category: sensor.proximity
+schema_version: '1.0'
+manufacturer: SICK
+family: CM30
+package: M30 x 1,5, carcaça de plástico
+lifecycle: desconhecido
+notes:
+- Documento da série CM30 (16/25 mm); valores elétricos da tabela de seleção valem para a série. Linha desta peça (p. 2) = 16 mm, NPN, conector M12 x 1, antivalente, 6021460.
+- Texto original em alemão (Baureihe CM30, DC 4-Leiter); novo link achado no distribuidor.
+- Histerese dada em % de sr; reprodutibilidade <= 5 % de sr; deriva de temperatura ± 10 % de sr; atraso de disponibilidade <= 100 ms (p. 2).
+- Ondulação residual <= 10 % de Ub; proteção contra curto-circuito (pulsada), inversão de polaridade e pulso de ligação (p. 2).
+datasheets:
+- id: ds1
+  manufacturer: SICK
+  url: https://docs.rs-online.com/1fc1/0900766b8007f488.pdf
+  sha256: 8902cd88e21e0977e0963c339906834bd8f079830997c548c47e7a72e1ea3fbd
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  sn:
+    typ: 16
+    unit: mm
+    status: extraido
+    source: {page: 2, location: Auswahltabelle - Schaltabstand sn (linha CM30-16BNP-KC1), excerpt: "16 NPN 50 Stecker M12 x 1 mm CM30-16BNP-KC1 6021460"}
+  sr:
+    min: 2
+    max: 16
+    unit: mm
+    status: extraido
+    source: {page: 1, location: Merkmale - Schaltabstand einstellbar (bündig), excerpt: "Schaltabstand einstellbar: 2 bis 16 mm (bündig)"}
+  hysteresis:
+    min: 4
+    max: 20
+    unit: '%'
+    status: extraido
+    source: {page: 2, location: Elektrische und mechanische Daten - Hysterese H, excerpt: "4% ... 20% von sr"}
+  VS:
+    min: 10
+    max: 40
+    unit: V
+    status: extraido
+    source: {page: 2, location: Elektrische und mechanische Daten - Betriebsspannung Ub, excerpt: "10 ... 40 V DC"}
+  IS:
+    max: 10
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Elektrische und mechanische Daten - Stromaufnahme (ohne Last), excerpt: "≤ 10 mA"}
+  IL:
+    max: 200
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Elektrische und mechanische Daten - Dauerstrom Ia, excerpt: "≤ 200 mA"}
+  Vdrop:
+    max: 2.5
+    unit: V
+    status: extraido
+    source: {page: 2, location: Elektrische und mechanische Daten - Spannungsabfall Ud (bei Ia max), excerpt: "≤ 2,5 V"}
+  f_sw:
+    max: 50
+    unit: Hz
+    status: extraido
+    source: {page: 2, location: Auswahltabelle - Schaltfrequenz f in Hz (linha CM30-16BNP-KC1), excerpt: "16 NPN 50 Stecker M12 x 1 mm"}
+  Top:
+    min: -25
+    max: 80
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Elektrische und mechanische Daten - Umgebungstemperatur Ta, excerpt: "- 25 ... + 80 °C"}
+attributes:
+  saida:
+    value: NPN, antivalente (NA + NF), proteção contra curto-circuito (pulsada)
+    status: extraido
+    source: {page: 2, location: Auswahltabelle - Schaltausgang Typ / Ausgangsfunktion, excerpt: "NPN antivalent"}
+  conexao:
+    value: Conector M12 x 1 mm (4 pinos)
+    status: extraido
+    source: {page: 2, location: Auswahltabelle - Anschlußart, excerpt: "Stecker M12 x 1 mm"}
+  invólucro:
+    value: Plástico, rosca fina M30 x 1,5 mm
+    status: extraido
+    source: {page: 1, location: Merkmale / página 2 - Gehäusewerkstoff, excerpt: "Kunststoffgehäuse mit Feingewinde M30 x 1,5 mm"}
+  grau_protecao:
+    value: IP 67
+    status: extraido
+    source: {page: 2, location: Elektrische und mechanische Daten - Schutzart nach EN 60529, excerpt: "IP 67"}
+  montagem:
+    value: Faceado ou não faceado (bündig oder nicht bündig)
+    status: extraido
+    source: {page: 1, location: Merkmale, excerpt: "Bündig oder nicht bündig einbaubar"}

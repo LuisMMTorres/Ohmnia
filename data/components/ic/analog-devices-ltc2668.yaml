@@ -1,0 +1,98 @@
+# Fonte: Analog Devices (Linear Technology), LTC2668 16-Channel 16-/12-Bit ±10V VOUT SoftSpan DACs with 10ppm/°C Max Reference, documento 2668fa (cópia Datasheetcafe).
+part_number: LTC2668
+category: ic.dac
+schema_version: '1.0'
+manufacturer: Analog Devices
+family: LTC2668-16 / LTC2668-12
+package: QFN 40 pinos 6 mm x 6 mm (UJ)
+lifecycle: desconhecido
+notes:
+- 'Documento cobre LTC2668-16 (16 bits) e LTC2668-12 (12 bits); registrado o de 16 bits, exceto onde indicado (pág. 4).'
+- 'Condições: AVP = 5 V, OVP = 5 V, V+ = 15 V, V- = -15 V, VREF = 2,5 V, VOUT sem carga, TA = 25 °C salvo indicação (pág. 4).'
+- 'INL do LTC2668-16 típ. ±2,2 LSB e máx. ±4 LSB (graus C e I, V+/V- = ±15 V); ±5 LSB no grau H com V- = GND (pág. 4). DNL típ. ±0,2 e máx. ±1 LSB (16 bits).'
+- 'Cinco faixas de saída programáveis por canal: 0 a 5 V, 0 a 10 V, ±2,5 V, ±5 V, ±10 V (pág. 1); saídas fornecem ±10 mA garantidos.'
+- 'Alimentação: AVP 4,5 a 5,5 V; V+ 4,5 a 15,75 V; V- -15,75 a -4,5 V ou 0 V (pág. 5); OVP 1,71 V a AVP + 0,3 V. VS abaixo é AVP.'
+- 'Corrente V+/V-: 4,6 típ./6,5 máx. mA (faixas unipolares) e 8 típ./9,5 máx. mA (bipolares); IS abaixo é o máximo bipolar (pág. 5). IAVP 5,4 típ./6,5 máx. mA (unipolar), 9,4/12 mA (bipolar).'
+- 'Tempo de acomodação até ±1 LSB de 16 bits: 9 us (degrau ±5 V ou ±10 V) e 20,5 us (degrau ±20 V); o máx. 20,5 us é o pior caso (pág. 5).'
+- 'Faixa de operação por grau: C 0 a 70 °C, I -40 a 85 °C, H -40 a 125 °C (pág. 2); aqui a faixa total -40 a 125 °C.'
+- 'Referência interna 2,5 V (2,495 a 2,505 V, ±10 ppm/°C máx.); faixa de referência externa 0,5 V a AVP - 1,75 V (pág. 4 e 5).'
+datasheets:
+- id: ds1
+  manufacturer: Analog Devices
+  document_number: 2668fa
+  url: https://www.datasheetcafe.com/wp-content/uploads/2022/04/LTC2668.pdf
+  sha256: fc49f79aeb12c05f5e1f6ac814a1fa9e1ae5995c341f1cb5fe7aeffe74b0808f
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  bits:
+    typ: 16
+    unit: bit
+    status: extraido
+    source: {page: 4, location: Electrical characteristics - DC performance - resolution LTC2668-16, excerpt: "Resolution 12 16 Bits"}
+  t_settle:
+    max: 20.5
+    unit: us
+    status: extraido
+    source: {page: 5, location: AC performance - settling time ±10V span ±20V step ±1LSB at 16 bits, excerpt: "±10V Span, ±20V Step ... 15.5 20.5 µs"}
+  channels:
+    typ: 16
+    unit: '1'
+    status: extraido
+    source: {page: 1, location: Description, excerpt: "LTC2668 is a family of 16-channel, 16-/12-bit"}
+  VS:
+    min: 4.5
+    max: 5.5
+    unit: V
+    status: extraido
+    source: {page: 5, location: Power supply - AVP analog supply voltage, excerpt: "AVP Analog Supply Voltage 4.5 5.5 V"}
+  VREF:
+    typ: 2.5
+    unit: V
+    status: extraido
+    source: {page: 4, location: Reference - reference output voltage, excerpt: "Reference Output Voltage 2.495 2.5 2.505 V"}
+  V_out:
+    min: -10
+    max: 10
+    unit: V
+    status: extraido
+    source: {page: 1, location: Features - independently programmable output ranges, excerpt: "0V to 5V, 0V to 10V, ±2.5V, ±5V, ±10V"}
+  INL:
+    typ: 2.2
+    max: 4
+    unit: '1'
+    status: extraido
+    source: {page: 4, location: DC performance - INL LTC2668-16 V+/V- = ±15V, excerpt: "INL Integral Nonlinearity ... ±2.2 ±4 LSB"}
+  DNL:
+    typ: 0.2
+    max: 1
+    unit: '1'
+    status: extraido
+    source: {page: 4, location: DC performance - DNL LTC2668-16, excerpt: "DNL Differential Nonlinearity ±0.2 ±1 LSB"}
+  IS:
+    max: 9.5
+    unit: mA
+    status: extraido
+    source: {page: 5, location: Power supply - IS supply current V+/V-, bipolar ranges, excerpt: "IS Supply Current V+/V- Bipolar Ranges 8 9.5 mA"}
+  Top:
+    min: -40
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - operating temperature range LTC2668H, excerpt: "LTC2668H –40°C to 125°C"}
+  Tstg:
+    min: -65
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - storage temperature range, excerpt: "Storage Temperature Range –65°C to 150°C"}
+attributes:
+  interface:
+    value: SPI/Microwire 3 fios, até 50 MHz, lógica a partir de 1,71 V
+    status: extraido
+    source: {page: 1, location: Description, excerpt: "3-wire serial interface ... as low as 1.71V at clock rates up to 50MHz"}
+  encapsulamento:
+    value: QFN 40 pinos 6 mm x 6 mm
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "6mm × 6mm 40-Lead QFN Package"}

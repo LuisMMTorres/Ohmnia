@@ -1,0 +1,69 @@
+# Fonte: Analog Devices, ADE7953 Single Phase, Multifunction Metering IC with Neutral Current Measurement, Data Sheet Rev. C (cópia SparkFun).
+part_number: ADE7953
+category: ic.energy_meter
+schema_version: '1.0'
+manufacturer: Analog Devices
+package: LFCSP 28 terminais
+lifecycle: desconhecido
+notes:
+- 'Fila: ADE7953. Especificações com VDD = 3,3 V ±10 %, CLKIN = 3,58 MHz, TMIN a TMAX = -40 a +85 °C (pág. 4).'
+- 'Erro de IRMS < 0,2 % em 1000:1 (canal A) e largura de banda de 1,23 kHz (pág. 1 e 4). Três ADCs sigma-delta; resolução em bits não transcrita.'
+datasheets:
+- id: ds1
+  manufacturer: Analog Devices
+  document_number: ADE7953
+  revision: Rev. C
+  url: https://cdn.sparkfun.com/assets/a/2/3/3/2/ADE7953.pdf
+  sha256: 927698e99383922f0cea67f507744fca92229b6686ffd18b4e246dcd816fbf76
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 3.0
+    max: 3.6
+    unit: V
+    status: extraido
+    source: {page: 5, location: Table 1 - Power supply VDD, excerpt: "VDD 3.0 ... 3.3 V - 10% ... 3.6 3.3 V + 10%"}
+  V_in:
+    max: 0.5
+    unit: V
+    status: extraido
+    source: {page: 4, location: Table 1 - Analog inputs, maximum signal levels, differential inputs, excerpt: "Maximum Signal Levels +-500 mV peak, IAP to IAN, IBP to IBN"}
+  accuracy:
+    typ: 0.1
+    unit: '%'
+    status: extraido
+    source: {page: 4, location: Table 1 - Active energy measurement error (current channel A), excerpt: "Active Energy Measurement Error 0.1 % Over a dynamic range of 3000:1"}
+  dynamic_range:
+    typ: 3000
+    unit: '1'
+    status: extraido
+    source: {page: 4, location: Table 1 - Active energy measurement error (current channel A), excerpt: "Over a dynamic range of 3000:1, PGA = 1, PGA = 22"}
+  IS:
+    typ: 7
+    max: 9
+    unit: mA
+    status: extraido
+    source: {page: 5, location: Table 1 - Power supply IDD, excerpt: "IDD 7 9 mA"}
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 8, location: Table 4 - Absolute maximum ratings, operating temperature industrial range, excerpt: "Operating Temperature Industrial Range -40C to +85C"}
+  Tstg:
+    min: -65
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 8, location: Table 4 - Absolute maximum ratings, storage temperature range, excerpt: "Storage Temperature Range -65C to +150C"}
+attributes:
+  grandezas:
+    value: energia ativa, reativa e aparente; tensão e corrente rms; forma de onda amostrada; segunda entrada de corrente para neutro
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "Measures active, reactive, and apparent energy; sampled waveform; current and voltage rms"}
+  interface:
+    value: SPI, I2C ou UART
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "SPI, I2C, or UART communication"}

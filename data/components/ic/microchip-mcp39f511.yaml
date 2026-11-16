@@ -1,0 +1,76 @@
+# Fonte: Microchip, MCP39F511 Power-Monitoring IC with Calculation and Energy Accumulation, DS20005393B (2015).
+part_number: MCP39F511
+category: ic.energy_meter
+schema_version: '1.0'
+manufacturer: Microchip
+family: MCP39F511
+package: QFN-28 5x5 (com pad exposto)
+lifecycle: desconhecido
+notes:
+- 'Exatidão de 0,1 % em potência ativa/reativa/aparente, IRMS e VRMS com faixa dinâmica 4000:1 (pág. 4, Tabela 1-1).'
+- 'Corrente de operação IDD 13 mA típ. (pág. 7); ADC delta-sigma de 24 bits (pág. 5); interface UART até 115,2 kbps (pág. 1).'
+- 'Faixa de entrada diferencial (I1+ - I1-) e (V1+ - V1-): ±600/GAIN mV com VREF = 1,2 V (pág. 5).'
+datasheets:
+- id: ds1
+  manufacturer: Microchip
+  document_number: DS20005393B
+  revision: B (2015)
+  url: https://ww1.microchip.com/downloads/en/DeviceDoc/20005393B.pdf
+  sha256: af6a9dc85fb7c1ae2d55168a600234bec12df227ff0e1b52a63d7af78ed4b005
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 2.7
+    max: 3.6
+    unit: V
+    status: extraido
+    source: {page: 4, location: Tabela 1-1, condições (AVDD, DVDD), excerpt: "AVDD, DVDD = +2.7 to +3.6V"}
+  V_in:
+    max: 600
+    unit: mV
+    status: extraido
+    source: {page: 5, location: Tabela 1-1, Differential Input Voltage Range, excerpt: "-600/GAIN +600/GAIN mV"}
+    conditions: {GAIN: 1, VREF: 1.2 V}
+  accuracy:
+    typ: 0.1
+    unit: '%'
+    status: extraido
+    source: {page: 4, location: Tabela 1-1, Active Power, excerpt: "P ±0.1 % 4000:1 Dynamic Range"}
+  dynamic_range:
+    typ: 4000
+    unit: '1'
+    status: extraido
+    source: {page: 4, location: Tabela 1-1, Active Power test conditions, excerpt: "4000:1 Dynamic Range on Current Channel"}
+  bits:
+    typ: 24
+    unit: bit
+    status: extraido
+    source: {page: 5, location: 24-Bit Delta-Sigma ADC Performance, excerpt: "24-Bit Delta-Sigma ADC Performance"}
+  IS:
+    typ: 13
+    unit: mA
+    status: extraido
+    source: {page: 7, location: Tabela 1-1, Operating Current, excerpt: "Operating Current IDD 13 mA"}
+  Top:
+    min: -40
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "Extended Temperature Range -40°C to +125°C"}
+  Tstg:
+    min: -65
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 4, location: Absolute Maximum Ratings, excerpt: "Storage temperature -65°C to +150°C"}
+attributes:
+  grandezas:
+    value: potência ativa, reativa e aparente, IRMS, VRMS, frequência de linha, fator de potência, energia
+    status: extraido
+    source: {page: 1, location: Features, Built-In Calculations}
+  interface:
+    value: UART (2 fios), até 115,2 kbps
+    status: extraido
+    source: {page: 1, location: Features}

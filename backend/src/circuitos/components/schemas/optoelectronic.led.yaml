@@ -1,0 +1,59 @@
+category: optoelectronic.led
+schema_version: '1.0'
+description: LED, LED IR ou display de LEDs
+required:
+- VF
+- IF
+parameters:
+  VF:
+    unit: V
+    kind: characteristic
+    description: Tensão direta (indicar IF na nota)
+  IF:
+    unit: mA
+    kind: max_rating
+    description: Corrente direta contínua máxima
+  IF_peak:
+    unit: mA
+    kind: max_rating
+    description: Corrente direta de pico
+  VR:
+    unit: V
+    kind: max_rating
+    description: Tensão reversa máxima
+  P_diss:
+    unit: mW
+    kind: max_rating
+    description: Dissipação máxima
+  lambda:
+    unit: nm
+    kind: characteristic
+    description: Comprimento de onda de pico ou dominante
+  Iv:
+    unit: mcd
+    kind: characteristic
+    description: Intensidade luminosa
+  Phi_e:
+    unit: mW
+    kind: characteristic
+    description: Fluxo radiante (IR)
+  angle:
+    unit: deg
+    kind: characteristic
+    description: Ângulo de visão (2θ½)
+  digits:
+    unit: '1'
+    kind: geometry
+    description: Dígitos ou segmentos (display)
+  Top:
+    unit: °C
+    kind: thermal
+    description: 'Temperatura de operação (faixa: mín. e máx.)'
+  Tstg:
+    unit: °C
+    kind: thermal
+    description: Temperatura de armazenamento (faixa)
+attributes:
+  cor: Cor
+  configuracao: Configuração (anodo comum, catodo comum...)
+  encapsulamento: Encapsulamento

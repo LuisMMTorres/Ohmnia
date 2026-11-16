@@ -1,0 +1,113 @@
+# Fonte: Texas Instruments, LM2596 SIMPLE SWITCHER Power Converter 150-kHz 3-A Step-Down Voltage Regulator, SNVS124G, November 1999 - revised March 2023.
+part_number: LM2596
+category: regulator.switching
+schema_version: '1.0'
+manufacturer: Texas Instruments
+family: LM2596 (3,3 V, 5 V, 12 V e ajustável)
+package: TO-220 5 pinos (NDZ/NDH), TO-263 5 pinos (KTW/KTT)
+lifecycle: desconhecido
+notes:
+- 'Regulador abaixador (buck) com chave de 3 A integrada. Valores da família; as versões de saída fixa (3,3 / 5 / 12 V) e ajustável compartilham os parâmetros da seção 7.9 (página 7).'
+- 'Vref é a tensão de realimentação da versão ajustável (página 6): 1,23 V típ.; 1,193 a 1,267 V a TJ = 25 C e 1,18 a 1,28 V de -40 a 125 C.'
+- 'Rendimento típico 73 % (VIN = 12 V, ILOAD = 3 A) nas versões de 3,3 V e ajustável (VOUT programada em 3 V); as versões de 5 V e 12 V têm outros valores na página 6, não transcritos.'
+- 'Rth_ja depende do encapsulamento e da área de cobre (20 a 50 C/W, nota (4) a (7), página 5); Rth_jc(top) 2 C/W. Não transcritos como parâmetro único.'
+- 'Fora do esquema: corrente de standby típ. 80 uA (máx. 200 uA a 25 C, 250 uA de -40 a 125 C), ON/OFF com ON abaixo de 1,3 V típ. (página 7); tensão de saturação da chave 1,16 V típ., 1,4 V máx. com IOUT = 3 A (página 7); corrente de polarização do FB 10 nA típ., 50 nA máx. (página 7).'
+datasheets:
+- id: ds1
+  manufacturer: Texas Instruments
+  document_number: SNVS124G
+  revision: Revised March 2023
+  sha256: 2eec90879908cf711b84d4f0c5d534c3cd12c576d25254b7019247435af4ab0f
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VI:
+    min: 4.5
+    max: 40
+    unit: V
+    status: extraido
+    source: {page: 5, location: 7.3 Operating Conditions - Supply voltage, excerpt: "Supply voltage 4.5 40 V"}
+  VI_max:
+    max: 45
+    unit: V
+    status: extraido
+    source: {page: 5, location: 7.1 Absolute Maximum Ratings - Maximum supply voltage (VIN), excerpt: "Maximum supply voltage (VIN) 45 V"}
+  VO:
+    min: 1.2
+    max: 37
+    unit: V
+    status: extraido
+    source: {page: 1, location: 1 Features - Adjustable version output voltage range, excerpt: "Adjustable version output voltage range: 1.2-V to 37-V"}
+  Vref:
+    min: 1.193
+    typ: 1.23
+    max: 1.267
+    unit: V
+    conditions: {Tj: 25 °C}
+    status: extraido
+    source: {page: 6, location: 7.8 Adjustable Voltage Version - VFB Feedback voltage, excerpt: "VFB Feedback voltage 1.23 V ... 1.193 1.267"}
+  IO_max:
+    max: 3
+    unit: A
+    status: extraido
+    source: {page: 1, location: 1 Features - 3-A output load current, excerpt: "3-A output load current"}
+  ILIM:
+    min: 3.6
+    typ: 4.5
+    max: 6.9
+    unit: A
+    conditions: {Tj: 25 °C}
+    status: extraido
+    source: {page: 7, location: 7.9 All Output Voltage Versions - ICL Current limit, peak current, excerpt: "ICL Current limit Peak current TJ = 25°C 3.6 4.5 6.9 A"}
+  fsw:
+    min: 127
+    typ: 150
+    max: 173
+    unit: kHz
+    conditions: {Tj: 25 °C}
+    status: extraido
+    source: {page: 7, location: 7.9 All Output Voltage Versions - fO Oscillator frequency, excerpt: "fO Oscillator frequency TJ = 25°C 127 150 173 kHz"}
+  D_max:
+    typ: 100
+    unit: "%"
+    status: extraido
+    source: {page: 7, location: 7.9 All Output Voltage Versions - DC Max duty cycle (ON), excerpt: "DC Max duty cycle (ON) 100%"}
+  eta:
+    typ: 73
+    unit: "%"
+    status: extraido
+    source: {page: 6, location: 7.8 Adjustable Voltage Version - Efficiency (VIN = 12 V, VOUT = 3 V, ILOAD = 3 A), excerpt: "η Efficiency VIN = 12 V, VOUT = 3 V, ILOAD = 3 A 73%"}
+  VCE_sat:
+    typ: 1.16
+    max: 1.4
+    unit: V
+    conditions: {IC: 3 A}
+    status: extraido
+    source: {page: 7, location: 7.9 All Output Voltage Versions - VSAT Saturation voltage, IOUT = 3 A, TJ = 25 C, excerpt: "VSAT Saturation voltage IOUT = 3 A TJ = 25°C 1.16 1.4 V"}
+  IQ:
+    typ: 5
+    max: 10
+    unit: mA
+    status: extraido
+    source: {page: 7, location: 7.9 All Output Voltage Versions - IQ Operating quiescent current (nota 6), excerpt: "IQ Operating quiescent current See (6) 5 10 mA"}
+  Tj_max:
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 5, location: 7.1 Absolute Maximum Ratings - Maximum junction temperature, excerpt: "Maximum junction temperature 150 °C"}
+  Top:
+    min: -40
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 5, location: 7.3 Operating Conditions - Temperature, excerpt: "Temperature -40 125 °C"}
+attributes:
+  topologia:
+    value: Buck (abaixador), chave de potência integrada
+    status: extraido
+    source: {page: 1, location: 3 Description, excerpt: "step-down (buck) switching regulator, capable of driving a 3-A load"}
+  encapsulamento:
+    value: TO-220 5 pinos (NDH), TO-263 5 pinos (KTT)
+    status: extraido
+    source: {page: 1, location: Package Information, excerpt: "NDH (TO-220, 5) ... KTT (TO-263, 5)"}

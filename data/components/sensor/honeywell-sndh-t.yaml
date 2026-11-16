@@ -1,0 +1,76 @@
+# Fonte: Honeywell, SNDH-T Series Quadrature Speed and Direction Sensors, product sheet 000641-7-EN (Issue 7, 10/22).
+part_number: SNDH-T
+category: sensor.magnetic
+schema_version: '1.0'
+manufacturer: Honeywell
+family: SNDH-T Series
+package: Carcaça de aço inox 304, comprimento 45 mm, flange fixo com O-ring
+lifecycle: desconhecido
+notes:
+- 'Fila: sndh-t-series-datasheet-32305128-a-en. Documento da série (SNDH-T4C-G01, T4L-G01, T4P-G01, T4P-G02); valores comuns à série.'
+- 'Saída em quadratura (canais A e B defasados 90° +-20°), ciclo de trabalho 50 % +-10 %, push/pull, coletor aberto citado nas features (pág. 1-2).'
+- 'Tempo de subida 10 us max, descida 1 us max (pág. 2). Frequência 1 Hz a 15 kHz, depende de temperatura e entreferro (pág. 2-3).'
+- 'Proteção contra curto-circuito 80 mA max e tensão reversa -18 V max contínua (pág. 2). Entreferro 0 a 2 mm (pág. 2). Grau de proteção IP69K (pág. 3).'
+- 'Nota de projeto: Rload = Vs / 0,02 A (pág. 4).'
+datasheets:
+- id: ds1
+  manufacturer: Honeywell
+  document_number: 000641-7-EN
+  revision: Issue 7 (10/22)
+  url: https://prod-edam.honeywell.com/content/dam/honeywell-edam/sps/siot/en-us/products/sensors/speed-sensors/hall-effect-digital-speed-and-direction-sensors/sndh-t-series/documents/sps-siot-sndh-t-series-ps-000641-3-en-ciid-54724.pdf
+  sha256: 9f0da7d081aa066fd99a26fd9fa58855ec385e85550a0b9833f60f0d357ef1df
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 4.5
+    max: 18
+    unit: V
+    status: extraido
+    source: {page: 2, location: Table 1 Electrical specifications - Voltage supply, excerpt: "supply 4.5 V to 18 V"}
+  IS:
+    typ: 12
+    max: 18
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Table 1 - Supply current, excerpt: "normal 12 mA; max. 18 mA"}
+  IL:
+    max: 20
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Table 1 - Output signal load current, excerpt: "load current 20 mA max."}
+  bandwidth:
+    max: 15
+    unit: kHz
+    status: extraido
+    source: {page: 2, location: Table 1 - Output signal frequency, excerpt: "frequency 1 Hz to 15 kHz"}
+  f_sw:
+    min: 1
+    max: 15000
+    unit: Hz
+    status: extraido
+    source: {page: 2, location: Table 1 - Output signal frequency, excerpt: "frequency 1 Hz to 15 kHz"}
+  Top:
+    min: -40
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 3, location: Table 3 Environmental specifications - Operating temperature, excerpt: "continuous -40°C to 150°C"}
+attributes:
+  saida:
+    value: Quadratura, onda quadrada push/pull, 2 canais defasados 90° (+-20°)
+    status: extraido
+    source: {page: 2, location: Table 1 - Output signal type/phase shift}
+  conexao:
+    value: Conector integral (T4C), conector com cabo de 203,8 mm (T4P-G01) ou 555 mm (T4P-G02), ou cabo de 555 mm com fios (T4L)
+    status: extraido
+    source: {page: 3, location: Table 4 Catalog listings}
+  invólucro:
+    value: Carcaça aço inox 304, inserto plástico Valox K4560, O-ring fluorocarbono, flange fixo
+    status: extraido
+    source: {page: 2, location: Table 2 Mechanical specifications - Materials}
+  encapsulamento:
+    value: Flange fixo, furo de montagem ø15,05 a ø15,15 mm, torque max 10 Nm (parafuso M6)
+    status: extraido
+    source: {page: 2, location: Table 2 - Mounting}

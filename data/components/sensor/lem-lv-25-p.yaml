@@ -1,0 +1,77 @@
+# Fonte: LEM, Voltage Transducer LV 25-P, N° 97.27.19.000.0, version 19 (12 August 2014).
+part_number: LV 25-P
+category: sensor.voltage
+schema_version: '1.0'
+manufacturer: LEM
+family: LV 25-P
+lifecycle: desconhecido
+notes:
+- 'Transdutor de tensão por corrente primária: a tensão é medida passando corrente proporcional por um resistor externo R1 em série com o primário (pág. 1, Principle of use); faixa recomendada 10 a 500 V (pág. 4).'
+- 'R_M (resistor de medida), pág. 1: com ±15 V, 100 a 350 ohm @ ±10 mA max e 100 a 190 ohm @ ±14 mA max; com ±12 V, 30 a 190 ohm @ ±10 mA max e 30 a 100 ohm @ ±14 mA max.'
+- 'Consumo IC (pág. 1): 10 mA (@ ±15 V) + IS. Corrente primária nominal 10 mA, faixa 0 a ±14 mA (pág. 1).'
+- 'Tensão de impulso 1.2/50 us: 16 kV (pág. 2).'
+datasheets:
+- id: ds1
+  manufacturer: LEM
+  document_number: 97.27.19.000.0
+  revision: version 19, 12 August 2014
+  url: https://sy-dep-epc-lpc.web.cern.ch/components/datasheets/epc-lpc%20(converters)/LV25-P_Voltage-Transducer_(LEM).pdf
+  sha256: 4f562e9c2d214a8440a77639f554ad8e2b3fdbe61b3804e929b1128cc68cccb2
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  V_PN:
+    min: 10
+    max: 500
+    unit: V
+    status: extraido
+    source: {page: 1, location: Features, VPN, excerpt: "VPN = 10 .. 500 V"}
+  ratio:
+    typ: 2.5
+    unit: '1'
+    status: extraido
+    source: {page: 1, location: tabela, KN conversion ratio, excerpt: "KN 2500 : 1000"}
+  I_SN:
+    typ: 25
+    unit: mA
+    status: extraido
+    source: {page: 1, location: tabela, ISN, excerpt: "ISN 25 mA"}
+  accuracy:
+    max: 0.9
+    unit: '%'
+    status: extraido
+    source: {page: 1, location: tabela, XG overall accuracy, excerpt: "XG ± 0.9 %"}
+    conditions: {TA: 25 °C}
+  V_iso:
+    max: 2500
+    unit: V
+    status: extraido
+    source: {page: 2, location: Insulation coordination, Ud, excerpt: "Ud 2.5 kV"}
+  VS:
+    min: 12
+    max: 15
+    unit: V
+    status: extraido
+    source: {page: 1, location: tabela, UC supply voltage, excerpt: "UC ± 12 .. 15 V"}
+  Top:
+    min: 0
+    max: 70
+    unit: °C
+    status: extraido
+    source: {page: 1, location: General data, TA, excerpt: "TA 0 .. + 70 °C"}
+  Tstg:
+    min: -25
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 1, location: General data, TS, excerpt: "TS - 25 .. + 85 °C"}
+attributes:
+  principio:
+    value: Hall malha fechada (compensação)
+    status: extraido
+    source: {page: 1, location: Features}
+  saida:
+    value: corrente (ISN 25 mA)
+    status: extraido
+    source: {page: 1, location: tabela}

@@ -1,0 +1,75 @@
+# Fonte: SICK, Online data sheet MZT8-03VPS-KP0 (part no. 1044458), impresso em 2026-09-17.
+part_number: MZT8-03VPS-KP0
+category: sensor.magnetic
+schema_version: '1.0'
+manufacturer: SICK
+family: MZT8
+lifecycle: desconhecido
+notes:
+- Sensor de cilindro pneumático (ranhura em T, ímã do pistão); a sensibilidade de resposta típica 2,6 mT foi lançada em B_op (rótulo do documento "Response sensitivity, typ."), conferir (p. 2).
+- Histerese típica 0,7 mT (p. 2), reprodutibilidade <= 0,1 mT (p. 3), distância de sobrecurso típica 3 mm (p. 2), atraso de disponibilidade 25 ms (p. 2).
+- Proteção inversão de polaridade, curto-circuito e pulso de ligação; classe de proteção III; LED de status; sem teach-in (p. 2-3). IP67/IP68 (p. 2).
+- Cabo com conector M8 de 3 pinos, 0,3 m, para corrente de arrasto (p. 3). MTTFD 2.289 anos (p. 3).
+datasheets:
+- id: ds1
+  manufacturer: SICK
+  url: https://www.sick.com/media/pdf/7/57/657/dataSheet_MZT8-03VPS-KP0_1044458_en.pdf
+  sha256: aa345e5582403520840dede316a39cca49a6ca95ee27cc6dde8f878f31cd919f
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  B_op:
+    typ: 2.6
+    unit: mT
+    status: extraido
+    source: {page: 2, location: Mechanics/Electronics - Response sensitivity typ., excerpt: "Response sensitivity, typ. 2.6 mT"}
+  VS:
+    min: 10
+    max: 30
+    unit: V
+    status: extraido
+    source: {page: 2, location: Mechanics/Electronics - Supply voltage, excerpt: "10 V DC ... 30 V DC"}
+  IS:
+    typ: 10
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Mechanics/Electronics - Power consumption, excerpt: "10 mA, without load"}
+  IL:
+    max: 200
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Mechanics/Electronics - Continuous current Ia, excerpt: "≤ 200 mA"}
+  Vdrop:
+    max: 2.2
+    unit: V
+    status: extraido
+    source: {page: 2, location: Mechanics/Electronics - Voltage drop, excerpt: "≤ 2.2 V"}
+  f_sw:
+    max: 1000
+    unit: Hz
+    status: extraido
+    source: {page: 2, location: Features - Switching frequency, excerpt: "Switching frequency 1,000 Hz"}
+  Top:
+    min: -30
+    max: 80
+    unit: °C
+    status: extraido
+    source: {page: 3, location: Mechanics/Electronics - Ambient operating temperature, excerpt: "–30 °C ... +80 °C"}
+attributes:
+  saida:
+    value: PNP, NA (DC 3 fios), proteção contra curto-circuito
+    status: extraido
+    source: {page: 2, location: Features - Switching output / Output function / Electrical wiring, excerpt: "PNP; NO; DC 3-wire"}
+  conexao:
+    value: Cabo com conector M8, 3 pinos, 0,3 m, uso em corrente de arrasto
+    status: extraido
+    source: {page: 3, location: Mechanics/Electronics - Connection type, excerpt: "Cable with connector M8, 3-pin, drag chain use, 0.3 m"}
+  invólucro:
+    value: Plástico PA12 (cabo PUR), para cilindros com ranhura em T
+    status: extraido
+    source: {page: 3, location: Material - Housing / Cable; Features - Cylinder type, excerpt: "Housing Plastic, PA12; Cable PUR; T-slot"}
+  encapsulamento:
+    value: Comprimento da carcaça 24 mm
+    status: extraido
+    source: {page: 2, location: Features - Housing length, excerpt: "Housing length 24 mm"}

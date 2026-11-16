@@ -1,0 +1,402 @@
+# Fonte: Vishay Siliconix, IRF740 Power MOSFET, documento 91054, S21-0853-Rev. D, 16-Aug-2021.
+part_number: IRF740
+category: mosfet.n
+schema_version: '1.0'
+manufacturer: Vishay Siliconix
+package: TO-220AB
+lifecycle: desconhecido
+notes:
+- 'Folha ''IRF740 Power MOSFET'' (documento 91054, S21-0853-Rev. D, 16-Aug-2021). Pedido sem chumbo: IRF740PbF; sem halogênio: IRF740PbF-BE3.'
+datasheets:
+- id: ds1
+  manufacturer: Vishay Siliconix
+  document_number: '91054'
+  revision: S21-0853-Rev. D, 16-Aug-2021
+  url: https://www.vishay.com/docs/91054/91054.pdf
+  sha256: 61fc0ff03dd1ec6e5a61458eb7c906cceeedeb3161257a86868d23beb6b798b7
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VDS:
+    max: 400
+    unit: V
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - drain-source voltage
+      excerpt: Drain-source voltage VDS 400 V
+  VGS:
+    max: 20
+    unit: V
+    note: Limite simétrico ±20 V
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - gate-source voltage
+      excerpt: Gate-source voltage VGS ± 20
+  ID:
+    max: 10
+    unit: A
+    conditions:
+      TC: 25 degC
+      VGS: 10 V
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - continuous drain current, VGS at 10 V, TC = 25 °C
+      excerpt: TC = 25 °C ID 10 A
+  ID@100C:
+    max: 6.3
+    unit: A
+    conditions:
+      TC: 100 degC
+      VGS: 10 V
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - continuous drain current, TC = 100 °C
+      excerpt: TC = 100 °C 6.3
+  IDM:
+    max: 40
+    unit: A
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - pulsed drain current (a)
+      excerpt: Pulsed drain current a IDM 40
+  Ptot_derating:
+    max: 1.0
+    unit: W/K
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - linear derating factor
+      excerpt: Linear derating factor 1.0 W/°C
+  EAS:
+    max: 520
+    unit: mJ
+    note: 'Nota b: VDD = 50 V, TJ inicial 25 °C, L = 9.1 mH, Rg = 25 Ω, IAS = 10 A'
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - single pulse avalanche energy (b)
+      excerpt: Single pulse avalanche energy b EAS 520 mJ
+  IAR:
+    max: 10
+    unit: A
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - repetitive avalanche current
+      excerpt: Repetitive avalanche current a IAR 10 A
+  EAR:
+    max: 13
+    unit: mJ
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - repetitive avalanche energy
+      excerpt: Repetitive avalanche energy a EAR 13 mJ
+  Ptot:
+    max: 125
+    unit: W
+    conditions:
+      TC: 25 degC
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - maximum power dissipation
+      excerpt: Maximum power dissipation TC = 25 °C PD 125 W
+  dv/dt:
+    max: 4.0
+    unit: V/ns
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - peak diode recovery dV/dt (c)
+      excerpt: Peak diode recovery dV/dt c 4.0 V/ns
+  Tj_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - operating junction and storage temperature range
+      excerpt: TJ, Tstg -55 to +150 °C
+  Tj_min:
+    min: -55
+    unit: degC
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - operating junction and storage temperature range
+      excerpt: TJ, Tstg -55 to +150 °C
+  Rth_ja:
+    max: 62
+    unit: K/W
+    status: extraido
+    source:
+      page: 2
+      location: Thermal resistance ratings - maximum junction-to-ambient
+      excerpt: Maximum junction-to-ambient RthJA 62 °C/W
+  Rth_cs:
+    typ: 0.5
+    unit: K/W
+    status: extraido
+    source:
+      page: 2
+      location: Thermal resistance ratings - case-to-sink, flat, greased surface
+      excerpt: Case-to-sink, flat, greased surface RthCS 0.50
+  Rth_jc:
+    max: 1.0
+    unit: K/W
+    status: extraido
+    source:
+      page: 2
+      location: Thermal resistance ratings - maximum junction-to-case (drain)
+      excerpt: Maximum junction-to-case (drain) RthJC 1.0
+  V(BR)DSS:
+    min: 400
+    unit: V
+    conditions:
+      ID: 250 uA
+      VGS: 0 V
+    status: extraido
+    source:
+      page: 2
+      location: Specifications static - drain-source breakdown voltage
+      excerpt: Drain-source breakdown voltage VDS VGS = 0 V, ID = 250 μA 400
+  VGS(th):
+    min: 2.0
+    max: 4.0
+    unit: V
+    conditions:
+      ID: 250 uA
+    status: extraido
+    source:
+      page: 2
+      location: Specifications static - gate-source threshold voltage
+      excerpt: VGS(th) VDS = VGS, ID = 250 μA 2.0 4.0 V
+  IGSS:
+    max: 100
+    unit: nA
+    conditions:
+      VGS: 20 V
+    status: extraido
+    source:
+      page: 2
+      location: Specifications static - gate-source leakage
+      excerpt: Gate-source leakage IGSS VGS = ± 20 V ± 100 nA
+  IDSS:
+    max: 25
+    unit: uA
+    conditions:
+      VDS: 400 V
+    status: extraido
+    source:
+      page: 2
+      location: Specifications static - zero gate voltage drain current
+      excerpt: IDSS VDS = 400 V, VGS = 0 V 25 μA
+  RDS(on):
+    max: 0.55
+    unit: ohm
+    conditions:
+      VGS: 10 V
+      ID: 6.0 A
+    status: extraido
+    source:
+      page: 2
+      location: Specifications static - drain-source on-state resistance
+      excerpt: RDS(on) VGS = 10 V ID = 6.0 A 0.55 Ω
+  gfs:
+    min: 5.8
+    unit: S
+    conditions:
+      VDS: 50 V
+      ID: 6.0 A
+    status: extraido
+    source:
+      page: 2
+      location: Specifications static - forward transconductance
+      excerpt: gfs VDS = 50 V, ID = 6.0 A 5.8 S
+  Ciss:
+    typ: 1400
+    unit: pF
+    conditions:
+      VDS: 25 V
+    status: extraido
+    source:
+      page: 2
+      location: Specifications dynamic - input capacitance
+      excerpt: Input capacitance Ciss VGS = 0 V VDS = 25 V 1400 pF
+  Coss:
+    typ: 330
+    unit: pF
+    conditions:
+      VDS: 25 V
+    status: extraido
+    source:
+      page: 2
+      location: Specifications dynamic - output capacitance
+      excerpt: Output capacitance Coss 330
+  Crss:
+    typ: 120
+    unit: pF
+    conditions:
+      VDS: 25 V
+    status: extraido
+    source:
+      page: 2
+      location: Specifications dynamic - reverse transfer capacitance
+      excerpt: Reverse transfer capacitance Crss 120
+  Qg:
+    max: 63
+    unit: nC
+    conditions:
+      VGS: 10 V
+      ID: 10 A
+      VDS: 320 V
+    status: extraido
+    source:
+      page: 2
+      location: Specifications dynamic - total gate charge
+      excerpt: Total gate charge Qg VGS = 10 V ID = 10 A, VDS = 320 V 63 nC
+  Qgs:
+    max: 9.0
+    unit: nC
+    conditions:
+      VGS: 10 V
+      ID: 10 A
+      VDS: 320 V
+    status: extraido
+    source:
+      page: 2
+      location: Specifications dynamic - gate-source charge
+      excerpt: Gate-source charge Qgs 9.0
+  Qgd:
+    max: 32
+    unit: nC
+    conditions:
+      VGS: 10 V
+      ID: 10 A
+      VDS: 320 V
+    status: extraido
+    source:
+      page: 2
+      location: Specifications dynamic - gate-drain charge
+      excerpt: Gate-drain charge Qgd 32
+  td(on):
+    typ: 14
+    unit: ns
+    conditions:
+      ID: 10 A
+    status: extraido
+    source:
+      page: 2
+      location: Specifications dynamic - turn-on delay time
+      excerpt: Turn-on delay time td(on) VDD = 200 V, ID = 10 A 14 ns
+  tr:
+    typ: 27
+    unit: ns
+    conditions:
+      ID: 10 A
+    status: extraido
+    source:
+      page: 2
+      location: Specifications dynamic - rise time
+      excerpt: Rise time tr 27
+  td(off):
+    typ: 50
+    unit: ns
+    conditions:
+      ID: 10 A
+    status: extraido
+    source:
+      page: 2
+      location: Specifications dynamic - turn-off delay time
+      excerpt: Turn-off delay time td(off) 50
+  tf:
+    typ: 24
+    unit: ns
+    conditions:
+      ID: 10 A
+    status: extraido
+    source:
+      page: 2
+      location: Specifications dynamic - fall time
+      excerpt: Fall time tf 24
+  Rg:
+    min: 0.8
+    max: 5.9
+    unit: ohm
+    status: extraido
+    source:
+      page: 2
+      location: Specifications dynamic - gate input resistance
+      excerpt: Gate input resistance Rg f = 1 MHz, open drain 0.8 5.9 Ω
+  LD:
+    typ: 4.5
+    unit: nH
+    status: extraido
+    source:
+      page: 2
+      location: Specifications dynamic - internal drain inductance
+      excerpt: Internal drain inductance LD 4.5 nH
+  LS:
+    typ: 7.5
+    unit: nH
+    status: extraido
+    source:
+      page: 2
+      location: Specifications dynamic - internal source inductance
+      excerpt: Internal source inductance LS 7.5
+  IS:
+    max: 10
+    unit: A
+    status: extraido
+    source:
+      page: 2
+      location: Body diode characteristics - continuous source-drain diode current
+      excerpt: Continuous source-drain diode current IS 10 A
+  ISM:
+    max: 40
+    unit: A
+    status: extraido
+    source:
+      page: 2
+      location: Body diode characteristics - pulsed diode forward current
+      excerpt: Pulsed diode forward current a ISM 40
+  VSD:
+    max: 2.0
+    unit: V
+    conditions:
+      IS: 10 A
+    status: extraido
+    source:
+      page: 2
+      location: Body diode characteristics - body diode voltage
+      excerpt: Body diode voltage VSD TJ = 25 °C, IS = 10 A, VGS = 0 V 2.0 V
+  trr:
+    typ: 370
+    max: 790
+    unit: ns
+    conditions:
+      IF: 10 A
+    status: extraido
+    source:
+      page: 2
+      location: Body diode characteristics - reverse recovery time
+      excerpt: trr TJ = 25 °C, IF = 10 A, dI/dt = 100 A/μs 370 790 ns
+  Qrr:
+    typ: 3.8
+    max: 8.2
+    unit: uC
+    conditions:
+      IF: 10 A
+    status: extraido
+    source:
+      page: 2
+      location: Body diode characteristics - reverse recovery charge
+      excerpt: Qrr 3.8 8.2 μC
+attributes: {}

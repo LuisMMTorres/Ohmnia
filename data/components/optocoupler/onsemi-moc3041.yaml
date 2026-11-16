@@ -1,0 +1,67 @@
+# Fonte: onsemi, MOC3031M/MOC3032M/MOC3033M/MOC3041M/MOC3042M/MOC3043M - 6-Pin DIP Zero-Cross Triac Driver Output Optocoupler (250/400 Volt Peak), Publication Order Number MOC3043M/D, September 2022 - Rev. 4.
+part_number: MOC3041
+category: optocoupler
+schema_version: '1.0'
+manufacturer: onsemi
+family: MOC303xM / MOC304xM
+package: PDIP6 8.51x6.35, 2.54P (6 pinos)
+lifecycle: desconhecido
+notes:
+- Driver de TRIAC com detecção de cruzamento por zero; o documento chama a peça de MOC3041M.
+- 'VCEO abaixo é a tensão de bloqueio de pico VDRM do detector: 400 V para MOC304xM (250 V para MOC303xM).'
+- 'IFT (corrente de disparo do LED) do MOC3041M: máx. 15 mA (Vmain = 3 V); não há símbolo IFT no esquema.'
+- 'Zero-cross: tensão de inibição VIH máx. 20 V; fuga em estado inibido IDRM2 máx. 2 mA.'
+datasheets:
+- id: ds1
+  manufacturer: onsemi
+  document_number: MOC3043M/D
+  revision: Rev. 4, September 2022
+  sha256: ce183da340c3179741180c34453249b2f60ca1b12dfac47da037869b0f992ee9
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  IF:
+    max: 60
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - Emitter - continuous forward current, excerpt: "IF Continuous Forward Current All 60 mA"}
+  VF:
+    typ: 1.25
+    max: 1.5
+    unit: V
+    conditions: {IF: 30 mA, TA: 25 °C}
+    status: extraido
+    source: {page: 3, location: Electrical characteristics - Emitter - input forward voltage, excerpt: "VF Input Forward Voltage IF = 30 mA All - 1.25 1.50 V"}
+  VCEO:
+    max: 400
+    unit: V
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - Detector - VDRM, excerpt: "VDRM Off-State Output Terminal Voltage MOC3041M MOC3042M MOC3043M 400 V"}
+  V_iso:
+    max: 4170
+    unit: V
+    conditions: {t: 1 min}
+    status: extraido
+    source: {page: 3, location: Electrical characteristics - Isolation characteristics - VISO, excerpt: "VISO Isolation Voltage t = 1 Minute All 4170 VACRMS"}
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - total device - operating temperature, excerpt: "TOPR Operating Temperature All -40 to +85 °C"}
+  Tstg:
+    min: -40
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - total device - storage temperature, excerpt: "TSTG Storage Temperature All -40 to +125 °C"}
+attributes:
+  saida:
+    value: TRIAC (detector monolítico de cruzamento por zero)
+    status: extraido
+    source: {page: 1, location: Title and description, excerpt: "6-Pin DIP Zero-Cross Triac Driver Output Optocoupler"}
+  canais:
+    value: '1'
+    status: extraido
+    source: {page: 1, location: Schematic, excerpt: "ANODE CATHODE ... MAIN TERM."}

@@ -1,0 +1,383 @@
+# Fonte: Infineon (International Rectifier), IRF540NPbF, Rev. 2.1, 2026-07-24.
+part_number: IRF540N
+category: mosfet.n
+schema_version: '1.0'
+manufacturer: Infineon
+package: TO-220
+lifecycle: desconhecido
+notes:
+- Folha 'IRF540NPbF' (HEXFET), Rev. 2.1, 2026-07-24, conforme impresso no documento.
+- 'EAS (700 típ. / 185 máx. mJ) não transcrito: nota do documento diz que o valor típico é de destruição.'
+datasheets:
+- id: ds1
+  manufacturer: Infineon
+  revision: Rev. 2.1, 2026-07-24
+  sha256: a3fd62a76cc88828f98f0c9bc541d62c225109ad1319fad93c75e92eb9653155
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VDS:
+    max: 100
+    unit: V
+    status: extraido
+    source:
+      page: 1
+      location: Features table - V(BR)DSS
+      excerpt: V(BR)DSS 100V
+  VGS:
+    max: 20
+    unit: V
+    note: Limite simétrico ±20 V
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum rating - gate-to-source voltage
+      excerpt: VGS Gate-to-Source Voltage ± 20 V
+  ID:
+    max: 33
+    unit: A
+    conditions:
+      TC: 25 degC
+      VGS: 10 V
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum rating - continuous drain current
+      excerpt: ID @ TC = 25°C ... VGS @ 10V 33 A
+  ID@100C:
+    max: 23
+    unit: A
+    conditions:
+      TC: 100 degC
+      VGS: 10 V
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum rating - continuous drain current
+      excerpt: ID @ TC = 100°C ... VGS @ 10V 23
+  IDM:
+    max: 110
+    unit: A
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum rating - pulsed drain current
+      excerpt: IDM Pulsed Drain Current 110
+  Ptot:
+    max: 130
+    unit: W
+    conditions:
+      TC: 25 degC
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum rating - maximum power dissipation
+      excerpt: PD @TC = 25°C 130 W
+  Ptot_derating:
+    max: 0.87
+    unit: W/K
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum rating - linear derating factor
+      excerpt: Linear Derating Factor 0.87 W/°C
+  IAR:
+    max: 16
+    unit: A
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum rating - avalanche current
+      excerpt: IAR Avalanche Current 16 A
+  EAR:
+    max: 13
+    unit: mJ
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum rating - repetitive avalanche energy
+      excerpt: EAR Repetitive Avalanche Energy 13 mJ
+  dv/dt:
+    max: 7.0
+    unit: V/ns
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum rating - peak diode recovery dv/dt
+      excerpt: dv/dt Peak Diode Recovery dv/dt 7.0 V/ns
+  Tj_max:
+    max: 175
+    unit: degC
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum rating - operating junction and storage temperature
+      excerpt: -55 to + 175
+  Tj_min:
+    min: -55
+    unit: degC
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum rating - operating junction and storage temperature
+      excerpt: -55 to + 175
+  Rth_jc:
+    max: 1.15
+    unit: K/W
+    status: extraido
+    source:
+      page: 1
+      location: Thermal resistance - junction-to-case
+      excerpt: Junction-to-Case 1.15 °C/W
+  Rth_cs:
+    typ: 0.5
+    unit: K/W
+    status: extraido
+    source:
+      page: 1
+      location: Thermal resistance - case-to-sink
+      excerpt: Case-to-Sink, Flat, Greased Surface 0.50
+  Rth_ja:
+    max: 62
+    unit: K/W
+    status: extraido
+    source:
+      page: 1
+      location: Thermal resistance - junction-to-ambient
+      excerpt: Junction-to-Ambient 62
+  V(BR)DSS:
+    min: 100
+    unit: V
+    conditions:
+      ID: 250 uA
+      VGS: 0 V
+    status: extraido
+    source:
+      page: 2
+      location: Static - drain-to-source breakdown voltage
+      excerpt: V(BR)DSS 100 V VGS = 0V, ID = 250µA
+  RDS(on):
+    max: 44
+    unit: mohm
+    conditions:
+      VGS: 10 V
+      ID: 16 A
+    status: extraido
+    source:
+      page: 2
+      location: Static - static drain-to-source on-resistance
+      excerpt: RDS(on) 44 mΩ VGS = 10V, ID = 16A
+  VGS(th):
+    min: 2.0
+    max: 4.0
+    unit: V
+    conditions:
+      ID: 250 uA
+    status: extraido
+    source:
+      page: 2
+      location: Static - gate threshold voltage
+      excerpt: VGS(th) 2.0 4.0 V VDS = VGS, ID = 250µA
+  gfs:
+    min: 21
+    unit: S
+    conditions:
+      VDS: 50 V
+      ID: 16 A
+    status: extraido
+    source:
+      page: 2
+      location: Static - forward transconductance
+      excerpt: gfs 21 S VDS = 50V, ID = 16A
+  IDSS:
+    max: 25
+    unit: uA
+    conditions:
+      VDS: 100 V
+    status: extraido
+    source:
+      page: 2
+      location: Static - drain-to-source leakage current
+      excerpt: IDSS 25 µA VDS = 100V, VGS = 0V
+  IGSS:
+    max: 100
+    unit: nA
+    conditions:
+      VGS: 20 V
+    status: extraido
+    source:
+      page: 2
+      location: Static - gate-to-source forward leakage
+      excerpt: IGSS 100 nA VGS = 20V
+  Qg:
+    max: 71
+    unit: nC
+    conditions:
+      VGS: 10 V
+      ID: 16 A
+      VDS: 80 V
+    status: extraido
+    source:
+      page: 2
+      location: Dynamic - total gate charge
+      excerpt: Qg 71 nC ID = 16A VDS = 80V VGS = 10V
+  Qgs:
+    max: 14
+    unit: nC
+    conditions:
+      VGS: 10 V
+      ID: 16 A
+      VDS: 80 V
+    status: extraido
+    source:
+      page: 2
+      location: Dynamic - gate-to-source charge
+      excerpt: Qgs 14
+  Qgd:
+    max: 21
+    unit: nC
+    conditions:
+      VGS: 10 V
+      ID: 16 A
+      VDS: 80 V
+    status: extraido
+    source:
+      page: 2
+      location: Dynamic - gate-to-drain charge
+      excerpt: Qgd 21
+  td(on):
+    typ: 11
+    unit: ns
+    conditions:
+      ID: 16 A
+    status: extraido
+    source:
+      page: 2
+      location: Dynamic - turn-on delay time
+      excerpt: td(on) 11 ns VDD = 50V ID = 16A RG = 5.1
+  tr:
+    typ: 35
+    unit: ns
+    conditions:
+      ID: 16 A
+    status: extraido
+    source:
+      page: 2
+      location: Dynamic - rise time
+      excerpt: tr 35
+  td(off):
+    typ: 39
+    unit: ns
+    conditions:
+      ID: 16 A
+    status: extraido
+    source:
+      page: 2
+      location: Dynamic - turn-off delay time
+      excerpt: td(off) 39
+  tf:
+    typ: 35
+    unit: ns
+    conditions:
+      ID: 16 A
+    status: extraido
+    source:
+      page: 2
+      location: Dynamic - fall time
+      excerpt: tf 35
+  LD:
+    typ: 4.5
+    unit: nH
+    status: extraido
+    source:
+      page: 2
+      location: Dynamic - internal drain inductance
+      excerpt: LD 4.5 nH
+  LS:
+    typ: 7.5
+    unit: nH
+    status: extraido
+    source:
+      page: 2
+      location: Dynamic - internal source inductance
+      excerpt: LS 7.5 nH
+  Ciss:
+    typ: 1960
+    unit: pF
+    conditions:
+      VDS: 25 V
+    status: extraido
+    source:
+      page: 2
+      location: Dynamic - input capacitance
+      excerpt: Ciss 1960 pF VGS = 0V VDS = 25V
+  Coss:
+    typ: 250
+    unit: pF
+    conditions:
+      VDS: 25 V
+    status: extraido
+    source:
+      page: 2
+      location: Dynamic - output capacitance
+      excerpt: Coss 250
+  Crss:
+    typ: 40
+    unit: pF
+    conditions:
+      VDS: 25 V
+    status: extraido
+    source:
+      page: 2
+      location: Dynamic - reverse transfer capacitance
+      excerpt: Crss 40
+  IS:
+    max: 33
+    unit: A
+    status: extraido
+    source:
+      page: 2
+      location: Diode characteristics - continuous source current
+      excerpt: IS Continuous Source Current 33 A
+  ISM:
+    max: 110
+    unit: A
+    status: extraido
+    source:
+      page: 2
+      location: Diode characteristics - pulsed source current
+      excerpt: ISM Pulsed Source Current 110
+  VSD:
+    max: 1.2
+    unit: V
+    conditions:
+      IS: 16 A
+    status: extraido
+    source:
+      page: 2
+      location: Diode characteristics - diode forward voltage
+      excerpt: VSD 1.2 V TJ = 25°C, IS = 16A, VGS = 0V
+  trr:
+    typ: 115
+    max: 170
+    unit: ns
+    conditions:
+      IF: 16 A
+    status: extraido
+    source:
+      page: 2
+      location: Diode characteristics - reverse recovery time
+      excerpt: trr 115 170 ns TJ = 25°C, IF = 16A
+  Qrr:
+    typ: 505
+    max: 760
+    unit: nC
+    conditions:
+      IF: 16 A
+    status: extraido
+    source:
+      page: 2
+      location: Diode characteristics - reverse recovery charge
+      excerpt: Qrr 505 760 nC di/dt = 100A/µs
+attributes: {}

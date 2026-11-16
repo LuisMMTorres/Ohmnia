@@ -1,0 +1,34 @@
+# Fonte: Oriental Motor, Product Catalog 2018/2019, Hybrid Control System AlphaStep AR Series (AC input), páginas B-83 a B-98.
+part_number: AR
+category: drive.stepper
+schema_version: '1.0'
+manufacturer: Oriental Motor
+family: AlphaStep AR Series
+lifecycle: desconhecido
+notes:
+- 'Catálogo comercial (lista de preços e opções); as especificações elétricas detalhadas não estão no documento (pág. 15: "refer to our website"). Registro mínimo, só o que o catálogo declara.'
+- 'Série composta de motor híbrido com controle em malha fechada e driver ARD; drivers ARD-A/-C/-S (entrada de pulsos) e ARD-AD/-CD (controlador embutido) (págs. 2 e 14).'
+- 'Faixa de comando de velocidade do controlador embutido: 0 a 1000000 Hz (pág. 5, linha "Command Range"); não confundir com a frequência máxima de pulsos de entrada.'
+- 'Controle híbrido: malha aberta com correção em malha fechada em sobrecarga (pág. 2).'
+- 'Operação contínua exige dissipador equivalente a placa de alumínio 250 x 250 mm, 6 mm de espessura (pág. 2).'
+datasheets:
+- id: ds1
+  manufacturer: Oriental Motor
+  revision: Catálogo 2018/2019
+  url: https://www.orientalmotor.com/products/pdfs/2018-2019/B/hybrid-control-system-alphastep_ar-series.pdf
+  sha256: e09ca2ed66b9644139a368425b721e39ac5a18cf707d3f5578e54b9fdb2f0a47
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 100
+    max: 240
+    unit: V
+    status: extraido
+    source: {page: 14, location: Driver, Power Supply Input, excerpt: "Single-Phase 100-120 VAC ... Single-Phase 200-240 VAC"}
+attributes:
+  entrada:
+    value: pulsos (tipo Pulse Input, entrada 1 ou 2 pulsos) ou controlador embutido (Built-in Controller Type)
+    status: extraido
+    source: {page: 14, location: Driver, tipos ARD}

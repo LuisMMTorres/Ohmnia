@@ -1,0 +1,89 @@
+# Fonte: Texas Instruments, DACxx6x Dual 16-, 14-, 12-Bit, Low-Power, Buffered, Voltage-Output DACs With 2.5-V, 4-PPM/°C Internal Reference (DAC7562/7563/8162/8163/8562/8563), SLAS719E, August 2010 - Revised June 2015.
+part_number: DAC8562
+category: ic.dac
+schema_version: '1.0'
+manufacturer: Texas Instruments
+family: DACxx6x
+package: WSON-10 (DSC, 3 x 3 mm) e VSSOP-10 (DGS) (p. 1 e p. 5)
+lifecycle: desconhecido
+notes:
+- 'O documento cobre DAC7562/7563 (12 bits), DAC8162/8163 (14 bits) e DAC8562/8563 (16 bits); o DAC8562 é de 16 bits com power-on reset em zero (os DACxx63 iniciam em meia escala) (p. 1).'
+- 'Referência interna de 2,5 V (4 ppm/°C típ.), saída de tensão de 0 a AVDD, dois canais (p. 1 e p. 6).'
+- 'Corrente de alimentação a AVDD = 3,6 a 5,5 V, modo normal: 0,25 mA típ. e 0,5 mA máx. com referência interna desligada; 0,9 mA típ. e 1,6 mA máx. com referência ligada (p. 8).'
+- 'Relative accuracy do DAC856x: ±4 LSB típ., ±12 LSB máx. (p. 6).'
+datasheets:
+- id: ds1
+  manufacturer: Texas Instruments
+  document_number: SLAS719E
+  revision: June 2015
+  url: https://www.ti.com/lit/ds/symlink/dac8562.pdf
+  sha256: 3fbba20baac4cf7e3b38e5f73196a8f4e9d936280de5881cbc9e8b5df33b1549
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  bits:
+    typ: 16
+    unit: bit
+    status: extraido
+    source: {page: 6, location: 7.5 Electrical Characteristics - Static performance DAC856x, excerpt: "Resolution 16 Bits DAC856x"}
+  t_settle:
+    typ: 7
+    unit: us
+    status: extraido
+    source: {page: 6, location: 7.5 Electrical Characteristics - Output voltage settling time, excerpt: "DACs unloaded 7 ... RL = 1 MΩ 10 µs"}
+  channels:
+    typ: 2
+    unit: '1'
+    status: extraido
+    source: {page: 1, location: 3 Description, excerpt: "low-power, voltage-output, dual-channel"}
+  VS:
+    min: 2.7
+    max: 5.5
+    unit: V
+    status: extraido
+    source: {page: 5, location: 7.3 Recommended Operating Conditions - Supply voltage, excerpt: "Supply voltage AVDD to GND 2.7 5.5 V"}
+  VREF:
+    typ: 2.5
+    unit: V
+    status: extraido
+    source: {page: 7, location: 7.5 Electrical Characteristics - Reference output, excerpt: "Output voltage TA = 25°C 2.495 2.5 2.505 V"}
+  V_out:
+    min: 0
+    unit: V
+    status: extraido
+    source: {page: 6, location: 7.5 Electrical Characteristics - Output voltage range, excerpt: "Output voltage range 0 AVDD V"}
+  DNL:
+    typ: 0.2
+    max: 1
+    unit: '1'
+    status: extraido
+    source: {page: 6, location: 7.5 Electrical Characteristics - DNL DAC856x, excerpt: "Differential nonlinearity 16-bit monotonic ±0.2 ±1 LSB"}
+  IS:
+    typ: 0.25
+    max: 0.5
+    unit: mA
+    conditions: {AVDD: 3.6 V}
+    status: extraido
+    source: {page: 8, location: 7.5 Electrical Characteristics - Power supply current, excerpt: "normal mode, internal reference off 0.25 0.5 mA"}
+  Top:
+    min: -40
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 5, location: 7.3 Recommended Operating Conditions - Operating ambient temperature, excerpt: "TA Operating ambient temperature –40 125 °C"}
+  Tstg:
+    min: -65
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 5, location: 7.1 Absolute Maximum Ratings - Tstg, excerpt: "Storage temperature, Tstg –65 150 °C"}
+attributes:
+  interface:
+    value: Serial de 3 fios compatível com SPI, QSPI e Microwire (até 50 MHz)
+    status: extraido
+    source: {page: 1, location: 3 Description, excerpt: "three-wire serial interface that operates at clock rates up to 50 MHz"}
+  encapsulamento:
+    value: WSON-10 (3 x 3 mm), VSSOP-10
+    status: extraido
+    source: {page: 1, location: Device Information, excerpt: "Packages: WSON-10 (3 mm × 3 mm), VSSOP-10"}

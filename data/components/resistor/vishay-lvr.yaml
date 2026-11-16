@@ -1,0 +1,63 @@
+# Fonte: Vishay Dale, LVR Wirewound Resistors, Precision Power, Low Value, Commercial, Axial Lead, Document Number 30206, Revision 21-Apr-2021.
+part_number: LVR
+category: resistor.fixed
+schema_version: '1.0'
+manufacturer: Vishay
+family: LVR (LVR01, LVR03, LVR05, LVR10)
+package: Axial; corpo de 10.85 x 2.92 mm (LVR01) a 46.43 x 9.96 mm (LVR10)
+lifecycle: desconhecido
+notes:
+- Valores da serie, faixa entre os modelos LVR01, LVR03, LVR05 e LVR10
+- 'LVR01, LVR03 e LVR05 em End of Life desde 22/05/2021; LVR10 segue suportado (p. 1)'
+- 'Tensao maxima de trabalho dada pela formula (P x R)^1/2 (p. 1), sem valor fixo; por isso nao ha V_max'
+- 'TCR por modelo e faixa de resistencia (p. 2): LVR01 de +/-1000 ppm/C (0.01 a 0.0249 ohm) a +/-150 (0.1 ohm); LVR03 de +/-850 a +/-50; LVR05 de +/-650 a +/-50; LVR10 de +/-300 a +/-50; TCR do schema = maior valor'
+- 'Faixa de temperatura de operacao: -65 a +175 C no LVR01; -65 a +275 C nos demais (p. 1)'
+- 'Resistencia por modelo (ohm): LVR01 0.01 a 0.1; LVR03 0.005 a 0.2; LVR05 0.005 a 0.3; LVR10 0.01 a 0.25'
+datasheets:
+- id: ds1
+  manufacturer: Vishay
+  document_number: '30206'
+  revision: 21-Apr-2021
+  sha256: 29e2c361e9df5a50387b3c86c44ae3a5998257abfe24bd2d309075343d03086a
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  R:
+    min: 0.005
+    max: 0.3
+    unit: ohm
+    status: extraido
+    source: {page: 1, location: Standard Electrical Specifications - Resistance Range, excerpt: "LVR03 0.005 to 0.2; LVR05 0.005 to 0.3"}
+  tol:
+    max: 10
+    unit: '%'
+    status: extraido
+    source: {page: 1, location: Standard Electrical Specifications - Tolerance, excerpt: "Tolerance ± % 1, 3, 5, 10"}
+  P_rated:
+    min: 1
+    max: 10
+    unit: W
+    status: extraido
+    conditions: {TA: 25 °C}
+    source: {page: 1, location: Standard Electrical Specifications - Power Rating P25C, excerpt: "LVR01 1; LVR03 3; LVR05 5; LVR10 10"}
+  TCR:
+    max: 1000
+    unit: ppm/K
+    status: extraido
+    source: {page: 2, location: Temperature Coefficient (ppm/C) LVR01, excerpt: "± 1000 for 0.01 to 0.0249"}
+  Top:
+    min: -65
+    max: 275
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Technical Specifications - Operating Temperature Range, excerpt: "-65 to +175 / -65 to +275"}
+attributes:
+  tecnologia:
+    value: Fio/liga niquel-cromo (wirewound); tira metalica (LVR01/03/05), bobina espacada (LVR10)
+    status: extraido
+    source: {page: 1, location: Standard Electrical Specifications - Technology, excerpt: "Metal strip ... Coil spacewound"}
+  encapsulamento:
+    value: Axial, composto moldado
+    status: extraido
+    source: {page: 2, location: Material Specifications, excerpt: "Encapsulation: high temperature mold compound"}

@@ -1,0 +1,17 @@
+category: ic.oscillator
+schema_version: "1.0"
+description: Gerador de funções, VCO ou oscilador integrado (XR2206, ICL8038, CD4046...)
+required: []
+parameters:
+  VS:       {unit: V, kind: characteristic, description: Alimentação (faixa)}
+  VS_max:   {unit: V, kind: max_rating, description: Alimentação máxima absoluta}
+  f:        {unit: Hz, kind: characteristic, description: Faixa de frequência}
+  sweep:    {unit: "1", kind: characteristic, description: Faixa de varredura (relação)}
+  THD:      {unit: "%", kind: characteristic, description: Distorção da senoide}
+  V_out:    {unit: V, kind: characteristic, description: Amplitude de saída}
+  drift:    {unit: ppm/K, kind: characteristic, description: Deriva de frequência com a temperatura}
+  IS:       {unit: mA, kind: characteristic, description: Corrente de alimentação}
+  Top:      {unit: °C, kind: thermal, description: Temperatura de operação (faixa)}
+attributes:
+  formas_de_onda: Formas de onda disponíveis
+  encapsulamento: Encapsulamento

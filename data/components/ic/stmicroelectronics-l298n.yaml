@@ -1,0 +1,82 @@
+# Fonte: STMicroelectronics, L298 Dual Full-Bridge Driver, datasheet January 2000 (cópia SparkFun).
+part_number: L298N
+category: ic.interface
+schema_version: '1.0'
+manufacturer: STMicroelectronics
+family: L298
+package: Multiwatt15 (vertical)
+lifecycle: desconhecido
+notes:
+- 'Fila: L298N. O documento cobre L298N, L298HN (Multiwatt) e L298P (PowerSO20).'
+- 'Corrente quiescente (pág. 3, VS = 42 V, VSS = 5 V): IS 13 a 22 mA (Ven = H, IL = 0, Vi = L) ou 50 a 70 mA (Vi = H), 4 mA (Ven = L); ISS 24 a 36 mA (Vi = L) ou 7 a 12 mA (Vi = H), 6 mA (Ven = L). Não transcrito como parâmetro.'
+- 'Queda total (VCEsat total, pág. 3): 1,80 V (IL = 1 A) e 3,2 V (IL = 2 A) nas colunas típ./máx. da tabela; atribuição de colunas não confirmada, não transcrito.'
+- 'Tensão de entrada baixa máx. 1,5 V, alta mín. 2,3 V (pág. 3).'
+datasheets:
+- id: ds1
+  manufacturer: STMicroelectronics
+  document_number: L298
+  revision: January 2000
+  url: https://www.sparkfun.com/datasheets/Robotics/L298_H_Bridge.pdf
+  sha256: b499461614cbbec95227bc79e1da4bf21f0e0121d9f7f931b462cbe66fced4b3
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 4.5
+    max: 7
+    unit: V
+    status: extraido
+    source: {page: 3, location: Electrical characteristics - VSS logic supply voltage (pin 9), excerpt: "VSS Logic Supply Voltage (pin 9) 4.5 5 7 V"}
+  V_load:
+    max: 46
+    unit: V
+    status: extraido
+    source: {page: 3, location: Electrical characteristics - VS supply voltage operative condition, excerpt: "VS Supply Voltage (pin 4) Operative Condition VIH+2.5 ... 46 V"}
+  I_out:
+    max: 2
+    unit: A
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - IO DC operation, excerpt: "Peak Output Current (each Channel) DC Operation 2 A"}
+  I_peak:
+    max: 3
+    unit: A
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - IO non repetitive (t = 100 us), excerpt: "Non Repetitive (t = 100us) 3 A"}
+  f_max:
+    typ: 25
+    max: 40
+    unit: kHz
+    status: extraido
+    source: {page: 4, location: Electrical characteristics continued - fc (Vi) commutation frequency, excerpt: "fc (Vi) Commutation Frequency IL = 2A 25 40 KHz"}
+    conditions: {IL: 2 A}
+  channels:
+    typ: 2
+    unit: '1'
+    status: extraido
+    source: {page: 1, location: Title, excerpt: "DUAL FULL-BRIDGE DRIVER"}
+  Top:
+    min: -25
+    max: 130
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - Top junction operating temperature, excerpt: "Junction Operating Temperature -25 to 130 C"}
+  Tstg:
+    min: -40
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - Tstg, Tj, excerpt: "Storage and Junction Temperature -40 to 150 C"}
+attributes:
+  funcao:
+    value: driver de ponte H dupla (dual full-bridge) para cargas indutivas, relés, solenoides, motores CC e de passo
+    status: extraido
+    source: {page: 1, location: Description, excerpt: "dual full-bridge driver ... drive inductive loads such as relays, solenoids, DC and stepping motors"}
+  interface:
+    value: entradas lógicas compatíveis com TTL, duas entradas de habilitação
+    status: extraido
+    source: {page: 3, location: Pin functions, excerpt: "TTL Compatible Inputs of the Bridge A"}
+  encapsulamento:
+    value: Multiwatt15 (L298N vertical)
+    status: extraido
+    source: {page: 1, location: Ordering numbers, excerpt: "L298N (Multiwatt Vert.)"}

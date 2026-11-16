@@ -1,0 +1,57 @@
+category: motor.stepper
+schema_version: '1.0'
+description: Motor de passo
+required:
+- step_angle
+parameters:
+  step_angle:
+    unit: deg
+    kind: characteristic
+    description: Ângulo de passo
+  I_phase:
+    unit: A
+    kind: max_rating
+    description: Corrente por fase
+  R_phase:
+    unit: ohm
+    kind: characteristic
+    description: Resistência por fase
+  L_phase:
+    unit: mH
+    kind: characteristic
+    description: Indutância por fase
+  V_rated:
+    unit: V
+    kind: characteristic
+    description: Tensão nominal
+  T_hold:
+    unit: N*m
+    kind: characteristic
+    description: Torque de retenção
+  T_detent:
+    unit: N*m
+    kind: characteristic
+    description: Torque de detenção
+  J_rotor:
+    unit: g*cm^2
+    kind: characteristic
+    description: Inércia do rotor
+  mass:
+    unit: kg
+    kind: geometry
+    description: Massa
+  length:
+    unit: mm
+    kind: geometry
+    description: Comprimento
+  Top:
+    unit: °C
+    kind: thermal
+    description: 'Temperatura de operação (faixa: mín. e máx.)'
+  Tstg:
+    unit: °C
+    kind: thermal
+    description: Temperatura de armazenamento (faixa)
+attributes:
+  tamanho: Tamanho (NEMA)
+  ligacao: Ligação (bipolar, unipolar, fios)

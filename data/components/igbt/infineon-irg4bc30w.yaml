@@ -1,0 +1,276 @@
+# Fonte: International Rectifier / Infineon, PD-95693A IRG4BC30W-SPbF Insulated Gate Bipolar Transistor (versão D2Pak).
+part_number: IRG4BC30W
+category: igbt.n
+schema_version: '1.0'
+manufacturer: Infineon
+package: D2Pak
+lifecycle: desconhecido
+notes:
+- O documento é do IRG4BC30W-SPbF (D2Pak); o part number da fila IRG4BC30W pode ser outro encapsulamento (a conferir pelo revisor).
+- 'Ptot a TC = 100 °C é 42 W (pág. 1). Perda total de comutação Ets 0.26 mJ típico, 0.35 mJ máx a 25 °C e 0.55 mJ a 150 °C (pág. 2); Eon e Eoff só são dados a 25 °C.'
+- 'Condições dos tempos de comutação: TJ = 25 °C, IC = 12 A, VCC = 480 V, VGE = 15 V, RG = 23 ohm (pág. 2); a energia inclui a cauda ("tail").'
+- Sem diodo antiparalelo no documento. VCE(on) tipicamente 2.10 V a VGE = 15 V, IC = 12 A (pág. 1).
+datasheets:
+- id: ds1
+  manufacturer: Infineon
+  document_number: PD-95693A
+  url: https://cdn.eicom.ru/media/PDF/8149777.pdf
+  sha256: 299c8bca522221bb6607c095828ecc328c9ca966c4d31b42e44a0b80ac7adcc3
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VCES:
+    max: 600
+    unit: V
+    status: extraido
+    source:
+      page: 1
+      location: Absolute Maximum Ratings - VCES
+      excerpt: "VCES Collector-to-Emitter Breakdown Voltage 600 V"
+  VGES:
+    max: 20
+    unit: V
+    status: extraido
+    source:
+      page: 1
+      location: Absolute Maximum Ratings - VGE
+      excerpt: "VGE Gate-to-Emitter Voltage ± 20 V"
+  IC:
+    max: 23
+    unit: A
+    conditions: {TC: 25 °C}
+    status: extraido
+    source:
+      page: 1
+      location: Absolute Maximum Ratings - IC @ TC = 25°C
+      excerpt: "IC @ TC = 25°C Continuous Collector Current 23"
+  IC@100C:
+    max: 12
+    unit: A
+    conditions: {TC: 100 °C}
+    status: extraido
+    source:
+      page: 1
+      location: Absolute Maximum Ratings - IC @ TC = 100°C
+      excerpt: "IC @ TC = 100°C Continuous Collector Current 12"
+  ICM:
+    max: 92
+    unit: A
+    status: extraido
+    source:
+      page: 1
+      location: Absolute Maximum Ratings - ICM
+      excerpt: "ICM Pulsed Collector Current 92"
+  Ptot:
+    max: 100
+    unit: W
+    conditions: {TC: 25 °C}
+    status: extraido
+    source:
+      page: 1
+      location: Absolute Maximum Ratings - PD @ TC = 25°C
+      excerpt: "PD @ TC = 25°C Maximum Power Dissipation 100"
+  Tj_max:
+    max: 150
+    unit: °C
+    status: extraido
+    source:
+      page: 1
+      location: Absolute Maximum Ratings - TJ operating junction
+      excerpt: "TJ Operating Junction and TSTG -55 to + 150"
+  Tj_min:
+    min: -55
+    unit: °C
+    status: extraido
+    source:
+      page: 1
+      location: Absolute Maximum Ratings - TJ operating junction
+      excerpt: "TJ Operating Junction and TSTG -55 to + 150"
+  Tstg_max:
+    max: 150
+    unit: °C
+    status: extraido
+    source:
+      page: 1
+      location: Absolute Maximum Ratings - Storage Temperature Range
+      excerpt: "TJ Operating Junction and TSTG -55 to + 150"
+  Rth_jc:
+    max: 1.2
+    unit: K/W
+    status: extraido
+    source:
+      page: 1
+      location: Thermal Resistance - RθJC Junction-to-Case
+      excerpt: "RθJC Junction-to-Case 1.2 °C/W"
+  Rth_ja:
+    max: 40
+    unit: K/W
+    status: extraido
+    source:
+      page: 1
+      location: Thermal Resistance - RθJA Junction-to-Ambient (PCB mounted)
+      excerpt: "RθJA Junction-to-Ambient (PCB Mounted, steady-state) 40"
+  BVCES:
+    min: 600
+    unit: V
+    conditions: {IC: 250 uA}
+    status: extraido
+    source:
+      page: 2
+      location: Electrical Characteristics - V(BR)CES
+      excerpt: "V(BR)CES 600 V VGE = 0V, IC = 250µA"
+  ICES:
+    max: 250
+    unit: uA
+    conditions: {VCE: 600 V}
+    status: extraido
+    source:
+      page: 2
+      location: Electrical Characteristics - ICES Zero Gate Voltage Collector Current
+      excerpt: "ICES 250 µA VGE = 0V, VCE = 600V"
+  IGES:
+    max: 100
+    unit: nA
+    conditions: {VGE: 20 V}
+    status: extraido
+    source:
+      page: 2
+      location: Electrical Characteristics - IGES
+      excerpt: "IGES Gate-to-Emitter Leakage Current ±100 nA VGE = ±20V"
+  VGE(th):
+    min: 3
+    max: 6
+    unit: V
+    conditions: {IC: 250 uA}
+    status: extraido
+    source:
+      page: 2
+      location: Electrical Characteristics - VGE(th)
+      excerpt: "VGE(th) Gate Threshold Voltage 3.0 6.0 V VCE = VGE, IC = 250µA"
+  VCE(sat):
+    typ: 2.1
+    max: 2.7
+    unit: V
+    conditions: {IC: 12 A, VGE: 15 V}
+    status: extraido
+    source:
+      page: 2
+      location: Electrical Characteristics - VCE(ON), TJ = 25 °C
+      excerpt: "VCE(ON) 2.1 2.7 V IC = 12A VGE = 15V"
+  VCE(sat)@hot:
+    typ: 1.95
+    unit: V
+    conditions: {IC: 12 A, VGE: 15 V, TJ: 150 °C}
+    status: extraido
+    source:
+      page: 2
+      location: Electrical Characteristics - VCE(ON) at TJ = 150 °C
+      excerpt: "1.95 V IC = 12A, TJ = 150°C"
+  Cies:
+    typ: 980
+    unit: pF
+    conditions: {VCE: 30 V}
+    status: extraido
+    source:
+      page: 2
+      location: Switching Characteristics - Cies
+      excerpt: "Cies Input Capacitance 980 pF VGE = 0V VCC = 30V f = 1.0MHz"
+  Coes:
+    typ: 71
+    unit: pF
+    conditions: {VCE: 30 V}
+    status: extraido
+    source:
+      page: 2
+      location: Switching Characteristics - Coes
+      excerpt: "Coes Output Capacitance 71 pF"
+  Cres:
+    typ: 18
+    unit: pF
+    conditions: {VCE: 30 V}
+    status: extraido
+    source:
+      page: 2
+      location: Switching Characteristics - Cres
+      excerpt: "Cres Reverse Transfer Capacitance 18 pF"
+  td(on):
+    typ: 25
+    unit: ns
+    status: extraido
+    source:
+      page: 2
+      location: Switching Characteristics TJ = 25 °C - td(on)
+      excerpt: "td(on) Turn-On Delay Time 25 ns"
+  tr:
+    typ: 16
+    unit: ns
+    status: extraido
+    source:
+      page: 2
+      location: Switching Characteristics TJ = 25 °C - tr
+      excerpt: "tr Rise Time 16 ns"
+  td(off):
+    typ: 99
+    max: 150
+    unit: ns
+    status: extraido
+    source:
+      page: 2
+      location: Switching Characteristics TJ = 25 °C - td(off)
+      excerpt: "td(off) Turn-Off Delay Time 99 150 ns"
+  tf:
+    typ: 67
+    max: 100
+    unit: ns
+    status: extraido
+    source:
+      page: 2
+      location: Switching Characteristics TJ = 25 °C - tf
+      excerpt: "tf Fall Time 67 100 ns"
+  Eon:
+    typ: 0.13
+    unit: mJ
+    conditions: {VCC: 480 V, IC: 12 A}
+    status: extraido
+    source:
+      page: 2
+      location: Switching Characteristics TJ = 25 °C - Eon
+      excerpt: "Eon Turn-On Switching Loss 0.13 mJ IC = 12A, VCC = 480V"
+  Eoff:
+    typ: 0.13
+    unit: mJ
+    conditions: {VCC: 480 V, IC: 12 A}
+    status: extraido
+    source:
+      page: 2
+      location: Switching Characteristics TJ = 25 °C - Eoff
+      excerpt: "Eoff Turn-Off Switching Loss 0.13 mJ IC = 12A, VCC = 480V"
+  Qg:
+    typ: 51
+    max: 76
+    unit: nC
+    conditions: {VCE: 400 V, IC: 12 A, VGE: 15 V}
+    status: extraido
+    source:
+      page: 2
+      location: Switching Characteristics - Qg
+      excerpt: "Qg Total Gate Charge (turn-on) 51 76 nC IC = 12A VCC = 400V VGE = 15V"
+  Qge:
+    typ: 7.6
+    max: 11
+    unit: nC
+    status: extraido
+    source:
+      page: 2
+      location: Switching Characteristics - Qge
+      excerpt: "Qge Gate - Emitter Charge (turn-on) 7.6 11 nC"
+  Qgc:
+    typ: 18
+    max: 27
+    unit: nC
+    status: extraido
+    source:
+      page: 2
+      location: Switching Characteristics - Qgc
+      excerpt: "Qgc Gate - Collector Charge (turn-on) 18 27 nC"

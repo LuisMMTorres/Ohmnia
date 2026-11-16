@@ -1,0 +1,71 @@
+# Fonte: Yageo, DATA SHEET Carbon Film Resistors General Purpose CFR Series, Product specification April 3, 2024 V.3.
+part_number: CFR-25
+category: resistor.fixed
+schema_version: '1.0'
+manufacturer: Yageo
+family: CFR Series
+package: Axial furo passante, corpo 6.3 mm x diametro 2.4 mm
+lifecycle: desconhecido
+notes:
+- Valores da coluna CFR-25 das Tabelas 1 e 2 do documento da serie CFR (p. 3-4)
+- 'TCR (Tabela 2, p. 4): -500 a +350 ppm/C abaixo de 100 kohm; -700 a 0 de 100 kohm a 1 Mohm; -1500 a 0 de 1 Mohm a 10 Mohm; TCR do schema = maior modulo (500)'
+- Tolerancia por codigo no part number, G = +/-2 %, J = +/-5 % (p. 2)
+- Resistencia 1 ohm a 10 Mohm para valores da serie E24 (p. 3)
+datasheets:
+- id: ds1
+  manufacturer: Yageo
+  document_number: CFR Series
+  revision: Apr. 03, 2024 V.3
+  url: https://www.yageogroup.com/content/datasheet/asset/file/yageo-cfr_datasheet
+  sha256: 76319a6451937e7734a6833f620890256273d6d5bc18237e5425bb0e07a2a143
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  R:
+    min: 1
+    max: 10000000
+    unit: ohm
+    status: extraido
+    source: {page: 3, location: Table 1 - Resistance Range, excerpt: "1Ω ~ 10MΩ for E24 series value"}
+  tol:
+    max: 5
+    unit: '%'
+    status: extraido
+    source: {page: 2, location: Ordering information - Tolerance, excerpt: "G = ±2%  J = ±5%"}
+  P_rated:
+    max: 0.25
+    unit: W
+    status: extraido
+    conditions: {TA: 70 °C}
+    source: {page: 3, location: Table 1 - Power Rating at 70 C (CFR-25), excerpt: "Power Rating at 70 °C 1/6W 1/4W 1/4W"}
+  V_max:
+    max: 250
+    unit: V
+    status: extraido
+    source: {page: 3, location: Table 1 - Maximum Working Voltage (CFR-25), excerpt: "Maximum Working Voltage 150V 200V 250V"}
+  V_overload:
+    max: 500
+    unit: V
+    status: extraido
+    source: {page: 3, location: Table 1 - Maximum Overload Voltage (CFR-25), excerpt: "Maximum Overload Voltage 300V 400V 500V"}
+  TCR:
+    max: 500
+    unit: ppm/K
+    status: extraido
+    source: {page: 4, location: Table 2 Temperature Coefficient - CFR-25 under 100K, excerpt: "CFR-12, CFR-25, CFR-50 - 500 ~ +350"}
+  Top:
+    min: -55
+    max: 155
+    unit: °C
+    status: extraido
+    source: {page: 3, location: Table 1 - Operating Temp. Range, excerpt: "- 55°C to +155°C"}
+attributes:
+  tecnologia:
+    value: Filme de carbono, uso geral, AEC-Q200
+    status: extraido
+    source: {page: 2, location: Features, excerpt: "AEC-Q200 qualified"}
+  encapsulamento:
+    value: Axial, L 6.3 ± 0.5 mm, diametro 2.4 ± 0.2 mm, terminal 0.55 ± 0.05 mm
+    status: extraido
+    source: {page: 3, location: Dimensions, excerpt: "CFR -25 CFR 50S 6.3 ± 0.5 2.4 ± 0.2 28 ± 2.0 0.55 ± 0.05"}

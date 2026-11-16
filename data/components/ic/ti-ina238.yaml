@@ -1,0 +1,72 @@
+# Fonte: Texas Instruments, INA238 85V, 16-Bit, High-Precision Power Monitor With I2C Interface, SLYS025B, janeiro 2021, revisado maio 2025.
+part_number: INA238
+category: ic.energy_meter
+schema_version: '1.0'
+manufacturer: Texas Instruments
+package: DGS (10 pinos)
+lifecycle: desconhecido
+notes:
+- 'Faixa de tensão de shunt +-163.84 mV (ADCRANGE = 0) ou +-40.96 mV (ADCRANGE = 1); tensão de barramento 0 ... 85 V; modo comum -0.3 ... 85 V (p.5).'
+- 'Erro de ganho (shunt e barramento) +-0.01 % típ., +-0.1 % máx.; erro total de medição de potência +-0.7 % típ. (listado como máx. em Features: 0.7 % full scale, -40 ... +125 °C) (p.1, p.5).'
+- 'Offset do shunt +-1.5 uV típ., +-5 uV máx.; CMRR 140 dB mín. (p.5). Sensor de temperatura interno: +-1 °C máx. a 25 °C (p.6).'
+- 'Corrente quiescente 640 uA típ., 750 uA máx. (VSENSE = 0 V); 1.1 mA máx. de -40 a 125 °C; em shutdown 2.8 uA típ., 5 uA máx. (p.6). I2C de alta velocidade até 2.94 MHz com 16 endereços selecionáveis por pino (p.1).'
+- 'V_in registra o limite absoluto diferencial das entradas IN+/IN- (+-40 V, p.3); modo comum máx. 85 V.'
+datasheets:
+- id: ds1
+  manufacturer: Texas Instruments
+  document_number: SLYS025B
+  revision: 'janeiro 2021, revisado maio 2025'
+  url: https://www.ti.com/lit/ds/symlink/ina238.pdf
+  sha256: 66d47e5eec628369772c7a545c32420c2a0e31225efce08f9fd82aa37640f61d
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 2.7
+    max: 5.5
+    unit: V
+    status: extraido
+    source: {page: 6, location: 5.5 Electrical Characteristics - Power supply, VS Supply voltage, excerpt: "VS Supply voltage 2.7 5.5 V"}
+  V_in:
+    max: 40
+    unit: V
+    status: extraido
+    source: {page: 3, location: 5.1 Absolute Maximum Ratings - VIN+, VIN- Differential, excerpt: "Differential (VIN+) – (VIN–) –40 40 V"}
+  accuracy:
+    max: 0.7
+    unit: '%'
+    status: extraido
+    source: {page: 1, location: 1 Features - Power monitoring accuracy, excerpt: "0.7% full scale, –40°C to +125°C (maximum)"}
+  bits:
+    typ: 16
+    unit: bit
+    status: extraido
+    source: {page: 5, location: 5.5 Electrical Characteristics - DC accuracy, ADC resolution, excerpt: "ADC resolution 16 Bits"}
+  IS:
+    typ: 0.64
+    max: 0.75
+    unit: mA
+    status: extraido
+    source: {page: 6, location: 5.5 Electrical Characteristics - Power supply, IQ Quiescent current, excerpt: "VSENSE = 0V 640 750 µA"}
+  Top:
+    min: -40
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 4, location: 5.3 Recommended Operating Conditions - Ambient temperature TA, excerpt: "TA Ambient temperature –40 125 °C"}
+  Tstg:
+    min: -65
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 3, location: 5.1 Absolute Maximum Ratings - Storage temperature, excerpt: "Tstg Storage temperature –65 150 °C"}
+attributes:
+  grandezas:
+    value: Tensão de shunt, tensão de barramento (0 a 85 V), corrente, potência e temperatura
+    status: extraido
+    source: {page: 1, location: 1 Features, excerpt: "Bus voltage sense input: 0V to 85V; Temperature sensor"}
+  interface:
+    value: I2C de até 2.94 MHz, 16 endereços selecionáveis por pino, saída ALERT
+    status: extraido
+    source: {page: 1, location: 1 Features, excerpt: "2.94MHz high-speed I2C interface with 16 pin-selectable addresses"}

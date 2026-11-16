@@ -1,0 +1,100 @@
+# Fonte: WEG, Controlador Lógico Programável PLC500, PLC500ED, PLC500MC - Manual do Usuário, documento 10009242424, revisão 03, 03/2026.
+part_number: PLC500
+category: plc
+schema_version: '1.0'
+manufacturer: WEG
+family: PLC500 / PLC500ED / PLC500MC
+lifecycle: desconhecido
+notes:
+- 'Nome na fila: WEG-plc500-manual-do-usuario-10009567410-manual-portugues-br; PDF recebido é o manual 10009242424 rev. 03 (cap. 18 Especificações Técnicas, p. 50-52).'
+- 'Consumo do PLC500: 150 mA em regime, sem acessórios e sem redes (p. 50). Fonte recomendada LPS ou UL classe 2 com mínimo de 3 A.'
+- 'do: 8 saídas, sendo DO1-DO3 rápidas push-pull (100 mA por saída, 300 kHz) e DO4-DO8 PNP (500 mA por saída) (p. 51); do_I = DO4-DO8, do_I@2 = DO1-DO3 (carga resistiva).'
+- 'Processador dual core 1 GHz + coprocessador 200 MHz; 100 mil instruções em 1,19 ms (12 ns por instrução) (p. 50). Memória: RAM 1 GB e Flash 4 GB; valor memory = RAM.'
+- 'Até 8 módulos de expansão (p. 52). Entradas rápidas DI1-DI4 e DI7 até 150 kHz (p. 51).'
+datasheets:
+- id: ds1
+  manufacturer: WEG
+  document_number: '10009242424'
+  revision: Rev. 03, 03/2026
+  url: https://static.weg.net/medias/downloadcenter/h3d/h9e/WEG-PLC500-manual-do-usuario-10009242424-pt.pdf
+  sha256: 348358e18ed1e1762be08c8e72d75395f35c71bf1ab95afc5b503449161f4296
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 20.4
+    max: 28.8
+    typ: 24
+    unit: V
+    status: extraido
+    source: {page: 50, location: 18.1.1 Alimentação, excerpt: "Tensão recomendada: 24 V CC (20,4 V até 28,8 V)."}
+  di:
+    typ: 8
+    unit: '1'
+    status: extraido
+    source: {page: 51, location: 18.3 Entradas digitais, excerpt: "Entradas digitais: 8 x PNP."}
+  do:
+    typ: 8
+    unit: '1'
+    status: extraido
+    source: {page: 51, location: 18.4 Saídas digitais (DO1...DO8), excerpt: "Rápidas DO1, DO2 e DO3 ... Normais DO4 ... DO8"}
+  di_on:
+    min: 10
+    unit: V
+    status: extraido
+    source: {page: 51, location: 18.3 Entradas digitais, excerpt: "Nível alto: Vin ≥10 V."}
+  di_off:
+    max: 5
+    unit: V
+    status: extraido
+    source: {page: 51, location: 18.3 Entradas digitais, excerpt: "Nível baixo: Vin ≤5 V."}
+  do_I:
+    max: 500
+    unit: mA
+    status: extraido
+    source: {page: 51, location: 18.4.2 Normais DO4 ... DO8, excerpt: "Corrente máxima das saídas DO4 ... DO8: 500 mA/saída carga resistiva."}
+  do_I@2:
+    max: 100
+    unit: mA
+    status: extraido
+    source: {page: 51, location: 18.4.1 Rápidas DO1, DO2 e DO3, excerpt: "Corrente máxima DO1 ... DO3: 100 mA/saída carga resistiva."}
+  memory:
+    typ: 1
+    unit: GB
+    status: extraido
+    source: {page: 50, location: 18.2 Processamento e memória, excerpt: "RAM 1GB / Flash 4GB"}
+  t_instr:
+    typ: 0.012
+    unit: us
+    status: extraido
+    source: {page: 50, location: 18.2 Processamento e memória, excerpt: "Tempo total 1,19 ms (12 ns por instrução)."}
+  Top:
+    min: 0
+    max: 50
+    unit: °C
+    status: extraido
+    source: {page: 50, location: 18.1.4 Temperatura e Umidade, excerpt: "Temperatura de operação: 0 ºC até 50 ºC."}
+  Tstg:
+    min: -25
+    max: 60
+    unit: °C
+    status: extraido
+    source: {page: 50, location: 18.1.4 Temperatura e Umidade, excerpt: "Temperatura de armazenagem: -25 ºC até 60 ºC."}
+attributes:
+  linguagens:
+    value: LD (Ladder), IL, ST, CFC, SFC, FBD (CODESYS V3.5 SP19 ou superior)
+    status: extraido
+    source: {page: 52, location: 18.7 Programação, excerpt: "LD (Ladder). IL ... ST ... CFC ... SFC ... FBD"}
+  comunicacao:
+    value: 2 x Ethernet 10/100/1000 (Modbus TCP, EtherNet/IP, Profinet, EtherCAT mestre, OPC UA, BACnet IP, MQTT), RS485 Modbus RTU, CAN (CANopen, SAE J1939), USB OTG, Mini USB device, micro SD
+    status: extraido
+    source: {page: 51, location: 18.5 Portas de comunicação (p. 51-52), excerpt: "2 x Portas 10/100/1000 Mbps (RJ45). Modbus TCP ... EtherCAT (Mestre)"}
+  tipo_saida:
+    value: Transistor - DO1-DO3 push-pull, DO4-DO8 PNP
+    status: extraido
+    source: {page: 51, location: 18.4 Saídas digitais, excerpt: "Tipo: Push-Pull. ... Tipo: PNP."}
+  grau_protecao:
+    value: IP20
+    status: extraido
+    source: {page: 50, location: 18.1.6 Grau de Proteção e Poluição, excerpt: "Grau de proteção: IP20."}

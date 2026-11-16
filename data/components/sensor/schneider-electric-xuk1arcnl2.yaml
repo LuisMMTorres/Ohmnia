@@ -1,0 +1,95 @@
+# Fonte: Schneider Electric (Telemecanique Sensors), Product data sheet XUK1ARCNL2, impresso em 11/10/2026.
+part_number: XUK1ARCNL2
+category: sensor.photoelectric
+schema_version: '1.0'
+manufacturer: Schneider Electric
+family: Telemecanique XU (XUK)
+package: Compacto 50 x 50, plástico PBT, 50 x 18 x 50 mm
+lifecycle: desconhecido
+notes:
+- 'Fila: XUK1ARCNL2. Fotoelétrico reflex (retrorreflexivo), saída a relé 1 C/O, 24...240 V AC/DC, cabo 2 m (pág. 1-2). Requer refletor XUZC50.'
+- 'Distância nominal Sn 7 m; distância máxima 10 m; faixa de detecção "> 5...15 m" (pág. 1). range usa typ = Sn e max = distância máxima.'
+- 'Tensão nominal 24...240 V AC/DC; limites 20-264 V AC (pág. 1); VS abaixo transcreve os limites.'
+- 'Capacidade de comutação 3 A (cos φ = 1, 0,5 milhão de ciclos a 1 ciclo/s, 250 V); durabilidade elétrica 500000 ciclos (pág. 1).'
+- 'Atraso na energização 60 ms; atraso de recuperação 25 ms (pág. 2).'
+datasheets:
+- id: ds1
+  manufacturer: Schneider Electric
+  document_number: XUK1ARCNL2
+  revision: impresso em 11/10/2026
+  url: https://pdf.telemecaniquesensors.com/datasheet?ref=XUK1ARCNL2&lang=en
+  sha256: 9b0ff731840260c6e54597371e6aaf9a21c67d3edb7cdc990e1bc4a1b3ab63d6
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  range:
+    typ: 7
+    max: 10
+    unit: m
+    status: extraido
+    source: {page: 1, location: Main - Sn nominal sensing distance / Maximum sensing distance, excerpt: "[Sn] 7-7 m reflex need reflector XUZC50; Maximum sensing distance 10 m reflex"}
+  t_resp:
+    typ: 25
+    unit: ms
+    status: extraido
+    source: {page: 1, location: Main - Delay response, excerpt: "Delay response 25 ms"}
+  VS:
+    min: 20
+    max: 264
+    unit: V
+    status: extraido
+    source: {page: 1, location: Complementary - Supply voltage limits, excerpt: "Supply voltage limits 20-264 V AC"}
+  IS:
+    max: 35
+    unit: mA
+    status: extraido
+    source: {page: 1, location: Complementary - Current consumption, excerpt: "Current consumption <= 35 mA no-load"}
+  IL:
+    max: 3000
+    unit: mA
+    conditions: {cos_phi: 1, V: 250 V}
+    status: extraido
+    source: {page: 1, location: Complementary - Switching capacity, excerpt: "3 A (cos φ = 1 for 0.5 million cycles ... at 250 V)"}
+  f_sw:
+    max: 20
+    unit: Hz
+    status: extraido
+    source: {page: 2, location: Complementary - Switching frequency, excerpt: "Switching frequency 20 Hz"}
+  Top:
+    min: -25
+    max: 55
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Environment - Ambient air temperature for operation, excerpt: "-25…55 °C"}
+  Tstg:
+    min: -40
+    max: 70
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Environment - Ambient air temperature for storage, excerpt: "-40…70 °C"}
+attributes:
+  saida:
+    value: Relé, 1 C/O (NA/NF), 5 fios
+    status: extraido
+    source: {page: 2, location: Complementary - Output type / Discrete output function}
+  conexao:
+    value: Cabo de 2 m, 5 x 0,34 mm²
+    status: extraido
+    source: {page: 1, location: Complementary - Electrical connection / Cable composition}
+  invólucro:
+    value: Compacto 50 x 50, plástico PBT; lente PMMA
+    status: extraido
+    source: {page: 1, location: Main - Enclosure material}
+  grau_protecao:
+    value: IP65 (IEC 60529), dupla isolação
+    status: extraido
+    source: {page: 2, location: Environment - IP degree of protection}
+  principio:
+    value: Reflex (retrorreflexivo), requer refletor XUZC50
+    status: extraido
+    source: {page: 1, location: Main - Detection system}
+  luz:
+    value: Infravermelho
+    status: extraido
+    source: {page: 1, location: Complementary - Emission, excerpt: "Infrared reflex"}

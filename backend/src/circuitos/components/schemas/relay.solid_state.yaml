@@ -1,0 +1,62 @@
+category: relay.solid_state
+schema_version: '1.0'
+description: Relé de estado sólido
+required:
+- I_load
+parameters:
+  V_control:
+    unit: V
+    kind: characteristic
+    description: Tensão de comando (faixa)
+  I_control:
+    unit: mA
+    kind: characteristic
+    description: Corrente de comando
+  V_load:
+    unit: V
+    kind: max_rating
+    description: Tensão da carga (faixa)
+  I_load:
+    unit: A
+    kind: max_rating
+    description: Corrente de carga nominal
+  I_surge:
+    unit: A
+    kind: max_rating
+    description: Corrente de surto
+  V_drop:
+    unit: V
+    kind: characteristic
+    description: Queda de tensão em condução
+  I_off:
+    unit: mA
+    kind: characteristic
+    description: Corrente de fuga desligado
+  t_on:
+    unit: ms
+    kind: characteristic
+    description: Tempo de ligamento
+  t_off:
+    unit: ms
+    kind: characteristic
+    description: Tempo de desligamento
+  V_iso:
+    unit: V
+    kind: max_rating
+    description: Isolação entrada-saída
+  dv_dt:
+    unit: V/us
+    kind: characteristic
+    description: dv/dt de estado desligado
+  Top:
+    unit: °C
+    kind: thermal
+    description: 'Temperatura de operação (faixa: mín. e máx.)'
+  Tstg:
+    unit: °C
+    kind: thermal
+    description: Temperatura de armazenamento (faixa)
+attributes:
+  comutacao: Comutação (passagem por zero, aleatória, CC)
+  grau_protecao: Grau de proteção (IP) declarado
+  certificacoes: Certificações e aprovações (UL, CE, ATEX...)

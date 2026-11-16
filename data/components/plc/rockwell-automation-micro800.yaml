@@ -1,0 +1,83 @@
+# Fonte: Rockwell Automation, Micro830, Micro850 and Micro870 Programmable Controllers User Manual, 2080-UM002K-EN-E, March 2019 (Appendix A, Specifications).
+part_number: Micro800 (2080-UM002)
+category: plc
+schema_version: '1.0'
+manufacturer: Rockwell Automation
+family: Micro830/Micro850/Micro870
+lifecycle: desconhecido
+notes:
+- 'Fila: 2080-um002 -en-e. Manual de usuário da série; valores são faixas entre os controladores Micro830 (10, 16, 24, 48 pontos), Micro850 e Micro870 (apêndice A, págs. 223-246). Valores por modelo não individualizados.'
+- 'Memória (pág. 93): programa 4 K a 20 K passos e dados 8 KB a 40 KB conforme o modelo (1 passo = 12 bytes); não transcrito como parâmetro.'
+- 'Micro870 tem faixa de alimentação 21,4 a 26,4 V DC (pág. 243); demais modelos 20,4 a 26,4 V DC.'
+- 'Saídas: relé (até 2 A, 240 V AC) ou transistor 24 V DC sink/source conforme o modelo (pág. 224-225, ex. 2080-LC30-10QWB / 10QVB).'
+- 'Entradas rápidas e padrão 24 V DC sink/source; tempo de instrução e resolução analógica não localizados neste manual.'
+datasheets:
+- id: ds1
+  manufacturer: Rockwell Automation
+  document_number: 2080-UM002K-EN-E
+  revision: March 2019
+  url: https://media.distributordatasolutions.com/AB-Symmetrix-product/2021q1/documents/4733059ecac314f65646f17765e2863bb012e58b.pdf
+  sha256: 092b6b9ba1abf9894efbd6384790327751b8925911bdacb3adf8db54e24ebc43
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 20.4
+    max: 26.4
+    unit: V
+    status: extraido
+    source: {page: 224, location: Appendix A - Micro830 10-point general specifications, power supply voltage range, excerpt: "Power supply voltage range 20.4...26.4V DC Class 2"}
+  P_cons:
+    min: 5
+    max: 11
+    unit: W
+    status: extraido
+    source: {page: 231, location: Appendix A - Micro830 48-point general specifications, power consumption max, excerpt: "11 W - without plug-in modules"}
+  di:
+    min: 6
+    max: 28
+    unit: '1'
+    status: extraido
+    source: {page: 231, location: Appendix A - Number of I/O (10 pontos a 48 pontos), excerpt: "48 (28 inputs, 20 outputs)"}
+  do:
+    min: 4
+    max: 20
+    unit: '1'
+    status: extraido
+    source: {page: 223, location: Appendix A - Micro830 10-point Number of I/O, excerpt: "10 (6 inputs, 4 outputs)"}
+  di_off:
+    max: 5
+    unit: V
+    status: extraido
+    source: {page: 224, location: Appendix A - Inputs, off-state voltage max, excerpt: "Off-state voltage, max 5V DC"}
+  di_on:
+    min: 10
+    max: 30
+    unit: V
+    status: extraido
+    source: {page: 224, location: Appendix A - Inputs, on-state voltage range (entrada padrão, 30 °C), excerpt: "10...30.0V DC @ 30 C"}
+  do_I:
+    max: 2
+    unit: A
+    status: extraido
+    source: {page: 225, location: Appendix A - Outputs, relay output load current max, excerpt: "Load current, max 2.0 A"}
+  Top:
+    min: -20
+    max: 65
+    unit: °C
+    status: extraido
+    source: {page: 233, location: Appendix A - Environmental specifications, Temperature operating, excerpt: "-20...65 C (-4...149 F)"}
+attributes:
+  linguagens:
+    value: Ladder Diagram, Function Block Diagram e Structured Text (Connected Components Workbench)
+    status: extraido
+    source: {page: 94, location: Chapter 6 - Program execution guidelines, excerpt: "Structured Text (ST) is much more efficient ... than Ladder Logic"}
+  tipo_saida:
+    value: relé ou transistor 24 V DC sink conforme o modelo
+    status: extraido
+    source: {page: 223, location: Appendix A - Output circuit type, excerpt: "Output circuit type Relay 24V DC sink transistor"}
+  grau_protecao:
+    value: IP20
+    status: extraido
+    source: {page: 224, location: Appendix A - Enclosure type rating, excerpt: "Enclosure type rating Meets IP20"}

@@ -1,0 +1,66 @@
+# Fonte: WEG, Manual do Usuário SSW900 (Soft-Starter), documento 10003989114 (conforme a nota da fila), sem revisão legível no texto.
+part_number: SSW900
+category: drive.soft_starter
+schema_version: '1.0'
+manufacturer: WEG
+family: SSW900
+lifecycle: desconhecido
+notes:
+- 'Valores da série SSW900 (modelos 10 A a 1400 A); faixas entre os modelos. Numeração de páginas = páginas do PDF.'
+- 'Tensão de linha: T5 = 220 a 575 V e T6 = 380 a 690 V (conexão padrão); dentro do delta T5 = 220 a 500 V e T6 = 380 a 575 V (p. 76).'
+- 'Tensão de comando: E2 = 110 a 240 V (modelos 10 A a 200 A); E3 = 110 a 130 V ou E4 = 220 a 240 V (255 A a 1400 A) (p. 76).'
+- 'Temperatura ambiente: -10 a 55 °C (modelos até 412 A) e -10 a 40 °C (acima de 412 A); redução de 2 % por °C acima de 40 °C (p. 13).'
+- 'Partidas por hora dependem do modelo e do regime (10, 5 ou 3 por hora; Tabelas 7.1 e 7.2, não transcritas).'
+- 'Entradas: 5 digitais isoladas 24 Vcc e 1 de termistor; saídas: 3 digitais (relés 240 Vca / 30 Vcc, 2 A) e 1 analógica (0 a 10 V ou 0/4 a 20 mA) (p. 76).'
+- 'Fila de transcrição: novo link do site do fabricante.'
+datasheets:
+- id: ds1
+  manufacturer: WEG
+  document_number: '10003989114'
+  url: https://static.weg.net/medias/downloadcenter/h8d/h85/WEG-SSW900-manual-do-usuario-10003989114-pt.pdf
+  sha256: a0f916c0294b775cdd54c69ab9216431d004c132a335747cbdaf7bce89f0cdc8
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_rated:
+    min: 10
+    max: 1400
+    unit: A
+    status: extraido
+    source: {page: 11, location: 2.4 Como especificar o modelo - Corrente nominal, excerpt: "0010 = 10 A ... 1400 = 1400 A"}
+  V_line:
+    min: 220
+    max: 690
+    unit: V
+    status: extraido
+    source: {page: 11, location: 2.4 Tabela 2.1 - Tensão trifásica nominal da potência, excerpt: "T5 = 220 a 575 V T6 = 380 a 690 V"}
+  V_ctrl:
+    min: 110
+    max: 240
+    unit: V
+    status: extraido
+    source: {page: 76, location: 7.3 Dados da eletrônica - Tensão de controle, excerpt: "E2 = 110 a 240 V (-15 % a +10 %)"}
+  Top:
+    min: -10
+    max: 55
+    unit: °C
+    status: extraido
+    source: {page: 13, location: 3.1.1 Condições ambientais permitidas - Temperatura, excerpt: "-10 ºC a 55 ºC (14 ºF a 131 ºF) modelos até 412 A"}
+attributes:
+  controle:
+    value: Soft-starter trifásica com bypass integrado (AC-53b); partida em rampa
+    status: extraido
+    source: {page: 67, location: 7.1.1 Regimes de trabalho, excerpt: "AC-53b: dispositivo com bypass integrado"}
+  comunicacao:
+    value: Módulos plug-in opcionais RS485 Modbus-RTU, Ethernet (Modbus TCP e EtherNet/IP) e Anybus; USB via HMI
+    status: extraido
+    source: {page: 76, location: 7.3 Dados da eletrônica - Conexão de PC; lista de módulos plug-in (cap. 6), excerpt: "Módulo plug-in de comunicação RS485 – Modbus RTU"}
+  grau_protecao:
+    value: HMI IP65 (com a proteção da USB fechada); grau de proteção do corpo não encontrado neste texto
+    status: extraido
+    source: {page: 76, location: 7.3 Dados da eletrônica - HMI, excerpt: "Grau de proteção da HMI – IP65, com a proteção da USB fechada."}
+  certificacoes:
+    value: UL508; EN60947-4-2; Diretivas 2014/35/EU e 2014/30/EU; RoHS
+    status: extraido
+    source: {page: 77, location: 7.4 Normas consideradas, excerpt: "UL508 - Industrial control equipment. EN60947-4-2"}

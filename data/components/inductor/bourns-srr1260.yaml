@@ -1,0 +1,82 @@
+# Fonte: Bourns, SRR1260 Series - Shielded SMD Power Inductors, REV. 03/26.
+part_number: SRR1260
+category: inductor.fixed
+schema_version: '1.0'
+manufacturer: Bourns
+family: SRR1260
+package: SMD blindado, 12,5 x 12,5 mm, altura 6,0 mm
+lifecycle: desconhecido
+notes:
+- Valores da série; faixa entre os modelos (1,0 a 1000 µH). Os demais valores variam com a indutância.
+- 'Irms é máximo (elevação de 40 °C típica) e Isat é típico (queda de indutância de 25 % típica). SRF é típica por modelo (1,8 a 100 MHz).'
+- 'Tolerância ±30 % (1,0 a 8,2 µH), ±20 % (10 a 100 µH) e ±10 % (120 a 1000 µH).'
+datasheets:
+- id: ds1
+  manufacturer: Bourns
+  document_number: SRR1260 Series
+  revision: REV. 03/26
+  sha256: 63df6a6f7b86505210bf5ceb5a374ddbccfabf002331b3cc95877dc1b38b1e5f
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  L:
+    min: 1.0
+    max: 1000
+    unit: uH
+    status: extraido
+    conditions: {f: 100 kHz}
+    note: Teste a 100 kHz/0,1 V de 1,0 a 8,2 µH e a 1 kHz/0,1 V de 10 a 1000 µH.
+    source: {datasheet_id: ds1, page: 1, location: Electrical Specifications - Inductance (µH), excerpt: "SRR1260-1R0Y 1.0 ... SRR1260-102K 1000.0"}
+  tol:
+    max: 30
+    unit: '%'
+    status: extraido
+    note: ±30 %, ±20 % ou ±10 % conforme a indutância.
+    source: {datasheet_id: ds1, page: 1, location: Electrical Specifications - Tol. (%), excerpt: "±   30"}
+  I_sat:
+    min: 0.6
+    max: 10
+    unit: A
+    status: extraido
+    note: Valor típico; queda de indutância de 25 % típica em Isat. Faixa entre os modelos.
+    source: {datasheet_id: ds1, page: 1, location: Electrical Specifications - I sat Typ. (A) e Inductance Drop, excerpt: "Inductance Drop 25 % typ. at I sat"}
+  I_rms:
+    min: 0.68
+    max: 9.4
+    unit: A
+    status: extraido
+    note: Valor máximo; elevação de temperatura de 40 °C típica em Irms. Faixa entre os modelos.
+    source: {datasheet_id: ds1, page: 1, location: Electrical Specifications - I rms Max. (A), excerpt: "Temperature Rise 40 °C typ. at rated I rms"}
+  DCR:
+    min: 0.0078
+    max: 1.7
+    unit: ohm
+    status: extraido
+    note: RDC máx., dado em mΩ no documento (7,8 a 1700 mΩ); faixa entre os modelos.
+    source: {datasheet_id: ds1, page: 1, location: Electrical Specifications - RDC Max. (mW), excerpt: "SRR1260-1R0Y ... 7.8; SRR1260-102K ... 1700.0"}
+  SRF:
+    min: 1.8
+    max: 100
+    unit: MHz
+    status: extraido
+    note: SRF típica por modelo; faixa entre os modelos.
+    source: {datasheet_id: ds1, page: 1, location: Electrical Specifications - SRF Typ. (MHz), excerpt: "100.00 ... 1.80"}
+  Top:
+    min: -40
+    max: 125
+    unit: °C
+    status: extraido
+    note: Elevação de temperatura incluída.
+    source: {datasheet_id: ds1, page: 1, location: General Specifications - Operating Temperature, excerpt: "-40 °C to +125 °C"}
+  Tstg:
+    min: -40
+    max: 125
+    unit: °C
+    status: extraido
+    source: {datasheet_id: ds1, page: 1, location: General Specifications - Storage Temperature, excerpt: "-40 °C to +125 °C"}
+attributes:
+  nucleo:
+    value: Ferrite DR e RI, blindado, fio de cobre esmaltado, terminal Sn
+    status: extraido
+    source: {datasheet_id: ds1, page: 1, location: Materials}

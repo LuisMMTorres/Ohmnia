@@ -1,0 +1,68 @@
+category: drive.vfd
+schema_version: '1.0'
+description: Inversor de frequência (ou série)
+required:
+- P_motor
+parameters:
+  P_motor:
+    unit: kW
+    kind: max_rating
+    description: Potência do motor (faixa da série)
+  V_in:
+    unit: V
+    kind: characteristic
+    description: Tensão de alimentação (faixa)
+  phases_in:
+    unit: '1'
+    kind: geometry
+    description: Fases de entrada
+  I_out:
+    unit: A
+    kind: max_rating
+    description: Corrente nominal de saída (faixa da série)
+  overload:
+    unit: '%'
+    kind: max_rating
+    description: Sobrecarga (indicar tempo na nota)
+  f_out:
+    unit: Hz
+    kind: characteristic
+    description: Frequência de saída (faixa)
+  f_sw:
+    unit: kHz
+    kind: characteristic
+    description: Frequência de chaveamento (faixa)
+  efficiency:
+    unit: '%'
+    kind: characteristic
+    description: Rendimento
+  di:
+    unit: '1'
+    kind: geometry
+    description: Entradas digitais
+  ai:
+    unit: '1'
+    kind: geometry
+    description: Entradas analógicas
+  do:
+    unit: '1'
+    kind: geometry
+    description: Saídas a relé ou digitais
+  ao:
+    unit: '1'
+    kind: geometry
+    description: Saídas analógicas
+  Top:
+    unit: °C
+    kind: thermal
+    description: 'Temperatura de operação (faixa: mín. e máx.)'
+  Tstg:
+    unit: °C
+    kind: thermal
+    description: Temperatura de armazenamento (faixa)
+attributes:
+  controle: Modos de controle (V/f, vetorial, sensorless...)
+  comunicacao: Comunicação
+  frenagem: Frenagem
+  grau_protecao: Grau de proteção (IP) declarado
+  certificacoes: Certificações e aprovações (UL, CE, ATEX...)

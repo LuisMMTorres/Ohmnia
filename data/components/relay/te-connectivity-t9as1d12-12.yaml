@@ -1,0 +1,73 @@
+# Fonte: TE Connectivity, folha de produto 1-1393210-3 (Potter & Brumfield T9A, T9AS1D12-12), página web 2015.
+part_number: T9AS1D12-12
+category: relay.electromechanical
+schema_version: '1.0'
+manufacturer: TE Connectivity
+family: T9A (Potter & Brumfield)
+package: PCB-THT, 32,5 x 27,4 x 20,4 mm (comprimento x largura x altura), 26 g
+lifecycle: ativo
+notes:
+- 'Folha de produto (página de catálogo web) do número interno TE 1-1393210-3; o status "Active" aparece na pág. 1.'
+- 'Material do contato AgCdO; sistema magnético monoestável DC; classe de isolação da bobina UL F (págs. 2 e 3).'
+- 'Carga mínima de comutação 1000 mA @ 5 V; tensão suportável entre contatos abertos 1500 Vrms; surto inicial de 6000 V entre contatos e bobina (pág. 2).'
+- 'Corrente limite de fechamento, de interrupção, contínua e de curta duração, todas 30 A (pág. 2).'
+datasheets:
+- id: ds1
+  manufacturer: TE Connectivity
+  document_number: 1-1393210-3 (T9AS1D12-12)
+  revision: © 2015
+  url: https://tvsat.com.pl/PDF/1/1-1393210-3.pdf
+  sha256: f79e4ce834bb4db315b0930c7fb7f0d016e607cd3b6369dd9940a696473e0fb2
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  V_coil:
+    typ: 12
+    unit: V
+    status: extraido
+    note: VDC nominal.
+    source: {datasheet_id: ds1, page: 2, location: Electrical Characteristics - Coil Voltage Rating (VDC), excerpt: "Coil Voltage Rating (VDC) 12"}
+  R_coil:
+    typ: 144
+    unit: ohm
+    status: extraido
+    source: {datasheet_id: ds1, page: 2, location: Electrical Characteristics - Coil Resistance, excerpt: "Coil Resistance (Ω) 144"}
+  P_coil:
+    typ: 1
+    unit: W
+    status: extraido
+    note: 1000 mW.
+    source: {datasheet_id: ds1, page: 2, location: Electrical Characteristics - Coil Power Rating (DC) (mW), excerpt: "Coil Power Rating (DC) (mW) 1000"}
+  I_contact:
+    max: 30
+    unit: A
+    status: extraido
+    source: {datasheet_id: ds1, page: 2, location: Contact Features - Contact Limiting Continuous Current (A), excerpt: "Contact Limiting Continuous Current (A) 30"}
+  V_contact:
+    max: 277
+    unit: V
+    status: extraido
+    note: VAC.
+    source: {datasheet_id: ds1, page: 2, location: Contact Features - Contact Switching Voltage (Max) (VAC), excerpt: "Contact Switching Voltage (Max) (VAC) 277"}
+  V_iso:
+    max: 2500
+    unit: V
+    status: extraido
+    note: Vrms inicial, entre contatos e bobina.
+    source: {datasheet_id: ds1, page: 2, location: Insulation - Initial Dielectric Between Contacts and Coil (Vrms), excerpt: "Between Contacts and Coil (Vrms) 2500"}
+  Top:
+    max: 85
+    unit: °C
+    status: extraido
+    note: Temperatura ambiente máxima; mínima não informada.
+    source: {datasheet_id: ds1, page: 3, location: Usage Conditions - Environmental Ambient Temperature (Max), excerpt: "Environmental Ambient Temperature (Max) 85 °C"}
+attributes:
+  contatos:
+    value: 1 Form A (NA), 1 polo
+    status: extraido
+    source: {page: 2, location: Contact Features - Contact Arrangement, excerpt: "Contact Arrangement 1 Form A (NO)"}
+  montagem:
+    value: placa de circuito impresso (PCB-THT)
+    status: extraido
+    source: {page: 3, location: Mounting Type, excerpt: "Mounting Type Printed Circuit Board"}

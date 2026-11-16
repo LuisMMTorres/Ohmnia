@@ -1,0 +1,67 @@
+# Fonte: NOVUS, Controlador N1200 - Controlador Universal - Manual de Instruções V2.0x M (português).
+part_number: N1200
+category: instrument.controller
+schema_version: '1.0'
+manufacturer: Novus
+family: N1200
+package: 48 x 48 x 110 mm (1/16 DIN); recorte no painel 45,5 x 45,5 mm
+lifecycle: desconhecido
+notes:
+- 'Fila: manual n1200 portugues. Valores da seção ESPECIFICAÇÕES (págs. 13-14).'
+- 'Exatidão: termopares J, K, T, E 0,25 % do span ±1 °C; termopares N, R, S, B 0,25 % do span ±3 °C; Pt100 e 4-20 mA, 0-50 mV, 0-5 Vcc, 0-10 Vcc 0,2 % do span (pág. 13).'
+- 'Taxa de leitura da entrada até 55 por segundo; resolução interna 15 bits (32767 níveis); display 12000 níveis (pág. 13).'
+- 'Alimentação 100 a 240 Vca/cc (±10 %), 50/60 Hz, consumo máx. 9 VA; opcional 24 V: 12 a 24 Vcc / 24 Vca (-10 % / +20 %) (pág. 13).'
+- 'Saídas: relés SPST-NA (I/O1 e I/O2) 1,5 A / 240 Vca; relé SPDT (I/O3) 3 A / 250 Vca; pulso para SSR 10 V / 20 mA (I/O5) e 5 V / 20 mA (I/O3 e I/O4); saída analógica 0-20 / 4-20 mA, 550 Ω máx. (pág. 13).'
+datasheets:
+- id: ds1
+  manufacturer: Novus
+  document_number: Manual N1200 V2.0x M
+  url: https://cdn.novusautomation.com/downloads/manual_n1200_v20x_m_pt.pdf
+  sha256: fba6462364b7c052c5116d90c3beb697e11f84ca3eaf9a7f69de04fae7c1d6a0
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  accuracy:
+    max: 0.25
+    unit: '%'
+    status: extraido
+    source: {page: 13, location: Especificações - Entrada - Exatidão (% do span; termopares ainda somam ±1 °C ou ±3 °C), excerpt: "Termopares J, K, T, E: 0,25 % do span ±1 °C"}
+  I_relay:
+    max: 3
+    unit: A
+    status: extraido
+    source: {page: 13, location: Especificações - Control output - Relé SPDT (I/O3), excerpt: "1 Relé SPDT (I/O3): 3 A / 250 Vca"}
+  VS:
+    min: 100
+    max: 240
+    unit: V
+    status: extraido
+    source: {page: 13, location: Especificações - Alimentação, excerpt: "100 a 240 Vca/cc (±10 %), 50/60 Hz"}
+  Top:
+    min: 5
+    max: 50
+    unit: °C
+    status: extraido
+    source: {page: 13, location: Especificações - Condições ambientais, excerpt: "Temperatura de operação: ............................................  5 a 50 °C"}
+attributes:
+  entrada:
+    value: Termopares, Pt100 (3 fios), tensão e corrente (0-50 mV, 0-5 Vcc, 0-10 Vcc, 4-20 mA)
+    status: extraido
+    source: {page: 13, location: Especificações - Entrada, excerpt: "T/C, Pt100, tensão e corrente"}
+  saida:
+    value: Relés SPST-NA e SPDT, pulso de tensão para SSR, saída analógica 0-20 / 4-20 mA
+    status: extraido
+    source: {page: 13, location: Especificações - Control output, excerpt: "Pulso de tensão para SSR"}
+  comunicacao:
+    value: USB 2.0 (CDC, Modbus RTU); RS485 Modbus opcional
+    status: extraido
+    source: {page: 14, location: Interface USB / Identificação - Comunicação digital, excerpt: "Interface USB: 2.0, classe CDC"}
+  grau_protecao:
+    value: Painel frontal IP65; caixa IP20
+    status: extraido
+    source: {page: 14, location: Especificações - Painel frontal / Caixa, excerpt: "IP65"}
+  certificacoes:
+    value: CE, UKCA, UL (FILE E300526)
+    status: extraido
+    source: {page: 14, location: Certificações, excerpt: "CE, UKCA, UL"}

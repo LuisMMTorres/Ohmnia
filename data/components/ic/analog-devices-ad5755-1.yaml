@@ -1,0 +1,97 @@
+# Fonte: Analog Devices, AD5755-1 Quad, 16-Bit, Serial Input, 4-20 mA and Voltage Output DAC with Dynamic Power Control and HART Connectivity, Rev. E, 2011-2012 (edição em chinês do datasheet, cópia Octopart).
+part_number: AD5755-1
+category: ic.dac
+schema_version: '1.0'
+manufacturer: Analog Devices
+package: LFCSP 64 pinos
+lifecycle: desconhecido
+notes:
+- 'O PDF é a edição em chinês (ADI中文版) do datasheet; trechos de origem citados no texto chinês, valores numéricos conferidos nas tabelas de especificação (págs. 5 a 8).'
+- 'Especificações com AVDD = VBOOST_x = 15 V, AVSS = -15 V/0 V, DVDD 2,7 a 5,5 V, AVCC 4,5 a 5,5 V, REFIN 5 V, DC-DC desabilitado; saída em tensão RL = 1 kohm, CL = 220 pF; em corrente RL = 300 ohm (pág. 5).'
+- 'Faixas de saída em tensão 0-5 V, 0-10 V, ±5 V, ±10 V (mais 20 % de sobrefaixa: 0-6 V, 0-12 V, ±6 V, ±12 V); em corrente 0-20 mA, 4-20 mA, 0-24 mA (págs. 5 e 6).'
+- 'TUE máx. ±0,04 % FSR (tensão) e ±0,05 % FSR (corrente, RSET externo) (pág. 5 e 6); INL ±0,006 % FSR máx.; em % FSR não cabe no símbolo INL (LSB).'
+- 'Alimentação: AVDD 9 a 33 V; AVSS -26,4 V a -10,8 V ou 0 V; DVDD 2,7 a 5,5 V; AVCC 4,5 a 5,5 V (pág. 7). O VS abaixo é AVDD.'
+- 'Tempo de acomodação em tensão: 11 us (degrau de 5 V, faixa 0-5 V) e 18 us (degrau de 10 V, faixa 0-10 V) a ±0,03 % FSR (pág. 8); a coluna típ./máx. do segundo valor não ficou clara, registrado 11 us como típ.'
+- 'AIDD 8,6 mA típ. e 10,5 mA máx. (todos os canais em modo tensão, sem carga) (pág. 8).'
+datasheets:
+- id: ds1
+  manufacturer: Analog Devices
+  revision: Rev. E
+  url: https://datasheet.octopart.com/AD5755-1ACPZ-Analog-Devices-datasheet-140566659.pdf
+  sha256: 8d589fb4d3141d0061e88ac5d614c74b7b3ffddeac9ef6e771959267d84b7c0b
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  bits:
+    typ: 16
+    unit: bit
+    status: extraido
+    source: {page: 5, location: Tabela 1 - Precisão (alimentação bipolar) - Resolução, excerpt: "分辨率 16 Bits"}
+  t_settle:
+    typ: 11
+    unit: us
+    status: extraido
+    source: {page: 8, location: Tabela 2 - Dinâmica - tempo de estabelecimento da tensão de saída, excerpt: "输出电压建立时间 11 µs 5 V阶跃至±0.03% FSR"}
+  channels:
+    typ: 4
+    unit: '1'
+    status: extraido
+    source: {page: 1, location: Título / Visão geral, excerpt: "四通道、电压和电流输出DAC"}
+  VS:
+    min: 9
+    max: 33
+    unit: V
+    status: extraido
+    source: {page: 7, location: Tabela 1 - Requisitos de alimentação - AVDD, excerpt: "AVDD 9 33 V"}
+  VREF:
+    min: 4.95
+    typ: 5
+    max: 5.05
+    unit: V
+    status: extraido
+    source: {page: 7, location: Tabela 1 - Entrada de referência - tensão de entrada, excerpt: "基准输入电压 4.95 5 5.05 V"}
+  V_out:
+    min: -12
+    max: 12
+    unit: V
+    status: extraido
+    source: {page: 5, location: Tabela 1 - Saída em tensão - faixa de tensão de saída, excerpt: "−12 +12 V (faixas 0-5, 0-10, ±5, ±10 V mais sobrefaixa)"}
+  I_out:
+    min: 0
+    max: 24
+    unit: mA
+    status: extraido
+    source: {page: 6, location: Tabela 1 - Saída em corrente - faixa de corrente de saída, excerpt: "输出电流范围 0 24 mA; 0 20 mA; 4 20 mA"}
+  DNL:
+    max: 1
+    unit: '1'
+    status: extraido
+    source: {page: 5, location: Tabela 1 - Precisão - DNL, excerpt: "差分非线性(DNL) −1 +1 LSB 保证单调性"}
+  IS:
+    typ: 8.6
+    max: 10.5
+    unit: mA
+    status: extraido
+    source: {page: 8, location: Tabela 1 - Requisitos de alimentação - AIDD, excerpt: "AIDD 8.6 10.5 mA"}
+  Top:
+    min: -40
+    max: 105
+    unit: °C
+    status: extraido
+    source: {page: 12, location: Valores máximos absolutos - temperatura de operação, excerpt: "工业 −40°C至+105°C"}
+  Tstg:
+    min: -65
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 12, location: Valores máximos absolutos - temperatura de armazenamento, excerpt: "存储温度范围 −65°C至+150°C"}
+attributes:
+  interface:
+    value: SPI/QSPI/MICROWIRE/DSP, 3 fios, até 30 MHz, com CRC-8 opcional
+    status: extraido
+    source: {page: 1, location: Visão geral, excerpt: "最高30 MHz的时钟速率 ... CRC-8"}
+  encapsulamento:
+    value: LFCSP 64 pinos
+    status: extraido
+    source: {page: 12, location: Valores máximos absolutos - encapsulamento, excerpt: "64引脚 LFCSP"}

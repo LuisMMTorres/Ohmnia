@@ -1,0 +1,85 @@
+# Fonte: SICK, Data sheet AFM60A-S4NB018x12 (AFS/AFM60 Ethernet, Absolute encoders), SICK ID 1059039, impresso 2026-08-11.
+part_number: AFM60A-S4NB018x12
+category: sensor.encoder
+schema_version: '1.0'
+manufacturer: SICK
+family: AFS/AFM60 Ethernet
+package: Eixo maciço, flange de face (solid shaft, face mount flange)
+lifecycle: desconhecido
+notes:
+- 'Encoder absoluto multivoltas PROFINET (perfil V4.1 classe 3), 18 bit x 12 bit (p.2). Consumo <= 3 W sem carga (p.3).'
+- 'Erro limite 0,03 graus; repetibilidade 0,002 graus (p.2). MTTFD 80 anos (p.2).'
+- 'Velocidade 9000 min-1 segundo a nota, considerar autoaquecimento de 3,3 K por 1000 rpm (p.3).'
+datasheets:
+- id: ds1
+  manufacturer: SICK
+  document_number: '1059039'
+  url: https://www.sick.com/media/pdf/1/51/151/dataSheet_AFM60A-S4NB018x12_1059039_en.pdf
+  sha256: 92cfb2525a76b45edf344d92ca2589aa5fc108cf997b45a4c43b023a0e103fbc
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  resolution:
+    typ: 262144
+    unit: '1'
+    status: extraido
+    source: {page: 2, location: Performance - number of steps per revolution, excerpt: "262,144 (18 bit)"}
+  bits:
+    typ: 18
+    unit: bit
+    status: extraido
+    source: {page: 2, location: Performance - steps per revolution (18 bit; 12 bit de voltas), excerpt: "262,144 (18 bit)"}
+  speed:
+    max: 9000
+    unit: rpm
+    status: extraido
+    source: {page: 3, location: Mechanics - operating speed, excerpt: "≤ 9,000 min"}
+  shaft:
+    typ: 10
+    unit: mm
+    status: extraido
+    source: {page: 3, location: Mechanics - shaft diameter, excerpt: "10 mm"}
+  VS:
+    min: 10
+    max: 30
+    unit: V
+    status: extraido
+    source: {page: 3, location: Electronics - supply voltage, excerpt: "10 ... 30 V"}
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 3, location: Ambient data - operating temperature range, excerpt: "+85 °C"}
+  Tstg:
+    min: -40
+    max: 100
+    unit: °C
+    status: extraido
+    source: {page: 3, location: Ambient data - storage temperature range, excerpt: "+100 °C, without package"}
+attributes:
+  tipo:
+    value: Absoluto multivoltas (4096 voltas)
+    status: extraido
+    source: {page: 2, location: Performance - number of revolutions, excerpt: "4,096 (12 bit)"}
+  interface:
+    value: PROFINET, perfil de encoder V4.1 classe 3, 10/100 Mbit/s
+    status: extraido
+    source: {page: 2, location: Interfaces, excerpt: "V4.1 class3"}
+  saida:
+    value: PROFINET (cabo CAT-5e)
+    status: extraido
+    source: {page: 2, location: Interfaces - transmission medium, excerpt: "CAT-5e cable"}
+  conexao:
+    value: Conector macho M12 4 pinos (alimentação) e 2x conector fêmea M12 4 pinos (portas), axiais
+    status: extraido
+    source: {page: 3, location: Electronics - connection type, excerpt: "Male connector, 1x, M12, 4-pin, axial"}
+  invólucro:
+    value: Alumínio; eixo em aço inox; flange de alumínio
+    status: extraido
+    source: {page: 3, location: Mechanics - materials, excerpt: "Housing material"}
+  grau_protecao:
+    value: IP65 lado do eixo, IP67 lado da carcaça (com conector)
+    status: extraido
+    source: {page: 3, location: Ambient data - enclosure rating, excerpt: "IP65, shaft side (IEC 60529)"}

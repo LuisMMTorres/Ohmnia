@@ -1,0 +1,108 @@
+# Fonte: onsemi, SG3525A/D, Pulse Width Modulator Control Circuit, Rev. 7, February 2024.
+part_number: SG3525A
+category: ic.pwm_controller
+schema_version: '1.0'
+manufacturer: onsemi
+family: SG3525A
+package: PDIP-16 (sufixo N, case 648-08), SOIC-16 WB (sufixo DW, case 751G)
+lifecycle: desconhecido
+notes:
+- 'Controlador PWM para fontes chaveadas, duas saídas totem-pole (A e B), referência de 5,1 V, soft-start e sincronismo. Condições gerais da página 4: VCC = 20 V, TA de 0 a 70 C.'
+- 'I_out é o máximo absoluto de corrente de saída (fonte ou sumidouro); em regime permanente a faixa recomendada é 0 a 100 mA e o pico recomendado 400 mA (página 3).'
+- 'Tensão de coletor VC: máximo absoluto 40 V, faixa recomendada 4,5 a 35 V (páginas 3).'
+- 'D_max: mínimo garantido 45 %, típico 49 % (página 4). t_r e t_f com CL = 1 nF, TJ = 25 C (página 5).'
+- 'Fora do esquema: soft-start 25 a 80 uA (típ. 50 uA), RT 2 a 150 kohm, CT 0,001 a 0,2 uF, precisão inicial do oscilador típ. 2 % (máx. 6 %), saída em nível baixo típ. 0,2 V (Isink = 20 mA), alta 18 V mín. (Isource = 20 mA), páginas 4 e 5.'
+datasheets:
+- id: ds1
+  manufacturer: onsemi
+  document_number: SG3525A/D
+  revision: Rev. 7, February 2024
+  sha256: aa275c22984d6ba76038fea20a7c1b1e8eae0c1a5258cc46876a5187f505b022
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 8
+    max: 35
+    unit: V
+    status: extraido
+    source: {page: 3, location: Recommended Operating Conditions - Supply Voltage VCC, excerpt: "Supply Voltage VCC 8.0 35 Vdc"}
+  VS_max:
+    max: 40
+    unit: V
+    status: extraido
+    source: {page: 3, location: Maximum Ratings - Supply Voltage VCC, excerpt: "Supply Voltage VCC +40 Vdc"}
+  Vref:
+    min: 5.00
+    typ: 5.10
+    max: 5.20
+    unit: V
+    conditions: {Tj: 25 °C}
+    status: extraido
+    source: {page: 4, location: Electrical Characteristics - Reference Section - Reference Output Voltage, excerpt: "Reference Output Voltage (TJ = +25C) Vref 5.00 5.10 5.20 Vdc"}
+  f_osc:
+    min: 0.1
+    max: 400
+    unit: kHz
+    status: extraido
+    source: {page: 3, location: Recommended Operating Conditions - Oscillator Frequency Range, excerpt: "Oscillator Frequency Range fosc 0.1 400 kHz"}
+  D_max:
+    min: 45
+    typ: 49
+    unit: "%"
+    status: extraido
+    source: {page: 4, location: PWM Comparator Section - Maximum Duty Cycle, excerpt: "Maximum Duty Cycle DCmax 45 49 %"}
+  I_out:
+    max: 500
+    unit: mA
+    status: extraido
+    source: {page: 3, location: Maximum Ratings - Output Current, Source or Sink, excerpt: "Output Current, Source or Sink IO 500 mA"}
+  t_r:
+    typ: 100
+    max: 600
+    unit: ns
+    conditions: {CL: 1.0 nF, Tj: 25 °C}
+    status: extraido
+    source: {page: 5, location: Output Drivers - Rise Time, excerpt: "Rise Time (CL = 1.0 nF, TJ = 25C) tr 100 600 ns"}
+  t_f:
+    typ: 50
+    max: 300
+    unit: ns
+    conditions: {CL: 1.0 nF, Tj: 25 °C}
+    status: extraido
+    source: {page: 5, location: Output Drivers - Fall Time, excerpt: "Fall Time (CL = 1.0 nF, TJ = 25C) tf 50 300 ns"}
+  V_uvlo:
+    min: 6.0
+    typ: 7.0
+    max: 8.0
+    unit: V
+    status: extraido
+    source: {page: 5, location: Output Drivers - Under Voltage Lockout, excerpt: "Under Voltage Lockout (V8 and V9 = High) VUL 6.0 7.0 8.0 V"}
+  IS:
+    typ: 14
+    max: 20
+    unit: mA
+    conditions: {VCC: 35 V}
+    status: extraido
+    source: {page: 5, location: Output Drivers - Supply Current (VCC = +35 V), excerpt: "Supply Current (VCC = +35 V) ICC 14 20 mA"}
+  Top:
+    min: 0
+    max: 70
+    unit: °C
+    status: extraido
+    source: {page: 3, location: Recommended Operating Conditions - Operating Ambient Temperature Range, excerpt: "Operating Ambient Temperature Range TA 0 +70 C"}
+  Tj_max:
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 3, location: Maximum Ratings - Operating Junction Temperature, excerpt: "Operating Junction Temperature TJ +150 C"}
+attributes:
+  saida:
+    value: Totem-pole dupla (Output A e Output B), fonte e sumidouro
+    status: extraido
+    source: {page: 1, location: Features - Dual Source/Sink Outputs, excerpt: "Dual Source/Sink Outputs: 400 mA Peak"}
+  encapsulamento:
+    value: PDIP-16 (N), SOIC-16 WB (DW)
+    status: extraido
+    source: {page: 2, location: Ordering Information, excerpt: "SG3525ANG PDIP-16; SG3525ADWR2G SOIC-16 WB"}

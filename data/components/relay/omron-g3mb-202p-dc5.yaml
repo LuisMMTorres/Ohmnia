@@ -1,0 +1,104 @@
+# Fonte: Omron, Solid State Relay G3MB (Low cost Subminiature PCB mounting 2 amp SIP SSR), catálogo págs. 383-386, sem data de revisão.
+part_number: G3MB-202P-DC5
+category: relay.solid_state
+schema_version: '1.0'
+manufacturer: Omron
+family: G3MB
+package: SIP, montagem em PCB, terminais de saída a 7,62 mm (modelo sem "-4"), 24,5 x 20,5 mm máx. (vista inferior)
+lifecycle: obsoleto
+notes:
+- 'Documento marca "NOT FOR NEW DESIGN. Discontinuation planned for April, 2010." (pág. 1).'
+- 'Modelo G3MB-202P (7,62 mm, passagem por zero, resistor de entrada e snubber embutidos, 2 A em 100 a 240 VAC), versão de 5 VDC (pág. 1).'
+- 'Entrada 5 VDC: faixa de operação 4 a 6 VDC, impedância 440 ohm ±20 % (300 ohm ±20 % nos modelos -UTU), tensão que deve operar 4 VDC máx., deve liberar 1 VDC mín. (pág. 2).'
+- 'Corrente de operação 7 a 20 mA; deve operar 7 mA DC máx.; deve liberar 1 mA DC mín. (pág. 2).'
+- 'Tensão nominal de carga 100 a 240 VAC, 50/60 Hz, faixa 75 a 264 VAC; corrente de carga 0,10 a 2 A; surto 30 A (60 Hz, 1 ciclo) (pág. 2).'
+- 'PIV (VDRM) 600 V; di/dt 40 A/us; I2t 4 A2s; Tj máx. 125 °C; rigidez dielétrica 2500 VAC por 1 min; resistência de isolação 1000 Mohm mín. a 500 VDC (pág. 2).'
+- 'Aprovações de carga (pág. 4): uso geral 2 A, 240 VAC; tungstênio 1 A, 240 VAC; motor 1,60 FLA/9,60 LRA, 240 VAC.'
+- 'Tempo de operação e de liberação (modelos G3MB-202P): 1/2 ciclo da fonte de carga + 1 ms máx. (pág. 2); depende da frequência da rede, por isso não vai em t_on/t_off.'
+datasheets:
+- id: ds1
+  manufacturer: Omron
+  document_number: Solid State Relay G3MB
+  url: https://media.digikey.com/pdf/Data%20Sheets/Omron%20PDFs/G3MB.pdf
+  sha256: ffd459bdc78b89d2bd9652d5835960daf0920f9cdbf0086482dba5a395346748
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  V_control:
+    min: 4
+    max: 6
+    unit: V
+    status: extraido
+    note: Faixa de operação para tensão nominal de 5 VDC.
+    source: {datasheet_id: ds1, page: 2, location: Specifications - Input Rating (models with input resistor), excerpt: "5 VDC 4 to 6 VDC 440 ohm"}
+  I_control:
+    min: 7
+    max: 20
+    unit: mA
+    status: extraido
+    note: Corrente de operação (Operating current).
+    source: {datasheet_id: ds1, page: 2, location: Specifications - Input Rating, excerpt: "Operating current 7 to 20 mA"}
+  V_load:
+    min: 75
+    max: 264
+    unit: V
+    status: extraido
+    note: VAC; tensão nominal 100 a 240 VAC, 50/60 Hz.
+    source: {datasheet_id: ds1, page: 2, location: Specifications - Output Rating, excerpt: "75 to 264 VAC"}
+  I_load:
+    max: 2
+    unit: A
+    status: extraido
+    note: Faixa de corrente de carga 0,10 a 2 A.
+    source: {datasheet_id: ds1, page: 2, location: Specifications - Output Rating, excerpt: "0.10 to 2 A"}
+  I_surge:
+    max: 30
+    unit: A
+    status: extraido
+    note: 60 Hz, 1 ciclo.
+    source: {datasheet_id: ds1, page: 2, location: Specifications - Output Rating, excerpt: "30 A (60 Hz, 1 cycle)"}
+  V_drop:
+    max: 1.6
+    unit: V
+    status: extraido
+    note: Valor RMS.
+    source: {datasheet_id: ds1, page: 2, location: Specifications - Characteristics, excerpt: "Output ON voltage drop 1.60 V (RMS) max."}
+  I_off:
+    max: 1.5
+    unit: mA
+    status: extraido
+    note: A 200 VAC.
+    source: {datasheet_id: ds1, page: 2, location: Specifications - Characteristics, excerpt: "Leakage current 1.50 mA at 200 VAC"}
+  V_iso:
+    max: 2500
+    unit: V
+    status: extraido
+    note: VAC, 50/60 Hz por 1 minuto.
+    source: {datasheet_id: ds1, page: 2, location: Specifications - Characteristics, excerpt: "Dielectric strength 2500 VAC, 50/60 Hz for 1 minute"}
+  dv_dt:
+    max: 100
+    unit: V/us
+    status: extraido
+    source: {datasheet_id: ds1, page: 2, location: Specifications - Characteristics, excerpt: "dv/dt 100 V/μs"}
+  Top:
+    min: -30
+    max: 80
+    unit: °C
+    status: extraido
+    source: {datasheet_id: ds1, page: 2, location: Specifications - Characteristics, excerpt: "Operating -30° to 80°C"}
+  Tstg:
+    min: -30
+    max: 100
+    unit: °C
+    status: extraido
+    source: {datasheet_id: ds1, page: 2, location: Specifications - Characteristics, excerpt: "Storage -30° to 100°C"}
+attributes:
+  comutacao:
+    value: passagem por zero (zero cross), saída com fototriac, snubber embutido
+    status: extraido
+    source: {page: 1, location: Ordering Information table, excerpt: "Phototriac, Zero cross Yes, Built-in snubber circuit Yes"}
+  certificacoes:
+    value: UL Recognized (File No. E64562), CSA Certified (File No. LR35535); versões VDE (TUV) com sufixo -UTU
+    status: extraido
+    source: {page: 4, location: Approvals}

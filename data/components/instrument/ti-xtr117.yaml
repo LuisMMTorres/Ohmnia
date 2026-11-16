@@ -1,0 +1,70 @@
+# Fonte: Texas Instruments, XTR117 4-20mA Current-Loop Transmitter, SBOS344E, set/2005, rev. jan/2026.
+part_number: XTR117
+category: instrument.transmitter
+schema_version: '1.0'
+manufacturer: Texas Instruments
+package: VSSOP-8 (DGK) e VSON-8 (DRB)
+lifecycle: desconhecido
+notes:
+- 'Fila: XTR117. Conversor de corrente de malha 4-20 mA: IO = IIN x 100 (ganho 100 A/A); regulador de 5 V para circuitos externos; transistor externo (TIP29C no teste); RIN = 20 kohm no teste (p. 6).'
+- 'Máximos absolutos (p. 5): V+ 40 V (referido ao pino IO); TJ 165 °C; TA operação -40 a 125 °C; Tstg -55 a 150 °C.'
+- 'Faixa linear de saída 0,20 a 25 mA; limite de sobre-escala 32 mA; sub-escala 0,13/0,20 mA; erro de span +-0,4 % máx.; não linearidade +-0,02 % máx. (p. 6).'
+- 'IQ de 130 uA típ./200 uA máx. refere-se à variante CSO SHE a 25 °C; CSO TID 105/200 uA; máx. 250 uA de -40 a 125 °C (p. 6).'
+datasheets:
+- id: ds1
+  manufacturer: Texas Instruments
+  document_number: SBOS344E
+  revision: janeiro 2026
+  url: https://www.ti.com/lit/ds/symlink/xtr117.pdf
+  sha256: f1e9b04d320c721872558e32805282c09e90454ec24973fcf69cd3f706ef5c22
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_out:
+    min: 0.2
+    max: 25
+    unit: mA
+    status: extraido
+    source: {page: 6, location: 6.5 Electrical Characteristics - Output current linear range, excerpt: "Output current, linear range 0.20 25 mA"}
+  VS:
+    min: 7.5
+    typ: 24
+    max: 40
+    unit: V
+    status: extraido
+    source: {page: 5, location: 6.3 Recommended Operating Conditions - V+, excerpt: "V+ Power supply voltage 7.5 24 40 V"}
+  IS:
+    typ: 0.13
+    max: 0.2
+    unit: mA
+    status: extraido
+    conditions: {TA: 25 °C}
+    source: {page: 6, location: 6.5 Electrical Characteristics - Power supply IQ (CSO SHE), excerpt: "IQ Quiescent current CSO: SHE 130 200 μA"}
+  accuracy:
+    max: 0.4
+    unit: '%'
+    status: extraido
+    conditions: {TA: 25 °C}
+    source: {page: 6, location: 6.5 Electrical Characteristics - Span error, excerpt: "Error IOUT = 200µA to 25mA ±0.05 ±0.4 %"}
+  Top:
+    min: -40
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 5, location: 6.3 Recommended Operating Conditions - Specified temperature, excerpt: "TA Specified temperature -40 125 °C"}
+  Tstg:
+    min: -55
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 5, location: 6.1 Absolute Maximum Ratings - Tstg, excerpt: "Tstg Storage temperature –55 150 °C"}
+attributes:
+  entrada:
+    value: "Corrente IIN (RIN externo, IO = 100 x IIN)"
+    status: extraido
+    source: {page: 1, location: Description, excerpt: "precision current output converter"}
+  saida:
+    value: "4-20 mA, 2 fios (faixa linear 0,20 a 25 mA)"
+    status: extraido
+    source: {page: 6, location: 6.5 Electrical Characteristics, excerpt: "Output current, linear range 0.20 25 mA"}

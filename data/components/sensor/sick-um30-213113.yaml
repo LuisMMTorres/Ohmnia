@@ -1,0 +1,99 @@
+# Fonte: SICK, Product data sheet UM30-213113 (SICK ID 6036918), 2026-09-06.
+part_number: UM30-213113
+category: sensor.level
+schema_version: '1.0'
+manufacturer: SICK
+family: UM30
+package: Cilíndrico M30 x 1,5, 30 mm x 30 mm x 84 mm
+lifecycle: desconhecido
+notes:
+- 'Fila: UM30-213113. Sensor ultrassônico de distância, part no. 6036918.'
+- 'Faixa de operação 200 ... 1,300 mm; faixa limite 2,000 mm (p. 2). Repetibilidade ±0,15 %; resolução >= 0,18 mm; tempo de saída 23 ms; frequência ultrassônica típica 200 kHz (p. 2).'
+- 'Consumo <= 2,4 W sem carga (p. 3). Com 4-20 mA e Vs <= 20 V a carga máx. é 100 ohm; com saída em tensão exige 15 a 30 V (p. 3, notas).'
+datasheets:
+- id: ds1
+  manufacturer: SICK
+  document_number: '6036918'
+  revision: '2026-09-06'
+  url: https://www.sick.com/media/pdf/7/57/357/dataSheet_UM30-213113_6036918_en.pdf
+  sha256: d5fa825aa80f20756a3307fa6d653b0375f9c64413002a66174dc1c1e1806e65
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  range_m:
+    min: 200
+    max: 1300
+    unit: mm
+    status: extraido
+    source: {page: 2, location: Features - Operating range, limiting range, excerpt: "Operating range, limiting range 200 mm ... 1,300 mm, 2,000 mm"}
+  accuracy:
+    max: 1
+    unit: '%'
+    status: extraido
+    source: {page: 2, location: Features - Measurement accuracy, excerpt: "Measurement accuracy ± 1 %"}
+  t_resp:
+    typ: 92
+    unit: ms
+    status: extraido
+    source: {page: 2, location: Features - Response time, excerpt: "Response time 92 ms"}
+  I_out:
+    min: 4
+    max: 20
+    unit: mA
+    status: extraido
+    source: {page: 3, location: Interfaces - Analog output - Current, excerpt: "4 mA ... 20 mA, ≤ 500 Ω"}
+  V_out:
+    min: 0
+    max: 10
+    unit: V
+    status: extraido
+    source: {page: 3, location: Interfaces - Analog output - Voltage, excerpt: "0 V ... 10 V, ≥ 100,000 Ω"}
+  RL:
+    max: 500
+    unit: ohm
+    status: extraido
+    source: {page: 3, location: Interfaces - Analog output - Current, excerpt: "4 mA ... 20 mA, ≤ 500 Ω"}
+  VS:
+    min: 9
+    max: 30
+    unit: V
+    status: extraido
+    source: {page: 3, location: Electronics - Supply voltage UB, excerpt: "DC 9 V ... 30 V"}
+  Top:
+    min: -25
+    max: 70
+    unit: °C
+    status: extraido
+    source: {page: 3, location: Ambient data - Ambient temperature, operation, excerpt: "–25 °C ... +70 °C"}
+  Tstg:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 3, location: Ambient data - Ambient temperature, storage, excerpt: "–40 °C ... +85 °C"}
+attributes:
+  saida:
+    value: Analógica 4 a 20 mA ou 0 a 10 V (seleção automática conforme a carga), 12 bit
+    status: extraido
+    source: {page: 3, location: Interfaces - Analog output}
+  conexao:
+    value: Conector M12, 5 pinos
+    status: extraido
+    source: {page: 3, location: Mechanics - Connection type, excerpt: "Male connector, M12, 5-pin"}
+  invólucro:
+    value: Metal (latão niquelado, PBT), rosca M30 x 1,5
+    status: extraido
+    source: {page: 3, location: Mechanics - Housing material / Thread size}
+  grau_protecao:
+    value: IP65 / IP67
+    status: extraido
+    source: {page: 3, location: Electronics - Enclosure rating}
+  certificacoes:
+    value: cULus, declaração de conformidade UE/UK
+    status: extraido
+    source: {page: 3, location: Certificates}
+  principio:
+    value: Ultrassônico com compensação de temperatura
+    status: extraido
+    source: {page: 2, location: Features - Temperature compensation}

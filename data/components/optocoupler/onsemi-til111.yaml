@@ -1,0 +1,65 @@
+# Fonte: onsemi (Fairchild Semiconductor), General Purpose 6-Pin Phototransistor Optocouplers TIL111 / TIL111-M / TIL117-M / MOC8100-M, 6/15/05, Page 1 of 14.
+part_number: TIL111
+category: optocoupler
+schema_version: '1.0'
+manufacturer: onsemi
+family: TIL111 / TIL111-M / TIL117-M / MOC8100-M
+package: DIP 6 pinos (pacote preto sem sufixo; branco com sufixo -M)
+lifecycle: desconhecido
+notes:
+- 'Valores do TIL111 sem sufixo (pacote preto) quando o documento distingue (IF 100 mA; VISO 5300 Vac rms em 1 min).'
+- A tabela de características de transferência (CTR, VCE(sat), tempos de comutação) fica na página 4, sem texto extraível; não transcrita.
+datasheets:
+- id: ds1
+  manufacturer: onsemi
+  revision: 6/15/05
+  url: https://www.farnell.com/datasheets/87351.pdf
+  sha256: f7d27c4be9909ecfb52f6e6da55c299b96a59eca7a05711ea239e6201b9e0f31
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  IF:
+    max: 100
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - emitter - DC/average forward input current, excerpt: "IF 100 (non-M), 60 (-M) mA"}
+  VF:
+    typ: 1.2
+    max: 1.4
+    unit: V
+    conditions: {IF: 16 mA, TA: 25 °C}
+    status: extraido
+    source: {page: 3, location: Electrical characteristics - emitter - input forward voltage, excerpt: "Input Forward Voltage (IF = 16 mA) TIL111/TIL111-M VF 1.2 1.4 V"}
+  VCEO:
+    max: 30
+    unit: V
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - detector - collector-emitter voltage, excerpt: "Collector-Emitter Voltage All VCEO 30 V"}
+  V_iso:
+    max: 5300
+    unit: V
+    conditions: {t: 1 min}
+    status: extraido
+    source: {page: 3, location: Isolation characteristics - input-output isolation voltage (non -M, black), excerpt: "(f = 60 Hz, t = 1 min) VISO 5300 Vac(rms)"}
+  Top:
+    min: -55
+    max: 100
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - total device - operating temperature, excerpt: "Operating Temperature All TOPR -55 to +100 °C"}
+  Tstg:
+    min: -55
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - total device - storage temperature, excerpt: "Storage Temperature All TSTG -55 to +150 °C"}
+attributes:
+  saida:
+    value: Fototransistor (com terminal de base)
+    status: extraido
+    source: {page: 1, location: Description and schematic, excerpt: "gallium arsenide infrared emitting diode driving a silicon phototransistor"}
+  canais:
+    value: '1'
+    status: extraido
+    source: {page: 1, location: Schematic, excerpt: "PIN 1. ANODE 2. CATHODE ... 6. BASE"}

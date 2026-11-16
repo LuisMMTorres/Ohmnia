@@ -1,0 +1,104 @@
+# Fonte: Microchip, MCP3004/3008 2.7V 4-Channel/8-Channel 10-Bit A/D Converters with SPI Serial Interface, DS21295D, 2008.
+part_number: MCP3004/3008
+category: ic.adc
+schema_version: '1.0'
+manufacturer: Microchip
+family: MCP3004/3008
+package: MCP3004 em PDIP-14, SOIC-14 e TSSOP-14; MCP3008 em PDIP-16 e SOIC-16 (p. 1)
+lifecycle: desconhecido
+notes:
+- 'Fila: DS21295D. O documento cobre MCP3004 (4 canais single-ended ou 2 pseudo-diferenciais) e MCP3008 (8 canais single-ended ou 4 pseudo-diferenciais) (p. 1).'
+- 'Número de canais transcrito para o MCP3008 (máximo da família).'
+- 'Especificações a VDD = VREF = 5 V, TA = -40 a +85 °C, 200 ksps (p. 3); a 2,7 V a taxa máxima é 75 ksps (p. 3).'
+- 'Corrente de operação: 425 µA típ. e 550 µA máx. a VDD = VREF = 5 V; 225 µA típ. a 2,7 V (p. 5).'
+datasheets:
+- id: ds1
+  manufacturer: Microchip
+  document_number: DS21295D
+  revision: '2008'
+  url: https://ww1.microchip.com/downloads/en/DeviceDoc/21295d.pdf
+  sha256: e6c2231de727395ff42b094ed4ffd185db77b3958ac0b805f97330f4ad4b1122
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  bits:
+    typ: 10
+    unit: bit
+    status: extraido
+    source: {page: 3, location: 1.0 Electrical Characteristics - DC Accuracy, excerpt: "Resolution 10 bits"}
+  fs:
+    max: 200
+    unit: kHz
+    conditions: {VDD: 5 V}
+    status: extraido
+    source: {page: 3, location: 1.0 Electrical Characteristics - Throughput rate, excerpt: "Throughput Rate fSAMPLE 200 75 ksps VDD = VREF = 5V"}
+  channels:
+    typ: 8
+    unit: '1'
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "4 (MCP3004) or 8 (MCP3008) input channels"}
+  VS:
+    min: 2.7
+    max: 5.5
+    unit: V
+    status: extraido
+    source: {page: 5, location: Power Requirements - Operating voltage, excerpt: "Operating Voltage VDD 2.7 5.5 V"}
+  VREF:
+    min: 0.25
+    max: 5.5
+    unit: V
+    status: extraido
+    source: {page: 3, location: Electrical Characteristics - Reference input voltage range, excerpt: "Voltage Range 0.25 — VDD V"}
+  V_in:
+    min: 0
+    unit: V
+    status: extraido
+    source: {page: 3, location: Electrical Characteristics - Analog inputs, single-ended, excerpt: "Input Voltage Range for CH0 or CH1 in Single-Ended Mode VSS VREF V"}
+  INL:
+    max: 1
+    unit: '1'
+    status: extraido
+    source: {page: 3, location: Electrical Characteristics - Integral nonlinearity, excerpt: "Integral Nonlinearity INL ±0.5 ±1 LSB"}
+  DNL:
+    max: 1
+    unit: '1'
+    status: extraido
+    source: {page: 3, location: Electrical Characteristics - Differential nonlinearity, excerpt: "Differential Nonlinearity DNL ±0.25 ±1 LSB"}
+  offset:
+    max: 1.5
+    unit: '1'
+    status: extraido
+    source: {page: 3, location: Electrical Characteristics - Offset error, excerpt: "Offset Error ±1.5 LSB"}
+  IS:
+    typ: 0.425
+    max: 0.55
+    unit: mA
+    conditions: {VDD: 5 V}
+    status: extraido
+    source: {page: 5, location: Power Requirements - Operating current, excerpt: "Operating Current IDD 425 225 550 µA VDD = VREF = 5V"}
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 5, location: Temperature Ranges - Operating temperature range, excerpt: "Operating Temperature Range TA -40 +85 °C"}
+  Tstg:
+    min: -65
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 5, location: Temperature Ranges - Storage temperature range, excerpt: "Storage Temperature Range TA -65 +150 °C"}
+attributes:
+  interface:
+    value: SPI (modos 0,0 e 1,1)
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "SPI serial interface (modes 0,0 and 1,1)"}
+  arquitetura:
+    value: SAR com sample-and-hold
+    status: extraido
+    source: {page: 1, location: Description, excerpt: "successive approximation 10-bit Analog-to-Digital (A/D) converters"}
+  encapsulamento:
+    value: PDIP, SOIC, TSSOP (MCP3004); PDIP, SOIC (MCP3008)
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "Available in PDIP, SOIC and TSSOP packages"}

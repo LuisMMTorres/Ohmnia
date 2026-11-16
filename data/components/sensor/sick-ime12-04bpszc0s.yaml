@@ -1,0 +1,91 @@
+# Fonte: SICK, Online data sheet IME12-04BPSZC0S (part no. 1040764), impresso em 2026-07-18.
+part_number: IME12-04BPSZC0S
+category: sensor.proximity
+schema_version: '1.0'
+manufacturer: SICK
+family: IME
+package: M12 x 1, Ø 12 mm
+lifecycle: desconhecido
+notes:
+- Distância sensora segura Sa = 3.24 mm (p. 2).
+- Histerese, reprodutibilidade <= 2 % e deriva de temperatura ± 10 % de Sr (p. 3); atraso de disponibilidade <= 100 ms (p. 2); ondulação <= 10 %.
+- Proteção contra curto-circuito e pulso de ligação (p. 3). MTTFD 1.735 anos (p. 3).
+- Fator de redução (aço St37 = 1; inox ~0,8; alumínio ~0,45; latão/cobre ~0,4) na p. 3.
+- Novo link achado no site do fabricante; número da peça do documento IME12-04BPSZC0S (1040764).
+datasheets:
+- id: ds1
+  manufacturer: SICK
+  url: https://www.sick.com/media/pdf/1/81/481/dataSheet_IME12-04BPSZC0S_1040764_en.pdf
+  sha256: 9f29a7b2d364f8834c44dca1d40b9ae5eeb2f9661cf1c7c3f4f2f29127100852
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  sn:
+    typ: 4
+    unit: mm
+    status: extraido
+    source: {page: 2, location: Detailed technical data - Features - Sensing range Sn, excerpt: "Sensing range Sn 4 mm"}
+  hysteresis:
+    min: 5
+    max: 15
+    unit: '%'
+    status: extraido
+    source: {page: 3, location: Mechanics/Electronics - Hysteresis, excerpt: "5 % ... 15 %"}
+  VS:
+    min: 10
+    max: 30
+    unit: V
+    status: extraido
+    source: {page: 2, location: Mechanics/Electronics - Supply voltage, excerpt: "10 V DC ... 30 V DC"}
+  IS:
+    max: 10
+    unit: mA
+    status: extraido
+    source: {page: 3, location: Mechanics/Electronics - No load current, excerpt: "≤ 10 mA"}
+  IL:
+    max: 200
+    unit: mA
+    status: extraido
+    source: {page: 3, location: Mechanics/Electronics - Continuous current Ia, excerpt: "≤ 200 mA"}
+  Vdrop:
+    max: 2
+    unit: V
+    status: extraido
+    source: {page: 2, location: Mechanics/Electronics - Voltage drop (at Ia max), excerpt: "≤ 2 V"}
+  f_sw:
+    max: 2000
+    unit: Hz
+    status: extraido
+    source: {page: 2, location: Features - Switching frequency, excerpt: "Switching frequency 2,000 Hz"}
+  Top:
+    min: -25
+    max: 75
+    unit: °C
+    status: extraido
+    source: {page: 3, location: Mechanics/Electronics - Ambient operating temperature, excerpt: "–25 °C ... +75 °C"}
+attributes:
+  saida:
+    value: PNP, NA (DC 3 fios), proteção contra curto-circuito
+    status: extraido
+    source: {page: 2, location: Features - Switching output / Output function / Electrical wiring, excerpt: "PNP; NO; DC 3-wire"}
+  conexao:
+    value: Conector macho M12, 4 pinos
+    status: extraido
+    source: {page: 2, location: Features - Connection type, excerpt: "Male connector M12, 4-pin"}
+  invólucro:
+    value: Métrico M12 x 1, Ø 12 mm; latão niquelado, face de plástico PA 66
+    status: extraido
+    source: {page: 3, location: Mechanics/Electronics - Housing material / Sensing face material, excerpt: "Brass, nickel-plated; Plastic, PA 66"}
+  grau_protecao:
+    value: IP67 (EN 60529)
+    status: extraido
+    source: {page: 2, location: Features - Enclosure rating, excerpt: "IP67 1) According to EN 60529"}
+  certificacoes:
+    value: UL File No. NRKH.E181493; cULus; declarações de conformidade UE/UK/ACMA/Marrocos; China RoHS; CCC isento
+    status: extraido
+    source: {page: 3, location: Mechanics/Electronics - UL File No. / Certificates, excerpt: "UL File No. NRKH.E181493"}
+  montagem:
+    value: Faceado (flush)
+    status: extraido
+    source: {page: 2, location: Features - Installation type, excerpt: "Installation type Flush"}

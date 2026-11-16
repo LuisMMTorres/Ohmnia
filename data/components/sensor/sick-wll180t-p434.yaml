@@ -1,0 +1,94 @@
+# Fonte: SICK, Online data sheet WLL180T-P434 (part no. 6039095), WLL180 fiber-optic sensors (amplificador), impresso em 2026-07-24.
+part_number: WLL180T-P434
+category: sensor.photoelectric
+schema_version: '1.0'
+manufacturer: SICK
+family: WLL180
+package: Retangular, plástico ABS/PC, 10,5 x 34,6 x 71,9 mm
+lifecycle: desconhecido
+notes:
+- 'Fila: WLL180T-P434. Amplificador de fibra óptica stand-alone; o alcance depende do cabo de fibra utilizado (pág. 2), por isso o parâmetro range não foi preenchido.'
+- 'Tempos de resposta selecionáveis e frequências de comutação correspondentes: 16 us/31,2 kHz, 70 us/7,1 kHz, 250 us/2 kHz, 2000 us/250 Hz, 8000 us/62,5 Hz (pág. 3).'
+- 'Funções de tempo: sem atraso, atraso ao desligar, ao ligar, ON e OFF, one shot; atraso programável 0 a 9999 ms (pág. 3).'
+- 'LED vermelho visível 650 nm, grupo de risco livre (EN 62471); MTTFD 323 anos (pág. 2). Imunidade a luz ambiente típ.: artificial <= 3000 lx, sol <= 10000 lx (pág. 3).'
+- 'Tensão de alimentação 12 a 24 V DC com tolerância +-10 %; ondulação <= 10 % (pág. 3).'
+datasheets:
+- id: ds1
+  manufacturer: SICK
+  document_number: '6039095'
+  revision: impresso em 2026-07-24
+  url: https://www.sick.com/media/pdf/7/67/167/dataSheet_WLL180T-P434_6039095_en.pdf
+  sha256: 1dc452ef9b436b2f7f56e8cc970fd4c24e08a1d269005f4f9f9024b4ffa52207
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  t_resp:
+    min: 0.016
+    max: 8
+    unit: ms
+    status: extraido
+    source: {page: 3, location: Electronics - Response time, excerpt: "Response time ≤ 16 µs ... ≤ 8,000 µs"}
+  lambda:
+    typ: 650
+    unit: nm
+    status: extraido
+    source: {page: 2, location: Features - Wave length, excerpt: "Wave length 650 nm"}
+  VS:
+    min: 12
+    max: 24
+    unit: V
+    status: extraido
+    source: {page: 3, location: Electronics - Supply voltage UB, excerpt: "12 V DC ... 24 V DC (±10%)"}
+  IS:
+    max: 50
+    unit: mA
+    status: extraido
+    source: {page: 3, location: Electronics - Current consumption, excerpt: "Current consumption ≤ 50 mA (without load)"}
+  f_sw:
+    min: 62.5
+    max: 31200
+    unit: Hz
+    status: extraido
+    source: {page: 3, location: Electronics - Switching frequency, excerpt: "Switching frequency 31.2 kHz ... 62.5 Hz"}
+  Top:
+    min: -25
+    max: 55
+    unit: °C
+    status: extraido
+    source: {page: 3, location: Ambient data, excerpt: "Ambient operating temperature –25 °C ... +55 °C"}
+  Tstg:
+    min: -40
+    max: 70
+    unit: °C
+    status: extraido
+    source: {page: 3, location: Ambient data, excerpt: "Ambient temperature, storage –40 °C ... +70 °C"}
+attributes:
+  saida:
+    value: PNP (selecionável por menu), 1 saída digital, comutação claro/escuro selecionável; protegida contra polaridade reversa, sobrecorrente e curto-circuito
+    status: extraido
+    source: {page: 3, location: Electronics - Digital output}
+  conexao:
+    value: Conector macho M8, 4 pinos
+    status: extraido
+    source: {page: 3, location: Mechanics - Connection}
+  invólucro:
+    value: Plástico ABS/PC, retangular
+    status: extraido
+    source: {page: 3, location: Mechanics - Material}
+  grau_protecao:
+    value: IP50 (EN 60529)
+    status: extraido
+    source: {page: 3, location: Ambient data - Enclosure rating}
+  certificacoes:
+    value: UL File No. NRKH.E300503 e NRKH7.E300503; RoHS; EMC EN 60947-5-2
+    status: extraido
+    source: {page: 4, location: Ambient data / Certificates}
+  principio:
+    value: Amplificador de fibra óptica (alcance depende do cabo de fibra)
+    status: extraido
+    source: {page: 2, location: Features - Device type, excerpt: "Fiber-optic amplifier"}
+  luz:
+    value: LED vermelho visível, 650 nm
+    status: extraido
+    source: {page: 2, location: Features - Type of light}

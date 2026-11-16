@@ -1,0 +1,75 @@
+# Fonte: Sensirion, Datasheet SHT3x-DIS Humidity and Temperature Sensor, Version 7, December 2022.
+part_number: SHT31-D
+category: sensor.humidity
+schema_version: '1.0'
+manufacturer: Sensirion
+family: SHT3x-DIS
+package: DFN de 8 pinos, 2,5 x 2,5 mm, altura 0,9 mm
+lifecycle: desconhecido
+notes:
+- 'O documento cobre a série SHT30, SHT31 e SHT35; os valores transcritos são os da linha SHT31 quando separados por modelo (p. 2).'
+- 'Interface I2C até 1 MHz com dois endereços selecionáveis (p. 1).'
+- 'Corrente média 1,7 uA com uma medição por segundo na menor repetibilidade, modo single shot; em espera típ. 0,2 uA (p. 6).'
+- 'Tempo de resposta da umidade (63 %) aparece como "86 s" no texto extraído, provavelmente 8 s com nota de rodapé; não transcrito (p. 2).'
+- 'Faixa de operação absoluta: -40 a 125 °C (p. 7, Table 6).'
+datasheets:
+- id: ds1
+  manufacturer: Sensirion
+  revision: Version 7, December 2022
+  sha256: 095b1853e7f4328f5897c9ca6c392a7dd8b0202eda66b0a2629f9cb840dd496d
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  range:
+    min: 0
+    max: 100
+    unit: '%'
+    status: extraido
+    source: {page: 2, location: Table 1 - Specified range, excerpt: "Specified range extended 0 to 100 %RH"}
+  accuracy:
+    typ: 2
+    unit: '%'
+    status: extraido
+    source: {page: 2, location: Table 1 - SHT31 Accuracy tolerance, excerpt: "SHT31 Accuracy tolerance Typ. 2 %RH"}
+  T_range:
+    min: -40
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Table 2 - Specified Range, excerpt: "Specified Range -40 to 125 °C"}
+  T_accuracy:
+    typ: 0.2
+    unit: K
+    status: extraido
+    source: {page: 2, location: Table 2 - SHT31 Accuracy tolerance, excerpt: "SHT31 typ., 0°C to 90°C 0.2 °C"}
+  VS:
+    min: 2.15
+    typ: 3.3
+    max: 5.5
+    unit: V
+    status: extraido
+    source: {page: 6, location: Electrical specifications - Supply voltage VDD, excerpt: "Supply voltage VDD 2.15 3.3 5.5 V"}
+  IS:
+    typ: 0.6
+    max: 1.5
+    unit: mA
+    status: extraido
+    source: {page: 6, location: Electrical specifications - Supply current, measuring, excerpt: "Measuring 600 1500 µA"}
+  Top:
+    min: -40
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 7, location: Table 6 - Operating temperature range, excerpt: "Operating temperature range -40 to 125 °C"}
+  Tstg:
+    min: -40
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 7, location: Table 6 - Storage temperature range, excerpt: "Storage temperature range -40 to 150 °C"}
+attributes:
+  saida:
+    value: Digital I2C
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "I2C Interface with communication speeds up to 1 MHz"}

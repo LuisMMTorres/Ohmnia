@@ -1,0 +1,372 @@
+# Fonte: WeEn Semiconductors, BT137-600 4Q Triac, Product data sheet, Rev.01 - 14 March 2018.
+part_number: BT137-600
+category: thyristor.triac
+schema_version: '1.0'
+manufacturer: WeEn
+package: SOT78 (TO-220AB)
+lifecycle: desconhecido
+notes:
+- 'Parâmetros por quadrante: IGT e IL em IGT, IGT@2, IGT@3, IGT@4 (e IL idem) na ordem T2+ G+, T2+ G-, T2- G-, T2- G+ (MT2 e G em relação a MT1), conforme a folha.'
+- 'di/dt: valor sem sufixo vale para os três primeiros quadrantes e di/dt@2 para T2- G+ (página 3).'
+- Rth_jc corresponde a Rth(j-mb), junção à base de montagem; @2 é o valor de meio ciclo.
+datasheets:
+- id: ds1
+  manufacturer: WeEn
+  revision: Rev.01 - 14 March 2018
+  url: https://www.ween-semi.com/datasheet/BT137-600.pdf
+  sha256: 4998b63b6aeadcfac2a170451078dc5d0207a5fa3d0c65e2e2ce0b4b9f5cb78f
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VDRM:
+    max: 600
+    unit: V
+    status: extraido
+    source:
+      page: 3
+      location: Limiting values - repetitive peak off-state voltage
+      excerpt: VDRM repetitive peak off-state voltage 600 V
+  IT(RMS):
+    max: 8
+    unit: A
+    conditions:
+      TC: 102 degC
+    note: Tmb (base de montagem) usada como TC
+    status: extraido
+    source:
+      page: 3
+      location: Limiting values - RMS on-state current
+      excerpt: IT(RMS) full sine wave; Tmb ≤ 102 °C 8 A
+  ITSM:
+    max: 65
+    unit: A
+    conditions:
+      t_pulse: 20 ms
+      Tj: 25 degC
+    status: extraido
+    source:
+      page: 3
+      location: Limiting values - non-repetitive peak on-state current
+      excerpt: ITSM full sine wave; Tj(init) = 25 °C; tp = 20 ms 65 A
+  ITSM@2:
+    max: 71
+    unit: A
+    conditions:
+      t_pulse: 16.7 ms
+      Tj: 25 degC
+    status: extraido
+    source:
+      page: 3
+      location: Limiting values - non-repetitive peak on-state current
+      excerpt: full sine wave; Tj(init) = 25 °C; tp = 16.7 ms 71 A
+  I2t:
+    max: 21
+    unit: A**2*s
+    conditions:
+      t_pulse: 10 ms
+    status: extraido
+    source:
+      page: 3
+      location: Limiting values - I2t for fusing
+      excerpt: I2t for fusing tp = 10 ms; SIN 21 A²s
+  di/dt:
+    max: 50
+    unit: A/us
+    note: IG = 70 mA; T2+ G+, T2+ G-, T2- G-
+    status: extraido
+    source:
+      page: 3
+      location: Limiting values - rate of rise of on-state current (T2+ G+, T2+ G-, T2- G-)
+      excerpt: dIT/dt rate of rise of on-state current IG = 70 mA; T2+ G+, T2+ G-, T2- G- 50 A/µs
+  di/dt@2:
+    max: 10
+    unit: A/us
+    note: IG = 140 mA; T2- G+
+    status: extraido
+    source:
+      page: 3
+      location: Limiting values - rate of rise of on-state current (T2- G+)
+      excerpt: dIT/dt rate of rise of on-state current IG = 140 mA; T2- G+ 10 A/µs
+  IGM:
+    max: 2
+    unit: A
+    status: extraido
+    source:
+      page: 3
+      location: Limiting values - peak gate current
+      excerpt: IGM peak gate current 2 A
+  PGM:
+    max: 5
+    unit: W
+    status: extraido
+    source:
+      page: 3
+      location: Limiting values - peak gate power
+      excerpt: PGM peak gate power 5 W
+  PG(AV):
+    max: 0.5
+    unit: W
+    status: extraido
+    source:
+      page: 3
+      location: Limiting values - average gate power over any 20 ms period
+      excerpt: PG(AV) average gate power over any 20 ms period 0.5 W
+  Tj_max:
+    max: 125
+    unit: degC
+    status: extraido
+    source:
+      page: 3
+      location: Limiting values - junction temperature
+      excerpt: Tj junction temperature 125 °C
+  Tstg_max:
+    max: 150
+    unit: degC
+    note: 'faixa de armazenamento: -40 a 150 °C'
+    status: extraido
+    source:
+      page: 3
+      location: Limiting values - storage temperature
+      excerpt: Tstg storage temperature -40 150 °C
+  Rth_jc:
+    max: 2
+    unit: K/W
+    note: Rth(j-mb) em ciclo completo (bidirecional)
+    status: extraido
+    source:
+      page: 6
+      location: Thermal characteristics - junction to mounting base, full cycle
+      excerpt: Rth(j-mb) thermal resistance from junction to mounting base full cycle 2 K/W
+  Rth_jc@2:
+    max: 2.4
+    unit: K/W
+    note: Rth(j-mb) em meio ciclo (unidirecional)
+    status: extraido
+    source:
+      page: 6
+      location: Thermal characteristics - junction to mounting base, half cycle
+      excerpt: Rth(j-mb) half cycle 2.4 K/W
+  Rth_ja:
+    typ: 60
+    unit: K/W
+    note: em ar livre
+    status: extraido
+    source:
+      page: 6
+      location: Thermal characteristics - junction to ambient
+      excerpt: Rth(j-a) thermal resistance from junction to ambient 60 K/W
+  IGT:
+    typ: 5
+    max: 35
+    unit: mA
+    conditions:
+      VD: 12 V
+      IT: 0.1 A
+      Tj: 25 degC
+    note: quadrante T2+ G+
+    status: extraido
+    source:
+      page: 7
+      location: Characteristics - gate trigger current, T2+ G+
+      excerpt: 'IGT VD = 12 V; IT = 0.1 A; T2+ G+; Tj = 25 °C: typ 5, max 35 mA'
+  IGT@2:
+    typ: 8
+    max: 35
+    unit: mA
+    conditions:
+      VD: 12 V
+      IT: 0.1 A
+      Tj: 25 degC
+    note: quadrante T2+ G-
+    status: extraido
+    source:
+      page: 7
+      location: Characteristics - gate trigger current, T2+ G-
+      excerpt: 'IGT VD = 12 V; IT = 0.1 A; T2+ G-; Tj = 25 °C: typ 8, max 35 mA'
+  IGT@3:
+    typ: 11
+    max: 35
+    unit: mA
+    conditions:
+      VD: 12 V
+      IT: 0.1 A
+      Tj: 25 degC
+    note: quadrante T2- G-
+    status: extraido
+    source:
+      page: 7
+      location: Characteristics - gate trigger current, T2- G-
+      excerpt: 'IGT VD = 12 V; IT = 0.1 A; T2- G-; Tj = 25 °C: typ 11, max 35 mA'
+  IGT@4:
+    typ: 30
+    max: 70
+    unit: mA
+    conditions:
+      VD: 12 V
+      IT: 0.1 A
+      Tj: 25 degC
+    note: quadrante T2- G+
+    status: extraido
+    source:
+      page: 7
+      location: Characteristics - gate trigger current, T2- G+
+      excerpt: 'IGT VD = 12 V; IT = 0.1 A; T2- G+; Tj = 25 °C: typ 30, max 70 mA'
+  IL:
+    typ: 7
+    max: 30
+    unit: mA
+    conditions:
+      VD: 12 V
+      IG: 0.1 A
+      Tj: 25 degC
+    note: quadrante T2+ G+
+    status: extraido
+    source:
+      page: 7
+      location: Characteristics - latching current, T2+ G+
+      excerpt: 'IL VD = 12 V; IG = 0.1 A; T2+ G+; Tj = 25 °C: typ 7, max 30 mA'
+  IL@2:
+    typ: 16
+    max: 45
+    unit: mA
+    conditions:
+      VD: 12 V
+      IG: 0.1 A
+      Tj: 25 degC
+    note: quadrante T2+ G-
+    status: extraido
+    source:
+      page: 7
+      location: Characteristics - latching current, T2+ G-
+      excerpt: 'IL VD = 12 V; IG = 0.1 A; T2+ G-; Tj = 25 °C: typ 16, max 45 mA'
+  IL@3:
+    typ: 5
+    max: 30
+    unit: mA
+    conditions:
+      VD: 12 V
+      IG: 0.1 A
+      Tj: 25 degC
+    note: quadrante T2- G-
+    status: extraido
+    source:
+      page: 7
+      location: Characteristics - latching current, T2- G-
+      excerpt: 'IL VD = 12 V; IG = 0.1 A; T2- G-; Tj = 25 °C: typ 5, max 30 mA'
+  IL@4:
+    typ: 7
+    max: 45
+    unit: mA
+    conditions:
+      VD: 12 V
+      IG: 0.1 A
+      Tj: 25 degC
+    note: quadrante T2- G+
+    status: extraido
+    source:
+      page: 7
+      location: Characteristics - latching current, T2- G+
+      excerpt: 'IL VD = 12 V; IG = 0.1 A; T2- G+; Tj = 25 °C: typ 7, max 45 mA'
+  IH:
+    typ: 5
+    max: 20
+    unit: mA
+    conditions:
+      VD: 12 V
+      Tj: 25 degC
+    status: extraido
+    source:
+      page: 7
+      location: Characteristics - holding current
+      excerpt: 'IH VD = 12 V; Tj = 25 °C: typ 5, max 20 mA'
+  VTM:
+    typ: 1.3
+    max: 1.65
+    unit: V
+    conditions:
+      ITM: 10 A
+      Tj: 25 degC
+    status: extraido
+    source:
+      page: 7
+      location: Characteristics - on-state voltage
+      excerpt: 'VT on-state voltage IT = 10 A; Tj = 25 °C: typ 1.3, max 1.65 V'
+  VGT:
+    typ: 0.7
+    max: 1
+    unit: V
+    conditions:
+      VD: 12 V
+      IT: 0.1 A
+      Tj: 25 degC
+    status: extraido
+    source:
+      page: 7
+      location: Characteristics - gate trigger voltage
+      excerpt: 'VGT VD = 12 V; IT = 0.1 A; Tj = 25 °C: typ 0.7, max 1 V'
+  VGD:
+    min: 0.25
+    typ: 0.4
+    unit: V
+    conditions:
+      VD: 400 V
+      IT: 0.1 A
+      Tj: 125 degC
+    note: linha 'VGT' da folha com VD = 400 V e Tj = 125 °C (tensão que não dispara)
+    status: extraido
+    source:
+      page: 7
+      location: Characteristics - gate trigger voltage at VD = 400 V, Tj = 125 °C
+      excerpt: 'VD = 400 V; IT = 0.1 A; Tj = 125 °C: min 0.25, typ 0.4 V'
+  IDRM:
+    typ: 0.1
+    max: 0.5
+    unit: mA
+    conditions:
+      VD: 600 V
+      Tj: 125 degC
+    status: extraido
+    source:
+      page: 7
+      location: Characteristics - off-state current
+      excerpt: 'ID off-state current VD = 600 V; Tj = 125 °C: typ 0.1, max 0.5 mA'
+  dv/dt:
+    min: 100
+    typ: 250
+    unit: V/us
+    conditions:
+      VD: 402 V
+      Tj: 125 degC
+    note: porta aberta
+    status: extraido
+    source:
+      page: 7
+      location: Characteristics - rate of rise of off-state voltage
+      excerpt: 'dVD/dt VDM = 402 V; Tj = 125 °C; (VDM = 67% of VDRM): min 100, typ 250 V/µs'
+  dv/dt(c):
+    typ: 20
+    unit: V/us
+    conditions:
+      VD: 400 V
+      Tj: 95 degC
+    note: dIcom/dt = 3.6 A/ms; IT = 8 A; porta aberta
+    status: extraido
+    source:
+      page: 7
+      location: Characteristics - rate of change of commutating voltage
+      excerpt: 'dVcom/dt VD = 400 V; Tj = 95 °C; dIcom/dt = 3.6 A/ms; IT = 8 A; gate open circuit: typ 20 V/µs'
+  tgt:
+    typ: 2
+    unit: us
+    conditions:
+      ITM: 12 A
+      VD: 600 V
+      IG: 0.1 A
+    note: dIG/dt = 5 A/us
+    status: extraido
+    source:
+      page: 7
+      location: Characteristics - gate-controlled turn-on time
+      excerpt: 'tgt ITM = 12 A; VD = 600 V; IG = 0.1 A: typ 2 µs'
+attributes: {}

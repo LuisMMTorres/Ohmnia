@@ -1,0 +1,75 @@
+# Fonte: Belimo, Technical data sheet 01DT-1B.. (Duct/Immersion sensor Temperature), en-gb, 2023-03-10.
+part_number: 01DT-1BH
+category: sensor.temperature
+schema_version: '1.0'
+manufacturer: Belimo
+family: 01DT-1B..
+package: sonda de 50 mm, diâmetro 6 mm
+lifecycle: desconhecido
+notes:
+- "Nome na fila: belimo 01DT-1BH datasheet en-gb. O documento cobre a série 01DT-1B.. (sondas Pt1000 de 50 a 450 mm); a linha 01DT-1BH é Pt1000, sonda 50 mm, diâmetro 6 mm (p. 1)."
+- "R0 não transcrito como parâmetro: o documento dá apenas o sinal de saída Pt1000 (p. 1)."
+- "Corrente de medição < 0,3 mA a 0 °C (p. 1); temperatura do fluido -50 a 160 °C (p. 2); temperatura da superfície do invólucro máx. 90 °C (p. 2); umidade ambiente máx. 95 % UR sem condensação (p. 2)."
+- "Constante de tempo (63 %) em água com poço de latão: típico 7 s; poço de aço inox: típico 9 s (p. 1). t_resp@2 = a 3 m/s em duto de ar."
+datasheets:
+- id: ds1
+  manufacturer: Belimo
+  document_number: 01DT-1B..
+  revision: en-gb 2023-03-10
+  url: https://storage.tameson.com/asset/Products/Manuals/EN/m27kv_md22_belimo_01dt-1b.._datasheet_en.pdf
+  sha256: e9f75d0b86e1c320eebc0ff53869fc412e6021bcc2eff3779ca204d5e09e29a3
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  range:
+    min: -50
+    max: 160
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Technical data - Measuring data - Measuring range temperature, excerpt: "-50...160°C [-60...320°F]"}
+  accuracy:
+    max: 0.3
+    unit: K
+    conditions: {T: 0 °C}
+    status: extraido
+    source: {page: 1, location: Technical data - Accuracy temperature passive, excerpt: "Class B, ±0.3°C @ 0°C"}
+  t_resp:
+    typ: 210
+    unit: s
+    conditions: {velocidade do ar: 0 m/s}
+    status: extraido
+    source: {page: 1, location: Technical data - Time constant τ (63%) in air duct, excerpt: "Typical 210 s @ 0 m/s"}
+  t_resp@2:
+    typ: 46
+    unit: s
+    conditions: {velocidade do ar: 3 m/s}
+    status: extraido
+    source: {page: 1, location: Technical data - Time constant τ (63%) in air duct, excerpt: "Typical 46 s @ 3 m/s"}
+  Top:
+    min: -35
+    max: 50
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Safety data - Ambient temperature, excerpt: "-35...50°C [-30...122°F]"}
+attributes:
+  elemento:
+    value: Pt1000, classe B
+    status: extraido
+    source: {page: 1, location: Type Overview / Technical data - Output signal passive temperature, excerpt: "Pt1000"}
+  saida:
+    value: passivo (resistência), 2 fios
+    status: extraido
+    source: {page: 2, location: General remarks concerning sensors - Remarks, excerpt: "2 wire passive sensors"}
+  ligacao:
+    value: "2 fios (bloco de terminais com mola, máx. 2,5 mm²)"
+    status: extraido
+    source: {page: 1, location: Technical data - Electrical connection, excerpt: "Pluggable spring loaded terminal block max. 2.5 mm²"}
+  grau_protecao:
+    value: IP65 (IEC/EN), NEMA 4X
+    status: extraido
+    source: {page: 1, location: Technical data - Safety data, excerpt: "Degree of protection IEC/EN IP65"}
+  certificacoes:
+    value: CE; cULus (UL60730-1A/-2-9, CAN/CSA E60730-1/-2-9); IEC/EN 60730-1
+    status: extraido
+    source: {page: 2, location: Safety data - UL Approval, excerpt: "cULus acc. to UL60730-1A/-2-9"}

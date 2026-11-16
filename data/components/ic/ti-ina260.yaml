@@ -1,0 +1,67 @@
+# Fonte: Texas Instruments, INA260 Precision Digital Current and Power Monitor With Low-Drift, Precision Integrated Shunt, SBOS656C, julho 2016, revisado dezembro 2016.
+part_number: INA260
+category: ic.energy_meter
+schema_version: '1.0'
+manufacturer: Texas Instruments
+package: PW (TSSOP, 16 pinos)
+lifecycle: desconhecido
+notes:
+- 'Shunt integrado de 2 mohm (resistência de sensoriamento); resistência do encapsulamento IN+ a IN- 4.5 mohm típ.; corrente contínua máx. +-15 A de -40 a 85 °C (p.1, p.6).'
+- 'Tensão de barramento 0 ... 36 V (escala do ADC 40.96 V; não aplicar mais de 36 V); modo comum 0 ... 36 V (p.5, p.6).'
+- 'Erro de ganho do sistema de corrente 0.02 % típ., 0.15 % máx. a 25 °C (+-15 A); 0.2 % típ., 0.5 % máx. de -40 a 125 °C (+-10 A) (p.6). Offset de corrente +-1.25 mA típ., +-5 mA máx.'
+- 'Resolução 1 LSB: corrente 1.25 mA, barramento 1.25 mV, potência 10 mW (p.6). Tempo de conversão do ADC de 140 us a 9.068 ms (p.6).'
+- 'Corrente quiescente em desligamento 0.5 uA típ., 2 uA máx. (p.7). Limite absoluto de corrente analógica contínua +-15 A (p.5).'
+datasheets:
+- id: ds1
+  manufacturer: Texas Instruments
+  document_number: SBOS656C
+  revision: 'julho 2016, revisado dezembro 2016'
+  url: https://www.ti.com/lit/ds/symlink/ina260.pdf
+  sha256: 5160ed4af198b093e541beb3fe5f1048f00233fa23cd4f4822391acad9f94dcf
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 2.7
+    max: 5.5
+    unit: V
+    status: extraido
+    source: {page: 7, location: Electrical Characteristics (continued) - Power supply, Operating supply range, excerpt: "Operating supply range 2.7 5.5 V"}
+  accuracy:
+    max: 0.15
+    unit: '%'
+    status: extraido
+    source: {page: 6, location: 7.5 Electrical Characteristics - DC accuracy, System current sense gain error, excerpt: "ISENSE = –15 A to 15 A, TA = 25°C 0.02% 0.15%"}
+  bits:
+    typ: 16
+    unit: bit
+    status: extraido
+    source: {page: 6, location: 7.5 Electrical Characteristics - Integrated ADC, ADC native resolution, excerpt: "ADC native resolution 16 Bits"}
+  IS:
+    typ: 0.31
+    max: 0.42
+    unit: mA
+    status: extraido
+    source: {page: 7, location: Electrical Characteristics (continued) - Power supply, IQ Quiescent current, excerpt: "IQ Quiescent current 310 420 µA"}
+  Top:
+    min: -40
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 5, location: 7.3 Recommended Operating Conditions - Operating free-air temperature, excerpt: "TA –40 125 °C"}
+  Tstg:
+    min: -65
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 5, location: 7.1 Absolute Maximum Ratings - Storage Tstg, excerpt: "Storage, Tstg –65 150 °C"}
+attributes:
+  grandezas:
+    value: Corrente (shunt integrado de 2 mohm, até +-15 A), tensão de barramento (0 a 36 V) e potência
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "Current Sense Resistance: 2 mΩ; Senses Bus Voltages From 0 V to 36 V"}
+  interface:
+    value: I2C/SMBus, 16 endereços programáveis, saída ALERT
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "16 Programmable Addresses"}

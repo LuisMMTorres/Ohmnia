@@ -1,0 +1,50 @@
+# Fonte: SAMSON, Data Sheet T 8015 EN, Series 240 Type 3241-1 and Type 3241-7 Pneumatic Control Valves, Edition November 2022.
+part_number: Type 3241
+category: actuator.valve
+schema_version: '1.0'
+manufacturer: SAMSON
+family: Series 240 Type 3241-1 / 3241-7
+lifecycle: desconhecido
+notes:
+- "Nome na fila: t8015en. Válvula de controle globo, versão DIN, operada com atuador pneumático Type 3271 (3241-1) ou Type 3277 (3241-7) (p. 1)."
+- "P_max: classe de pressão nominal PN 10 a 40 (p. 1); a pressão admissível depende do diagrama pressão-temperatura (Information Sheet T 8000-2)."
+- "Temperatura do fluido -196 a +450 °C (p. 1); versão padrão -10 a +220 °C (p. 2). Não é temperatura ambiente, por isso não entra em Top."
+- "Kv: coeficientes KVS de 0,1 a 1500 (tabela 3, p. 6); a unidade não aparece no texto extraído, assumida m3/h como no schema; conferir. Rangeabilidade 50:1 (DN 15 a 50) e 30:1 (DN 65 a 150) (tabela 1, p. 4)."
+- "Classe de vazamento IV (metal), VI (vedação macia) conforme DIN EN 60534-4 (p. 4)."
+datasheets:
+- id: ds1
+  manufacturer: SAMSON
+  document_number: T 8015 EN
+  revision: Edition November 2022
+  url: https://www.samsongroup.com/document/t80150en.pdf
+  sha256: faa358b5567ab76da8b3cec986de31293489bcf070300771eb33692066c3e691
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  DN:
+    min: 15
+    max: 300
+    unit: mm
+    status: extraido
+    source: {page: 1, location: Application - Nominal size, excerpt: "Nominal size DN 15 to 300"}
+  P_max:
+    max: 40
+    unit: bar
+    status: extraido
+    source: {page: 1, location: Application - Pressure rating, excerpt: "Pressure rating PN 10 to 40"}
+  Kv:
+    min: 0.1
+    max: 1500
+    unit: m^3/h
+    status: extraido
+    source: {page: 6, location: KVS coefficients - Table 3, excerpt: "KVS 0.1 0.16 0.25 ... 1000 1500"}
+attributes:
+  tipo:
+    value: "Válvula globo de controle (DIN), sede-obturador metal, macio ou metal de alto desempenho"
+    status: extraido
+    source: {page: 4, location: Table 1 - Seat-plug seal / Type 3241 Globe Valve}
+  comando:
+    value: "Pneumático (atuador Type 3271 ou 3277, fail-close ou fail-open); acessórios: posicionadores, chaves fim de curso, válvulas solenoide"
+    status: extraido
+    source: {page: 2, location: Design and principle of operation}

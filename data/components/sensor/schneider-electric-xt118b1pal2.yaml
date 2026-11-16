@@ -1,0 +1,95 @@
+# Fonte: Schneider Electric (Telemecanique Sensors), Product data sheet XT118B1PAL2, 11/10/2026.
+part_number: XT118B1PAL2
+category: sensor.proximity
+schema_version: '1.0'
+manufacturer: Schneider Electric
+family: XT1 (sensor capacitivo)
+package: M18 x 1, cilíndrico
+lifecycle: desconhecido
+notes:
+- Sensor capacitivo M18, latão, Sn 5 mm, PNP NA, cabo 2 m, 12...24 V DC, faceado, 3 fios (título, p. 1). Tensão nominal 24 V DC com proteção contra inversão de polaridade (p. 1).
+- Faixa de distância sensora "> 4...8 mm" ajustável por potenciômetro (p. 1). Repetibilidade < 0,1 x Sr (p. 1).
+- Histerese "< 0,2 x Sr" (p. 2) lançada como máx. 20 % de Sr (conversão simples), conferir.
+- Documento não informa temperatura de operação nem de armazenamento. Atraso de resposta 5 ms; atraso na energização 30 ms (p. 1-2).
+datasheets:
+- id: ds1
+  manufacturer: Schneider Electric
+  revision: 11/10/2026
+  url: https://pdf.telemecaniquesensors.com/datasheet?ref=XT118B1PAL2&lang=en
+  sha256: cb3fc480941e0277e1483c07e703a8984d787346f2e38ceb5f6a24c5dd647267
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  sn:
+    typ: 5
+    unit: mm
+    status: extraido
+    source: {page: 1, location: Main - Sn nominal sensing distance, excerpt: "[Sn] nominal sensing distance 5 mm"}
+  sr:
+    min: 4
+    max: 8
+    unit: mm
+    status: extraido
+    source: {page: 1, location: Complementary - Sensing range, excerpt: "Sensing range > 4...8 mm"}
+  hysteresis:
+    max: 20
+    unit: '%'
+    status: extraido
+    source: {page: 2, location: Complementary - Differential travel, excerpt: "Differential travel < 0.2 x Sr"}
+  VS:
+    min: 12
+    max: 30
+    unit: V
+    status: extraido
+    source: {page: 1, location: Complementary - Supply voltage limits, excerpt: "Supply voltage limits 12-30 V DC"}
+  IS:
+    max: 15
+    unit: mA
+    status: extraido
+    source: {page: 1, location: Complementary - Current consumption, excerpt: "< 15 mA"}
+  IL:
+    max: 200
+    unit: mA
+    status: extraido
+    source: {page: 1, location: Complementary - Maximum switching current, excerpt: "Maximum switching current 200 mA"}
+  Vdrop:
+    max: 2
+    unit: V
+    status: extraido
+    source: {page: 1, location: Complementary - Voltage drop, excerpt: "<2 V (closed)"}
+  f_sw:
+    max: 200
+    unit: Hz
+    status: extraido
+    source: {page: 2, location: Complementary - Switching frequency, excerpt: "<= 200 Hz"}
+  Ir:
+    max: 0.1
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Complementary - Residual current, excerpt: "0.1 mA open state"}
+attributes:
+  saida:
+    value: PNP, NA (1 NO), 3 fios, DC
+    status: extraido
+    source: {page: 4, location: Wiring Diagram, excerpt: "3-wire DC, PNP NO Output, Pre-cabled"}
+  conexao:
+    value: Cabo PVC 2 m
+    status: extraido
+    source: {page: 1, location: Complementary - Electrical connection / Cable length, excerpt: "Cable; Cable length 2 m"}
+  invólucro:
+    value: Latão niquelado, M18 x 1, comprimento 70 mm
+    status: extraido
+    source: {page: 1, location: Main - Enclosure material / ISO thread, excerpt: "Nickel plated brass; M18 x 1"}
+  grau_protecao:
+    value: IP67 (IEC 60529 e IEC 60947-5-2)
+    status: extraido
+    source: {page: 2, location: Environment - IP degree of protection, excerpt: "IP67 conforming to IEC 60529, IP67 conforming to IEC 60947-5-2"}
+  certificacoes:
+    value: CETLus, CE
+    status: extraido
+    source: {page: 1, location: Main - Product certifications / Marking, excerpt: "CETLus; Marking CE"}
+  montagem:
+    value: Faceado
+    status: extraido
+    source: {page: 1, location: Main - Detector flush mounting acceptance, excerpt: "Flush mountable"}

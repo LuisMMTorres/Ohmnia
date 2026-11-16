@@ -1,0 +1,83 @@
+# Fonte: Espressif, ESP32-S3 Series Datasheet, Version 2.2.
+part_number: ESP32-S3
+category: ic.mcu
+schema_version: '1.0'
+manufacturer: Espressif
+family: ESP32-S3
+package: QFN56 (7 × 7 mm) (p. 1)
+lifecycle: desconhecido
+notes:
+- 'O PDF da fila (ESP32-S3-DevKitC-1) é o datasheet do SoC da série ESP32-S3; a placa ESP32-S3-DevKitC-1 usa este chip. Registro do chip, não da placa.'
+- 'Valores da série; a variante ESP32-S3 (sem flash/PSRAM no pacote) tem ambiente -40 a 105 °C (Tabela 1-1, p. 13). Variantes: ESP32-S3FN8, S3RH2, S3R8, S3R16V, S3FH4R2 (p. 1).'
+- 'Sem flash de programa no chip ESP32-S3 base (Tabela 1-1, p. 13: In-Package Flash "-"); as variantes FN8 (8 MB) e FH4R2 (4 MB) trazem flash no pacote.'
+- 'Níveis de E/S (Tabela 5-4, 3,3 V, 25 °C, p. 65): VIH = 0,75×VDD a VDD+0,3 V; VIL = -0,3 V a 0,25×VDD; VOH min 0,8×VDD; VOL max 0,1×VDD (VDD = tensão do domínio do pino).'
+- 'Correntes (p. 65): fonte IOH típ. 40 mA (VOH >= 2,64 V, PAD_DRIVER = 3); sumidouro IOL típ. 28 mA (VOL = 0,495 V); IIH/IIL máx. 50 nA; pull-up/pull-down internos típ. 45 kΩ.'
+- 'Corrente de saída acumulada de E/S: máx. 1500 mA (Tabela 5-1, p. 64). Corrente mínima de entrada acumulada: 0,5 A (Tabela 5-2, p. 64).'
+- 'ADC (Tabela 5-5, p. 66): DNL ±4 LSB. USB OTG full-speed e USB Serial/JTAG (p. 4).'
+datasheets:
+- id: ds1
+  manufacturer: Espressif
+  revision: Version 2.2
+  sha256: 2d5a7cb7fd559d8d972bd88db32669c0196d23f22d7afaafb0f63d099b589a3f
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 3.0
+    typ: 3.3
+    max: 3.6
+    unit: V
+    status: extraido
+    source: {page: 64, location: 5.2 Recommended Operating Conditions - VDDA, VDD3P3 (Tabela 5-2), excerpt: "VDDA, VDD3P3 Recommended input voltage 3.0 3.3 3.6 V"}
+  f_clk:
+    max: 240
+    unit: MHz
+    status: extraido
+    source: {page: 3, location: Features - CPU and Memory, excerpt: "Clock speed: up to 240 MHz"}
+  ram:
+    typ: 512
+    unit: kB
+    status: extraido
+    source: {page: 4, location: Features - CPU and Memory, excerpt: "SRAM: 512 KB"}
+  gpio:
+    typ: 45
+    unit: '1'
+    status: extraido
+    source: {page: 4, location: Features - Peripherals, excerpt: "45 programmable GPIOs"}
+  adc_ch:
+    max: 20
+    unit: '1'
+    status: extraido
+    source: {page: 5, location: Features - Analog signal processing, excerpt: "Two 12-bit SAR ADCs, up to 20 channels"}
+  adc_bits:
+    typ: 12
+    unit: bit
+    status: extraido
+    source: {page: 5, location: Features - Analog signal processing, excerpt: "Two 12-bit SAR ADCs, up to 20 channels"}
+  pwm_ch:
+    max: 8
+    unit: '1'
+    status: extraido
+    source: {page: 4, location: Features - Peripherals, excerpt: "LED PWM controller, up to 8 channels"}
+  Top:
+    min: -40
+    max: 105
+    unit: °C
+    status: extraido
+    source: {page: 13, location: Tabela 1-1 ESP32-S3 Series Comparison - ESP32-S3 Ambient Temp., excerpt: "ESP32-S3 - - -40 ~105 °C 3.3 V/1.8 V"}
+  Tstg:
+    min: -40
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 64, location: 5.1 Absolute Maximum Ratings - TSTORE (Tabela 5-1), excerpt: "TSTORE Storage temperature -40 150 °C"}
+attributes:
+  microcontrolador:
+    value: Xtensa LX7 dual-core de 32 bits
+    status: extraido
+    source: {page: 3, location: Features - CPU and Memory, excerpt: "Xtensa dual-core 32-bit LX7 microprocessor"}
+  comunicacao:
+    value: Wi-Fi 802.11 b/g/n, Bluetooth 5 (LE), USB OTG full-speed, USB Serial/JTAG, UART, I2C, I2S, SPI, TWAI (CAN 2.0), SD/MMC
+    status: extraido
+    source: {page: 4, location: Features - Peripherals - Connectivity interfaces}

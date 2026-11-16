@@ -1,0 +1,5 @@
+category: ic.mcu
+extends: board.mcu
+schema_version: "1.0"
+description: Microcontrolador ou módulo (chip ou módulo Wi-Fi/Bluetooth, sem a placa de desenvolvimento)
+required: []

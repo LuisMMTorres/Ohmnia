@@ -1,0 +1,82 @@
+# Fonte: Novotechnik, Datasheet 25_DS_48 TLH - Transducer Potentiometric up to 3000 mm, © Mar 4, 2026.
+part_number: TLH
+category: sensor.position
+schema_version: '1.0'
+manufacturer: Novotechnik
+family: TLH
+package: Perfil de alumínio anodizado, sem haste (rodless), conector DIN EN 175301-803 de 4 pinos
+lifecycle: desconhecido
+notes:
+- 'Fila: TLH e. Valores da série TLH-0100 a TLH-3000; faixas entre os modelos (curso, linearidade, resistência).'
+- 'Linearidade e vida valem só como divisor de tensão com corrente no cursor <= 1 uA (p. 4).'
+- 'Corrente máxima no cursor em falha: 10 mA (p. 4). Resistência de isolação >= 10 MOhm a 500 VDC (p. 4).'
+datasheets:
+- id: ds1
+  manufacturer: Novotechnik
+  document_number: 25_DS_48
+  url: https://www.novotechnik.de/wp-content/uploads/25_DS_48_TLH-en.pdf
+  sha256: dac497a5e97e40589e8570cc1d507b96b8908b62092df47f6604794bd3391d8c
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  range:
+    min: 100
+    max: 3000
+    unit: mm
+    status: extraido
+    source: {page: 4, location: Technical Data - Defined electr. range (dim. D), excerpt: "Defined electr. range 100 ... 3000 mm"}
+  linearity:
+    min: 0.02
+    max: 0.1
+    unit: '%'
+    status: extraido
+    source: {page: 4, location: Technical Data - Independent linearity, excerpt: "Independent linearity 0.1 ... 0.02"}
+  repeatability:
+    max: 0.01
+    unit: mm
+    status: extraido
+    source: {page: 4, location: Technical Data - Repeatability, excerpt: "Repeatability ≤ ±0.01 mm"}
+  R:
+    min: 3
+    max: 20
+    unit: kohm
+    status: extraido
+    source: {page: 4, location: Technical Data - Resistance value, excerpt: "Resistance value 3 ... 20 kΩ"}
+  speed:
+    max: 10
+    unit: m/s
+    status: extraido
+    source: {page: 4, location: Environmental Data - Max. operational speed, excerpt: "Max. operational speed 10 m/s"}
+  VS:
+    max: 42
+    unit: V
+    status: extraido
+    source: {page: 4, location: Technical Data - Max. permissible supply voltage Ub, excerpt: "Max. permissible supply voltage Ub 42 VDC"}
+  Top:
+    min: -30
+    max: 100
+    unit: °C
+    status: extraido
+    source: {page: 4, location: Environmental Data - Operating temperature, excerpt: "Operating temperature -30 ... +100°C"}
+attributes:
+  saida:
+    value: Divisor de tensão (potenciométrico)
+    status: extraido
+    source: {page: 4, location: Technical Data - Output, excerpt: "Output Voltage divider"}
+  conexao:
+    value: Conector DIN EN 175301-803, 4 pinos
+    status: extraido
+    source: {page: 1, location: Description - Electrical connection}
+  invólucro:
+    value: Alumínio anodizado
+    status: extraido
+    source: {page: 1, location: Description - Material, excerpt: "Housing: aluminium, anodized"}
+  grau_protecao:
+    value: IP40 ou IP54 com atuador voltado para baixo
+    status: extraido
+    source: {page: 4, location: Environmental Data - Protection class DIN EN 60529}
+  principio:
+    value: Potenciométrico, elemento resistivo de plástico condutivo
+    status: extraido
+    source: {page: 1, location: Description - Resistance element, excerpt: "Resistance element Conductive plastic"}

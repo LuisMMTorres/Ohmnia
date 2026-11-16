@@ -1,0 +1,65 @@
+# Fonte: Bourns, PDB18 Series - 17 mm Rotary Potentiometer (datasheet, K2540 05/26R).
+part_number: PDB181-K420K-103B
+category: resistor.variable
+schema_version: '1.0'
+manufacturer: Bourns
+family: PDB18
+package: PDB181-K, pinos PC verticais, eixo metálico estriado 25 mm, sem detente
+lifecycle: desconhecido
+notes:
+- 'Valor de resistência obtido do código 103 na parte final do número (padrão da tabela How To Order). Demais valores são da série PDB18; potência e tensão para taper linear (B = linear em PDB181).'
+datasheets:
+- id: ds1
+  manufacturer: Bourns
+  document_number: K2540
+  revision: 05/26R
+  sha256: 19697d1dc7271301b6884bca870e0c6a3e778673df2c8703a61d342c1d10972d
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  R:
+    typ: 10000
+    unit: ohm
+    status: extraido
+    source: {page: 5, location: How To Order - Resistance Code / Standard Resistance Table, excerpt: "10000 ohm code 103"}
+  tol:
+    max: 20
+    unit: '%'
+    status: extraido
+    source: {page: 1, location: Electrical Characteristics - Standard Resistance Tolerance, excerpt: "1K Ω<R<1M Ω ±20 %"}
+  P_rated:
+    max: 0.2
+    unit: W
+    status: extraido
+    source: {page: 1, location: Environmental Characteristics - Power Rating Linear, excerpt: "Linear 0.2 watt"}
+  V_max:
+    max: 200
+    unit: V
+    status: extraido
+    source: {page: 1, location: Environmental Characteristics - Maximum Operating Voltage Linear, excerpt: "Linear 200 V"}
+  rotation:
+    typ: 300
+    unit: deg
+    status: extraido
+    source: {page: 1, location: Mechanical Characteristics - Mechanical Angle, excerpt: "300 ° ±5 °"}
+  life:
+    min: 15000
+    unit: '1'
+    status: extraido
+    source: {page: 1, location: Mechanical Characteristics - Rotational Life, excerpt: "15,000 cycles"}
+  Top:
+    min: -10
+    max: 50
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Environmental Characteristics - Operating Temperature, excerpt: "-10 °C to +50 °C"}
+attributes:
+  curva:
+    value: Linear (B)
+    status: extraido
+    source: {page: 5, location: Taper Charts - B Series Tapers, excerpt: "PDB181 Standard: Linear taper B"}
+  tipo:
+    value: Potenciômetro rotativo 17 mm, elemento de carbono, seção simples
+    status: extraido
+    source: {page: 1, location: Features / How To Order, excerpt: "17 mm Rotary Potentiometer; Carbon element"}

@@ -1,0 +1,99 @@
+# Fonte: Pepperl+Fuchs, folha de dados NBN8-18GM60-A2-V1 (Inductive sensor), release date 2020-03-20, date of issue 2020-03-30.
+part_number: NBN8-18GM60-A2-V1
+category: sensor.proximity
+schema_version: '1.0'
+manufacturer: Pepperl+Fuchs
+package: M18 x 1, latão niquelado, conector M12 x 1 de 4 pinos
+lifecycle: desconhecido
+notes:
+- 'Fila: 084014 eng (arquivo 084014_eng.pdf).'
+- 'Fatores de redução rAl 0,45; rCu 0,4; r304 0,75 (pág. 1). MTTFd 1140 a (pág. 2). Função de comutação complementar (NA e NF).'
+datasheets:
+- id: ds1
+  manufacturer: Pepperl+Fuchs
+  document_number: 084014_eng
+  revision: 'date of issue 2020-03-30'
+  url: https://files.pepperl-fuchs.com/webcat/navi/productInfo/pds/084014_eng.pdf
+  sha256: 90fa2475b957f818d0d33fe32c91e6cbee6c5a1d022053a424bcfb6206c5ef31
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  sn:
+    typ: 8
+    unit: mm
+    status: extraido
+    source: {page: 1, location: General specifications - rated operating distance, excerpt: "Rated operating distance sn 8 mm"}
+  sr:
+    min: 0
+    max: 6.48
+    unit: mm
+    status: extraido
+    source: {page: 1, location: General specifications - assured operating distance, excerpt: "Assured operating distance sa 0 ... 6.48 mm"}
+  VS:
+    min: 10
+    max: 30
+    unit: V
+    status: extraido
+    source: {page: 1, location: Nominal ratings - operating voltage, excerpt: "Operating voltage UB 10 ... 30 V"}
+  f_sw:
+    max: 700
+    unit: Hz
+    status: extraido
+    source: {page: 1, location: Nominal ratings - switching frequency, excerpt: "Switching frequency f 0 ... 700 Hz"}
+  hysteresis:
+    typ: 5
+    unit: '%'
+    status: extraido
+    source: {page: 2, location: Technical Data - hysteresis, excerpt: "Hysteresis H typ. 5%"}
+  Vdrop:
+    max: 3
+    unit: V
+    status: extraido
+    source: {page: 2, location: Technical Data - voltage drop, excerpt: "Voltage drop Ud ≤ 3 V"}
+  IL:
+    max: 200
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Technical Data - operating current, excerpt: "Operating current IL 0 ... 200 mA"}
+  Ir:
+    max: 0.5
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Technical Data - off-state current, excerpt: "Off-state current Ir 0 ... 0.5 mA"}
+  IS:
+    max: 20
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Technical Data - no-load supply current, excerpt: "No-load supply current I0 ≤ 20 mA"}
+  Top:
+    min: -25
+    max: 70
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Ambient conditions - ambient temperature, excerpt: "-25 ... 70 °C (-13 ... 158 °F)"}
+attributes:
+  saida:
+    value: PNP, complementar (NA e NF), 3 fios DC
+    status: extraido
+    source: {page: 1, location: General specifications, excerpt: "Switching function complementary; Output type PNP"}
+  conexao:
+    value: Conector M12 x 1, 4 pinos
+    status: extraido
+    source: {page: 2, location: Mechanical specifications - connection type, excerpt: "Connector M12 x 1 , 4-pin"}
+  invólucro:
+    value: M18 x 1, latão niquelado, face sensora PBT
+    status: extraido
+    source: {page: 2, location: Mechanical specifications, excerpt: "Housing material brass, nickel-plated"}
+  grau_protecao:
+    value: IP67
+    status: extraido
+    source: {page: 2, location: Mechanical specifications - degree of protection, excerpt: "Degree of protection IP67"}
+  certificacoes:
+    value: cULus Listed e cCSAus Listed (General Purpose); EN/IEC 60947-5-2
+    status: extraido
+    source: {page: 2, location: Approvals and certificates, excerpt: "cULus Listed, General Purpose"}
+  montagem:
+    value: não faceado (non-flush)
+    status: extraido
+    source: {page: 1, location: General specifications - installation, excerpt: "Installation non-flush"}

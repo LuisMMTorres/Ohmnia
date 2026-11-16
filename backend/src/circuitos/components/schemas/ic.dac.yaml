@@ -1,0 +1,57 @@
+category: ic.dac
+schema_version: '1.0'
+description: Conversor digital-analógico
+required:
+- bits
+parameters:
+  bits:
+    unit: bit
+    kind: characteristic
+    description: Resolução
+  t_settle:
+    unit: us
+    kind: characteristic
+    description: Tempo de acomodação
+  channels:
+    unit: '1'
+    kind: geometry
+    description: Canais
+  VS:
+    unit: V
+    kind: characteristic
+    description: Alimentação (faixa)
+  VREF:
+    unit: V
+    kind: characteristic
+    description: Referência
+  V_out:
+    unit: V
+    kind: characteristic
+    description: Faixa de saída em tensão
+  I_out:
+    unit: mA
+    kind: characteristic
+    description: 'Faixa de saída em corrente (ex.: 4 a 20 mA)'
+  INL:
+    unit: '1'
+    kind: characteristic
+    description: Não linearidade integral (LSB)
+  DNL:
+    unit: '1'
+    kind: characteristic
+    description: Não linearidade diferencial (LSB)
+  IS:
+    unit: mA
+    kind: characteristic
+    description: Consumo
+  Top:
+    unit: °C
+    kind: thermal
+    description: 'Temperatura de operação (faixa: mín. e máx.)'
+  Tstg:
+    unit: °C
+    kind: thermal
+    description: Temperatura de armazenamento (faixa)
+attributes:
+  interface: Interface
+  encapsulamento: Encapsulamento

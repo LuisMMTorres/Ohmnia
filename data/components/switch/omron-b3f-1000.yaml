@@ -1,0 +1,77 @@
+# Fonte: Omron, B3F Tactile Switch (catálogo de chaves táteis B3F, sem número/revisão de documento visível nas páginas lidas).
+part_number: B3F-1000
+category: switch.mechanical
+schema_version: '1.0'
+manufacturer: Omron
+family: B3F
+package: 6 x 6 mm, plunger 4,3 mm, contatos banhados a prata, sem terminal de terra
+lifecycle: desconhecido
+notes:
+- 'B3F-1000: força de acionamento 0,98 N (100 gf), plunger marfim, 4,3 mm; valores elétricos da tabela de séries 6 x 6 mm.'
+- Documento cobre toda a família B3F (6 x 6, 12 x 12, laterais, douradas); durabilidade do B3F-1000 é a da linha de 0,98 N.
+datasheets:
+- id: ds1
+  manufacturer: Omron
+  sha256: be9cf69e5f43fb7689448a2097c19858e5643c0e2e49cd77d018881543e27a1f
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_rated:
+    min: 0.001
+    max: 0.05
+    unit: A
+    status: extraido
+    source: {page: 3, location: Ratings/Characteristics - rating (resistive load), excerpt: "1 to 50 mA, 3 to 24 VDC"}
+  V_rated:
+    min: 3
+    max: 24
+    unit: V
+    status: extraido
+    source: {page: 3, location: Ratings/Characteristics - rating (resistive load), excerpt: "1 to 50 mA, 3 to 24 VDC"}
+  R_contact:
+    max: 100
+    unit: mohm
+    status: extraido
+    source: {page: 3, location: Operating characteristics - contact resistance (initial value), excerpt: "Contact resistance (initial value) 100 mΩ max."}
+  R_iso:
+    min: 100
+    unit: Mohm
+    conditions: {V: 250 V}
+    status: extraido
+    source: {page: 3, location: Operating characteristics - insulation resistance, excerpt: "100 MΩ min. (at 250 VDC with insulation tester)"}
+  V_diel:
+    max: 500
+    unit: V
+    conditions: {t: 1 min}
+    status: extraido
+    source: {page: 3, location: Operating characteristics - dielectric strength, excerpt: "500 VAC, 50/60 Hz for 1 min"}
+  life:
+    min: 1000000
+    unit: '1'
+    status: extraido
+    source: {page: 3, location: Operating characteristics - durability (B3F-1000, OF 0.98 N), excerpt: "1,000,000 operations min (OF: 0.98 N {100 gf})"}
+  force:
+    typ: 0.98
+    unit: N
+    status: extraido
+    source: {page: 3, location: Operating characteristics - operating force (OF), excerpt: "Operating force (OF) 0.98±0.29 N {100±30 gf}"}
+  Top:
+    min: -25
+    max: 70
+    unit: °C
+    status: extraido
+    source: {page: 3, location: Operating characteristics - ambient operating temperature, excerpt: "-25°C to +70°C at 60%RH max."}
+attributes:
+  tipo:
+    value: Chave táctil (tactile switch), plunger projetado
+    status: extraido
+    source: {page: 1, location: List of models - 6 x 6 mm, excerpt: "Standard: B3F-1000 Series ... Plunger Height 4.3 mm"}
+  contatos:
+    value: SPST-NO
+    status: extraido
+    source: {page: 3, location: Operating characteristics - contact form, excerpt: "Contact form SPST-NO"}
+  grau_protecao:
+    value: IEC IP00
+    status: extraido
+    source: {page: 3, location: Operating characteristics - degree of protection, excerpt: "Degree of protection IEC IP00"}

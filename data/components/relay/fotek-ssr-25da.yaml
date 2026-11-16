@@ -1,0 +1,75 @@
+# Fonte: Fotek, SSR series - Solid State Module, SSR-DA series (Single phase DC to AC), páginas 03-05, 28-29 do catálogo; sem revisão/data visível.
+part_number: SSR-25DA
+category: relay.solid_state
+schema_version: '1.0'
+manufacturer: Fotek
+family: SSR-DA (SSR-10DA a SSR-75DA)
+lifecycle: desconhecido
+notes:
+- Folha da série SSR-DA (modelos 10, 25, 40, 50, 75 A); I_load e I_surge são do SSR-25DA; os demais são "General specification" comuns à série.
+- 'I2t para fusível do SSR-25DA: 259 A2s (pág. 3, tabela de especificação); sem símbolo no esquema.'
+- 'Tensão de pico suportada: 1200 VAC mín.; tempo de resposta 8,3 ms (60 Hz); tensão de desligamento < 3,5 VDC (pág. 3).'
+- 'Tipo de alta tensão SSR-25DA-H: saída 90 a 480 VAC (pág. 3); este registro cobre o tipo padrão.'
+- 'Código de modelo (pág. 1): 25 = 25 A; D = entrada 4 a 32 VDC; A = saída AC; sem H = tipo padrão; sem R = controle por passagem por zero.'
+- 'A corrente nominal corresponde a carga resistiva; o documento indica dissipador e ventilador conforme a corrente de linha (págs. 4-5).'
+datasheets:
+- id: ds1
+  manufacturer: Fotek
+  url: https://cdn.shopify.com/s/files/1/0672/9409/files/SSR-DA-datasheet.pdf
+  sha256: 8e39a34a78d63dc1a4703f2cf0ba9929ab2f173988fcdc9bd7a7d24a0308ae1b
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  V_control:
+    min: 4
+    max: 32
+    unit: V
+    status: extraido
+    source: {page: 3, location: General specification - input voltage, excerpt: "Input voltage 4 ~ 32 VDC"}
+  I_control:
+    max: 12
+    unit: mA
+    status: extraido
+    source: {page: 3, location: General specification - trigger current, excerpt: "Trigger current 12.0mA max."}
+  V_load:
+    min: 24
+    max: 380
+    unit: V
+    status: extraido
+    source: {page: 3, location: Specification - Standard type - output voltage, excerpt: "Output voltage 24 ~ 380VAC"}
+  I_load:
+    max: 25
+    unit: A
+    status: extraido
+    source: {page: 3, location: Specification - Standard type - rated current SSR-25DA, excerpt: "SSR - 25DA 25A max."}
+  I_surge:
+    max: 275
+    unit: A
+    status: extraido
+    source: {page: 3, location: Specification - Standard type - surge current SSR-25DA, excerpt: "Surge current 275A"}
+  I_off:
+    max: 5
+    unit: mA
+    status: extraido
+    source: {page: 3, location: General specification - leakage current, excerpt: "Leakage current 5 mA max."}
+  V_iso:
+    typ: 4000
+    unit: V
+    status: extraido
+    source: {page: 3, location: General specification - isolation strength, excerpt: "4 KVrms (EN60950/VDE0805)"}
+  Top:
+    min: -40
+    max: 80
+    unit: °C
+    status: extraido
+    source: {page: 3, location: General specification - circumstance, excerpt: "-40℃ ~ +80℃"}
+attributes:
+  comutacao:
+    value: Passagem por zero (zero cross)
+    status: extraido
+    source: {page: 3, location: General specification - control method, excerpt: "Control method Zero cross"}
+  certificacoes:
+    value: CE, RoHS, UL
+    status: extraido
+    source: {page: 1, location: Cabeçalho SSR series, excerpt: "SSR series CE, RoHs, UL"}

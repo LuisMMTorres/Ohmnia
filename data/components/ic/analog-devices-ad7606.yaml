@@ -1,0 +1,105 @@
+# Fonte: Analog Devices, AD7606/AD7606-6/AD7606-4 Preliminary Technical Data, Rev. PrL, 2010 (cópia Farnell).
+part_number: AD7606
+category: ic.adc
+schema_version: '1.0'
+manufacturer: Analog Devices
+family: AD7606/AD7606-6/AD7606-4
+package: LQFP 64 pinos
+lifecycle: desconhecido
+notes:
+- 'Documento preliminar (Preliminary Technical Data, Rev. PrL) com campos ainda TBD; valores abaixo são do AD7606 de 8 canais (pág. 1, 3 e 4).'
+- 'Faixas de entrada bipolares ±10 V (RANGE = 1) e ±5 V (RANGE = 0); impedância de entrada típica 1 Mohm; grampo de proteção tolera ±16,5 V (pág. 1 e 3).'
+- 'Tempo de conversão máx. 4 us com todos os 8 canais; vazão máx. 200 kSPS por canal (pág. 4).'
+- 'ITOTAL em operação a 200 kSPS: típ. 16 mA, máx. 21 mA (pág. 4). VDRIVE (E/S digital) 2,3 a 5,25 V (pág. 4).'
+- 'Versão B: -40 a +85 °C (pág. 3 nota 1 e pág. 9).'
+datasheets:
+- id: ds1
+  manufacturer: Analog Devices
+  revision: PrL
+  url: https://www.farnell.com/datasheets/1595896.pdf
+  sha256: 621c8275b2a79a3994002023dcb243e9b7f4ca45884a139b877c909ec2c6ad20
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  bits:
+    typ: 16
+    unit: bit
+    status: extraido
+    source: {page: 3, location: Table 1 - DC Accuracy - Resolution, excerpt: "Resolution No Missing Codes 16 Bits"}
+  fs:
+    max: 200
+    unit: kHz
+    status: extraido
+    source: {page: 4, location: Table 1 - Conversion Rate - Throughput Rate, excerpt: "Throughput Rate Per channel, all 8 channels included 200 kSPS"}
+  channels:
+    typ: 8
+    unit: '1'
+    status: extraido
+    source: {page: 1, location: Features / General Description, excerpt: "8/6/4 Simultaneously Sampled Inputs"}
+  VS:
+    min: 4.75
+    max: 5.25
+    unit: V
+    status: extraido
+    source: {page: 4, location: Table 1 - Power Requirements - AVCC, excerpt: "AVCC 4.75 5.25 V"}
+  VREF:
+    typ: 2.5
+    unit: V
+    status: extraido
+    source: {page: 3, location: Table 1 - Reference Input/Output, excerpt: "Reference Input Voltage Range ... 2.5 V"}
+  V_in:
+    min: -10
+    max: 10
+    unit: V
+    status: extraido
+    source: {page: 3, location: Table 1 - Analog Input - Input Voltage Ranges, excerpt: "RANGE = 1 ±10 V; RANGE = 0 ±5 V"}
+  INL:
+    min: -2
+    max: 2
+    unit: '1'
+    status: extraido
+    source: {page: 3, location: Table 1 - DC Accuracy, excerpt: "Integral Nonlinearity ±0.5 typ ±2 max LSB"}
+  DNL:
+    min: -0.95
+    max: 0.95
+    unit: '1'
+    status: extraido
+    source: {page: 3, location: Table 1 - DC Accuracy, excerpt: "Differential Nonlinearity ±0.5 typ ±0.95 max LSB"}
+  SNR:
+    min: 88
+    typ: 90
+    unit: dB
+    status: extraido
+    source: {page: 3, location: Table 1 - Dynamic Performance, excerpt: "Signal-to-Noise Ratio (SNR) 88 90 dB (fIN = 1 kHz)"}
+  IS:
+    typ: 16
+    max: 21
+    unit: mA
+    status: extraido
+    source: {page: 4, location: Table 1 - Power Requirements - ITOTAL, excerpt: "Normal Mode (Operational) fSAMPLE = 200 kSPS, AD7606 16 21 mA"}
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 9, location: Table 3 - Operating Temperature Range, excerpt: "B Version -40°C to +85°C"}
+  Tstg:
+    min: -65
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 9, location: Table 3 - Storage Temperature Range, excerpt: "-65°C to +150°C"}
+attributes:
+  interface:
+    value: Paralela/serial flexível (SPI/QSPI/MICROWIRE/DSP)
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "Flexible Parallel/Serial interface: SPI-/QSPI-/MICROWIRE-/DSP-compatible"}
+  arquitetura:
+    value: SAR de redistribuição de carga, amostragem simultânea
+    status: extraido
+    source: {page: 1, location: General Description, excerpt: "16-bit charge redistribution successive approximation ADC"}
+  encapsulamento:
+    value: LQFP 64 pinos
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "64-lead LQFP Package"}

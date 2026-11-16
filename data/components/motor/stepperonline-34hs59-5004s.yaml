@@ -1,0 +1,81 @@
+# Fonte: StepperOnline (OMC) / OYStepper, desenho e especificação do motor de passo 34HS59-5004S (PDF digitalizado, 1 página).
+part_number: 34HS59-5004S
+category: motor.stepper
+schema_version: '1.0'
+manufacturer: StepperOnline (OMC)
+lifecycle: desconhecido
+notes:
+- PDF digitalizado (sem camada de texto); valores lidos da imagem da página 1.
+- Os valores 5,00 V e 5,00 A/fase são os da tabela (VOTAGE(VOC) e AMPS/PHASE), ligação bipolar.
+- Passo ±5% (STEP ACCURACY non-accum), elevação de temperatura máx. 80 °C (motor parado, 2 fases energizadas), classe de isolação B 130 °C, resistência de isolação 100 Mohm, rigidez dielétrica 500 VAC por 1 min, umidade ambiente máx. 85% sem condensação.
+- Cabos UL 1007 AWG18, 500±10 mm; comprimento do corpo 150 mm máx. (desenho).
+datasheets:
+- id: ds1
+  manufacturer: StepperOnline (OMC)
+  url: https://oyostepper.com/images/upload/File/34HS59-5004S.pdf
+  sha256: 8ca71aac3a76e81ab86227cb9bf016629daf8f86c891b2598b0fff5774a4f6f3
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  step_angle:
+    typ: 1.8
+    unit: deg
+    status: extraido
+    source: {page: 1, location: tabela de especificação - STEP ANGLE, excerpt: "STEP ANGLE(°) 1.80"}
+  I_phase:
+    max: 5.0
+    unit: A
+    status: extraido
+    source: {page: 1, location: tabela de especificação - AMPS/PHASE, excerpt: "AMPS/PHASE 5.00"}
+  R_phase:
+    typ: 1.0
+    unit: ohm
+    status: extraido
+    conditions: {TA: 25 °C}
+    source: {page: 1, location: tabela de especificação - RESISTANCE/PHASE, excerpt: "RESISTANCE/PHASE(Ohms)@25°C 1.00±10%"}
+  L_phase:
+    typ: 11.0
+    unit: mH
+    status: extraido
+    source: {page: 1, location: tabela de especificação - INDUCTANCE/PHASE @1KHz, excerpt: "INDUCTANCE/PHASE(mH)@1KHz 11.00±20%"}
+  V_rated:
+    typ: 5.0
+    unit: V
+    status: extraido
+    source: {page: 1, location: tabela de especificação - VOTAGE(VOC), excerpt: "VOTAGE(VOC) 5.00"}
+  T_hold:
+    typ: 13.0
+    unit: N*m
+    status: extraido
+    source: {page: 1, location: tabela de especificação - HOLDING TORQUE, excerpt: "HOLDING TORQUE(Nm)[lb-in] 13.00[115.06]"}
+  J_rotor:
+    typ: 3600
+    unit: g*cm^2
+    status: extraido
+    source: {page: 1, location: tabela de especificação - ROTOR INERTIA, excerpt: "ROTOR INERTIA(g-cm²) 3600.00"}
+  mass:
+    typ: 5.0
+    unit: kg
+    status: extraido
+    source: {page: 1, location: tabela de especificação - WEIGHT, excerpt: "WEIGHT(Kg)[lb] 5.00[11.02]"}
+  length:
+    max: 150
+    unit: mm
+    status: extraido
+    source: {page: 1, location: desenho dimensional - vista lateral, excerpt: "150MAX"}
+  Top:
+    min: -10
+    max: 50
+    unit: °C
+    status: extraido
+    source: {page: 1, location: tabela de especificação - AMBIENT TEMPERATURE, excerpt: "AMBIENT TEMPERATURE -10°C~50°C[14°F~122°F]"}
+attributes:
+  tamanho:
+    value: flange 85,8 mm (desenho; o documento não cita NEMA)
+    status: extraido
+    source: {page: 1, location: desenho dimensional - flange, excerpt: "85.8±0.5"}
+  ligacao:
+    value: bipolar, 4 fios (A vermelho, A\ verde, B amarelo, B\ azul)
+    status: extraido
+    source: {page: 1, location: tabela de especificação e tabela de ligação, excerpt: "CONNECTION BIPOLAR; RED GRN YEL BLU"}

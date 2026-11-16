@@ -1,0 +1,153 @@
+# Fonte: Texas Instruments, LM393B/LM2903B/LM193/LM293/LM393/LM2903 Dual Comparators, SLCS005AH, October 1979 - Revised April 2025.
+part_number: LM393
+category: comparator
+schema_version: '1.0'
+manufacturer: Texas Instruments
+family: LM193 / LM293 / LM393 / LM2903 (comparador duplo)
+package: encapsulamentos múltiplos da família (ver o documento)
+lifecycle: desconhecido
+notes:
+- Folha SLCS005AH (outubro 1979, revisada abril 2025) cobre LM393B, LM2903B, LM193, LM293, LM393 e LM2903.
+- Valores transcritos da seção 5.8 (coluna LM293/LM393, sem sufixo A/B), dos limites absolutos das versões não-B e da seção 5.11.
+- 'Faixa de temperatura de operação do LM393: 0 a 70 °C (nota 1 da seção 5.8). Saída em coletor aberto.'
+- ICC (0,45 típ. / 1 máx. mA em VCC = 5 V, RL = infinito) transcrito como IQ; o documento não diz se é por comparador ou do encapsulamento duplo.
+datasheets:
+- id: ds1
+  manufacturer: Texas Instruments
+  document_number: SLCS005AH
+  revision: OCTOBER 1979 - REVISED APRIL 2025
+  sha256: a1f63934820e27c1f345a4d2c01c46fa2d58591df0f406a1bfca0fe97d8731bb
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS_max:
+    max: 36
+    unit: V
+    status: extraido
+    source:
+      page: 4
+      location: Absolute maximum ratings - supply voltage VCC, non-B versions
+      excerpt: VCC Supply voltage Non-B Versions -0.3 36 V
+  VID_max:
+    max: 36
+    unit: V
+    status: extraido
+    source:
+      page: 4
+      location: Absolute maximum ratings - differential input voltage, non-B versions
+      excerpt: VID Differential input voltage Non-B Versions -36 36 V
+  VI_max:
+    max: 36
+    unit: V
+    status: extraido
+    source:
+      page: 4
+      location: Absolute maximum ratings - input voltage (either input), non-B versions
+      excerpt: VI Input voltage (either input) Non-B Versions -0.3 36 V
+  VOUT_max:
+    max: 36
+    unit: V
+    status: extraido
+    source:
+      page: 4
+      location: Absolute maximum ratings - output voltage, non-B versions
+      excerpt: VO Output voltage Non-B Versions -0.3 36 V
+  Tj_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 4
+      location: Absolute maximum ratings - operating virtual-junction temperature
+      excerpt: TJ Operating virtual-junction temperature 150 °C
+  Tstg_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 4
+      location: Absolute maximum ratings - storage temperature
+      excerpt: Tstg Storage temperature -65 150 °C
+  Vos:
+    typ: 2
+    max: 5
+    unit: mV
+    conditions: &id001
+      TA: 25 degC
+    status: extraido
+    source:
+      page: 8
+      location: Electrical characteristics 5.8 - input offset voltage VIO, coluna LM293/LM393
+      excerpt: VIO Input offset voltage 25°C 2 5 mV
+  Ios:
+    typ: 5
+    max: 50
+    unit: nA
+    conditions: *id001
+    status: extraido
+    source:
+      page: 8
+      location: Electrical characteristics 5.8 - input offset current IIO, coluna LM293/LM393
+      excerpt: IIO Input offset current VO = 1.4V 25°C 5 50 nA
+  Ib:
+    typ: 25
+    max: 250
+    unit: nA
+    conditions: *id001
+    note: Em módulo; o documento dá -25 (típ.) e -250 (máx.)
+    status: extraido
+    source:
+      page: 8
+      location: Electrical characteristics 5.8 - input bias current IIB, coluna LM293/LM393 (negativa no documento)
+      excerpt: IIB Input bias current VO = 1.4V 25°C -25 -250 nA
+  Avol:
+    min: 50
+    typ: 200
+    unit: V/mV
+    note: VCC = 15 V, RL ≥ 15 kΩ ligado a VCC
+    status: extraido
+    source:
+      page: 8
+      location: Electrical characteristics 5.8 - large-signal differential-voltage amplification AVD
+      excerpt: VCC = 15V, VO = 1.4V to 11.4V, RL ≥ 15kΩ to VCC 25°C 50 200 V/mV
+  VOL:
+    typ: 130
+    max: 400
+    unit: mV
+    conditions:
+      IOL: 4 mA
+    status: extraido
+    source:
+      page: 8
+      location: Electrical characteristics 5.8 - low-level output voltage VOL
+      excerpt: VOL Low-level output voltage IOL = 4mA, VID = -1V 25°C 130 400 mV
+  IOH_leak:
+    typ: 0.1
+    max: 50
+    unit: nA
+    note: 'VOH = 5 V, VID = 1 V, TA = 25 °C; com VOH = 30 V, faixa completa de temperatura: máx. 1 µA'
+    status: extraido
+    source:
+      page: 8
+      location: Electrical characteristics 5.8 - high-level output current IOH, VOH = 5 V, VID = 1 V
+      excerpt: IOH High-level output current VOH = 5V VID = 1V 25°C 0.1 50 nA
+  IQ:
+    typ: 0.45
+    max: 1
+    unit: mA
+    status: extraido
+    source:
+      page: 8
+      location: Electrical characteristics 5.8 - supply current ICC, VCC = 5 V, RL = infinito
+      excerpt: ICC Supply current RL = ∞ VCC = 5V 25°C 0.45 1 mA
+  t_resp:
+    typ: 1.3
+    unit: us
+    note: 'VCC = 5 V, TA = 25 °C; com degrau de entrada nível TTL: 0,3 µs'
+    status: extraido
+    source:
+      page: 10
+      location: Switching characteristics 5.11 - response time, 100 mV step with 5 mV overdrive
+      excerpt: Response time RL to 5V through 5.1kΩ, CL = 15pF, 100mV input step with 5mV overdrive 1.3 µs
+attributes: {}

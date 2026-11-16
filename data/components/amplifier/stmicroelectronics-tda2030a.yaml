@@ -1,0 +1,106 @@
+# Fonte: STMicroelectronics, TDA2030A 18 W hi-fi amplifier and 35 W driver, Doc ID 1459 Rev 2, July 2011 (cópia no distribuidor Farnell).
+part_number: TDA2030A
+category: amplifier.audio
+schema_version: '1.0'
+manufacturer: STMicroelectronics
+family: TDA2030A
+package: Pentawatt (vertical), código TDA2030AV
+lifecycle: obsoleto
+notes:
+- 'Documento marcado "Obsolete Product(s)" (p. 1-3).'
+- 'Alimentação simétrica: VS = ±6 a ±22 V (p. 3); os valores de VS abaixo estão em módulo (V por lado). Condições da Tabela 4: VS = ±16 V, Tamb = 25 °C, salvo indicação.'
+- 'Po (p. 3): d = 0,5%, Gv = 26 dB, f = 40 a 15000 Hz; RL = 4 ohm: mín. 15 W, típ. 18 W; RL = 8 ohm: mín. 10 W, típ. 12 W; com VS = ±19 V e RL = 8 ohm: mín. 13 W, típ. 16 W.'
+- 'Resistência térmica junção-cápsula máx. 3 °C/W (Tabela 2, p. 2) e temperatura de desligamento térmico típ. 145 °C (p. 3): sem símbolo no esquema.'
+- 'Corrente de pico de saída (limitada internamente) 3,5 A; tensão de entrada diferencial máx. ±15 V (Tabela 3, p. 2). Largura de banda de potência típ. 100 kHz (Po = 15 W, RL = 4 ohm); slew rate típ. 8 V/us (p. 3).'
+- 'Tj_max: o datasheet dá uma única faixa para "Tstg, Tj": -40 a +150 °C.'
+datasheets:
+- id: ds1
+  manufacturer: STMicroelectronics
+  document_number: Doc ID 1459
+  revision: Rev 2, July 2011
+  url: https://www.farnell.com/datasheets/1809779.pdf
+  sha256: 7183180d49149918bab64a271b7634d895286e5d9808d4405e3e26a9780c7e92
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 6
+    max: 22
+    unit: V
+    status: extraido
+    source: {page: 3, location: Table 4 Electrical characteristics - Supply voltage, excerpt: "Vs Supply voltage ± 6 ... ± 22 V"}
+  VS_max:
+    max: 22
+    unit: V
+    status: extraido
+    source: {page: 2, location: Table 3 Absolute maximum ratings - Supply voltage, excerpt: "Vs Supply voltage ± 22 V"}
+  Po:
+    min: 15
+    typ: 18
+    unit: W
+    conditions: {RL: 4 ohm, THD: 0.5 %, VS: 16 V}
+    status: extraido
+    source: {page: 3, location: Table 4 - Output power (d = 0.5%, Gv = 26 dB, f = 40 to 15000 Hz, RL = 4 ohm), excerpt: "PO Output power RL= 4 Ω 15 18 W"}
+  Po@2:
+    min: 10
+    typ: 12
+    unit: W
+    conditions: {RL: 8 ohm, THD: 0.5 %, VS: 16 V}
+    status: extraido
+    source: {page: 3, location: Table 4 - Output power (d = 0.5%, Gv = 26 dB, f = 40 to 15000 Hz, RL = 8 ohm), excerpt: "RL= 8 Ω 10 12 W"}
+  Av:
+    min: 25.5
+    typ: 26
+    max: 26.5
+    unit: dB
+    conditions: {f: 1 kHz}
+    status: extraido
+    source: {page: 3, location: Table 4 - Closed loop voltage gain, excerpt: "Gv Closed loop voltage gain f = 1 kHz 25.5 26 26.5 dB"}
+  RL:
+    min: 4
+    unit: ohm
+    status: extraido
+    source: {page: 3, location: Table 4 - Output power test loads (RL = 4 ohm e 8 ohm), excerpt: "RL= 4 Ω ... RL= 8 Ω"}
+  THD:
+    typ: 0.08
+    max: 0.5
+    unit: '%'
+    conditions: {RL: 4 ohm, Po: 14 W, f: 1 kHz}
+    status: extraido
+    source: {page: 3, location: Table 4 - Total harmonic distortion (Po = 0.1 to 14 W, RL = 4 ohm), excerpt: "d Total harmonic distortion ... 0.08 0.03 0.5 %"}
+  BW:
+    typ: 100
+    unit: kHz
+    conditions: {Po: 15 W, RL: 4 ohm}
+    status: extraido
+    source: {page: 3, location: Table 4 - Power bandwidth, excerpt: "BW Power bandwidth Po = 15 W; RL= 4 Ω 100 kHz"}
+  IQ:
+    typ: 50
+    max: 80
+    unit: mA
+    status: extraido
+    source: {page: 3, location: Table 4 - Quiescent drain current, excerpt: "Id Quiescent drain current 50 80 mA"}
+  Rin:
+    min: 500
+    typ: 5000
+    unit: kohm
+    conditions: {f: 1 kHz}
+    status: extraido
+    source: {page: 3, location: Table 4 - Input resistance (pin 1) (open loop), excerpt: "Ri Input resistance (pin 1) (open loop) f = 1 kHz 0.5 5 MΩ"}
+  Pd:
+    max: 20
+    unit: W
+    conditions: {Tcase: 90 degC}
+    status: extraido
+    source: {page: 2, location: Table 3 Absolute maximum ratings - Total power dissipation, excerpt: "Ptot Total power dissipation at Tcase = 90 °C 20 W"}
+  Tj_max:
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Table 3 Absolute maximum ratings - Storage and junction temperature, excerpt: "Tstg, Tj Storage and junction temperature – 40 to + 150 °C"}
+attributes:
+  encapsulamento:
+    value: Pentawatt (vertical)
+    status: extraido
+    source: {page: 1, location: Table 1 Device summary, excerpt: "TDA2030AV Pentawatt (vertical)"}

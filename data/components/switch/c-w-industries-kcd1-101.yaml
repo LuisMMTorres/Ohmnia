@@ -1,0 +1,110 @@
+# Fonte: Jinghan Switch Electronic Co., Ltd, Jinghan Rocker Switch KCD1-101 Series Datasheet, Copyright 2013.
+part_number: KCD1-101
+category: switch.mechanical
+schema_version: '1.0'
+manufacturer: Jinghan Switch
+family: KCD1-101
+lifecycle: desconhecido
+notes:
+- A fila indica C&W Industries, mas o documento é da Jinghan Switch Electronic Co., Ltd (KCD1-101 series rocker switch); valores da série.
+- 'Corrente nominal 6 A a 125 V e 10 A a 250 V (pág. 2); V_rated registra o maior valor (250 V).'
+- Tipos de ação ON-OFF, ON-ON, ON-OFF-ON; arranjos de contato descritos SPST, SPDT, DPST e DPDT (pág. 1 e 2). Atuador de policarbonato, base de Nylon 66, contatos de cobre prateado / liga de prata (pág. 2).
+datasheets:
+- id: ds1
+  manufacturer: Jinghan Switch
+  revision: Copyright 2013
+  url: https://www.zagroselec.ir/STFiles/GetAppDocument/1/True/d95a3f07-48ce-42c9-b34b-ac799df1ff4c.pdf
+  sha256: 17ea76bd5bd77b66a4fbc0cf4613c4c78b58b9d927f781c7ab936068f510d676
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_rated:
+    max: 6
+    unit: A
+    conditions: {V: 125 V}
+    status: extraido
+    source:
+      page: 2
+      location: Description of KCD1-101 Series - Ratings
+      excerpt: "Ratings : 6A125V 10A250V"
+  I_rated@2:
+    max: 10
+    unit: A
+    conditions: {V: 250 V}
+    status: extraido
+    source:
+      page: 2
+      location: Description of KCD1-101 Series - Ratings
+      excerpt: "Ratings : 6A125V 10A250V"
+  V_rated:
+    max: 250
+    unit: V
+    status: extraido
+    source:
+      page: 2
+      location: Description of KCD1-101 Series - Ratings
+      excerpt: "Ratings : 6A125V 10A250V"
+  R_contact:
+    max: 30
+    unit: mohm
+    status: extraido
+    source:
+      page: 2
+      location: Description of KCD1-101 Series - Contact Resistance
+      excerpt: "Contact Resistance : ≤30mΩ"
+  R_iso:
+    min: 100
+    unit: Mohm
+    status: extraido
+    source:
+      page: 2
+      location: Description of KCD1-101 Series - Insulation Resistance
+      excerpt: "Insulation Resistance : ≥100MΩ"
+  V_diel:
+    max: 1500
+    unit: V
+    status: extraido
+    source:
+      page: 2
+      location: Description of KCD1-101 Series - Dielectric Strength
+      excerpt: "Dielectric Strength : 1500V for 1 Min"
+  life:
+    min: 10000
+    unit: '1'
+    status: extraido
+    source:
+      page: 2
+      location: Description of KCD1-101 Series - Life
+      excerpt: "Life : ≥10000times"
+  Top:
+    min: -30
+    max: 85
+    unit: °C
+    status: extraido
+    source:
+      page: 2
+      location: Description of KCD1-101 Series - Temperature Range
+      excerpt: "Temperature Range : -30~85℃"
+attributes:
+  tipo:
+    value: gangorra (rocker)
+    status: extraido
+    source:
+      page: 1
+      location: Title - JINGHAN ROCKER SWITCH KCD1-101 Series Datasheet
+      excerpt: "JINGHAN ROCKER SWITCH KCD1-101 Series Datasheet"
+  contatos:
+    value: SPST, SPDT, DPST ou DPDT (ON-OFF, ON-ON, ON-OFF-ON)
+    status: extraido
+    source:
+      page: 2
+      location: Description - Types
+      excerpt: "Types: ON-OFF ON-ON ON-OFF-ON"
+  certificacoes:
+    value: RoHS, CE, TUV
+    status: extraido
+    source:
+      page: 2
+      location: Description of KCD1-101 Series - ROHS / CE / TUV
+      excerpt: "ROHS: YES CE: YES TUV: YES"

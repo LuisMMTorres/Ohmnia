@@ -1,0 +1,74 @@
+# Fonte: Siemens, SITRANS F M Flow sensor MAG 5100 W, Siemens FI 01, June 2015 (atualização 09/2015), páginas 3/92 a 3/95 do catálogo.
+part_number: SITRANS F M MAG 5100 W
+category: sensor.flow
+schema_version: '1.0'
+manufacturer: Siemens
+family: SITRANS F M MAG 5100 W (7ME6520 e 7ME6580)
+lifecycle: desconhecido
+notes:
+- 'Item da fila: "sitrans fm mag5100w datasheet en-US". Sensor eletromagnético de vazão para água, esgoto e lodo; a eletrônica é um transmissor separado (MAG 5000, MAG 6000 ou MAG 6000 I) (p.1).'
+- 'Dois modelos: 7ME6520 (mercado europeu, liner EPDM ou NBR, DN 15 a 1200) e 7ME6580 (mercado não europeu, liner ebonite, DN 25 a 2000) (p.2).'
+- 'Valores abaixo cobrem os dois modelos; ver faixas por DN na p.2. Temperatura do meio: -10 a +70 °C (NBR, EPDM, ebonite); 0,1 a 30 °C para EPDM/NBR (MI-001) (p.3).'
+- 'Temperatura ambiente do sensor: -40 a +70 °C (7ME6520) e -20 a +70 °C (7ME6580); com transmissor compacto MAG 5000/6000: -20 a +60 °C (p.2).'
+- 'Pressão de operação (absoluta): DN 15-40: 0,01 a 40 bar; DN 50-300: 0,03 a 20 bar; DN 350-1200: 0,01 a 16 bar (7ME6520); DN 25-50: 0,01 a 40 bar, DN 65-1200: 0,01 a 16 bar, DN 1400-2000: 0,01 a 10 bar (7ME6580) (p.2).'
+- 'Perda de pressão: máx. 20 mbar a 1 m/s (DN 15 e 25); máx. 25 mbar a 3 m/s (DN 40 a 300) (p.2). Frequência de excitação depende do DN (p.2).'
+- 'Pesos, vazões e exatidão por tamanho não estão nas páginas de especificação; ver tabelas de seleção no catálogo. Sem símbolos de alimentação ou saída elétrica: dependem do transmissor.'
+datasheets:
+- id: ds1
+  manufacturer: Siemens
+  document_number: Siemens FI 01
+  revision: June 2015 (Update 09/2015)
+  url: https://cdn.shopify.com/s/files/1/0840/8717/files/Siemens_SITRANS_F_M_MAG_5100_W_DataSheet.pdf
+  sha256: 9b921e161ac06575c06f1a4424d653808357577bb3d81ed2da3e3e68c0c6596e
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  DN:
+    min: 15
+    max: 2000
+    unit: mm
+    status: extraido
+    source: {page: 1, location: Benefits - nominal size range, excerpt: "DN 15 to DN 1200 / 2000"}
+  T_process:
+    min: -10
+    max: 70
+    unit: °C
+    status: extraido
+    source: {page: 3, location: Medium conditions - temperature of medium (NBR, EPDM, ebonite), excerpt: "-10 ... +70 °C"}
+  Top:
+    min: -40
+    max: 70
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Rated operation conditions - ambient temperature sensor (7ME6520; 7ME6580 -20 °C), excerpt: "-40 ... +70 °C"}
+  P_max:
+    max: 40
+    unit: bar
+    status: extraido
+    source: {page: 2, location: Rated operation conditions - operating pressure (abs), excerpt: "0.01 ... 40 bar"}
+attributes:
+  principio:
+    value: Indução eletromagnética (lei de Faraday)
+    status: extraido
+    source: {page: 1, location: Mode of operation, excerpt: "Faradays law of electromagnetic induction"}
+  conexao:
+    value: Flanges EN 1092-1, ANSI B16.5, AWWA C-207, AS4087 e JIS B 2220 (conforme modelo)
+    status: extraido
+    source: {page: 2, location: Process connection - flanges, excerpt: "EN 1092-1"}
+  invólucro:
+    value: Carcaça e flanges em aço carbono ASTM A 105 com epóxi; tubo de medição aço inox AISI 304; eletrodos Hastelloy C; caixa de terminais em poliamida reforçada com fibra de vidro
+    status: extraido
+    source: {page: 3, location: Design - material, excerpt: "Hastelloy C"}
+  grau_protecao:
+    value: IP67 (padrão); IP68 / NEMA 6P (opção)
+    status: extraido
+    source: {page: 2, location: Rated operation conditions - enclosure rating, excerpt: "IP68 to EN 60529/NEMA 6P"}
+  certificacoes:
+    value: OIML R 49, MI-001, PTB K7.2, FM Fire Service, MCERTS, PED, CSA/FM Class I Div 2, aprovações de água potável (NSF/ANSI 61, WRAS, ACS, DVGW W270, Belgaqua)
+    status: extraido
+    source: {page: 3, location: Certificates and approvals, excerpt: "Drinking water approvals"}
+  comunicacao:
+    value: Via transmissor (HART, DeviceNet, PROFIBUS DP/PA, FOUNDATION Fieldbus H1, Modbus RTU/RS 485)
+    status: extraido
+    source: {page: 1, location: Integration, excerpt: "FOUNDATION Fieldbus H1"}

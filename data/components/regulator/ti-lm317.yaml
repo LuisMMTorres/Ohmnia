@@ -1,0 +1,160 @@
+# Fonte: Texas Instruments, LM317 3-Pin Adjustable Regulator, SLVS044Z, September 1997 - revised April 2025.
+part_number: LM317
+category: regulator.positive
+schema_version: '1.0'
+manufacturer: Texas Instruments
+family: LM317
+package: TO-220 (KCS/KCT), TO-263 (KTT), SOT-223 (DCY)
+lifecycle: desconhecido
+notes:
+- Regulador ajustável 1,25 V a 37 V, 1,5 A. O datasheet traz duas versões de chip (legacy e new); os valores de Vref, regulação, IAdj, IL_min, ISC e RR são os da tabela comum, quando há dois valores usou-se o legacy ou o da faixa completa de temperatura.
+- Rth_ja e Rth_jc são do TO-220 KCS, chip legacy (Rth_jc = RθJC(bot), caminho para o dissipador). Outros encapsulamentos têm valores diferentes na tabela da página 7.
+datasheets:
+- id: ds1
+  manufacturer: Texas Instruments
+  document_number: SLVS044Z
+  revision: Revised April 2025
+  sha256: 1646fb2e4f8cf8c2cbd93aaf22edad368571619ad062476deca8ee29f95c65d3
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  Vref:
+    min: 1.2
+    typ: 1.25
+    max: 1.3
+    unit: V
+    status: extraido
+    source:
+      page: 8
+      location: Electrical Characteristics - Reference voltage, 3V <= (VIN-VOUT) <= 40V, 10mA <= IOUT <= 1500mA, PD <= 20W
+      excerpt: "Reference voltage ... 1.2 1.25 1.3 V"
+  IAdj:
+    typ: 50
+    max: 100
+    unit: uA
+    status: extraido
+    source:
+      page: 8
+      location: Electrical Characteristics - Adjustment pin current, over full operating temperature range
+      excerpt: "Adjustment pin current 50 100 uA"
+  VIO_max:
+    max: 40
+    unit: V
+    status: extraido
+    source:
+      page: 6
+      location: Absolute Maximum Ratings - Input-output voltage differential
+      excerpt: "Input-output voltage differential -0.3 40 V"
+  VIO_min:
+    min: 3
+    unit: V
+    status: extraido
+    source:
+      page: 6
+      location: Recommended Operating Conditions - VI - VO, Input-to-output differential voltage
+      excerpt: "VI - VO Input-to-output differential voltage 3 40 V"
+  IO_max:
+    max: 1.5
+    unit: A
+    status: extraido
+    source:
+      page: 6
+      location: Recommended Operating Conditions - IO Output current (0,01 A a 1,5 A)
+      excerpt: "IO Output current 0.01 1.5 A"
+  ISC:
+    min: 1.5
+    typ: 2.2
+    unit: A
+    note: condição do datasheet (VIN-VOUT) <= 15 V; VI na condição representa essa diferença
+    conditions:
+      VI: 15 V
+    status: extraido
+    source:
+      page: 8
+      location: Electrical Characteristics - Current limit, (VIN-VOUT) <= 15V, PD < PMAX
+      excerpt: "Current limit (VIN - VOUT) <= 15V 1.5 2.2 A"
+  ISC@2:
+    min: 0.15
+    typ: 0.4
+    unit: A
+    note: condição do datasheet (VIN-VOUT) = 40 V; VI na condição representa essa diferença
+    conditions:
+      VI: 40 V
+      TJ: 25 °C
+    status: extraido
+    source:
+      page: 8
+      location: Electrical Characteristics - Current limit, (VIN-VOUT) = 40V
+      excerpt: "(VIN - VOUT) = 40V PD < PMAX, TJ = 25C 0.15 0.4"
+  IL_min:
+    typ: 3.5
+    max: 10
+    unit: mA
+    status: extraido
+    source:
+      page: 8
+      location: Electrical Characteristics - Minimum load current, (VIN-VOUT) = 40V
+      excerpt: "Minimum load current ... 3.5 10 mA"
+  Regline_pct:
+    typ: 0.02
+    max: 0.07
+    unit: percent/V
+    status: extraido
+    source:
+      page: 8
+      location: Electrical Characteristics - Line regulation, 3V <= (VIN-VOUT) <= 40V, over full operating temperature range
+      excerpt: "(over full operating temperature range) 0.02 0.07 %/V"
+  Regload_pct:
+    typ: 0.3
+    max: 1.5
+    unit: percent
+    status: extraido
+    source:
+      page: 8
+      location: Electrical Characteristics - Load regulation, IO = 10mA to 1500mA, TJ = 0C to 125C, VO >= 5V (legacy)
+      excerpt: "VO >= 5V 0.3 1.5 %VO"
+  RR:
+    min: 66
+    typ: 80
+    unit: dB
+    conditions:
+      f: 120 Hz
+    status: extraido
+    source:
+      page: 8
+      location: Electrical Characteristics - Ripple rejection ratio, new chip, VOUT = 10V, f = 120Hz, CADJ = 10uF
+      excerpt: "VOUT = 10V, f = 120Hz, CADJ = 10uF ... 66 80 dB"
+  Rth_ja:
+    typ: 23.5
+    unit: K/W
+    status: extraido
+    source:
+      page: 7
+      location: Thermal Information (Legacy Chip) - R theta JA, KCS (TO-220)
+      excerpt: "Rθ(JA) Junction-to-ambient thermal resistance 66.8 23.5 37.9 38.0 °C/W"
+  Rth_jc:
+    typ: 0.1
+    unit: K/W
+    status: extraido
+    source:
+      page: 7
+      location: Thermal Information (Legacy Chip) - R theta JC(bot), KCS (TO-220)
+      excerpt: "RθJC(bot) Junction-to-case (bottom) NA 0.1 4.2 1.1 °C/W"
+  Tj_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 6
+      location: Absolute Maximum Ratings - Operating virtual junction temperature, TJ (legacy chip)
+      excerpt: "Operating virtual junction temperature, TJ (legacy chip) -65 150 °C"
+  Tstg_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 6
+      location: Absolute Maximum Ratings - Storage temperature, Tstg
+      excerpt: "Storage temperature, Tstg -65 150 °C"
+attributes: {}

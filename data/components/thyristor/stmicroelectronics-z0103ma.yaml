@@ -1,0 +1,154 @@
+# Fonte: STMicroelectronics, Z01 Standard 1A Triacs, Doc ID 7474 Rev 10, December 2010 (cópia no distribuidor Farnell).
+part_number: Z0103MA
+category: thyristor.triac
+schema_version: '1.0'
+manufacturer: STMicroelectronics
+family: Z01
+package: TO-92
+lifecycle: desconhecido
+notes:
+- 'Documento da série Z01. Z0103MA = 1 A, sensibilidade 03 (IGT 3 mA), M = 600 V, A = TO-92 (esquema de pedidos, p. 6 e seletor de produtos, p. 7). Valores de IGT, IH, IL, dV/dt e (dV/dt)c são os da coluna 03 da Tabela 2 (p. 2).'
+- 'IT(RMS) 1 A com TL = 50 °C para TO-92 (Tabela 1, p. 2). IGT quadrante IV: máx. 5 mA (quadrantes I-II-III: 3 mA). IL quadrante II: máx. 15 mA (I-III-IV: 7 mA).'
+- '(dV/dt)c mín. 0,5 V/us com (dI/dt)c = 0,44 A/ms, Tj = 110 °C (Tabela 2). Para dV/dt estático a condição é Tj = 110 °C (não 125 °C).'
+- 'Vto máx. 0,95 V e Rd máx. 400 mohm a Tj = 125 °C; IDRM/IRRM máx. 5 uA (Tj = 25 °C) e 0,5 mA (Tj = 125 °C) (Tabela 3, p. 3). Rth(j-l) junção-terminal TO-92 = 60 °C/W (p. 3).'
+datasheets:
+- id: ds1
+  manufacturer: STMicroelectronics
+  document_number: Doc ID 7474
+  revision: Rev 10, December 2010
+  url: https://www.farnell.com/datasheets/1788497.pdf
+  sha256: 3d48e50e0ece4128809b28e05ea569cdd005d135b57a78d2395e8d8bc456f28e
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VDRM:
+    max: 600
+    unit: V
+    status: extraido
+    source: {page: 7, location: Table 5 Product Selector - Z0103MA, excerpt: "Z0103MA  X (coluna 600 V)  3 mA  Standard  TO-92"}
+  VRRM:
+    max: 600
+    unit: V
+    status: extraido
+    source: {page: 7, location: Table 5 Product Selector - Z0103MA, excerpt: "Z0103MA  X (coluna 600 V)  3 mA  Standard  TO-92"}
+  IT(RMS):
+    max: 1
+    unit: A
+    conditions: {TA: 50 degC}
+    status: extraido
+    source: {page: 2, location: Table 1 Absolute maximum ratings - On-state rms current, TO-92 (TL = 50 °C), excerpt: "IT(RMS) TO-92 TL = 50 °C 1 A"}
+  ITSM:
+    max: 8
+    unit: A
+    conditions: {t_pulse: 20 ms}
+    status: extraido
+    source: {page: 2, location: Table 1 Absolute maximum ratings - Non repetitive surge peak on-state current (F = 50 Hz), excerpt: "ITSM F = 50 Hz t = 20 ms 8 A"}
+  ITSM@2:
+    max: 8.5
+    unit: A
+    conditions: {t_pulse: 16.7 ms}
+    status: extraido
+    source: {page: 2, location: Table 1 Absolute maximum ratings - Non repetitive surge peak on-state current (F = 60 Hz), excerpt: "F = 60 Hz t = 16.7 ms 8.5 A"}
+  I2t:
+    max: 0.35
+    unit: A**2*s
+    conditions: {t_pulse: 10 ms}
+    status: extraido
+    source: {page: 2, location: Table 1 Absolute maximum ratings - I2t value for fusing, excerpt: "I²t Value for fusing tp = 10 ms 0.35 A²s"}
+  di/dt:
+    max: 20
+    unit: A/us
+    status: extraido
+    source: {page: 2, location: Table 1 Absolute maximum ratings - Critical rate of rise of on-state current (IG = 2 x IGT, F = 120 Hz, Tj = 125 °C), excerpt: "dI/dt F = 120 Hz Tj = 125 °C 20 A/µs"}
+  IGM:
+    max: 1
+    unit: A
+    status: extraido
+    source: {page: 2, location: Table 1 Absolute maximum ratings - Peak gate current (tp = 20 us, Tj = 125 °C), excerpt: "IGM Peak gate current tp = 20 µs 1 A"}
+  PG(AV):
+    max: 1
+    unit: W
+    status: extraido
+    source: {page: 2, location: Table 1 Absolute maximum ratings - Average gate power dissipation (Tj = 125 °C), excerpt: "PG(AV) Tj = 125 °C 1 W"}
+  Tj_max:
+    max: 125
+    unit: degC
+    status: extraido
+    source: {page: 2, location: Table 1 Absolute maximum ratings - Operating junction temperature range, excerpt: "Operating junction temperature range - 40 to + 125 °C"}
+  Tj_min:
+    min: -40
+    unit: degC
+    status: extraido
+    source: {page: 2, location: Table 1 Absolute maximum ratings - Operating junction temperature range, excerpt: "Operating junction temperature range - 40 to + 125 °C"}
+  Tstg_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source: {page: 2, location: Table 1 Absolute maximum ratings - Storage junction temperature range, excerpt: "Storage junction temperature range - 40 to + 150 °C"}
+  Rth_ja:
+    max: 150
+    unit: K/W
+    status: extraido
+    source: {page: 3, location: Table 4 Thermal resistances - Junction to ambient, TO-92, excerpt: "Rth(j-a) Junction to ambient TO-92 150 °C/W"}
+  IDRM:
+    max: 5
+    unit: uA
+    conditions: {Tj: 25 degC}
+    status: extraido
+    source: {page: 3, location: Table 3 Static characteristics - IDRM / IRRM (VDRM = VRRM), excerpt: "IDRM IRRM VDRM = VRRM Tj = 25 °C MAX. 5 µA"}
+  IDRM@2:
+    max: 0.5
+    unit: mA
+    conditions: {Tj: 125 degC}
+    status: extraido
+    source: {page: 3, location: Table 3 Static characteristics - IDRM / IRRM (VDRM = VRRM), excerpt: "Tj = 125 °C 0.5 mA"}
+  VTM:
+    max: 1.6
+    unit: V
+    conditions: {ITM: 1.4 A}
+    status: extraido
+    source: {page: 3, location: Table 3 Static characteristics - VTM (ITM = 1.4 A, tp = 380 us, Tj = 25 °C), excerpt: "VTM ITM = 1.4 A, tp = 380 µs MAX. 1.6 V"}
+  IGT:
+    max: 3
+    unit: mA
+    conditions: {VD: 12 V}
+    status: extraido
+    source: {page: 2, location: Table 2 Electrical characteristics - IGT quadrantes I-II-III, coluna 03, excerpt: "IGT VD = 12 V, RL = 30 Ω I - II - III MAX. 3 5 10 25 mA (03 = 3)"}
+  IGT@2:
+    max: 5
+    unit: mA
+    conditions: {VD: 12 V}
+    status: extraido
+    source: {page: 2, location: Table 2 Electrical characteristics - IGT quadrante IV, coluna 03, excerpt: "IGT IV 5 7 10 25 mA (03 = 5)"}
+  VGT:
+    max: 1.3
+    unit: V
+    conditions: {VD: 12 V}
+    status: extraido
+    source: {page: 2, location: Table 2 Electrical characteristics - VGT (todos os quadrantes), excerpt: "VGT ALL MAX. 1.3 V"}
+  VGD:
+    min: 0.2
+    unit: V
+    status: extraido
+    source: {page: 2, location: Table 2 Electrical characteristics - VGD (VD = VDRM, RL = 3.3 kohm, Tj = 125 °C), excerpt: "VGD ALL MIN. 0.2 V"}
+  IH:
+    max: 7
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Table 2 Electrical characteristics - IH (IT = 50 mA), coluna 03, excerpt: "IH IT = 50 mA MAX. 7 10 10 25 mA (03 = 7)"}
+  IL:
+    max: 15
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Table 2 Electrical characteristics - IL (IG = 1.2 IGT) quadrante II, coluna 03, excerpt: "IL II 15 20 25 50 mA (03 = 15); I-III-IV: 7 mA"}
+  dv/dt:
+    min: 10
+    unit: V/us
+    status: extraido
+    source: {page: 2, location: Table 2 Electrical characteristics - dV/dt (VD = 67% VDRM, gate open, Tj = 110 °C), coluna 03, excerpt: "dV/dt MIN. 10 20 50 100 V/µs (03 = 10)"}
+  dv/dt(c):
+    min: 0.5
+    unit: V/us
+    status: extraido
+    source: {page: 2, location: Table 2 Electrical characteristics - (dV/dt)c ((dI/dt)c = 0.44 A/ms, Tj = 110 °C), coluna 03, excerpt: "(dV/dt)c MIN. 0.5 1 2 5 V/µs (03 = 0.5)"}

@@ -1,0 +1,65 @@
+# Fonte: YHDC, Split-core Current Transformer SCT-013 (folha de especificação de 1 página, modelo SCT-013-000).
+part_number: SCT-013-000
+category: sensor.current
+schema_version: '1.0'
+manufacturer: YHDC
+family: SCT-013
+lifecycle: desconhecido
+notes:
+- 'Pág. 1: duas opções de saída (corrente ou tensão, esta com resistor de amostragem interno); o modelo SCT-013-000 é o de saída em corrente, relação 100 A : 50 mA.'
+- 'Pág. 1: não linearidade de +/-3 % entre 10 % e 120 % da corrente nominal de entrada; núcleo de ferrite; abertura 13 mm x 13 mm; conector de saída plug Φ3,5 de 3 vias.'
+- 'Pág. 1: rigidez dielétrica 6000 V AC por 1 minuto (carcaça e terminais de saída); retardância a chama UL94-V0; mínimo de 1000 ciclos de abertura e fechamento (a 20 °C).'
+datasheets:
+- id: ds1
+  manufacturer: YHDC
+  url: https://cdn.sparkfun.com/assets/d/0/e/9/9/SCT-013-000-2.pdf
+  sha256: a56a33516fd7abddef6767efc0e7608fe1c5036c430515bd5781a517d7226477
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_PN:
+    typ: 100
+    unit: A
+    status: extraido
+    source: {page: 1, location: Cabeçalho - Rated Input Current, excerpt: "Rated Input Current: 100A"}
+  I_SN:
+    typ: 50
+    unit: mA
+    status: extraido
+    source: {page: 1, location: Cabeçalho - Current transformation ratio, excerpt: "Current transformation ratio: 100A : 50mA"}
+  linearity:
+    max: 3
+    unit: '%'
+    status: extraido
+    source: {page: 1, location: Features - Non-linearity, excerpt: "Non-linearity: ±3% (within 10% ~ 120% of rated input current)"}
+  V_iso:
+    max: 6000
+    unit: V
+    status: extraido
+    source: {page: 1, location: Safety Specifications - Dielectric strength, excerpt: "between housing and output terminals: 6000V AC for 1 minute"}
+  bandwidth:
+    min: 0.05
+    max: 150
+    unit: kHz
+    status: extraido
+    source: {page: 1, location: Cabeçalho - Frequency Range, excerpt: "Frequency Range: 50Hz - 150kHz"}
+  Top:
+    min: -25
+    max: 70
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Operating Temperature, excerpt: "-25℃~ +70℃"}
+attributes:
+  principio:
+    value: TC de núcleo bipartido (split-core), núcleo de ferrite
+    status: extraido
+    source: {page: 1, location: Título e Core Material, excerpt: "Split-core Current Transformer SCT-013; Core Material Ferrite"}
+  saida:
+    value: Corrente (50 mA para 100 A); plug Φ3,5 de 3 vias
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "fitted with standard Φ3.5 3-core plug for output"}
+  montagem:
+    value: Abertura 13 mm x 13 mm, núcleo bipartido (pinça)
+    status: extraido
+    source: {page: 1, location: Features - Opening size, excerpt: "Opening size: 13mm × 13mm"}

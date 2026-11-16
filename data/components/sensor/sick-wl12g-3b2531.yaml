@@ -1,0 +1,102 @@
+# Fonte: SICK, Online data sheet WL12G-3B2531 (part no. 1041456), W12 photoelectric sensors, impresso em 2026-07-25.
+part_number: WL12G-3B2531
+category: sensor.photoelectric
+schema_version: '1.0'
+manufacturer: SICK
+family: W12
+package: Retangular, zinco fundido, 15,6 x 48,5 x 42 mm
+lifecycle: desconhecido
+notes:
+- 'Fila: WL12G-3B2531. Retrorreflexivo com filtro de polarização, detecta objetos transparentes (pág. 2-3).'
+- 'Alcance máx. 0 a 4 m com refletor PL80A; ângulo de dispersão aprox. 1,5°; mancha de luz Ø 25 mm a 1,5 m (pág. 2).'
+- 'Sinal de saída PNP HIGH > Uv - 3 V / LOW aprox. 0 V; modo claro/escuro selecionável por cabo L/D (pág. 3).'
+- 'Corrente de consumo 30 mA sem carga; ondulação < 5 Vpp; MTTFD 823 anos (pág. 2-3).'
+datasheets:
+- id: ds1
+  manufacturer: SICK
+  document_number: '1041456'
+  revision: impresso em 2026-07-25
+  url: https://www.sick.com/media/pdf/3/73/373/dataSheet_WL12G-3B2531_1041456_en.pdf
+  sha256: da712bb5a3cc81354e8d77dafbdae6c23aeba408043a734e70454b3e5238407d
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  range:
+    min: 0
+    max: 4
+    unit: m
+    status: extraido
+    source: {page: 2, location: Features - Sensing range max., excerpt: "Sensing range max. 0 m ... 4 m (reflector PL80A)"}
+  t_resp:
+    max: 0.33
+    unit: ms
+    status: extraido
+    source: {page: 3, location: Electronics - Response time, excerpt: "Response time ≤ 330 µs"}
+  lambda:
+    typ: 640
+    unit: nm
+    status: extraido
+    source: {page: 2, location: Features - Wave length, excerpt: "Wave length 640 nm"}
+  VS:
+    min: 10
+    max: 30
+    unit: V
+    status: extraido
+    source: {page: 3, location: Electronics - Supply voltage UB, excerpt: "10 V DC ... 30 V DC"}
+  IS:
+    max: 30
+    unit: mA
+    status: extraido
+    source: {page: 3, location: Electronics - Current consumption, excerpt: "Current consumption 30 mA (without load)"}
+  IL:
+    max: 100
+    unit: mA
+    status: extraido
+    source: {page: 3, location: Electronics - Output current Imax., excerpt: "Output current Imax. ≤ 100 mA"}
+  f_sw:
+    max: 1500
+    unit: Hz
+    status: extraido
+    source: {page: 3, location: Electronics - Switching frequency, excerpt: "Switching frequency 1,500 Hz"}
+  Top:
+    min: -40
+    max: 60
+    unit: °C
+    status: extraido
+    source: {page: 3, location: Ambient data, excerpt: "Ambient operating temperature –40 °C ... +60 °C"}
+  Tstg:
+    min: -40
+    max: 75
+    unit: °C
+    status: extraido
+    source: {page: 3, location: Ambient data, excerpt: "Ambient temperature, storage –40 °C ... +75 °C"}
+attributes:
+  saida:
+    value: PNP ou NPN; comutação clara/escura selecionável por cabo L/D
+    status: extraido
+    source: {page: 3, location: Electronics - Digital output Type / Switching mode}
+  conexao:
+    value: Plugue M12, 5 pinos
+    status: extraido
+    source: {page: 3, location: Mechanics - Connection}
+  invólucro:
+    value: Zinco fundido; tela frontal PMMA
+    status: extraido
+    source: {page: 3, location: Mechanics - Material}
+  grau_protecao:
+    value: IP66, IP67 e IP69K
+    status: extraido
+    source: {page: 3, location: Ambient data - Enclosure rating}
+  certificacoes:
+    value: cULus (UL File No. NRKH.E181493 e NRKH7.E181493), declaração de conformidade UE/UK, China RoHS, ECOLAB
+    status: extraido
+    source: {page: 3, location: Ambient data / Certificates}
+  principio:
+    value: Retrorreflexivo (autocolimação/ótica coaxial, sem distância mínima do refletor)
+    status: extraido
+    source: {page: 2, location: Features - Functional principle}
+  luz:
+    value: LED vermelho visível
+    status: extraido
+    source: {page: 2, location: Features - Type of light}

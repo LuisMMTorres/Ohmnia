@@ -1,0 +1,91 @@
+# Fonte: Everlight, DATASHEET 5.0mm Infrared LED IR333C, Issue No DIR-0000931, release 22/05/2013.
+part_number: IR333C
+category: optoelectronic.led
+schema_version: '1.0'
+manufacturer: Everlight
+package: 5 mm (T-1 3/4), lente transparente
+lifecycle: desconhecido
+notes:
+- LED infravermelho GaAlAs, lente water clear
+- Intensidade radiante Ie tipica 20 mW/sr a IF=20 mA (min 7.8) e 85 mW/sr a IF=100 mA; nao ha parametro de schema para mW/sr
+- VF tipico 1.2 V a IF=20 mA (max 1.5 V); 1.4 V tipico a IF=100 mA (max 1.8 V)
+datasheets:
+- id: ds1
+  manufacturer: Everlight
+  document_number: DIR-0000931
+  revision: 22/05/2013
+  url: https://mm.digikey.com/Volume0/opasdata/d220001/medias/docus/7132/IR333C.pdf
+  sha256: 767b806a72463c3e32bdd9c63a11f143eded806547a1c69f83eb5cc11a47d52c
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VF:
+    typ: 1.2
+    max: 1.5
+    unit: V
+    status: extraido
+    conditions: {IF: 20 mA}
+    source: {page: 3, location: Electro-Optical Characteristics - Forward Voltage, excerpt: "VF - 1.2 1.5 V IF=20mA"}
+  VF@2:
+    typ: 1.4
+    max: 1.8
+    unit: V
+    status: extraido
+    conditions: {IF: 100 mA}
+    source: {page: 3, location: Electro-Optical Characteristics - Forward Voltage, excerpt: "1.4 1.8 IF=100mA"}
+  IF:
+    max: 100
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Absolute Maximum Ratings - Continuous Forward Current, excerpt: "Continuous Forward Current IF 100 mA"}
+  IF_peak:
+    max: 1000
+    unit: mA
+    status: extraido
+    conditions: {pulse_width: 100 us, duty: 1 %}
+    source: {page: 2, location: Absolute Maximum Ratings - Peak Forward Current, excerpt: "IFP 1.0 A; Pulse Width<=100us and Duty<=1%"}
+  VR:
+    max: 5
+    unit: V
+    status: extraido
+    source: {page: 2, location: Absolute Maximum Ratings - Reverse Voltage, excerpt: "Reverse Voltage VR 5 V"}
+  P_diss:
+    max: 150
+    unit: mW
+    status: extraido
+    conditions: {TA: 25 °C}
+    source: {page: 2, location: Absolute Maximum Ratings - Power Dissipation, excerpt: "Pd 150 mW at or below 25C free air"}
+  lambda:
+    typ: 940
+    unit: nm
+    status: extraido
+    conditions: {IF: 20 mA}
+    source: {page: 3, location: Electro-Optical Characteristics - Peak Wavelength, excerpt: "Peak Wavelength λp 940 nm IF=20mA"}
+  angle:
+    typ: 20
+    unit: deg
+    status: extraido
+    conditions: {IF: 20 mA}
+    source: {page: 3, location: Electro-Optical Characteristics - View Angle, excerpt: "View Angle 2θ1/2 20 deg IF=20mA"}
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Absolute Maximum Ratings - Operating Temperature, excerpt: "Topr -40 ~ +85"}
+  Tstg:
+    min: -40
+    max: 100
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Absolute Maximum Ratings - Storage Temperature, excerpt: "Tstg -40 ~ +100"}
+attributes:
+  cor:
+    value: Infravermelho (940 nm), lente transparente
+    status: extraido
+    source: {page: 2, location: Device Selection Guide, excerpt: "GaAlAs Water clear"}
+  encapsulamento:
+    value: 5 mm T-1 3/4, espacamento de terminais 2.54 mm
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "2.54mm Lead spacing"}

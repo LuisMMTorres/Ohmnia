@@ -1,0 +1,59 @@
+# Fonte: Aosong Electronics, Digital-output relative humidity & temperature sensor/module DHT22 (also named AM2302), sem número de documento visível.
+part_number: DHT22 AM2302
+category: sensor.humidity
+schema_version: '1.0'
+manufacturer: Aosong
+package: 4 pinos em linha; tamanho pequeno 14 x 18 x 5,5 mm, tamanho grande 22 x 28 x 5 mm
+lifecycle: desconhecido
+notes:
+- 'AM2302 é outro nome do DHT22 (p. 5).'
+- 'Resolução 0,1 %UR e 0,1 °C; repetibilidade ±1 %UR e ±0,2 °C; histerese ±0,3 %UR; estabilidade ±0,5 %UR/ano (p. 2).'
+- 'Período de sensoriamento médio 2 s (p. 2).'
+- 'Exatidão de umidade ±2 %UR (máx. ±5 %UR) (p. 2).'
+datasheets:
+- id: ds1
+  manufacturer: Aosong
+  sha256: c91441a385cdf58f5f0ae50b194f294d5d1f0faeaac9a010efacb7ecf21be448
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  range:
+    min: 0
+    max: 100
+    unit: '%'
+    status: extraido
+    source: {page: 2, location: 3 Technical Specification - Operating range, excerpt: "humidity 0-100%RH; temperature -40~80Celsius"}
+  accuracy:
+    max: 5
+    unit: '%'
+    status: extraido
+    source: {page: 2, location: 3 Technical Specification - Accuracy, excerpt: "humidity +-2%RH(Max +-5%RH)"}
+  T_range:
+    min: -40
+    max: 80
+    unit: °C
+    status: extraido
+    source: {page: 2, location: 3 Technical Specification - Operating range, excerpt: "humidity 0-100%RH; temperature -40~80Celsius"}
+  T_accuracy:
+    max: 0.5
+    unit: K
+    status: extraido
+    source: {page: 2, location: 3 Technical Specification - Accuracy, excerpt: "temperature <+-0.5Celsius"}
+  VS:
+    min: 3.3
+    max: 6
+    unit: V
+    status: extraido
+    source: {page: 2, location: 3 Technical Specification - Power supply, excerpt: "Power supply 3.3-6V DC"}
+  Top:
+    min: -40
+    max: 80
+    unit: °C
+    status: extraido
+    source: {page: 2, location: 3 Technical Specification - Operating range, excerpt: "temperature -40~80Celsius"}
+attributes:
+  saida:
+    value: Digital, barramento único (single-bus)
+    status: extraido
+    source: {page: 2, location: 3 Technical Specification - Output signal, excerpt: "digital signal via single-bus"}

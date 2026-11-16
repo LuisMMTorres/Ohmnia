@@ -1,0 +1,86 @@
+# Fonte: WEG, Manual do Usuário SSW-06 (Soft-Starter), documento 0899.5853 / 17, software 1.8X, 04/2019.
+part_number: SSW06
+category: drive.soft_starter
+schema_version: '1.0'
+manufacturer: WEG
+family: SSW-06
+lifecycle: desconhecido
+notes:
+- 'Valores da série SSW-06 (modelos de 10 A a 1400 A); faixas entre os modelos. Manual em português; numeração de páginas = páginas do PDF.'
+- 'Potência do motor por modelo não transcrita (tabelas de potência não consultadas).'
+- 'Tensão de linha: código 2257 = 220 a 575 V e 5769 = 575 a 690 V; modelos de 10, 16, 23 e 30 A não existem para 690 V (p. 29).'
+- 'Temperatura ambiente nominal: 0 a 55 °C (modelos 10 A a 820 A) e 0 a 40 °C (950 A a 1400 A), com redução de corrente de 2 % por °C acima (p. 31). Armazenamento -25 a 65 °C (p. 30).'
+- 'Parâmetros P101 (tensão inicial 25 a 90 % Un do motor, p. 10), P102 (rampa de aceleração 1 a 999 s, p. 11) e P110 (limite de corrente 150 a 500 %, p. 11).'
+- 'Fila de transcrição: novo link do site do fabricante.'
+datasheets:
+- id: ds1
+  manufacturer: WEG
+  document_number: 0899.5853 / 17
+  revision: Software 1.8X, 04/2019
+  url: https://static.weg.net/medias/downloadcenter/hb4/he0/WEG-SSW06-manual-do-usuario-0899.5853-pt.pdf
+  sha256: 6881b5f698375fd9e0ccba2f4a794b3ecffa980a9a2f0be582783473a1bee008
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_rated:
+    min: 10
+    max: 1400
+    unit: A
+    status: extraido
+    source: {page: 29, location: Como especificar o modelo - Corrente nominal de saída, excerpt: "0010=10A ... 1400=1400A"}
+  V_line:
+    min: 220
+    max: 690
+    unit: V
+    status: extraido
+    source: {page: 29, location: Como especificar o modelo - Tensão de alimentação de entrada, excerpt: "2257=(220 a 575)V 5769=(575 a 690)V"}
+  V_ctrl:
+    min: 94
+    max: 253
+    unit: V
+    status: extraido
+    source: {page: 53, location: Conector X1A - Alimentação da eletrônica, excerpt: "(110 a 230) Vca (-15% a +10%) ou (94 a 253) Vca"}
+  t_ramp:
+    min: 1
+    max: 999
+    unit: s
+    status: extraido
+    source: {page: 11, location: Referência rápida - P102 Tempo da Rampa de Aceleração, excerpt: "P102 Tempo da Rampa de Aceleração 1 a 999 s"}
+  V_start:
+    min: 25
+    max: 90
+    unit: '%'
+    status: extraido
+    source: {page: 10, location: Referência rápida - P101 Tensão Inicial (% Un do Motor), excerpt: "P101 Tensão Inicial 25 a 90 %"}
+  I_limit:
+    min: 150
+    max: 500
+    unit: '%'
+    status: extraido
+    source: {page: 11, location: Referência rápida - P110 Limite de Corrente, excerpt: "P110 Limite de Corrente 150 a 500"}
+  Top:
+    min: 0
+    max: 55
+    unit: °C
+    status: extraido
+    source: {page: 31, location: Condições ambientais permitidas - Temperatura, excerpt: "Temperatura: 0ºC a 55ºC - Condições nominais para os modelos de 10A a 820A"}
+  Tstg:
+    min: -25
+    max: 65
+    unit: °C
+    status: extraido
+    source: {page: 30, location: 2.5 Recebimento e armazenamento, excerpt: "temperatura entre - 25°C e 65°C"}
+attributes:
+  controle:
+    value: Rampa de tensão, limitação de corrente (constante ou em rampa), controle de bombas e controle de torque; contator de bypass interno nos modelos 10 A a 820 A
+    status: extraido
+    source: {page: 25, location: 2.3 Sobre a SSW-06 - Funções especiais e hardware de potência, excerpt: "Rampa de Tensão, Limitação de Corrente Constante ou em Rampa, Controle de Bombas e Controle de Torque"}
+  comunicacao:
+    value: RS-232 padrão (Modbus-RTU); RS-485 opcional; Fieldbus opcional (Profibus DP, DeviceNet)
+    status: extraido
+    source: {page: 27, location: Figura 2.2 - Blocodiagrama da SSW-06, excerpt: "Interface Serial RS-232 ... (Opcional) RS-485 ... Fieldbus (Opcional) Profibus DP DeviceNet"}
+  grau_protecao:
+    value: IP20 (10 A a 30 A) e IP00 (45 A a 1400 A)
+    status: extraido
+    source: {page: 29, location: Como especificar o modelo - produto standard, excerpt: "Grau de proteção: IP20 de 10A a 30A. IP00 de 45A a 1400A"}

@@ -1,0 +1,284 @@
+# Fonte: WeEn Semiconductors, BT152-600R SCR, Product data sheet, 5 September 2018.
+part_number: BT152-600R
+category: thyristor.scr
+schema_version: '1.0'
+manufacturer: WeEn
+package: TO-220AB (SOT78)
+lifecycle: desconhecido
+notes:
+- 'IT(RMS) = 20 A (página 3, ''half sine wave; Fig. 2; Fig. 3'') não foi transcrito como parâmetro: a tabela não dá temperatura e o esquema exige TC ou TA.'
+- Rth_jc corresponde a Rth(j-mb), junção à base de montagem.
+- Temperatura mínima de junção não é dada; armazenamento -40 a 150 °C (página 3).
+datasheets:
+- id: ds1
+  manufacturer: WeEn
+  revision: 5 September 2018
+  url: https://www.ween-semi.com/datasheet/BT152-600R.pdf
+  sha256: 0a18f5706368137a6703f907cc521cb9304e20364f7344662f8f8b7ace6a3246
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VDRM:
+    max: 600
+    unit: V
+    status: extraido
+    source:
+      page: 3
+      location: 7. Limiting values - repetitive peak off-state voltage
+      excerpt: VDRM repetitive peak off-state voltage 600 V
+  VRRM:
+    max: 600
+    unit: V
+    status: extraido
+    source:
+      page: 3
+      location: 7. Limiting values - repetitive peak reverse voltage
+      excerpt: VRRM repetitive peak reverse voltage 600 V
+  IT(AV):
+    max: 13
+    unit: A
+    conditions:
+      TC: 103 degC
+    note: Tmb (base de montagem) usada como TC
+    status: extraido
+    source:
+      page: 3
+      location: 7. Limiting values - average on-state current
+      excerpt: IT(AV) half sine wave; Tmb ≤ 103 °C 13 A
+  ITSM:
+    max: 200
+    unit: A
+    conditions:
+      t_pulse: 10 ms
+      Tj: 25 degC
+    status: extraido
+    source:
+      page: 3
+      location: 7. Limiting values - non-repetitive peak on-state current
+      excerpt: ITSM half sine wave; Tj(init) = 25 °C; tp = 10 ms 200 A
+  ITSM@2:
+    max: 220
+    unit: A
+    conditions:
+      t_pulse: 8.3 ms
+      Tj: 25 degC
+    status: extraido
+    source:
+      page: 3
+      location: 7. Limiting values - non-repetitive peak on-state current
+      excerpt: half sine wave; Tj(init) = 25 °C; tp = 8.3 ms 220 A
+  I2t:
+    max: 200
+    unit: A**2*s
+    conditions:
+      t_pulse: 10 ms
+    status: extraido
+    source:
+      page: 3
+      location: 7. Limiting values - I2t for fusing
+      excerpt: I2t for fusing tp = 10 ms; SIN 200 A²s
+  di/dt:
+    max: 200
+    unit: A/us
+    note: com IG = 100 mA
+    status: extraido
+    source:
+      page: 3
+      location: 7. Limiting values - rate of rise of on-state current
+      excerpt: dIT/dt rate of rise of on-state current IG = 100 mA 200 A/µs
+  IGM:
+    max: 5
+    unit: A
+    status: extraido
+    source:
+      page: 3
+      location: 7. Limiting values - peak gate current
+      excerpt: IGM peak gate current 5 A
+  VRGM:
+    max: 5
+    unit: V
+    status: extraido
+    source:
+      page: 3
+      location: 7. Limiting values - peak reverse gate voltage
+      excerpt: VRGM peak reverse gate voltage 5 V
+  PGM:
+    max: 20
+    unit: W
+    status: extraido
+    source:
+      page: 3
+      location: 7. Limiting values - peak gate power
+      excerpt: PGM peak gate power 20 W
+  PG(AV):
+    max: 0.5
+    unit: W
+    status: extraido
+    source:
+      page: 3
+      location: 7. Limiting values - average gate power over any 20 ms period
+      excerpt: PG(AV) average gate power over any 20 ms period 0.5 W
+  Tj_max:
+    max: 125
+    unit: degC
+    status: extraido
+    source:
+      page: 3
+      location: 7. Limiting values - junction temperature
+      excerpt: Tj junction temperature 125 °C
+  Tstg_max:
+    max: 150
+    unit: degC
+    note: 'faixa de armazenamento: -40 a 150 °C'
+    status: extraido
+    source:
+      page: 3
+      location: 7. Limiting values - storage temperature
+      excerpt: Tstg storage temperature -40 150 °C
+  Rth_jc:
+    max: 1.1
+    unit: K/W
+    note: junção-base de montagem (Rth(j-mb))
+    status: extraido
+    source:
+      page: 6
+      location: 8. Thermal characteristics - junction to mounting base
+      excerpt: Rth(j-mb) thermal resistance from junction to mounting base 1.1 K/W
+  Rth_ja:
+    typ: 60
+    unit: K/W
+    note: em ar livre
+    status: extraido
+    source:
+      page: 6
+      location: 8. Thermal characteristics - junction to ambient free air
+      excerpt: Rth(j-a) in free air 60 K/W
+  IGT:
+    typ: 3
+    max: 32
+    unit: mA
+    conditions:
+      VD: 12 V
+      IT: 0.1 A
+      Tj: 25 degC
+    status: extraido
+    source:
+      page: 7
+      location: 9. Characteristics - gate trigger current
+      excerpt: 'IGT VD = 12 V; IT = 0.1 A; Tj = 25 °C: typ 3, max 32 mA'
+  IL:
+    typ: 25
+    max: 80
+    unit: mA
+    conditions:
+      VD: 12 V
+      IG: 0.1 A
+      Tj: 25 degC
+    status: extraido
+    source:
+      page: 7
+      location: 9. Characteristics - latching current
+      excerpt: 'IL VD = 12 V; IG = 0.1 A; Tj = 25 °C: typ 25, max 80 mA'
+  IH:
+    typ: 15
+    max: 60
+    unit: mA
+    conditions:
+      VD: 12 V
+      Tj: 25 degC
+    status: extraido
+    source:
+      page: 7
+      location: 9. Characteristics - holding current
+      excerpt: 'IH VD = 12 V; Tj = 25 °C: typ 15, max 60 mA'
+  VTM:
+    typ: 1.4
+    max: 1.75
+    unit: V
+    conditions:
+      ITM: 40 A
+      Tj: 25 degC
+    status: extraido
+    source:
+      page: 7
+      location: 9. Characteristics - on-state voltage
+      excerpt: 'VT IT = 40 A; Tj = 25 °C: typ 1.4, max 1.75 V'
+  VGT:
+    typ: 0.6
+    max: 1
+    unit: V
+    conditions:
+      VD: 12 V
+      IT: 0.1 A
+      Tj: 25 degC
+    status: extraido
+    source:
+      page: 7
+      location: 9. Characteristics - gate trigger voltage
+      excerpt: 'VGT VD = 12 V; IT = 0.1 A; Tj = 25 °C: typ 0.6, max 1 V'
+  VGD:
+    min: 0.25
+    typ: 0.4
+    unit: V
+    conditions:
+      VD: 600 V
+      IT: 0.1 A
+      Tj: 125 degC
+    note: linha 'VGT' da folha com VD = 600 V e Tj = 125 °C (tensão que não dispara)
+    status: extraido
+    source:
+      page: 7
+      location: 9. Characteristics - gate trigger voltage at VD = 600 V, Tj = 125 °C
+      excerpt: 'VD = 600 V; IT = 0.1 A; Tj = 125 °C: min 0.25, typ 0.4 V'
+  IDRM:
+    typ: 0.2
+    max: 1
+    unit: mA
+    conditions:
+      VD: 600 V
+      Tj: 125 degC
+    note: a corrente reversa IR tem os mesmos valores (VR = 600 V)
+    status: extraido
+    source:
+      page: 7
+      location: 9. Characteristics - off-state current
+      excerpt: 'ID off-state current VD = 600 V; Tj = 125 °C: typ 0.2, max 1 mA'
+  dv/dt:
+    min: 200
+    typ: 300
+    unit: V/us
+    conditions:
+      VD: 402 V
+      Tj: 125 degC
+    note: com porta aberta
+    status: extraido
+    source:
+      page: 7
+      location: 9. Characteristics - rate of rise of off-state voltage
+      excerpt: 'dVD/dt VDM = 402 V; Tj = 125 °C; gate open circuit: min 200, typ 300 V/µs'
+  tgt:
+    typ: 2
+    unit: us
+    conditions:
+      ITM: 40 A
+      VD: 800 V
+      IG: 100 mA
+    status: extraido
+    source:
+      page: 7
+      location: 9. Characteristics - gate-controlled turn-on time
+      excerpt: 'tgt ITM = 40 A; VD = 800 V; IG = 100 mA: typ 2 µs'
+  tq:
+    typ: 70
+    unit: us
+    conditions:
+      VD: 402 V
+      Tj: 125 degC
+      ITM: 50 A
+    status: extraido
+    source:
+      page: 7
+      location: 9. Characteristics - commutated turn-off time
+      excerpt: 'tq VDM = 402 V; Tj = 125 °C; ITM = 50 A: typ 70 µs'
+attributes: {}

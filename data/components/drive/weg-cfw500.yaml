@@ -1,0 +1,91 @@
+# Fonte: WEG, Manual do usuário CFW500 (trilíngue ES/EN/PT), Capítulo 8 e Apêndice B - Technical Specifications (Tabelas B.1 e B.4).
+part_number: CFW500
+category: drive.vfd
+schema_version: '1.0'
+manufacturer: WEG
+family: CFW500
+package: mecânicas A a E, IP20 (Nema1/IP20 conforme opção)
+lifecycle: desconhecido
+notes:
+- 'Valores da série CFW500 (Tabela B.1, págs. 151 e 152): de CFW500A01P6S2 (1,6 A, 0,25 HP / 0,18 kW) a CFW500E49P0T4 (49 A, 30 HP / 22 kW); faixa entre os modelos.'
+- 'Faixas de tensão de alimentação: 200...240 V, 380...480 V e 500...600 V (nomenclatura, pág. 13).'
+- 'Frequência de saída 0 a 500 Hz, resolução 0,015 Hz; V/f ou VVW (Tabela 8.1, pág. 46).'
+- 'Entradas/saídas: 4 DI, 1 AI, 1 AO, 1 relé 240 Vca 0,5 A, 1 saída a transistor; fonte 24 Vcc -15 % +20 %, 150 mA; RS485 Modbus-RTU até 38,4 kbps (Tabela 8.1, págs. 46 e 47). Quantidades de I/O podem variar com o plug-in/modelo (marcação (*) no documento).'
+- 'Temperatura nominal ao redor do inversor 50 C (122 F), com coluna adicional de 40 C (104 F), na Tabela B.4 (pág. 153).'
+datasheets:
+- id: ds1
+  manufacturer: WEG
+  revision: manual trilíngue ES/EN/PT (cópia do distribuidor)
+  url: https://www.wolfautomation.com/content/cfwfivehund-manual-spanish.pdf
+  sha256: 028640ae9bfa9e3a068ab23909514f3b2458aee2c55a0959fa7f7fe1407769fe
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  P_motor:
+    min: 0.18
+    max: 22
+    unit: kW
+    status: extraido
+    source: {page: 152, location: Tabela B.1, Maximum Motor, excerpt: "CFW500E49P0T4 | 49 | 30/22"}
+  V_in:
+    min: 200
+    max: 600
+    unit: V
+    status: extraido
+    source: {page: 13, location: Nomenclatura, tensão, excerpt: "2 = 200... 240 V ... 5 = 500...600 V"}
+  I_out:
+    min: 1.6
+    max: 49
+    unit: A
+    status: extraido
+    source: {page: 152, location: Tabela B.1, Output Rated Current, excerpt: "CFW500A01P6S2 ... 1.6 ... CFW500E49P0T4 ... 49"}
+  f_out:
+    min: 0
+    max: 500
+    unit: Hz
+    status: extraido
+    source: {page: 46, location: Tabela 8.1, Output frequency, excerpt: "0 to 500 Hz, resolution of 0.015 Hz"}
+  f_sw:
+    typ: 5
+    unit: kHz
+    status: extraido
+    source: {page: 153, location: Tabela B.4, Rated Carrier Frequency, excerpt: "CFW500A07P0S2 7.0 10.5 14 5 50 / 122"}
+  efficiency:
+    min: 97
+    unit: '%'
+    status: extraido
+    source: {page: 46, location: 8.1 Power data, excerpt: "Typical efficiency: ≥ 97 %"}
+  di:
+    typ: 4
+    unit: '1'
+    status: extraido
+    source: {page: 46, location: Tabela 8.1, Inputs Digital, excerpt: "4 insulated inputs"}
+  ai:
+    typ: 1
+    unit: '1'
+    status: extraido
+    source: {page: 46, location: Tabela 8.1, Inputs Analog, excerpt: "1 insulated input"}
+  do:
+    typ: 1
+    unit: '1'
+    status: extraido
+    source: {page: 47, location: Tabela 8.1, Outputs Relay, excerpt: "1 relay with NA/NF contact"}
+  ao:
+    typ: 1
+    unit: '1'
+    status: extraido
+    source: {page: 46, location: Tabela 8.1, Outputs Analog, excerpt: "1 insulated output"}
+attributes:
+  controle:
+    value: V/f (escalar) ou VVW (vetorial de tensão)
+    status: extraido
+    source: {page: 46, location: Tabela 8.1, type of control}
+  comunicacao:
+    value: RS485 isolada, Modbus-RTU até 38,4 kbps
+    status: extraido
+    source: {page: 47, location: Tabela 8.1, Communication}
+  grau_protecao:
+    value: IP20 (Nema1/IP20 conforme opção)
+    status: extraido
+    source: {page: 47, location: Tabela 8.1, Degree of protection}

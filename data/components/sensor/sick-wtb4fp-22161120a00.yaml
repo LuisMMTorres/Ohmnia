@@ -1,0 +1,101 @@
+# Fonte: SICK, Online data sheet WTB4FP-22161120A00 (part no. 1222998), W4 photoelectric sensors, impresso em 2026-11-01.
+part_number: WTB4FP-22161120A00
+category: sensor.photoelectric
+schema_version: '1.0'
+manufacturer: SICK
+family: W4
+package: Retangular plano, plástico VISTAL, 16 x 40,1 x 12,1 mm
+lifecycle: desconhecido
+notes:
+- 'Fila: WTB4FP-22161120A00. Difuso com supressão de fundo (BluePilot, ajuste Teach-Turn), IO-Link V1.1.'
+- 'Alcance 4 a 220 mm; limiar de supressão de fundo ajustável 15 a 220 mm; faixa recomendada 40 a 140 mm; objeto de referência 90 % de remissão (pág. 2).'
+- 'Mancha de luz puntiforme Ø 4,2 mm a 130 mm; menor objeto detectável típ. 0,2 mm a 130 mm (pág. 2).'
+- 'IO-Link: COM2 38,4 kBaud, tempo de ciclo 2,3 ms, dados de processo 16 bit (pág. 3). Repetibilidade do tempo de resposta 150 us (pág. 3).'
+- 'Sinal PNP HIGH aprox. UB-2,5 V, NPN LOW < 2,5 V; duas saídas complementares push-pull (pág. 3).'
+- 'Imunidade a luz ambiente típ.: artificial <= 50000 lx, sol <= 50000 lx (pág. 4). MTTFD 1396 anos (pág. 3).'
+datasheets:
+- id: ds1
+  manufacturer: SICK
+  document_number: '1222998'
+  revision: impresso em 2026-11-01
+  url: https://www.sick.com/media/pdf/8/08/408/dataSheet_WTB4FP-22161120A00_1222998_en.pdf
+  sha256: ca0449a83203c95bd1c6d55d447a144f018f56343df78b040ac7063392160c11
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  range:
+    min: 0.004
+    max: 0.22
+    unit: m
+    status: extraido
+    source: {page: 2, location: Features - Sensing range min./max., excerpt: "Sensing range min. 4 mm; Sensing range max. 220 mm"}
+  t_resp:
+    max: 0.5
+    unit: ms
+    status: extraido
+    source: {page: 3, location: Electronics - Response time, excerpt: "Response time ≤ 500 µs"}
+  lambda:
+    typ: 635
+    unit: nm
+    status: extraido
+    source: {page: 2, location: Features - Wave length, excerpt: "Wave length 635 nm"}
+  VS:
+    min: 10
+    max: 30
+    unit: V
+    status: extraido
+    source: {page: 3, location: Electronics - Supply voltage UB, excerpt: "10 V DC ... 30 V DC"}
+  IS:
+    max: 25
+    unit: mA
+    conditions: {VS: 24 V}
+    status: extraido
+    source: {page: 3, location: Electronics - Current consumption, excerpt: "≤ 25 mA, without load. At UB = 24 V"}
+  IL:
+    max: 100
+    unit: mA
+    status: extraido
+    source: {page: 3, location: Electronics - Output current Imax., excerpt: "Output current Imax. ≤ 100 mA"}
+  f_sw:
+    max: 1000
+    unit: Hz
+    status: extraido
+    source: {page: 4, location: Electronics - Switching frequency, excerpt: "Switching frequency 1,000 Hz"}
+  Top:
+    min: -40
+    max: 60
+    unit: °C
+    status: extraido
+    source: {page: 4, location: Ambient data, excerpt: "Ambient operating temperature –40 °C ... +60 °C"}
+  Tstg:
+    min: -40
+    max: 75
+    unit: °C
+    status: extraido
+    source: {page: 4, location: Ambient data, excerpt: "Ambient temperature, storage –40 °C ... +75 °C"}
+attributes:
+  saida:
+    value: 2 saídas complementares push-pull PNP/NPN, comutação claro/escuro, IO-Link V1.1; protegidas contra polaridade reversa, sobrecorrente e curto-circuito
+    status: extraido
+    source: {page: 3, location: Electronics - Digital output; Communication interface}
+  conexao:
+    value: Conector macho M8, 4 pinos
+    status: extraido
+    source: {page: 4, location: Mechanics - Connection}
+  invólucro:
+    value: Plástico VISTAL; tela frontal PMMA
+    status: extraido
+    source: {page: 4, location: Mechanics - Material}
+  grau_protecao:
+    value: IP66 e IP67 (EN 60529)
+    status: extraido
+    source: {page: 4, location: Ambient data - Enclosure rating}
+  principio:
+    value: Difuso com supressão de fundo
+    status: extraido
+    source: {page: 2, location: Features - Functional principle detail}
+  luz:
+    value: LED vermelho visível PinPoint, 635 nm, grupo de risco livre
+    status: extraido
+    source: {page: 2, location: Features - Emitted beam / Key LED figures}

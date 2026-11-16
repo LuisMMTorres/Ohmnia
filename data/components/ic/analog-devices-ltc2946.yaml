@@ -1,0 +1,71 @@
+# Fonte: Linear Technology / Analog Devices, LTC2946 Wide Range I2C Power, Charge and Energy Monitor, datasheet 2946f (cópia Farnell).
+part_number: LTC2946
+category: ic.energy_meter
+schema_version: '1.0'
+manufacturer: Analog Devices
+package: DFN 16 (4 mm x 3 mm) ou MSOP 16
+lifecycle: desconhecido
+notes:
+- 'Fila: LTC2946. Documento 2946f; também descreve o LTC2946-1 (saída de dados invertida).'
+- 'Temperatura de operação (pág. 2): LTC2946C 0 a 70 °C; I -40 a 85 °C; H -40 a 125 °C; MP -55 a 125 °C. Registrado o grau I.'
+- 'Alimentação INTVCC 2,7 a 5,8 V (pág. 3). Corrente de shutdown de VDD 15 a 40 uA; IQ < 40 uA (pág. 1).'
+- 'Exatidão: +-0,6 % para corrente e carga; +-1 % para potência e energia (pág. 1). Registrado o pior caso (1 %).'
+datasheets:
+- id: ds1
+  manufacturer: Analog Devices
+  document_number: 2946f
+  url: https://www.farnell.com/datasheets/1852474.pdf
+  sha256: 1835b98a7322735b179258fdadbe6327d55456bee61bd1ea33eec92916c81687
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 4
+    max: 100
+    unit: V
+    status: extraido
+    source: {page: 3, location: Electrical characteristics - Supplies, VDD input supply voltage, excerpt: "VDD VDD Input Supply Voltage 4 100 V"}
+  V_in:
+    min: 0
+    max: 100
+    unit: V
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "Rail-to-Rail Input Range: 0V to 100V"}
+  accuracy:
+    max: 1
+    unit: '%'
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "+-1% Accurate Power and Energy Measurements"}
+  bits:
+    typ: 12
+    unit: bit
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "12-Bit Resolution for Current and Voltages"}
+  IS:
+    typ: 0.9
+    max: 1.3
+    unit: mA
+    status: extraido
+    source: {page: 3, location: Electrical characteristics - IDD VDD supply current, VDD = 48 V, excerpt: "IDD VDD Supply Current VDD = 48V 0.9 1.3 mA"}
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - Operating temperature range LTC2946I, excerpt: "LTC2946I -40C to 85C"}
+  Tstg:
+    min: -65
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - Storage temperature range, excerpt: "Storage Temperature Range -65C to 150C"}
+attributes:
+  grandezas:
+    value: corrente, tensão, potência, carga e energia; entrada auxiliar de tensão (ADIN)
+    status: extraido
+    source: {page: 1, location: Description, excerpt: "measures current, voltage, power, charge and energy"}
+  interface:
+    value: I2C (pinos SDAI e SDAO separados), nove endereços
+    status: extraido
+    source: {page: 1, location: Description and typical application, excerpt: "standard I2C interface ... separate data input and output pins"}

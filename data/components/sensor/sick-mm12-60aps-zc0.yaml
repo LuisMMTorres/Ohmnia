@@ -1,0 +1,71 @@
+# Fonte: SICK, Online data sheet MM12-60APS-ZCK (part no. 1040070), impresso em 2026-10-10.
+part_number: MM12-60APS-ZC0
+category: sensor.magnetic
+schema_version: '1.0'
+manufacturer: SICK
+family: MM12
+package: M12 x 1, Ø 12 mm, corpo curto
+lifecycle: desconhecido
+notes:
+- O PDF é do modelo MM12-60APS-ZCK (1040070); o nome da fila é MM12-60APS-ZC0 (mesmo número 1040070 no link anterior). O sufixo ZC0 não aparece no documento, conferir.
+- Faixa sensora 0 a 60 mm com ímã MAG-3010-B (M4.0), instalação em material não magnético; Sa = 48,6 mm (p. 2).
+- Sensibilidade magnética 1 mT (p. 2); histerese 1 % a 10 % e reprodutibilidade <= 1 % (p. 3); atraso de disponibilidade <= 20 ms (p. 3).
+- Proteção contra inversão de polaridade, curto-circuito (pulsada) e pulso de ligação (p. 3). Temperaturas abaixo de -25 °C reduzem a vida útil (p. 3). IP67 (EN 60529, p. 2).
+datasheets:
+- id: ds1
+  manufacturer: SICK
+  url: https://www.sick.com/media/pdf/4/54/154/dataSheet_MM12-60APS-ZCK_1040070_en.pdf
+  sha256: 3df8d32cdd93165df02361c93c522f0c10ba42e389e61b41034963ffc536fefd
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 10
+    max: 30
+    unit: V
+    status: extraido
+    source: {page: 3, location: Mechanics/Electronics - Supply voltage, excerpt: "10 V DC ... 30 V DC"}
+  IS:
+    typ: 10
+    unit: mA
+    status: extraido
+    source: {page: 3, location: Mechanics/Electronics - Current consumption (without load), excerpt: "Current consumption 10 mA"}
+  IL:
+    max: 200
+    unit: mA
+    status: extraido
+    source: {page: 3, location: Mechanics/Electronics - Continuous current Ia, excerpt: "≤ 200 mA"}
+  Vdrop:
+    max: 2
+    unit: V
+    status: extraido
+    source: {page: 3, location: Mechanics/Electronics - Voltage drop (at Ia max), excerpt: "≤ 2 V"}
+  f_sw:
+    max: 1000
+    unit: Hz
+    status: extraido
+    source: {page: 2, location: Features - Switching frequency, excerpt: "Switching frequency 1,000 Hz"}
+  Top:
+    min: -40
+    max: 75
+    unit: °C
+    status: extraido
+    source: {page: 3, location: Mechanics/Electronics - Ambient operating temperature, excerpt: "–40 °C ... +75 °C"}
+attributes:
+  saida:
+    value: PNP, NA (DC 3 fios), proteção contra curto-circuito
+    status: extraido
+    source: {page: 2, location: Features - Switching output / Output function / Electrical wiring, excerpt: "PNP; NO; DC 3-wire"}
+  conexao:
+    value: Conector macho M12, 4 pinos
+    status: extraido
+    source: {page: 2, location: Features - Connection type, excerpt: "Male connector M12, 4-pin"}
+  invólucro:
+    value: Latão niquelado, M12 x 1, Ø 12 mm, alinhamento magnético axial
+    status: extraido
+    source: {page: 3, location: Mechanics/Electronics - Housing material, excerpt: "Nickel-plated brass"}
+  encapsulamento:
+    value: Corpo curto (short-body), comprimento 46 mm, rosca 28 mm
+    status: extraido
+    source: {page: 3, location: Mechanics/Electronics - Housing length / Thread length, excerpt: "Housing length 46 mm"}

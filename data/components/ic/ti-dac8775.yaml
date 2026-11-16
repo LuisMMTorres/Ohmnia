@@ -1,0 +1,89 @@
+# Fonte: Texas Instruments, DAC8775 Quad-Channel, 16-Bit Programmable Current Output and Voltage Output Digital-to-Analog Converter with Adaptive Power Management, SLVSBY7, February 2017.
+part_number: DAC8775
+category: ic.dac
+schema_version: '1.0'
+manufacturer: Texas Instruments
+package: VQFN-72 (RWF) (p. 1 e p. 7)
+lifecycle: desconhecido
+notes:
+- 'DAC de 16 bits, quatro canais, com saída programável em corrente ou tensão e gerenciamento adaptativo de potência (conversor buck/boost) (p. 1).'
+- 'Faixas de corrente: 0 a 24 mA, 3,5 a 23,5 mA, 0 a 20 mA, 4 a 20 mA e ±24 mA; faixas de tensão: 0 a 5 V, 0 a 10 V, ±5 V, ±10 V, com 20% de sobrefaixa (0 a 6 V, 0 a 12 V, ±6 V, ±12 V) (p. 1).'
+- 'Especificações a AVDD/PVDD/VPOS_IN = +15 V, VNEG_IN = -15 V, REFIN = +5 V externa, conversor buck/boost desabilitado (p. 7).'
+- 'Alimentação única de 12 V a 36 V (PVDD/AVDD) (p. 1 e p. 6); DVDD externo de 2,7 V a 5,5 V (p. 7); referência interna de 5 V (máx. 10 ppm/°C) (p. 1).'
+- 'Corrente de alimentação não transcrita (seção de potência não localizada com segurança no texto extraído).'
+datasheets:
+- id: ds1
+  manufacturer: Texas Instruments
+  document_number: SLVSBY7
+  revision: February 2017
+  url: https://www.ti.com/lit/ds/symlink/dac8775.pdf
+  sha256: 099d8e430da67530f7719fe3804a09744ba4bb1708adfd3ed49ac34cdd6e02be
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  bits:
+    typ: 16
+    unit: bit
+    status: extraido
+    source: {page: 7, location: 7.5 Electrical Characteristics - Current output Accuracy Resolution, excerpt: "Resolution 16 Bits"}
+  channels:
+    typ: 4
+    unit: '1'
+    status: extraido
+    source: {page: 1, location: Title, excerpt: "DAC8775 Quad-Channel, 16-Bit Programmable Current Output and Voltage Output"}
+  VS:
+    min: 12
+    max: 36
+    unit: V
+    status: extraido
+    source: {page: 6, location: 7.3 Recommended Operating Conditions - PVDD_x/AVDD_x, excerpt: "Positive supply voltage to ground range 12 36 V"}
+  VREF:
+    min: 4.95
+    max: 5.05
+    unit: V
+    status: extraido
+    source: {page: 7, location: 7.3 Recommended Operating Conditions - Reference input, excerpt: "Reference input to substrate 4.95 5.05 V"}
+  V_out:
+    min: -12
+    max: 12
+    unit: V
+    status: extraido
+    source: {page: 1, location: 1 Features - Output voltage with 20% over-range, excerpt: "0 V to 6 V; 0 V to 12 V; ±6 V; ±12 V"}
+  I_out:
+    min: -24
+    max: 24
+    unit: mA
+    status: extraido
+    source: {page: 1, location: 1 Features - Output current, excerpt: "0 mA to 24 mA; 3.5 mA to 23.5 mA; ... ±24 mA"}
+  INL:
+    max: 12
+    unit: '1'
+    status: extraido
+    source: {page: 7, location: 7.5 Electrical Characteristics - INL, current output (exceto faixa bipolar), excerpt: "Relative Accuracy All ranges except bipolar range -12 12 LSB"}
+  DNL:
+    max: 1
+    unit: '1'
+    status: extraido
+    source: {page: 7, location: 7.5 Electrical Characteristics - DNL, current output, excerpt: "Differential Nonlinearity Ensured monotonic -1 1 LSB"}
+  Top:
+    min: -40
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 7, location: 7.3 Recommended Operating Conditions - Operating temperature, excerpt: "TA Operating temperature -40 125 °C"}
+  Tstg:
+    min: -65
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 6, location: 7.1 Absolute Maximum Ratings - Storage temperature, excerpt: "Storage temperature, Tstg -65 150"}
+attributes:
+  interface:
+    value: SPI (SCLK, SDIN, SDO, SYNC), com verificação CRC e watchdog
+    status: extraido
+    source: {page: 1, location: 1 Features, excerpt: "CRC/Frame Error Check, Watchdog Timer"}
+  encapsulamento:
+    value: VQFN-72 (RWF)
+    status: extraido
+    source: {page: 7, location: 7.4 Thermal Information, excerpt: "RWF (VQFN) 72 PINS"}

@@ -1,0 +1,83 @@
+# Fonte: TDK (EPCOS), SIOV metal oxide varistors, Leaded varistors, StandarD series B722*, Março 2018.
+part_number: S14K275
+category: varistor
+schema_version: '1.0'
+manufacturer: TDK
+family: SIOV B722* (StandarD series)
+package: Disco com terminais radiais, revestimento epóxi (S14)
+lifecycle: desconhecido
+notes:
+- 'Documento da série B722*; a peça S14K275 (código B72214S0271K101) tem VRMS = 275 V (págs. 9 e 10). Valores máximos especificados a TA = 105 °C (pág. 9).'
+- 'Tensão do varistor Vv a 1 mA com tolerância ±10% (pág. 10); registrada como valor nominal. Tensão de grampeamento vc,max 710 V a ic = 50 A.'
+- 'Faixa de operação (IEC 61051) "40 ... +105 °C" e armazenamento "40 ... +125 °C" no texto extraído (sinal negativo perdido, pág. 2); registradas como -40 a 105 °C e -40 a 125 °C, confirmar no PDF. Rigidez dielétrica ≥ 2,5 kVRMS; resistência de isolação ≥ 100 MΩ (pág. 2).'
+- 'Corrente nominal de descarga In (8/20 µs, 15 vezes) = 3000 A (pág. 9).'
+datasheets:
+- id: ds1
+  manufacturer: TDK
+  document_number: B722* (SIOV leaded, StandarD series)
+  revision: March 2018
+  sha256: 0f741b20f56ee3e323b2dec95805ea0c2ddcb559dee67d6abf0c6ca34046db1f
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  V_varistor:
+    typ: 430
+    unit: V
+    status: extraido
+    note: Vv a 1 mA, tolerância ±10%.
+    source: {datasheet_id: ds1, page: 10, location: Characteristics (TA = 25 °C) - Vv (1 mA), excerpt: "B72214S0271K101 | 430 | ±10 | 710 | 50.0 | 440"}
+  V_ac:
+    max: 275
+    unit: V
+    status: extraido
+    conditions: {TA: 105 °C}
+    source: {datasheet_id: ds1, page: 9, location: Maximum ratings (TA = 105 °C) - VRMS, excerpt: "B72214S0271K101 | S14K275 | 275 | 350 | 4500 | 3000 | 71.0 | 0.60"}
+  V_dc:
+    max: 350
+    unit: V
+    status: extraido
+    conditions: {TA: 105 °C}
+    source: {datasheet_id: ds1, page: 9, location: Maximum ratings (TA = 105 °C) - VDC, excerpt: "S14K275 | 275 | 350 | 4500 | 3000"}
+  V_clamp:
+    max: 710
+    unit: V
+    status: extraido
+    note: vc,max a ic = 50 A (8/20 µs).
+    source: {datasheet_id: ds1, page: 10, location: Characteristics - vc,max (ic), excerpt: "B72214S0271K101 | 430 | ±10 | 710 | 50.0 | 440"}
+  I_peak:
+    max: 4500
+    unit: A
+    status: extraido
+    note: imax (8/20 µs), 1 vez.
+    source: {datasheet_id: ds1, page: 9, location: Maximum ratings (TA = 105 °C) - imax (8/20 µs) 1 time, excerpt: "S14K275 | 275 | 350 | 4500 | 3000"}
+  W_max:
+    max: 71.0
+    unit: J
+    status: extraido
+    note: Wmax (2 ms).
+    source: {datasheet_id: ds1, page: 9, location: Maximum ratings (TA = 105 °C) - Wmax (2 ms), excerpt: "3000 | 71.0 | 0.60"}
+  P_avg:
+    max: 0.6
+    unit: W
+    status: extraido
+    note: Pmax.
+    source: {datasheet_id: ds1, page: 9, location: Maximum ratings (TA = 105 °C) - Pmax, excerpt: "71.0 | 0.60"}
+  C:
+    typ: 440
+    unit: pF
+    status: extraido
+    note: Ctyp a 1 kHz.
+    source: {datasheet_id: ds1, page: 10, location: Characteristics - Ctyp (1 kHz), excerpt: "B72214S0271K101 | 430 | ±10 | 710 | 50.0 | 440"}
+  Top:
+    min: -40
+    max: 105
+    unit: °C
+    status: extraido
+    source: {datasheet_id: ds1, page: 2, location: General technical data - Operating temperature to IEC 61051, excerpt: "40 ... +105 °C"}
+  Tstg:
+    min: -40
+    max: 125
+    unit: °C
+    status: extraido
+    source: {datasheet_id: ds1, page: 2, location: General technical data - Storage temperature, excerpt: "40 ... +125 °C"}

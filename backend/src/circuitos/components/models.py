@@ -85,6 +85,28 @@ class Parameter(BaseModel):
         return any(v is not None for v in (self.min, self.typ, self.max))
 
 
+class Attribute(BaseModel):
+    """A qualitative specification stated in the document (output type, protocol, IP rating...).
+
+    Same rule as a parameter: the text comes from the document, with page and location.
+    """
+
+    model_config = ConfigDict(frozen=True)
+
+    value: str = Field(min_length=1)
+    source: SourceRef | None = None
+    status: ParameterStatus = "a_verificar"
+    note: str | None = None
+
+    @model_validator(mode="after")
+    def _sourced(self) -> Attribute:
+        if self.status == "revisado" and (self.source is None or self.source.page is None):
+            raise ValueError("atributo revisado exige fonte com página")
+        if self.status == "extraido" and self.source is None:
+            raise ValueError("atributo extraído exige fonte")
+        return self
+
+
 AxisScale = Literal["lin", "log"]
 
 
@@ -215,6 +237,7 @@ class ComponentRecord(BaseModel):
     package: str | None = None
     lifecycle: Lifecycle = "desconhecido"
     parameters: dict[str, Parameter] = Field(default_factory=dict)
+    attributes: dict[str, Attribute] = Field(default_factory=dict)
     datasheets: list[DatasheetRef] = Field(default_factory=list)
     curves: list[Curve] = Field(default_factory=list)
     spice_models: list[SpiceModel] = Field(default_factory=list)
@@ -235,6 +258,11 @@ class ComponentRecord(BaseModel):
             if param.source is not None and param.source.datasheet_id not in known:
                 raise ValueError(
                     f"{key}: fonte aponta para datasheet inexistente {param.source.datasheet_id!r}"
+                )
+        for key, attr in self.attributes.items():
+            if attr.source is not None and attr.source.datasheet_id not in known:
+                raise ValueError(
+                    f"{key}: fonte aponta para datasheet inexistente {attr.source.datasheet_id!r}"
                 )
         if self.pinout is not None and self.pinout.source.datasheet_id not in known:
             ds = self.pinout.source.datasheet_id

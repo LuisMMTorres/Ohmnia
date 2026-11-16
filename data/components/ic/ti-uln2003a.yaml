@@ -1,0 +1,77 @@
+# Fonte: Texas Instruments, ULN200x, ULQ200x High-Voltage, High-Current Darlington Transistor Arrays, SLRS027T, December 1976 - revised March 2025.
+part_number: ULN2003A
+category: ic.interface
+schema_version: '1.0'
+manufacturer: TI
+family: ULN200x / ULQ200x
+lifecycle: desconhecido
+notes:
+- 'Documento cobre a família ULN2002A/ULN2003A/ULN2003AI/ULQ2003A/ULN2004A/ULQ2004A; valores transcritos da coluna ULN2003A (seção 5.6, TA = 25 °C).'
+- 'Sete pares Darlington NPN, entrada compatível com TTL/CMOS 5 V (p. 1).'
+- 'Top: faixa da versão ULN200xA (-40 a 70 °C); ULN200xAI e ULQ2003AT/ULN2004ADR chegam a 105 °C (p. 4).'
+- 'Máximo absoluto TJ = 150 °C; corrente total no terminal emissor -2.5 A (p. 4).'
+datasheets:
+- id: ds1
+  manufacturer: TI
+  document_number: SLRS027T
+  revision: March 2025
+  sha256: ba83a908675b45c41e84fb06ea390efb10f4b7a358edfee656f87a968dd1d62f
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  V_load:
+    max: 50
+    unit: V
+    status: extraido
+    source: {page: 4, location: 5.1 Absolute Maximum Ratings - VCC collector-emitter voltage, excerpt: "VCC Collector-emitter voltage 50 V"}
+  I_out:
+    max: 500
+    unit: mA
+    status: extraido
+    source: {page: 4, location: 5.1 Absolute Maximum Ratings - peak collector current, excerpt: "Peak collector current 500 mA"}
+  I_peak:
+    max: 500
+    unit: mA
+    status: extraido
+    source: {page: 1, location: Description - collector-current rating of a single Darlington pair, excerpt: "collector-current rating of a single Darlington pair is 500mA"}
+  V_sat:
+    typ: 1.2
+    max: 1.6
+    unit: V
+    conditions: {IC: 350 mA, II: 500 uA, TA: 25 °C}
+    status: extraido
+    source: {page: 5, location: 5.6 Electrical Characteristics ULN2003A - VCE(sat), excerpt: "II = 500 μA, IC = 350 mA 1.2 1.6 V"}
+  V_sat@2:
+    typ: 0.9
+    max: 1.1
+    unit: V
+    conditions: {IC: 100 mA, II: 250 uA, TA: 25 °C}
+    status: extraido
+    source: {page: 5, location: 5.6 Electrical Characteristics ULN2003A - VCE(sat), excerpt: "II = 250 μA, IC = 100 mA 0.9 1.1 V"}
+  channels:
+    typ: 7
+    unit: '1'
+    status: extraido
+    source: {page: 1, location: Description, excerpt: "Each consists of seven NPN Darlington pairs"}
+  Top:
+    min: -40
+    max: 70
+    unit: °C
+    status: extraido
+    source: {page: 4, location: 5.1 Absolute Maximum Ratings - Operating free-air temperature range ULN200xA, excerpt: "ULN200xA -40 70 °C"}
+  Tstg:
+    min: -65
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 4, location: 5.1 Absolute Maximum Ratings - Storage temperature, excerpt: "Tstg Storage temperature -65 150 °C"}
+attributes:
+  funcao:
+    value: Matriz de sete Darlingtons NPN de alta tensão e alta corrente com diodos de grampeamento (driver de relés, solenoides, lâmpadas)
+    status: extraido
+    source: {page: 1, location: Description, excerpt: "High-Voltage, High-Current Darlington Transistor Arrays"}
+  encapsulamento:
+    value: 16 pinos - D (SOIC), N (PDIP), NS (SO), PW (TSSOP), DYY (SOT)
+    status: extraido
+    source: {page: 4, location: 5.4 Thermal Information, excerpt: "D (SOIC) N (PDIP) NS (SO) PW (TSSOP) DYY (SOT) 16 PINS"}

@@ -1,0 +1,51 @@
+# Fonte: YIFA the plastics Ltd, Product Introduction (modelo YF-21, Hall sensor) via Seeed Studio, Water flow sensor datasheet, sem revisão visível.
+part_number: YF-S201
+category: sensor.flow
+schema_version: '1.0'
+manufacturer: Seeed Studio
+package: corpo de plástico com rosca G1/2, comprimento 60 mm (p. 1)
+lifecycle: desconhecido
+notes:
+- 'ATENÇÃO: o documento identifica o modelo como YF-21 (Product Name: Hall sensor), não YF-S201; confira a equivalência (p. 1).'
+- 'Folha 1 (esquerda): faixa 100 L/H a 1800 L/H, erro ±10 (tabela fluxo x frequência: 120 L/H = 16 Hz, 240 = 32,5, 360 = 49,3, 480 = 65,5, 600 = 82, 720 = 90,2 Hz) (p. 1).'
+- 'Folha 2 (direita): faixa 1-30 L/MIN, tensão 3,5-24 VDC, características de pulso F=7Q (L/MIN), erro ±5% (p. 1); a folha 1 indica ±10 e VCC 5-24 DC; valores divergentes entre as folhas.'
+- 'Fios: vermelho VCC(+), amarelo saída de sinal, preto GND(-) (p. 1).'
+datasheets:
+- id: ds1
+  manufacturer: Seeed Studio
+  url: https://github.com/SeeedDocument/G1_and_2_inch_Water_Flow_Sensor/raw/master/res/Water_flow_sensor_datasheet.pdf
+  sha256: 23e7b7b5927b6373863f79619052ce87b2940cbf1d12c1eb0cfa6ae265cd1e0a
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  flow:
+    min: 1
+    max: 30
+    unit: L/min
+    status: extraido
+    source: {page: 1, location: Product Introduction - 3. Flow Range, excerpt: "Flow Range: 1-30L/MIN"}
+  accuracy:
+    max: 5
+    unit: '%'
+    status: extraido
+    source: {page: 1, location: Product Introduction - 4.(3) Extent of error, excerpt: "Extent of error:±5%"}
+  VS:
+    min: 3.5
+    max: 24
+    unit: V
+    status: extraido
+    source: {page: 1, location: Product Introduction - 4.(2) Voltage Range, excerpt: "Voltage Range 3.5-24VDC"}
+attributes:
+  saida:
+    value: Trem de pulsos (sensor Hall), F = 7 x Q (Q em L/min)
+    status: extraido
+    source: {page: 1, location: Product Introduction - 4.(2) Pulse Characteristic, excerpt: "Pluse Characteristic:F=7Q(L/MIN)"}
+  principio:
+    value: Sensor Hall com turbina e ímã
+    status: extraido
+    source: {page: 1, location: Product Introduction - 2. Product Name and BOM, excerpt: "Product Name: Hall sensor"}
+  conexao:
+    value: 'Cabo de 3 fios: GND (preto), sinal (amarelo), VCC (vermelho)'
+    status: extraido
+    source: {page: 1, location: Connection method, excerpt: "GND(-) Signal output VCC(+)5-24DC"}

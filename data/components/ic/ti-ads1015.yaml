@@ -1,0 +1,100 @@
+# Fonte: Texas Instruments, ADS1013, ADS1014, ADS1015 Ultra-Small, Low-Power, I2C-Compatible, 3.3kSPS, 12-Bit ADCs, SBAS473F, May 2009 - Revised January 2025.
+part_number: ADS1015
+category: ic.adc
+schema_version: '1.0'
+manufacturer: Texas Instruments
+family: ADS101x
+package: X2QFN-10 (RUG, 1,5 x 2 mm), SOT-10 (DYN, 2,9 x 2,8 mm), VSSOP-10 (DGS, 3 x 4,9 mm) (p. 1)
+lifecycle: desconhecido
+notes:
+- 'O documento cobre ADS1013, ADS1014 e ADS1015; o ADS1015 tem 4 entradas single-ended ou 2 diferenciais, com PGA e comparador (p. 1).'
+- 'Características elétricas a VDD = 3,3 V, 128 SPS, FSR = ±2,048 V (p. 5).'
+- 'Tensão nos pinos analógicos limitada a VDD + 0,3 V (p. 4); taxa de dados 128 a 3300 SPS.'
+datasheets:
+- id: ds1
+  manufacturer: Texas Instruments
+  document_number: SBAS473F
+  revision: January 2025
+  url: https://www.ti.com/lit/ds/symlink/ads1015.pdf
+  sha256: 4617aa3843b16d23264f5eff63b90b1afffefff7af97ae29f0eb8c5a153156d4
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  bits:
+    typ: 12
+    unit: bit
+    status: extraido
+    source: {page: 5, location: 6.5 Electrical Characteristics - Resolution (no missing codes), excerpt: "Resolution (no missing codes) 12 Bits"}
+  fs:
+    max: 3.3
+    unit: kHz
+    status: extraido
+    source: {page: 1, location: 1 Features - programmable data rate, excerpt: "Programmable data rate: 128SPS to 3.3kSPS"}
+  channels:
+    typ: 4
+    unit: '1'
+    status: extraido
+    source: {page: 1, location: 1 Features - family of devices, excerpt: "ADS1015: 4 single-ended or 2 differential inputs"}
+  VS:
+    min: 2
+    max: 5.5
+    unit: V
+    status: extraido
+    source: {page: 4, location: 6.3 Recommended Operating Conditions - Power supply, excerpt: "Power supply (VDD to GND) 2 5.5 V"}
+  V_in:
+    min: -6.144
+    max: 6.144
+    unit: V
+    status: extraido
+    source: {page: 4, location: 6.3 Recommended Operating Conditions - Full-scale input voltage range, excerpt: "FSR ±0.256 ±6.144 V"}
+  INL:
+    max: 0.5
+    unit: '1'
+    conditions: {FSR: 2.048 V}
+    status: extraido
+    source: {page: 5, location: 6.5 Electrical Characteristics - INL, excerpt: "INL Integral nonlinearity DR = 128SPS, FSR = ±2.048V 0.5 LSB"}
+  offset:
+    max: 0.5
+    unit: '1'
+    conditions: {FSR: 2.048 V}
+    status: extraido
+    source: {page: 5, location: 6.5 Electrical Characteristics - Offset error, differential inputs, excerpt: "Offset error FSR = ±2.048V, differential inputs -0.5 0 0.5 LSB"}
+  gain_err:
+    max: 0.25
+    unit: '%'
+    conditions: {TA: 25 °C, FSR: 2.048 V}
+    status: extraido
+    source: {page: 5, location: 6.5 Electrical Characteristics - Gain error, excerpt: "Gain error FSR = ±2.048V, TA = 25°C 0.05% 0.25%"}
+  IS:
+    typ: 0.15
+    max: 0.3
+    unit: mA
+    conditions: {TA: 25 °C}
+    status: extraido
+    source: {page: 6, location: 6.5 Electrical Characteristics - Supply current, operating, excerpt: "Operating TA = 25°C 150 200 300 μA"}
+  Top:
+    min: -40
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 4, location: 6.3 Recommended Operating Conditions - Operating ambient temperature, excerpt: "TA Operating ambient temperature –40 125 °C"}
+  Tstg:
+    min: -60
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 4, location: 6.1 Absolute Maximum Ratings - Tstg, excerpt: "Storage Tstg –60 150 °C"}
+attributes:
+  interface:
+    value: I2C (rápido e alta velocidade, 4 endereços selecionáveis por pino)
+    status: extraido
+    source: {page: 1, location: 1 Features - I2C interface, excerpt: "I2C interface: Four pin-selectable addresses"}
+  arquitetura:
+    value: Com referência interna, oscilador interno, PGA e comparador programável
+    status: extraido
+    source: {page: 1, location: Title / 3 Description, excerpt: "With Internal Reference, Oscillator, and Programmable Comparator"}
+  encapsulamento:
+    value: X2QFN-10, SOT-10, VSSOP-10
+    status: extraido
+    source: {page: 1, location: Package Information, excerpt: "RUG (X2QFN, 10) DYN (SOT, 10) DGS (VSSOP, 10)"}

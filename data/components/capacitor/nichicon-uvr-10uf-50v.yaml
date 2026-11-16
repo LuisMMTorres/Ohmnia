@@ -1,0 +1,67 @@
+# Fonte: Nichicon, UVR Miniature Sized, Standard series for entertainment electronics, Aluminum Electrolytic Capacitors, CAT.8100M.
+part_number: UVR 10uF 50V
+category: capacitor.fixed
+schema_version: '1.0'
+manufacturer: Nichicon
+family: UVR
+lifecycle: desconhecido
+notes:
+- 'Item da fila: UVR 10uF 50V (série UVR). O PDF desta fila é o mesmo da UVR 100uF 50V (mesmo SHA-256, 4 páginas).'
+- A tabela de itens (página 3) não tem linha de 10 µF para 50 V (a menor capacitância em 50 V é 100 µF), por isso não há C, fuga nem ripple específicos; só os valores gerais da série.
+- Faixa de capacitância da série 1 a 22000 µF, tensões 6,3 a 450 V; tan δ da série para 50 V é 0,12.
+datasheets:
+- id: ds1
+  manufacturer: Nichicon
+  document_number: CAT.8100M
+  url: https://www.nichicon.co.jp/english/series_items/catalog_pdf/e-uvr.pdf
+  sha256: 77ade7b9c76bb6e81b6233502327d29e0f8500ef624494000079148ec407db76
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  C:
+    min: 1
+    max: 22000
+    unit: uF
+    status: extraido
+    note: Faixa da série (todas as tensões).
+    source: {datasheet_id: ds1, page: 1, location: Specifications - Rated Capacitance Range, excerpt: "1 to 22000µF"}
+  tol:
+    max: 20
+    unit: '%'
+    status: extraido
+    note: ± 20 % a 120 Hz, 20 °C.
+    source: {datasheet_id: ds1, page: 1, location: Specifications - capacitance tolerance, excerpt: "± 20% at 120Hz, 20˚C"}
+  V_rated:
+    min: 6.3
+    max: 450
+    unit: V
+    status: extraido
+    note: Faixa da série; o item da fila é 50 V (código 1H).
+    source: {datasheet_id: ds1, page: 1, location: Specifications - Rated Voltage Range, excerpt: "6.3 to 450V"}
+  tan_delta:
+    max: 0.12
+    unit: '1'
+    status: extraido
+    conditions: {f: 120 Hz, TA: 20 °C}
+    note: Limite para 50 V; para C acima de 1000 µF soma-se 0,02 a cada 1000 µF.
+    source: {datasheet_id: ds1, page: 1, location: Specifications - tan δ (max.) table, excerpt: "50|0.12"}
+  life:
+    typ: 2000
+    unit: h
+    status: extraido
+    conditions: {T: 85 °C}
+    note: Endurance com tensão nominal aplicada.
+    source: {datasheet_id: ds1, page: 1, location: Specifications - Endurance, excerpt: "rated voltage is applied for 2000 hours at 85°C"}
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    note: Faixa para 6,3 a 400 V (450 V, -25 a +85 °C).
+    source: {datasheet_id: ds1, page: 1, location: Specifications - Category Temperature Range, excerpt: "–40 to +85˚C (6.3V to 400V)"}
+attributes:
+  dieletrico:
+    value: Eletrolítico de alumínio, miniatura, série padrão 85 °C para eletrônica de entretenimento
+    status: extraido
+    source: {datasheet_id: ds1, page: 1, location: Título - Miniature Sized, Standard series for entertainment electronics}

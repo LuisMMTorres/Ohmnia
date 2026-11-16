@@ -1,0 +1,100 @@
+# Fonte: Melexis, MLX91220 Integrated Current Sensor IC, Datasheet DOC. N° 3901091220, Revision 4.0, May 30, 2024.
+part_number: MLX91220
+category: sensor.current
+schema_version: '1.0'
+manufacturer: Melexis
+family: MLX91220
+package: SOIC8 / SOIC16
+lifecycle: desconhecido
+notes:
+- 'Valores da série; faixa entre as variantes de código (Tabela 1, pág. 4): 17 A a 75 A de faixa, 26,7 a 120 mV/A.'
+- 'Condições de teste DC: VDD = 5 V (págs. 11 e 12). Faixa de alimentação de operação não localizada no texto; limites absolutos: +8 V sobretensão, +6,5 V mantendo modo de aplicação, -0,3 V reversa (pág. 10).'
+- 'Corrente de alimentação IDD típ. 20 mA, máx. 26 mA, sem carga (pág. 11).'
+- 'Isolação: 3550 Vrms (SOIC8) e 5400 Vrms (SOIC16) (pág. 13). Resistência do caminho primário: 1,09 mohm (SOIC8) e 0,89 mohm (SOIC16) típ. a 25 C (pág. 12).'
+- 'Corrente contínua: ±25 A (SOIC8) e ±30 A (SOIC16) a TA -40 a 85 C (pág. 12). Tempo de resposta máx. 2 us, banda 300 kHz (pág. 14).'
+datasheets:
+- id: ds1
+  manufacturer: Melexis
+  document_number: '3901091220'
+  revision: '4.0, May 30, 2024'
+  url: https://www.melexis.com/-/media/files/documents/datasheets/mlx91220-datasheet-melexis.pdf
+  sha256: 17368198477c7fb0dd173ec49d64ffe03efce6a534321ef1cf43e6e0e2d2ada4
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_PN:
+    min: 6.7
+    max: 30
+    unit: A
+    status: extraido
+    source: {page: 12, location: Tabela 8, Nominal Current IPNOM, excerpt: "Nominal Current IPNOM 6.7 ... 30 A"}
+  I_PM:
+    min: 16.7
+    max: 75
+    unit: A
+    status: extraido
+    source: {page: 12, location: Tabela 8, Measurement Range IPMAX, excerpt: "IPMAX 16.7 25 30 50 50 75 A"}
+  sensitivity:
+    min: 26.7
+    max: 120
+    unit: mV/A
+    status: extraido
+    source: {page: 4, location: Tabela 1 Ordering information, Sensitivity, excerpt: "26.7 mV/A ... 120 mV/A"}
+  linearity:
+    max: 0.6
+    unit: '%'
+    status: extraido
+    source: {page: 12, location: Tabela 8, Linearity Error NL, excerpt: "Current in range IPMAX, TA=25°C ±0.6 %FS"}
+  bandwidth:
+    typ: 300
+    unit: kHz
+    status: extraido
+    source: {page: 14, location: Tabela 10, Bandwidth, excerpt: "BW -3dB, TA =25°C 300 kHz"}
+  t_resp:
+    max: 2
+    unit: us
+    status: extraido
+    source: {page: 14, location: Tabela 10, Step Response Time, excerpt: "TRESP ... 2 μs"}
+  R_primary:
+    typ: 1.09
+    unit: mohm
+    status: extraido
+    source: {page: 12, location: Tabela 8, RIP_SOIC8 (SOIC16 0,89), excerpt: "RIP_SOIC8 1.09 mΩ"}
+    conditions: {TA: 25 °C}
+  V_iso:
+    max: 5400
+    unit: V
+    status: extraido
+    source: {page: 13, location: Tabela de isolação, VISO_SOIC16, excerpt: "VISO_SOIC16 5400 VRMS"}
+  IS:
+    typ: 20
+    max: 26
+    unit: mA
+    status: extraido
+    source: {page: 11, location: Tabela 7, Supply Current IDD, excerpt: "IDD Without RLOAD 20 26 mA"}
+  Top:
+    min: -40
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 10, location: Tabela 6, Operating Ambient Temperature Range, excerpt: "- 40°C to + 125°C"}
+  Tstg:
+    min: -40
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 10, location: Tabela 6, Storage Temperature Range, excerpt: "- 40°C to + 150°C"}
+attributes:
+  principio:
+    value: Hall diferencial (CI integrado com condutor primário)
+    status: extraido
+    source: {page: 4, location: Tabela 1 e pinagem (IP+/IP-)}
+  saida:
+    value: tensão, fixa ou ratiométrica, bipolar ou unipolar
+    status: extraido
+    source: {page: 4, location: Tabela 1, Output type}
+  montagem:
+    value: SOIC8 ou SOIC16
+    status: extraido
+    source: {page: 4, location: Tabela 1, Package}

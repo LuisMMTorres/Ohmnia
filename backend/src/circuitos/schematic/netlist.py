@@ -17,7 +17,7 @@ from __future__ import annotations
 import contextlib
 import itertools
 import math
-from collections.abc import Mapping
+from collections.abc import Callable, Mapping
 from dataclasses import dataclass, field
 
 from circuitos.components.models import ComponentRecord
@@ -26,7 +26,12 @@ from circuitos.cosim.controllers import ControllerSpec, controller_lines
 from circuitos.design.opamp import OpAmp
 from circuitos.devices.thyristor import Kind as ThyristorKind
 from circuitos.schematic import parts
-from circuitos.schematic.cosim_symbols import CONTROLLER_KINDS, COSIM_KINDS, emit_device
+from circuitos.schematic.cosim_symbols import (
+    CONTROLLER_KINDS,
+    COSIM_KINDS,
+    catalogue_value,
+    emit_device,
+)
 from circuitos.schematic.library import (
     element_name,
     param,
@@ -610,7 +615,13 @@ def _emit(comp: Component, n: list[str], ctx: _Ctx) -> list[str]:
                 ctx.controllers.append(spec)
                 ctx.warnings += spec.warnings
                 return lines
-            return emit_device(comp, pins, lambda name: ctx.value(comp, name))
+            value: Callable[[str], str] = lambda name: ctx.value(comp, name)  # noqa: E731
+            rec = ctx.record(comp)
+            if rec is not None:
+                value = catalogue_value(k, rec, value)
+            return emit_device(comp, pins, value)
+        except SchematicError:
+            raise
         except ValueError as exc:
             raise SchematicError(f"{ref}: {exc}") from exc
     raise SchematicError(f"Tipo de componente sem netlist: {k}")

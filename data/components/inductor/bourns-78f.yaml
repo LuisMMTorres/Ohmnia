@@ -1,0 +1,67 @@
+# Fonte: Bourns, 78F Series Conformal Coated RF Chokes (página 17.3 do Product Selection Catalog Bourns Magnetics / J.W. Miller, página 147 do PDF).
+part_number: 78F
+category: inductor.fixed
+schema_version: '1.0'
+manufacturer: Bourns
+family: 78F
+package: Choque RF com revestimento epóxi (conformal), terminais axiais
+lifecycle: desconhecido
+notes:
+- Valores da série; faixa entre os modelos (L de 0,033 a 1000 µH). Os demais valores variam com a indutância.
+- O PDF é um catálogo de 204 páginas; a série 78F está só na página 147.
+- 'SRF é dada como mínimo por modelo (1,2 a 400 MHz); I DC é a corrente que causa elevação máxima de 35 °C.'
+- Tolerância por faixa. ±20 % de 0,033 a 0,18 µH; ±10 % de 0,22 a 2,7 µH; ±5 % de 3,3 µH em diante.
+datasheets:
+- id: ds1
+  manufacturer: Bourns
+  document_number: 78F Series (catálogo 17.3)
+  url: https://www.farnell.com/datasheets/172589.pdf
+  sha256: 83f8538c2ba6d2b39f670fc87a6ba1c6de22a1819602061973ae6645513d46e7
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  L:
+    min: 0.033
+    max: 1000
+    unit: uH
+    status: extraido
+    source: {datasheet_id: ds1, page: 147, location: Tabela - L (μH), excerpt: "78FR033M-RC 0.033 ... 78F102J-RC 1000"}
+  tol:
+    max: 20
+    unit: '%'
+    status: extraido
+    note: ±20 %, ±10 % ou ±5 % conforme a faixa de L.
+    source: {datasheet_id: ds1, page: 147, location: Tabela - cabeçalho L (μH) ±20 %, ±10 %, ±5 %, excerpt: "±20 %"}
+  I_rms:
+    min: 0.041
+    max: 1.025
+    unit: A
+    status: extraido
+    note: I DC em mA (41 a 1025 mA), corrente que causa elevação máxima de 35 °C.
+    source: {datasheet_id: ds1, page: 147, location: Tabela - I DC* (mA) e nota *, excerpt: "Current to cause 35 °C max. temperature rise"}
+  DCR:
+    min: 0.02
+    max: 26
+    unit: ohm
+    status: extraido
+    note: DCR máx. por modelo.
+    source: {datasheet_id: ds1, page: 147, location: Tabela - DCR Ω Max.}
+  SRF:
+    min: 1.2
+    max: 400
+    unit: MHz
+    status: extraido
+    note: SRF mínima por modelo, de 1,2 a 400 MHz conforme a indutância.
+    source: {datasheet_id: ds1, page: 147, location: Tabela - SRF (MHz) Min.}
+  Top:
+    min: -55
+    max: 105
+    unit: °C
+    status: extraido
+    source: {datasheet_id: ds1, page: 147, location: Special Features - Operating temperature, excerpt: "Operating temperature -55 to +105 °C"}
+attributes:
+  nucleo:
+    value: Carretel (bobbin) de ferrite, enrolamento protegido com revestimento epóxi, alto Q e SRF
+    status: extraido
+    source: {datasheet_id: ds1, page: 147, location: Special Features}

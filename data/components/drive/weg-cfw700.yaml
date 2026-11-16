@@ -1,0 +1,140 @@
+# Fonte: WEG, CFW700 User's Manual (Frequency Inverter), documento 10000771684 / 04, 05/2015.
+part_number: CFW700
+category: drive.vfd
+schema_version: '1.0'
+manufacturer: WEG
+family: CFW700
+lifecycle: desconhecido
+notes:
+- 'Valores da série (tamanhos A...E); faixas entre os modelos. Numeração de páginas = páginas do PDF.'
+- 'Corrente nominal de saída da faixa é a de sobrecarga normal (ND), Tabela 2.2 (p. 12): 3,6 A a 211 A. Potência do motor da série não transcrita (tabelas de potência não consultadas).'
+- 'Tensão de entrada: modelos 200...240 V (S2/B2/T2), 220...230 V, 380...480 V (T4) e 500...600 V (T5); tolerância -15 % a +10 %, 50/60 Hz (p. 65).'
+- 'Sobrecarga: ciclos ND e HD, curvas IGBT em 1 min e 3 s na Tabela B.4 (p. 221); percentuais não transcritos.'
+- 'Temperatura ambiente de operação: de -10 °C até Ta da Tabela B.4; acima de Ta até 60 °C (tamanhos A-D) com redução de 2 %/°C (p. 15).'
+- 'Fila de transcrição: novo link do distribuidor (wolfautomation).'
+datasheets:
+- id: ds1
+  manufacturer: WEG
+  document_number: 10000771684 / 04
+  revision: 05/2015
+  url: https://www.wolfautomation.com/content/weg-cfw700-usermanual.pdf
+  sha256: 859d8cb3c6709a7abc0cbcd2479b02adcca816bbe81fbf2006a2fba40a5b3196
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_out:
+    min: 3.6
+    max: 211
+    unit: A
+    status: extraido
+    source:
+      page: 12
+      location: Table 2.2 - Rated Output Current for ND Overload (smallest 03P6 and largest 0211)
+      excerpt: "03P6 = 3.6 A ... 0211 = 211 A"
+  V_in:
+    min: 200
+    max: 600
+    unit: V
+    status: extraido
+    source:
+      page: 12
+      location: Table 2.2 - Rated Voltage (2 = 200...240 V; 5 = 500...600 V)
+      excerpt: "2 = 200…240 V ... 5 = 500...600 V"
+  phases_in:
+    min: 1
+    max: 3
+    unit: '1'
+    status: extraido
+    source:
+      page: 12
+      location: Table 2.2 - Number of Power Phases
+      excerpt: "B = single-phase or three-phase; T = three-phase"
+  f_out:
+    min: 0
+    max: 500
+    unit: Hz
+    status: extraido
+    source:
+      page: 66
+      location: Table 8.1 - Output frequency
+      excerpt: "500 Hz (switching frequency >= 5 kHz)"
+  f_sw:
+    min: 1.25
+    max: 5
+    unit: kHz
+    status: extraido
+    source:
+      page: 66
+      location: Table 8.1 - Maximum output frequency limit according to the switching frequency
+      excerpt: "125 Hz (switching frequency = 1.25 kHz) ... 500 Hz (switching frequency >= 5 kHz)"
+  efficiency:
+    typ: 97
+    unit: '%'
+    status: extraido
+    source:
+      page: 65
+      location: 8.1 Power Data
+      excerpt: "Typical efficiency: ≥ 97 %."
+  di:
+    typ: 8
+    unit: '1'
+    status: extraido
+    source:
+      page: 67
+      location: Table 8.1 - Inputs, digital (CC700 board)
+      excerpt: "8 isolated digital inputs."
+  ai:
+    typ: 2
+    unit: '1'
+    status: extraido
+    source:
+      page: 67
+      location: Table 8.1 - Inputs, analog (CC700 board)
+      excerpt: "2 differential inputs."
+  do:
+    typ: 5
+    unit: '1'
+    status: extraido
+    source:
+      page: 67
+      location: Table 8.1 - Outputs, relay (1) plus transistor (4)
+      excerpt: "1 relay (NO/NC) ... 4 open collector isolated digital outputs"
+  ao:
+    typ: 2
+    unit: '1'
+    status: extraido
+    source:
+      page: 67
+      location: Table 8.1 - Outputs, analog
+      excerpt: "2 non isolated outputs."
+  Top:
+    min: -10
+    max: 60
+    unit: °C
+    status: extraido
+    source:
+      page: 15
+      location: Environment conditions for the operation of the inverter
+      excerpt: "from -10 ºC up to Ta ... greater than Ta and smaller than 60 °C (frame sizes A, B, C and D)"
+attributes:
+  controle:
+    value: V/f (escalar), VVW (vetorial de tensão), vetorial com encoder, vetorial sensorless
+    status: extraido
+    source: {page: 66, location: Table 8.1 - Control method - Type of control, excerpt: "V/f (Scalar). VVW. Vector control with encoder. Sensorless vector control"}
+  comunicacao:
+    value: RS-485 (Modbus); módulos opcionais CANopen/DeviceNet e Profibus DP; porta USB no teclado
+    status: extraido
+    source: {page: 10, location: Figure 2.1 block diagram (RS-485) and optional modules list; USB Table 8.1 p. 67, excerpt: "RS-485 ... CAN interface module (CANopen / DeviceNet) ... Profibus DP interface module"}
+  frenagem:
+    value: IGBT de frenagem (opção DB) e função Optimal Braking no controle vetorial
+    status: extraido
+    source: {page: 11, location: Table 2.1 identification - Braking, excerpt: "DB = with dynamic braking."}
+  grau_protecao:
+    value: IP20, IP21, NEMA1 (UL Type 1), IP55 (opção N12)
+    status: extraido
+    source: {page: 67, location: Table 8.1 - Enclosure, excerpt: "IP20 / NEMA1/IP20 / IP21 / NEMA1/IP21 / IP55"}
+  certificacoes:
+    value: UL 508C, UL 840, EN 61800-5-1, EN 50178, EN 61800-3 (EMC), EN 60529
+    status: extraido
+    source: {page: 68, location: Table 8.2 - Codes and standards, excerpt: "UL 508C - Power conversion equipment."}

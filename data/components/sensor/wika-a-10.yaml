@@ -1,0 +1,104 @@
+# Fonte: WIKA, data sheet PE 81.60 (Pressure transmitter model A-10), edição 02/2026.
+part_number: A-10
+category: sensor.pressure
+schema_version: '1.0'
+manufacturer: WIKA
+family: A-10
+lifecycle: desconhecido
+notes:
+- 'Fila: "ds pe8160 en co" (nome de arquivo); produto real: transmissor de pressão modelo A-10, WIKA PE 81.60. Valores da série; faixa entre as variantes configuráveis.'
+- 'range_bar: manométrica 0 ... 0.05 bar até 0 ... 1000 bar; faixas de vácuo/compostas até -1 ... +24 bar (p.3-4). Absoluta 0 ... 0.1 até 0 ... 25 bar abs (p.3).'
+- 'Sobrepressão (p.4): <=0.1 bar -> 0.2 bar; <=0.4 bar -> 1 bar; <1.6 bar -> 3 bar; >=1.6 bar -> 2 vezes a faixa; faixa 1000 bar -> 1.43 vezes. Não registrado como número único.'
+- 'Carga RL: corrente (2 fios) <= (alimentação - 8 V)/0.02 A; tensão (3 fios) > sinal máx./1 mA; ratiométrico > 10k (p.6). Fórmulas, não registradas em RL.'
+- 'Não-linearidade <= +-0.5 % do span (opcional <= +-0.25 %, p.2); erro máx. medido IEC 61298-2 <= +-1 % do span para faixa >= 0.6 bar (p.2).'
+- 'Temperatura: faixa padrão (meio e ambiente) 0 ... 80 °C; faixas estendidas -30 ... +100 °C (tensão) e -40 ... +100 °C (corrente) (p.9). Top abaixo = faixa padrão.'
+- 'Tempo de estabilização < 1 ms (faixa >= 0.4 bar), < 1 min (faixa < 0.4 bar); tempo de ligação < 15 ms / < 1 min (p.7).'
+datasheets:
+- id: ds1
+  manufacturer: WIKA
+  document_number: PE 81.60
+  revision: '02/2026'
+  url: https://www.wika.com/media/Data-sheets/Pressure/Pressure-sensors/ds_pe8160_en_co.pdf
+  sha256: 3d4d1130a77ad956ba665ff4b29049b46deb62ad1f878d67256762fabd411d01
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  range_bar:
+    min: -1
+    max: 1000
+    unit: bar
+    status: extraido
+    source: {page: 3, location: Measuring ranges (gauge pressure; vacuum and compound on p.4), excerpt: "0 ... 0.05 ... 0 ... 1,000 bar; -1 ... +24"}
+  accuracy:
+    max: 0.5
+    unit: '%'
+    status: extraido
+    source: {page: 2, location: Accuracy specifications - Non-linearity, excerpt: "Non-linearity ≤ ±0.5 % of span"}
+  VS:
+    min: 8
+    max: 35
+    unit: V
+    status: extraido
+    source: {page: 6, location: Voltage supply - Auxiliary power, excerpt: "Output signal 4 ... 20 mA DC 8 ... 30 V / DC 8 ... 35 V"}
+  IS:
+    typ: 8
+    unit: mA
+    status: extraido
+    source: {page: 6, location: Voltage supply - Current supply, excerpt: "Voltage (3-wire) 8 mA"}
+  I_out:
+    min: 4
+    max: 20
+    unit: mA
+    status: extraido
+    source: {page: 6, location: Output signal - Signal type, excerpt: "Current (2-wire) 4 ... 20 mA"}
+  V_out:
+    min: 0
+    max: 10
+    unit: V
+    status: extraido
+    source: {page: 6, location: Output signal - Voltage (3-wire), excerpt: "DC 0 ... 10 V; DC 0 ... 5 V; DC 1 ... 5 V; DC 0.5 ... 4.5 V"}
+  t_resp:
+    max: 1
+    unit: ms
+    status: extraido
+    source: {page: 7, location: Dynamic behaviour - Settling time, excerpt: "Measuring range ≥ 0.4 bar < 1 ms"}
+  T_process:
+    min: 0
+    max: 80
+    unit: °C
+    status: extraido
+    source: {page: 9, location: Operating conditions - Medium temperature limit, excerpt: "0 ... 80 °C [32 ... 176 °F]"}
+  Top:
+    min: 0
+    max: 80
+    unit: °C
+    status: extraido
+    source: {page: 9, location: Operating conditions - Ambient temperature limit (standard range), excerpt: "0 ... 80 °C [32 ... 176 °F]"}
+  Tstg:
+    min: -40
+    max: 70
+    unit: °C
+    status: extraido
+    source: {page: 9, location: Operating conditions - Storage temperature limit, excerpt: "-40 ... +70 °C [-40 ... +158 °F]"}
+attributes:
+  saida:
+    value: 4 ... 20 mA (2 fios); DC 0 ... 10 V, 0 ... 5 V, 1 ... 5 V, 0.5 ... 4.5 V (3 fios); 0.5 ... 4.5 V ratiométrico (3 fios)
+    status: extraido
+    source: {page: 6, location: Output signal - Signal type}
+  conexao:
+    value: Conector angular DIN EN 175301-803 A (padrão), conector circular M12 x 1 (4 pinos), cabo moldado ou saída de cabo
+    status: extraido
+    source: {page: 7, location: Electrical connection - Connection type}
+  invólucro:
+    value: Partes molhadas aço inox 316L (e aço PH a partir de 10 bar); externo inox 316L, HNBR, PA e PBT
+    status: extraido
+    source: {page: 8, location: Material}
+  grau_protecao:
+    value: IP65 (conector DIN) ou IP67 (M12 e cabo), com contraparte adequada
+    status: extraido
+    source: {page: 7, location: Electrical connection - IP code}
+  principio:
+    value: Pressão manométrica, absoluta e vácuo; célula seca (>=10 bar) ou com óleo sintético
+    status: extraido
+    source: {page: 8, location: Material - Pressure transmission medium}

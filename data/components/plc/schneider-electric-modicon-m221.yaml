@@ -1,0 +1,52 @@
+# Fonte: Schneider Electric, Modicon M221 Logic Controller Programming Guide, EIO0000003297, 12/2018.
+part_number: Modicon M221
+category: plc
+schema_version: '1.0'
+manufacturer: Schneider Electric
+family: Modicon M221 (TM221C, TM221M)
+lifecycle: desconhecido
+notes:
+- "Nome na fila: EIO0000001360 (o documento baixado é o EIO0000003297 12/2018, sucessor do EIO0000001360). É um guia de programação, sem tabela de dados técnicos de hardware; os dados elétricos estão no Hardware Guide, citado mas não incluído."
+- "VS (24 V) é a alimentação DC; VS@2 (100 a 240 V) é a alimentação AC. Alimentação: TM221C 24 Vdc ou 100 a 240 Vac; TM221M 24 Vdc (p. 20 e 26)."
+- "TM221C16R/CE16R: 5 entradas comuns e 4 rápidas (HSC), 7 saídas a relé, 100-240 Vac; TM221C16T/U: 5 entradas comuns, 4 rápidas, 5 saídas transistor comuns e 2 rápidas, 24 Vdc (p. 22). Entradas comuns com frequência máxima de 5 kHz (p. 22)."
+- "Memória: RAM 512 Kbytes (256 Kbytes para variáveis internas e 256 Kbytes para aplicação e dados); não volátil 1,5 Mbytes (p. 21 e 27)."
+datasheets:
+- id: ds1
+  manufacturer: Schneider Electric
+  document_number: EIO0000003297
+  revision: 12/2018
+  url: https://cdn.i-pulse.nl/isotron/production/products/2616/Modicon%20M221%20programming%20guide.pdf
+  sha256: a6b85fcfb7fe5c6e5184fa8e6eb49da5bae0ef294268dcd194deaca3277fa096
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    typ: 24
+    unit: V
+    status: extraido
+    source: {page: 20, location: TM221C Description - Power Supply, excerpt: "24 Vdc ... or 100...240 Vac"}
+  VS@2:
+    min: 100
+    max: 240
+    unit: V
+    status: extraido
+    source: {page: 20, location: TM221C Description - Power Supply, excerpt: "100...240 Vac"}
+  memory:
+    typ: 512
+    unit: kB
+    status: extraido
+    source: {page: 21, location: TM221C Description - Memory - RAM, excerpt: "512 Kbytes of RAM memory"}
+attributes:
+  linguagens:
+    value: "IL, LD (ladder), Grafcet (List), Grafcet (SFC)"
+    status: extraido
+    source: {page: 20, location: Programming Languages}
+  comunicacao:
+    value: "Ethernet, USB Mini-B, Serial Line 1 (conforme a referência); slot de cartão SD"
+    status: extraido
+    source: {page: 21, location: Embedded Communication Features / Removable Storage}
+  tipo_saida:
+    value: "Relé (TM221C16R), transistor source (T) ou sink (U); saídas rápidas PLS/PWM/PTO/FREQGEN"
+    status: extraido
+    source: {page: 22, location: TM221C Logic Controller reference table}

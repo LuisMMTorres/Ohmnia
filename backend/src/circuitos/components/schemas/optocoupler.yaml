@@ -1,0 +1,65 @@
+category: optocoupler
+schema_version: '1.0'
+description: Optoacoplador, isolador digital ou amplificador isolado
+required:
+- V_iso
+parameters:
+  IF:
+    unit: mA
+    kind: max_rating
+    description: Corrente máxima do LED de entrada
+  VF:
+    unit: V
+    kind: characteristic
+    description: Tensão direta do LED
+  CTR:
+    unit: '%'
+    kind: characteristic
+    description: Razão de transferência de corrente
+  VCEO:
+    unit: V
+    kind: max_rating
+    description: Tensão coletor-emissor da saída
+  IC:
+    unit: mA
+    kind: max_rating
+    description: Corrente de saída
+  VCE_sat:
+    unit: V
+    kind: characteristic
+    description: Saturação da saída
+  V_iso:
+    unit: V
+    kind: max_rating
+    description: Isolação (eficaz, 1 min)
+  t_r:
+    unit: us
+    kind: characteristic
+    description: Tempo de subida
+  t_f:
+    unit: us
+    kind: characteristic
+    description: Tempo de descida
+  data_rate:
+    unit: Mbit/s
+    kind: characteristic
+    description: Taxa de dados (isolador digital)
+  gain:
+    unit: '1'
+    kind: characteristic
+    description: Ganho (amplificador isolado)
+  VS:
+    unit: V
+    kind: characteristic
+    description: Alimentação (faixa)
+  Top:
+    unit: °C
+    kind: thermal
+    description: 'Temperatura de operação (faixa: mín. e máx.)'
+  Tstg:
+    unit: °C
+    kind: thermal
+    description: Temperatura de armazenamento (faixa)
+attributes:
+  saida: Tipo de saída (transistor, Darlington, TRIAC, porta lógica, driver de gate...)
+  canais: Número de canais

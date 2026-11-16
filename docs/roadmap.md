@@ -168,3 +168,13 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 - ✅ Exemplo integrado de bombeamento com pressão constante (CLP + inversor + bomba + ESP32); ⏳ partida de motor e posicionamento com motor de passo
 - ✅ Editor de programa com diagrama ladder, monitor serial, protoboard dos exemplos
 - Validação: `docs/validacao/microcontroladores-clp.md`; manual: `docs/manual/08-microcontroladores-clp.md`
+
+## Fase 12 ✅ Catálogo de dispositivos reais: instrumentação, automação, passivos (aprovada em 2026-11-16; decisão D13)
+
+- ✅ Busca dos datasheets que faltavam (3 rodadas; manuais e catálogos quando não há datasheet): 457 de 510 itens com PDF
+- ✅ Atributos em texto no registro; 53 esquemas de categoria novos (77 no total)
+- ✅ Transcrição dos PDFs em registros com página e trecho: 393 registros novos (758 no catálogo), rascunho a revisar
+- ⏳ 53 itens sem PDF (portais que exigem navegador) e 17 com PDF sem dados da peça
+- ✅ Peças reais nos símbolos da co-simulação (LM35, Pt100, ACS712, potenciômetro, relé, placas, CLP)
+- Validação: `docs/validacao/catalogo-dispositivos.md`
+

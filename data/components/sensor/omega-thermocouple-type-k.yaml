@@ -1,0 +1,31 @@
+# Fonte: Omega, tabela de referência de termopar tipo K (NIST Monograph 175, revisada para ITS-90, Z-204), tabela em °C.
+part_number: Thermocouple type K (reference table Z-204)
+category: sensor.temperature
+schema_version: '1.0'
+manufacturer: Omega
+family: Thermocouple type K
+lifecycle: desconhecido
+notes:
+- 'Fila: thermocouple-type-k-celsius. Documento é tabela de referência (tensão termoelétrica em mV por °C, junta de referência a 0 °C), não folha de dados de um produto.'
+- 'Limites de erro (pág. 1): padrão 2,2 °C ou 0,75% acima de 0 °C e 2,2 °C ou 2,0% abaixo de 0 °C (o maior); especial 1,1 °C ou 0,4%. Grau de extensão 0 a 200 °C. Ambiente oxidante limpo ou inerte; calibração mais popular.'
+datasheets:
+- id: ds1
+  manufacturer: Omega
+  document_number: Z-204
+  url: https://assets.omega.com/pdf/tables_and_graphs/thermocouple-type-k-celsius.pdf
+  sha256: eb6a81233ac1c203a2d4a53f1ad7076fc8ed2a99ef1468d8af45fa14d7ccc923
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  range:
+    min: -200
+    max: 1250
+    unit: °C
+    status: extraido
+    source: {page: 1, location: MAXIMUM TEMPERATURE RANGE - Thermocouple Grade, excerpt: "200 to 1250°C"}
+attributes:
+  elemento:
+    value: Níquel-cromo (+) vs. níquel-alumínio (-), tipo K
+    status: extraido
+    source: {page: 1, location: Thermocouple Grade, excerpt: "Nickel-Chromium vs. Nickel-Aluminum"}

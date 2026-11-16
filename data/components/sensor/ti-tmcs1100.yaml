@@ -1,0 +1,112 @@
+# Fonte: Texas Instruments, TMCS1100 1% High-Precision, Basic Isolation Hall-Effect Current Sensor With ±600V Working Voltage, SBOS820C, setembro 2019, revisado junho 2025.
+part_number: TMCS1100
+category: sensor.current
+schema_version: '1.0'
+manufacturer: Texas Instruments
+family: TMCS1100A1 / A2 / A3 / A4
+package: D (SOIC, 8 pinos)
+lifecycle: desconhecido
+notes:
+- 'Valores da família; faixa entre as variantes A1 a A4 (sensibilidades 50, 100, 200, 400 mV/A) (p.1, p.8).'
+- 'Erro total tipicamente +-0.4 %, máx. +-0.9 % de -40 a 85 °C (p.1). Erro de sensibilidade +-0.2 % típ./+-0.7 % máx. a 25 °C; +-0.4 %/+-0.85 % de -40 a 85 °C; +-0.5 %/+-1.15 % de -40 a 125 °C (p.8).'
+- 'Offset de tensão de saída por variante: A1 +-3, A2 +-5, A3 +-8, A4 +-19 mV máx. (p.8); V_offset registra a faixa da família. Saída com referência externa VREF (GND ... VS) (p.9).'
+- 'Corrente RMS contínua admissível: 30 A (25 °C), 25 A (85 °C), 22.5 A (105 °C), 16 A (125 °C) (p.8). I_PN registra o valor a 25 °C.'
+- 'Isolação: básica, 3000 VRMS por 60 s (UL 1577), tensão de trabalho 600 VPK (424 VRMS) (p.6); CMTI 50 kV/us (p.8).'
+- 'Alimentação: A1 a A3 de 3 a 5.5 V; A4 de 4.5 a 5.5 V (p.4). Corrente quiescente 4.5 mA típ., 5.5 mA máx. a 25 °C, 6 mA máx. de -40 a 125 °C (p.9). Tempo de resposta 6.5 us, atraso de propagação 4 us (p.9). Tempo de ligação 25 ms (p.9).'
+datasheets:
+- id: ds1
+  manufacturer: Texas Instruments
+  document_number: SBOS820C
+  revision: 'setembro 2019, revisado junho 2025'
+  url: https://www.ti.com/lit/ds/symlink/tmcs1100.pdf
+  sha256: 1307ee6d6bbb7acf042112a09db777c48a726130cf7ed334e6284535d4a1db42
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_PN:
+    max: 30
+    unit: A
+    conditions: {TA: 25 °C}
+    status: extraido
+    source: {page: 8, location: 6.9 Electrical Characteristics - Input, IIN,max Allowable continuous RMS current, excerpt: "TA= 25ºC 30 A"}
+  sensitivity:
+    min: 50
+    max: 400
+    unit: mV/A
+    status: extraido
+    source: {page: 8, location: 6.9 Electrical Characteristics - Output, Sensitivity, excerpt: "A1 50; A2 100; A3 200; A4 400 mV/A"}
+  accuracy:
+    max: 0.9
+    unit: '%'
+    status: extraido
+    source: {page: 1, location: 1 Features - Total error, excerpt: "Total error: ±0.4% typical, ±0.9% maximum, –40°C to 85°C"}
+  linearity:
+    typ: 0.05
+    unit: '%'
+    status: extraido
+    source: {page: 8, location: 6.9 Electrical Characteristics - Output, Nonlinearity error, excerpt: "VOUT = 0.5 V to VS – 0.5 V ±0.05%"}
+  V_offset:
+    min: -19
+    max: 19
+    unit: mV
+    status: extraido
+    source: {page: 8, location: 6.9 Electrical Characteristics - VOE Output voltage offset error, excerpt: "TMCS1100A4 ±2.2 ±19 mV"}
+  bandwidth:
+    typ: 80
+    unit: kHz
+    status: extraido
+    source: {page: 9, location: 6.9 Electrical Characteristics - Frequency response, BW, excerpt: "–3-dB Bandwidth 80 kHz"}
+  t_resp:
+    typ: 6.5
+    unit: us
+    status: extraido
+    source: {page: 9, location: 6.9 Electrical Characteristics - Frequency response, tr Response time, excerpt: "Response time 6.5 µs"}
+  R_primary:
+    typ: 1.8
+    unit: mohm
+    status: extraido
+    source: {page: 8, location: 6.9 Electrical Characteristics - Input, RIN Input conductor resistance, excerpt: "IN+ to IN– 1.8 mΩ"}
+  V_iso:
+    max: 3000
+    unit: V
+    status: extraido
+    source: {page: 6, location: 6.6 Insulation Specifications - UL 1577 VISO, excerpt: "Withstand isolation voltage 3000 VRMS"}
+  VS:
+    min: 3
+    max: 5.5
+    unit: V
+    status: extraido
+    source: {page: 4, location: 6.3 Recommended Operating Conditions - Operating supply voltage VS, excerpt: "TMCS1100A1 – A3 3 5 5.5 V; A4 4.5 5 5.5 V"}
+  IS:
+    typ: 4.5
+    max: 5.5
+    unit: mA
+    conditions: {TA: 25 °C}
+    status: extraido
+    source: {page: 9, location: 6.9 Electrical Characteristics - Power supply, IQ Quiescent current, excerpt: "TA = 25ºC 4.5 5.5 mA"}
+  Top:
+    min: -40
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 4, location: 6.3 Recommended Operating Conditions - Operating free-air temperature TA, excerpt: "TA Operating free-air temperature –40 125 °C"}
+  Tstg:
+    min: -65
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 4, location: 6.1 Absolute Maximum Ratings - Storage temperature, excerpt: "Tstg Storage temperature –65 150 °C"}
+attributes:
+  principio:
+    value: Hall com condutor interno de 1.8 mohm, isolação galvânica básica, sem concentrador magnético
+    status: extraido
+    source: {page: 1, location: 3 Description, excerpt: "input current flows through an internal 1.8mΩ conductor"}
+  saida:
+    value: Tensão analógica proporcional à corrente, referenciada a VREF externa; bidirecional ou unidirecional
+    status: extraido
+    source: {page: 1, location: 1 Features, excerpt: "Bidirectional and unidirectional current sensing; External reference voltage"}
+  montagem:
+    value: SOIC de 8 pinos (D), montagem em PCB
+    status: extraido
+    source: {page: 4, location: 6.4 Thermal Information, excerpt: "D (SOIC) 8 PINS"}

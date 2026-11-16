@@ -1,0 +1,106 @@
+# Fonte: Pepperl+Fuchs, Diffuse mode sensor GLV18-8-200/25/102/159 (arquivo 188565_eng.pdf), release date 2023-03-28.
+part_number: GLV18-8-200/25/102/159
+category: sensor.photoelectric
+schema_version: '1.0'
+manufacturer: Pepperl+Fuchs
+family: GLV/GLK18
+package: M18 x 1 plástico, conector M12
+lifecycle: desconhecido
+notes:
+- 'Fila: "188565 eng" (nome de arquivo); produto real GLV18-8-200/25/102/159, sensor difuso (diffuse mode), luz vermelha, saída NPN.'
+- 'Faixa de detecção 50 ... 200 mm ajustável; máxima 0 ... 200 mm; alvo de referência 100 mm x 100 mm Kodak white (p.2).'
+- 'Histerese < 15 %; limite de luz ambiente 30000 Lux; ângulo de abertura aprox. 4 graus (p.2).'
+datasheets:
+- id: ds1
+  manufacturer: Pepperl+Fuchs
+  document_number: 188565_eng
+  revision: 'Release date 2023-03-28'
+  url: https://files.pepperl-fuchs.com/webcat/navi/productInfo/pds/188565_eng.pdf
+  sha256: 5372234c15117f2519acac421b00f406666b496cf0335407adc4b021e2bf681d
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  range:
+    min: 50
+    max: 200
+    unit: mm
+    status: extraido
+    source: {page: 2, location: Technical Data - General specifications - Detection range, excerpt: "Detection range 50 ... 200 mm adjustable"}
+  t_resp:
+    max: 1
+    unit: ms
+    status: extraido
+    source: {page: 3, location: Technical Data - Output - Response time, excerpt: "Response time ≤ 1 ms"}
+  lambda:
+    typ: 640
+    unit: nm
+    status: extraido
+    source: {page: 2, location: General specifications - Light type, excerpt: "modulated visible red light , 640 nm"}
+  VS:
+    min: 10
+    max: 30
+    unit: V
+    status: extraido
+    source: {page: 2, location: Electrical specifications - Operating voltage, excerpt: "10 ... 30 V DC"}
+  IS:
+    max: 20
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Electrical specifications - No-load supply current, excerpt: "I0 < 20 mA"}
+  IL:
+    max: 100
+    unit: mA
+    status: extraido
+    source: {page: 3, location: Output - Switching current, excerpt: "Switching current max. 100 mA"}
+  Vdrop:
+    max: 1.5
+    unit: V
+    status: extraido
+    source: {page: 3, location: Output - Voltage drop, excerpt: "Ud ≤ 1.5 V DC"}
+  f_sw:
+    typ: 500
+    unit: Hz
+    status: extraido
+    source: {page: 3, location: Output - Switching frequency, excerpt: "f 500 Hz"}
+  Top:
+    min: -25
+    max: 60
+    unit: °C
+    status: extraido
+    source: {page: 3, location: Ambient conditions - Ambient temperature, excerpt: "-25 ... 60 °C (-13 ... 140 °F)"}
+  Tstg:
+    min: -40
+    max: 70
+    unit: °C
+    status: extraido
+    source: {page: 3, location: Ambient conditions - Storage temperature, excerpt: "-40 ... 70 °C (-40 ... 158 °F)"}
+attributes:
+  saida:
+    value: 1 NPN, coletor aberto protegido contra curto-circuito; light-on; máx. 30 V DC
+    status: extraido
+    source: {page: 3, location: Output - Signal output, excerpt: "1 NPN, short-circuit protected open collector"}
+  conexao:
+    value: Conector M12 x 1, 3 pinos
+    status: extraido
+    source: {page: 3, location: Mechanical specifications - Connection, excerpt: "3-pin, M12 x 1 connector"}
+  invólucro:
+    value: Rosca M18 x 1; carcaça PC, face óptica PMMA; aprox. 10 g
+    status: extraido
+    source: {page: 3, location: Mechanical specifications - Material, excerpt: "Housing PC, Optical face PMMA"}
+  grau_protecao:
+    value: IP67
+    status: extraido
+    source: {page: 3, location: Mechanical specifications - Degree of protection, excerpt: "IP67"}
+  certificacoes:
+    value: cULus Listed Class 2; EN 60947-5-2; classe de proteção II
+    status: extraido
+    source: {page: 3, location: Conformity / Approvals, excerpt: "cULus Listed, Class 2 Power Source"}
+  principio:
+    value: Difuso (diffuse mode), face óptica frontal
+    status: extraido
+    source: {page: 2, location: General specifications - Optical face, excerpt: "Optical face frontal"}
+  luz:
+    value: Vermelha visível modulada, LED
+    status: extraido
+    source: {page: 2, location: General specifications - Light type, excerpt: "modulated visible red light , 640 nm"}

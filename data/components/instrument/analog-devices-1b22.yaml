@@ -1,0 +1,84 @@
+# Fonte: Analog Devices, 1B22 Programmable, Isolated Voltage-to-Current Converter, REV. B (C1193a-2.2-3/00), 2000.
+part_number: 1B22
+category: instrument.transmitter
+schema_version: '1.0'
+manufacturer: Analog Devices
+package: módulo plástico 1,0" x 2,10" x 0,35"
+lifecycle: desconhecido
+notes:
+- Conversor tensão-corrente isolado, modelo 1B22AN. Valores típicos a 25 °C, VS = ±15 V, VLOOP = +24 V (pág. 2).
+- Entrada selecionável por pinos 0 a +5 V (impedância 25 kohm) ou 0 a +10 V (50 kohm), pág. 2.
+- Alimentação do lado de entrada ±15 V ±5% (quiescente ±7,5 mA); VS abaixo refere-se à alimentação de laço (loop) +14 V a +30 V (pág. 2).
+- Compliance de carga 8 V min com VLOOP = +15 V e 20 V min com VLOOP = +28 V (pág. 2).
+- Não linearidade ±0,02% (máx. ±0,05%) do fundo de escala; erro de span ±0,7% FS e offset ±60 uA a 25 °C; tempco offset ±300 nA/°C, ganho ±50 ppm/°C (pág. 2). A exatidão abaixo é o erro de span.
+- CMR 90 dB min a 60 Hz; proteção de saída em modo normal 240 V rms contínuo; banda de pequenos sinais 400 Hz (pág. 2).
+datasheets:
+- id: ds1
+  manufacturer: Analog Devices
+  document_number: C1193a-2.2-3/00
+  revision: REV. B
+  url: https://cdn.components.ru/media/PDF/1708527.pdf
+  sha256: 2339004157ee8b60387eae424cf8b331fe3de05961df8a11a3204a17f7ff5509
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_out:
+    min: 0
+    max: 20
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Output specifications - current output range, excerpt: "4 to 20 mA, 0 to 20 mA"}
+  accuracy:
+    max: 0.7
+    unit: '%'
+    status: extraido
+    source: {page: 2, location: Accuracy - total output error @ +25 C - span, excerpt: "Span (VIN = +10 V) ±0.7% Full Scale"}
+  RL:
+    max: 1000
+    unit: ohm
+    status: extraido
+    conditions: {VLOOP: 28 V}
+    source: {page: 1, location: General description - loop compliance, excerpt: "with VLOOP = 28 V, it is sufficient to drive a 1000 Ω load"}
+  V_iso:
+    max: 1500
+    unit: V
+    status: extraido
+    source: {page: 2, location: Isolation - CMV input to output continuous, excerpt: "1500 V rms max"}
+  t_resp:
+    typ: 9
+    unit: ms
+    status: extraido
+    source: {page: 2, location: Dynamic response - settling time, excerpt: "Settling Time to 0.1% of FS for 10 V Step 9 ms"}
+  VS:
+    min: 14
+    max: 30
+    unit: V
+    status: extraido
+    source: {page: 2, location: Power supply - loop supply operating voltage, excerpt: "+14 V to +30 V"}
+  IS:
+    typ: 25
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Power supply - loop supply operating current at full-scale output, excerpt: "Operating Current, at Full-Scale Output 25 mA"}
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Environmental - temperature range operating, excerpt: "Operating –40°C to +85°C"}
+  Tstg:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Environmental - temperature range storage, excerpt: "Storage –40°C to +85°C"}
+attributes:
+  entrada:
+    value: tensão 0 a +5 V ou 0 a +10 V (por pinos); com resistor externo 0 a +1 V até 0 a +10 V
+    status: extraido
+    source: {page: 1, location: General description, excerpt: "0 V to +5 V or 0 V to +10 V inputs"}
+  saida:
+    value: corrente 4 a 20 mA ou 0 a 20 mA (por pinos), isolada, laço alimentado internamente
+    status: extraido
+    source: {page: 2, location: Output specifications, excerpt: "4 to 20 mA, 0 to 20 mA"}

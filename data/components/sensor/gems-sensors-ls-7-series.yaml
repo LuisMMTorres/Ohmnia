@@ -1,0 +1,50 @@
+# Fonte: Gems Sensors, LS-7 Series - Compact Side Mounts (level switches, single point), datasheet LS-7 Series p1-4 / 2020-09-28.
+part_number: LS-7 Series
+category: sensor.level
+schema_version: '1.0'
+manufacturer: Gems Sensors
+family: LS-7
+package: Chave de boia lateral compacta (tipos 3, 5, 6, 7, 8, 9, 10, 11, 12, 13)
+lifecycle: desconhecido
+notes:
+- 'Fila: ls-7-series-datasheet. Valores da série; faixas entre os tipos e materiais de flutuador/haste (tabelas p. 2 e 4).'
+- 'Capacidade do contato: SPST, 20 VA, fio 22 AWG (p. 1); detalhes elétricos remetem à página X-5 do catálogo, que não está neste PDF.'
+- 'Pressão máxima de operação 100 psi a 70 F (6,8 bar a 20 C) na maioria dos tipos; 300 psi nos tipos 8, 9 e 11 com flutuador 316 SS ou Teflon; 50 psi no tipo 10 (p. 2 e 4).'
+- 'Densidade mínima do líquido (sp. gr.) 0,55 a 0,80 conforme material (p. 2 e 4). Montagem horizontal (p. 1).'
+datasheets:
+- id: ds1
+  manufacturer: Gems Sensors
+  revision: LS-7 Series 2020-09-28
+  url: https://assets.testequity.com/te1/Documents/pdf/gems/GEMS-Sensors_LS-7_Series_Datasheet_0725.pdf
+  sha256: 0467aca974207ac02aa3229098a7dcf97a426c5480492d4feb8208eba5a5497c
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  T_process:
+    min: -40
+    max: 148.9
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Tabela - Operating Temperature (tipo 5 Versaplast até +300 F), excerpt: "-40°F to +300°F (-40°C to +148.9°C)"}
+attributes:
+  saida:
+    value: SPST, 20 VA, NA ou NF conforme posição de montagem (girar 180 graus)
+    status: extraido
+    source: {page: 1, location: Common Specifications - Switch Rating; Switch Operation, excerpt: "Switch Rating*: SPST, 20VA"}
+  conexao:
+    value: 'Cabo flexível (zip cord) 22 AWG, 24 pol. (tipos 3, 5, 7, 10, 13); tipo 7 com conexão para conduíte'
+    status: extraido
+    source: {page: 1, location: Common Specifications - Lead Wire Gauge; tipos}
+  invólucro:
+    value: 'Nylon, polipropileno, Versaplast ou Noryl; versões liga: zinco ou aço inox 316'
+    status: extraido
+    source: {page: 4, location: Tabela de materiais (Stem and Mounting / Float)}
+  certificacoes:
+    value: CE, UL Recognized (E45168), cUL, CSA Listed (30200), RoHS
+    status: extraido
+    source: {page: 1, location: Approvals}
+  principio:
+    value: Boia com ímã e interruptor reed (chave de nível de ponto único)
+    status: extraido
+    source: {page: 1, location: Cabeçalho - Level Switches Single Point; Switch Operation}

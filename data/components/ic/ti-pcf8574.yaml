@@ -1,0 +1,70 @@
+# Fonte: Texas Instruments, PCF8574 Remote 8-Bit I/O Expander for I2C Bus, SCPS068K, July 2001 - Revised September 2024.
+part_number: PCF8574
+category: ic.interface
+schema_version: '1.0'
+manufacturer: TI
+lifecycle: desconhecido
+notes:
+- 'Expansor de I/O de 8 bits quase-bidirecional (P0-P7) para barramento I2C, com saídas latched que acionam LEDs diretamente e saída de interrupção open-drain (p. 1).'
+- 'Corrente de saída em nível baixo recomendada 25 mA (p. 4, Recommended Operating Conditions); nível alto recomendado -1 mA.'
+- 'Corrente em espera ICC: 2,5 uA típ. e 10 uA máx. (linha Standby mode; p. 5).'
+- 'Empacotamentos citados na tabela térmica: DGV, DW, N, PW, RGT e RGY (p. 4).'
+datasheets:
+- id: ds1
+  manufacturer: TI
+  document_number: SCPS068K
+  revision: September 2024
+  sha256: 6625fa40247dc17f8526554783838e194f2ee7ecbab3e6443ad9b3603726e2d8
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 2.5
+    max: 6
+    unit: V
+    status: extraido
+    source: {page: 4, location: 5.3 Recommended Operating Conditions - Supply voltage, excerpt: "VCC Supply voltage 2.5 6 V"}
+  I_out:
+    max: 50
+    unit: mA
+    status: extraido
+    source: {page: 4, location: 5.1 Absolute Maximum Ratings - continuous output low current, excerpt: "IOL Continuous output low current VO = 0 to VCC 50 mA"}
+  channels:
+    typ: 8
+    unit: '1'
+    status: extraido
+    source: {page: 1, location: 3 Description, excerpt: "8-bit quasi-bidirectional I/O port (P0–P7)"}
+  f_max:
+    max: 100
+    unit: kHz
+    status: extraido
+    source: {page: 5, location: 5.6 I2C Interface Timing Requirements - fscl, excerpt: "fscl I2C clock frequency 100 kHz"}
+  ICC:
+    typ: 0.04
+    max: 0.1
+    unit: mA
+    conditions: {VCC: 6 V, fSCL: 100 kHz}
+    status: extraido
+    source: {page: 5, location: 5.5 Electrical Characteristics - ICC operating mode, excerpt: "Operating mode ... fSCL = 100 kHz 6 V 40 100 μA"}
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 4, location: 5.3 Recommended Operating Conditions - operating free-air temperature, excerpt: "TA Operating free-air temperature –40 85 °C"}
+  Tstg:
+    min: -65
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 4, location: 5.1 Absolute Maximum Ratings - storage temperature, excerpt: "Tstg Storage temperature range –65 150 °C"}
+attributes:
+  funcao:
+    value: Expansor de I/O de 8 bits para I2C (porta quase-bidirecional)
+    status: extraido
+    source: {page: 1, location: Title, excerpt: "PCF8574 Remote 8-Bit I/O Expander for I2C Bus"}
+  interface:
+    value: I2C (SCL, SDA), 100 kHz
+    status: extraido
+    source: {page: 5, location: 5.6 I2C Interface Timing Requirements, excerpt: "fscl I2C clock frequency 100 kHz"}

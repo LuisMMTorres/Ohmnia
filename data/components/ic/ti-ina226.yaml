@@ -1,0 +1,71 @@
+# Fonte: Texas Instruments, INA226 36V, 16-Bit, Ultra-Precise I2C Output Current, Voltage, and Power Monitor With Alert, SBOS547C, junho 2011, revisado agosto 2026.
+part_number: INA226
+category: ic.energy_meter
+schema_version: '1.0'
+manufacturer: Texas Instruments
+package: DGS (VSSOP, 10 pinos)
+lifecycle: desconhecido
+notes:
+- 'Faixa de tensão de shunt -81.9175 ... +81.92 mV (resolução 2.5 uV/LSB) e de barramento 0 ... 36 V (1.25 mV/LSB, escala de 40.96 V no ADC) (p.5).'
+- 'Erro de ganho (shunt e barramento) 0.02 % típ., 0.1 % máx.; offset do shunt +-2.5 uV típ., +-10 uV máx. (p.5).'
+- 'Corrente quiescente em desligamento (shutdown) 0.5 uA típ., 2 uA máx. (p.6). Tempo de conversão do ADC de 140 us a 9.068 ms conforme bits CT (p.5).'
+- 'V_in registra o limite absoluto diferencial das entradas IN+/IN- (+-40 V, p.4); a tensão de modo comum não pode exceder -0.3 ... 40 V.'
+datasheets:
+- id: ds1
+  manufacturer: Texas Instruments
+  document_number: SBOS547C
+  revision: 'junho 2011, revisado agosto 2026'
+  url: https://www.ti.com/lit/ds/symlink/ina226.pdf
+  sha256: c9b67f886d4a5241a5e070723f7b61867409eeb27eed768b9cdd9cb17e03ca2d
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 2.7
+    max: 5.5
+    unit: V
+    status: extraido
+    source: {page: 6, location: 5.5 Electrical Characteristics - Power supply, Operating supply range, excerpt: "Operating supply range 2.7 5.5 V"}
+  V_in:
+    max: 40
+    unit: V
+    status: extraido
+    source: {page: 4, location: 5.1 Absolute Maximum Ratings - Analog inputs IN+, IN- Differential, excerpt: "Differential (VIN+ – VIN-) –40 40 V"}
+  accuracy:
+    max: 0.1
+    unit: '%'
+    status: extraido
+    source: {page: 5, location: 5.5 Electrical Characteristics - DC accuracy, Shunt voltage gain error, excerpt: "Shunt voltage gain error 0.02% 0.1%"}
+  bits:
+    typ: 16
+    unit: bit
+    status: extraido
+    source: {page: 5, location: 5.5 Electrical Characteristics - DC accuracy, ADC native resolution, excerpt: "ADC native resolution 16 Bits"}
+  IS:
+    typ: 0.33
+    max: 0.42
+    unit: mA
+    status: extraido
+    source: {page: 6, location: 5.5 Electrical Characteristics - Power supply, IQ Quiescent current, excerpt: "Quiescent current 330 420 μA"}
+  Top:
+    min: -40
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 4, location: 5.3 Recommended Operating Conditions - Operating free-air temperature, excerpt: "TA –40 125 °C"}
+  Tstg:
+    min: -65
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 4, location: 5.1 Absolute Maximum Ratings - Storage temperature range, excerpt: "Tstg –65 150 °C"}
+attributes:
+  grandezas:
+    value: Tensão de shunt, tensão de barramento (0 a 36 V), corrente e potência
+    status: extraido
+    source: {page: 1, location: 1 Features, excerpt: "Senses bus voltages from 0V to 36V; Reports current, voltage, and power"}
+  interface:
+    value: I2C ou SMBus, 16 endereços programáveis, saída Alert
+    status: extraido
+    source: {page: 1, location: 1 Features, excerpt: "16 programmable addresses"}

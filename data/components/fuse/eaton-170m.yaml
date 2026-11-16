@@ -1,0 +1,77 @@
+# Fonte: Eaton Bussmann series, Square body fuses 170M size 000 to 3, DIN 43620, dual indicator fuses; catálogo High Speed Fuse 10506 (jan. 2017; tabela na pág. 2 datada jan. 2016).
+part_number: 170M
+category: fuse
+schema_version: '1.0'
+manufacturer: Eaton
+family: 170M (square body, tamanhos 000 a 3, DIN 43620)
+package: Corpo quadrado com lâminas DIN 43620, tamanhos 000, 00, 1, 2, 3
+lifecycle: desconhecido
+notes:
+- 'Valores da série (faixa entre os modelos 170M1558D ... 170M8557D). Detalhes elétricos: o catálogo remete às fichas 170K6386/6388/6390/6392 (pág. 1).'
+- 'Tensão: 690 Vac (IEC) e 700 Vac (UL) (pág. 1). Corrente máxima de carga permissível menor que a nominal nos tamanhos 1 a 3 (ex.: 170M3808D 40 A nominal, 25 A máx. permissível) (pág. 2).'
+- 'I2t: pré-arco de 4 A²s (170M1558D, 10 A) a 585 000 A²s (170M8557D, 1600 A); I2t de extinção a 690 Vac de 27 a 4 150 000 A²s (pág. 2). Perdas de 2,5 W (170M1558D) a 74 W (170M8557D), dadas na corrente nominal máxima (nota 3, pág. 2).'
+- '170M4867D não é UL Recognized (nota 1, pág. 2). Dimensões por tamanho na tabela da pág. 1.'
+datasheets:
+- id: ds1
+  manufacturer: Eaton
+  document_number: Bussmann series High Speed Fuse catalog 10506, pp. 59-60
+  revision: January 2017 (pág. 1); January 2016 (pág. 2)
+  url: https://baoanjsc.com.vn/TaiLieu/Square-body-fuses-size-000-to-3-BUSSMANN-170M-series-CATALOG-5976.pdf
+  sha256: 50cdc9ab62e22e9f2050457c5045267da90c214fb2300d7a6fc5f72fef8e29d7
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_rated:
+    min: 10
+    max: 1600
+    unit: A
+    status: extraido
+    source: {datasheet_id: ds1, page: 1, location: Title and Specifications - Amps, excerpt: "690 Vac (IEC), 700 Vac (UL), 10 to 1600 A"}
+  V_rated:
+    max: 690
+    unit: V
+    status: extraido
+    note: 690 Vac (IEC); 700 Vac (UL).
+    source: {datasheet_id: ds1, page: 1, location: Specifications - Ratings - Volts, excerpt: "690 Vac (IEC) / 700 Vac (UL)"}
+  I_break:
+    max: 200000
+    unit: A
+    status: extraido
+    note: 200 kA RMS simétrico.
+    source: {datasheet_id: ds1, page: 1, location: Specifications - Ratings - Interrupting rating, excerpt: "Interrupting rating: 200 kA RMS Sym."}
+  I2t:
+    min: 4
+    max: 585000
+    unit: A^2*s
+    status: extraido
+    note: I2t de pré-arco (coluna Pre-arcing), faixa entre os modelos.
+    source: {datasheet_id: ds1, page: 2, location: Table - I2t (A2s) Pre-arcing, excerpt: "10 A: 4 ... 1600 A: 585,000"}
+  I2t@2:
+    min: 27
+    max: 4150000
+    unit: A^2*s
+    status: extraido
+    conditions: {V: 690 V}
+    note: I2t de extinção a 690 Vac (coluna Clearing), faixa entre os modelos.
+    source: {datasheet_id: ds1, page: 2, location: Table - I2t (A2s) Clearing at 690 Vac, excerpt: "10 A: 27 ... 1600 A: 4,150,000"}
+  P_diss:
+    min: 2.5
+    max: 74
+    unit: W
+    status: extraido
+    note: Na corrente nominal máxima de carga; faixa entre os modelos.
+    source: {datasheet_id: ds1, page: 2, location: Table - Watts loss (W), excerpt: "170M1558D 2.5 ... 170M8557D 74"}
+attributes:
+  curva:
+    value: gR (tamanho 000, 10-63 A); aR (demais) - alta velocidade
+    status: extraido
+    source: {page: 1, location: Specifications - Operating class}
+  formato:
+    value: Corpo quadrado DIN 43620 com lâminas, tamanhos 000 a 3, duplo indicador
+    status: extraido
+    source: {page: 1, location: Title and Description}
+  certificacoes:
+    value: IEC 60269-4; UL Recognized E125085 (JFHR2); CSA Class 1422-30 (53787), exceto 170M4867D; CE
+    status: extraido
+    source: {page: 1, location: Agency information}

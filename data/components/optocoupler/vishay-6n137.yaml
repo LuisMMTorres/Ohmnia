@@ -1,0 +1,101 @@
+# Fonte: Vishay Semiconductors, 6N137, VO2601, VO2611, VO2630, VO2631, VO4661 - High Speed Optocoupler, Single and Dual, 10 MBd, Document Number 84732, Rev. 2.2, 15-Mar-2023.
+part_number: 6N137
+category: optocoupler
+schema_version: '1.0'
+manufacturer: Vishay
+family: 6N137 / VO2601 / VO2611 / VO2630 / VO2631 / VO4661
+package: DIP-8 (opções 6, 7 e 9 também)
+lifecycle: desconhecido
+notes:
+- Valores do canal único (6N137); o documento cobre também as versões VO26xx (CMR 5 kV/us e 15 kV/us) e duplas.
+- Saída NMOS dreno aberto com função enable no pino 7; data_rate dado em MBd no documento.
+datasheets:
+- id: ds1
+  manufacturer: Vishay
+  document_number: '84732'
+  revision: Rev. 2.2, 15-Mar-2023
+  sha256: e838b59beab53ddad0fedf094df8bd32fc35297fda7d500fd24ddd188924f6d2
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  IF:
+    max: 20
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - input - average forward current (single channel), excerpt: "Average forward current (single channel) IF 20 mA"}
+  VF:
+    min: 1.1
+    typ: 1.4
+    max: 1.7
+    unit: V
+    conditions: {IF: 10 mA, Tamb: 25 °C}
+    status: extraido
+    source: {page: 4, location: Electrical characteristics - input forward voltage, excerpt: "Input forward voltage IF = 10 mA VF 1.1 1.4 1.7 V"}
+  VCEO:
+    max: 7
+    unit: V
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - output voltage VO, excerpt: "Output voltage VO 7 V"}
+  IC:
+    max: 50
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - output current IO, excerpt: "Output current IO 50 mA"}
+  VCE_sat:
+    typ: 0.2
+    max: 0.6
+    unit: V
+    conditions: {IF: 5 mA, IOL: 13 mA, VE: 2 V}
+    status: extraido
+    source: {page: 4, location: Electrical characteristics - low level output voltage VOL, excerpt: "Low level output voltage ... VOL 0.2 0.6 V"}
+  V_iso:
+    max: 5300
+    unit: V
+    conditions: {t: 1 min}
+    status: extraido
+    source: {page: 7, location: Safety and insulation ratings - VISO, excerpt: "According to UL1577, t = 1 min VISO 5300 VRMS"}
+  t_r:
+    typ: 0.023
+    unit: us
+    conditions: {RL: 350 ohm, CL: 15 pF}
+    status: extraido
+    source: {page: 4, location: Switching characteristics - output rise time, excerpt: "Output rise time (10 % to 90 %) tr 23 ns"}
+  t_f:
+    typ: 0.007
+    unit: us
+    conditions: {RL: 350 ohm, CL: 15 pF}
+    status: extraido
+    source: {page: 4, location: Switching characteristics - output fall time, excerpt: "Output fall time (90 % to 10 %) tf 7 ns"}
+  data_rate:
+    typ: 10
+    unit: Mbit/s
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "High speed: 10 MBd typical"}
+  VS:
+    min: 4.5
+    max: 5.5
+    unit: V
+    status: extraido
+    source: {page: 3, location: Recommended operating conditions - supply voltage VCC, excerpt: "Supply voltage VCC 4.5 5.5 V"}
+  Top:
+    min: -40
+    max: 100
+    unit: °C
+    status: extraido
+    source: {page: 3, location: Recommended operating conditions - operating temperature, excerpt: "Operating temperature Tamb -40 100 °C"}
+  Tstg:
+    min: -55
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Absolute maximum ratings - coupler, excerpt: "Storage temperature Tstg -55 to +150 °C"}
+attributes:
+  saida:
+    value: NMOS dreno aberto (porta lógica) com enable
+    status: extraido
+    source: {page: 1, location: Description, excerpt: "open drain NMOS-transistor output"}
+  canais:
+    value: 1 (6N137)
+    status: extraido
+    source: {page: 1, location: Description, excerpt: "6N137, VO2601, and VO2611 are single channel"}

@@ -1,0 +1,5 @@
+category: jfet.p
+extends: jfet.n
+schema_version: "1.0"
+description: JFET canal P (depleção), pequenos sinais; valores em módulo, como no canal N
+required: [IDSS, VGS(off), Ptot, Tj_max]

@@ -1,0 +1,71 @@
+# Fonte: Contrinex, data sheet DW-A-509-M12 (indutivo com saída analógica, trilingue d/f/e), rev. 9, 10.08.05.
+part_number: DW-AD-509-M12
+category: sensor.proximity
+schema_version: '1.0'
+manufacturer: Contrinex
+family: DW-AD/DW-AS 509 M12
+package: M12, latão cromado, quase-faceado (quasi-embeddable)
+lifecycle: desconhecido
+notes:
+- 'DW-AD = versão com cabo (art. 320 020 100); DW-AS = versão com conector S12 (p.2). O documento cobre a família; valores são comuns.'
+- 'Saída analógica não linearizada: tensão 0 a 5 V (A1) e corrente 1 a 5 mA (A2) (p.1). Tensão: 0 V a s=0 mm, +2,6 V +-0,2 V a 3 mm, +5 V +-0,2 V a 6 mm (23 °C) (p.1).'
+- 'Corrente de saída A2: 1 mA +-0,2 mA a s=0 mm, 5 mA +-0,2 mA a s=6 mm; carga máx. em A2: 1 kohm (UB=10 V) / 5 kohm (UB=30 V) (p.1).'
+- 'Largura de banda 1000 Hz (-3 dB a s=3 mm), atraso de disponibilidade <= 50 ms, deriva de temperatura de sr <= +-5 % (0 a +70 °C) (p.1). Resolução <= 1 um, repetibilidade 0,3 mm (p.1).'
+- 'Ripple admissível <= 20 % UB; proteção contra curto-circuito e inversão de polaridade integradas (p.1).'
+datasheets:
+- id: ds1
+  manufacturer: Contrinex
+  url: https://media.distrelec.com/Web/Downloads/-e/-f/itDW-Ax509M12_d-e-f.pdf
+  sha256: a2a2d55af59fa6ae595c1cee2485a5fc3851a0c947f39fa1ff3ba4eeca1aac6f
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  sn:
+    max: 6
+    unit: mm
+    status: extraido
+    source: {page: 1, location: Technical data - sensing range sd (faixa analógica 0 a 6 mm), excerpt: "0 ... 6 mm"}
+  VS:
+    min: 10
+    max: 30
+    unit: V
+    status: extraido
+    source: {page: 1, location: Technical data - supply voltage range UB, excerpt: "10 ... 30 VDC"}
+  IS:
+    max: 10
+    unit: mA
+    status: extraido
+    source: {page: 1, location: Technical data - no-load supply current, excerpt: "≤ 10 mA"}
+  IL:
+    max: 10
+    unit: mA
+    status: extraido
+    source: {page: 1, location: Technical data - load at voltage output A1, excerpt: "≤ 10 mA"}
+  Top:
+    min: -25
+    max: 70
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Technical data - ambient temperature range TA, excerpt: "-25 ... + 70 oC"}
+attributes:
+  saida:
+    value: Analógica, 0 a 5 V (A1) e 1 a 5 mA (A2), não linearizada
+    status: extraido
+    source: {page: 1, location: Main features - voltage output / current output, excerpt: "Voltage output 0 to 5 V"}
+  conexao:
+    value: Cabo PUR 4 x 0,25 mm2, 2 m (DW-AD); conector S12 (DW-AS)
+    status: extraido
+    source: {page: 1, location: Technical data - connection cable / main features, excerpt: "Cable and S12 connector versions"}
+  invólucro:
+    value: Latão cromado, M12; face ativa em PBTP
+    status: extraido
+    source: {page: 1, location: Technical data - housing material, excerpt: "cr-plated brass"}
+  grau_protecao:
+    value: IP67
+    status: extraido
+    source: {page: 1, location: Technical data - degree of protection, excerpt: "IP 67"}
+  montagem:
+    value: Quase-faceado (quasi-embeddable)
+    status: extraido
+    source: {page: 1, location: Header - mounting, excerpt: "quasi-embeddable"}

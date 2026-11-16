@@ -1,0 +1,89 @@
+# Fonte: Texas Instruments, ADS1220 4-Channel, 2kSPS, Low-Power, 24-Bit ADC With Integrated PGA and Reference, SBAS501D, May 2013 - Revised May 2026.
+part_number: ADS1220
+category: ic.adc
+schema_version: '1.0'
+manufacturer: Texas Instruments
+family: ADS1220
+package: VQFN-16 (RVA) e TSSOP-16 (PW) (p. 1 e p. 4)
+lifecycle: desconhecido
+notes:
+- 'ADC delta-sigma de 24 bits com PGA (ganho 1 a 128), referência interna de 2,048 V, oscilador interno, duas fontes de corrente de excitação (10 µA a 1,5 mA) e sensor de temperatura interno (p. 1).'
+- 'Especificações a AVDD = 3,3 V, AVSS = 0 V, DVDD = 3,3 V, PGA ligado, 20 SPS e VREF externa de 2,5 V (p. 7).'
+- 'INL: ±6 ppmFSR típico, 15 ppmFSR máx. (p. 7); unidade em ppm do fundo de escala, sem símbolo equivalente no esquema.'
+- 'Taxas de dados: normal 20 a 1000 SPS, turbo 40 a 2000 SPS, duty-cycle 5 a 250 SPS (p. 7).'
+- 'Tensão de referência externa: 0,75 V a AVDD - AVSS (p. 6).'
+datasheets:
+- id: ds1
+  manufacturer: Texas Instruments
+  document_number: SBAS501D
+  revision: May 2026
+  url: https://www.ti.com/lit/ds/symlink/ads1220.pdf
+  sha256: 218e25810febc1d740287cebe0678d844817a5db9191cba59cb471647ace3ac4
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  bits:
+    typ: 24
+    unit: bit
+    status: extraido
+    source: {page: 7, location: 6.5 Electrical Characteristics - Resolution (no missing codes), excerpt: "Resolution (no missing codes) 24 Bits"}
+  fs:
+    max: 2
+    unit: kHz
+    status: extraido
+    source: {page: 7, location: 6.5 Electrical Characteristics - Data rate, turbo mode, excerpt: "Turbo mode 40, 90, 180, 350, 660, 1200, 2000 SPS"}
+  channels:
+    typ: 4
+    unit: '1'
+    status: extraido
+    source: {page: 1, location: 1 Features - inputs, excerpt: "Two differential or four single-ended inputs"}
+  VS:
+    min: 2.3
+    max: 5.5
+    unit: V
+    status: extraido
+    source: {page: 6, location: 6.3 Recommended Operating Conditions - Unipolar analog power supply, excerpt: "AVDD to AVSS 2.3 5.5 V"}
+  VREF:
+    min: 0.75
+    typ: 2.048
+    unit: V
+    status: extraido
+    source: {page: 7, location: 6.5 Electrical Characteristics - Internal voltage reference (typ) e 6.3 p.6 (min externa), excerpt: "Initial accuracy TA = 25°C 2.045 2.048 2.051 V"}
+  gain_err:
+    max: 0.1
+    unit: '%'
+    conditions: {TA: 25 °C}
+    status: extraido
+    source: {page: 7, location: 6.5 Electrical Characteristics - Gain error, gain = 1 to 128, excerpt: "Gain = 1 to 128, TA = 25°C –0.1% ±0.015% 0.1%"}
+  IS:
+    typ: 0.34
+    max: 0.49
+    unit: mA
+    status: extraido
+    source: {page: 8, location: 6.5 Electrical Characteristics - IAVDD analog supply current, excerpt: "Normal mode, gain = 1 to 16 340 490 µA"}
+  Top:
+    min: -40
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 6, location: 6.3 Recommended Operating Conditions - Operating ambient temperature, excerpt: "TA Operating ambient temperature –40 125 °C"}
+  Tstg:
+    min: -60
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 5, location: 6.1 Absolute Maximum Ratings - Tstg, excerpt: "Storage, Tstg –60 150 °C"}
+attributes:
+  interface:
+    value: SPI (modo 1)
+    status: extraido
+    source: {page: 1, location: 1 Features, excerpt: "SPI-compatible interface (mode 1)"}
+  arquitetura:
+    value: Delta-sigma com PGA, referência e oscilador integrados
+    status: extraido
+    source: {page: 1, location: Title, excerpt: "24-Bit ADC With Integrated PGA and Reference"}
+  encapsulamento:
+    value: VQFN-16 (RVA), TSSOP-16 (PW)
+    status: extraido
+    source: {page: 4, location: 5 Pin Configuration, excerpt: "RVA Package, 16-Pin VQFN; PW Package, 16-Pin TSSOP"}

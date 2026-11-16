@@ -1,0 +1,98 @@
+# Fonte: Sharp, PC817X Series - DIP 4pin General Purpose Photocoupler, Sheet No. D2-A03101EN, Sep. 30, 2003.
+part_number: PC817
+category: optocoupler
+schema_version: '1.0'
+manufacturer: Sharp
+family: PC817X Series
+package: DIP 4 pinos (opções SMT gullwing e wide lead-form)
+lifecycle: desconhecido
+notes:
+- Valores da série PC817X, com saída fototransistor. Tabelas do texto extraído estavam embaralhadas; valores atribuídos pela ordem das colunas, conferir no PDF.
+- 'VCEO 80 V; até o date code P7 (jul/2002) o VCEO era 35 V (nota *4 do documento).'
+datasheets:
+- id: ds1
+  manufacturer: Sharp
+  document_number: D2-A03101EN
+  revision: Sep. 30, 2003
+  sha256: a485f78cde6091c805dc38d94e3becf440495439d94862c0a80234a8c0f56abd
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  IF:
+    max: 50
+    unit: mA
+    status: extraido
+    source: {page: 4, location: Absolute maximum ratings - input - forward current, excerpt: "Forward current IF mA ... 50"}
+  VF:
+    typ: 1.2
+    max: 1.4
+    unit: V
+    conditions: {IF: 20 mA, Ta: 25 °C}
+    status: extraido
+    source: {page: 4, location: Electro-optical characteristics - forward voltage, excerpt: "Forward voltage VF TYP. 1.2 MAX. 1.4 V IF=20mA"}
+  CTR:
+    min: 50
+    max: 600
+    unit: '%'
+    conditions: {IF: 5 mA, VCE: 5 V}
+    status: extraido
+    source: {page: 1, location: Description / Features - current transfer ratio, excerpt: "CTR is 50% to 600% at input current of 5mA"}
+  VCEO:
+    max: 80
+    unit: V
+    status: extraido
+    source: {page: 4, location: Absolute maximum ratings - output - collector-emitter voltage, excerpt: "Collector-emitter voltage VCEO V ... 80"}
+  IC:
+    max: 50
+    unit: mA
+    status: extraido
+    source: {page: 4, location: Absolute maximum ratings - output - collector current, excerpt: "Collector current IC mA ... 50"}
+  VCE_sat:
+    typ: 0.1
+    max: 0.2
+    unit: V
+    conditions: {IF: 20 mA, IC: 1 mA, Ta: 25 °C}
+    status: extraido
+    source: {page: 4, location: Electro-optical characteristics - collector-emitter saturation voltage, excerpt: "VCE(sat) 0.1 0.2 V IF=20mA, IC=1mA"}
+  V_iso:
+    max: 5000
+    unit: V
+    conditions: {t: 1 min}
+    status: extraido
+    source: {page: 4, location: Absolute maximum ratings - isolation voltage (rms), excerpt: "Viso (rms) 5.0 kV; AC for 1minute, f=60Hz"}
+  t_r:
+    typ: 4
+    max: 18
+    unit: us
+    conditions: {VCE: 2 V, IC: 2 mA, RL: 100 ohm, Ta: 25 °C}
+    status: extraido
+    source: {page: 4, location: Electro-optical characteristics - response time rise time, excerpt: "Rise time tr 4 18 µs VCE=2V, IC=2mA, RL=100Ω"}
+  t_f:
+    typ: 3
+    max: 18
+    unit: us
+    conditions: {VCE: 2 V, IC: 2 mA, RL: 100 ohm, Ta: 25 °C}
+    status: extraido
+    source: {page: 4, location: Electro-optical characteristics - response time fall time, excerpt: "Fall time tf 3 18 µs VCE=2V, IC=2mA, RL=100Ω"}
+  Top:
+    min: -30
+    max: 100
+    unit: °C
+    status: extraido
+    source: {page: 4, location: Absolute maximum ratings - operating temperature, excerpt: "Operating temperature Topr −30 to +100 °C"}
+  Tstg:
+    min: -55
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 4, location: Absolute maximum ratings - storage temperature, excerpt: "Storage temperature Tstg −55 to +125 °C"}
+attributes:
+  saida:
+    value: Fototransistor
+    status: extraido
+    source: {page: 1, location: Description, excerpt: "IRED optically coupled to a phototransistor"}
+  canais:
+    value: '1'
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "4pin DIP package; 4-channel package type is also available (PC847X)"}

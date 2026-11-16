@@ -1,0 +1,50 @@
+category: actuator.electric
+schema_version: '1.0'
+description: Atuador elétrico, cilindro elétrico, bomba dosadora ou atuador linear
+required: []
+parameters:
+  VS:
+    unit: V
+    kind: characteristic
+    description: Alimentação
+  P_rated:
+    unit: W
+    kind: max_rating
+    description: Potência
+  force:
+    unit: N
+    kind: max_rating
+    description: Força
+  torque:
+    unit: N*m
+    kind: max_rating
+    description: Torque
+  stroke:
+    unit: mm
+    kind: geometry
+    description: Curso
+  speed:
+    unit: mm/s
+    kind: characteristic
+    description: Velocidade
+  flow:
+    unit: L/h
+    kind: characteristic
+    description: Vazão (bomba)
+  P_max:
+    unit: bar
+    kind: max_rating
+    description: Pressão máxima (bomba)
+  Top:
+    unit: °C
+    kind: thermal
+    description: 'Temperatura de operação (faixa: mín. e máx.)'
+  Tstg:
+    unit: °C
+    kind: thermal
+    description: Temperatura de armazenamento (faixa)
+attributes:
+  tipo: Tipo
+  comando: Comando
+  grau_protecao: Grau de proteção (IP) declarado
+  certificacoes: Certificações e aprovações (UL, CE, ATEX...)

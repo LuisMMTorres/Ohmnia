@@ -1,0 +1,77 @@
+# Fonte: WEG, Manual do usuário CFW300 (trilíngue EN/ES/PT), Apêndice B - Technical Specifications (Tabelas B1 e B4) e capítulo 8.
+part_number: CFW300
+category: drive.vfd
+schema_version: '1.0'
+manufacturer: WEG
+family: CFW300
+package: IP20, mecânicas A, B e C
+lifecycle: desconhecido
+notes:
+- 'Valores da série CFW300 (Tabela B1, págs. 133 e 134): modelos de 110...127 Vac (1,6 a 6,0 A), 200...240 Vac (1,6 a 15,2 A) e 380...480 Vac (1,1 a 15,0 A); faixa entre os modelos.'
+- 'Alguns modelos aceitam barramento DC: 280...340 Vdc (linha 200 V) e 513...650 Vdc (linha 400 V) (Tabela B1, págs. 133 e 134).'
+- 'Potência máxima do motor: 0,25 HP / 0,18 kW a 10 HP / 7,5 kW (CFW300C15P0T4NB20) (Tabela B1, pág. 134).'
+- 'Frequência de saída 0 a 400 Hz, resolução 0,1 Hz; controle V/f ou VVW; 4 DI, 1 AI, 1 relé 250 Vca 0,5 A, fonte 10 Vcc 50 mA (Tabela 8.1, pág. 127).'
+- 'Temperatura nominal ao redor do inversor 50 C na Tabela B4 (pág. 140), coluna "Nominal Inverter Surrounding Temperature" (50/122 C/F).'
+datasheets:
+- id: ds1
+  manufacturer: WEG
+  revision: manual trilíngue EN/ES/PT (cópia do distribuidor)
+  url: https://www.wolfautomation.com/media/pdf/ac-drives/weg/cfwthreehund/weg-cfw300-usermanual.pdf
+  sha256: 5e882f9a068a666f2142c56ed5edf4418bb9685fff9712cf31bd3f0567c5e2cb
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  P_motor:
+    min: 0.18
+    max: 7.5
+    unit: kW
+    status: extraido
+    source: {page: 133, location: Tabela B1, Maximum Motor, excerpt: "CFW300A01P6S1NB20 ... 0.25/0.18"}
+  V_in:
+    min: 110
+    max: 480
+    unit: V
+    status: extraido
+    source: {page: 133, location: Tabela B1, Power Supply Rated Voltage, excerpt: "110...127 Vac ... 380...480 Vac"}
+  I_out:
+    min: 1.1
+    max: 15.2
+    unit: A
+    status: extraido
+    source: {page: 133, location: Tabela B1, Output Rated Current, excerpt: "CFW300B15P2T2DB20 | 3 | 200...240 Vac | B | 15.2"}
+  f_out:
+    min: 0
+    max: 400
+    unit: Hz
+    status: extraido
+    source: {page: 127, location: Tabela 8.1, Frequência de saída, excerpt: "0 a 400 Hz, resolução de 0,1 Hz"}
+  f_sw:
+    typ: 5
+    unit: kHz
+    status: extraido
+    source: {page: 140, location: Tabela B4, Rated Carrier Frequency, excerpt: "CFW300A01P6S1NB20|1.6|2.4|5|50/122"}
+  di:
+    typ: 4
+    unit: '1'
+    status: extraido
+    source: {page: 127, location: Tabela 8.1, Entradas Digitais, excerpt: "4 entradas isoladas"}
+  ai:
+    typ: 1
+    unit: '1'
+    status: extraido
+    source: {page: 127, location: Tabela 8.1, Entradas Analógicas, excerpt: "1 entrada isolada"}
+  do:
+    typ: 1
+    unit: '1'
+    status: extraido
+    source: {page: 127, location: Tabela 8.1, Saídas Relé, excerpt: "1 relé com contato NA/NF"}
+attributes:
+  controle:
+    value: V/f (escalar) ou VVW (vetorial de tensão)
+    status: extraido
+    source: {page: 127, location: Tabela 8.1, Tipos de controle}
+  grau_protecao:
+    value: IP20
+    status: extraido
+    source: {page: 127, location: Tabela 8.1, Grau de proteção}

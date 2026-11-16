@@ -1,0 +1,93 @@
+# Fonte: WEG, PLC300 Programmable Logic Controller - User's Manual, documento 10001615232 / 03, 05/2015 (modelos com e sem IHM).
+part_number: PLC300
+category: plc
+schema_version: '1.0'
+manufacturer: WEG
+family: PLC300
+lifecycle: desconhecido
+notes:
+- 'Nome na fila: WEG-plc300-manual-do-usuario-10001483024-manual-portugues-br; PDF recebido é o manual em inglês 10001615232/03.'
+- 'VS: 24 Vdc com tolerância de ±15 % (p. 69); consumo do PLC300 em 24 V: 250 mA, cerca de 30 mA por expansão (p. 69).'
+- 'do: DO1 a DO8 PNP de 500 mA cada; DO9 é saída PWM push-pull de 100 mA, até 300 kHz (50 kHz para duty-cycle correto) (p. 69).'
+- 'Entradas digitais DI1-DI10 bidirecionais; DI9 e DI10 rápidas (até 100 kHz), DI1-DI8 até 4 kHz (p. 69).'
+- 'Saída analógica de 10 bits com terminais independentes de corrente ou tensão (p. 10); até 2 módulos de expansão de E/S (p. 10).'
+- 'Ciclo de varredura: 142 us/KB de programa; exemplo de 1000 instruções = 12 KB, ciclo total de 3 ms (p. 70).'
+datasheets:
+- id: ds1
+  manufacturer: WEG
+  document_number: 10001615232 / 03
+  revision: 05/2015
+  url: https://static.weg.net/medias/downloadcenter/hfa/h2a/WEG-plc300-user-manual-10001615232-en.pdf
+  sha256: 147d7a266445289fe3802db459288ee2075e054f83f43dd9b4b89c5c64078507
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    typ: 24
+    unit: V
+    status: extraido
+    source: {page: 69, location: 15 Technical Specifications - Supply, excerpt: "Voltage: 24 Vdc ±15 %."}
+  di:
+    typ: 10
+    unit: '1'
+    status: extraido
+    source: {page: 69, location: 15 Technical Specifications - DI1 to DI10 Digital Inputs, excerpt: "DI1 to DI10 Digital Inputs"}
+  do:
+    typ: 8
+    unit: '1'
+    status: extraido
+    source: {page: 69, location: 15 Technical Specifications - DO1 to DO8 Digital Outputs, excerpt: "DO1 to DO8 Digital Outputs: PNP Outputs"}
+  ai:
+    typ: 1
+    unit: '1'
+    status: extraido
+    source: {page: 10, location: 2 Introduction - Digital and analog inputs, excerpt: "A 12-bit, differential, analog input is also available."}
+  di_on:
+    min: 10
+    unit: V
+    status: extraido
+    source: {page: 69, location: 15 Technical Specifications - DI1 to DI10, excerpt: "High level: Vin ≥ 10 V."}
+  di_off:
+    max: 3
+    unit: V
+    status: extraido
+    source: {page: 69, location: 15 Technical Specifications - DI1 to DI10, excerpt: "Low level: Vin ≤ 3 V."}
+  do_I:
+    max: 500
+    unit: mA
+    status: extraido
+    source: {page: 69, location: 15 Technical Specifications - DO1 to DO8 Digital Outputs, excerpt: "Maximum current of each output: 500 mA."}
+  ai_bits:
+    typ: 12
+    unit: bit
+    status: extraido
+    source: {page: 69, location: 15 Technical Specifications - Analog Input, excerpt: "12- Bit Resolution."}
+  memory:
+    typ: 1
+    unit: MB
+    status: extraido
+    source: {page: 70, location: 15 Technical Specifications - Memory, excerpt: "SRAM Memory with battery, capacity of 1 MByte."}
+  Top:
+    min: 0
+    max: 50
+    unit: °C
+    status: extraido
+    source: {page: 69, location: 15 Technical Specifications - Supply / Operating temperature, excerpt: "Operating temperature 0 °C to 50 °C."}
+attributes:
+  linguagens:
+    value: Ladder (programação via software WPS)
+    status: extraido
+    source: {page: 9, location: 2 Introduction - Programming, excerpt: "In addition to the ladder programming, the WPS allows the assembly of the screens"}
+  comunicacao:
+    value: RS-485 isolada Modbus RTU mestre/escravo, CAN isolada CANopen mestre/escravo, RS-232 Modbus RTU/ASCII, USB, Ethernet 10/100 Modbus TCP
+    status: extraido
+    source: {page: 11, location: 2 Introduction - Communication interfaces, excerpt: "RS-485 insulated ... Modbus RTU; CAN ... CANopen; Ethernet 10/100 with Modbus TCP"}
+  tipo_saida:
+    value: Transistor PNP (DO1-DO8); DO9 push-pull PWM
+    status: extraido
+    source: {page: 19, location: 4 Connections - Digital outputs, excerpt: "The outputs DO1 to DO8 are of PNP type and can provide a current of up to 500 mA each."}
+  grau_protecao:
+    value: IP65
+    status: extraido
+    source: {page: 69, location: 15 Technical Specifications - Degree of protection, excerpt: "Degree of protection IP65."}

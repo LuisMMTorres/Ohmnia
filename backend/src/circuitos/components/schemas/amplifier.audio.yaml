@@ -1,0 +1,19 @@
+category: amplifier.audio
+schema_version: "1.0"
+description: Amplificador de potência de áudio integrado (LM386, TDA2030, TDA7294...)
+required: [VS]
+parameters:
+  VS:       {unit: V, kind: characteristic, description: Alimentação (faixa)}
+  VS_max:   {unit: V, kind: max_rating, description: Alimentação máxima absoluta}
+  Po:       {unit: W, kind: characteristic, description: Potência de saída (indicar carga e THD na nota)}
+  Av:       {unit: dB, kind: characteristic, description: Ganho de tensão}
+  RL:       {unit: ohm, kind: characteristic, description: Carga nominal}
+  THD:      {unit: "%", kind: characteristic, description: Distorção harmônica total}
+  BW:       {unit: kHz, kind: characteristic, description: Banda}
+  IQ:       {unit: mA, kind: characteristic, description: Corrente quiescente}
+  Rin:      {unit: kohm, kind: characteristic, description: Resistência de entrada}
+  Pd:       {unit: W, kind: max_rating, description: Dissipação máxima}
+  Top:      {unit: °C, kind: thermal, description: Temperatura de operação (faixa)}
+  Tj_max:   {unit: °C, kind: thermal, description: Temperatura máxima de junção}
+attributes:
+  encapsulamento: Encapsulamento

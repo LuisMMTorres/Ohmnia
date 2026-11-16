@@ -1,0 +1,91 @@
+# Fonte: Analog Devices, AD5412/AD5422 Data Sheet (Single Channel, 12-/16-Bit, Serial Input, Current Source and Voltage Output DACs, HART Connectivity), Rev. N, 2009-2017 (cópia Farnell).
+part_number: AD5422
+category: ic.dac
+schema_version: '1.0'
+manufacturer: Analog Devices
+family: AD5412/AD5422
+package: TSSOP_EP 24 pinos ou LFCSP 40 pinos
+lifecycle: desconhecido
+notes:
+- 'O datasheet cobre AD5412 (12 bits) e AD5422 (16 bits); os valores abaixo são do AD5422 (pág. 1 e 5).'
+- 'Saída em corrente: 4-20 mA, 0-20 mA ou 0-24 mA; saída em tensão: 0-5 V, 0-10 V, ±5 V, ±10 V com 10% de overrange (pág. 1 e 5).'
+- 'AVDD 10,8 V a 40 V; AVSS de -26,4 V a -3 V ou 0 V; conformidade de laço de corrente AVDD - 2,5 V (pág. 1).'
+- 'Tempo de acomodação: saída em corrente 10 us (passo de 16 mA a 0,1% FSR); saída em tensão típico 8 us (passo de 512 LSB a ±0,03% FSR) (pág. 10).'
+- 'Corrente AIDD: com saída em corrente habilitada típ. 3,4 mA, máx. 4 mA; com saída em tensão habilitada típ. 3,9 mA, máx. 4,4 mA (pág. 8); registrado IS máx. 4,4 mA.'
+- 'HART disponível apenas no encapsulamento LFCSP (pág. 1).'
+datasheets:
+- id: ds1
+  manufacturer: Analog Devices
+  revision: N
+  url: https://www.farnell.com/datasheets/2266821.pdf
+  sha256: f10806d22060af3ce2ba3912a8c2be023f4cc51f0b641604dae5d8ad9fcf13a0
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  bits:
+    typ: 16
+    unit: bit
+    status: extraido
+    source: {page: 5, location: Table 2 - Voltage output accuracy - Resolution, excerpt: "Resolution 16 Bits AD5422"}
+  t_settle:
+    typ: 10
+    unit: us
+    status: extraido
+    source: {page: 10, location: Table 4 - Output Current Settling Time, excerpt: "16 mA step to 0.1% FSR 10 µs"}
+  channels:
+    typ: 1
+    unit: '1'
+    status: extraido
+    source: {page: 1, location: Título, excerpt: "Single Channel, 12-/16-Bit"}
+  VS:
+    min: 10.8
+    max: 40
+    unit: V
+    status: extraido
+    source: {page: 1, location: Features - Power supply range, excerpt: "AVDD: 10.8 V to 40 V"}
+  VREF:
+    min: 4.95
+    typ: 5
+    max: 5.05
+    unit: V
+    status: extraido
+    source: {page: 7, location: Table 2 - Reference Input Voltage, excerpt: "Reference Input Voltage 4.95 5 5.05 V"}
+  V_out:
+    min: -10
+    max: 10
+    unit: V
+    status: extraido
+    source: {page: 5, location: Table 2 - Voltage Output - Output Voltage Ranges, excerpt: "0 5 V; 0 10 V; -5 +5 V; -10 +10 V"}
+  I_out:
+    min: 0
+    max: 24
+    unit: mA
+    status: extraido
+    source: {page: 1, location: Features - Current output ranges, excerpt: "4 mA to 20 mA, 0 mA to 20 mA, or 0 mA to 24 mA"}
+  IS:
+    max: 4.4
+    unit: mA
+    status: extraido
+    source: {page: 8, location: Table 3 - Power Requirements - AIDD, excerpt: "AIDD ... 3.9 4.4 mA"}
+  Top:
+    min: -40
+    max: 105
+    unit: °C
+    status: extraido
+    source: {page: 13, location: Table 6 - Operating Temperature Range, excerpt: "Industrial -40°C to +105°C"}
+  Tstg:
+    min: -65
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 13, location: Table 6 - Storage Temperature Range, excerpt: "-65°C to +150°C"}
+attributes:
+  interface:
+    value: Serial digital flexível (SPI)
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "Flexible serial digital interface"}
+  encapsulamento:
+    value: TSSOP_EP 24 pinos e LFCSP 40 pinos
+    status: extraido
+    source: {page: 13, location: Table 6 - Absolute Maximum Ratings, excerpt: "24-Lead TSSOP_EP Package ... 40-Lead LFCSP Package"}

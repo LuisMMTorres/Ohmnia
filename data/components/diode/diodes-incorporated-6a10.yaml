@@ -1,0 +1,81 @@
+# Fonte: Diodes Incorporated, 6A05 - 6A10 (6.0A Silicon Rectifier), Document number DS28009 Rev. 12 - 4, May 2021.
+part_number: 6A10
+category: diode.rectifier
+schema_version: '1.0'
+manufacturer: Diodes Incorporated
+family: 6A05 - 6A10
+package: R-6 (axial)
+lifecycle: obsoleto
+notes:
+- 'Datasheet da série 6A05-6A10; valores de tensão são da coluna 6A10. Documento marcado OBSOLETE - PART DISCONTINUED.'
+datasheets:
+- id: ds1
+  manufacturer: Diodes Incorporated
+  document_number: DS28009
+  revision: Rev. 12 - 4, May 2021
+  url: https://www.diodes.com/assets/Datasheets/6A05-6A10.pdf
+  sha256: 8452f3bc1e27b29d817fc97f64973fa5dc7899759111025d488dbeac9fbcc385
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VRRM:
+    max: 1000
+    unit: V
+    status: extraido
+    source: {page: 1, location: Maximum Ratings and Electrical Characteristics - coluna 6A10, excerpt: "Maximum Recurrent Peak Reverse Voltage VRRM ... 1000 V"}
+  VRMS:
+    max: 700
+    unit: V
+    status: extraido
+    source: {page: 1, location: Maximum Ratings and Electrical Characteristics - coluna 6A10, excerpt: "Maximum RMS Voltage VRMS ... 700 V"}
+  VDC:
+    max: 1000
+    unit: V
+    status: extraido
+    source: {page: 1, location: Maximum Ratings and Electrical Characteristics - coluna 6A10, excerpt: "Maximum DC Blocking Voltage VDC ... 1000 V"}
+  IF(AV):
+    max: 6.0
+    unit: A
+    conditions: {TA: 75 degC}
+    status: extraido
+    source: {page: 1, location: Maximum Ratings - average forward rectified current, excerpt: "9.5mm Lead Length @ TA = +75°C I(AV) 6.0 A"}
+  IFSM:
+    max: 400
+    unit: A
+    conditions: {t_pulse: 8.3 ms}
+    status: extraido
+    source: {page: 1, location: Maximum Ratings - peak forward surge current, excerpt: "8.3ms Single Half Sine-Wave Superimposed on Rated Load IFSM 400 A"}
+  VF:
+    max: 0.90
+    unit: V
+    conditions: {IF: 6.0 A, TA: 25 degC}
+    status: extraido
+    source: {page: 1, location: Maximum Ratings - instantaneous forward voltage VFM, excerpt: "Maximum Instantaneous Forward Voltage at 6.0A DC VFM 0.90 V"}
+  IR:
+    max: 10
+    unit: uA
+    conditions: {VR: 1000 V, TA: 25 degC}
+    status: extraido
+    source: {page: 1, location: Maximum Ratings - DC reverse current at rated blocking voltage, excerpt: "@ TA = +25°C IRM 10 µA"}
+  IR@2:
+    max: 100
+    unit: uA
+    conditions: {VR: 1000 V, TA: 100 degC}
+    status: extraido
+    source: {page: 1, location: Maximum Ratings - DC reverse current at rated blocking voltage, excerpt: "@ TA = +100°C 100 µA"}
+  Tj_max:
+    max: 175
+    unit: degC
+    status: extraido
+    source: {page: 1, location: Maximum Ratings - operating and storage temperature range, excerpt: "TJ, TSTG -65 to +175 °C"}
+  Tj_min:
+    min: -65
+    unit: degC
+    status: extraido
+    source: {page: 1, location: Maximum Ratings - operating and storage temperature range, excerpt: "TJ, TSTG -65 to +175 °C"}
+  Tstg_max:
+    max: 175
+    unit: degC
+    status: extraido
+    source: {page: 1, location: Maximum Ratings - operating and storage temperature range, excerpt: "TJ, TSTG -65 to +175 °C"}

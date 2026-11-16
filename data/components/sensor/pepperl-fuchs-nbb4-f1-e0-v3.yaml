@@ -1,0 +1,99 @@
+# Fonte: Pepperl+Fuchs, folha de dados NBB4-F1-E0-V3 (Inductive sensor), release date 2026-03-09, date of issue 2026-03-09.
+part_number: NBB4-F1-E0-V3
+category: sensor.proximity
+schema_version: '1.0'
+manufacturer: Pepperl+Fuchs
+package: Retangular 40 x 12 x 26 mm, PA, conector M8 x 1 de 3 pinos
+lifecycle: desconhecido
+notes:
+- 'Fila: 184369 eng (arquivo 184369_eng.pdf).'
+- 'Fatores de redução rAl 0,4; rCu 0,45; r304 0,8; rLatão 0,55 (pág. 1). Tensão nominal de isolação 60 V, Uimp 800 V, classe de proteção II (pág. 2). MTTFd 1530 a.'
+datasheets:
+- id: ds1
+  manufacturer: Pepperl+Fuchs
+  document_number: 184369_eng
+  revision: 'date of issue 2026-03-09'
+  url: https://files.pepperl-fuchs.com/webcat/navi/productInfo/pds/184369_eng.pdf
+  sha256: d9259efd95ea7c73178807da9944ed401a4e027a157dd8e779abf4c810c120d3
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  sn:
+    typ: 4
+    unit: mm
+    status: extraido
+    source: {page: 1, location: General specifications - rated operating distance, excerpt: "Rated operating distance sn 4 mm"}
+  sr:
+    min: 0
+    max: 3.24
+    unit: mm
+    status: extraido
+    source: {page: 1, location: General specifications - assured operating distance, excerpt: "Assured operating distance sa 0 ... 3.24 mm"}
+  VS:
+    min: 10
+    max: 30
+    unit: V
+    status: extraido
+    source: {page: 1, location: Nominal ratings - operating voltage, excerpt: "Operating voltage UB 10 ... 30 V DC"}
+  f_sw:
+    max: 1400
+    unit: Hz
+    status: extraido
+    source: {page: 1, location: Nominal ratings - switching frequency, excerpt: "Switching frequency f 0 ... 1400 Hz"}
+  hysteresis:
+    typ: 5
+    unit: '%'
+    status: extraido
+    source: {page: 1, location: Nominal ratings - hysteresis, excerpt: "Hysteresis H typ. 5%"}
+  Vdrop:
+    max: 2.5
+    unit: V
+    status: extraido
+    source: {page: 2, location: Technical Data - voltage drop, excerpt: "Voltage drop Ud ≤ 2.5 V"}
+  IL:
+    max: 250
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Technical Data - operating current, excerpt: "Operating current IL 0 ... 250 mA"}
+  Ir:
+    max: 0.01
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Technical Data - off-state current, excerpt: "Off-state current Ir 0 ... 0.01 mA"}
+  IS:
+    max: 15
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Technical Data - no-load supply current, excerpt: "No-load supply current I0 ≤ 15 mA"}
+  Top:
+    min: -25
+    max: 70
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Ambient conditions - ambient temperature, excerpt: "-25 ... 70 °C (-13 ... 158 °F)"}
+attributes:
+  saida:
+    value: NPN, NA, 3 fios DC
+    status: extraido
+    source: {page: 1, location: General specifications, excerpt: "Normally open (NO); Output type NPN"}
+  conexao:
+    value: Conector M8 x 1, 3 pinos
+    status: extraido
+    source: {page: 2, location: Mechanical specifications - connector, excerpt: "Threading M8 x 1; Number of pins 3"}
+  invólucro:
+    value: Retangular 40 x 12 x 26 mm, PA
+    status: extraido
+    source: {page: 2, location: Mechanical specifications, excerpt: "Housing material PA"}
+  grau_protecao:
+    value: IP67
+    status: extraido
+    source: {page: 2, location: Mechanical specifications - degree of protection, excerpt: "Degree of protection IP67"}
+  certificacoes:
+    value: cULus Listed; EN IEC 60947-5-2
+    status: extraido
+    source: {page: 2, location: Approvals and certificates, excerpt: "UL approval cULus Listed"}
+  montagem:
+    value: faceado (flush)
+    status: extraido
+    source: {page: 1, location: General specifications - installation, excerpt: "Installation flush"}

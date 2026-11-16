@@ -1,0 +1,74 @@
+# Fonte: VEGA, Product information VEGAPULS 6X (Radar, level measurement in liquids and bulk solids), Document ID 66377, 66377-EN-250730, versão 07-08-2025.
+part_number: VEGAPULS 6X
+category: sensor.level
+schema_version: '1.0'
+manufacturer: VEGA
+family: VEGAPULS 6X
+lifecycle: desconhecido
+notes:
+- 'Fila: pi vegapuls 6x en. Valores da série (várias antenas, bandas W/C/K e eletrônicas); faixa entre as versões.'
+- 'Desvio de medição <= 1 mm conforme a versão (p. 4); fora do símbolo accuracy (em %). Pressão de processo -1 a 160 bar; ângulo do feixe até 3 graus (p. 4).'
+- 'Tensão de operação 12 a 35 V DC nas versões a dois fios 4-20 mA/HART (p. 4 e 9). Protocolos: 4-20 mA/HART, Profibus PA, Modbus, Ethernet APL (p. 4).'
+datasheets:
+- id: ds1
+  manufacturer: VEGA
+  document_number: '66377'
+  revision: 07-08-2025
+  url: https://www.vega.com/api/sitecore/DocumentDownload/Handler?documentContainerId=1008139&languageId=2&fileExtension=pdf&softwareVersion=&documentGroupId=66377&version=07-08-2025
+  sha256: 939f735caafa295063803e2baa4b746487ec713841d3d74d772670a0ee872533
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  range_m:
+    max: 120
+    unit: m
+    status: extraido
+    source: {page: 4, location: Technical data - Measuring range up to, excerpt: "Measuring range up to 120 m (393.7 ft)"}
+  VS:
+    min: 12
+    max: 35
+    unit: V
+    status: extraido
+    source: {page: 4, location: Technical data - Operating voltage, excerpt: "Operating voltage 12 … 35 V DC"}
+  I_out:
+    min: 4
+    max: 20
+    unit: mA
+    status: extraido
+    source: {page: 4, location: Technical data - Output signal, excerpt: "Output signal 4 … 20 mA/HART"}
+  T_process:
+    min: -196
+    max: 450
+    unit: °C
+    status: extraido
+    source: {page: 4, location: Technical data - Process temperature, excerpt: "-196 … +450 °C"}
+  Top:
+    min: -40
+    max: 80
+    unit: °C
+    status: extraido
+    source: {page: 4, location: Technical data - Ambient, storage and transport temperature, excerpt: "-40 … +80 °C"}
+  Tstg:
+    min: -40
+    max: 80
+    unit: °C
+    status: extraido
+    source: {page: 4, location: Technical data - Ambient, storage and transport temperature, excerpt: "-40 … +80 °C"}
+attributes:
+  saida:
+    value: 4-20 mA/HART, Profibus PA, Modbus, Ethernet APL
+    status: extraido
+    source: {page: 4, location: Technical data - Output signal}
+  comunicacao:
+    value: HART, Profibus PA, Modbus (Levelmaster), Ethernet APL, Bluetooth 5.0
+    status: extraido
+    source: {page: 4, location: Technical data - Output signal / Bluetooth standard}
+  grau_protecao:
+    value: IP66/IP67, IP66/IP68 (0,2 bar), IP68 (1 bar), IP69; NEMA 4X/6P
+    status: extraido
+    source: {page: 4, location: Technical data - Protection acc. to IEC 60529 / NEMA}
+  principio:
+    value: Radar (80 GHz banda W, 6 GHz banda C, 26 GHz banda K)
+    status: extraido
+    source: {page: 4, location: Technical data - Measuring frequency}

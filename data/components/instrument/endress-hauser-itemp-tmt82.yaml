@@ -1,0 +1,82 @@
+# Fonte: Endress+Hauser, Technical Information iTEMP TMT82, TI01010T/09/EN/27.25-00, 2025-03-10.
+part_number: iTEMP TMT82
+category: instrument.transmitter
+schema_version: '1.0'
+manufacturer: Endress+Hauser
+family: iTEMP TMT82
+lifecycle: desconhecido
+notes:
+- "Nome na fila: TI01010T09EN 0313 (revisão original 03/2013; o documento baixado é a revisão 2025-03-10)."
+- "Transmissor de temperatura HART de 2 fios com duas entradas universais (RTD, termopar, resistência, tensão mV); versões cabeça, trilho DIN e caixa de campo."
+- "Faixas de entrada (p. 5-6): RTD Pt100 -200 a +850 °C, Pt1000 -200 a +250 °C, Ni100 -60 a +250 °C, resistência 10 a 400 Ω ou 10 a 2000 Ω, mV -20 a 100 mV; termopares tipos A, B, C, D, E, J, K, L, N, R, S, T, U (ex.: tipo K -270 a +1372 °C). Sem símbolo no schema para in_range."
+- "VS: transmissor de cabeça 11 a 42 V (modo SIL 11 a 32 V); trilho DIN 12 a 42 V (modo SIL 12 a 32 V) (p. 8). Consumo de corrente 3,6 a 23 mA (p. 8). Tempo de resposta p. 11."
+- "Top: -40 a +85 °C (opcional -50 ou -52 °C; caixa de campo com display -30 a +85 °C; modo SIL -40 a +70 °C) (p. 19-20). Tstg: cabeça -50 a +100 °C (p. 20)."
+- "Erro de medição por tipo de sensor em fórmula (p. 12-13), p. ex. mV ±10 µV; D/A 0,03 % da faixa. Não transcrito como accuracy."
+- "Alarme de falha: ≤ 3,6 mA (baixo) ou ≥ 21 mA (alto, ajustável 21,5 a 23 mA); sub-faixa 4,0 a 3,8 mA, sobre-faixa 20,0 a 20,5 mA (p. 7)."
+datasheets:
+- id: ds1
+  manufacturer: Endress+Hauser
+  document_number: TI01010T/09/EN/27.25-00
+  revision: '2025-03-10'
+  url: https://www.lenntech.com/Data-sheets/Endress-Hauser-iTemp-TMT82-EN-L.pdf
+  sha256: 5f0f228c2b3cfdd97e5b0df197340b2af86d73c2f3d5d5edead12761e599de6e
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_out:
+    min: 4
+    max: 20
+    unit: mA
+    status: extraido
+    source: {page: 7, location: Output - Output signal, excerpt: "Analog output 4 to 20 mA, 20 to 4 mA (can be inverted)"}
+  V_iso:
+    max: 2000
+    unit: V
+    status: extraido
+    source: {page: 7, location: Output - Galvanic isolation, excerpt: "U = 2 kV AC for 1 minute (input/output)"}
+  t_resp:
+    min: 900
+    max: 1500
+    unit: ms
+    status: extraido
+    source: {page: 11, location: Performance characteristics - Response time, excerpt: "Resistance thermometers (RTD) 0.9 to 1.5 s"}
+  VS:
+    min: 11
+    max: 42
+    unit: V
+    status: extraido
+    source: {page: 8, location: Power supply - Supply voltage, excerpt: "11 V ≤ Vcc ≤ 42 V (standard)"}
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 19, location: Ambient conditions - Ambient temperature, excerpt: "–40 to +85 °C (–40 to +185 °F)"}
+  Tstg:
+    min: -50
+    max: 100
+    unit: °C
+    status: extraido
+    source: {page: 20, location: Ambient conditions - Storage temperature - Head transmitter, excerpt: "–50 to +100 °C (–58 to +212 °F)"}
+attributes:
+  entrada:
+    value: "RTD (Pt100/200/500/1000, Ni, Cu), termopares (A, B, C, D, E, J, K, L, N, R, S, T, U), resistência (Ω) e tensão (mV); 2 entradas"
+    status: extraido
+    source: {page: 5, location: Input - Measuring range}
+  saida:
+    value: "4-20 mA / 20-4 mA com HART (FSK ±0,5 mA, 1200 baud)"
+    status: extraido
+    source: {page: 7, location: Output - Output signal / Signal encoding}
+  comunicacao:
+    value: "HART 7"
+    status: extraido
+    source: {page: 8, location: Protocol-specific data - HART version, excerpt: "HART version 7"}
+  grau_protecao:
+    value: "IP 20 (parafuso) / IP 30 (push-in) cabeça; IP 20 trilho DIN; IP 67 na caixa de campo"
+    status: extraido
+    source: {page: 20, location: Ambient conditions - Degree of protection}
+  certificacoes:
+    value: "SIL2 (IEC 61508:2010); aprovações para áreas explosivas (ver documentação Ex)"
+    status: extraido
+    source: {page: 2, location: Your benefits, excerpt: "SIL certification as per IEC 61508:2010"}

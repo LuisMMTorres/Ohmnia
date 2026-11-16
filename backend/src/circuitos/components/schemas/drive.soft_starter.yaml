@@ -1,0 +1,51 @@
+category: drive.soft_starter
+schema_version: '1.0'
+description: Soft-starter (ou série)
+required:
+- I_rated
+parameters:
+  I_rated:
+    unit: A
+    kind: max_rating
+    description: Corrente nominal (faixa da série)
+  P_motor:
+    unit: kW
+    kind: max_rating
+    description: Potência do motor
+  V_line:
+    unit: V
+    kind: characteristic
+    description: Tensão de linha (faixa)
+  V_ctrl:
+    unit: V
+    kind: characteristic
+    description: Tensão de comando
+  t_ramp:
+    unit: s
+    kind: characteristic
+    description: Tempo de rampa (faixa)
+  V_start:
+    unit: '%'
+    kind: characteristic
+    description: Tensão inicial (faixa)
+  I_limit:
+    unit: '%'
+    kind: characteristic
+    description: Limitação de corrente (faixa)
+  starts_h:
+    unit: '1'
+    kind: characteristic
+    description: Partidas por hora
+  Top:
+    unit: °C
+    kind: thermal
+    description: 'Temperatura de operação (faixa: mín. e máx.)'
+  Tstg:
+    unit: °C
+    kind: thermal
+    description: Temperatura de armazenamento (faixa)
+attributes:
+  controle: Controle (2 ou 3 fases, bypass integrado)
+  comunicacao: Comunicação
+  grau_protecao: Grau de proteção (IP) declarado
+  certificacoes: Certificações e aprovações (UL, CE, ATEX...)

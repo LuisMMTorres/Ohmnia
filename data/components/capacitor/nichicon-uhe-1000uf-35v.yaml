@@ -1,0 +1,81 @@
+# Fonte: Nichicon, UHE Miniature Sized, Low Impedance, High Reliability, Aluminum Electrolytic Capacitors, CAT.8100M.
+part_number: UHE 1000uF 35V
+category: capacitor.fixed
+schema_version: '1.0'
+manufacturer: Nichicon
+family: UHE
+package: Radial, φD×L 12.5×25 mm (UHE1V102MHD) ou 18×15 mm (UHE1V102MHD6)
+lifecycle: desconhecido
+notes:
+- 'Item da fila: UHE 1000uF 35V (série UHE). C, V_rated, tan δ, fuga e corrente de ondulação são da linha 1000 µF / 35 V (código 1V) da tabela da página 4.'
+- Tolerância, temperatura e vida são das especificações gerais da série (página 1). A vida citada (6000 a 10000 h) é a faixa da série por tensão e diâmetro; a ordem das colunas no texto do PDF é ambígua.
+- A tabela também dá impedância (0,027 ohm a 20 °C/100 kHz e 0,089 ohm a -10 °C/100 kHz para 12.5×25), que não tem símbolo neste esquema.
+datasheets:
+- id: ds1
+  manufacturer: Nichicon
+  document_number: CAT.8100M
+  url: https://www.nichicon.co.jp/english/series_items/catalog_pdf/e-uhe.pdf
+  sha256: fcc5554836adbf921499f2969fb661b03a22e0ee37874d7db5bd5f9ccd499267
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  C:
+    typ: 1000
+    unit: uF
+    status: extraido
+    source: {datasheet_id: ds1, page: 4, location: Tabela de especificações - 35 V (1V), excerpt: "1000|12.5×25|0.12|350|0.027|0.089|2230|UHE1V102MHD"}
+  tol:
+    max: 20
+    unit: '%'
+    status: extraido
+    note: ± 20 % a 120 Hz, 20 °C.
+    source: {datasheet_id: ds1, page: 1, location: Specifications - capacitance tolerance, excerpt: "± 20% at 120Hz, 20˚C"}
+  V_rated:
+    typ: 35
+    unit: V
+    status: extraido
+    source: {datasheet_id: ds1, page: 4, location: Tabela - Rated voltage code 1V, excerpt: "UHE1V102MHD"}
+  I_ripple:
+    max: 2.23
+    unit: A
+    status: extraido
+    conditions: {TA: 105 °C, f: 100 kHz}
+    note: 2230 mArms (12.5×25); 2210 mArms para 18×15.
+    source: {datasheet_id: ds1, page: 4, location: Tabela - Rated ripple (mArms) 105 °C/100 kHz, excerpt: "2230"}
+  tan_delta:
+    max: 0.12
+    unit: '1'
+    status: extraido
+    conditions: {f: 120 Hz, TA: 20 °C}
+    source: {datasheet_id: ds1, page: 4, location: Tabela - tan δ, excerpt: "1000|12.5×25|0.12"}
+  I_leak:
+    max: 350
+    unit: uA
+    status: extraido
+    conditions: {TA: 20 °C}
+    note: Após 2 minutos de tensão nominal; regra 0,01 CV (µA).
+    source: {datasheet_id: ds1, page: 4, location: Tabela - Leakage current (µA), excerpt: "350"}
+  life:
+    min: 6000
+    max: 10000
+    unit: h
+    status: extraido
+    conditions: {T: 105 °C}
+    note: Faixa da série (6000 a 10000 h conforme tensão e diâmetro).
+    source: {datasheet_id: ds1, page: 1, location: Título / Specifications - Endurance, excerpt: "withstanding 6000 hours to 10000 hours"}
+  Top:
+    min: -40
+    max: 105
+    unit: °C
+    status: extraido
+    source: {datasheet_id: ds1, page: 1, location: Specifications - Category Temperature Range, excerpt: "–40 to +105˚C"}
+attributes:
+  dieletrico:
+    value: Eletrolítico de alumínio, baixa impedância, alta confiabilidade
+    status: extraido
+    source: {datasheet_id: ds1, page: 1, location: Título - Miniature Sized, Low Impedance, High Reliability}
+  montagem:
+    value: Radial com terminais; φD×L 12.5×25 mm (UHE1V102MHD) ou 18×15 mm (UHE1V102MHD6)
+    status: extraido
+    source: {datasheet_id: ds1, page: 4, location: Tabela - Case size φD×L (mm)}

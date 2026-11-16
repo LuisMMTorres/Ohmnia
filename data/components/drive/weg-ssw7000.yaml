@@ -1,0 +1,68 @@
+# Fonte: WEG, SSW7000 - Soft-Starters de Média Tensão (catálogo), código 50030443, sem revisão/data legível no texto.
+part_number: SSW7000
+category: drive.soft_starter
+schema_version: '1.0'
+manufacturer: WEG
+family: SSW7000 G4 (média tensão)
+lifecycle: desconhecido
+notes:
+- 'Valores da série (soft-starter de média tensão, 2,3 kV a 13,8 kV, corrente de saída 70 A a 600 A, p. 8 e 13). Numeração de páginas = páginas do PDF.'
+- 'Temperatura: -10 a 40 °C, até 50 °C com redução de corrente de saída de 2 % por °C (p. 18); Top max registrado como 50 °C com essa condição.'
+- 'Número de partidas: 1 por hora (10/11 kV acima de 300 A) e 2 por hora nos demais modelos (p. 18). Corrente de partida típica 400 % por 20 s (70 a 359 A) e 450 % por 30 s (500 a 600 A) (p. 18).'
+- 'Tensão de controle: bivolt 110~230 Vca ou Vcc, ou 24 Vcc (p. 18). Potência do motor por modelo nas tabelas das p. 15 a 17 (não transcrita).'
+- 'Fila de transcrição: novo link do site do fabricante.'
+datasheets:
+- id: ds1
+  manufacturer: WEG
+  document_number: '50030443'
+  url: https://static.weg.net/medias/downloadcenter/h59/hc3/WEG-SSW7000-50030443-catalogo-pt.pdf
+  sha256: 9dabd0c1eaa5b36834e13d2173d1ca561eb00a269684ea27cc1560e697c39e67
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_rated:
+    min: 70
+    max: 600
+    unit: A
+    status: extraido
+    source: {page: 8, location: Principais características - Corrente do motor, excerpt: "Corrente do motor: 70 A a 600 A"}
+  V_line:
+    min: 2300
+    max: 13800
+    unit: V
+    status: extraido
+    source: {page: 8, location: Principais características - Tensão do motor, excerpt: "Tensão do motor: 2,3 kV a 13,8 kV"}
+  V_ctrl:
+    min: 110
+    max: 230
+    unit: V
+    status: extraido
+    source: {page: 18, location: Características técnicas gerais - Fonte de controle, excerpt: "Bivolt 110~230 Vca ou Vcc"}
+  starts_h:
+    max: 2
+    unit: '1'
+    status: extraido
+    source: {page: 18, location: Características técnicas gerais - Capacidade, Número de partidas, excerpt: "2 partidas por hora (para demais modelos e correntes)"}
+  Top:
+    min: -10
+    max: 50
+    unit: °C
+    status: extraido
+    source:
+      page: 18
+      location: Características técnicas gerais - Condições ambientais, Temperatura
+      excerpt: "-10 a 40 °C (104º F) e até 50 °C (122º F) com redução da corrente de saída"
+attributes:
+  controle:
+    value: Rampa de tensão (com limite de corrente), limitação e rampa de corrente, controle de bombas, controle de torque (FTC), partida direta; bypass integrado
+    status: extraido
+    source: {page: 18, location: Características técnicas gerais - Controle, Método, excerpt: "Rampa de tensão; Rampa de tensão com limite de corrente; Controle de bombas; Controle de torque; Partida direta"}
+  comunicacao:
+    value: Módulos plug-in opcionais Modbus-RTU, Modbus-TCP, DeviceNet, CANopen, EtherNet/IP, Profibus-DP, PROFINET IO; porta USB na IHM
+    status: extraido
+    source: {page: 8, location: Principais características - Módulos de comunicação em rede, excerpt: "Modbus-RTU, Modbus-TCP, DeviceNet, CANopen, EtherNet/IP, Profibus-DP, PROFINET IO"}
+  grau_protecao:
+    value: IP41, IP54 (NEMA 12 ou NEMA 3R sob consulta)
+    status: extraido
+    source: {page: 8, location: Principais características - Grau de proteção, excerpt: "Grau de proteção: IP41, IP54, (NEMA 12 ou NEMA 3R sob consulta)"}

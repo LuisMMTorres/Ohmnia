@@ -1,0 +1,89 @@
+# Fonte: Omron, E6B2-C New General-purpose Incremental Rotary Encoder (datasheet).
+part_number: E6B2-C
+category: sensor.encoder
+schema_version: '1.0'
+manufacturer: Omron
+family: E6B2-C (E6B2-CWZ6C, -CWZ5B, -CWZ3E, -CWZ1X)
+lifecycle: desconhecido
+notes:
+- "Nome na fila: en-e6b2 c. Valores como faixa entre os quatro modelos (NPN coletor aberto, PNP coletor aberto, saída em tensão, line driver) (p. 2)."
+- "VS: 5 VDC -5 % a 24 VDC +15 % (CWZ6C); 12 VDC -10 % a 24 VDC +15 % (CWZ5B); 5 VDC -5 % a 12 VDC +10 % (CWZ3E); 5 VDC ±5 % (CWZ1X); ripple 5 % máx. Limites de VS são os valores nominais, sem tolerância (p. 2)."
+- "IS: tabela lista 70 mA, 80 mA e 130 mA máx. para as colunas dos quatro modelos; usado o maior valor da série (p. 2). Corrente de partida de cerca de 9 A por cerca de 0,3 ms ao ligar (nota 1, p. 2)."
+- "Resolução 10 a 2000 P/R conforme o modelo (p. 2). Velocidade máx. de resposta 100 kHz (CWZ6C, CWZ1X e CWZ3E) e 50 kHz (CWZ5B) (p. 2)."
+- "Saída: coletor aberto 30 VDC máx., 35 mA máx., tensão residual 0,4 V máx. (CWZ6C, CWZ5B); tensão: 20 mA máx., 2 kΩ; line driver AM26LS31 equivalente +-20 mA (p. 2)."
+- "Carga no eixo: radial 30 N, axial 20 N; torque de partida 0,98 mN·m máx. (p. 2)."
+datasheets:
+- id: ds1
+  manufacturer: Omron
+  document_number: E6B2-C
+  url: https://www.farnell.com/datasheets/1582366.pdf
+  sha256: 74de855d2e813f015feced6c646e43f60ad18c082ac6ea13d9b7d9d89b3f1eba
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  resolution:
+    min: 10
+    max: 2000
+    unit: '1'
+    status: extraido
+    source: {page: 2, location: Ratings/Characteristics - Resolution (pulses/rotation), excerpt: "10/20/30/40/50/60/100/200/300/... 2,000 P/R"}
+  f_max:
+    max: 100
+    unit: kHz
+    status: extraido
+    source: {page: 2, location: Ratings/Characteristics - Max. response speed, excerpt: "100 kHz"}
+  speed:
+    max: 6000
+    unit: rpm
+    status: extraido
+    source: {page: 2, location: Ratings/Characteristics - Max. permissible speed, excerpt: "6,000 r/min."}
+  IL:
+    max: 35
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Ratings/Characteristics - Output capacity, excerpt: "Sink current: 35 mA max."}
+  VS:
+    min: 5
+    max: 24
+    unit: V
+    status: extraido
+    source: {page: 2, location: Ratings/Characteristics - Power supply voltage, excerpt: "5 VDC –5% to 24 VDC +15%"}
+  IS:
+    max: 130
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Ratings/Characteristics - Current consumption, excerpt: "70 mA max. 80 mA max. 130 mA max."}
+  Top:
+    min: -10
+    max: 70
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Ratings/Characteristics - Ambient temperature, excerpt: "Operating: –10°C to 70°C (with no icing)"}
+  Tstg:
+    min: -25
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Ratings/Characteristics - Ambient temperature, excerpt: "Storage: –25°C to 85°C (with no icing)"}
+attributes:
+  tipo:
+    value: Incremental, fases A, B e Z
+    status: extraido
+    source: {page: 2, location: Ratings/Characteristics - Output phases, excerpt: "A, B, and Z"}
+  saida:
+    value: "NPN coletor aberto (CWZ6C); PNP coletor aberto (CWZ5B); tensão NPN (CWZ3E); line driver (CWZ1X)"
+    status: extraido
+    source: {page: 2, location: Ratings/Characteristics - Output configuration}
+  interface:
+    value: "Line driver compatível com RS-422A (CWZ1X)"
+    status: extraido
+    source: {page: 2, location: Note 2, excerpt: "compatible with RS-422A"}
+  conexao:
+    value: "Pré-cabeado, comprimento padrão 0,5 m"
+    status: extraido
+    source: {page: 2, location: Ratings/Characteristics - Connection method, excerpt: "Pre-wired Models (standard length: 0.5 m)"}
+  grau_protecao:
+    value: IP50
+    status: extraido
+    source: {page: 2, location: Ratings/Characteristics - Degree of protection, excerpt: "IEC 60529: IP50"}

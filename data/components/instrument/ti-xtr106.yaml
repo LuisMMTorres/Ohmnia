@@ -1,0 +1,67 @@
+# Fonte: Texas Instruments, XTR106 4mA to 20mA Current Transmitter With Bridge Excitation and Linearization, SBOS092C, jun/1998, rev. jan/2026.
+part_number: XTR106
+category: instrument.transmitter
+schema_version: '1.0'
+manufacturer: Texas Instruments
+package: SOIC-14 (D) e PDIP-14 (N)
+lifecycle: desconhecido
+notes:
+- 'Fila: XTR106. Transmissor 4-20 mA a 2 fios para sensores em ponte, com referências de excitação de 2,5 V ou 5 V, regulador VREG de 5,1 V e linearização; transistor externo (TIP29C no teste). Equação de saída: IO = VIN x (40 / RG) + 4 mA (p. 5).'
+- 'Máximos absolutos (p. 4): V+ 40 V (referido ao pino IO); TJ 165 °C; TA operação -40 a 125 °C; solda 300 °C (10 s).'
+- 'Erro de zero inicial +-25 uA máx. (P/U), +-50 uA (PA/UA); erro de span não ajustado +-0,2 % máx. (P/U), +-0,4 % (PA/UA); não linearidade +-0,01 % máx. (p. 5).'
+- 'Limites de saída: sobre-escala 24/28/30 mA; sub-escala 1/1,6/2,2 mA (IREF=IREG=0) (p. 5). Referências VREF 2,5 V e 5 V, precisão +-0,25 % máx. (P/U); VREG 5,1 V (p. 6).'
+datasheets:
+- id: ds1
+  manufacturer: Texas Instruments
+  document_number: SBOS092C
+  revision: janeiro 2026
+  url: https://www.ti.com/lit/ds/symlink/xtr106.pdf
+  sha256: 2be0cacfcf0261acadd478481edc375d0abf99637c96b3d6dc7eda71f3c41514
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_out:
+    min: 4
+    max: 20
+    unit: mA
+    status: extraido
+    source: {page: 5, location: 5.4 Electrical Characteristics - Output current specified range, excerpt: "Output current, specified range 4 20 mA"}
+  VS:
+    min: 7.5
+    typ: 24
+    max: 36
+    unit: V
+    status: extraido
+    source: {page: 4, location: 5.2 Recommended Operating Conditions - V+, excerpt: "V+ Power supply (referenced to the IO pin) 7.5 24 36 V"}
+  accuracy:
+    max: 0.2
+    unit: '%'
+    status: extraido
+    conditions: {TA: 25 °C}
+    source: {page: 5, location: 5.4 Electrical Characteristics - Span untrimmed error (XTR106P, XTR106U), excerpt: "Untrimmed error Full scale (VIN) = 50mV XTR106P, XTR106U ±0.05 ±0.2 %"}
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 4, location: 5.2 Recommended Operating Conditions - Specified temperature, excerpt: "TA Specified temperature –40 85 °C"}
+  Tstg:
+    min: -55
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 4, location: 5.1 Absolute Maximum Ratings - Tstg, excerpt: "Tstg Storage temperature –55 125 °C"}
+attributes:
+  entrada:
+    value: "Diferencial VIN+/VIN-, modo comum 1,1 a 3,5 V; ponte de sensores com excitação de 2,5 V ou 5 V"
+    status: extraido
+    source: {page: 1, location: Description, excerpt: "complete bridge excitation (2.5V or 5V reference)"}
+  saida:
+    value: "4-20 mA, 2 fios"
+    status: extraido
+    source: {page: 1, location: Description, excerpt: "monolithic 4mA to 20mA, two-wire current transmitter"}
+  comunicacao:
+    value: "Compatível com modem HART"
+    status: extraido
+    source: {page: 1, location: Applications, excerpt: "Compatible with HART modem"}

@@ -1,0 +1,100 @@
+# Fonte: SICK, Online data sheet CS81-P3612 (part no. 1028225), sensor de cor CS8, impresso em 2026-09-05.
+part_number: CS81-P3612
+category: sensor.photoelectric
+schema_version: '1.0'
+manufacturer: SICK
+family: CS8
+package: Caixa de zinco fundido, 30,4 x 80 x 53 mm
+lifecycle: desconhecido
+notes:
+- 'Fila: CS81-P3612. Sensor de cor (LED RGB) classificado como fotoelétrico por falta de categoria específica.'
+- 'Comprimentos de onda do LED RGB: 640, 525 e 470 nm (pág. 2); lambda não foi preenchido por ser múltiplo.'
+- 'Tempo de resposta e frequência de comutação dependem do modo: 500 us / 1 kHz, 160 us / 3 kHz, 85 us / 6 kHz (pág. 2-3). Frequência de 1 kHz medida com razão claro/escuro 1:1.'
+- 'Distância de detecção <= 60 mm, tolerância +-9 mm, mancha de luz 13 x 13 mm (pág. 2). Corrente de saída máx. 100 mA a 24 V (pág. 3).'
+- 'Tensão de alimentação em rede protegida contra curto-circuito, máx. 8 A; ondulação < 5 Vpp (pág. 2).'
+datasheets:
+- id: ds1
+  manufacturer: SICK
+  document_number: '1028225'
+  revision: impresso em 2026-09-05
+  url: https://www.sick.com/media/pdf/5/55/055/dataSheet_CS81-P3612_1028225_en.pdf
+  sha256: a1a06242c7a4c615806756fed2e382f5e7bebb38bdb80270fbb8c96c11fa0875
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  range:
+    max: 0.06
+    unit: m
+    status: extraido
+    source: {page: 2, location: Features - Sensing distance, excerpt: "Sensing distance ≤ 60 mm"}
+  t_resp:
+    min: 0.085
+    max: 0.5
+    unit: ms
+    status: extraido
+    source: {page: 3, location: Electronics - Response time, excerpt: "Response time 500 µs 160 µs 85 µs"}
+  f_sw:
+    min: 1000
+    max: 6000
+    unit: Hz
+    status: extraido
+    source: {page: 2, location: Electronics - Switching frequency, excerpt: "Switching frequency 1 kHz, 3 kHz, 6 kHz"}
+  VS:
+    min: 10
+    max: 30
+    unit: V
+    status: extraido
+    source: {page: 2, location: Electronics - Supply voltage, excerpt: "10 V DC ... 30 V DC"}
+  IS:
+    max: 120
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Electronics - Current consumption, excerpt: "Current consumption < 120 mA (without load)"}
+  IL:
+    max: 100
+    unit: mA
+    conditions: {VS: 24 V}
+    status: extraido
+    source: {page: 3, location: Electronics - Output current Imax., excerpt: "Output current Imax. 100 mA 5) (at 24 V)"}
+  Top:
+    min: -10
+    max: 55
+    unit: °C
+    status: extraido
+    source: {page: 3, location: Ambient data, excerpt: "Ambient operating temperature –10 °C ... +55 °C"}
+  Tstg:
+    min: -20
+    max: 75
+    unit: °C
+    status: extraido
+    source: {page: 3, location: Ambient data, excerpt: "Ambient temperature, storage –20 °C ... +75 °C"}
+attributes:
+  saida:
+    value: PNP (HIGH = UV <= 2 V), 1 cor, protegida contra curto-circuito
+    status: extraido
+    source: {page: 3, location: Electronics - Switching output}
+  conexao:
+    value: Plugue M12, 5 pinos
+    status: extraido
+    source: {page: 3, location: Electronics - Connection type}
+  invólucro:
+    value: Zinco fundido (zinc diecast)
+    status: extraido
+    source: {page: 3, location: Mechanics - Housing material}
+  grau_protecao:
+    value: IP67
+    status: extraido
+    source: {page: 3, location: Ambient data - Enclosure rating}
+  certificacoes:
+    value: cULus (UL File No. NRKH.E181493 e NRKH7.E181493), declaração de conformidade UE/UK, China RoHS
+    status: extraido
+    source: {page: 3, location: Certificates}
+  principio:
+    value: Sensor de cor (teach-in estático de 1 ponto)
+    status: extraido
+    source: {page: 2, location: Features - Teach-in mode}
+  luz:
+    value: LED RGB (640 nm, 525 nm, 470 nm)
+    status: extraido
+    source: {page: 2, location: Features - Light source / Wave length}

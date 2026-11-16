@@ -1,0 +1,96 @@
+# Fonte: STMicroelectronics, STM32F446xC/E Arm Cortex-M4 32-bit MCU+FPU datasheet, DocID027107 Rev 6, September 2016 (cópia no agregador pdf.direnc.net).
+part_number: STM32F446RE
+category: ic.mcu
+schema_version: '1.0'
+manufacturer: STMicroelectronics
+family: STM32F446xC/E
+package: LQFP64 (variante R)
+lifecycle: desconhecido
+notes:
+- 'O item da fila é a placa Nucleo-F446RE, mas o PDF é o datasheet do microcontrolador STM32F446xC/E: registro do chip STM32F446RE (R = LQFP64, E = 512 KB de flash), não da placa.'
+- 'ATENÇÃO ao PDF: o arquivo está truncado/corrompido (sem tabela de referências cruzadas e sem página 1; abre com 0 páginas em leitores comuns). O texto foi recuperado reconstruindo a árvore de páginas numa cópia de trabalho; contém as páginas impressas 2 a 144 de 202. Os números de página abaixo são os IMPRESSOS no rodapé/cabeçalho (N/202), que são o índice de página do PDF + 1.'
+- 'Valores de flash, GPIO e canais ADC são da coluna STM32F446RE da Tabela 2 (p. 13): flash 512 KB, SRAM 128 KB (112 + 16) mais 4 KB de backup, 50 GPIOs, 3 ADCs de 12 bits com 16 canais (LQFP64).'
+- 'Alimentação: VDD de 1,7 V (com a ressalva da nota 2 da Tabela 16, não transcrita) a 3,6 V (p. 77); a Tabela 2 (p. 13) diz 1,8 a 3,6 V com nota (4). VDDA com ADC: 2,4 a 3,6 V para até 2,4 Msps; 1,7 a 2,4 V limita o ADC a 1,2 Msps (p. 77).'
+- 'Temperatura ambiente (Tabela 16, p. 77): -40 a +85 °C (sufixo 6) e -40 a +105 °C (sufixo 7); a peça da fila não traz sufixo, usada a faixa mais ampla (sufixo 7), revisar.'
+- 'Níveis de E/S (Tabelas 56 e 57, p. 118 e 121): VOL máx. 0,4 V com IIO = 8 mA (porta CMOS, 2,7 V <= VDD <= 3,6 V); VIL máx. 0,3 VDD e VIH mín. 0,7 VDD (FT/TTa/NRST). Pinos FT toleram até 5,5 V (2 V <= VDD <= 3,6 V, p. 77).'
+- 'Consumo em Run a 180 MHz, PLL ligado, todos os periféricos habilitados: típ. 72 mA a 25 °C, máx. 100 mA a 85 °C e 110 mA a 105 °C (Tabela 23, p. 83). Corrente total de VDD máx. 240 mA e total de E/S máx. 120 mA (Tabela 14, p. 75).'
+- 'pwm_ch não transcrito: o datasheet lista 10 timers de uso geral e 2 de controle avançado (Tabela 2, p. 13), sem contagem de canais PWM por variante.'
+datasheets:
+- id: ds1
+  manufacturer: STMicroelectronics
+  document_number: DocID027107
+  revision: Rev 6, September 2016
+  url: https://pdf.direnc.net/upload/stm32f446ret6-datasheet.pdf
+  sha256: 411453764a78a69499f820e1f255ed0ba9f8c53c9dcdc8d2890018cee2001002
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 1.7
+    max: 3.6
+    unit: V
+    status: extraido
+    source: {page: 77, location: Table 16 General operating conditions - VDD standard operating voltage (página impressa), excerpt: "VDD Standard operating voltage 1.7 (2) - 3.6 V"}
+  V_io:
+    min: 1.7
+    max: 3.6
+    unit: V
+    status: extraido
+    source: {page: 77, location: Table 16 General operating conditions - VDD (E/S operam na tensão VDD), excerpt: "VDD Standard operating voltage 1.7 3.6 V"}
+  I_io:
+    max: 25
+    unit: mA
+    status: extraido
+    source: {page: 75, location: Table 14 Current characteristics - output current sunk/sourced by any I/O, excerpt: "IIO Output current sunk by any I/O and control pin 25 / sourced - 25 mA"}
+  f_clk:
+    max: 180
+    unit: MHz
+    status: extraido
+    source: {page: 13, location: Table 2 features - Maximum CPU frequency, excerpt: "Maximum CPU frequency 180 MHz"}
+  flash:
+    typ: 512
+    unit: kB
+    status: extraido
+    source: {page: 13, location: Table 2 features - Flash memory in Kbytes (STM32F446RE), excerpt: "Flash memory in Kbytes 256 512 (RC / RE)"}
+  ram:
+    typ: 128
+    unit: kB
+    status: extraido
+    source: {page: 13, location: Table 2 features - SRAM System, excerpt: "SRAM in Kbytes System 128 (112+16)"}
+  gpio:
+    max: 50
+    unit: '1'
+    status: extraido
+    source: {page: 13, location: Table 2 features - GPIOs (STM32F446RC/RE), excerpt: "GPIOs 63 50 81 114"}
+  adc_ch:
+    max: 16
+    unit: '1'
+    status: extraido
+    source: {page: 13, location: Table 2 features - 12-bit ADC number of channels (STM32F446RC/RE), excerpt: "Number of channels 14 16 16 24"}
+  adc_bits:
+    typ: 12
+    unit: bit
+    status: extraido
+    source: {page: 13, location: Table 2 features - 12-bit ADC, excerpt: "12-bit ADC Number of channels"}
+  Top:
+    min: -40
+    max: 105
+    unit: °C
+    status: extraido
+    source: {page: 77, location: Table 16 General operating conditions - TA ambient temperature for 7 suffix version, excerpt: "TA Ambient temperature for 7 suffix version -40 105 °C"}
+  Tstg:
+    min: -65
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 75, location: Table 15 Thermal characteristics - storage temperature range, excerpt: "TSTG Storage temperature range 65 to +150 °C"}
+attributes:
+  microcontrolador:
+    value: Arm Cortex-M4 de 32 bits com FPU, até 180 MHz
+    status: extraido
+    source: {page: 13, location: Table 2 features and datasheet title (STM32F446xC/E), excerpt: "Maximum CPU frequency 180 MHz; ARM Cortex-M4 with FPU (sumário, 3.1)"}
+  comunicacao:
+    value: 'USB OTG FS e HS, 2 CAN, 4 SPI, 4 I2C, 4 USART/UART, 2 SAI, SDIO, SPDIF-Rx, HDMI-CEC, Quad SPI'
+    status: extraido
+    source: {page: 13, location: Table 2 features - Communication interfaces, excerpt: "SPI 4/3, I2C 4/1 FMP+, USART/UART 4/2, USB OTG FS, USB OTG HS, CAN 2"}

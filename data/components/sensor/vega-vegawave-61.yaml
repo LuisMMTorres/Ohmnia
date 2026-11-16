@@ -1,0 +1,46 @@
+# Fonte: VEGA, Product information VEGAWAVE (vibrating level switch for powders), Document ID 54833, versão 23-04-2024 (2 páginas, p. 40-41 do catálogo).
+part_number: VEGAWAVE 61
+category: sensor.level
+schema_version: '1.0'
+manufacturer: VEGA
+family: VEGAWAVE
+package: Versão compacta, rosca G1½, 1½ NPT, flanges DN 50 / 2 pol. ou conexões sanitárias
+lifecycle: desconhecido
+notes:
+- 'Fila: pi vegawave 61 en. Documento é um resumo comercial de 2 páginas da série VEGAWAVE (S61, 61/63, 62); valores abaixo são da coluna VEGAWAVE 61/63.'
+- 'Pressão de processo -1 a +25 bar (-100 a +2500 kPa) na coluna 61/63 (p. 2). Faixa de medição: sólidos a granel a partir de 8 g/l (p. 2). Granulometria até 10 mm (p. 1).'
+- 'Sem tensão de alimentação, corrente ou dados elétricos detalhados neste documento.'
+datasheets:
+- id: ds1
+  manufacturer: VEGA
+  document_number: '54833'
+  revision: 23-04-2024
+  url: https://www.vega.com/api/sitecore/DocumentDownload/Handler?documentContainerId=1005005&languageId=2&fileExtension=pdf&softwareVersion=&documentGroupId=54833&version=23-04-2024
+  sha256: 6dd631bf60eb440f48571e7384d976f9dff212bf5a369344064447bba17c5224
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  T_process:
+    min: -50
+    max: 250
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Tabela - Process temperature, coluna VEGAWAVE 61/63, excerpt: "-50 … +250 °C"}
+attributes:
+  saida:
+    value: Relé, transistor, dois fios, NAMUR, chave eletrônica sem contato
+    status: extraido
+    source: {page: 2, location: Tabela - Signal output, coluna VEGAWAVE 61/63}
+  invólucro:
+    value: 316L com revestimento Carbocer
+    status: extraido
+    source: {page: 2, location: Tabela - Material, coluna VEGAWAVE 61/63}
+  certificacoes:
+    value: ATEX, UKEX, IECEx, FM, CSA, EAC (GOST), UKR Sepro, SIL2, NEPSI, KOSHA/KTL, CCOE
+    status: extraido
+    source: {page: 2, location: Tabela - Approvals, coluna VEGAWAVE 61/63}
+  principio:
+    value: Garfo vibratório (chave de nível para pós e sólidos granulados)
+    status: extraido
+    source: {page: 1, location: Texto - Vibrating level switch for powders}

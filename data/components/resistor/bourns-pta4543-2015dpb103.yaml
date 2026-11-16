@@ -1,0 +1,63 @@
+# Fonte: Bourns, PTA Series - Low Profile Slide Potentiometer (datasheet).
+part_number: PTA4543-2015DPB103
+category: resistor.variable
+schema_version: '1.0'
+manufacturer: Bourns
+family: PTA
+package: Potenciômetro deslizante 45 mm, pinos PC, sem tampa de pó, simples, alavanca metálica DP 15 mm
+lifecycle: desconhecido
+notes:
+- 'Decodificação pelo How To Order: 45 = curso 45 mm, B = taper linear, 103 = 10 000 ohm. Potência e tensão são as da linha Linear 45 mm / 20-60 mm.'
+datasheets:
+- id: ds1
+  manufacturer: Bourns
+  sha256: 834c576027bb26f3f0983f35cf2ac48e6357bfe508f1a471ccb9f82488760d55
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  R:
+    typ: 10000
+    unit: ohm
+    status: extraido
+    source: {page: 4, location: Standard Resistance Table, excerpt: "10,000 (código 103)"}
+  tol:
+    max: 20
+    unit: '%'
+    status: extraido
+    source: {page: 1, location: Electrical Characteristics - Standard Resistance Tolerance, excerpt: "1 KΩ<R<1 MΩ ±20%"}
+  P_rated:
+    max: 0.25
+    unit: W
+    status: extraido
+    source: {page: 1, location: Environmental Characteristics - Power Rating, Linear, excerpt: "45 mm 0.25 W (0.125 W Dual Gang)"}
+  V_max:
+    max: 200
+    unit: V
+    status: extraido
+    source: {page: 1, location: Environmental Characteristics - Maximum Operating Voltage, Linear, excerpt: "20-60 mm 200 V DC"}
+  travel:
+    typ: 45
+    unit: mm
+    status: extraido
+    source: {page: 1, location: Mechanical Characteristics - Travel / How To Order stroke length, excerpt: "Travel 15, 20, 30, 45, 60 mm"}
+  life:
+    min: 15000
+    unit: '1'
+    status: extraido
+    source: {page: 1, location: Mechanical Characteristics - Sliding Life, excerpt: "Sliding Life 15,000 cycles"}
+  Top:
+    min: -10
+    max: 50
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Environmental Characteristics - Operating Temperature, excerpt: "-10 °C to +50 °C"}
+attributes:
+  curva:
+    value: Linear (B)
+    status: extraido
+    source: {page: 1, location: How To Order - Resistance Taper, excerpt: "B = Linear Taper"}
+  tipo:
+    value: Deslizante, elemento de carbono, caixa metálica, simples
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "Carbon element, Metal housing, Single and dual gang"}

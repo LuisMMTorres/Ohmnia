@@ -1,0 +1,20 @@
+category: ic.pwm_controller
+schema_version: "1.0"
+description: CI controlador PWM ou de modo de corrente (SG3525, UC3842, TL494...)
+required: [VS]
+parameters:
+  VS:       {unit: V, kind: characteristic, description: Alimentação (faixa)}
+  VS_max:   {unit: V, kind: max_rating, description: Alimentação máxima absoluta}
+  Vref:     {unit: V, kind: characteristic, description: Tensão de referência interna}
+  f_osc:    {unit: kHz, kind: characteristic, description: Faixa de frequência do oscilador}
+  D_max:    {unit: "%", kind: characteristic, description: Razão cíclica máxima}
+  I_out:    {unit: mA, kind: max_rating, description: Corrente de saída (fonte ou dreno)}
+  t_r:      {unit: ns, kind: characteristic, description: Tempo de subida da saída}
+  t_f:      {unit: ns, kind: characteristic, description: Tempo de descida da saída}
+  V_uvlo:   {unit: V, kind: characteristic, description: Limiar de subtensão (UVLO)}
+  IS:       {unit: mA, kind: characteristic, description: Corrente de alimentação}
+  Top:      {unit: °C, kind: thermal, description: Temperatura de operação (faixa)}
+  Tj_max:   {unit: °C, kind: thermal, description: Temperatura máxima de junção}
+attributes:
+  saida: Tipo de saída (totem-pole, coletor aberto, dupla)
+  encapsulamento: Encapsulamento

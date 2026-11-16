@@ -1,0 +1,37 @@
+category: drive.stepper
+schema_version: '1.0'
+description: Driver de motor de passo ou servoacionamento
+required: []
+parameters:
+  VS:
+    unit: V
+    kind: characteristic
+    description: Alimentação (faixa)
+  I_out:
+    unit: A
+    kind: max_rating
+    description: Corrente de saída por fase (faixa)
+  microstep:
+    unit: '1'
+    kind: characteristic
+    description: Micropassos por passo (máx.)
+  f_step:
+    unit: kHz
+    kind: characteristic
+    description: Frequência máxima de pulsos
+  P_motor:
+    unit: kW
+    kind: max_rating
+    description: Potência do motor (servo)
+  Top:
+    unit: °C
+    kind: thermal
+    description: 'Temperatura de operação (faixa: mín. e máx.)'
+  Tstg:
+    unit: °C
+    kind: thermal
+    description: Temperatura de armazenamento (faixa)
+attributes:
+  entrada: Entrada de comando (passo/direção, pulso, rede)
+  grau_protecao: Grau de proteção (IP) declarado
+  certificacoes: Certificações e aprovações (UL, CE, ATEX...)

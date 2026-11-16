@@ -1,0 +1,85 @@
+# Fonte: Siemens, SIMATIC HMI Basic Panels 2nd Generation - Operating Instructions, A5E33293231-AE, 10/2024.
+part_number: SIMATIC HMI Basic Panels 2nd Generation
+category: hmi
+schema_version: '1.0'
+manufacturer: Siemens
+family: SIMATIC HMI Basic Panels 2nd Generation (KTP400, KTP700, KTP700 DP, KTP900, KTP1200, KTP1200 DP)
+lifecycle: desconhecido
+notes:
+- 'Nome na fila: hmi basic panels 2nd gen operating instructions en-US; manual de operação da série, valores como faixa entre os modelos KTP400 Basic a KTP1200 Basic DP (seção 8.7, p. 116-119).'
+- 'diagonal 4.3 a 12 pol; resolução 480 x 272 (KTP400), 800 x 480 (KTP700/KTP900), 1280 x 800 (KTP1200); res_x e res_y são as faixas da série.'
+- 'P_cons de 3 W (KTP400 Basic) a 13.2 W (KTP1200 Basic DP); corrente constante máxima de aprox. 310 mA a 800 mA (p. 117, 119).'
+- 'Top: 0 a 50 °C apenas em montagem horizontal (landscape) vertical; reduzida para 0-40, 0-35 °C conforme inclinação e orientação retrato (p. 107).'
+- 'Memória: dados 256 MB, programa 512 MB (p. 116, 118). Interfaces: Ethernet RJ45 10/100 (modelos PN) ou RS422/RS485 PROFIBUS DP até 12 Mbps (modelos DP), USB 2.0 (p. 117, 119).'
+datasheets:
+- id: ds1
+  manufacturer: Siemens
+  document_number: A5E33293231-AE
+  revision: 10/2024
+  url: https://icdn.tradew.com/file/201606/1569362/pdf/8391948.pdf
+  sha256: 106a321352ee316a9ec11c5b23db9a0101c7093a1876d03b8d3bcfbb7da18119
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 19.2
+    max: 28.8
+    typ: 24
+    unit: V
+    status: extraido
+    source: {page: 117, location: 8.7.1 Technical specifications - Power supply, excerpt: "Rated voltage +24 V DC; Permitted voltage range 19.2 to 28.8 V"}
+  P_cons:
+    min: 3
+    max: 13.2
+    unit: W
+    status: extraido
+    source: {page: 119, location: 8.7 Technical specifications - Power consumption (KTP400 em p. 117 a KTP1200 DP em p. 119), excerpt: "Power consumption 3 W ... 13.2 W"}
+  diagonal:
+    min: 4.3
+    max: 12
+    unit: in
+    status: extraido
+    source: {page: 116, location: 8.7.1 / 8.7.2 Display - active display area (KTP400 4.3" ... KTP1200 12"), excerpt: "95 x 53.9 mm (4.3\")"}
+  res_x:
+    min: 480
+    max: 1280
+    unit: '1'
+    status: extraido
+    source: {page: 118, location: 8.7.2 Display - Resolution, excerpt: "Resolution, pixels 800 x 480 / 1280 x 800"}
+  res_y:
+    min: 272
+    max: 800
+    unit: '1'
+    status: extraido
+    source: {page: 116, location: 8.7.1 Display - Resolution (KTP400), excerpt: "Resolution 480 x 272 pixels"}
+  memory:
+    typ: 512
+    unit: MB
+    status: extraido
+    source: {page: 116, location: 8.7.1 Memory - Program memory, excerpt: "Program memory 512 MB"}
+  Top:
+    min: 0
+    max: 50
+    unit: °C
+    status: extraido
+    source: {page: 107, location: 8.4.2 Operating conditions - Temperature, landscape mounting vertical, excerpt: "Mounting in landscape format Vertical 0 ... 50 °C"}
+  Tstg:
+    min: -20
+    max: 60
+    unit: °C
+    status: extraido
+    source: {page: 107, location: 8.4.1 Transport and storage conditions, excerpt: "Temperature –20 ... 60 °C"}
+attributes:
+  tela:
+    value: LCD TFT, 65536 cores (16 bits), retroiluminação LED, touch screen resistivo analógico
+    status: extraido
+    source: {page: 116, location: 8.7.1 Display / Input device, excerpt: "LCD TFT; Touch screen, analog resistive"}
+  comunicacao:
+    value: Ethernet RJ45 10/100 Mbps (modelos PROFINET), RS422/RS485 PROFIBUS DP até 12 Mbps (modelos DP), USB 2.0
+    status: extraido
+    source: {page: 117, location: 8.7.1 Interfaces, excerpt: "1 x RS 422/RS 485 Max. 12 Mbps; 1 x Ethernet RJ45 10/100 Mbps; USB 2.0"}
+  grau_protecao:
+    value: Frente IP65 (IEC 60529) e Type 4X/12 (UL50E, uso interno, só frente); traseira IP20
+    status: extraido
+    source: {page: 109, location: 8.5 Protection against foreign objects and water, excerpt: "Front When mounted: IP65 according to IEC 60529; Rear panel IP20"}

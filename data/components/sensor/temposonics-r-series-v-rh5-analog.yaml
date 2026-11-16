@@ -1,0 +1,84 @@
+# Fonte: Temposonics, Data Sheet R-Series V RH5 Analog (documento 552061).
+part_number: R-Series V RH5 Analog
+category: sensor.position
+schema_version: '1.0'
+manufacturer: Temposonics
+family: R-Series V RH5 (saída analógica)
+lifecycle: desconhecido
+notes:
+- "Nome na fila: R-Series V Analog Datasheet EN. Sensor de posição linear magnetostritivo tipo haste, saída analógica (corrente ou tensão); valores da série."
+- "Repetibilidade < ±0,001 % F.S. (mín. ±1 µm); histerese < 4 µm típico; coeficiente de temperatura < 30 ppm/K típico (p. 4)."
+- "Consumo < 3,25 W (p. 5); proteção contra polaridade invertida até -36 VDC e sobretensão até 36 VDC (p. 5)."
+- "Tempo de atualização conforme o curso: 0,25 ms (≤ 200 mm) a 5,0 ms (≤ 7620 mm) (p. 4). Velocidade 0,01 a 10 m/s medida pela segunda saída (p. 4)."
+- "Pressão de operação 350 bar (pico 700 bar); RH5-J: 800 bar (p. 4)."
+datasheets:
+- id: ds1
+  manufacturer: Temposonics
+  document_number: '552061'
+  url: https://www.temposonics.com/docs/temposonicslibraries/literature/rv/Data_Sheet_R-SeriesV_RH5_Analog_552061_EN.pdf
+  sha256: 9b4279ca1689228857f396f446a21a11fbbfd8d4fb19cfcf3cc2c76eee436946
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  range:
+    min: 25
+    max: 7620
+    unit: mm
+    status: extraido
+    source: {page: 4, location: Design/Material - Stroke length, excerpt: "Stroke length 25…7620 mm (1…300 in.)"}
+  linearity:
+    max: 0.01
+    unit: '%'
+    status: extraido
+    source: {page: 4, location: Measurement parameters - Linearity deviation, excerpt: "< ±0.01 % F.S. (minimum ±50 µm)"}
+  resolution:
+    typ: 0.0001
+    unit: mm
+    status: extraido
+    source: {page: 4, location: Measurement parameters - Resolution, excerpt: "16 bit (internal resolution 0.1 µm)"}
+  VS:
+    min: 9.6
+    max: 36
+    unit: V
+    status: extraido
+    source: {page: 5, location: Electrical connection - Operating voltage, excerpt: "+12…30 VDC ±20 % (9.6…36 VDC)"}
+  I_out:
+    min: 4
+    max: 20
+    unit: mA
+    status: extraido
+    source: {page: 4, location: Output - Current, excerpt: "Current: 4(0)…20/20…4(0) mA (min./max. load 0/500 Ω)"}
+  V_out:
+    min: -10
+    max: 10
+    unit: V
+    status: extraido
+    source: {page: 4, location: Output - Voltage, excerpt: "0…10 /10…0/−10…+10/+10…−10 VDC (min. controller load > 5 kΩ)"}
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 4, location: Operating conditions - Operating temperature, excerpt: "−40…+85 °C (−40…+185 °F)"}
+attributes:
+  saida:
+    value: "Analógica: tensão 0-10 V / 10-0 V / -10...+10 V / +10...-10 V ou corrente 4(0)-20 mA / 20-4(0) mA"
+    status: extraido
+    source: {page: 4, location: TECHNICAL DATA - Output - Analog}
+  conexao:
+    value: "Conector M16 macho (6 pinos), conector M12 macho (5 pinos) ou saída por cabo"
+    status: extraido
+    source: {page: 5, location: Electrical connection - Connection type}
+  invólucro:
+    value: "Eletrônica em alumínio pintado/zinco fundido; flange aço inox 1.4305; haste aço inox 1.4306"
+    status: extraido
+    source: {page: 4, location: Design/Material}
+  grau_protecao:
+    value: "IP67 (conectores corretamente encaixados) / IP68 (3 m/3 d) saída reta / IP68 e IP69 saída angular"
+    status: extraido
+    source: {page: 4, location: Operating conditions - Ingress protection}
+  principio:
+    value: "Magnetostritivo, tempo de voo (ímã de posição, guia de onda)"
+    status: extraido
+    source: {page: 2, location: MEASURING TECHNOLOGY}

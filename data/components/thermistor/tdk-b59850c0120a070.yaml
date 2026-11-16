@@ -1,0 +1,80 @@
+# Fonte: TDK Electronics, PTC thermistors for overcurrent protection, Leaded disks coated 230 V, Series B598** (C810 ... C890), Janeiro 2026.
+part_number: B59850C0120A070
+category: thermistor.ptc
+schema_version: '1.0'
+manufacturer: TDK
+family: B598** (C810 ... C890)
+package: Disco revestido com terminais radiais (tipo C850, Tref 120 °C)
+lifecycle: desconhecido
+notes:
+- 'Documento da série B598**; a linha da peça B59850C0120A070 é o tipo C850 com Tref 120 °C (pág. 3): IR 200 mA, IS 400 mA, ISmax 2,2 A, Ir 13 mA, RR 10 Ω, Rmin 6,4 Ω.'
+- 'Mapeamento adotado: I_hold = IR (corrente nominal "rated current"), I_trip = IS (corrente de comutação "switching current"), I_max = ISmax (corrente de comutação máxima a Vmax), R25 = RR (resistência nominal à temperatura nominal TR = 25 °C, pág. 15). Confirmar o mapeamento na revisão.'
+- 'Dimensões do tipo C850 / Tref 120 °C (pág. 2): wmax 13,5 mm, hmax 17,0 mm, lmin 25 mm, diâmetro do terminal 0,6 mm.'
+- 'Ciclos de comutação N = 100; tolerância de RR ±25% para Tref 80 ou 120 °C (pág. 3). Corrente residual Ir 13 mA típ. a V = Vmax. Aprovação UL 1434 para Tref = 120 °C com Vmax = 230 V e VR = 220 V (pág. 2).'
+- 'Faixa de operação com V = 0: o texto extraído mostra "40/+125" (sinal negativo perdido); registrada como -40 a 125 °C, confirmar no PDF.'
+datasheets:
+- id: ds1
+  manufacturer: TDK
+  document_number: B598** (C810 ... C890)
+  revision: January 2026
+  url: https://www.tdk-electronics.tdk.com/inf/55/db/PTC/PTC_OC_Leaded_230V_C810_C890.pdf
+  sha256: 6c5c63e8e40ed16cc4892d95170965748664a5172d7501431119790d9f6ca5c4
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  R25:
+    typ: 10
+    unit: ohm
+    status: extraido
+    note: RR, resistência nominal à temperatura nominal TR (25 °C); tolerância ±25%.
+    source: {datasheet_id: ds1, page: 3, location: Electrical specifications and ordering codes - RR, excerpt: "C850 200 400 2.2 13 120 10 6.4 ... B59850C0120A070"}
+  I_hold:
+    max: 0.2
+    unit: A
+    status: extraido
+    note: IR, corrente nominal (200 mA).
+    source: {datasheet_id: ds1, page: 3, location: Electrical specifications - IR, excerpt: "C850 200 400 2.2 13 120 10 6.4"}
+  I_trip:
+    typ: 0.4
+    unit: A
+    status: extraido
+    note: IS, corrente de comutação (400 mA).
+    source: {datasheet_id: ds1, page: 3, location: Electrical specifications - IS, excerpt: "C850 200 400 2.2 13 120 10 6.4"}
+  V_max:
+    max: 265
+    unit: V
+    status: extraido
+    conditions: {TA: 60 °C}
+    source: {datasheet_id: ds1, page: 3, location: General technical data - Max. operating voltage, excerpt: "Max. operating voltage (TA = 60 °C) Vmax 265 V DC or V AC"}
+  I_max:
+    max: 2.2
+    unit: A
+    status: extraido
+    conditions: {V: 265 V}
+    note: ISmax, corrente de comutação máxima a V = Vmax.
+    source: {datasheet_id: ds1, page: 3, location: Electrical specifications - ISmax (V = Vmax), excerpt: "C850 200 400 2.2 13 120 10 6.4"}
+  T_ref:
+    typ: 120
+    unit: °C
+    status: extraido
+    source: {datasheet_id: ds1, page: 3, location: Electrical specifications - Tref (typ.), excerpt: "C850 200 400 2.2 13 120 10 6.4"}
+  Top:
+    min: -40
+    max: 125
+    unit: °C
+    status: extraido
+    conditions: {V: 0 V}
+    source: {datasheet_id: ds1, page: 3, location: General technical data - Operating temperature range (V = 0), excerpt: "Top 40/+125 °C"}
+  Top@2:
+    min: 0
+    max: 60
+    unit: °C
+    status: extraido
+    conditions: {V: 265 V}
+    source: {datasheet_id: ds1, page: 3, location: General technical data - Operating temperature range (V = Vmax), excerpt: "Top 0/+60 °C"}
+attributes:
+  aplicacao:
+    value: proteção contra sobrecorrente e curto-circuito
+    status: extraido
+    source: {page: 2, location: Applications - Overcurrent protection, Short circuit protection}

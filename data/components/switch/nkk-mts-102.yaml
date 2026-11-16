@@ -1,0 +1,103 @@
+# Fonte: Massuse Electric Ltd., MTS Series Miniature Toggle Switch (folha de série, páginas 90 a 95 do catálogo).
+part_number: MTS-102
+category: switch.mechanical
+schema_version: '1.0'
+manufacturer: Massuse Electric
+family: MTS
+lifecycle: desconhecido
+notes:
+- A fila indica NKK, mas o documento é da Massuse Electric Ltd. (MTS Series, chave alavanca miniatura); valores da série MTS.
+- 'MTS-102: ON-ON, SPDT, 3 terminais (pág. 1, tabela Circuitry trait). Valores de especificação são da série, não só do MTS-102.'
+- 'Especificações em chinês e inglês (pág. 1): 6A 125VAC; 3A 250VAC. Vida elétrica 20.000 ciclos.'
+datasheets:
+- id: ds1
+  manufacturer: Massuse Electric
+  url: https://www.rcscomponents.kiev.ua/datasheets/MTSSeries.pdf
+  sha256: 9932049ca7ebe02a6bd1669c32495a489ed49d769c806762c38a40b11e9c8cf4
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_rated:
+    max: 6
+    unit: A
+    conditions: {V: 125 V}
+    status: extraido
+    source:
+      page: 1
+      location: Specification - Rating
+      excerpt: "Rating: 6A 125VAC: 3A 250VAC"
+  I_rated@2:
+    max: 3
+    unit: A
+    conditions: {V: 250 V}
+    status: extraido
+    source:
+      page: 1
+      location: Specification - Rating
+      excerpt: "Rating: 6A 125VAC: 3A 250VAC"
+  V_rated:
+    max: 250
+    unit: V
+    status: extraido
+    source:
+      page: 1
+      location: Specification - Rating
+      excerpt: "Rating: 6A 125VAC: 3A 250VAC"
+  R_contact:
+    max: 20
+    unit: mohm
+    status: extraido
+    source:
+      page: 1
+      location: Specification - Contact Resistance
+      excerpt: "Contact Resistance: 20mΩmax."
+  R_iso:
+    min: 1000
+    unit: Mohm
+    conditions: {V: 500 V}
+    status: extraido
+    source:
+      page: 1
+      location: Specification - Insulation Resistance
+      excerpt: "Insulation Resistance: 500VDC 1000MΩmin."
+  V_diel:
+    max: 1500
+    unit: V
+    status: extraido
+    source:
+      page: 1
+      location: Specification - Dielectric strength
+      excerpt: "Dielectric strength: 1500VAC,1Minute"
+  life:
+    min: 20000
+    unit: '1'
+    status: extraido
+    source:
+      page: 1
+      location: Specification - Electrical Life
+      excerpt: "Electrical Life: 20,000 Cycles"
+  Top:
+    min: -55
+    max: 85
+    unit: °C
+    status: extraido
+    source:
+      page: 1
+      location: Specification - Operating Temperature
+      excerpt: "Operating Temperature: -55℃~ +85℃"
+attributes:
+  tipo:
+    value: alavanca (toggle) miniatura
+    status: extraido
+    source:
+      page: 2
+      location: Product series title - Miniature Toggle Switch
+      excerpt: "小型钮子开关 Miniature Toggle Switch"
+  contatos:
+    value: SPDT ON-ON, 3 terminais
+    status: extraido
+    source:
+      page: 1
+      location: Circuitry trait table - MTS-102
+      excerpt: "MTS-102 ON - ON SPDT 3P"

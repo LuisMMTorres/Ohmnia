@@ -37,6 +37,8 @@ class CategorySchema(BaseModel):
     required: list[str]
     optional: list[str] = Field(default_factory=list)
     parameters: dict[str, ParameterSpec]
+    # qualitative specifications (name -> description), e.g. output type or protocol
+    attributes: dict[str, str] = Field(default_factory=dict)
 
     def model_post_init(self, _context: object) -> None:
         listed = set(self.required) | set(self.optional)
@@ -64,6 +66,7 @@ def load_schema(category: str) -> CategorySchema:
         data.setdefault("required", parent.required)
         listed = set(data["required"])
         data["optional"] = [k for k in params if k not in listed]
+        data["attributes"] = parent.attributes | (data.get("attributes") or {})
     return CategorySchema.model_validate(data)
 
 
@@ -96,6 +99,9 @@ def validate_against_schema(record: ComponentRecord) -> list[str]:
                 options = cond.split("|")
                 if not any(o in param.conditions for o in options):
                     problems.append(f"{key}: falta a condição de teste {' ou '.join(options)}")
+    for key in record.attributes:
+        if key not in schema.attributes:
+            problems.append(f"{key}: atributo não previsto na categoria {record.category}")
     return problems
 
 

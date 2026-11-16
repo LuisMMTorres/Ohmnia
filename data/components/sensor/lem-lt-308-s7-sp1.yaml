@@ -1,0 +1,99 @@
+# Fonte: LEM (Beijing LEM Electronics), folha de dados "Current Transducer LT 308-S7" (texto em chinês), ref. 081113/2, Page 1/3 a 3/3.
+part_number: LT 308-S7 SP1
+category: sensor.current
+schema_version: '1.0'
+manufacturer: LEM
+family: LT 308-S7
+lifecycle: desconhecido
+notes:
+- 'O número SP1 não aparece no texto; o documento trata de LT 308-S7 (confirmar a variante SP1).'
+- 'R_M (resistor de medida), pág. 1: com ±15 V, 0 a 43 ohm @ ±300 A max e 0 a 17 ohm @ ±500 A max; com ±12 V, 0 a 30 ohm @ ±300 A max e 0 a 7 ohm @ ±500 A max.'
+- 'Consumo IC (pág. 1): 28 mA (@ ±12 V) + IS (corrente secundária).'
+- 'Tensão de isolação 3,52 kV rms 50 Hz 1 min (pág. 2); sensor de malha fechada (compensação), Hall.'
+datasheets:
+- id: ds1
+  manufacturer: LEM
+  document_number: 081113/2
+  url: https://uploadcdn.oneyac.com/upload/document/1572859208975_2379.pdf
+  sha256: f060548991c7e91861254a50787c4a119c724f285c0995fd4b50c13fb7d1b310
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_PN:
+    typ: 300
+    unit: A
+    status: extraido
+    source: {page: 1, location: tabela, IPN, excerpt: "IPN 300 A"}
+  I_PM:
+    max: 500
+    unit: A
+    status: extraido
+    source: {page: 1, location: tabela, IPM faixa de medição, excerpt: "0 .. ± 500 A"}
+  ratio:
+    typ: 0.0005
+    unit: '1'
+    status: extraido
+    source: {page: 1, location: tabela, KN conversão, excerpt: "KN 1 : 2000"}
+  I_SN:
+    typ: 150
+    unit: mA
+    status: extraido
+    source: {page: 1, location: tabela, ISN, excerpt: "ISN 150 mA"}
+  accuracy:
+    max: 0.5
+    unit: '%'
+    status: extraido
+    source: {page: 1, location: tabela, XG precisão global, excerpt: "XG ± 0.5 %"}
+    conditions: {TA: 25 °C}
+  linearity:
+    max: 0.1
+    unit: '%'
+    status: extraido
+    source: {page: 1, location: tabela, linearidade, excerpt: "εL < 0.1 %"}
+  bandwidth:
+    max: 100
+    unit: kHz
+    status: extraido
+    source: {page: 1, location: tabela, BW -3 dB, excerpt: "BW DC .. 100 kHz"}
+  t_resp:
+    max: 1
+    unit: us
+    status: extraido
+    source: {page: 1, location: tabela, tr resposta a 90 % de IP max, excerpt: "tr < 1 μs"}
+  VS:
+    min: 12
+    max: 15
+    unit: V
+    status: extraido
+    source: {page: 1, location: tabela, VC tensão de alimentação, excerpt: "VC ± 12 .. 15 V"}
+  V_iso:
+    max: 3520
+    unit: V
+    status: extraido
+    source: {page: 2, location: Isolation characteristics, Vd, excerpt: "Vd 3.52 kV"}
+  Top:
+    min: -10
+    max: 70
+    unit: °C
+    status: extraido
+    source: {page: 1, location: tabela, TA, excerpt: "TA - 10 .. + 70 °C"}
+  Tstg:
+    min: -25
+    max: 80
+    unit: °C
+    status: extraido
+    source: {page: 1, location: tabela, TS, excerpt: "TS - 25 .. + 80 °C"}
+attributes:
+  principio:
+    value: Hall malha fechada (compensação)
+    status: extraido
+    source: {page: 1, location: Características}
+  saida:
+    value: corrente (ISN 150 mA, 1:2000)
+    status: extraido
+    source: {page: 1, location: tabela}
+  montagem:
+    value: furo primário 20 mm, 2 furos de fixação 5,4 mm, terminais secundários
+    status: extraido
+    source: {page: 3, location: Propriedades mecânicas}

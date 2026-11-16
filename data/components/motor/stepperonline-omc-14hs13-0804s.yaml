@@ -1,0 +1,77 @@
+# Fonte: StepperOnline (OMC / OYO Stepper), ficha do motor 14HS13-0804S (desenho e especificação, página única digitalizada), sem revisão informada.
+part_number: 14HS13-0804S
+category: motor.stepper
+schema_version: '1.0'
+manufacturer: StepperOnline (OMC)
+lifecycle: desconhecido
+notes:
+- 'Fila: 14HS13-0804S. PDF digitalizado (sem texto), valores lidos da imagem da página 1 (tabela de especificação, ligação bipolar).'
+- 'Tensão nominal ("VOLTAGE(VDC)") e corrente por fase são os da tabela; exatidão de passo +-5 % (não acumulada); elevação de temperatura máx. 80 °C (motor parado, 2 fases energizadas).'
+- 'Classe de isolação B 130 °C; resistência de isolação 100 Mohm; rigidez dielétrica 500 VAC por 1 min; umidade ambiente máx. 85 % sem condensação.'
+- 'Comprimento = cota "MAX" do corpo no desenho; torque de retenção também em lb-in na tabela.'
+datasheets:
+- id: ds1
+  manufacturer: StepperOnline (OMC)
+  url: https://www.oyostepper.com/images/upload/File/14HS13-0804S.pdf
+  sha256: 43955eb9da6639528d043c0ff0726e0219c3dfe7b1b0b55fc3a06d2ea19ec5b4
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  step_angle:
+    typ: 1.8
+    unit: deg
+    status: extraido
+    source: {page: 1, location: Tabela de especificação - STEP ANGLE, excerpt: "STEP ANGLE(°) 1.80"}
+  I_phase:
+    typ: 0.80
+    unit: A
+    status: extraido
+    source: {page: 1, location: Tabela de especificação - AMPS/PHASE, excerpt: "AMPS/PHASE 0.80"}
+  R_phase:
+    typ: 6.80
+    unit: ohm
+    status: extraido
+    source: {page: 1, location: Tabela de especificação - RESISTANCE/PHASE a 25 °C (tolerância +-10 %), excerpt: "RESISTANCE/PHASE(Ohms)@25°C 6.80±10%"}
+    conditions: {TA: 25 °C}
+  L_phase:
+    typ: 10.00
+    unit: mH
+    status: extraido
+    source: {page: 1, location: Tabela de especificação - INDUCTANCE/PHASE a 1 kHz (tolerância +-20 %), excerpt: "INDUCTANCE/PHASE(mH)@1KHz 10.00±20%"}
+  V_rated:
+    typ: 5.40
+    unit: V
+    status: extraido
+    source: {page: 1, location: Tabela de especificação - VOLTAGE (VDC), excerpt: "VOTAGE(VDC) 5.40"}
+  T_hold:
+    typ: 0.18
+    unit: N*m
+    status: extraido
+    source: {page: 1, location: Tabela de especificação - HOLDING TORQUE, excerpt: "HOLDING TORQUE(Nm)[lb-in] 0.18"}
+  J_rotor:
+    typ: 14.00
+    unit: g*cm^2
+    status: extraido
+    source: {page: 1, location: Tabela de especificação - ROTOR INERTIA, excerpt: "ROTOR INERTIA(g-cm²) 14.00"}
+  mass:
+    typ: 0.17
+    unit: kg
+    status: extraido
+    source: {page: 1, location: Tabela de especificação - WEIGHT, excerpt: "WEIGHT(Kg)[lb] 0.17"}
+  length:
+    max: 34
+    unit: mm
+    status: extraido
+    source: {page: 1, location: Desenho - vista lateral, cota do comprimento do corpo, excerpt: "34MAX"}
+  Top:
+    min: -10
+    max: 50
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Tabela de especificação - AMBIENT TEMPERATURE, excerpt: "AMBIENT TEMPERATURE -10°C~50°C"}
+attributes:
+  ligacao:
+    value: bipolar, 4 fios (A, A\, B, B\)
+    status: extraido
+    source: {page: 1, location: Tabela - CONNECTION e tipo de ligação, excerpt: "CONNECTION BIPOLAR"}

@@ -1,0 +1,58 @@
+category: motor.ac
+schema_version: '1.0'
+description: Motor de indução ou motor CA
+required: []
+parameters:
+  P_rated:
+    unit: kW
+    kind: max_rating
+    description: Potência nominal
+  V_rated:
+    unit: V
+    kind: characteristic
+    description: Tensão nominal
+  I_rated:
+    unit: A
+    kind: characteristic
+    description: Corrente nominal
+  f:
+    unit: Hz
+    kind: characteristic
+    description: Frequência
+  n_rated:
+    unit: rpm
+    kind: characteristic
+    description: Rotação nominal
+  efficiency:
+    unit: '%'
+    kind: characteristic
+    description: Rendimento
+  pf:
+    unit: '1'
+    kind: characteristic
+    description: Fator de potência
+  T_rated:
+    unit: N*m
+    kind: characteristic
+    description: Torque nominal
+  Ip_In:
+    unit: '1'
+    kind: characteristic
+    description: Relação corrente de partida/nominal
+  Tp_Tn:
+    unit: '1'
+    kind: characteristic
+    description: Relação torque de partida/nominal
+  Top:
+    unit: °C
+    kind: thermal
+    description: 'Temperatura de operação (faixa: mín. e máx.)'
+  Tstg:
+    unit: °C
+    kind: thermal
+    description: Temperatura de armazenamento (faixa)
+attributes:
+  carcaca: Carcaça
+  classe: Classe de rendimento e isolamento
+  grau_protecao: Grau de proteção (IP) declarado
+  certificacoes: Certificações e aprovações (UL, CE, ATEX...)

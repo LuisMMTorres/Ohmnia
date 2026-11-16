@@ -1,0 +1,78 @@
+# Fonte: CR Magnetics, True RMS AC Current Transducer CR4110/CR4120/CR4111 (série CR4100, catálogo p. 26-27), cópia Chipsmall.
+part_number: CR4100
+category: sensor.current
+schema_version: '1.0'
+manufacturer: CR Magnetics
+family: CR4100 Series
+lifecycle: desconhecido
+notes:
+- 'Fila: CR4100. Valores da série (CR4110, CR4111, CR4120, CR4150-CR4180); faixas entre os modelos.'
+- 'Faixa de entrada 0,5 a 150 AAC (elemento único) e 0,5 a 30 AAC (2 e 3 elementos), pág. 2. Saídas 0-5 VDC, 0-10 VDC ou 4-20 mADC.'
+- 'Alimentação 24 VDC ±10% (pág. 3). Corrente de alimentação típ./máx.: CR4110/11 15/25 mA; CR4120 25/40 mA; CR4150 25/75 mA; CR4160 40/70 mA; CR4170 20/60 mA; CR4180 55/110 mA (pág. 3).'
+- 'Deriva térmica 500 PPM/°C; carga de saída 4-20 mA 0 a 300 Ω, 0-5 V 2 kΩ ou mais (pág. 3).'
+datasheets:
+- id: ds1
+  manufacturer: CR Magnetics
+  url: https://datasheet.chipsmall.com/CR4120-5/440787.pdf
+  sha256: 78e67ffbb2ed0c4f4ccf7dedbf7866014a47c29e91cddb4b1cae1b4a32f32b81
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_PN:
+    min: 0.5
+    max: 150
+    unit: A
+    status: extraido
+    source: {page: 2, location: Título - Input Range, excerpt: "0.5 to 150 AAC Input Range"}
+  accuracy:
+    max: 0.5
+    unit: '%'
+    status: extraido
+    source: {page: 3, location: Specifications - Basic Accuracy, excerpt: "Basic Accuracy:............................... 0.5%"}
+  bandwidth:
+    min: 0.02
+    max: 5
+    unit: kHz
+    status: extraido
+    source: {page: 3, location: Specifications - Frequency Range, excerpt: "Frequency Range:.........   20 Hz - 5 KHz"}
+  t_resp:
+    max: 250000
+    unit: us
+    status: extraido
+    source: {page: 3, location: Specifications - Response Time, excerpt: "Response Time:............. 250 ms max. 0-90%"}
+  V_iso:
+    typ: 2500
+    unit: V
+    status: extraido
+    source: {page: 3, location: Specifications - Insulation Voltage, excerpt: "Insulation Voltage:........................ 2500 VDC"}
+  VS:
+    typ: 24
+    unit: V
+    status: extraido
+    source: {page: 3, location: Specifications - Supply Voltage, excerpt: "Supply Voltage:.............. 24 VDC ± 10%"}
+  IS:
+    min: 15
+    max: 110
+    unit: mA
+    status: extraido
+    source: {page: 3, location: Specifications - Supply Current, excerpt: "CR4110/11......................Typical 15mA      Max 25mA"}
+  Top:
+    min: 0
+    max: 60
+    unit: °C
+    status: extraido
+    source: {page: 3, location: Specifications - Operating Temperature, excerpt: "Operating Temperature:................. 0°C to +60°C"}
+attributes:
+  principio:
+    value: Transdutor de corrente CA True RMS (usa TC); versões bipartidas com sufixo S
+    status: extraido
+    source: {page: 2, location: Título e descrição, excerpt: "True RMS AC Current Transducer"}
+  saida:
+    value: 0-5 VDC, 0-10 VDC ou 4-20 mADC conforme o modelo
+    status: extraido
+    source: {page: 2, location: Part numbers, excerpt: "Single element with 4 - 20 mADC output"}
+  montagem:
+    value: Trilho DIN 35 mm ou painel
+    status: extraido
+    source: {page: 2, location: Features, excerpt: "35mm DIN Rail or Panel Mount"}

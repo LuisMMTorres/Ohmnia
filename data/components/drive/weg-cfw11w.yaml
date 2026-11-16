@@ -1,0 +1,82 @@
+# Fonte: WEG, CFW-11W User's Manual (Modular Drive), documento 10004699316, r00.
+part_number: CFW11W
+category: drive.vfd
+schema_version: '1.0'
+manufacturer: WEG
+family: CFW-11W
+package: IP00, módulo com refrigeração líquida
+lifecycle: desconhecido
+notes:
+- 'Valores da série CFW-11W UP11-06 (Tabela 8.1, pág. 77): modelos CFW11W 1445 T6, 2600 T6 e 3900 T6, alimentação em barramento DC 574...1025 Vdc; faixa entre os modelos.'
+- 'Alimentação é em Vdc (corrente de entrada em Adc), portanto sem número de fases de entrada; o parâmetro V_in registra a faixa do barramento DC.'
+- 'Sobrecarga ND: 1590 A / 2860 A / 4290 A por 1 min e 2167 A / 3900 A / 5850 A por 3 s (Tabela 8.1, pág. 77). Motor máximo a 60 Hz / 690 V: 2000/1500 a 5500/4100 HP/kW.'
+- 'Temperatura ambiente 0 a 45 C (redução de 1 % por grau até 50 C); temperatura de entrada do líquido de refrigeração 0 a 40 C, vazão 20 l/min; altitude nominal 1000 m (pág. 21, seção 3.1).'
+datasheets:
+- id: ds1
+  manufacturer: WEG
+  document_number: '10004699316'
+  revision: r00
+  url: https://static.weg.net/medias/downloadcenter/hae/h83/WEG-10004699316-13871637-r00-CFW11-W-users-manual-en.pdf
+  sha256: 1b7607baf8e7fbc883958f9d597b20897601fa30af907864c8615cb336be9aac
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  P_motor:
+    min: 1500
+    max: 4100
+    unit: kW
+    status: extraido
+    source: {page: 77, location: Tabela 8.1, Maximum Motor 60 Hz 690 V, excerpt: "2000/1500 ... 5500/4100 [HP/kW]"}
+  V_in:
+    min: 574
+    max: 1025
+    unit: V
+    status: extraido
+    source: {page: 77, location: Tabela 8.1, Power Supply (Vdc), excerpt: "574...1025"}
+  I_out:
+    min: 1445
+    max: 3900
+    unit: A
+    status: extraido
+    source: {page: 77, location: Tabela 8.1, Rated Output Current ND, excerpt: "CFW11W 1445 T6 ... 3900 T6"}
+  f_sw:
+    typ: 2
+    unit: kHz
+    status: extraido
+    source: {page: 77, location: Tabela 8.1, Rated Switching Frequency, excerpt: "1445|1590|2167|2|2000/1500"}
+  di:
+    typ: 6
+    unit: '1'
+    status: extraido
+    source: {page: 79, location: Tabela 8.2, Inputs (CC11 board), Digital, excerpt: "6 isolated digital inputs, 24 Vdc"}
+  ai:
+    typ: 2
+    unit: '1'
+    status: extraido
+    source: {page: 79, location: Tabela 8.2, Inputs (CC11 board), Analog, excerpt: "2 isolated differential inputs"}
+  do:
+    typ: 3
+    unit: '1'
+    status: extraido
+    source: {page: 79, location: Tabela 8.2, Outputs (CC11 board), Relay, excerpt: "3 relays with NO/NC contacts, 240 Vac, 1 A"}
+  ao:
+    typ: 2
+    unit: '1'
+    status: extraido
+    source: {page: 79, location: Tabela 8.2, Outputs (CC11 board), Analog, excerpt: "2 isolated outputs, (0 to 10) V"}
+  Top:
+    min: 0
+    max: 45
+    unit: °C
+    status: extraido
+    source: {page: 21, location: 3.1 Mechanical installation, ambient, excerpt: "Ambient temperature: 0 °C to 45 °C"}
+attributes:
+  controle:
+    value: V/f, VVW, vetorial com encoder, sensorless e vetorial para PMSM
+    status: extraido
+    source: {page: 79, location: Tabela 8.2, Control types}
+  grau_protecao:
+    value: IP00
+    status: extraido
+    source: {page: 79, location: Tabela 8.2, Degree of Protection}

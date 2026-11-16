@@ -1,0 +1,76 @@
+# Fonte: Honeywell Sensing and Productivity Solutions, Datasheet Speed Sensors 1GT Series Gear Tooth Sensors, 32315204 Issue A.
+part_number: 1GT Series
+category: sensor.magnetic
+schema_version: '1.0'
+manufacturer: Honeywell
+family: 1GT Series Gear Tooth Sensors
+lifecycle: desconhecido
+notes:
+- 'Nome na fila: 1gt-series-datasheet-005889-2-en; valores da série, medidos com resistor de pull-up de 1 kohm (Tabela 1, p. 2).'
+- 'Sensor Hall polarizado magneticamente para alvos metálicos ferrosos (dentes de engrenagem); saída digital em coletor aberto (sink), proteção contra polaridade reversa e transientes de +60 V / -40 V (p. 1).'
+- 'Operação: ponto de operação 3.3° ±1.25° e de liberação 4.4° ±2.5° (ângulo) com entreferro de 0,13 mm a 2,03 mm, 10 a 5000 rpm (p. 2).'
+- 'Tempos de comutação: subida (10% a 90%) 5 us máx.; descida (90% a 10%) 1.0 us máx. (p. 2). Carga capacitiva externa máxima de 550 pF (p. 2).'
+- 'Temperatura de operação contínua -40 a 150 °C, curto prazo até 160 °C (p. 1). Corrente de saída/fuga: linha da tabela 1 ambígua no PDF, não transcrita.'
+datasheets:
+- id: ds1
+  manufacturer: Honeywell
+  document_number: 32315204 Issue A
+  url: https://www.farnell.com/datasheets/2337759.pdf
+  sha256: 6bc0880d4b055a4f6e9cdbc803e2ff991ef7d5d99b10b81b8ef68f1238444963
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 4.5
+    max: 24
+    unit: V
+    status: extraido
+    source: {page: 2, location: Table 1 Electrical Specifications - Supply voltage, excerpt: "Supply voltage 4.5 Vdc to 24 Vdc"}
+  IS:
+    typ: 10
+    max: 20
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Table 1 Electrical Specifications - Supply current, excerpt: "Supply current 10 mA typ., 20 mA max."}
+  IL:
+    max: 40
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Table 3 Absolute Maximum Ratings - Output current, excerpt: "Output current 40 mA sinking"}
+  Vdrop:
+    max: 0.4
+    unit: V
+    status: extraido
+    source: {page: 2, location: Table 1 Electrical Specifications - Vsat low output, excerpt: "Vsat low output 0.4 V max."}
+  f_sw:
+    min: 50
+    max: 10000
+    unit: Hz
+    status: extraido
+    source: {page: 2, location: Table 1 Electrical Specifications - Operating frequency range, excerpt: "Operating frequency range 50 Hz to 10 kHz"}
+  Top:
+    min: -40
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Table 2 Environmental Specifications - Operating temperature (sensor only), excerpt: "-40 °C to 150 °C [-40 °F to 302 °F]"}
+  Tstg:
+    min: -40
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Table 2 Environmental Specifications - Storage temperature, excerpt: "-40 °C to 150 °C [-40 °F to 302 °F]"}
+attributes:
+  saida:
+    value: Digital, em corrente (coletor aberto, current sinking)
+    status: extraido
+    source: {page: 1, location: Description, excerpt: "Output is digital, current sinking (open collector)."}
+  conexao:
+    value: Cabos de 137,2 mm, 650 mm ou 1500 mm, fio 22 AWG com isolação de polietileno reticulado (135 °C máx.)
+    status: extraido
+    source: {page: 2, location: Table 4 Mechanical Specifications - Leads, excerpt: "137,2 mm [5.40 in], 650 mm [25.6 in], 1500 mm [59.1 in]; 22 gauge wire"}
+  invólucro:
+    value: Encapsulamento tipo sonda (probe) selado, com CI Hall, capacitor discreto e ímã de polarização
+    status: extraido
+    source: {page: 1, location: Description, excerpt: "sealed in a probe-type package for physical protection"}

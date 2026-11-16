@@ -272,6 +272,33 @@ export function ComponentReview({ id, onBack }: { id: string; onBack: () => void
             })}
           </tbody>
         </table>
+        {Object.keys(record.attributes ?? {}).length > 0 && (
+          <table className="params attributes">
+            <thead>
+              <tr>
+                <th>Especificação</th>
+                <th>Valor no documento</th>
+                <th>Pág.</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {Object.entries(record.attributes ?? {}).map(([name, a]) => (
+                <tr key={name}>
+                  <td>
+                    <strong>{name.replace(/_/g, " ")}</strong>
+                    <div className="muted small">{detail.schema_.attributes?.[name]}</div>
+                  </td>
+                  <td>{a.value}</td>
+                  <td>{a.source?.page ?? "—"}</td>
+                  <td>
+                    <span className={`badge ${a.status}`}>{STATUS_LABEL[a.status]}</span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
         <div className="release">
           {detail.release_blockers.length > 0 ? (
             <details>

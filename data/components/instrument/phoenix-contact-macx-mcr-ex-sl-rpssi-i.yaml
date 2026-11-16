@@ -1,0 +1,96 @@
+# Fonte: Phoenix Contact, Data sheet do catálogo online, MACX MCR-EX-SL-RPSSI-I, art. 2865340, 14 nov 2013 (cópia Conrad).
+part_number: MACX MCR-EX-SL-RPSSI-I
+category: instrument.transmitter
+schema_version: '1.0'
+manufacturer: Phoenix Contact
+family: MACX MCR-EX
+package: 12,5 x 99 x 114,5 mm (L x A x P), trilho DIN
+lifecycle: desconhecido
+notes:
+- 'Fila: repeater-power-supply-macx-mcr-ex-sl-rpssi-2865340 (art. 2865340). Repetidor/alimentador Ex-i com isolação de 3 vias, HART, SIL 2.'
+- 'Dados Ex (pág. 4): Uo 25,2 V, Io 93 mA, Po 587 mW, Lo 2 mH, Co 107 nF; Ui <= 30 V, Ii <= 130 mA.'
+- 'Tensão de alimentação do transmissor > 16 V a 20 mA; queda de tensão < 3,5 V (pág. 2). Corrente de saída 0/4-20 mA ativa ou passiva (fonte externa 14-26 V).'
+- 'Erro máximo < 0,1 % do valor final; típico < 0,05 %; coeficiente de temperatura < 0,01 %/K (págs. 2-3). Ondulação da saída < 20 mVrms.'
+datasheets:
+- id: ds1
+  manufacturer: Phoenix Contact
+  document_number: '2865340'
+  revision: 14 nov 2013
+  url: https://asset.conrad.com/media10/add/160267/c1/-/en/000774164DS03/datasheet-774164-powerinput-isolating-amplifier-macx-mcr-ex-sl-rpssi-i-2865340-phoenix-contact.pdf
+  sha256: 79cca289ca45ff402f87793d844fc3b7c6a90d6713a6d92f2a39b32903cad030
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_out:
+    min: 0
+    max: 20
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Output data - Current output signal, excerpt: "0 mA ... 20 mA (active)"}
+  accuracy:
+    max: 0.1
+    unit: '%'
+    status: extraido
+    source: {page: 2, location: General - Maximum transmission error, excerpt: "< 0.1 % (of final value)"}
+  RL:
+    max: 600
+    unit: ohm
+    status: extraido
+    source: {page: 2, location: Output data - Load/output load current output, excerpt: "< 600 Ω"}
+  V_iso:
+    typ: 2500
+    unit: V
+    status: extraido
+    conditions: {t: 1 min, f: 50 Hz}
+    source: {page: 3, location: Electrical isolation (entrada/saída/alimentação), excerpt: "2.5 kV (50 Hz, 1 min., test voltage)"}
+  t_resp:
+    max: 0.6
+    unit: ms
+    status: extraido
+    source: {page: 3, location: General - Step response (10-90%), excerpt: "< 600 µs (for 4 mA ... 20 mA step)"}
+  VS:
+    min: 19.2
+    max: 30
+    unit: V
+    status: extraido
+    source: {page: 2, location: Power supply - Supply voltage range, excerpt: "19.2 V DC ... 30 V DC"}
+  IS:
+    max: 60
+    unit: mA
+    status: extraido
+    conditions: {VS: 24 V}
+    source: {page: 2, location: Power supply - Max. current consumption, excerpt: "< 60 mA (at 24 V DC)"}
+  Top:
+    min: -20
+    max: 60
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Ambient conditions - operation, excerpt: "-20 °C ... 60 °C (Any mounting position)"}
+  Tstg:
+    min: -40
+    max: 80
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Ambient conditions - storage/transport, excerpt: "-40 °C ... 80 °C"}
+attributes:
+  entrada:
+    value: 0/4-20 mA, [Ex ia] IIC, alimentada ou não alimentada, com resistor de 250 ohm para HART
+    status: extraido
+    source: {page: 1, location: Product Features, excerpt: "0/4 ... 20 mA input, [Ex ia] IIC (powered or not powered)"}
+  saida:
+    value: 0/4-20 mA ativa ou passiva
+    status: extraido
+    source: {page: 1, location: Product Features, excerpt: "0/4 ... 20 mA output (active or passive)"}
+  grau_protecao:
+    value: IP20
+    status: extraido
+    source: {page: 2, location: Ambient conditions - Degree of protection, excerpt: "IP20"}
+  certificacoes:
+    value: ATEX, IECEx, UL/cUL (Class I Div 2), SIL 2 (EN 61508), CE
+    status: extraido
+    source: {page: 3, location: Conformance, excerpt: "SIL 2 according to EN 61508"}
+  comunicacao:
+    value: HART (transmissão bidirecional)
+    status: extraido
+    source: {page: 3, location: Data communication (bypass), excerpt: "Protocols supported HART"}

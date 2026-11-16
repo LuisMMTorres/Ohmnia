@@ -1,0 +1,172 @@
+# Fonte: Texas Instruments, NE5532, NE5532A, SA5532, SA5532A Dual Low-Noise Operational Amplifiers, SLOS075K, November 1979 - Revised December 2025.
+part_number: NE5532
+category: opamp
+schema_version: '1.0'
+manufacturer: Texas Instruments
+family: NE5532 / NE5532A / SA5532 / SA5532A (ampop duplo de baixo ruído)
+package: SOIC D (8), PDIP P (8), SO PS (8)
+lifecycle: desconhecido
+notes:
+- Folha SLOS075K (novembro 1979, revisada dezembro 2025). Ampop duplo; valores por amplificador, exceto ICC (total).
+- Valores da seção 5.5 com VCC± = ±15 V, TA = 25 °C.
+- 'Faixa de temperatura de operação NE5532: 0 a 70 °C (SA5532: -40 a 85 °C).'
+- 'ICC total do encapsulamento: 6 mA típ. e 16 mA máx. (VO = 0, sem carga); não transcrito como IQ por amplificador.'
+datasheets:
+- id: ds1
+  manufacturer: Texas Instruments
+  document_number: SLOS075K
+  revision: NOVEMBER 1979 - REVISED DECEMBER 2025
+  sha256: d9ab074bb64a1a0374f2c353f0b7854ee55e8a95e6de44c336a1084749fdbcb0
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS_max:
+    max: 18
+    unit: V
+    note: 'Simétrica: VCC+ até +18 V e VCC- até -18 V'
+    status: extraido
+    source:
+      page: 3
+      location: Absolute maximum ratings - supply voltage VCC+ / VCC-
+      excerpt: Supply voltage VCC+ 0 +18 V, VCC- -18 0 V
+  VI_max:
+    max: 15
+    unit: V
+    note: Em relação ao ponto médio entre VCC+ e VCC-; nunca deve exceder a tensão de alimentação
+    status: extraido
+    source:
+      page: 3
+      location: Absolute maximum ratings - input voltage, either input (relativa ao ponto médio da alimentação)
+      excerpt: Input voltage, either input -15 +15 V
+  Tj_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 3
+      location: Absolute maximum ratings - operating virtual-junction temperature
+      excerpt: TJ Operating virtual-junction temperature +150 °C
+  Tstg_max:
+    max: 125
+    unit: degC
+    status: extraido
+    source:
+      page: 3
+      location: Absolute maximum ratings - storage temperature range
+      excerpt: Tstg Storage temperature range -60 +125 °C
+  Vos:
+    typ: 0.5
+    max: 4
+    unit: mV
+    conditions: &id001
+      TA: 25 degC
+    status: extraido
+    source:
+      page: 4
+      location: Electrical characteristics 5.5 - input offset voltage VIO
+      excerpt: VIO Input offset voltage VO = 0 TA = 25°C 0.5 4 mV
+  Ios:
+    typ: 10
+    max: 150
+    unit: nA
+    conditions: *id001
+    status: extraido
+    source:
+      page: 4
+      location: Electrical characteristics 5.5 - input offset current IIO
+      excerpt: IIO Input offset current TA = 25°C 10 150 nA
+  Ib:
+    typ: 200
+    max: 800
+    unit: nA
+    conditions: *id001
+    status: extraido
+    source:
+      page: 4
+      location: Electrical characteristics 5.5 - input bias current IIB
+      excerpt: IIB Input bias current TA = 25°C 200 800 nA
+  Rin:
+    min: 30
+    typ: 300
+    unit: kohm
+    status: extraido
+    source:
+      page: 4
+      location: Electrical characteristics 5.5 - input resistance ri
+      excerpt: ri Input resistance 30 300 kΩ
+  Avol:
+    min: 25
+    typ: 100
+    unit: V/mV
+    conditions:
+      RL: 2 kohm
+    status: extraido
+    source:
+      page: 4
+      location: Electrical characteristics 5.5 - large-signal differential-voltage amplification, RL ≥ 2 kΩ
+      excerpt: RL ≥ 2kΩ, VO±10 V TA = 25°C 25 100
+  Avol@2:
+    min: 15
+    typ: 50
+    unit: V/mV
+    conditions:
+      RL: 600 ohm
+    status: extraido
+    source:
+      page: 4
+      location: Electrical characteristics 5.5 - large-signal differential-voltage amplification, RL ≥ 600 Ω
+      excerpt: RL ≥ 600Ω, VO = ±10 V TA = 25°C 15 50
+  GBW:
+    typ: 12
+    unit: MHz
+    status: extraido
+    source:
+      page: 4
+      location: Electrical characteristics 5.5 - unity-gain bandwidth B1
+      excerpt: B1 Unity-gain bandwidth 12 MHz
+  CMRR:
+    min: 70
+    typ: 100
+    unit: dB
+    status: extraido
+    source:
+      page: 4
+      location: Electrical characteristics 5.5 - common-mode rejection ratio
+      excerpt: CMRR VIC = VICR min 70 100 dB
+  PSRR:
+    min: 80
+    typ: 100
+    unit: dB
+    status: extraido
+    source:
+      page: 4
+      location: Electrical characteristics 5.5 - supply-voltage rejection ratio kSVR
+      excerpt: kSVR VCC± = ±9 V to ±15 V, VO = 0 80 100 dB
+  Isc:
+    typ: 38
+    unit: mA
+    status: extraido
+    source:
+      page: 4
+      location: Electrical characteristics 5.5 - output short-circuit current IOS
+      excerpt: IOS Output short-circuit current 38 mA
+  SR:
+    typ: 5
+    unit: V/us
+    status: extraido
+    source:
+      page: 4
+      location: Operating characteristics 5.6 - slew rate at unity gain
+      excerpt: SR Slew rate at unity gain 5 V/μs
+  en:
+    typ: 5
+    unit: nV/Hz**0.5
+    conditions:
+      f: 1 kHz
+    status: extraido
+    source:
+      page: 4
+      location: Operating characteristics 5.6 - equivalent input noise voltage Vn, f = 1 kHz
+      excerpt: Vn Equivalent input noise voltage f = 30Hz 8 f = 1kHz 5 nV/√Hz
+attributes: {}

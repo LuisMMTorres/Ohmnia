@@ -1,0 +1,92 @@
+# Fonte: LEM, Voltage transducer DVL 1000 (N° 97.H9.60.000.0), Version 7 (Public datasheet), 17 February 2026.
+part_number: DVL 1000
+category: sensor.voltage
+schema_version: '1.0'
+manufacturer: LEM
+family: DVL
+lifecycle: desconhecido
+notes:
+- 'Transdutor de tensão com saída em corrente e isolação galvânica; medição bipolar até 1500 V (p.1).'
+- 'Alimentação bipolar +-UC: valores de VS são o módulo (13,5 a 26,4 V cada polo) (p.4). Máx. absoluta +-26,4 V em operação, +-34 V por 0,1 s (p.2).'
+- 'Condições elétricas: TA = 25 °C, +-UC = +-24 V, RM = 100 ohm (p.4). RM máx. 133 ohm, ver figuras 1 e 2 (p.4-5).'
+- 'Erro total <= +-0,5 % de UP N a 25 °C e <= +-1 % de -40 a 85 °C (p.4). Offset IO +-50 uA a 25 °C (p.4).'
+- 'Tempo de atraso a 90 % do valor final: 50 us typ, 60 us max (passo 0 a 1000 V, 6 kV/us) (p.4). Resistência do primário 11,3 Mohm (p.4).'
+- 'Conexões de entrada e saída com terminais M5 (p.1).'
+- 'Máx. tensão de modo comum DC <= 4,2 kV (p.3). Isolação: 8,5 kV rms 50 Hz 1 min (p.3).'
+datasheets:
+- id: ds1
+  manufacturer: LEM
+  document_number: 97.H9.60.000.0
+  revision: Version 7
+  url: https://www.lem.com/sites/default/files/products_datasheets/dvl_1000_v7.pdf
+  sha256: e714b95ae150404a7a09fc94c5c790337df0c22f8ebba638768c6a52811c8370
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  V_PN:
+    typ: 1000
+    unit: V
+    status: extraido
+    source: {page: 4, location: Electrical data - primary nominal RMS voltage UP N, excerpt: "Primary nominal RMS voltage"}
+  V_PM:
+    min: -1500
+    max: 1500
+    unit: V
+    status: extraido
+    source: {page: 4, location: Electrical data - primary voltage measuring range UP M, excerpt: "Primary voltage, measuring range"}
+  I_SN:
+    typ: 50
+    unit: mA
+    status: extraido
+    source: {page: 4, location: Electrical data - secondary nominal RMS current IS N, excerpt: "Secondary nominal RMS current"}
+  accuracy:
+    max: 0.5
+    unit: '%'
+    conditions: {TA: 25 °C}
+    status: extraido
+    source: {page: 4, location: Electrical data - total error (% of UP N), excerpt: "Total error"}
+  bandwidth:
+    typ: 14
+    unit: kHz
+    status: extraido
+    source: {page: 4, location: Electrical data - frequency bandwidth BW (-3 dB), excerpt: "Frequency bandwidth"}
+  V_iso:
+    typ: 8500
+    unit: V
+    status: extraido
+    source: {page: 3, location: Insulation coordination - RMS voltage for AC insulation test 50 Hz 1 min (8.5 kV), excerpt: "RMS voltage for AC insulation test, 50 Hz, 1 min"}
+  VS:
+    min: 13.5
+    max: 26.4
+    unit: V
+    status: extraido
+    source: {page: 4, location: Electrical data - supply voltage +-UC (módulo), excerpt: "Supply voltage"}
+  IS:
+    typ: 20
+    max: 25
+    unit: mA
+    conditions: {VS: 24 V}
+    status: extraido
+    source: {page: 4, location: Electrical data - current consumption at UC = +-24 V, UP = 0 V, excerpt: "Current consumption"}
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 3, location: Environmental characteristics - ambient operating temperature, excerpt: "Ambient operating temperature"}
+  Tstg:
+    min: -50
+    max: 90
+    unit: °C
+    status: extraido
+    source: {page: 3, location: Environmental characteristics - ambient storage temperature, excerpt: "Ambient storage temperature"}
+attributes:
+  principio:
+    value: Transdutor de tensão isolado (medição eletrônica de DC, AC, pulsada)
+    status: extraido
+    source: {page: 1, location: Description, excerpt: "For the electronic measurement of voltage"}
+  saida:
+    value: Corrente (50 mA para 1000 V primário; sensibilidade 50 uA/V)
+    status: extraido
+    source: {page: 4, location: Electrical data - sensitivity S, excerpt: "50 mA for primary 1000 V"}

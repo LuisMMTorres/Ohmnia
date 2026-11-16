@@ -1,0 +1,49 @@
+category: resistor.variable
+schema_version: '1.0'
+description: Potenciômetro, trimpot ou resistor variável
+required:
+- R
+parameters:
+  R:
+    unit: ohm
+    kind: characteristic
+    description: Resistência total (ou faixa da série)
+  tol:
+    unit: '%'
+    kind: characteristic
+    description: Tolerância da resistência total
+  P_rated:
+    unit: W
+    kind: max_rating
+    description: Potência nominal
+  V_max:
+    unit: V
+    kind: max_rating
+    description: Tensão máxima
+  rotation:
+    unit: deg
+    kind: geometry
+    description: Ângulo de rotação elétrico ou mecânico
+  travel:
+    unit: mm
+    kind: geometry
+    description: Curso (deslizante)
+  life:
+    unit: '1'
+    kind: characteristic
+    description: Vida mecânica em ciclos
+  linearity:
+    unit: '%'
+    kind: characteristic
+    description: Linearidade
+  Top:
+    unit: °C
+    kind: thermal
+    description: 'Temperatura de operação (faixa: mín. e máx.)'
+  Tstg:
+    unit: °C
+    kind: thermal
+    description: Temperatura de armazenamento (faixa)
+attributes:
+  curva: Curva (linear B, logarítmica A...)
+  tipo: Tipo (rotativo, deslizante, multivoltas, trimpot)

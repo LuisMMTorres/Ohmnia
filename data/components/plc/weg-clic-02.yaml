@@ -1,0 +1,102 @@
+# Fonte: WEG, CLIC-02 Programmable Micro Controller - User Manual (EN/ES/PT), documento 10009280784 / 00, 12/2021.
+part_number: CLIC-02
+category: plc
+schema_version: '1.0'
+manufacturer: WEG
+family: CLIC-02
+lifecycle: desconhecido
+notes:
+- 'Nome na fila: WEG-clic02-manual-do-usuario-10000436522-manual-portugues-br; PDF recebido é a edição 10009280784/00 trilíngue; valores transcritos da seção em inglês (cap. 4.1 General Specifications, PDF p. 27-29).'
+- 'Valores da série (relé inteligente compacto, até 44 pontos de E/S digitais); variam entre os modelos CLW-02/10 a /20 (HR, HT, VR, VT, -A, -12D).'
+- 'VS: faixa dos modelos em corrente contínua (12 Vdc: 10.4 a 14.4 V; 24 Vdc: 20.4 a 28.8 V). Modelos CA: 100 a 240 Vac e 24 Vac (20.4 a 28.8 Vac) (p. 27).'
+- 'do: 4 saídas nos modelos de 10/12 pontos, 8 nos de 20 pontos (tabela de modelos, p. 30).'
+- 'Entradas analógicas A01-A04 na unidade básica, A05-A08 em módulos de expansão; entrada analógica 0~10 Vdc (p. 29).'
+- 'Tempo de ciclo 10 ms/ciclo; programa máximo 300 linhas ou 260 blocos funcionais; display LCD 4 linhas x 16 caracteres (p. 27).'
+datasheets:
+- id: ds1
+  manufacturer: WEG
+  document_number: 10009280784 / 00
+  revision: 12/2021
+  url: https://static.weg.net/medias/downloadcenter/h86/hcf/WEG-CLIC-02-user-manual-10009280784-pt-en-es.pdf
+  sha256: dd40aaed505d3a333d5614e52938c329df176768f90c60a0498e9e77c2043f70
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 10.4
+    max: 28.8
+    unit: V
+    status: extraido
+    source: {page: 27, location: 4.1 General Specifications - Power Supply Input Voltage Range (modelos Vdc), excerpt: "24 Vdc 20.4 ~ 28.8 Vdc; 12 Vdc 10.4 ~ 14.4 Vdc"}
+  do:
+    min: 4
+    max: 8
+    unit: '1'
+    status: extraido
+    source: {page: 30, location: 4.2.1 Basic Unit - Digital Outputs (Relay/Transistor), excerpt: "CLW-02/12HR-D ... 4 ; CLW-02/20HR-D ... 8"}
+  ai:
+    typ: 4
+    unit: '1'
+    status: extraido
+    source: {page: 29, location: Analog Inputs - Available Amount Basic Unit, excerpt: "Basic Unit A01-A04"}
+  di_on:
+    min: 15
+    unit: V
+    conditions: {VS: 24 V}
+    status: extraido
+    source: {page: 28, location: Discrete Inputs - Voltage Signal in input for Status ON, excerpt: "24 Vdc > 15 Vdc"}
+  di_off:
+    max: 5
+    unit: V
+    conditions: {VS: 24 V}
+    status: extraido
+    source: {page: 28, location: Discrete Inputs - Voltage Signal in input for Status OFF, excerpt: "24 Vdc < 5 Vdc"}
+  do_I:
+    max: 8
+    unit: A
+    status: extraido
+    source: {page: 29, location: Relay Outputs - Maximum Load, excerpt: "Resistive: 8A / point; Inductive: 4A / point"}
+  do_I@2:
+    max: 0.5
+    unit: A
+    status: extraido
+    source: {page: 29, location: Transistor Outputs - Maximum Load, excerpt: "Resistive: 0.5A / point; Inductive: 0.3A / point"}
+  ai_bits:
+    typ: 12
+    unit: bit
+    status: extraido
+    source: {page: 29, location: Analog Inputs - Resolution Basic Unit, excerpt: "Resolution Basic Unit 12 bits"}
+  Top:
+    min: -20
+    max: 55
+    unit: °C
+    status: extraido
+    source: {page: 28, location: Environmental - Temperature in Operation, excerpt: "Temperature in Operation -20 to 55°C"}
+  Tstg:
+    min: -40
+    max: 70
+    unit: °C
+    status: extraido
+    source: {page: 28, location: Environmental - Storage Temperature, excerpt: "Storage Temperature -40° to 70°C"}
+attributes:
+  linguagens:
+    value: Ladder / FBD
+    status: extraido
+    source: {page: 27, location: 4.1 General Specifications - Programming Languages, excerpt: "Programming Languages Ladder / FBD"}
+  comunicacao:
+    value: RS-485 Modbus incorporado nos modelos CLW-02/20VR-D e /20VT-D; módulo de expansão CLW-02/MBUS 3RD (RS-485, Modbus RTU Slave)
+    status: extraido
+    source: {page: 30, location: 4.2 Models and Features, excerpt: "Communication RS-485 MODBUS incorporated; Communication Module, RS-485, ModBus RTU Slave"}
+  tipo_saida:
+    value: Relé (liga de prata) ou transistor, conforme modelo
+    status: extraido
+    source: {page: 30, location: 4.2.1 Basic Unit - Digital Outputs Relay / Transistor, excerpt: "Digital Outputs Relay Transistor"}
+  grau_protecao:
+    value: IP20
+    status: extraido
+    source: {page: 28, location: Environmental - Enclosure Type, excerpt: "Enclosure Type IP20"}
+  certificacoes:
+    value: CUL, CE, UL
+    status: extraido
+    source: {page: 28, location: Environmental - Certifications, excerpt: "Certifications CUL , CE, UL"}

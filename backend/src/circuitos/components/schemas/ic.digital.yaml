@@ -1,0 +1,58 @@
+category: ic.digital
+schema_version: '1.0'
+description: CI digital (portas, flip-flops, contadores, registradores...)
+required:
+- VS
+parameters:
+  VS:
+    unit: V
+    kind: characteristic
+    description: Alimentação (faixa)
+  VIH:
+    unit: V
+    kind: characteristic
+    description: Tensão de entrada nível alto (mín.)
+  VIL:
+    unit: V
+    kind: characteristic
+    description: Tensão de entrada nível baixo (máx.)
+  VOH:
+    unit: V
+    kind: characteristic
+    description: Tensão de saída nível alto
+  VOL:
+    unit: V
+    kind: characteristic
+    description: Tensão de saída nível baixo
+  IOH:
+    unit: mA
+    kind: max_rating
+    description: Corrente de saída nível alto
+  IOL:
+    unit: mA
+    kind: max_rating
+    description: Corrente de saída nível baixo
+  tpd:
+    unit: ns
+    kind: characteristic
+    description: Atraso de propagação
+  f_max:
+    unit: MHz
+    kind: characteristic
+    description: Frequência máxima
+  ICC:
+    unit: uA
+    kind: characteristic
+    description: Corrente de alimentação quiescente
+  Top:
+    unit: °C
+    kind: thermal
+    description: 'Temperatura de operação (faixa: mín. e máx.)'
+  Tstg:
+    unit: °C
+    kind: thermal
+    description: Temperatura de armazenamento (faixa)
+attributes:
+  familia: Família lógica (74HC, CD4000, 74LS...)
+  funcao: Função
+  encapsulamento: Encapsulamento

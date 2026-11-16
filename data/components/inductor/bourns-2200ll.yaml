@@ -1,0 +1,59 @@
+# Fonte: Bourns, 2200LL Series Low Core Loss, High Current Toroid Inductors, REV. 06/07.
+part_number: 2200LL
+category: inductor.fixed
+schema_version: '1.0'
+manufacturer: Bourns
+family: 2200LL
+package: Toroide com terminais, montagem horizontal (-H) ou vertical (-V)
+lifecycle: desconhecido
+notes:
+- Valores da série; faixa entre os modelos (L de 1,0 a 1000 µH). Idc e DCR variam com a indutância.
+- 'Idc nominal causa elevação de 30 °C na temperatura. Não há corrente de saturação nem SRF no documento.'
+datasheets:
+- id: ds1
+  manufacturer: Bourns
+  document_number: 2200LL Series
+  revision: 06/07
+  sha256: 469a1f9b88bd7e7541ea36abc70f968da654ee591913c1c77095dee3da91d4cd
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  L:
+    min: 1.0
+    max: 1000
+    unit: uH
+    status: extraido
+    conditions: {f: 1 kHz}
+    source: {datasheet_id: ds1, page: 1, location: Tabela - L (μH) @ 1 kHz, excerpt: "2200LL-1R0-RC ... 2200LL-102-RC"}
+  tol:
+    max: 20
+    unit: '%'
+    status: extraido
+    note: ± 20 % a 1 kHz; a L com corrente nominal tem ± 15 %.
+    source: {datasheet_id: ds1, page: 1, location: Tabela - cabeçalho L (μH) ± 20 % @ 1 KHz, excerpt: "± 20 %"}
+  I_rms:
+    min: 2.4
+    max: 26.1
+    unit: A
+    status: extraido
+    note: Idc nominal causa elevação de 30 °C; faixa entre os modelos da série.
+    source: {datasheet_id: ds1, page: 1, location: Tabela - Idc (A) e nota *, excerpt: "Rated Idc causes a 30 °C temperature rise"}
+  DCR:
+    min: 0.002
+    max: 0.216
+    unit: ohm
+    status: extraido
+    note: DCR máx. por modelo; faixa entre os modelos da série.
+    source: {datasheet_id: ds1, page: 1, location: Tabela - DCR (Ω) Max.}
+  Top:
+    min: -55
+    max: 125
+    unit: °C
+    status: extraido
+    source: {datasheet_id: ds1, page: 1, location: Special Features - Operating temperature, excerpt: "-55 to +125 °C"}
+attributes:
+  nucleo:
+    value: Toroide de baixa perda no núcleo, baixa radiação magnética, alta corrente
+    status: extraido
+    source: {datasheet_id: ds1, page: 1, location: Título e Special Features}

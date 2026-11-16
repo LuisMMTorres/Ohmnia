@@ -1,0 +1,145 @@
+# Fonte: Toshiba, TLP521-1, TLP521-2, TLP521-4 Photocoupler GaAs Ired & Photo-Transistor, 2017-05-11.
+part_number: TLP521-4
+category: optocoupler
+schema_version: '1.0'
+manufacturer: Toshiba
+family: TLP521-1 / TLP521-2 / TLP521-4
+package: DIP-16 (11-20A3)
+lifecycle: desconhecido
+notes:
+- Documento da família TLP521-1/-2/-4; valores da coluna TLP521-4 (4 canais, DIP de 16 pinos, pág. 1). IF máx 50 mA é o valor da coluna do TLP521-4 (70 mA para -1/-2), pág. 2.
+- CTR 50 a 600 % (tipo sem rank, IF = 5 mA, VCE = 5 V, Ta = 25 °C, pág. 3); ranks GB 100 a 600 %, etc.
+- 'V_iso 2500 Vrms (AC, 60 s, UR <= 60 %); VS é a faixa recomendada de VCC de 5 V típico a 24 V máx (pág. 2).'
+- 'Tempos tr = 2 us e tf = 3 us (VCC = 10 V, IC = 2 mA, RL = 100 ohm; pág. 5). Sem símbolo no esquema: ton 3 us, toff 3 us, VECO 7 V, IC máx 50 mA da saída ja registrado.'
+datasheets:
+- id: ds1
+  manufacturer: Toshiba
+  revision: '2017-05-11'
+  url: https://www.radiodetali.perm.ru/goodstech/TLP521-1GB.pdf
+  sha256: 3d9023f3a101ec3d119858830b7f1d6f46ce868134208158146bcb59f30b47ae
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  IF:
+    max: 50
+    unit: mA
+    status: extraido
+    source:
+      page: 2
+      location: Absolute Maximum Ratings - LED, Forward current (coluna TLP521-4)
+      excerpt: "Forward current IF 70 50 mA"
+  VF:
+    min: 1.0
+    typ: 1.15
+    max: 1.3
+    unit: V
+    conditions: {IF: 10 mA}
+    status: extraido
+    source:
+      page: 4
+      location: Electrical Characteristics - LED Forward voltage
+      excerpt: "Forward voltage VF IF = 10 mA 1.0 1.15 1.3 V"
+  CTR:
+    min: 50
+    max: 600
+    unit: '%'
+    conditions: {IF: 5 mA, VCE: 5 V, Ta: 25 °C}
+    status: extraido
+    source:
+      page: 3
+      location: Current transfer ratio - TLP521-4 Blank
+      excerpt: "TLP521-4 Blank 50 600 IF = 5mA, VCE = 5V, Ta = 25°C"
+  VCEO:
+    max: 55
+    unit: V
+    status: extraido
+    source:
+      page: 2
+      location: Absolute Maximum Ratings - Detector, Collector-emitter voltage
+      excerpt: "Collector-emitter voltage VCEO 55 V"
+  IC:
+    max: 50
+    unit: mA
+    status: extraido
+    source:
+      page: 2
+      location: Absolute Maximum Ratings - Detector, Collector current
+      excerpt: "Collector current IC 50 mA"
+  VCE_sat:
+    max: 0.4
+    unit: V
+    conditions: {IC: 2.4 mA, IF: 8 mA}
+    status: extraido
+    source:
+      page: 4
+      location: Coupled Electrical Characteristics - Collector-emitter saturation voltage
+      excerpt: "VCE(sat) IC = 2.4 mA, IF = 8 mA 0.4 V"
+  V_iso:
+    min: 2500
+    unit: V
+    status: extraido
+    source:
+      page: 2
+      location: Absolute Maximum Ratings - Isolation voltage (AC, 60 s, R.H. <= 60%)
+      excerpt: "Isolation voltage BVS 2500 Vrms"
+  t_r:
+    typ: 2
+    unit: us
+    conditions: {VCC: 10 V, IC: 2 mA, RL: 100 ohm}
+    status: extraido
+    source:
+      page: 5
+      location: Switching Characteristics - Rise time
+      excerpt: "Rise time tr VCC = 10 V IC = 2 mA RL = 100 ohm 2 us"
+  t_f:
+    typ: 3
+    unit: us
+    conditions: {VCC: 10 V, IC: 2 mA, RL: 100 ohm}
+    status: extraido
+    source:
+      page: 5
+      location: Switching Characteristics - Fall time
+      excerpt: "Fall time tf 3 us"
+  VS:
+    typ: 5
+    max: 24
+    unit: V
+    status: extraido
+    source:
+      page: 2
+      location: Recommended Operating Conditions - Supply voltage
+      excerpt: "Supply voltage VCC 5 24 V"
+  Top:
+    min: -55
+    max: 100
+    unit: °C
+    status: extraido
+    source:
+      page: 2
+      location: Absolute Maximum Ratings - Operating temperature range
+      excerpt: "Operating temperature range Topr -55 to 100 °C"
+  Tstg:
+    min: -55
+    max: 125
+    unit: °C
+    status: extraido
+    source:
+      page: 2
+      location: Absolute Maximum Ratings - Storage temperature range
+      excerpt: "Storage temperature range Tstg -55 to 125 °C"
+attributes:
+  saida:
+    value: fototransistor
+    status: extraido
+    source:
+      page: 1
+      location: Title - Photocoupler GaAs Ired & Photo-Transistor
+      excerpt: "TOSHIBA Photocoupler GaAs Ired & Photo-Transistor"
+  canais:
+    value: '4'
+    status: extraido
+    source:
+      page: 1
+      location: Description - TLP521-4 four isolated channels
+      excerpt: "TLP521-4 provides four isolated channels in a sixteen plastic DIP package"

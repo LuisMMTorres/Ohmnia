@@ -1,0 +1,113 @@
+# Fonte: Vishay Semiconductors, 4N32 / 4N33 - Optocoupler, Photodarlington Output, High Gain, With Base Connection, Document Number 83736, Rev. 1.3, 20-Apr-04.
+part_number: 4N33
+category: optocoupler
+schema_version: '1.0'
+manufacturer: Vishay
+family: 4N32 / 4N33
+package: DIP-6 (opções SMD-6 X007 e X009)
+lifecycle: desconhecido
+notes:
+- Documento comum aos 4N32 e 4N33 (CTR mínimo 500 % para ambos). O documento foi obtido de um site agregador (nota da fila), confira a origem.
+- 'O documento rotula as temperaturas de forma trocada: a linha "Storange temperature" traz o símbolo Tamb com -55 a +150 C e a linha "Operating temperature" traz Tstg com -55 a +100 C. Foram transcritos pelos nomes das linhas (armazenamento -55 a +150 C, operação -55 a +100 C).'
+- 'Tempos de chaveamento (página 3, VCC = 10 V, IC = 50 mA, IF = 200 mA, RL = 180 ohm): ton máximo 5,0 us e toff máximo 100 us; o esquema só tem t_r e t_f.'
+- VCEO é a tensão de ruptura coletor-emissor BVCEO (30 V, página 1). IC é a corrente de coletor (carga).
+- Nenhuma tensão absoluta separada para a saída além das tensões de ruptura (BVCEO 30 V, BVCBO 50 V, BVEBO 8 V, BVECO 5 V).
+datasheets:
+- id: ds1
+  manufacturer: Vishay
+  document_number: '83736'
+  revision: Rev. 1.3, 20-Apr-04
+  url: https://vikiwat.com/userfiles/productimages/6800/files/optron-4n33-darlington-tranzistoren-izhod-1-kanal-dip6-0.pdf
+  sha256: 46616727862cb8609b9a9d9017bd45d178be141868f9d28847827137cb508ed9
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  IF:
+    max: 60
+    unit: mA
+    status: extraido
+    source:
+      page: 1
+      location: Absolute Maximum Ratings - Input, Forward continuous current
+      excerpt: "Forward continuous current IF 60 mA"
+  VF:
+    typ: 1.25
+    max: 1.5
+    unit: V
+    conditions:
+      IF: 50 mA
+    status: extraido
+    source:
+      page: 2
+      location: Electrical Characteristics - Input, Forward voltage, IF = 50 mA
+      excerpt: "Forward voltage IF = 50 mA VF 1.25 1.5 V"
+  CTR:
+    min: 500
+    unit: '%'
+    conditions:
+      VCE: 10 V
+      IF: 10 mA
+    status: extraido
+    source:
+      page: 3
+      location: Current Transfer Ratio - CTR, VCE = 10 V, IF = 10 mA
+      excerpt: "Current Transfer Ratio VCE = 10 V, IF = 10 mA CTR 500 %"
+  VCEO:
+    max: 30
+    unit: V
+    status: extraido
+    source:
+      page: 1
+      location: Absolute Maximum Ratings - Output, Collector-emitter breakdown voltage BVCEO
+      excerpt: "Collector-emitter breakdown voltage BVCEO 30 V"
+  IC:
+    max: 125
+    unit: mA
+    status: extraido
+    source:
+      page: 2
+      location: Absolute Maximum Ratings - Output, Collector (load) current
+      excerpt: "Collector (load) current IC 125 mA"
+  VCE_sat:
+    typ: 1.0
+    unit: V
+    status: extraido
+    source:
+      page: 3
+      location: Coupler - Colector emitter saturation voltage VCEsat (sem condição de teste no documento)
+      excerpt: "Colector emitter saturation voltage VCEsat 1.0 V"
+  V_iso:
+    max: 5300
+    unit: V
+    status: extraido
+    source:
+      page: 2
+      location: Coupler - Isolation test voltage between emitter and detector VISO (VRMS)
+      excerpt: "Isolation test voltage ... VISO 5300 VRMS"
+  Top:
+    min: -55
+    max: 100
+    unit: °C
+    status: extraido
+    source:
+      page: 2
+      location: Coupler - linha Operating temperature (-55 a +100 C; símbolo impresso Tstg)
+      excerpt: "Operating temperature Tstg - 55 to + 100 °C"
+  Tstg:
+    min: -55
+    max: 150
+    unit: °C
+    status: extraido
+    source:
+      page: 2
+      location: Coupler - linha Storange temperature (-55 a +150 C; símbolo impresso Tamb)
+      excerpt: "Storange temperature Tamb - 55 to + 150 °C"
+attributes:
+  saida:
+    value: Fotodarlington com conexão de base
+    status: extraido
+    source:
+      page: 1
+      location: título
+      excerpt: "Optocoupler, Photodarlington Output, High Gain, With Base Connection"

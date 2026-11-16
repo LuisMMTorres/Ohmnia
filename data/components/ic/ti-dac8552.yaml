@@ -1,0 +1,89 @@
+# Fonte: Texas Instruments, DAC8552 16-Bit, Dual Channel, Ultra-Low Glitch, Voltage Output Digital-to-Analog Converter, SLAS430A, July 2006 - Revised October 2006.
+part_number: DAC8552
+category: ic.dac
+schema_version: '1.0'
+manufacturer: Texas Instruments
+package: MSOP-8 (DGK) (p. 2 e p. 4)
+lifecycle: desconhecido
+notes:
+- 'DAC de 16 bits, dois canais, saída em tensão rail-to-rail, referência externa obrigatória (p. 1).'
+- 'Características a VDD = 2,7 V a 5,5 V, de -40 °C a +105 °C (p. 2 e p. 3).'
+- 'Corrente de alimentação (modo normal): 340 µA típ., 500 µA máx. para VDD = 3,6 a 5,5 V; não inclui corrente de referência (p. 3).'
+- 'Tempo de acomodação 8 µs típ. e 10 µs máx. (a ±0,003% FSR, RL = 2 kΩ, 0 a 200 pF) (p. 3).'
+- 'Relative accuracy: ±4 LSB típ., ±12 LSB máx. (p. 2).'
+datasheets:
+- id: ds1
+  manufacturer: Texas Instruments
+  document_number: SLAS430A
+  revision: October 2006
+  url: https://www.ti.com/lit/ds/symlink/dac8552.pdf
+  sha256: 5b161a84e888b0f41f702c4808fff23c5d979b5486f1c183d66f3803028dbc6d
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  bits:
+    typ: 16
+    unit: bit
+    status: extraido
+    source: {page: 2, location: Electrical Characteristics - Static performance, excerpt: "Resolution 16 Bits"}
+  t_settle:
+    max: 10
+    unit: us
+    status: extraido
+    source: {page: 3, location: Electrical Characteristics - Output characteristics, excerpt: "To ±0.003% FSR 0200h to FD00h, RL = 2kΩ 8 10 µs"}
+  channels:
+    typ: 2
+    unit: '1'
+    status: extraido
+    source: {page: 1, location: Title, excerpt: "16-BIT, DUAL CHANNEL, ULTRA-LOW GLITCH, VOLTAGE OUTPUT"}
+  VS:
+    min: 2.7
+    max: 5.5
+    unit: V
+    status: extraido
+    source: {page: 3, location: Electrical Characteristics - Power requirements, excerpt: "VDD 2.7 5.5 V"}
+  VREF:
+    min: 0
+    unit: V
+    status: extraido
+    source: {page: 3, location: Electrical Characteristics - Reference input, excerpt: "Reference input range 0 VDD V"}
+  V_out:
+    min: 0
+    unit: V
+    status: extraido
+    source: {page: 3, location: Electrical Characteristics - Output characteristics, excerpt: "Output voltage range 0 VREF V"}
+  DNL:
+    typ: 0.35
+    max: 1
+    unit: '1'
+    status: extraido
+    source: {page: 2, location: Electrical Characteristics - Differential nonlinearity, excerpt: "Differential nonlinearity 16-bit monotonic ±0.35 ±1 LSB"}
+  IS:
+    typ: 0.34
+    max: 0.5
+    unit: mA
+    conditions: {VDD: 3.6 V a 5.5 V}
+    status: extraido
+    source: {page: 3, location: Electrical Characteristics - IDD normal mode, excerpt: "IDD (normal mode) VDD = 3.6V to 5.5V 340 500 µA"}
+  Top:
+    min: -40
+    max: 105
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Absolute Maximum Ratings - Operating temperature range, excerpt: "Operating temperature range –40°C to +105°C"}
+  Tstg:
+    min: -65
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Absolute Maximum Ratings - Storage temperature range, excerpt: "Storage temperature range –65°C to +150°C"}
+attributes:
+  interface:
+    value: Serial de 3 fios (SYNC, SCLK, DIN), até 30 MHz a VDD = 5 V
+    status: extraido
+    source: {page: 1, location: Description, excerpt: "standard 3-wire serial interface ... up to 30MHz for VDD = 5V"}
+  encapsulamento:
+    value: MSOP-8 (DGK)
+    status: extraido
+    source: {page: 4, location: Pin Configuration, excerpt: "DGK PACKAGE MSOP-8"}

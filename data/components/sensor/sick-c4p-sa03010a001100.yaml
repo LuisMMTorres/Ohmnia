@@ -1,0 +1,74 @@
+# Fonte: SICK, Online data sheet C4P-SA03010A001100 (part no. 1215675), deTec4 Prime safety light curtain (emissor), impresso em 2026-07-25.
+part_number: C4P-SA03010A001100
+category: sensor.photoelectric
+schema_version: '1.0'
+manufacturer: SICK
+family: deTec4 Prime
+package: Perfil de alumínio extrudado, altura de campo protegido 300 mm
+lifecycle: desconhecido
+notes:
+- 'Fila: C4P-SA03010A00. Este modelo é apenas o EMISSOR (Sender) da cortina de luz de segurança; o datasheet não lista saídas OSSD para este módulo.'
+- 'Segurança: Tipo 4 (IEC 61496-1), SIL 3, Categoria 4, PL e; PFHD 9,6E-9 por hora (dispositivo único) (pág. 2).'
+- 'Resolução 14 mm; altura do campo protegido 300 mm; potência típica 1,42 W (DC); ondulação <= 10 %; classe de proteção III (pág. 2-3).'
+- 'Auxiliar de alinhamento laser integrado: classe 1, 650 nm, luz vermelha visível (pág. 3).'
+- 'Grau de proteção IP65 e IP67 (pág. 3).'
+datasheets:
+- id: ds1
+  manufacturer: SICK
+  document_number: '1215675'
+  revision: impresso em 2026-07-25
+  url: https://www.sick.com/media/pdf/4/64/564/dataSheet_C4P-SA03010A001100_1215675_en.pdf
+  sha256: 4a9282083503199a7b5221b37e17393441ad38b2cb7233be9ad269cd7b40b309
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  range:
+    max: 20
+    unit: m
+    status: extraido
+    source: {page: 2, location: Features - Scanning range, excerpt: "Scanning range 20 m"}
+  lambda:
+    typ: 850
+    unit: nm
+    status: extraido
+    source: {page: 3, location: Other information - Wave length, excerpt: "Wave length 850 nm; Near-infrared (NIR), invisible"}
+  VS:
+    min: 19.2
+    max: 28.8
+    unit: V
+    status: extraido
+    source: {page: 3, location: Electronics - Supply voltage VS, excerpt: "24 V DC (19.2 V ... 28.8 V)"}
+  Top:
+    min: -30
+    max: 55
+    unit: °C
+    status: extraido
+    source: {page: 3, location: Ambient data, excerpt: "Ambient operating temperature –30 °C ... +55 °C"}
+  Tstg:
+    min: -30
+    max: 70
+    unit: °C
+    status: extraido
+    source: {page: 3, location: Ambient data, excerpt: "Storage temperature –30 °C ... +70 °C"}
+attributes:
+  grau_protecao:
+    value: IP65 e IP67 (IEC 60529)
+    status: extraido
+    source: {page: 3, location: Ambient data - Enclosure rating}
+  conexao:
+    value: Plugue M12, 5 pinos (conexão do sistema)
+    status: extraido
+    source: {page: 3, location: Interfaces - System connection, excerpt: "System connection Plug, M12, 5-pin"}
+  invólucro:
+    value: Perfil de alumínio extrudado
+    status: extraido
+    source: {page: 3, location: Mechanics - Housing material}
+  principio:
+    value: Cortina de luz de segurança, emissor (barreira)
+    status: extraido
+    source: {page: 2, location: Features - System part, excerpt: "System part Sender"}
+  luz:
+    value: Infravermelho próximo 850 nm, invisível
+    status: extraido
+    source: {page: 3, location: Other information - Type of light}

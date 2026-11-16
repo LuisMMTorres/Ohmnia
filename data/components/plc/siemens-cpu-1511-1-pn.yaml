@@ -1,0 +1,62 @@
+# Fonte: Siemens, SIMATIC S7-1500 CPU 1511-1 PN (6ES7511-1AK00-0AB0) Manual, A5E31264526-AC, 12/2014.
+part_number: CPU 1511-1 PN
+category: plc
+schema_version: '1.0'
+manufacturer: Siemens
+family: SIMATIC S7-1500
+lifecycle: desconhecido
+notes:
+- 'Nome na fila: s71500 cpu1511 1 pn manual en-US; referência de pedido 6ES7511-1AK00-0AB0, hardware FS06, firmware V1.7 (p. 31).'
+- 'CPU sem E/S digitais ou analógicas integradas no documento (módulos de E/S externos); por isso di, do, ai e ao não foram transcritos.'
+- 'Consumo: corrente nominal de entrada 0.7 A a 24 VDC, corrente de partida máx. 1.9 A (p. 31). P_cons usa a perda de potência típica (Power loss, typ.) como valor mais próximo de consumo.'
+- 'Memória de trabalho: 150 KB para programa e 1 MB para dados; memória de carga em cartão SIMATIC até 32 GB (p. 31). Valor de memory = programa.'
+- 'Tempos de CPU típicos: bit 60 ns, palavra 72 ns, ponto fixo 96 ns, ponto flutuante 384 ns (p. 32).'
+- 'Top: 0 a 60 °C em montagem horizontal, display até 50 °C; 0 a 40 °C na vertical (p. 39).'
+datasheets:
+- id: ds1
+  manufacturer: Siemens
+  document_number: A5E31264526-AC
+  revision: 12/2014
+  url: https://cache.industry.siemens.com/dl/files/492/68020492/att_75349/v1/s71500_cpu1511_1_pn_manual_en-US_en-US.pdf
+  sha256: 82cf0bda18f2e981b738434a038b88a7ad79ea8e2aac660f66f4685f4941c39d
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 19.2
+    max: 28.8
+    typ: 24
+    unit: V
+    status: extraido
+    source: {page: 31, location: 5 Technical specifications - Supply voltage, excerpt: "24 V DC; Low limit 19.2 V; High limit 28.8 V"}
+  P_cons:
+    typ: 5.7
+    unit: W
+    status: extraido
+    source: {page: 31, location: 5 Technical specifications - Power loss, typ., excerpt: "Power loss, typ. 5.7 W"}
+  memory:
+    typ: 150
+    unit: kB
+    status: extraido
+    source: {page: 31, location: 5 Technical specifications - Work memory Integrated (for program), excerpt: "Integrated (for program) 150 KB"}
+  t_instr:
+    typ: 0.06
+    unit: us
+    status: extraido
+    source: {page: 32, location: 5 Technical specifications - CPU processing time, excerpt: "For bit operations, typ. 60 ns"}
+  Top:
+    min: 0
+    max: 60
+    unit: °C
+    status: extraido
+    source: {page: 39, location: 5 Technical specifications - Ambient temperature in operation (horizontal), excerpt: "Horizontal installation, min. 0 °C; max. 60 ℃"}
+attributes:
+  linguagens:
+    value: LAD, FBD, STL, SCL, GRAPH
+    status: extraido
+    source: {page: 39, location: 5 Technical specifications - Programming language, excerpt: "LAD Yes; FBD Yes; STL Yes; SCL Yes; GRAPH Yes"}
+  comunicacao:
+    value: 1 interface PROFINET integrada com 2 portas e switch, PROFINET IO controller e device, comunicação SIMATIC, Open IE, servidor web
+    status: extraido
+    source: {page: 34, location: 5 Technical specifications - Interfaces (PROFINET), excerpt: "Number of PROFINET interfaces 1; Number of ports 2; Integrated switch Yes"}

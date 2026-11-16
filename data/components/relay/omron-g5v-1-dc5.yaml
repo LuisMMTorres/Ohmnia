@@ -1,0 +1,98 @@
+# Fonte: Omron, G5V-1 Low Signal Relay (Ultra-miniature, Highly Sensitive SPDT Relay for Signal Circuits), Cat. No. K048-E1-07.
+part_number: G5V-1-DC5
+category: relay.electromechanical
+schema_version: '1.0'
+manufacturer: Omron
+family: G5V-1
+package: PCB, totalmente selado, 12,5 x 7,5 x 10 mm (C x L x A), peso aprox. 2 g
+lifecycle: desconhecido
+notes:
+- 'Modelo G5V-1 (padrão, 70 °C máx.) com bobina de 5 VDC (pág. 1). Tensão que opera (must operate) 80% máx. e tensão que libera (must release) 10% mín. da tensão nominal (pág. 1); não convertidas em V_pickup/V_dropout por serem percentuais (80% de 5 V = 4 V).'
+- 'Tensão máxima da bobina: 200% da nominal a 23 °C (pág. 1). Corrente nominal e resistência da bobina medidas a 23 °C com tolerância de ±10%.'
+- 'Contatos de liga Au + Ag (single crossbar): carga nominal 0,5 A a 125 VAC e 1 A a 24 VDC; corrente de passagem 2 A; tensão de comutação máx. 125 VAC, 60 VDC; corrente de comutação máx. 1 A; faixa de comutação de 1 mA a 1 A (pág. 1).'
+- 'Resistência de contato 100 mΩ máx.; resistência de isolação 1000 MΩ mín.; rigidez entre contatos de mesma polaridade 400 VAC (pág. 2).'
+datasheets:
+- id: ds1
+  manufacturer: Omron
+  document_number: K048-E1-07
+  sha256: 1d264d1ebbd17bd1dbac42133ffbd27d31ced85ad549a8bd28f0381df848dd0f
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  V_coil:
+    typ: 5
+    unit: V
+    status: extraido
+    source: {datasheet_id: ds1, page: 1, location: Coil table - Rated voltage, excerpt: "5 VDC | 30 | 167 | 80% max. | 10% min."}
+  R_coil:
+    typ: 167
+    unit: ohm
+    status: extraido
+    note: A 23 °C, tolerância ±10%.
+    source: {datasheet_id: ds1, page: 1, location: Coil table - Coil resistance, excerpt: "5 VDC 30 mA 167 Ω"}
+  P_coil:
+    typ: 0.15
+    unit: W
+    status: extraido
+    note: Aprox. 150 mW.
+    source: {datasheet_id: ds1, page: 1, location: Coil table - Power consumption, excerpt: "Power consumption (mW) Approx. 150"}
+  I_contact:
+    max: 2
+    unit: A
+    status: extraido
+    note: Rated carry current; corrente de comutação máx. 1 A.
+    source: {datasheet_id: ds1, page: 1, location: Contacts - Rated carry current, excerpt: "Rated carry current 2 A"}
+  V_contact:
+    max: 125
+    unit: V
+    status: extraido
+    note: '125 VAC, 60 VDC.'
+    source: {datasheet_id: ds1, page: 1, location: Contacts - Max. switching voltage, excerpt: "125 VAC, 60 VDC"}
+  t_on:
+    max: 5
+    unit: ms
+    status: extraido
+    source: {datasheet_id: ds1, page: 2, location: Characteristics - Operate time, excerpt: "Operate time 5 ms max."}
+  t_off:
+    max: 5
+    unit: ms
+    status: extraido
+    source: {datasheet_id: ds1, page: 2, location: Characteristics - Release time, excerpt: "Release time 5 ms max."}
+  life_mech:
+    min: 5000000
+    unit: '1'
+    status: extraido
+    source: {datasheet_id: ds1, page: 2, location: Characteristics - Durability Mechanical, excerpt: "5,000,000 operations min. (at 36,000 operations/hr)"}
+  life_el:
+    min: 100000
+    unit: '1'
+    status: extraido
+    note: Sob carga nominal, 1800 operações/h.
+    source: {datasheet_id: ds1, page: 2, location: Characteristics - Durability Electrical, excerpt: "100,000 operations min. (under rated load, at 1,800 operations/hr)"}
+  V_iso:
+    max: 1000
+    unit: V
+    status: extraido
+    note: Rigidez dielétrica entre bobina e contatos, 1000 VAC 50/60 Hz por 1 min.
+    source: {datasheet_id: ds1, page: 2, location: Characteristics - Dielectric strength, excerpt: "Between coil and contacts 1,000 VAC, 50/60 Hz for 1 min"}
+  Top:
+    min: -40
+    max: 70
+    unit: °C
+    status: extraido
+    note: Padrão; G5V-1-T90 vai a 90 °C.
+    source: {datasheet_id: ds1, page: 2, location: Characteristics - Ambient operating temperature, excerpt: "-40°C to 70°C (Standard), -40°C to 90°C (G5V-1-T90)"}
+attributes:
+  contatos:
+    value: SPDT (1c), Au-alloy + Ag
+    status: extraido
+    source: {page: 1, location: Ordering Information - Contact form SPDT (1c); Contacts - material}
+  montagem:
+    value: PCB (terminais para placa)
+    status: extraido
+    source: {page: 1, location: Ordering Information - Terminal Shape PCB terminals}
+  certificacoes:
+    value: UL, CSA
+    status: extraido
+    source: {page: 4, location: Approved Standards}

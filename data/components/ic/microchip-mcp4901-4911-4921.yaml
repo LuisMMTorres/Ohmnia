@@ -1,0 +1,94 @@
+# Fonte: Microchip, MCP4901/4911/4921 8/10/12-Bit Voltage Output Digital-to-Analog Converter with SPI Interface, DS22248A, 2010.
+part_number: MCP4901/4911/4921
+category: ic.dac
+schema_version: '1.0'
+manufacturer: Microchip
+family: MCP49x1
+package: PDIP-8, SOIC-8, MSOP-8 e DFN (p. 1)
+lifecycle: desconhecido
+notes:
+- 'Fila: DS22248A. O documento cobre MCP4901 (8 bits), MCP4911 (10 bits) e MCP4921 (12 bits); resolução, INL e DNL transcritos para o MCP4921, o de maior resolução (p. 3).'
+- 'Para o MCP4901 e o MCP4911: INL ±1 LSb máx. (8 bits) e ±3,5 LSb máx. (10 bits) (p. 3).'
+- 'DAC de um canal, saída de tensão rail-to-rail, ganho selecionável 1x ou 2x, referência externa (p. 1).'
+- 'Especificações a VDD = 5 V, VREF = 2,048 V, ganho 2x, RL = 5 kΩ, CL = 100 pF, TA = -40 a +85 °C (p. 3).'
+- 'Corrente de alimentação: 175 µA típ. e 350 µA máx. a VDD = 5 V; 125 µA típ. e 250 µA máx. a VDD = 3 V (p. 3).'
+datasheets:
+- id: ds1
+  manufacturer: Microchip
+  document_number: DS22248A
+  revision: '2010'
+  url: https://ww1.microchip.com/downloads/en/DeviceDoc/22248a.pdf
+  sha256: a52733deb49e0ae49c7f535e0f3591491d5e81c72f18e6c9f3846ce4ce2dcc5e
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  bits:
+    typ: 12
+    unit: bit
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "MCP4921: 12-Bit Voltage Output DAC"}
+  t_settle:
+    typ: 4.5
+    unit: us
+    status: extraido
+    source: {page: 1, location: Features - Fast settling time, excerpt: "Fast Settling Time of 4.5 µs"}
+  channels:
+    typ: 1
+    unit: '1'
+    status: extraido
+    source: {page: 1, location: Description, excerpt: "single channel 8-bit, 10-bit and 12-bit buffered voltage output"}
+  VS:
+    min: 2.7
+    max: 5.5
+    unit: V
+    status: extraido
+    source: {page: 3, location: Electrical Characteristics - Power requirements operating voltage, excerpt: "Operating Voltage VDD 2.7 5.5"}
+  VREF:
+    min: 0
+    unit: V
+    status: extraido
+    source: {page: 4, location: Electrical Characteristics - Input amplifier VREF, unbuffered mode, excerpt: "Input Range – Unbuffered Mode VREF 0 VDD V"}
+  V_out:
+    min: 0.01
+    unit: V
+    status: extraido
+    source: {page: 4, location: Electrical Characteristics - Output swing, excerpt: "Output Swing VOUT 0.01 to VDD – 0.04 V"}
+  INL:
+    max: 12
+    unit: '1'
+    status: extraido
+    source: {page: 3, location: Electrical Characteristics - DC accuracy MCP4921, excerpt: "INL Error INL -12 ±2 12 LSb"}
+  DNL:
+    max: 0.75
+    unit: '1'
+    status: extraido
+    source: {page: 3, location: Electrical Characteristics - DC accuracy MCP4921, excerpt: "DNL DNL -0.75 ±0.2 +0.75 LSb"}
+  IS:
+    typ: 0.175
+    max: 0.35
+    unit: mA
+    conditions: {VDD: 5 V}
+    status: extraido
+    source: {page: 3, location: Electrical Characteristics - Supply current, excerpt: "Supply Current IDD 175 350 µA VDD = 5V"}
+  Top:
+    min: -40
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Features - Extended temperature range, excerpt: "Extended Temperature Range: -40°C to +125°C"}
+  Tstg:
+    min: -65
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 3, location: Absolute Maximum Ratings - Storage temperature, excerpt: "Storage temperature -65°C to +150°C"}
+attributes:
+  interface:
+    value: SPI (clock até 20 MHz)
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "SPI Interface with 20 MHz Clock Support"}
+  encapsulamento:
+    value: PDIP, SOIC, MSOP, DFN (8 pinos)
+    status: extraido
+    source: {page: 1, location: Package Types, excerpt: "PDIP, SOIC, MSOP and DFN packages"}

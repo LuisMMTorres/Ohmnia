@@ -1,0 +1,70 @@
+# Fonte: NK Technologies, AT Series AC Current Transducers, doc 291000103 Rev 3.
+part_number: AT
+category: sensor.current
+schema_version: '1.0'
+manufacturer: NK Technologies
+family: AT Series
+lifecycle: desconhecido
+notes:
+- 'Fila: AT (série). Valores da série; faixas entre os modelos -420 / -005 / -010. Transdutor de corrente CA (TC + condicionador).'
+- 'Faixas de entrada selecionáveis por jumper: 2 e 5 A (só 4-20 mA), 10/20/50 A, 100/150/200 A (pág. 2, Ordering Information).'
+- 'Tempo de resposta (90% do degrau) 100 ms e 300 ms na tabela de especificações; a associação de cada valor ao modelo não ficou legível no texto (pág. 2).'
+- 'Faixa de frequência 50-60 Hz e 20-100 Hz (somente formas senoidais), pág. 2. Algoritmo de resposta média (RMS em senoide pura), pág. 1.'
+- 'Carga de saída: 1 MΩ mín. nos modelos de tensão; 100 kΩ adicionam 1,3% de erro; modelo 4-20 mA ver gráfico (pág. 2). Limites de saída 8,2 VDC / 15 VDC / 32 mA.'
+datasheets:
+- id: ds1
+  manufacturer: NK Technologies
+  document_number: '291000103'
+  revision: Rev 3 (03/2026)
+  url: https://assets.testequity.com/te1/Documents/pdf/nk/NK_AT-Series-AC-Current-Transducers_Datasheet_0326.pdf
+  sha256: 01b2a92d36393537bff026d4303a4e21b041d7d41e8871fae1890f9bd9b7a1f0
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_PN:
+    min: 2
+    max: 200
+    unit: A
+    status: extraido
+    source: {page: 2, location: Ordering Information - Full Scale Range, excerpt: "2 & 5 A (4–20 mA only) ... 100, 150, 200 A"}
+  I_PM:
+    max: 200
+    unit: A
+    status: extraido
+    source: {page: 2, location: Specifications - Input Range, excerpt: "Input Range 0–200 A field-selectable"}
+  accuracy:
+    max: 1.0
+    unit: '%'
+    status: extraido
+    source: {page: 2, location: Specifications - Accuracy, excerpt: "Accuracy 1.0% FS"}
+  V_iso:
+    typ: 2200
+    unit: V
+    status: extraido
+    source: {page: 2, location: Specifications - Isolation Voltage, excerpt: "Isolation Voltage 2200 VAC"}
+  VS:
+    min: 5
+    max: 40
+    unit: V
+    status: extraido
+    source: {page: 2, location: Specifications - Power Supply (modelo -420), excerpt: "5–40 VDC, loop-powered"}
+  Top:
+    min: -20
+    max: 50
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Specifications - Environmental, excerpt: "-4 to 122°F (-20 to 50°C)"}
+attributes:
+  principio:
+    value: Transformador de corrente com condicionador de sinal (resposta média), isolado magneticamente
+    status: extraido
+    source: {page: 1, location: Descrição, excerpt: "combine a current transformer and signal conditioner into a single package"}
+  saida:
+    value: 4-20 mA (loop 24L, 5-40 VDC), 0-5 VDC ou 0-10 VDC (autoalimentado)
+    status: extraido
+    source: {page: 2, location: Ordering Information - Output Signal / Power Supply, excerpt: "4–20 mA 0–5 VDC 0–10 VDC"}
+  montagem:
+    value: Painel ou trilho DIN; caixa sólida (FF, FT) ou bipartida (SP)
+    status: extraido
+    source: {page: 2, location: Ordering Information - Case Style, excerpt: "Solid-core, front terminal ... Split-core"}

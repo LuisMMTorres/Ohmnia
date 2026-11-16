@@ -1,0 +1,79 @@
+# Fonte: Analog Devices, AD7792/AD7793 Data Sheet (3-Channel, Low Noise, Low Power, 16/24-Bit Sigma-Delta ADC with On-Chip In-Amp and Reference), Rev. A, 2005 (cópia Chipdip).
+part_number: AD7793
+category: ic.adc
+schema_version: '1.0'
+manufacturer: Analog Devices
+family: AD7792/AD7793
+package: TSSOP 16 pinos
+lifecycle: desconhecido
+notes:
+- 'O datasheet cobre AD7792 (16 bits) e AD7793 (24 bits); valores abaixo são do AD7793 (pág. 1 e 3).'
+- 'Taxa de atualização 4,17 a 500 Hz; ganho programável do amplificador de instrumentação de 1 a 128 (pág. 1 e 3).'
+- 'INL: ±15 ppm do FSR máx. (pág. 3), não registrado em LSB. Referência interna 1,17 V ±0,01% a 25 °C (pág. 4). Referência externa REFIN nominal 2,5 V (pág. 4).'
+- 'Faixa de entrada diferencial ±VREF/ganho (pág. 3). Fontes de corrente de excitação 10/210/1000 uA (pág. 4).'
+datasheets:
+- id: ds1
+  manufacturer: Analog Devices
+  revision: A
+  url: https://static.chipdip.ru/lib/205/DOC000205434.pdf
+  sha256: 0b71c4f35932949e27c6b2f2af0e0e34ef7455fc61bd4c1cca85be2513a1b99f
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  bits:
+    typ: 24
+    unit: bit
+    status: extraido
+    source: {page: 3, location: Table 1 - ADC Channel - No Missing Codes, excerpt: "No Missing Codes 24 Bits min fADC < 250 Hz, AD7793"}
+  fs:
+    max: 0.5
+    unit: kHz
+    status: extraido
+    source: {page: 3, location: Table 1 - Output Update Rate, excerpt: "Output Update Rate 4.17 to 500 Hz nom"}
+  channels:
+    typ: 3
+    unit: '1'
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "3 differential inputs"}
+  VS:
+    min: 2.7
+    max: 5.25
+    unit: V
+    status: extraido
+    source: {page: 1, location: Features - Power supply, excerpt: "Power supply: 2.7 V to 5.25 V"}
+  VREF:
+    typ: 2.5
+    unit: V
+    status: extraido
+    source: {page: 4, location: Table 1 - External Reference, excerpt: "External REFIN Voltage 2.5 V nom"}
+  IS:
+    typ: 0.4
+    unit: mA
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "Current: 400 µA typ"}
+  Top:
+    min: -40
+    max: 105
+    unit: °C
+    status: extraido
+    source: {page: 8, location: Table 3 - Operating Temperature Range, excerpt: "-40°C to +105°C"}
+  Tstg:
+    min: -65
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 8, location: Table 3 - Storage Temperature Range, excerpt: "-65°C to +150°C"}
+attributes:
+  interface:
+    value: Serial 3 fios, compatível com SPI, QSPI, MICROWIRE e DSP
+    status: extraido
+    source: {page: 1, location: Interface, excerpt: "3-wire serial SPI-, QSPI-, MICROWIRE-, and DSP-compatible"}
+  arquitetura:
+    value: Sigma-delta com amplificador de instrumentação e referência internos
+    status: extraido
+    source: {page: 1, location: Título, excerpt: "Sigma-Delta ADC with On-Chip In-Amp and Reference"}
+  encapsulamento:
+    value: TSSOP 16 pinos
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "16-lead TSSOP package"}

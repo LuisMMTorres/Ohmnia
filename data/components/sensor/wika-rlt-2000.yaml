@@ -1,0 +1,85 @@
+# Fonte: WIKA, data sheet LM 50.01 - Level sensor, model RLT-2000, 02/2019.
+part_number: RLT-2000
+category: sensor.level
+schema_version: '1.0'
+manufacturer: WIKA
+family: RLT-2000
+package: Tubo guia e flutuador em PP ou PVDF, rosca G 1 1/2, G 2, G 3/8 ou G 1/2
+lifecycle: desconhecido
+notes:
+- 'Fila: ds lm5001 en co. Sensor de nível por cadeia reed e flutuador magnético, saída resistiva (3 fios) ou 4-20 mA (2 fios, opcional).'
+- 'Resistência total da cadeia reed aprox. 1 a 10 kohm conforme faixa; tensão máx. < 40 V DC na saída resistiva (p. 2).'
+- 'Carga na saída 4-20 mA: <= (alimentação - 12 V) / 0,02 A (p. 2). Resolução/exatidão de 24, 12, 10, 6 ou 3 mm conforme opção (p. 2).'
+- 'Temperaturas valem para versão PP (-10 a +80 C); versão PVDF: meio -10 a +80 C (opção -30 a +120 C), ambiente e armazenamento -30 a +80 C (p. 2).'
+datasheets:
+- id: ds1
+  manufacturer: WIKA
+  document_number: LM 50.01
+  revision: 02/2019
+  url: https://www.ics-schneider.de/wp-content/uploads/2023/08/ds_lm5001_en_co.pdf
+  sha256: c0c5e634a106216b7b3348bec2ed0df1c01a33ee79e65a71fe0d292118ce138f
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  range_m:
+    min: 150
+    max: 1500
+    unit: mm
+    status: extraido
+    source: {page: 2, location: Specifications - Guide tube length L, excerpt: "Guide tube length L 150 ... 1,500 mm [6 ... 59 in]"}
+  VS:
+    min: 12
+    max: 32
+    unit: V
+    status: extraido
+    source: {page: 2, location: Specifications - Output signal, current output, excerpt: "Power supply: DC 12 ... 32 V"}
+  I_out:
+    min: 4
+    max: 20
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Specifications - Output signal, excerpt: "Current output, 4 ... 20 mA, 2-wire"}
+  T_process:
+    min: -10
+    max: 80
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Specifications - Permissible temperatures, Medium, PP version, excerpt: "-10 … +80 °C"}
+  Top:
+    min: -10
+    max: 80
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Specifications - Permissible temperatures, Ambient, PP version, excerpt: "-10 … +80 °C"}
+  Tstg:
+    min: -10
+    max: 80
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Specifications - Permissible temperatures, Storage, PP version, excerpt: "-10 … +80 °C"}
+attributes:
+  saida:
+    value: Resistência variável (potenciômetro 3 fios) ou 4-20 mA 2 fios
+    status: extraido
+    source: {page: 2, location: Specifications - Output signal}
+  conexao:
+    value: Conector angular DIN 175301-803 A, saída por cabo ou caixa de conexão
+    status: extraido
+    source: {page: 2, location: Specifications - Electrical connections}
+  invólucro:
+    value: Tubo guia e caixa em PP (opção PVDF); flutuador PP ou PVDF
+    status: extraido
+    source: {page: 2, location: Specifications - Material}
+  grau_protecao:
+    value: IP65 (conector angular), IP67 (saída por cabo), IP66 (caixa de conexão)
+    status: extraido
+    source: {page: 2, location: Specifications - Electrical connections, Ingress protection}
+  certificacoes:
+    value: Declaração de conformidade UE (EMC EN 61326, RoHS), China RoHS
+    status: extraido
+    source: {page: 6, location: Approvals}
+  principio:
+    value: Cadeia reed com flutuador magnético
+    status: extraido
+    source: {page: 2, location: Specifications - Measuring principle, excerpt: "Reed-chain technology with optional analogue amplifier"}

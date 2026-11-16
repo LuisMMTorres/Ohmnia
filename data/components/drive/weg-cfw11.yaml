@@ -1,0 +1,81 @@
+# Fonte: WEG, Manual do Usuário CFW-11 (mecânicas A a D, 200-400 V), documento 10000062964.
+part_number: CFW11
+category: drive.vfd
+schema_version: '1.0'
+manufacturer: WEG
+family: CFW-11
+package: mecânicas A a D, IP21/Nema1 ou IP55
+lifecycle: desconhecido
+notes:
+- 'Valores da série CFW-11 (Tabela 8.1, pág. 91): modelos 200...240 V e 380...480 V, de 0003 T 4 (3,6 A) a 0088 T 4 (88 A, 60 CV / 45 kW); faixa entre os modelos, uso ND (sobrecarga normal).'
+- 'Corrente nominal de saída ND: 3,6 A (CFW11 0003 T 4) a 88 A (CFW11 0088 T 4); motor máximo ND de 1,5 kW (2 CV) a 45 kW (60 CV) (pág. 91).'
+- 'Redução de corrente de 2 % por grau acima de 50 C (IP2X/Nema1) ou acima de 40 C (IP55); altitude 1000 m nominal, redução de 1 % por 100 m até 4000 m (pág. 93, notas). Umidade 5 % a 95 % sem condensação.'
+- 'Frequência de saída: 0 a 3,4 x frequência nominal do motor (pág. 95). Entradas e saídas do cartão CC11: 6 DI isoladas 24 Vcc, 2 AI, 2 AO, 3 relés 240 Vca 1 A (pág. 95).'
+datasheets:
+- id: ds1
+  manufacturer: WEG
+  document_number: '10000062964'
+  url: https://static.weg.net/medias/downloadcenter/h03/heb/WEG-cfw11-manual-do-usuario-200-400v-mec.-a-a-d-10000062964-manual-portugues-br-dc.pdf
+  sha256: dba4abaf212e03accd63a7711bf5d926113a923734df19a082096bb3334d2461
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  P_motor:
+    min: 1.5
+    max: 45
+    unit: kW
+    status: extraido
+    source: {page: 91, location: Tabela 8.1, Motor Máximo ND, excerpt: "CFW11 0088 T 4 | 3φ | 88 | 96,8 | 132 | 5 | 60/45"}
+  V_in:
+    min: 200
+    max: 480
+    unit: V
+    status: extraido
+    source: {page: 91, location: Tabela 8.1, Modelos com Alimentação, excerpt: "200...240 V ... 380...480 V"}
+  I_out:
+    min: 3.6
+    max: 88
+    unit: A
+    status: extraido
+    source: {page: 91, location: Tabela 8.1, Corrente de Saída Nominal ND, excerpt: "CFW11 0003 T 4 ... 3,6 ... CFW11 0088 T 4 ... 88"}
+  f_sw:
+    typ: 5
+    unit: kHz
+    status: extraido
+    source: {page: 91, location: Tabela 8.1, Frequência de Chaveamento Nominal, excerpt: "88|96,8|132|5|60/45"}
+  di:
+    typ: 6
+    unit: '1'
+    status: extraido
+    source: {page: 95, location: 8.2 Entradas (cartão CC11), Digitais, excerpt: "6 entradas digitais isoladas, 24 Vcc"}
+  ai:
+    typ: 2
+    unit: '1'
+    status: extraido
+    source: {page: 95, location: 8.2 Entradas (cartão CC11), Analógicas, excerpt: "2 entradas diferenciais isoladas"}
+  do:
+    typ: 3
+    unit: '1'
+    status: extraido
+    source: {page: 95, location: 8.2 Saídas (cartão CC11), Relé, excerpt: "3 relés com contatos NA/NF (NO/NC), 240 Vca, 1 A"}
+  ao:
+    typ: 2
+    unit: '1'
+    status: extraido
+    source: {page: 95, location: 8.2 Saídas (cartão CC11), Analógicas, excerpt: "2 saídas, isoladas, (0 a 10) V"}
+  Top:
+    min: -10
+    max: 50
+    unit: °C
+    status: extraido
+    source: {page: 93, location: Notas Tabela 8.1, (1) Temperatura ambiente, excerpt: "-10 °C a 50 °C para inversores com grau de proteção IP2X/Nema1"}
+attributes:
+  controle:
+    value: V/f (escalar), VVW, vetorial com encoder e vetorial sensorless
+    status: extraido
+    source: {page: 95, location: 8.2 Controle, Tipos de controle}
+  grau_protecao:
+    value: IP21/Nema1 ou IP55 (conforme mecânica/opcional)
+    status: extraido
+    source: {page: 91, location: Tabela 8.1, Grau de Proteção do Gabinete}

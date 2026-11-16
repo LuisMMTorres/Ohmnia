@@ -1,0 +1,69 @@
+# Fonte: InvenSense (TDK), MPU-6000 and MPU-6050 Product Specification, PS-MPU-6000A-00, Revisão 3.2, 16/11/2011.
+part_number: MPU-6050
+category: sensor.inertial
+schema_version: '1.0'
+manufacturer: TDK InvenSense
+family: MPU-6000/MPU-6050
+package: QFN 4 x 4 x 0,9 mm
+lifecycle: desconhecido
+notes:
+- 'Documento cobre o MPU-6000 (I2C e SPI) e o MPU-6050 (I2C, com pino VLOGIC); valores abaixo valem para o MPU-6050 salvo indicação.'
+- 'Pág. 10: faixas programáveis do giroscópio +/-250, +/-500, +/-1000 e +/-2000 °/s; do acelerômetro +/-2, +/-4, +/-8 e +/-16 g; registradas como magnitude mínima e máxima.'
+- 'Pág. 14: corrente de operação normal 3,9 mA (giroscópio, acelerômetro e DMP ativos), 3,6 mA só giroscópio, 500 uA só acelerômetro; modo ocioso 5 uA.'
+- 'Pág. 14: sensor de temperatura interno com faixa -40 a +85 °C, sensibilidade 340 LSB/°C (sem calibração). Pág. 10: FIFO de 1024 bytes.'
+datasheets:
+- id: ds1
+  manufacturer: InvenSense (TDK)
+  document_number: PS-MPU-6000A-00
+  revision: '3.2'
+  url: https://alliance.seas.upenn.edu/~medesign/wiki/uploads/Guides/MPU6050_datasheet.pdf
+  sha256: 75d163b19dccec6b6a038e90b95976eab5028cabf00035d84b2c012e8d46cfb5
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  accel_range:
+    min: 2
+    max: 16
+    unit: '1'
+    status: extraido
+    source: {page: 13, location: 6.2 Accelerometer Specifications - Full-Scale Range, excerpt: "AFS_SEL=0 ±2 g ... AFS_SEL=3 ±16 g"}
+  gyro_range:
+    min: 250
+    max: 2000
+    unit: deg/s
+    status: extraido
+    source: {page: 12, location: 6.1 Gyroscope Specifications - Full-Scale Range, excerpt: "FS_SEL=0 ±250 º/s ... FS_SEL=3 ±2000 º/s"}
+  bits:
+    typ: 16
+    unit: bit
+    status: extraido
+    source: {page: 12, location: 6.1 Gyroscope Specifications - ADC Word Length, excerpt: "Gyroscope ADC Word Length 16 bits"}
+  VS:
+    min: 2.375
+    max: 3.46
+    unit: V
+    status: extraido
+    source: {page: 14, location: 6.3 Electrical and Other Common Specifications - VDD Operating Voltages, excerpt: "Operating Voltages 2.375 3.46 V"}
+  IS:
+    typ: 3.9
+    unit: mA
+    status: extraido
+    source: {page: 14, location: 6.3 - Normal Operating Current, excerpt: "Gyroscope + Accelerometer + DMP 3.9 mA"}
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 14, location: 6.3 - Specified Temperature Range, excerpt: "Specified Temperature Range -40 +85 °C"}
+  Tstg:
+    min: -40
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 20, location: 6.9 Absolute Maximum Ratings - Storage Temperature Range, excerpt: "Storage Temperature Range -40°C to +125°C"}
+attributes:
+  interface:
+    value: I2C (modo rápido de 400 kHz); barramento I2C auxiliar mestre para magnetômetro externo
+    status: extraido
+    source: {page: 10, location: 5.3 Additional Features, excerpt: "400kHz Fast Mode I2C for communicating with all registers"}

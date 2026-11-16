@@ -1,0 +1,98 @@
+# Fonte: Central Semiconductor, 2N2646 / 2N2647 Silicon PN Unijunction Transistors, R1 (2-December 2013).
+part_number: 2N2646
+category: ujt
+schema_version: '1.0'
+manufacturer: Central Semiconductor
+package: TO-18 (UJT) case
+lifecycle: desconhecido
+notes:
+- Datasheet cobre 2N2646 e 2N2647; valores transcritos apenas da coluna 2N2646.
+- A tabela de características não traz o símbolo da primeira linha (VB2B1=10V, 0,56 a 0,75); interpretada como razão intrínseca eta, a confirmar na revisão.
+- 'Pinagem (p. 2): 1 emissor, 2 base 1, 3 base 2.'
+- 'Corrente de emissor de pico: duty cycle <= 1 %, PRR <= 10 pps (p. 1).'
+datasheets:
+- id: ds1
+  manufacturer: Central Semiconductor
+  revision: R1 (2-December 2013)
+  url: https://components101.com/sites/default/files/component_datasheet/2N2646%20Datasheet.pdf
+  sha256: 7dc700e7e24cc833d45179c85c29619f80bd5c184c17287c05418559eef16f34
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VB2E:
+    max: 30
+    unit: V
+    status: extraido
+    source: {page: 1, location: Maximum ratings - Emitter Reverse Voltage, excerpt: "Emitter Reverse Voltage VB2E 30 V"}
+  VB2B1:
+    max: 35
+    unit: V
+    status: extraido
+    source: {page: 1, location: Maximum ratings - Interbase Voltage, excerpt: "Interbase Voltage VB2B1 35 V"}
+  IE:
+    max: 50
+    unit: mA
+    status: extraido
+    source: {page: 1, location: Maximum ratings - RMS Emitter Current, excerpt: "RMS Emitter Current Ie 50 mA"}
+  IE_peak:
+    max: 2.0
+    unit: A
+    status: extraido
+    source: {page: 1, location: Maximum ratings - Peak Emitter Current, excerpt: "Peak Emitter Current (Duty Cycle <=1%, PRR<=10pps) ie 2.0 A"}
+  Ptot:
+    max: 300
+    unit: mW
+    conditions: {TA: 25 °C}
+    status: extraido
+    source: {page: 1, location: Maximum ratings - RMS Power Dissipation, excerpt: "RMS Power Dissipation PD 300 mW"}
+  Tj_max:
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Maximum ratings - Operating and Storage Junction Temperature, excerpt: "TJ, Tstg -65 to +150 °C"}
+  Tstg:
+    min: -65
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Maximum ratings - Operating and Storage Junction Temperature, excerpt: "TJ, Tstg -65 to +150 °C"}
+  eta:
+    min: 0.56
+    max: 0.75
+    unit: "1"
+    conditions: {VB2B1: 10 V}
+    status: extraido
+    source: {page: 1, location: Electrical characteristics - first row (symbol not printed), excerpt: "VB2B1=10V 0.56 0.75 (2N2646)"}
+  RBB:
+    min: 4.7
+    max: 9.1
+    unit: kohm
+    conditions: {VB2B1: 3.0 V}
+    status: extraido
+    source: {page: 1, location: Electrical characteristics - RBB, excerpt: "RBB VB2B1=3.0V 4.7 9.1 kΩ"}
+  IEB2O:
+    max: 12
+    unit: uA
+    conditions: {VB2E: 30 V}
+    status: extraido
+    source: {page: 1, location: Electrical characteristics - IEB2O, excerpt: "IEB2O VB2E=30V - 12 μA"}
+  IV:
+    min: 4.0
+    unit: mA
+    conditions: {VB2B1: 20 V, RB2: 100 ohm}
+    status: extraido
+    source: {page: 1, location: Electrical characteristics - IV, excerpt: "IV VB2B1=20V, RB2=100Ω 4.0 - mA"}
+  IP:
+    max: 5.0
+    unit: uA
+    conditions: {VB2B1: 25 V}
+    status: extraido
+    source: {page: 1, location: Electrical characteristics - IP, excerpt: "IP VB2B1=25V - 5.0 μA"}
+  VOB1:
+    min: 3.0
+    unit: V
+    conditions: {V1: 20 V}
+    status: extraido
+    source: {page: 1, location: Electrical characteristics - VOB1, excerpt: "VOB1 V1=20V 3.0 - V"}
+attributes: {}

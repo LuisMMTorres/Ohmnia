@@ -1,0 +1,112 @@
+# Fonte: Allegro MicroSystems, ACS770xCB datasheet (ACS770-DS, Rev. 16, MCO-0000205), 2 fevereiro 2026.
+part_number: ACS770
+category: sensor.current
+schema_version: '1.0'
+manufacturer: Allegro MicroSystems
+family: ACS770xCB
+package: 5-pin CB (PFF/PSF/PSS leadforms)
+lifecycle: desconhecido
+notes:
+- 'Fila: ACS770 (série). Valores da série; faixa entre os modelos 050B/050U, 100B/100U, 150B/150U, 200B/200U (p.2 Selection Guide).'
+- 'Corrente primária nominal registrada em I_PN como faixa entre variantes: 50 a 200 A (bidirecionais +-50 ... +-200 A, unidirecionais 50 ... 200 A) (p.2).'
+- 'Sensibilidade típ. por variante: 050B 40, 050U 80, 100B 20, 100U 40, 150B 13.3, 150U 26.7, 200B 10, 200U 20 mV/A (p.2).'
+- 'Faixas de temperatura por sufixo: E -40 a 85 °C, K -40 a 125 °C, L -40 a 150 °C (p.3); Top registrado é o máximo do conjunto.'
+- 'Exatidão e offset: valores na p.7 são da variante X050B (erro total +-2.4 % a 25 °C, +-3.5 % a -40...25 °C); outras variantes nas páginas seguintes (não transcritas).'
+- 'Tensão de saída quiescente: bidirecional VCC/2; unidirecional 0.5 V típ. (p.6). Sobrecorrente típ. 1200 A a 25 °C (1 s, 1 % duty) (p.4). RthJA 7 °C/W (p.4). Carga mín. 4.7 kohm, capacitância máx. 10 nF (p.6).'
+datasheets:
+- id: ds1
+  manufacturer: Allegro MicroSystems
+  document_number: ACS770-DS
+  revision: 'Rev. 16, 2 fevereiro 2026'
+  url: https://www.allegromicro.com/-/media/files/datasheets/acs770-datasheet.pdf
+  sha256: 4f935a813f82d60bf0fc2189f668e051bd709ebc510da9113968d4b8133e5233
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_PN:
+    min: 50
+    max: 200
+    unit: A
+    status: extraido
+    source: {page: 2, location: Selection Guide - Primary Sampled Current IP, excerpt: "±50 ±100 ±150 ±200 (B); 50 100 150 200 (U)"}
+  sensitivity:
+    min: 10
+    max: 80
+    unit: mV/A
+    status: extraido
+    source: {page: 2, location: Selection Guide - Sensitivity Sens (Typ.), excerpt: "40. 80. 20 40 13.3 26.7 10 20"}
+  linearity:
+    min: -1
+    max: 1
+    unit: '%'
+    status: extraido
+    source: {page: 7, location: X050B Performance Characteristics - Nonlinearity ELIN, excerpt: "full-scale and half-scale IP: -1 ... 1 %"}
+  accuracy:
+    max: 3.5
+    unit: '%'
+    status: extraido
+    source: {page: 7, location: X050B Performance Characteristics - Total Output Error ETOT(LT), excerpt: "TOP = -40°C to 25°C: -3.5 ±2 3.5 %"}
+  V_offset:
+    min: -20
+    max: 20
+    unit: mV
+    status: extraido
+    source: {page: 7, location: X050B Performance Characteristics - Electrical Offset Voltage VOE(TOP)LT, excerpt: "IP = 0 A, TOP = -40°C to 25°C: -20 ±6 20 mV"}
+  bandwidth:
+    typ: 120
+    unit: kHz
+    status: extraido
+    source: {page: 6, location: Common Operating Characteristics - Internal Bandwidth BWi, excerpt: "-3 dB; TA = 25°C, CL = 0.47 nF: 120 kHz"}
+  t_resp:
+    typ: 4.6
+    unit: us
+    status: extraido
+    source: {page: 6, location: Common Operating Characteristics - Response Time, excerpt: "tRESPONSE 80% input to 80% output: 4.6 µs"}
+  R_primary:
+    typ: 0.1
+    unit: mohm
+    status: extraido
+    source: {page: 4, location: Package Characteristics - Internal Conductor Resistance RIC, excerpt: "TA = 25°C, typ 100 µΩ"}
+  V_iso:
+    max: 4800
+    unit: V
+    status: extraido
+    source: {page: 3, location: Isolation Characteristics - Withstand Strength VISO, excerpt: "Agency rated for 60 seconds per UL 62368-1: 4800 VRMS"}
+  VS:
+    min: 4.5
+    max: 5.5
+    unit: V
+    status: extraido
+    source: {page: 6, location: Common Operating Characteristics - Supply Voltage VCC, excerpt: "VCC 4.5 / 5.0 / 5.5 V"}
+  IS:
+    typ: 10
+    max: 15
+    unit: mA
+    status: extraido
+    source: {page: 6, location: Common Operating Characteristics - Supply Current ICC, excerpt: "Output open: 10 typ, 15 max mA"}
+  Top:
+    min: -40
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 3, location: Absolute Maximum Ratings - Nominal Operating Ambient Temperature, excerpt: "Range E -40 to 85; K -40 to 125; L -40 to 150 °C"}
+  Tstg:
+    min: -65
+    max: 165
+    unit: °C
+    status: extraido
+    source: {page: 3, location: Absolute Maximum Ratings - Storage Temperature, excerpt: "Tstg -65 to 165 °C"}
+attributes:
+  principio:
+    value: Hall linear com condutor de cobre integrado (100 µΩ típ.), núcleo de baixa histerese magnética e compensação digital de temperatura; isolado galvanicamente
+    status: extraido
+    source: {page: 1, location: Description}
+  saida:
+    value: Tensão analógica VIOUT, ratiométrica a VCC; bidirecional (VCC/2 quiescente) ou unidirecional (0.5 V)
+    status: extraido
+    source: {page: 6, location: Common Operating Characteristics - Quiescent Output Voltage}
+  montagem:
+    value: Pacote CB de 5 pinos, terminais IP+ e IP- no condutor primário; AEC-Q100
+    status: extraido
+    source: {page: 5, location: Terminal List Table}

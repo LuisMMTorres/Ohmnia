@@ -1,0 +1,66 @@
+# Fonte: Micrometals, T106-26 DataSheet (Iron Powder Cores), Revision 20190524.
+part_number: T106-26
+category: magnetic.core
+schema_version: '1.1'
+manufacturer: Micrometals
+package: Toroide revestido (epóxi amarelo/branco), mix 26 (75µ)
+lifecycle: desconhecido
+notes:
+- 'Núcleo toroidal de pó de ferro, mix 26, µi 75. Dimensões (pág. 1): OD 26,92 mm nom. (máx. 27,43 mm revestido); ID 14,48 mm nom. (mín. 13,97 mm revestido); Ht 11,10 mm nom. (máx. 11,73 mm revestido).'
+- 'Superfície sa 28,1 cm²; área mínima de janela WA 1,53 cm²; tensão de ruptura mín. 500 Vrms 60 Hz (limite 3 mA, 5 s) (pág. 1).'
+- 'AL nominal 93 nH/N² medido com N=100, #28 AWG, 10 kHz, 0,29 V (Agilent 4284A), tolerância ±10% (pág. 1). Núcleo de pó de ferro: o datasheet não informa entreferro.'
+- 'Perdas do núcleo: 83 mW/cm³ nominal e 95 mW/cm³ máx. a Bpk 140 G e 100 kHz (pág. 1); temperatura não informada. Datasheet não informa Bsat nem temperatura de Curie.'
+- 'Queda de permeabilidade com CC: 55,2% (nom.) e 47,4% (mín.) de µi a HDC 50 Oe (pág. 1).'
+datasheets:
+- id: ds1
+  manufacturer: Micrometals
+  document_number: T106-26 DataSheet
+  revision: '20190524'
+  url: https://datasheets.micrometals.com/T106-26-DataSheet.pdf
+  sha256: e98a7696615c6392f6b0a11a6688ffd83e13609c3cea3d991eea3a0aa131e6ab
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  Ae:
+    typ: 65.9
+    unit: mm**2
+    status: extraido
+    source: {datasheet_id: ds1, page: 1, location: Magnetic Dimensions - Ae Eff. Mag. Cross Section, excerpt: "Ae - Eff. Mag. Cross Section 0.659 cm²"}
+  le:
+    typ: 64.9
+    unit: mm
+    status: extraido
+    source: {datasheet_id: ds1, page: 1, location: Magnetic Dimensions - Le Eff. Mag. Path Length, excerpt: "Le - Eff. Mag. Path Length 6.49 cm"}
+  Ve:
+    typ: 4280
+    unit: mm**3
+    status: extraido
+    source: {datasheet_id: ds1, page: 1, location: Magnetic Dimensions - Ve Eff. Core Volume, excerpt: "Ve - Eff. Core Volume 4.28 cm³"}
+  Aw:
+    min: 153
+    unit: mm**2
+    status: extraido
+    source: {datasheet_id: ds1, page: 1, location: Magnetic Dimensions - WA Min. Eff. Window Area, excerpt: "WA - Min. Eff. Window Area 1.53 cm²"}
+  lw:
+    typ: 43.9
+    unit: mm
+    status: extraido
+    source: {datasheet_id: ds1, page: 1, location: Magnetic Dimensions - mlt mean length per turn, excerpt: "mlt - mean length per turn 4.39 cm"}
+  mass:
+    typ: 30
+    unit: g
+    status: extraido
+    source: {datasheet_id: ds1, page: 1, location: Mass (approximate), excerpt: "Mass (approximate) 30 grams"}
+  mu_i:
+    typ: 75
+    unit: dimensionless
+    status: extraido
+    source: {datasheet_id: ds1, page: 1, location: Inductance - μi (reference), excerpt: "μi(reference) 75"}
+  AL:
+    typ: 93
+    unit: nH
+    status: extraido
+    conditions: {gap: 0 mm, f: 10 kHz}
+    note: 'Condição gap 0 mm é inferência do revisor/transcritor (toroide de pó de ferro, datasheet não cita entreferro); confirmar.'
+    source: {datasheet_id: ds1, page: 1, location: Inductance - AL value (nominal), excerpt: "AL value (nominal) 93 nH/N²; Test Winding N=100, #28 AWG; Frequency 10 kHz"}

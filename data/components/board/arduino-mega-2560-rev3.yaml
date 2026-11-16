@@ -1,0 +1,105 @@
+# Fonte: Arduino, Arduino Mega 2560 Rev3 User Manual, SKU A000067.
+part_number: Arduino Mega 2560 Rev3
+category: board.mcu
+schema_version: '1.0'
+manufacturer: Arduino
+family: Arduino Mega 2560
+lifecycle: desconhecido
+notes:
+- 'Manual de usuário Arduino Mega 2560 Rev3 (SKU A000067), 17 páginas, "Modified: 13/11/2026". O nome da fila era "Arduino Mega"/"2560" (campos trocados); part_number corrigido para Arduino Mega 2560 Rev3.'
+- 'Tensão de entrada pela USB: 4,8 mín. / 5,0 típ. / 5,5 máx. V (pág. 5). Regulador linear de 5 V a bordo (pág. 6); há também 3,3 V.'
+- O texto não traz corrente por pino de E/S nem resolução do A/D; EEPROM de 4 kB; 4 USART; ATmega16U2 como interface USB-serial (págs. 2 e 7).
+- 'Pág. 2: "Four 8-bit PWM Channels" no ATmega2560, e "15 PWM Output" nas E/S da placa; usado 15 (E/S da placa).'
+datasheets:
+- id: ds1
+  manufacturer: Arduino
+  document_number: A000067
+  revision: 'Modified: 13/11/2026'
+  sha256: 6caa5a430d168ec3a47ba72b2108423e7d537775f737e9bf3d29314592e3e1fe
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 7
+    typ: 7
+    max: 12
+    unit: V
+    status: extraido
+    source:
+      page: 5
+      location: Ratings - recommended operating conditions, VIN input voltage from VIN pad / DC jack
+      excerpt: VIN Input voltage from VIN pad / DC Jack 7 7.0 12 V
+  f_clk:
+    typ: 16
+    unit: MHz
+    status: extraido
+    source:
+      page: 7
+      location: 3.3 Processor - ATmega2560 clock
+      excerpt: ATmega2560 chip which operates at a frequency of 16 MHz
+  flash:
+    typ: 256
+    unit: kB
+    status: extraido
+    source:
+      page: 2
+      location: Features - ATmega2560 program memory (8 kB used by bootloader)
+      excerpt: 256k bytes (of which 8k is used for the bootloader)
+  ram:
+    typ: 8
+    unit: kB
+    status: extraido
+    source:
+      page: 2
+      location: Features - ATmega2560 internal SRAM
+      excerpt: 8k bytes Internal SRAM
+  gpio:
+    typ: 54
+    unit: '1'
+    status: extraido
+    source:
+      page: 2
+      location: Features - I/O digital
+      excerpt: I/O 54 Digital
+  adc_ch:
+    typ: 16
+    unit: '1'
+    status: extraido
+    source:
+      page: 2
+      location: Features - I/O analog
+      excerpt: 16 Analog
+  pwm_ch:
+    typ: 15
+    unit: '1'
+    status: extraido
+    source:
+      page: 2
+      location: Features - I/O PWM output
+      excerpt: 15 PWM Output
+  Top:
+    min: -40
+    typ: 25
+    max: 85
+    unit: °C
+    status: extraido
+    source:
+      page: 5
+      location: Ratings - recommended operating conditions, operating temperature
+      excerpt: TOP Operating Temperature -40 25 85 C
+attributes:
+  microcontrolador:
+    value: ATmega2560 (8 bits) + ATmega16U2 (interface USB)
+    status: extraido
+    source:
+      page: 2
+      location: Features
+      excerpt: ATmega2560 Processor ... ATmega16U2
+  comunicacao:
+    value: USB tipo B, 4 USART, SPI, ICSP
+    status: extraido
+    source:
+      page: 1
+      location: Description
+      excerpt: 4 UARTs (hardware serial ports), a USB connection, a power jack, an ICSP header

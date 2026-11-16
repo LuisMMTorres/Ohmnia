@@ -1,0 +1,184 @@
+# Fonte: Texas Instruments, LM340, LM340A, LM7805, LM7812, LM7815 (SNOSBT0L), February 2000 - revised September 2016.
+part_number: LM7812
+category: regulator.positive
+schema_version: '1.0'
+manufacturer: Texas Instruments
+family: LM340 / LM78xx
+package: TO-220 (NDE), TO-263 (KTT), SOT-223 (DCY), TO-3 (NDS)
+lifecycle: desconhecido
+notes:
+- Datasheet da família LM340/LM7805/LM7812/LM7815; as colunas e tabelas usadas são as de LM7812 (secao 6.7, VO = 12 V, VI = 19 V, 0 a 125 C).
+- Rth_ja e Rth_jc são do TO-220 (NDE), tabela Thermal Information (Rth_jc = RθJC(bot)); a nota de rodapé da página 4 cita para o TO-220 θJA = 54 C/W e θJC = 4 C/W, valores diferentes dos da tabela.
+- Regline e Regload são tipicos e máximos a TJ = 25 C; Regline com IO = 500 mA e 14,5 V a 30 V; Regload com 5 mA a 1,5 A.
+- IQ máximo a TJ = 25 C; 8,5 mA sobre a faixa de temperatura (página 7).
+datasheets:
+- id: ds1
+  manufacturer: Texas Instruments
+  document_number: SNOSBT0L
+  revision: Revised September 2016
+  sha256: 49391342cf3b05f89ae94607257ef03f678ae9f1a3bdd388252adb8b00da043d
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VO:
+    min: 11.5
+    typ: 12
+    max: 12.5
+    unit: V
+    conditions:
+      TJ: 25 °C
+    status: extraido
+    source:
+      page: 7
+      location: 6.7 Electrical Characteristics - Output voltage, TJ = 25C, 5 mA <= IO <= 1 A
+      excerpt: "Output voltage TJ = 25°C, 5 mA ≤IO ≤1 A 11.5 12 12.5 V"
+  VO_band:
+    min: 11.4
+    max: 12.6
+    unit: V
+    status: extraido
+    source:
+      page: 7
+      location: 6.7 Electrical Characteristics - Output voltage, PD <= 15 W, 5 mA <= IO <= 1 A, 14.5 V ≤VIN ≤27 V
+      excerpt: "PD ≤15 W, 5 mA ≤IO ≤1 A 11.4 12.6 V"
+  VI_reg_min:
+    min: 14.5
+    unit: V
+    status: extraido
+    source:
+      page: 7
+      location: 6.7 Electrical Characteristics - Output voltage band, menor VIN da faixa 14.5 V ≤VIN ≤27 V
+      excerpt: "14.5 V ≤VIN ≤27 V"
+  VI_max:
+    max: 35
+    unit: V
+    status: extraido
+    source:
+      page: 4
+      location: Absolute Maximum Ratings - DC input voltage
+      excerpt: "DC input voltage 35 V"
+  IO_max:
+    max: 1
+    unit: A
+    status: extraido
+    source:
+      page: 7
+      location: 6.7 Electrical Characteristics - faixa de corrente de saída 5 mA a 1 A
+      excerpt: "5 mA ≤IO ≤1 A"
+  IQ:
+    max: 8
+    unit: mA
+    conditions:
+      TJ: 25 °C
+    status: extraido
+    source:
+      page: 7
+      location: 6.7 Electrical Characteristics - Quiescent current, IO <= 1 A, TJ = 25C
+      excerpt: "Quiescent current IO ≤1 A TJ = 25°C 8 mA"
+  Vdo:
+    typ: 2
+    unit: V
+    conditions:
+      IO: 1 A
+    status: extraido
+    source:
+      page: 7
+      location: 6.7 Electrical Characteristics - Dropout voltage, TJ = 25C, IO = 1 A
+      excerpt: "Dropout voltage TJ = 25°C, IO = 1 A 2 V"
+  ISC:
+    typ: 1.5
+    unit: A
+    conditions:
+      VI: 19 V
+    status: extraido
+    source:
+      page: 7
+      location: 6.7 Electrical Characteristics - Short-circuit current, TJ = 25C
+      excerpt: "Short-circuit current TJ = 25°C 1.5 A"
+  Ipk:
+    typ: 2.4
+    unit: A
+    status: extraido
+    source:
+      page: 7
+      location: 6.7 Electrical Characteristics - Peak output current, TJ = 25C
+      excerpt: "Peak output current TJ = 25°C 2.4 A"
+  Regline:
+    typ: 4
+    max: 120
+    unit: mV
+    status: extraido
+    source:
+      page: 7
+      location: 6.7 Electrical Characteristics - Line regulation, IO = 500 mA, TJ = 25C
+      excerpt: "Line regulation IO = 500 mA TJ = 25°C 14,5 V a 30 V 120 mV"
+  Regload:
+    typ: 12
+    max: 120
+    unit: mV
+    status: extraido
+    source:
+      page: 7
+      location: 6.7 Electrical Characteristics - Load regulation, TJ = 25C, 5 mA <= IO <= 1.5 A
+      excerpt: "Load regulation TJ = 25°C 5 mA ≤IO ≤1.5 A 12 120 mV"
+  RR:
+    min: 55
+    typ: 72
+    unit: dB
+    conditions:
+      f: 120 Hz
+    status: extraido
+    source:
+      page: 7
+      location: 6.7 Electrical Characteristics - Ripple rejection, f = 120 Hz, TJ = 25C, IO <= 1 A
+      excerpt: "Ripple rejection f = 120 Hz TJ = 25°C, IO ≤1 A 55 72 dB"
+  Cin_app:
+    typ: 0.22
+    unit: uF
+    status: extraido
+    source:
+      page: 7
+      location: nota (1) das Electrical Characteristics - capacitor de entrada usado nas medições
+      excerpt: "0.22-μF capacitor from input to ground"
+  Co_app:
+    typ: 0.1
+    unit: uF
+    status: extraido
+    source:
+      page: 7
+      location: nota (1) das Electrical Characteristics - capacitor de saída usado nas medições
+      excerpt: "0.1-μF capacitor from output to ground"
+  Rth_ja:
+    typ: 23.9
+    unit: K/W
+    status: extraido
+    source:
+      page: 4
+      location: Thermal Information - R theta JA, NDE (TO-220)
+      excerpt: "RθJA Junction-to-ambient thermal resistance 23.9 44.8 62.1 39 °C/W"
+  Rth_jc:
+    typ: 1.7
+    unit: K/W
+    status: extraido
+    source:
+      page: 4
+      location: Thermal Information - R theta JC(bot), NDE (TO-220)
+      excerpt: "RθJC(bot) Junction-to-case (bottom) thermal resistance 1.7 1.5"
+  Tj_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 4
+      location: Absolute Maximum Ratings - Maximum junction temperature
+      excerpt: "Maximum junction temperature 150 °C"
+  Tstg_max:
+    max: 150
+    unit: degC
+    status: extraido
+    source:
+      page: 4
+      location: Absolute Maximum Ratings - Storage temperature
+      excerpt: "Storage temperature -65 150 °C"
+attributes: {}

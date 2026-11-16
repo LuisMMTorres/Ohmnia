@@ -1,0 +1,94 @@
+# Fonte: Broadcom, ACPL-C87B / ACPL-C87A / ACPL-C870 Precision Optically Isolated Voltage Sensor, Data Sheet AV02-3563EN, September 16, 2024.
+part_number: ACPL-C87x
+category: sensor.voltage
+schema_version: '1.0'
+manufacturer: Broadcom
+family: ACPL-C87B / ACPL-C87A / ACPL-C870
+package: Stretched SO-8 (SSO-8)
+lifecycle: desconhecido
+notes:
+- 'Valores da família; as versões diferem na tolerância de ganho: C87B +-0,5 %, C87A +-1 %, C870 +-3 % (p.1, p.6).'
+- 'Amplificador de isolação óptico sigma-delta, entrada 0 a 2 V (faixa plena diferencial 2,46 V), saída diferencial, ganho unitário 1 V/V, impedância de entrada 1 Gohm (p.1, p.6).'
+- 'Alimentação: VDD1 4,5 a 5,5 V (lado da entrada) e VDD2 3,0 a 5,5 V (lado da saída) (p.5). VS abaixo é VDD1.'
+- 'Corrente IDD1 típ. 10,5 mA / máx. 15 mA (VSD = 0 V); em shutdown 15 uA (típ.). IDD2 típ. 6,5 mA / máx. 12 mA com 5 V (p.7).'
+- 'Não linearidade típ. 0,05 % / máx. 0,1 %; deriva de ganho -35 ppm/°C; deriva de offset 21 uV/°C; offset de entrada +-9,9 mV a 25 °C (p.6).'
+- 'Atraso de propagação 50 % a 50 %: típ. 3,7 us, máx. 5,5 us (p.6). CMTI mín. 10 kV/us (típ. 15) (p.7).'
+- 'Tensão de isolação de trabalho VIORM = 1414 Vpico (IEC/EN/DIN EN 60747-5-5); UL 1577: 5000 Vrms/1 min (p.4, p.7).'
+datasheets:
+- id: ds1
+  manufacturer: Broadcom
+  document_number: AV02-3563EN
+  revision: September 16, 2024
+  url: https://docs.broadcom.com/doc/AV02-3563EN
+  sha256: f95904d2e5cec43820de6640a346272b122621de2e65e044f815f6fb0f218e63
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  V_PN:
+    typ: 2
+    unit: V
+    status: extraido
+    source: {page: 5, location: Recommended operating conditions - input voltage range VIN (0 a 2,0 V), excerpt: "Input Voltage Range"}
+  V_PM:
+    min: 0
+    max: 2.46
+    unit: V
+    status: extraido
+    source: {page: 6, location: Electrical specifications - full-scale differential voltage input range FSR (referido a GND1), excerpt: "2.46"}
+  ratio:
+    typ: 1
+    unit: '1'
+    status: extraido
+    source: {page: 6, location: Electrical specifications - gain (V/V), excerpt: "Gain (ACPL-C87B"}
+  accuracy:
+    min: 0.5
+    max: 3
+    unit: '%'
+    conditions: {TA: 25 °C}
+    status: extraido
+    source: {page: 1, location: Description - tolerância de ganho C87B +-0,5 %, C87A +-1 %, C870 +-3 %, excerpt: "±3% gain tolerance"}
+  bandwidth:
+    min: 70
+    typ: 100
+    unit: kHz
+    status: extraido
+    source: {page: 6, location: Electrical specifications - small-signal bandwidth (-3 dB), excerpt: "Small-Signal Bandwidth"}
+  V_iso:
+    min: 5000
+    unit: V
+    status: extraido
+    source: {page: 7, location: Package characteristics - input-output momentary withstand voltage VISO (Vrms), excerpt: "5000"}
+  VS:
+    min: 4.5
+    max: 5.5
+    unit: V
+    status: extraido
+    source: {page: 5, location: Recommended operating conditions - VDD1 supply voltage, excerpt: "VDD1 Supply Voltage"}
+  IS:
+    typ: 10.5
+    max: 15
+    unit: mA
+    status: extraido
+    source: {page: 7, location: Power supplies - input side supply current IDD1 (VSD = 0 V), excerpt: "Input Side Supply Current"}
+  Top:
+    min: -40
+    max: 105
+    unit: °C
+    status: extraido
+    source: {page: 5, location: Recommended operating conditions - ambient operating temperature, excerpt: "Ambient Operating Temperature"}
+  Tstg:
+    min: -55
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 5, location: Absolute maximum rating - storage temperature, excerpt: "Storage Temperature"}
+attributes:
+  principio:
+    value: Amplificador de isolação óptico sigma-delta (isolamento galvânico), chopper estabilizado
+    status: extraido
+    source: {page: 1, location: Description, excerpt: "optical isolation amplifiers"}
+  saida:
+    value: Tensão diferencial (VOUT+ / VOUT-), ganho 1 V/V, modo comum 1,23 V
+    status: extraido
+    source: {page: 6, location: Electrical specifications - output common-mode voltage, excerpt: "Output Common-Mode Voltage"}

@@ -1,0 +1,103 @@
+# Fonte: SICK, Online data sheet WSE12-3P2431 (part no. 1041459), W12 photoelectric sensors, impresso em 2026-07-25.
+part_number: WSE12-3P2431
+category: sensor.photoelectric
+schema_version: '1.0'
+manufacturer: SICK
+family: W12
+package: Retangular, metal, 15,6 x 48,5 x 42 mm
+lifecycle: desconhecido
+notes:
+- 'Fila: WSE12-3P2431. Barreira (through-beam) composta por emissor WS12-3D2430 (2041879) e receptor WE12-3P2431 (2041881) (pág. 2).'
+- 'Alcance máx. 0 a 20 m; alcance (range) 0 a 15 m, mancha de luz Ø 220 mm a 15 m, ângulo de dispersão aprox. 1,5° (pág. 2). O parâmetro range usa 0 a 15 m; o máximo absoluto de 20 m fica nesta nota.'
+- 'Consumo: emissor <= 30 mA, receptor <= 15 mA, sem carga (pág. 3). IS abaixo usa o do emissor.'
+- 'Sinal PNP HIGH > Uv - 2,5 V / LOW aprox. 0 V; saída complementar; entrada de teste (emissor desligado): TE a 0 V (pág. 3).'
+- 'MTTFD 826 anos (pág. 2).'
+datasheets:
+- id: ds1
+  manufacturer: SICK
+  document_number: '1041459'
+  revision: impresso em 2026-07-25
+  url: https://www.sick.com/media/pdf/2/32/332/dataSheet_WSE12-3P2431_1041459_en.pdf
+  sha256: 27d1b8aa46d5d0108ea1649a4bddfc7d038f0c892afda4b4f2f3a71d485ba076
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  range:
+    min: 0
+    max: 15
+    unit: m
+    status: extraido
+    source: {page: 2, location: Features - Sensing range, excerpt: "Sensing range 0 m ... 15 m"}
+  t_resp:
+    max: 0.33
+    unit: ms
+    status: extraido
+    source: {page: 3, location: Electronics - Response time, excerpt: "Response time ≤ 330 µs"}
+  lambda:
+    typ: 640
+    unit: nm
+    status: extraido
+    source: {page: 2, location: Features - Wave length, excerpt: "Wave length 640 nm"}
+  VS:
+    min: 10
+    max: 30
+    unit: V
+    status: extraido
+    source: {page: 3, location: Electronics - Supply voltage UB, excerpt: "10 V DC ... 30 V DC"}
+  IS:
+    max: 30
+    unit: mA
+    status: extraido
+    source: {page: 3, location: Electronics - Current consumption, sender, excerpt: "Current consumption, sender ≤ 30 mA"}
+  IL:
+    max: 100
+    unit: mA
+    status: extraido
+    source: {page: 3, location: Electronics - Output current Imax., excerpt: "Output current Imax. ≤ 100 mA"}
+  f_sw:
+    max: 1500
+    unit: Hz
+    status: extraido
+    source: {page: 3, location: Electronics - Switching frequency, excerpt: "Switching frequency 1,500 Hz"}
+  Top:
+    min: -40
+    max: 60
+    unit: °C
+    status: extraido
+    source: {page: 3, location: Ambient data, excerpt: "Ambient operating temperature –40 °C ... +60 °C"}
+  Tstg:
+    min: -40
+    max: 75
+    unit: °C
+    status: extraido
+    source: {page: 3, location: Ambient data, excerpt: "Ambient temperature, storage –40 °C ... +75 °C"}
+attributes:
+  saida:
+    value: PNP, comutação claro/escuro, saída complementar
+    status: extraido
+    source: {page: 3, location: Electronics - Digital output}
+  conexao:
+    value: Conector macho M12, 4 pinos
+    status: extraido
+    source: {page: 3, location: Mechanics - Connection}
+  invólucro:
+    value: Metal; tela frontal PMMA
+    status: extraido
+    source: {page: 3, location: Mechanics - Material}
+  grau_protecao:
+    value: IP66, IP67 e IP69K
+    status: extraido
+    source: {page: 3, location: Ambient data - Enclosure rating}
+  certificacoes:
+    value: UL File No. NRKH.E181493 e NRKH7.E181493; declaração de conformidade UE/UK; China RoHS
+    status: extraido
+    source: {page: 3, location: Ambient data / Certificates}
+  principio:
+    value: Barreira (through-beam)
+    status: extraido
+    source: {page: 2, location: Features - Functional principle}
+  luz:
+    value: LED vermelho visível
+    status: extraido
+    source: {page: 2, location: Features - Type of light}

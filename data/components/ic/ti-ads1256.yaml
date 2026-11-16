@@ -1,0 +1,90 @@
+# Fonte: Texas Instruments, ADS1255, ADS1256 Very Low Noise, 24-Bit Analog-to-Digital Converter, SBAS288K, June 2003 - Revised September 2013.
+part_number: ADS1256
+category: ic.adc
+schema_version: '1.0'
+manufacturer: Texas Instruments
+family: ADS125x
+package: SSOP (p. 5)
+lifecycle: desconhecido
+notes:
+- 'O documento cobre ADS1255 e ADS1256; só o ADS1256 tem quatro entradas diferenciais ou oito single-ended (p. 1).'
+- 'Especificações a AVDD = 5 V, DVDD = 1,8 V, fCLKIN = 7,68 MHz, PGA = 1 e VREF = 2,5 V, de -40 °C a +85 °C (p. 3).'
+- 'INL: ±0,0003 % FSR típico e ±0,0010 % FSR máx. com PGA = 1 (p. 3); unidade % do fundo de escala, sem símbolo equivalente no esquema.'
+- 'Taxa de dados de 2,5 a 30.000 SPS (p. 3).'
+- 'Alimentação digital DVDD de 1,8 V a 3,6 V (p. 4).'
+datasheets:
+- id: ds1
+  manufacturer: Texas Instruments
+  document_number: SBAS288K
+  revision: September 2013
+  url: https://www.ti.com/lit/ds/symlink/ads1256.pdf
+  sha256: 9da3323db162b59329ec1a865829441ff1605279cd802fe879649b6f54e100e6
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  bits:
+    typ: 24
+    unit: bit
+    status: extraido
+    source: {page: 3, location: Electrical Characteristics - Resolution, excerpt: "Resolution 24 Bit"}
+  fs:
+    max: 30
+    unit: kHz
+    status: extraido
+    source: {page: 3, location: Electrical Characteristics - Data rate, excerpt: "Data rate (fDATA) fCLKIN = 7.68MHz 2.5 30,000 SPS"}
+  channels:
+    typ: 8
+    unit: '1'
+    status: extraido
+    source: {page: 1, location: Features - input multiplexer, excerpt: "Eight Single-Ended Inputs (ADS1256 only)"}
+  VS:
+    min: 4.75
+    max: 5.25
+    unit: V
+    status: extraido
+    source: {page: 4, location: Electrical Characteristics - Power-Supply AVDD, excerpt: "AVDD 4.75 5.25 V"}
+  VREF:
+    min: 0.5
+    typ: 2.5
+    max: 2.6
+    unit: V
+    status: extraido
+    source: {page: 3, location: Electrical Characteristics - Voltage Reference Inputs, excerpt: "Reference input voltage (VREF) 0.5 2.5 2.6 V"}
+  gain_err:
+    typ: 0.005
+    unit: '%'
+    conditions: {PGA: 1}
+    status: extraido
+    source: {page: 3, location: Electrical Characteristics - Gain error after calibration, excerpt: "Gain error After calibration, PGA = 1, Buffer on ±0.005 %"}
+  IS:
+    typ: 7
+    max: 10
+    unit: mA
+    status: extraido
+    source: {page: 4, location: Electrical Characteristics - AVDD current, excerpt: "AVDD current Normal mode, PGA = 1, Buffer off 7 10 mA"}
+  Top:
+    min: -40
+    max: 105
+    unit: °C
+    status: extraido
+    source: {page: 4, location: Electrical Characteristics - Temperature Range Operating, excerpt: "Operating −40 +105 °C"}
+  Tstg:
+    min: -60
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 4, location: Electrical Characteristics - Temperature Range Storage, excerpt: "Storage −60 +150 °C"}
+attributes:
+  interface:
+    value: SPI, tolerante a 5 V
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "5V Tolerant SPI-Compatible Serial Interface"}
+  arquitetura:
+    value: Delta-sigma de 4a ordem com PGA (ganho 1 a 64)
+    status: extraido
+    source: {page: 1, location: Description, excerpt: "4th-order, delta-sigma (ΔΣ) modulator"}
+  encapsulamento:
+    value: SSOP
+    status: extraido
+    source: {page: 5, location: Pin Assignments, excerpt: "SSOP PACKAGE (TOP VIEW)"}

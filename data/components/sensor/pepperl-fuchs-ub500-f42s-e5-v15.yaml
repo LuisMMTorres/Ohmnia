@@ -1,0 +1,98 @@
+# Fonte: Pepperl+Fuchs, Ultrasonic sensor UB500-F42S-E5-V15 (arquivo 133981_eng.pdf), release date 2025-06-03.
+part_number: UB500-F42S-E5-V15
+category: sensor.proximity
+schema_version: '1.0'
+manufacturer: Pepperl+Fuchs
+package: M12 x 1 plug, 80 x 34 x 80 mm
+lifecycle: desconhecido
+notes:
+- 'Fila: "133981 eng" (nome de arquivo); produto real UB500-F42S-E5-V15, sensor ultrassônico (categoria sensor.proximity usada por falta de categoria ultrassônica).'
+- 'sn registrado como o limite superior da faixa de detecção (500 mm); o datasheet não define distância sensora nominal separadamente (p.1 Technical Data - Sensing range 30 ... 500 mm).'
+- 'Faixa de ajuste 50 ... 500 mm, zona morta 0 ... 30 mm, alvo padrão 100 mm x 100 mm, frequência do transdutor aprox. 390 kHz, atraso de resposta aprox. 50 ms (p.1).'
+- 'Repetibilidade <= 0.5 % do ponto de comutação; influência da temperatura +-1 % do fundo de escala (p.2).'
+datasheets:
+- id: ds1
+  manufacturer: Pepperl+Fuchs
+  document_number: 133981_eng
+  revision: 'Release date 2025-06-03'
+  url: https://files.pepperl-fuchs.com/webcat/navi/productInfo/pds/133981_eng.pdf
+  sha256: e70709f37a714dfba7b7567fbd890b02ca5210fd53020527d809e805d558a8a3
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  sn:
+    max: 500
+    unit: mm
+    status: extraido
+    source: {page: 1, location: Technical Data - General specifications - Sensing range, excerpt: "Sensing range 30 ... 500 mm"}
+  sr:
+    min: 30
+    max: 500
+    unit: mm
+    status: extraido
+    source: {page: 1, location: Technical Data - General specifications - Sensing range, excerpt: "Sensing range 30 ... 500 mm"}
+  hysteresis:
+    typ: 1
+    unit: '%'
+    status: extraido
+    source: {page: 2, location: Electrical specifications - Range hysteresis, excerpt: "Range hysteresis H 1 % of the set operating distance"}
+  VS:
+    min: 10
+    max: 30
+    unit: V
+    status: extraido
+    source: {page: 2, location: Electrical specifications - Operating voltage, excerpt: "10 ... 30 V DC , ripple 10 %SS"}
+  IS:
+    max: 50
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Electrical specifications - No-load supply current, excerpt: "I0 ≤ 50 mA"}
+  IL:
+    max: 200
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Output - Rated operating current, excerpt: "Ie 200 mA , short-circuit/overload protected"}
+  Vdrop:
+    max: 2.5
+    unit: V
+    status: extraido
+    source: {page: 2, location: Output - Voltage drop, excerpt: "Ud ≤ 2.5 V"}
+  f_sw:
+    max: 8
+    unit: Hz
+    status: extraido
+    source: {page: 2, location: Output - Switching frequency, excerpt: "f ≤ 8 Hz"}
+  Top:
+    min: -25
+    max: 70
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Ambient conditions - Ambient temperature, excerpt: "-25 ... 70 °C (-13 ... 158 °F)"}
+  Tstg:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Ambient conditions - Storage temperature, excerpt: "-40 ... 85 °C (-40 ... 185 °F)"}
+attributes:
+  saida:
+    value: 1 saída de comutação E5, PNP NA/NF programável
+    status: extraido
+    source: {page: 2, location: Output - Output type, excerpt: "1 switching output E5, PNP NO/NC, programmable"}
+  conexao:
+    value: Conector M12 x 1, 5 pinos
+    status: extraido
+    source: {page: 2, location: Mechanical specifications - Connection type, excerpt: "Connector plug M12 x 1 , 5-pin"}
+  invólucro:
+    value: ABS; transdutor em resina epóxi/esferas de vidro, cobertura PBT; 140 g
+    status: extraido
+    source: {page: 2, location: Mechanical specifications - Material, excerpt: "Housing ABS"}
+  grau_protecao:
+    value: IP54
+    status: extraido
+    source: {page: 2, location: Mechanical specifications - Degree of protection, excerpt: "IP54"}
+  certificacoes:
+    value: cULus Listed Class 2; EN IEC 60947-5-2:2020
+    status: extraido
+    source: {page: 2, location: Compliance / Approvals, excerpt: "cULus Listed, Class 2 Power Source"}

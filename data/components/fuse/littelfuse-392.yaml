@@ -1,0 +1,84 @@
+# Fonte: Littelfuse, 392 Series TE5 Time-Lag Fuse (Radial Lead Fuses), revisado 04/19/16.
+part_number: '392'
+category: fuse
+schema_version: '1.0'
+manufacturer: Littelfuse
+family: 392 Series (TE5, radial, retardado)
+package: radial TE5, base e tampa de poliamida, passo 5,08 mm
+lifecycle: desconhecido
+notes:
+- 'Valores da série: 0,28 A a 6,3 A, 250 V (pág. 1). Capacidade de interrupção de 35 A @ 250 VAC (280 mA) a 63 A @ 250 VAC (6,3 A).'
+- 'Resistência a frio nominal de 0,33 ohm (280 mA) a 0,0077 ohm (6,3 A), medida a 10 % da corrente nominal, 25 ºC; queda de tensão máxima a 1,0 x In de 115 mV a 65 mV.'
+- 'Dissipação máxima a 1,5 x In de 168 mW (280 mA) a 1200 mW (6,3 A); integral de fusão a 10 x In de 0,048 A2s a 160,74 A2s (pág. 1).'
+- 'Redução (re-rating) da corrente com a temperatura ambiente: ver curva na pág. 2, além do derating padrão de 25 % em operação contínua.'
+datasheets:
+- id: ds1
+  manufacturer: Littelfuse
+  document_number: 392 Series TE5
+  revision: Revised 04/19/16
+  url: https://www.farnell.com/datasheets/2243931.pdf
+  sha256: 04407148c80be01323d6a9f5c657122b1b51032ba9d3c5c9c6f969f9310f8667
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_rated:
+    min: 0.28
+    max: 6.3
+    unit: A
+    status: extraido
+    note: Faixa da série.
+    source: {datasheet_id: ds1, page: 1, location: Electrical Characteristic Specifications by Item - Rated Current, excerpt: "280 mA ... 6.30 A"}
+  V_rated:
+    max: 250
+    unit: V
+    status: extraido
+    source: {datasheet_id: ds1, page: 1, location: Description, excerpt: "TE5 Fuse, Time-Lag type, 250V rated"}
+  I_break:
+    min: 25
+    max: 63
+    unit: A
+    status: extraido
+    note: 'Faixa entre os modelos a 250 VAC: 25 A (0,8 A) a 63 A (6,3 A); o modelo de 280 mA tem 35 A.'
+    source: {datasheet_id: ds1, page: 1, location: Electrical Characteristic Specifications by Item - Breaking Capacity, excerpt: "25A@250VAC ... 63A@250VAC"}
+  I2t:
+    min: 0.048
+    max: 160.74
+    unit: A^2*s
+    status: extraido
+    note: Melting Integral a 10 x In (máx.); faixa entre os modelos.
+    source: {datasheet_id: ds1, page: 1, location: Electrical Characteristic Specifications by Item - Melting Integral 10xIN max, excerpt: "0.048 ... 160.74"}
+  R_cold:
+    min: 0.0077
+    max: 0.33
+    unit: ohm
+    status: extraido
+    note: Resistência a frio nominal, medida a 10 % da corrente nominal e 25 ºC; faixa entre os modelos.
+    source: {datasheet_id: ds1, page: 1, location: Electrical Characteristic Specifications by Item - Nominal Cold Resistance, excerpt: "0.3300 ... 0.0077"}
+  P_diss:
+    min: 0.168
+    max: 1.2
+    unit: W
+    status: extraido
+    note: Dissipação máxima a 1,5 x In (valores de 168 mW a 1200 mW); faixa entre os modelos.
+    source: {datasheet_id: ds1, page: 1, location: Electrical Characteristic Specifications by Item - Power Dissipation 1.5xIN max (mW), excerpt: "168 ... 1200"}
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    note: Considerar re-rating.
+    source: {datasheet_id: ds1, page: 3, location: Product Characteristics - Operating Temperature, excerpt: "-40ºC to +85ºC (Consider re-rating)"}
+attributes:
+  curva:
+    value: retardado (time-lag), IEC 60127-3
+    status: extraido
+    source: {page: 1, location: Description, excerpt: "Time-Lag type, 250V rated, designed in accordance to IEC 60127-3"}
+  formato:
+    value: radial TE5, fios longos (L=18,8 mm) ou curtos (L=4,3 mm), passo 5,08 mm
+    status: extraido
+    source: {page: 3, location: Dimensions, excerpt: "Long Leads (L=18.8mm) Short Leads (L=4.3mm)"}
+  certificacoes:
+    value: RoHS, livre de halogênio e de chumbo, PSE e demais aprovações de agências (tabela na pág. 1)
+    status: extraido
+    source: {page: 1, location: Features / Agency Approvals}

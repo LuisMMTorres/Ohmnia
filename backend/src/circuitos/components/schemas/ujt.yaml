@@ -1,0 +1,20 @@
+category: ujt
+schema_version: "1.0"
+description: Transistor de unijunção (UJT) ou UJT programável (PUT)
+required: [eta, RBB]
+parameters:
+  eta:      {unit: "1", kind: characteristic, description: Razão intrínseca de disparo (η)}
+  RBB:      {unit: kohm, kind: characteristic, description: Resistência interbases}
+  IP:       {unit: uA, kind: characteristic, description: Corrente de pico}
+  IV:       {unit: mA, kind: characteristic, description: Corrente de vale}
+  VV:       {unit: V, kind: characteristic, description: Tensão de vale}
+  VEB1_sat: {unit: V, kind: characteristic, description: Tensão de saturação emissor-base 1}
+  IEB2O:    {unit: uA, kind: characteristic, description: Corrente reversa emissor-base 2}
+  VOB1:     {unit: V, kind: characteristic, description: Amplitude do pulso em base 1}
+  VB2B1:    {unit: V, kind: max_rating, description: Tensão interbases máxima}
+  VB2E:     {unit: V, kind: max_rating, description: Tensão reversa emissor-base 2 máxima}
+  IE:       {unit: mA, kind: max_rating, description: Corrente de emissor RMS máxima}
+  IE_peak:  {unit: A, kind: max_rating, description: Corrente de emissor de pico}
+  Ptot:     {unit: W, kind: max_rating, description: Dissipação máxima}
+  Tj_max:   {unit: °C, kind: thermal, description: Temperatura máxima de junção}
+  Tstg:     {unit: °C, kind: thermal, description: Temperatura de armazenamento (faixa)}

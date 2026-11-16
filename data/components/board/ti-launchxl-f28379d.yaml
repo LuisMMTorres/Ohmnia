@@ -1,0 +1,46 @@
+# Fonte: Texas Instruments, LAUNCHXL-F28379D Overview User's Guide, SPRUI77C, agosto 2016, revisado março 2019.
+part_number: LAUNCHXL-F28379D
+category: board.mcu
+schema_version: '1.0'
+manufacturer: Texas Instruments
+family: C2000 Delfino LaunchPad
+lifecycle: desconhecido
+notes:
+- 'Fila: part_number "TI LaunchPad" / fabricante "F28379D"; produto real LAUNCHXL-F28379D (MCU TMS320F28379D).'
+- 'Pág. 6: 4 ADCs independentes de 16/12 bits com resolução selecionável por software; ADCD ligado a amplificador diferencial para o modo de 16 bits.'
+- 'Pág. 6: alimentação de 3,3 V por USB (regulador de bordo) ou externa; trilho de 5 V por USB, externa ou step-up de bordo. O guia não traz tabela de limites elétricos, frequência de clock nem RAM.'
+datasheets:
+- id: ds1
+  manufacturer: Texas Instruments
+  document_number: SPRUI77C
+  revision: C (março 2019)
+  sha256: 6f6ab0c0a4e2fe6ffb03e8ceb7767f9a0110b9da0f353c8d147646dec367d1d4
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    typ: 3.3
+    unit: V
+    status: extraido
+    source: {page: 6, location: 5.2 Power Domain - Table 1 Supplying the LaunchPad With 3.3 V, excerpt: "on-board regulator steps the 5 V from the USB port down to 3.3 V"}
+  flash:
+    typ: 1024
+    unit: kB
+    status: extraido
+    source: {page: 20, location: Bill of Materials - U14, excerpt: "IC, MCU 32BIT 1024KB,TMS320F28379DZWTT"}
+  adc_bits:
+    min: 12
+    max: 16
+    unit: bit
+    status: extraido
+    source: {page: 6, location: 5.1 ADC, excerpt: "4 independent 16-bit/12-bit ADCs. The resolution of each ADC is SW selectable"}
+attributes:
+  microcontrolador:
+    value: TMS320F28379D (Delfino F2837xD, dual-core)
+    status: extraido
+    source: {page: 1, location: Introdução, excerpt: "development board for the Texas Instruments Delfino F2837xD devices"}
+  comunicacao:
+    value: USB (XDS100v2 com UART), CAN com transceptor integrado, interfaces de encoder em quadratura de 5 V
+    status: extraido
+    source: {page: 2, location: 1 Introduction - features list, excerpt: "CAN Interface with integrated transceiver"}

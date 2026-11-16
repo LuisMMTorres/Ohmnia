@@ -1,0 +1,66 @@
+# Fonte: UWT, Rotonivo Level limit switch Series RN 3000 / 6000 - Product configuration, Technical notes, RN 3000 / 6000 010724.
+part_number: RN 3000 / RN 6000
+category: sensor.level
+schema_version: '1.0'
+manufacturer: UWT
+family: Rotonivo RN 3000 / RN 6000
+lifecycle: desconhecido
+notes:
+- 'Fila: rotonivo-rn3000-technical-information-en. Chave de nível rotativa para sólidos a granel (detector de cheio, demanda ou vazio); valores da série, faixas entre extensões e versões.'
+- 'Alimentação: CA 24, 48, 115 ou 230 V; CC 24 V; universal 24 V DC / 22 a 230 V CA (p. 4). VS abaixo cobre a versão universal; as demais versões usam tensões fixas.'
+- 'Saídas: SPDT, DPDT (micro chave), PNP, SPST (RN 6000), FSH/FSL, atraso ajustável, alarme fail safe opcional (p. 4). Sensibilidade > 15 g/l (p. 1).'
+- 'Temperatura ambiente RN 3000: -20 a +70 C (-20 a +60 C Ex; -40 C com aquecimento); RN 6000: -20 a +50 C (p. 3). Pressão de processo -0,9 a +0,8 bar ou -0,9 a +5/10 bar (p. 5).'
+datasheets:
+- id: ds1
+  manufacturer: UWT
+  document_number: RN 3000 / 6000
+  revision: '010724'
+  url: https://www.uwtgroup.com/en/mwdownloads/download/link/id/3348
+  sha256: cabe86c8c68f1f68d1395ee9db8c56d3e574fbadccc2d75114e139031fd68fce
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 22
+    max: 230
+    unit: V
+    status: extraido
+    source: {page: 4, location: Specifications - Electronics, Universal voltage, excerpt: "24 V DC/ 22 .. 230 V AC"}
+  T_process:
+    min: -40
+    max: 1100
+    unit: °C
+    status: extraido
+    source: {page: 5, location: Specifications - Extensions RN ..001, Process temperature, excerpt: "-40/ -25 .. +80/ 150/ 250/ 350/ 600/ 1,100°C"}
+  Top:
+    min: -20
+    max: 70
+    unit: °C
+    status: extraido
+    source: {page: 3, location: Technical data - Ambient temperature (RN 3000), excerpt: "-20°C .. +70°C (-4°F .. +158°F)"}
+attributes:
+  saida:
+    value: SPDT, DPDT (micro chave) ou PNP; RN 6000 também SPST
+    status: extraido
+    source: {page: 4, location: Specifications - Electronics, Output signal}
+  conexao:
+    value: Prensa-cabo M20 x 1,5 (padrão); NPT 1/2 pol. nas versões FM e CSA
+    status: extraido
+    source: {page: 3, location: Technical data - Cable entries}
+  invólucro:
+    value: Alumínio ou plástico PA6 (RN 3000, opcional); palheta e eixo em aço inox 304/303/316L
+    status: extraido
+    source: {page: 3, location: Technical data - Material housing / Material of measuring vane and shaft}
+  grau_protecao:
+    value: IP66 e NEMA Type 4/4X (RN 6000)
+    status: extraido
+    source: {page: 3, location: Technical data - Type of protection}
+  certificacoes:
+    value: CE, UKCA, TR-CU, ATEX, UKEX, IEC-Ex, INMETRO, KC, CCC, FM, CSA, SIL 2 (IEC 61508)
+    status: extraido
+    source: {page: 3, location: Specifications - Approvals / Functional safety}
+  principio:
+    value: Palheta rotativa acionada por motor (chave de nível rotativa para sólidos a granel)
+    status: extraido
+    source: {page: 1, location: Cabeçalho - Level limit detection in bulk goods/solids}

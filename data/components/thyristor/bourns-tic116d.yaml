@@ -1,0 +1,236 @@
+# Fonte: Bourns, TIC116 SERIES Silicon Controlled Rectifiers, April 1971 - revised September 2002.
+part_number: TIC116D
+category: thyristor.scr
+schema_version: '1.0'
+manufacturer: Bourns
+family: TIC116 (D, M, S, N)
+package: TO-220 (pino 2 em contato elétrico com a base de fixação)
+lifecycle: obsoleto
+notes:
+- Documento da série TIC116 (D/M/S/N, 400 a 800 V); VDRM e VRRM são os da coluna TIC116D, os demais valores são comuns à série.
+- A folha só dá faixa de temperatura de operação da cápsula, -40 a +110 °C, e não define Tj_max; por isso Tj_max não foi transcrito.
+- 'Colunas do documento confirmadas na imagem da página 2: IGT 8 típ. e 20 máx.; IH 100 mA a -40 °C e 40 mA a 25 °C; VGT 0,8 típ./1,5 máx. a 25 °C.'
+- O documento marca a série como obsoleta e não recomendada para novos projetos (página 1).
+datasheets:
+- id: ds1
+  manufacturer: Bourns
+  document_number: TIC116 SERIES
+  revision: April 1971 - revised September 2002
+  url: https://media.digikey.com/pdf/Data%20Sheets/Bourns%20PDFs/TIC116.pdf
+  sha256: 491a3ab7dfe8185f3dce61dc9da9e22c7b05574f8ab5cf4ffc67d3cab6957d51
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VDRM:
+    max: 400
+    unit: V
+    note: coluna TIC116D da série (D 400 / M 600 / S 700 / N 800 V)
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - repetitive peak off-state voltage, TIC116D
+      excerpt: Repetitive peak off-state voltage TIC116D VDRM 400 V
+  VRRM:
+    max: 400
+    unit: V
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - repetitive peak reverse voltage, TIC116D
+      excerpt: Repetitive peak reverse voltage TIC116D VRRM 400 V
+  IT(RMS):
+    max: 8
+    unit: A
+    conditions:
+      TC: 70 degC
+    note: corrente contínua cc, carga resistiva; acima de 70 °C reduz linearmente a zero em 110 °C (nota 1)
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - continuous on-state current at (or below) 70 C case temperature (Note 1)
+      excerpt: Continuous on-state current at (or below) 70°C case temperature IT(RMS) 8 A
+  IT(AV):
+    max: 5
+    unit: A
+    conditions:
+      TC: 70 degC
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - average on-state current (180 deg conduction) at (or below) 70 C (Note 2)
+      excerpt: Average on-state current (180° conduction angle) at (or below) 70°C IT(AV) 5 A
+  ITSM:
+    max: 80
+    unit: A
+    conditions:
+      t_pulse: 10 ms
+      TC: 25 degC
+    note: símbolo ITM na folha; um meio ciclo senoidal de 50 Hz (10 ms)
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - surge on-state current at (or below) 25 C case temperature (Note 3)
+      excerpt: Surge on-state current at (or below) 25°C case temperature ITM 80 A
+  IGM:
+    max: 3
+    unit: A
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - peak positive gate current (pulse width <= 300 us)
+      excerpt: Peak positive gate current (pulse width ≤ 300 µs) IGM 3 A
+  PGM:
+    max: 5
+    unit: W
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - peak gate power dissipation (pulse width <= 300 us)
+      excerpt: Peak gate power dissipation (pulse width ≤ 300 µs) PGM 5 W
+  PG(AV):
+    max: 1
+    unit: W
+    note: tempo máximo de média de 20 ms
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - average gate power dissipation (Note 4)
+      excerpt: Average gate power dissipation (see Note 4) PG(AV) 1 W
+  Tstg_max:
+    max: 125
+    unit: degC
+    note: 'faixa de armazenamento: -40 a +125 °C'
+    status: extraido
+    source:
+      page: 1
+      location: Absolute maximum ratings - storage temperature range
+      excerpt: Storage temperature range Tstg -40 to +125 °C
+  IDRM:
+    max: 2
+    unit: mA
+    conditions:
+      TC: 110 degC
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics - repetitive peak off-state current
+      excerpt: IDRM Repetitive peak off-state current VD = rated VDRM TC = 110°C 2 mA
+  IGT:
+    typ: 8
+    max: 20
+    unit: mA
+    conditions:
+      VD: 12 V
+      RL: 100 ohm
+      TC: 25 degC
+    note: tp(g) ≥ 20 us
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics - gate trigger current
+      excerpt: 'IGT Gate trigger current VAA = 12 V RL = 100 Ω tp(g) ≥ 20 µs: typ 8, max 20 mA'
+  VGT:
+    typ: 0.8
+    max: 1.5
+    unit: V
+    conditions:
+      VD: 12 V
+      RL: 100 ohm
+      TC: 25 degC
+    note: tp(g) ≥ 20 us
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics - gate trigger voltage, 25 C
+      excerpt: 'VGT Gate trigger voltage VAA = 12 V RL = 100 Ω: typ 0.8, max 1.5 V'
+  VGT@2:
+    max: 2.5
+    unit: V
+    conditions:
+      VD: 12 V
+      RL: 100 ohm
+      TC: -40 degC
+    note: tp(g) ≥ 20 us
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics - gate trigger voltage, TC = -40 C
+      excerpt: 'VGT VAA = 12 V RL = 100 Ω TC = - 40°C: max 2.5 V'
+  VGT@3:
+    min: 0.2
+    unit: V
+    conditions:
+      VD: 12 V
+      RL: 100 ohm
+      TC: 110 degC
+    note: tp(g) ≥ 20 us
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics - gate trigger voltage, TC = 110 C
+      excerpt: 'VGT VAA = 12 V RL = 100 Ω TC = 110°C: min 0.2 V'
+  IH:
+    max: 40
+    unit: mA
+    conditions:
+      VD: 12 V
+      TC: 25 degC
+    note: corrente inicial IT = 100 mA
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics - holding current, 25 C
+      excerpt: 'IH Holding current VAA = 12 V Initiating IT = 100 mA: max 40 mA'
+  IH@2:
+    max: 100
+    unit: mA
+    conditions:
+      VD: 12 V
+      TC: -40 degC
+    note: corrente inicial IT = 100 mA
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics - holding current, TC = -40 C
+      excerpt: 'IH VAA = 12 V Initiating IT = 100 mA TC = - 40°C: max 100 mA'
+  VTM:
+    max: 1.7
+    unit: V
+    conditions:
+      ITM: 8 A
+      TC: 25 degC
+    note: medido por pulso (tp = 300 us, ciclo ≤ 2 %), nota 5
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics - on-state voltage (Note 5)
+      excerpt: VT On-state voltage IT = 8 A 1.7 V
+  dv/dt:
+    typ: 400
+    unit: V/us
+    conditions:
+      TC: 110 degC
+    note: com IG = 0, VD = VD nominal
+    status: extraido
+    source:
+      page: 2
+      location: Electrical characteristics - critical rate of rise of off-state voltage
+      excerpt: dv/dt Critical rate of rise of off-state voltage VD = rated VD IG = 0 TC = 110°C 400 V/µs
+  Rth_jc:
+    max: 3
+    unit: K/W
+    status: extraido
+    source:
+      page: 2
+      location: Thermal characteristics - junction to case
+      excerpt: RθJC Junction to case thermal resistance 3 °C/W
+  Rth_ja:
+    max: 62.5
+    unit: K/W
+    status: extraido
+    source:
+      page: 2
+      location: Thermal characteristics - junction to free air
+      excerpt: RθJA Junction to free air thermal resistance 62.5 °C/W
+attributes: {}

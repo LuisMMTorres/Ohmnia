@@ -1,0 +1,75 @@
+# Fonte: SMC, Operation Manual No.D-S-OMG0002-E, Solid State Auto Switch D-M9 (série D-M9N/M9P/M9B e versões V), sem data de revisão visível.
+part_number: D-M9
+category: sensor.magnetic
+schema_version: '1.0'
+manufacturer: SMC
+family: D-M9
+lifecycle: desconhecido
+notes:
+- Documento da série D-M9 (D-M9N NPN 3 fios, D-M9P PNP 3 fios, D-M9B 2 fios; versões V com saída de cabo perpendicular); valores abaixo são da tabela de especificações (p. 18 do PDF, impressa como p. 17) e valem para a série, salvo indicação.
+- Chave de estado sólido para cilindros pneumáticos, detecta o ímã do pistão; o documento não informa campo de operação em mT.
+- Tensão de alimentação 4,5 a 28 V DC e consumo <= 10 mA são só dos modelos de 3 fios; o D-M9B (2 fios) tem tensão de carga 24 V DC (10 a 28 V DC), corrente de carga 2,5 a 40 mA, queda interna <= 4 V e fuga <= 0,8 mA.
+- Corrente de fuga <= 100 uA a 24 V DC (3 fios). Tempo de operação <= 1 ms. LED vermelho indica operação. Choque 1000 m/s2. IP67.
+- "Comprimento do cabo e conector conforme código de pedido (p. 9): 500/1000/3000/5000 mm ou pré-cabeado M8/M12."
+datasheets:
+- id: ds1
+  manufacturer: SMC
+  document_number: D-S-OMG0002-E
+  url: https://partbuilder.smcpneumatics.com/manuals/D-xS-OMG0002im.pdf
+  sha256: b7a8421a2e81f50c37d4c0447d484550a923a2f37f66b36d82820e8b2343cb5f
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VS:
+    min: 4.5
+    max: 28
+    unit: V
+    status: extraido
+    source: {page: 18, location: Specifications - Power supply voltage (3-wire), excerpt: "5/12/24 VDC (4.5 to 28 VDC)"}
+  IS:
+    max: 10
+    unit: mA
+    status: extraido
+    source: {page: 18, location: Specifications - Current consumption (3-wire), excerpt: "10 mA or less"}
+  IL:
+    max: 40
+    unit: mA
+    status: extraido
+    source: {page: 18, location: Specifications - Load current, excerpt: "40 mA or less"}
+  Vdrop:
+    max: 0.8
+    unit: V
+    conditions: {IL: 10 mA}
+    status: extraido
+    source: {page: 18, location: Specifications - Internal voltage drop (3-wire), excerpt: "0.8 V or less at load current of 10 mA"}
+  Vdrop@2:
+    max: 2
+    unit: V
+    conditions: {IL: 40 mA}
+    status: extraido
+    source: {page: 18, location: Specifications - Internal voltage drop (3-wire), excerpt: "(2 V or less at load current of 40 mA)"}
+  Ir:
+    max: 0.1
+    unit: mA
+    status: extraido
+    source: {page: 18, location: Specifications - Current leakage (3-wire), excerpt: "100 µA or less at 24 VDC"}
+  Top:
+    min: -10
+    max: 60
+    unit: °C
+    status: extraido
+    source: {page: 18, location: Specifications - Ambient temperature, excerpt: "-10 to 60 °C"}
+attributes:
+  saida:
+    value: D-M9N NPN 3 fios; D-M9P PNP 3 fios; D-M9B 2 fios (carga 24 V DC); estado sólido, LED vermelho
+    status: extraido
+    source: {page: 18, location: Specifications - Wiring / Output / Indication light, excerpt: "3-wire NPN PNP; 2-wire; The Red LED lights up"}
+  conexao:
+    value: Cabo de vinil 2,7 x 3,2 oval, 0,15 mm2 (2 fios D-M9B, 3 fios D-M9N/P); entrada em linha ou perpendicular (V)
+    status: extraido
+    source: {page: 18, location: Specifications - Lead wire / Lead wire orientation, excerpt: "2.7 x 3.2 oval, 0.15 mm2, 2-wire (D-M9B(V)), 3-wire (D-M9N(V),D-M9P(V))"}
+  invólucro:
+    value: Entrada elétrica tipo grommet, cabo com bainha de vinil; IP67 (IEC 60529)
+    status: extraido
+    source: {page: 18, location: Specifications - Electrical entry / Enclosure, excerpt: "Grommet; IEC 60529 criteria IP67"}

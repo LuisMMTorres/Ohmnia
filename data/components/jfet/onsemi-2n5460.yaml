@@ -1,0 +1,111 @@
+# Fonte: onsemi, 2N5460/D, 2N5460, 2N5461, 2N5462 JFET Amplifier P-Channel Depletion, Rev. 5, March 2006.
+part_number: 2N5460
+category: jfet.p
+schema_version: '1.0'
+manufacturer: onsemi
+family: 2N5460, 2N5461, 2N5462
+package: TO-92 (case 29, style 7)
+lifecycle: desconhecido
+notes:
+- 'Documento da série 2N5460/61/62; os valores abaixo são da coluna 2N5460 (as outras variantes têm faixas diferentes de VGS(off), VGS, IDSS e yfs na página 3).'
+- 'Valores em módulo, como no esquema jfet.p. O datasheet imprime IDSS negativo (-1,0 a -5,0 mA) e as tensões do canal P sem sinal.'
+- 'IGSS: o datasheet lista duas tensões (20 V e 30 V, também a 100 C) e dois valores máximos (5,0 nA e 1,0 uA); o pareamento entre valor e condição não ficou claro na tabela. Transcrito só 5,0 nA com VGS = 20 V (página 3).'
+- 'Fora do esquema: ruído equivalente de entrada en típ. 60 / máx. 115 nV/raiz(Hz) (VDS = 15 V, VGS = 0, f = 100 Hz, BW = 1 Hz), página 3. VGS (polarização, ID = 0,1 mA) 0,5 a 4,0 V para o 2N5460, página 3.'
+datasheets:
+- id: ds1
+  manufacturer: onsemi
+  document_number: 2N5460/D
+  revision: Rev. 5, March 2006
+  sha256: 48aba5b2d3f5f05af7e3b215b5d3eb90d42a8e869103371eac94a8cda0cef25e
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VDG:
+    max: 40
+    unit: V
+    status: extraido
+    source: {page: 2, location: Maximum Ratings - Drain-Gate Voltage, excerpt: "Drain-Gate Voltage VDG 40 Vdc"}
+  VGSR:
+    max: 40
+    unit: V
+    status: extraido
+    source: {page: 2, location: Maximum Ratings - Reverse Gate-Source Voltage, excerpt: "Reverse Gate-Source Voltage VGSR 40 Vdc"}
+  IG:
+    max: 10
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Maximum Ratings - Forward Gate Current IG(f), excerpt: "Forward Gate Current IG(f) 10 mAdc"}
+  Ptot:
+    max: 350
+    unit: mW
+    conditions: {TA: 25 °C}
+    status: extraido
+    source: {page: 2, location: Maximum Ratings - Total Device Dissipation @ TA = 25°C, excerpt: "Total Device Dissipation @ TA = 25°C PD 350 mW"}
+  Ptot_derating:
+    max: 2.8
+    unit: mW/K
+    status: extraido
+    source: {page: 2, location: Maximum Ratings - Derate above 25°C, excerpt: "Derate above 25°C 2.8 mW/°C"}
+  Tj_max:
+    max: 135
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Maximum Ratings - Junction Temperature Range, excerpt: "Junction Temperature Range TJ -65 to +135 °C"}
+  Tstg_max:
+    max: 150
+    unit: °C
+    status: extraido
+    source: {page: 2, location: Maximum Ratings - Storage Channel Temperature Range, excerpt: "Storage Channel Temperature Range Tstg -65 to +150 °C"}
+  V(BR)GSS:
+    min: 40
+    unit: V
+    status: extraido
+    source: {page: 3, location: Electrical Characteristics - OFF - Gate-Source Breakdown Voltage (IG = 10 uA, VDS = 0), excerpt: "V(BR)GSS 40 Vdc"}
+  IGSS:
+    max: 5.0
+    unit: nA
+    conditions: {VGS: 20 V}
+    status: extraido
+    source: {page: 3, location: Electrical Characteristics - OFF - Gate Reverse Current (VGS = 20 Vdc, VDS = 0), excerpt: "IGSS 5.0 nAdc"}
+  VGS(off):
+    min: 0.75
+    max: 6.0
+    unit: V
+    conditions: {VDS: 15 V}
+    status: extraido
+    source: {page: 3, location: Electrical Characteristics - Gate-Source Cutoff Voltage 2N5460 (VDS = 15 V, ID = 1.0 uA), excerpt: "VGS(off) 2N5460 0.75 ... 6.0 Vdc"}
+  IDSS:
+    min: 1.0
+    max: 5.0
+    unit: mA
+    conditions: {VDS: 15 V}
+    status: extraido
+    source: {page: 3, location: Electrical Characteristics - ON - Zero-Gate-Voltage Drain Current 2N5460 (VDS = 15 V, VGS = 0), excerpt: "IDSS 2N5460 -1.0 ... -5.0 mAdc"}
+  yfs:
+    min: 1000
+    max: 4000
+    unit: uS
+    conditions: {VDS: 15 V, f: 1 kHz}
+    status: extraido
+    source: {page: 3, location: Small-Signal - Forward Transfer Admittance 2N5460 (VDS = 15 V, VGS = 0, f = 1 kHz), excerpt: "|yfs| 2N5460 1000 ... 4000 umhos"}
+  yos:
+    max: 75
+    unit: uS
+    conditions: {VDS: 15 V}
+    status: extraido
+    source: {page: 3, location: Small-Signal - Output Admittance (VDS = 15 V, VGS = 0, f = 1 kHz), excerpt: "|yos| 75 umhos"}
+  Ciss:
+    typ: 5.0
+    max: 7.0
+    unit: pF
+    conditions: {VDS: 15 V}
+    status: extraido
+    source: {page: 3, location: Small-Signal - Input Capacitance (VDS = 15 V, VGS = 0, f = 1 MHz), excerpt: "Ciss 5.0 7.0 pF"}
+  Crss:
+    typ: 1.0
+    max: 2.0
+    unit: pF
+    conditions: {VDS: 15 V}
+    status: extraido
+    source: {page: 3, location: Small-Signal - Reverse Transfer Capacitance (VDS = 15 V, VGS = 0, f = 1 MHz), excerpt: "Crss 1.0 2.0 pF"}
