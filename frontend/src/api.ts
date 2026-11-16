@@ -884,6 +884,7 @@ export interface BomLine {
   datasheet: string | null;
   unit_cost: number | null;
   total_cost: number | null;
+  cost_key: string;
 }
 export interface BomOut {
   title: string;

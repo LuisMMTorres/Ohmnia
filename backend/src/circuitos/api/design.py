@@ -262,7 +262,12 @@ def bom_json(request: Request, module_id: str, body: DesignIn) -> BomOut:
     return BomOut(
         title=title,
         lines=[
-            {**vars(line), "designator": line.designator, "total_cost": line.total_cost}
+            {
+                **vars(line),
+                "designator": line.designator,
+                "total_cost": line.total_cost,
+                "cost_key": line.cost_key,
+            }
             for line in lines
         ],
         total_cost=bom.total_cost(lines),

@@ -101,9 +101,9 @@ export function BomTab({ moduleId, body, costs, onCosts, version }: Props) {
               <td>
                 <input
                   className="num"
-                  aria-label={`Custo unitário de ${l.part_number}`}
-                  defaultValue={costs[l.part_number] != null ? money(costs[l.part_number]!) : ""}
-                  onBlur={(e) => setCost(l.part_number, e.target.value)}
+                  aria-label={`Custo unitário de ${l.designator}`}
+                  defaultValue={costs[l.cost_key] != null ? money(costs[l.cost_key]!) : ""}
+                  onBlur={(e) => setCost(l.cost_key, e.target.value)}
                 />
               </td>
               <td>{money(l.total_cost)}</td>

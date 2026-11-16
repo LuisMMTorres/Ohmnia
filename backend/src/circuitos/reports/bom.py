@@ -72,6 +72,11 @@ class BomLine:
         return ", ".join(self.designators)
 
     @property
+    def cost_key(self) -> str:
+        """Unspecified parts ("(a escolher)") are priced per position, real parts per code."""
+        return self.designator if self.part_number in _PLACEHOLDERS else self.part_number
+
+    @property
     def total_cost(self) -> float | None:
         return None if self.unit_cost is None else self.unit_cost * self.quantity
 
@@ -103,8 +108,8 @@ def build(
             manufacturer=r.manufacturer,
             value=r.value,
             note=r.note,
-            unit_cost=costs.get(r.part_number),
         )
+        line.unit_cost = costs.get(line.cost_key)
         g = _governing(margins.get(r.designator, []))
         if g is not None:
             line.parameter = g.parameter

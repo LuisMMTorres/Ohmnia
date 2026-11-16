@@ -51,7 +51,7 @@
 {% set n.s = n.s + 1 %}<h2>{{ n.s }}. Memória de cálculo</h2>
 {% for s in steps %}<h3>{{ loop.index }}. {{ s.description }}</h3>
 <p>{{ eq(s.latex)|safe }}</p>
-<p>Resultado: <b>{{ fmt(s.output) }}</b>{% if s.inputs %} · entradas: {% for k, v in s.inputs.items() %}{{ eq(k, 8)|safe }} = {{ fmt(v) }}{{ "; " if not loop.last }}{% endfor %}{% endif %}</p>
+<p>Resultado: <b>{{ fmt(s.output) }}</b>{% if s.inputs %} · entradas: {% for k, v in s.inputs.items() %}{{ eq(k, 7.5)|safe }} = {{ fmt(v) }}{{ "; " if not loop.last }}{% endfor %}{% endif %}</p>
 {% if s.assumptions %}<p class="muted">Premissas: {{ s.assumptions|join("; ") }}</p>{% endif %}
 {% if s.reference %}<p class="muted">Referência: {{ s.reference.book }}{% if s.reference.edition %}, {{ s.reference.edition }} ed.{% endif %}{% if s.reference.chapter %}, cap. {{ s.reference.chapter }}{% endif %}{% if s.reference.equation %}, eq. {{ s.reference.equation }}{% endif %}</p>{% endif %}
 {% endfor %}

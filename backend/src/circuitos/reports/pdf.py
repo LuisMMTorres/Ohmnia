@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import io
 import re
+import struct
 from functools import lru_cache
 from pathlib import Path
 from typing import Any
@@ -45,13 +46,16 @@ def _normalise(latex: str) -> str:
     return s.strip()
 
 
+_EQ_DPI = 170
+
+
 @lru_cache(maxsize=512)
-def equation_png(latex: str, size: float = 11.0) -> bytes | None:
+def equation_png(latex: str, size: float = 10.0) -> bytes | None:
     """PNG of an equation, or None when mathtext cannot parse it."""
     buf = io.BytesIO()
     try:
         mathtext.math_to_image(
-            f"${_normalise(latex)}$", buf, prop=FontProperties(size=size), dpi=170, format="png"
+            f"${_normalise(latex)}$", buf, prop=FontProperties(size=size), dpi=_EQ_DPI, format="png"
         )
     except Exception:
         return None
@@ -89,12 +93,17 @@ def render_pdf(ctx: dict[str, Any]) -> bytes:
         images[name] = name
         return name
 
-    def eq(latex: str, size: float = 11.0) -> str:
+    def eq(latex: str, size: float = 10.0) -> str:
         png = equation_png(latex, size)
         if png is None:
             return f"<code>{_escape(latex)}</code>"
         name = add(f"eq{len(images)}.png", png)
-        return f'<img src="{name}"/>'
+        # PNG rendered at _EQ_DPI: place it at its true size in points (≤ the text width)
+        w_px, h_px = struct.unpack(">II", png[16:24])
+        w, h = w_px * 72 / _EQ_DPI, h_px * 72 / _EQ_DPI
+        if w > 500:
+            w, h = 500, h * 500 / w
+        return f'<img src="{name}" width="{w:.1f}" height="{h:.1f}"/>'
 
     schematic = add("schematic.png", svg_to_png(ctx["schematic"]))
     figures = [add(f"fig{i}.png", f.data) for i, f in enumerate(ctx["figures"])]

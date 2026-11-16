@@ -203,7 +203,7 @@ def test_bom_costs_xlsx_and_pdf(client):
     import pymupdf
 
     first = client.post("/api/v1/design/DM-RET1/bom", json={"spec": {}}).json()["lines"][0]
-    spec = {"spec": {}, "costs": {first["part_number"]: 2.5}}
+    spec = {"spec": {}, "costs": {first["cost_key"]: 2.5}}
     body = client.post("/api/v1/design/DM-RET1/bom", json=spec).json()
     assert body["total_cost"] == pytest.approx(2.5 * first["quantity"])
 
