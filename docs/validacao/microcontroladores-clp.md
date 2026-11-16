@@ -1,6 +1,6 @@
 # Validação: microcontroladores, CLP e co-simulação (Fase 11, decisão D12)
 
-Data: 2026-11-16. Status: aguardando revisão do usuário.
+Data: 2026-11-16. Status: aprovada em 2026-11-16.
 
 Arduino, ESP32 e CLP entram no esquemático e o programa de cada um roda junto com o ngspice: o
 A/D lê o nó ligado ao pino, as saídas acionam o circuito, e `delay()` e o ciclo de varredura

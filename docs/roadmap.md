@@ -156,7 +156,7 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 - ✅ Montagem gerada a partir do assistente de projeto (19 de 22 módulos)
 - ✅ Conferência protoboard × esquemático (faltando, sobrando, trocada, não montado, furo em conflito)
 
-## Fase 11 👀 Microcontroladores, CLP e instrumentação (decisão D12, decidida em 2026-11-16; aguardando revisão)
+## Fase 11 ✅ Microcontroladores, CLP e instrumentação (aprovada em 2026-11-16; decisão D12)
 
 - ✅ Datasheets de instrumentação, CLP e sensores de corrente, tensão e energia na fila (grupos 26 a 39)
 - ⏳ Esquema de categoria para sensor, transmissor, atuador, microcontrolador e CLP (sensores da co-simulação ainda fora do catálogo)
