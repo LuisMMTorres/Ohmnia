@@ -14,7 +14,7 @@ from typing import Literal
 
 from circuitos.schematic.model import Component, Point
 
-ParamType = Literal["number", "text", "choice"]
+ParamType = Literal["number", "text", "choice", "code"]
 
 
 @dataclass(frozen=True)
@@ -633,3 +633,10 @@ ANALYSES: dict[str, tuple[str, tuple[ParamDef, ...]]] = {
         ),
     ),
 }
+
+
+# controllers, sensors and actuators (Fase 11): defined in their own module, which imports the
+# classes above, so the import sits at the end
+from circuitos.schematic.cosim_symbols import COSIM_SYMBOLS  # noqa: E402
+
+SYMBOLS.update({s.kind: s for s in COSIM_SYMBOLS})

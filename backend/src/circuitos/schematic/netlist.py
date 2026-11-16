@@ -22,9 +22,11 @@ from dataclasses import dataclass, field
 
 from circuitos.components.models import ComponentRecord
 from circuitos.core.calc import CalcLog, CalcStep
+from circuitos.cosim.controllers import ControllerSpec, controller_lines
 from circuitos.design.opamp import OpAmp
 from circuitos.devices.thyristor import Kind as ThyristorKind
 from circuitos.schematic import parts
+from circuitos.schematic.cosim_symbols import CONTROLLER_KINDS, COSIM_KINDS, emit_device
 from circuitos.schematic.library import (
     element_name,
     param,
@@ -339,6 +341,7 @@ class _Ctx:
     warnings: list[str] = field(default_factory=list)
     log: CalcLog = field(default_factory=CalcLog)
     spreads: dict[str, parts.Spread] = field(default_factory=dict)
+    controllers: list[ControllerSpec] = field(default_factory=list)
 
     def value(self, comp: Component, name: str) -> str:
         o = self.overrides.get((comp.ref, name))
@@ -592,6 +595,18 @@ def _emit(comp: Component, n: list[str], ctx: _Ctx) -> list[str]:
             raise SchematicError(f"{ref}: informe o nome do .subckt")
         args = param(comp, "args")
         return [f"{name} {' '.join(n)} {model}" + (f" {args}" if args else "")]
+    if k in COSIM_KINDS:
+        pins = {p.name: node for p, node in zip(pin_defs(comp), n, strict=True)}
+        try:
+            if k in CONTROLLER_KINDS:
+                values = {pd.name: param(comp, pd.name) for pd in symbol(k).params}
+                lines, spec = controller_lines(ref, k, values, pins)
+                ctx.controllers.append(spec)
+                ctx.warnings += spec.warnings
+                return lines
+            return emit_device(comp, pins, lambda name: ctx.value(comp, name))
+        except ValueError as exc:
+            raise SchematicError(f"{ref}: {exc}") from exc
     raise SchematicError(f"Tipo de componente sem netlist: {k}")
 
 
@@ -608,6 +623,7 @@ class Netlist:
     spreads: dict[str, parts.Spread]
     steps: list[CalcStep]
     elements: dict[str, str]  # designator -> SPICE element name
+    controllers: list[ControllerSpec] = field(default_factory=list)  # co-simulation (Fase 11)
 
 
 def build_netlist(
@@ -671,4 +687,5 @@ def build_netlist(
         spreads=ctx.spreads,
         steps=list(ctx.log),
         elements=elements,
+        controllers=ctx.controllers,
     )
