@@ -16,8 +16,8 @@ from __future__ import annotations
 import re
 from collections.abc import Callable
 
-from circuitos.schematic.library import ParamDef, PinDef, Symbol
 from circuitos.schematic.model import Component
+from circuitos.schematic.symbols_base import ParamDef, PinDef, Symbol
 
 Value = Callable[[str], str]  # parameter name -> text (with overrides applied)
 
@@ -410,7 +410,10 @@ def stimulus(text: str) -> str:
         return f"{values[0]:.9g}"
     if len(values) % 2 or not values:
         raise ValueError(f"estímulo {text!r}: use pares tempo/valor")
-    pairs = ", ".join(f"{a:.9g}, {b:.9g}" for a, b in zip(values[::2], values[1::2], strict=True))
+    points = list(zip(values[::2], values[1::2], strict=True))
+    # ngspice's pwl() keeps the last slope beyond the ends: pin both ends flat
+    points = [(points[0][0] - 1e9, points[0][1]), *points, (points[-1][0] + 1e9, points[-1][1])]
+    pairs = ", ".join(f"{a:.9g}, {b:.9g}" for a, b in points)
     return f"pwl(time, {pairs})"
 
 

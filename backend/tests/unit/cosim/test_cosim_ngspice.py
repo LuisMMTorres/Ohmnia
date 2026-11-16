@@ -65,8 +65,13 @@ def test_arduino_on_off_control_of_an_rc(backend):
 
 def test_program_error_is_reported_with_time(backend):
     b = Builder("erro")
-    add(b, "arduino_uno", "U1", {"GND": "0", "A0": "x"},
-        program="int k = 0; void setup() {} void loop() { delay(10); k = 10 / (k - k); }")
+    add(
+        b,
+        "arduino_uno",
+        "U1",
+        {"GND": "0", "A0": "x"},
+        program="int k = 0; void setup() {} void loop() { delay(10); k = 10 / (k - k); }",
+    )
     b.add("resistor", "R1", ["x", "0"], value="1k")
     b.sch.analyses = [Analysis(kind="tran", params={"tstop": "50m"})]
     with pytest.raises(SchematicError, match="divisão por zero"):

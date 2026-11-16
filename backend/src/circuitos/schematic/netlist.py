@@ -644,7 +644,10 @@ def build_netlist(
         raise SchematicError("O circuito não tem terra: coloque o símbolo de terra (nó 0)")
     probes, ammeters = plan_probes(sch, conn)
     ctx = _Ctx(records or {}, overrides or {}, sch)
-    warnings = list(conn.warnings)
+    boards = tuple(f"Pino {c.ref}." for c in sch.components if c.kind in CONTROLLER_KINDS)
+    warnings = (
+        [w for w in conn.warnings if not w.startswith(boards)] if boards else list(conn.warnings)
+    )
     lines = [f"* {sch.title}{title_suffix}", "* gerado pelo Ohmnia"]
     all_params = {**sch.params, **(params or {})}
     for pname, pval in all_params.items():

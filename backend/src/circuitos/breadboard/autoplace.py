@@ -183,10 +183,11 @@ def autoplace(ref: Reference) -> tuple[Breadboard, list[str]]:
         if not r.checkable or package(r.package or "").style != "offboard":
             continue
         legs = {}
+        members = ref.members()
         for term in package(r.package or "").pins:
             net = net_of(r, term)
-            if net is None:
-                continue
+            if net is None or len(members.get(net, [])) < 2:
+                continue  # terminal not wired in the schematic: no lead
             if net in rails:
                 hole = _rail_hole(st, rails[net]["U"], 2)
             else:

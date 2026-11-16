@@ -162,6 +162,26 @@ def _value_label(comp: Component, name: str, unit: str) -> str:
 def _generic(comp: Component) -> Resolved:
     kind = comp.kind
     r = Resolved(comp.ref, kind, None, "generico")
+    if kind == "lm35":
+        r.package = "to-92"
+        r.pinmap = {"1": "VS", "2": "OUT", "3": "GND"}
+        r.labels = {"1": "+VS", "2": "VOUT", "3": "GND"}
+        r.title = "LM35"
+        r.notes.append(GENERIC_NOTE)
+        return r
+    if kind == "potentiometer":
+        r.package = "pot-3"
+        r.pinmap = {"1": "a", "2": "w", "3": "b"}
+        r.labels = {"1": "A", "2": "W", "3": "B"}
+        r.title = "Potenciômetro"
+        return r
+    if f"mod-{kind}" in PACKAGES:
+        pkg = package(f"mod-{kind}")
+        r.package = pkg.id
+        r.pinmap = {pin: pin for pin in pkg.pins}
+        r.labels = {pin: pin for pin in pkg.pins}
+        r.title = pkg.label
+        return r
     if kind in _IDEAL:
         r.origin = "sem_montagem"
         r.notes.append("Elemento ideal da simulação, sem equivalente físico: não vai à protoboard.")

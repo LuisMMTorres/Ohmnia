@@ -1,4 +1,4 @@
-"""Design assistant on the breadboard: the physical circuit of each module, assembled and checked."""
+"""Design assistant on the breadboard: each module's physical circuit, assembled and checked."""
 
 from __future__ import annotations
 

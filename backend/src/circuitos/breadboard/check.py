@@ -125,7 +125,12 @@ def check(ref: Reference, bb: Breadboard) -> CheckReport:
         checked.add(p.ref)
         for pin, h in p.legs.items():
             leg_hole[key(p.ref, pin)] = h
-        missing = [pin for pin in r.pinmap if pin not in p.legs]
+        net_members = ref.members()
+        missing = [
+            pin
+            for pin in r.pinmap
+            if pin not in p.legs and len(net_members.get(ref.nets.get(key(p.ref, pin), ""), [])) > 1
+        ]
         if missing:
             issues.append(
                 Issue(

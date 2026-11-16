@@ -9,52 +9,11 @@ them by the model built from its datasheet (:mod:`circuitos.schematic.parts`).
 from __future__ import annotations
 
 import math
-from dataclasses import dataclass, field
-from typing import Literal
 
 from circuitos.schematic.model import Component, Point
+from circuitos.schematic.symbols_base import ParamDef, ParamType, PinDef, Symbol
 
-ParamType = Literal["number", "text", "choice", "code"]
-
-
-@dataclass(frozen=True)
-class ParamDef:
-    name: str
-    label: str
-    unit: str = ""
-    default: str = ""
-    type: ParamType = "number"
-    choices: tuple[str, ...] = ()
-    optional: bool = False
-    help: str = ""
-
-
-@dataclass(frozen=True)
-class PinDef:
-    name: str
-    dx: int
-    dy: int
-
-
-@dataclass(frozen=True)
-class Symbol:
-    kind: str
-    label: str
-    group: str
-    prefix: str  # SPICE element letter
-    pins: tuple[PinDef, ...]
-    params: tuple[ParamDef, ...] = ()
-    catalogue: tuple[str, ...] = ()  # categories whose parts can be placed with this symbol
-    tolerance: str | None = None  # parameter varied by "tol" (Monte Carlo, worst case)
-    description: str = ""
-    ref_prefix: str = ""  # designator prefix for new parts (default: the SPICE letter)
-    extra: dict[str, str] = field(default_factory=dict)
-
-    def param(self, name: str) -> ParamDef:
-        for p in self.params:
-            if p.name == name:
-                return p
-        raise KeyError(f"{self.kind}: parâmetro {name!r} inexistente")
+__all__ = ["ParamDef", "ParamType", "PinDef", "Symbol"]
 
 
 def _two(a: str = "1", b: str = "2") -> tuple[PinDef, ...]:

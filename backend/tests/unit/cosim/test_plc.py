@@ -1,3 +1,4 @@
+# ruff: noqa: E501  (embedded program sources)
 """PLC runtime: ladder, structured text, function blocks and the scan cycle."""
 
 from __future__ import annotations

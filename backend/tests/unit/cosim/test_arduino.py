@@ -1,3 +1,4 @@
+# ruff: noqa: E501  (embedded program sources)
 """Arduino-style interpreter: language, Arduino API and the time model, with a fake circuit."""
 
 from __future__ import annotations
@@ -63,7 +64,9 @@ def test_analog_read_quantises_and_pwm_scales():
 
 
 def test_int_is_16_bits_on_the_uno_and_32_on_the_esp32():
-    src = "int x = 32767; long y; void setup() { x = x + 1; y = 70000; } void loop() { delay(1000); }"
+    src = (
+        "int x = 32767; long y; void setup() { x = x + 1; y = 70000; } void loop() { delay(1000); }"
+    )
     rt, _ = run(src, 0.001)
     assert rt.globals["x"].value == -32768 and rt.globals["y"].value == 70000
     rt, _ = run(src, 0.001, board="esp32_devkitc")
