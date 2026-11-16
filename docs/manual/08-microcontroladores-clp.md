@@ -114,9 +114,29 @@ mensagem e o instante em que aconteceu.
 | CLP: laço 4-20 mA (ladder) | Transmissor de 0 a 150 °C em AI0, histerese de 58 a 62 °C, botões de liga e desliga com selo. |
 | ESP32 + CLP: condicionamento 0-10 V | O ESP32 lê o LM35 e entrega 0 a 3,3 V no DAC; um amp-op leva a 0 a 10 V para a AI1 do CLP, que liga o ventilador acima de 70 °C. |
 | Bombeamento com pressão constante | PID do CLP comanda o inversor (AQ0 0 a 10 V = 0 a 60 Hz), transmissor de pressão em 4 a 20 mA, degrau de demanda em 30 s; o ESP32 supervisiona a referência. |
+| Partida de motor: direta × soft-starter (CLP) | O botão em I0 liga, pelo ladder com selo, um motor por contator (partida direta, cerca de 48 A de pico) e outro por soft-starter com limite de 15 A; I1 desliga os dois em 9 s, o segundo com rampa de 2 s. |
+| Arduino: posicionamento com motor de passo | O Arduino gera STEP/DIR com rampa para o driver em 1/4 de passo e leva o 17HS19-2004S1 a 180°, 90° e de volta à origem; o monitor serial mostra a posição contada e v(m1_deg) a posição real do rotor. |
 
 Todos montam na protoboard (**Montar automaticamente**): as placas e os módulos ficam fora da
 placa, ligados por fios aos furos.
+
+## Acionamentos e termopar
+
+Em **Atuadores**, **Controladores** e **Sensores** do simulador:
+
+| Componente | Como ligar | O que aparece |
+|---|---|---|
+| Motor de indução trifásico | A, B e C na fonte trifásica, no contator, no soft-starter ou no inversor. Parâmetros do circuito equivalente por fase (R1, R2, X1, X2, Xm), polos, inércia, atrito e carga constante ou quadrática. | v(m1_rpm), v(m1_te) (torque), v(m1_i) (corrente de linha eficaz) |
+| Inversor de frequência (V/f) | AI-GND recebe 0 a 10 V (0 a fnom); RUN-COM com 11 V ou mais liga; U, V e W vão ao motor. Saída senoidal (rápida) ou SPWM a 5 kHz. | v(inv1_f) (Hz), v(inv1_v) (tensão comandada) |
+| Soft-starter | L1 a L3 na rede, T1 a T3 no motor, RUN-COM como no inversor. Rampa de tensão ou limitação de corrente, kick start e parada suave. | v(ss1_kv) (fração da tensão), v(ss1_i) |
+| Contator tripolar | Bobina A1-A2 (CC ou CA); contatos L-T. | v(k1_ctl) (nível da bobina, fecha em 0,75) |
+| Motor de passo híbrido | A+, A−, B+ e B− no driver. Com a peça do catálogo (por exemplo, 17HS19-2004S1), R, L, inércia e passo vêm do datasheet e a constante de torque vem do torque de retenção. | v(m1_deg), v(m1_w), v(m1_te) |
+| Driver de motor de passo | STEP, DIR e EN vêm do Arduino ou do ESP32 (EN solto habilita); VM é a alimentação do motor. Micropasso de 1 a 1/16 e corrente por fase. | drv1.steps (contagem), drv1.ia_ref, drv1.ib_ref |
+| Termopar | Tipos J, K, T, E e N; temperatura da junta quente e da junta fria (terminais). | tensão entre + e −, v(tc1_t) |
+
+Os nós internos (como `m1_rpm`) podem ser usados como ponta de tensão e no osciloscópio. Com motor
+de indução, inversor ou soft-starter no circuito, o passo máximo fica em 1/80 de um ciclo de 60 Hz;
+com SPWM, em 1/40 da portadora.
 
 ## Limites
 
@@ -125,3 +145,9 @@ placa, ligados por fios aos furos.
 - Os valores elétricos das placas com fonte estão na validação; os que não têm fonte são
   didáticos e vêm marcados assim no próprio componente.
 - Aquecedor, motor CC e planta de bombeamento são modelos didáticos, não peças do catálogo.
+- O motor de indução padrão é didático (não há catálogo de motor de indução com circuito
+  equivalente); troque os parâmetros pelos do seu motor.
+- O soft-starter simula a fundamental da tensão dos tiristores; as harmônicas do disparo não
+  aparecem (o controle de fase com tiristores, em detalhe, está no projeto de controlador CA).
+- O driver de motor de passo conta as bordas de STEP nos pontos da simulação: cada pulso precisa
+  durar pelo menos 20 µs (o passo máximo com driver no circuito).
