@@ -1,4 +1,6 @@
-# Sistema de Projeto de Circuitos Eletrônicos
+# Ohmnia
+
+Sistema de projeto de circuitos eletrônicos.
 
 Projeto, dimensionamento, seleção de componentes reais e simulação de circuitos de Eletrônica
 Analógica e Eletrônica de Potência. Aplicação local: um servidor Python roda no seu computador e

@@ -137,7 +137,7 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 - ✅ Ambiente Windows: DLL do ngspice, memória insuficiente classificada
 - ✅ [validacao/importacao-datasheets.md](validacao/importacao-datasheets.md)
 
-## Fase 9 — Relatórios, empacotamento e documentação 👀 (aguardando aprovação)
+## Fase 9 — Relatórios, empacotamento e documentação ✅ (aprovada em 2026-11-15)
 
 - ✅ Relatório completo em HTML (imprimível) e PDF: formas de onda (cálculo × ngspice), limites de operação, BOM com margens
 - ✅ Lista de materiais com esforço × nominal × margem, Tj, dissipador, datasheet, custo; CSV, XLSX e PDF

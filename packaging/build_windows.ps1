@@ -1,4 +1,4 @@
-# Builds the Windows package: packaging\dist\Circuitos\Circuitos.exe and a .zip to distribute.
+# Builds the Windows package: packaging\dist\Ohmnia\Ohmnia.exe and a .zip to distribute.
 #
 # Requirements on the build machine: uv, Node.js, and ngspice for Windows (the console package
 # "Spice64" and the DLL package "Spice64_dll"), located by CIRCUITOS_NGSPICE_EXE and
@@ -48,11 +48,11 @@ $version = (uv run python -c "import circuitos; print(circuitos.__version__)").T
 Pop-Location
 
 Write-Host "== pacote"
-$dist = Join-Path $PSScriptRoot "dist\Circuitos"
+$dist = Join-Path $PSScriptRoot "dist\Ohmnia"
 Copy-Item (Join-Path $PSScriptRoot "LEIA-ME.txt") $dist
 $manual = Join-Path $root "docs\manual"
 if (Test-Path $manual) { Copy-Item $manual (Join-Path $dist "manual") -Recurse -Force }
-$zip = Join-Path $PSScriptRoot "dist\Circuitos-$version-windows-x64.zip"
+$zip = Join-Path $PSScriptRoot "dist\Ohmnia-$version-windows-x64.zip"
 if (Test-Path $zip) { Remove-Item $zip }
 Compress-Archive -Path $dist -DestinationPath $zip
 Write-Host "Pronto: $zip"

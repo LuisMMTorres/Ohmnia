@@ -24,5 +24,5 @@ aquela notação; ela aparece como fonte para não sumir. A versão HTML (KaTeX)
 
 **Porta 8000 em uso.** Feche a outra cópia do programa ou use `--port 8001`.
 
-**Antivírus bloqueou `Circuitos.exe`.** Executáveis novos sem assinatura digital às vezes são
+**Antivírus bloqueou `Ohmnia.exe`.** Executáveis novos sem assinatura digital às vezes são
 bloqueados; libere a pasta do programa.

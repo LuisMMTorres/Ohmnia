@@ -2,16 +2,16 @@
 
 ## Pacote pronto para Windows (recomendado para alunos e laboratório)
 
-1. Descompacte `Circuitos-<versão>-windows-x64.zip` em qualquer pasta.
-2. Dê dois cliques em `Circuitos.exe`. O navegador abre em <http://127.0.0.1:8000/>.
+1. Descompacte `Ohmnia-<versão>-windows-x64.zip` em qualquer pasta.
+2. Dê dois cliques em `Ohmnia.exe`. O navegador abre em <http://127.0.0.1:8000/>.
 3. A janela preta é o servidor: ela mostra o registro e, ao ser fechada, encerra o programa.
 
 O pacote já traz o ngspice e o catálogo de componentes. Não é preciso instalar Python nem
 Node.js. Para OCR de datasheets digitalizados, instale também o Tesseract
 (`winget install tesseract-ocr.tesseract`).
 
-Para usar outra porta: `Circuitos.exe --port 8001`. Para não abrir o navegador sozinho:
-`Circuitos.exe --no-browser`.
+Para usar outra porta: `Ohmnia.exe --port 8001`. Para não abrir o navegador sozinho:
+`Ohmnia.exe --no-browser`.
 
 ## A partir do código-fonte (Windows ou Linux)
 

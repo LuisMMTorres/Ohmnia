@@ -15,7 +15,7 @@ from fastapi import FastAPI, HTTPException, Query, WebSocket, WebSocketDisconnec
 from fastapi.staticfiles import StaticFiles
 from numpy.typing import NDArray
 
-from circuitos import __version__
+from circuitos import APP_NAME, __version__
 from circuitos.api.catalog import open_repository
 from circuitos.api.catalog import router as catalog_router
 from circuitos.api.design import router as design_router
@@ -59,7 +59,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     app.state.jobs.shutdown()
 
 
-app = FastAPI(title="Sistema de Projeto de Circuitos", version=__version__, lifespan=lifespan)
+app = FastAPI(title=APP_NAME, version=__version__, lifespan=lifespan)
 app.include_router(catalog_router)
 app.include_router(devices_router)
 app.include_router(design_router)

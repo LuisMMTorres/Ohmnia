@@ -629,7 +629,7 @@ def build_netlist(
     probes, ammeters = plan_probes(sch, conn)
     ctx = _Ctx(records or {}, overrides or {}, sch)
     warnings = list(conn.warnings)
-    lines = [f"* {sch.title}{title_suffix}", "* gerado pelo Sistema de Projeto de Circuitos"]
+    lines = [f"* {sch.title}{title_suffix}", "* gerado pelo Ohmnia"]
     all_params = {**sch.params, **(params or {})}
     for pname, pval in all_params.items():
         lines.append(f".param {pname}={pval}")

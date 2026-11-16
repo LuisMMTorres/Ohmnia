@@ -34,8 +34,8 @@ exe = EXE(
     a.scripts,
     [],
     exclude_binaries=True,
-    name="Circuitos",
+    name="Ohmnia",
     console=True,  # the window shows the server log; closing it stops the application
     icon=None,
 )
-coll = COLLECT(exe, a.binaries, a.datas, name="Circuitos")
+coll = COLLECT(exe, a.binaries, a.datas, name="Ohmnia")

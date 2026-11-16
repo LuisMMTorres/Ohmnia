@@ -288,7 +288,7 @@ def to_kicad(
         "  (design\n"
         f"    (source {_sexpr(title)})\n"
         f"    (date {_sexpr(dt.datetime.now().strftime('%Y-%m-%d %H:%M'))})\n"
-        '    (tool "Sistema de Projeto de Circuitos")\n'
+        '    (tool "Ohmnia")\n'
         '    (sheet (number "1") (name "/") (tstamps "/")\n'
         f"      (title_block (title {_sexpr(title)})\n"
         f'        (comment (number "1") (value {_sexpr(note)})))))\n'

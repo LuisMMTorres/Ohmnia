@@ -45,7 +45,9 @@ export default function App() {
   return (
     <div className="app">
       <header>
-        <h1>Projeto de Circuitos</h1>
+        <h1>
+          Ohmnia <span className="tagline">projeto e simulação de circuitos</span>
+        </h1>
         <nav aria-label="Seções">
           {(Object.keys(PAGES) as PageKey[]).map((key) => (
             <button

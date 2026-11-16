@@ -1,7 +1,7 @@
 {% set n = namespace(s=0) %}
 <h1>{{ project or title }}</h1>
 {% if project %}<p>{{ title }}</p>{% endif %}
-<p class="muted">{{ module_id }} · gerado em {{ generated }} · critério de derating "{{ policy }}" (critério de projeto, não normativo)</p>
+<p class="muted">{{ module_id }} · gerado pelo Ohmnia em {{ generated }} · critério de derating "{{ policy }}" (critério de projeto, não normativo)</p>
 
 {% set n.s = n.s + 1 %}<h2>{{ n.s }}. Especificação</h2>
 <table>{% for k, v in spec_rows %}<tr><th>{{ k }}</th><td>{{ v }}</td></tr>{% endfor %}</table>

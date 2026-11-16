@@ -1,6 +1,6 @@
 # Validação: relatórios, exportações, empacotamento e documentação (Fase 9)
 
-Data: 2026-11-15. Status: aguardando a sua aprovação.
+Data: 2026-11-15. Status: aprovada em 2026-11-15.
 
 Esta fase fecha o fluxo do projeto: o que o assistente calcula vira relatório, lista de materiais,
 netlist para placa e arquivo de projeto, e o programa passa a ser distribuído como pacote para
@@ -95,7 +95,7 @@ PDF local gerou 46 candidatos para revisão.
 
 `packaging/build_windows.ps1` compila a interface, monta a pasta do ngspice (executável, DLL,
 modelos de código e as duas DLLs que faltam no pacote da DLL) e gera com o PyInstaller
-`packaging/dist/Circuitos/Circuitos.exe` e o `.zip` para distribuir. O `LEIA-ME.txt` e o manual
+`packaging/dist/Ohmnia/Ohmnia.exe` e o `.zip` para distribuir. O `LEIA-ME.txt` e o manual
 vão junto.
 
 Construção nesta máquina (Windows 11, 2026-11-15): pacote de 173 MB (323 MB descompactado). Teste

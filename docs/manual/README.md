@@ -1,6 +1,6 @@
 # Manual do usuário
 
-Sistema de Projeto de Circuitos: projeto, dimensionamento com componentes reais de datasheet e
+Ohmnia: projeto, dimensionamento com componentes reais de datasheet e
 simulação (ngspice) de circuitos de Eletrônica Analógica e de Potência.
 
 1. [Instalação e primeiros passos](01-instalacao.md)

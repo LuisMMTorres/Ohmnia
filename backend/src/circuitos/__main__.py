@@ -10,7 +10,7 @@ import uvicorn
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Sistema de projeto de circuitos")
+    parser = argparse.ArgumentParser(description="Ohmnia: projeto e simulação de circuitos")
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=8000)
     parser.add_argument("--no-browser", action="store_true")
