@@ -21,7 +21,8 @@ def time_step(sch: Schematic, nominal: Netlist) -> float:
     """Largest time step that lets every controller see its own timing.
 
     tstop/20000 bounded to 10 µs .. 2 ms; at most half a PLC scan; with switched PWM, 1/40 of
-    the PWM period. A smaller step given by the user is kept.
+    the PWM period; 20 µs with a stepper driver (it must see each STEP pulse); 1/40 of the
+    carrier with an SPWM inverter. A smaller step given by the user is kept.
     """
     tran = next((a for a in sch.analyses if a.enabled and a.kind == "tran"), None)
     if tran is None:
@@ -34,6 +35,8 @@ def time_step(sch: Schematic, nominal: Netlist) -> float:
         if spec.kind == "plc":
             scan = (try_parse(spec.params.get("scan_ms", "10")) or 10) / 1000
             step = min(step, scan / 2)
+        elif spec.kind == "stepper_driver":
+            step = min(step, 20e-6)
         elif spec.params.get("pwm") == "chaveado":
             freqs = BOARDS[spec.kind].pwm.values()
             if freqs:

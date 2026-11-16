@@ -162,10 +162,10 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 - ⏳ Esquema de categoria para sensor, transmissor, atuador, microcontrolador e CLP (sensores da co-simulação ainda fora do catálogo)
 - ✅ ESP32 e Arduino: programa estilo Arduino interpretado e co-simulado com o ngspice (ADC, GPIO, PWM, DAC, Serial)
 - ✅ CLP: ladder e texto estruturado em ciclo de varredura, E/S 24 V, 4 a 20 mA e 0 a 10 V ligadas ao circuito
-- ✅ Modelos de sensor com valores do datasheet: LM35, Pt100 (IEC 60751), ACS712, transmissor 4 a 20 mA; ⏳ termopar, ZMPT101B, SCT-013 (sem PDF)
+- ✅ Modelos de sensor com valores do datasheet: LM35, Pt100 (IEC 60751), ACS712, transmissor 4 a 20 mA; termopar J, K, T, E e N (NIST ITS-90, conferido nas tabelas Omega), em 2026-11-16; ⏳ ZMPT101B, SCT-013 (sem PDF)
 - ✅ Exemplos: medidor de energia com ESP32; controle PWM com Arduino; laço de 4 a 20 mA no CLP; ESP32 e CLP integrados
-- ⏳ Modelos de acionamento: motor de indução, inversor de frequência (V/f, rampa), soft-starter e motor de passo com driver (feitos: motor CC, relé, aquecedor e planta de bombeamento didáticos)
-- ✅ Exemplo integrado de bombeamento com pressão constante (CLP + inversor + bomba + ESP32); ⏳ partida de motor e posicionamento com motor de passo
+- ✅ Modelos de acionamento (2026-11-16): motor de indução (αβ), inversor V/f com rampas e SPWM, soft-starter (rampa de tensão e limitação de corrente), contator, motor de passo com driver STEP/DIR; `AS-DRV-01..06`; validação em [validacao/acionamentos-termopar.md](validacao/acionamentos-termopar.md)
+- ✅ Exemplo integrado de bombeamento com pressão constante (CLP + inversor + bomba + ESP32); partida direta × soft-starter pelo CLP e posicionamento com motor de passo pelo Arduino (2026-11-16)
 - ✅ Editor de programa com diagrama ladder, monitor serial, protoboard dos exemplos
 - Validação: `docs/validacao/microcontroladores-clp.md`; manual: `docs/manual/08-microcontroladores-clp.md`
 

@@ -94,6 +94,33 @@ def test_e5_pid_keeps_the_pressure(backend):
     assert res.summary["cosim"]["serial"]["U1"]
 
 
+def test_e6_soft_starter_limits_the_starting_current(backend):
+    """Same motor and load: the direct start draws 5 to 8 times the rated current (DOL, AS-DRV-01);
+    the soft-starter holds the 15 A limit; both reach the same speed; I1 stops both at 9 s."""
+    _res, tran, t = run(backend, ex.motor_start_comparison)
+    i_dol = float(np.max(tran.vectors["v(m1_i)"].data))
+    i_soft = float(np.max(tran.vectors["v(m2_i)"].data))
+    assert i_dol > 40
+    assert i_soft < 15 * 1.03
+    assert at(tran, t, "v(m1_rpm)", 8.5) == pytest.approx(at(tran, t, "v(m2_rpm)", 8.5), rel=1e-3)
+    assert at(tran, t, "v(m1_rpm)", 8.5) > 1700
+    assert at(tran, t, "v(k1_ctl)", 0.9) < 0.1 < at(tran, t, "v(k1_ctl)", 1.2)  # K1 closes at 1 s
+    assert at(tran, t, "v(m1_i)", 11.9) < 0.1  # contactor open: no current
+    # soft stop (2 s ramp): M2 still turns after M1 has nearly stopped
+    assert at(tran, t, "v(m2_rpm)", 10.0) > at(tran, t, "v(m1_rpm)", 10.0)
+
+
+def test_e7_stepper_reaches_each_position(backend):
+    """Arduino counts 0,45° per pulse; the rotor follows within a fraction of a micro step
+    (home at 0,9°: the full-step home of the driver, current vector at 45°)."""
+    res, tran, t = run(backend, ex.stepper_positioning)
+    serial = [text for _, text in res.summary["cosim"]["serial"]["U1"]]
+    assert serial == ["posição: 180.00 graus", "posição: 90.00 graus", "posição: 0.00 graus"]
+    times = [when for when, _ in res.summary["cosim"]["serial"]["U1"]]
+    for when, target in zip(times, (180.0, 90.0, 0.0), strict=True):
+        assert at(tran, t, "v(m1_deg)", when + 0.2) == pytest.approx(target + 0.9, abs=0.2)
+
+
 def test_every_example_assembles_on_the_breadboard():
     from circuitos.breadboard.autoplace import autoplace
     from circuitos.breadboard.check import check

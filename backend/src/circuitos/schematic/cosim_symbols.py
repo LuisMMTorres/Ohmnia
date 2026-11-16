@@ -19,6 +19,7 @@ from collections.abc import Callable
 
 from circuitos.components.models import ComponentRecord
 from circuitos.core.units import Q_, parse_unit
+from circuitos.machines.stepper import torque_constant
 from circuitos.schematic.model import Component
 from circuitos.schematic.symbols_base import ParamDef, PinDef, Symbol
 
@@ -392,6 +393,17 @@ COSIM_SYMBOLS: list[Symbol] = [
     ),
 ]
 
+# Drives, machines and the thermocouple (Fase 11 leftovers) live in their own module
+from circuitos.schematic.drive_symbols import (  # noqa: E402
+    DRIVE_CATALOGUE,
+    DRIVE_KINDS,
+    DRIVE_SYMBOLS,
+    DRIVER_KINDS,
+    emit_drive,
+)
+
+COSIM_SYMBOLS += DRIVE_SYMBOLS
+
 # Catalogue parts for the co-simulation symbols: symbol parameter <- (record symbol, unit).
 # A real part placed with the symbol takes these values from its record (rule 1: the values
 # come from the datasheet, with page); parameters without a value keep the symbol default.
@@ -410,6 +422,7 @@ CATALOGUE_PARAMS: dict[str, tuple[tuple[str, ...], dict[str, tuple[str, str]]]] 
     "arduino_uno": (("board.mcu",), {}),
     "esp32_devkitc": (("board.mcu",), {}),
     "plc": (("plc",), {}),
+    **DRIVE_CATALOGUE,
 }
 COSIM_SYMBOLS[:] = [
     dataclasses.replace(sym, catalogue=CATALOGUE_PARAMS[sym.kind][0])
@@ -419,16 +432,36 @@ COSIM_SYMBOLS[:] = [
 ]
 
 
+def _number(param: object) -> float | None:
+    return next(
+        (x for x in (getattr(param, a) for a in ("typ", "max", "min")) if x is not None), None
+    )
+
+
+def _si(record: ComponentRecord, name: str, unit: str) -> float | None:
+    param = record.parameters.get(name)
+    number = _number(param) if param is not None else None
+    if param is None or number is None:
+        return None
+    return float(Q_(number, parse_unit(param.unit)).to(parse_unit(unit)).magnitude)
+
+
 def catalogue_value(kind: str, record: ComponentRecord, fallback: Value) -> Value:
     """Parameter lookup that prefers the values of the catalogue part placed with the symbol."""
     mapping = CATALOGUE_PARAMS.get(kind, ((), {}))[1]
 
     def value(name: str) -> str:
+        if kind == "stepper_motor" and name == "km":
+            # torque constant from the holding torque, both phases at rated current
+            t_hold, i_ph = _si(record, "T_hold", "N*m"), _si(record, "I_phase", "A")
+            if t_hold and i_ph:
+                return f"{torque_constant(t_hold, i_ph):.6g}"
+            return fallback(name)
         target = mapping.get(name)
         param = record.parameters.get(target[0]) if target else None
         if target is None or param is None:
             return fallback(name)
-        number = next((x for x in (param.typ, param.max, param.min) if x is not None), None)
+        number = _number(param)
         if number is None:
             return fallback(name)
         si = Q_(number, parse_unit(param.unit)).to(parse_unit(target[1])).magnitude
@@ -438,7 +471,7 @@ def catalogue_value(kind: str, record: ComponentRecord, fallback: Value) -> Valu
 
 
 COSIM_KINDS = {s.kind for s in COSIM_SYMBOLS}
-CONTROLLER_KINDS = {"arduino_uno", "esp32_devkitc", "plc"}
+CONTROLLER_KINDS = {"arduino_uno", "esp32_devkitc", "plc", *DRIVER_KINDS}
 
 
 # ------------------------------------------------------------------------------ stimulus
@@ -565,4 +598,6 @@ def emit_device(comp: Component, n: dict[str, str], v: Value) -> list[str]:
             f"B{x}_pt {n['PT+']} {n['PT-']} I = (4m + 16m*{frac})*"
             f"min(1, max(0, V({n['PT+']},{n['PT-']})/({v('vmin')})))",
         ]
+    if k in DRIVE_KINDS:
+        return emit_drive(comp, n, v, stimulus)
     raise ValueError(f"tipo {k} sem modelo")

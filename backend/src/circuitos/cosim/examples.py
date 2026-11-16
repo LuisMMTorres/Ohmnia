@@ -300,6 +300,124 @@ def pump_constant_pressure() -> Schematic:
     return s.tran("60")
 
 
+# ------------------------------------------------------------------------------------- E6
+
+START_LADDER = """{
+  "rungs": [
+    {"comment": "Liga (I0) e desliga (I1) com selo",
+     "branches": [[{"type": "NO", "var": "I0"}, {"type": "NC", "var": "I1"}],
+                  [{"type": "NO", "var": "M0"}, {"type": "NC", "var": "I1"}]],
+     "coils": [{"type": "coil", "var": "M0"}]},
+    {"comment": "Partida direta: bobina do contator K1",
+     "branches": [[{"type": "NO", "var": "M0"}]],
+     "coils": [{"type": "coil", "var": "Q0"}]},
+    {"comment": "Partida suave: RUN do soft-starter",
+     "branches": [[{"type": "NO", "var": "M0"}]],
+     "coils": [{"type": "coil", "var": "Q1"}]}
+  ]
+}"""
+
+
+def motor_start_comparison() -> Schematic:
+    s = _Layout("Partida de motor: direta com contator × soft-starter, comandadas pelo CLP")
+    s.probe("m1_i", "m2_i", "m1_rpm", "m2_rpm")
+    s.add("v3ph", "V1", (-44, 20), {"a": "l1", "b": "l2", "c": "l3", "n": "0"},
+          vrms="219.393")  # fmt: skip
+    s.add("vdc", "V24", (-44, -10), {"p": "p24", "n": "0"}, dc="24")
+    s.add("switch_manual", "B1", (-30, -16), {"1": "p24", "2": "i0"}, state="0 0 1 0 1.05 1")
+    s.add("switch_manual", "B2", (-30, -22), {"1": "p24", "2": "i1"},
+          state="0 0 9 0 9.05 1")  # fmt: skip
+    s.add("plc", "CLP1", (-10, -12),
+          {"L+": "p24", "M": "0", "I0": "i0", "I1": "i1", "Q0a": "p24", "Q0b": "k1",
+           "Q1a": "p24", "Q1b": "ss_run"},
+          language="ladder", ladder=START_LADDER)  # fmt: skip
+    s.add("contactor", "K1", (14, 4),
+          {"A1": "k1", "A2": "0", "L1": "l1", "T1": "u1", "L2": "l2", "T2": "v1", "L3": "l3",
+           "T3": "w1"})  # fmt: skip
+    s.add("induction_motor", "M1", (32, 4), {"A": "u1", "B": "v1", "C": "w1"},
+          tl="20", load="quadrática")  # fmt: skip
+    s.add("soft_starter", "SS1", (14, 24),
+          {"L1": "l1", "L2": "l2", "L3": "l3", "RUN": "ss_run", "COM": "0", "T1": "u2",
+           "T2": "v2", "T3": "w2"},
+          control="limitação de corrente", ilim="15", tacc="10", tdec="2")  # fmt: skip
+    s.add("induction_motor", "M2", (32, 24), {"A": "u2", "B": "v2", "C": "w2"},
+          tl="20", load="quadrática")  # fmt: skip
+    s.ground((-44, -2))
+    s.ground((-44, 28))
+    return s.tran("12")
+
+
+# ------------------------------------------------------------------------------------- E7
+
+STEPPER_PROGRAM = """// Posicionamento com motor de passo: driver em 1/4 de passo (0,45° por pulso).
+// D2 = STEP, D3 = DIR. Vai a 180°, volta a 90° e retorna à origem, com rampa de
+// aceleração (intervalo entre pulsos de 4 ms caindo para 1,5 ms).
+const int STEP = 2;
+const int DIR = 3;
+const float GRAUS_POR_PULSO = 0.45;
+long posicao = 0;   // pulsos desde a origem
+float angulo = 0;   // graus (variável vista no osciloscópio)
+
+void pulso(int intervalo_us) {
+  digitalWrite(STEP, HIGH);
+  delayMicroseconds(intervalo_us / 2);
+  digitalWrite(STEP, LOW);
+  delayMicroseconds(intervalo_us / 2);
+}
+
+void mover(long alvo) {
+  int sentido = alvo > posicao ? 1 : -1;
+  digitalWrite(DIR, sentido > 0 ? HIGH : LOW);
+  delay(1);
+  long total = alvo > posicao ? alvo - posicao : posicao - alvo;
+  for (long i = 0; i < total; i++) {
+    long resta = total - i;
+    long rampa = i < resta ? i : resta;            // acelera e desacelera
+    int intervalo = 4000 - rampa * 50;
+    if (intervalo < 1500) intervalo = 1500;
+    pulso(intervalo);
+    posicao += sentido;
+    angulo = posicao * GRAUS_POR_PULSO;
+  }
+  Serial.print("posição: ");
+  Serial.print(angulo);
+  Serial.println(" graus");
+}
+
+void setup() {
+  pinMode(STEP, OUTPUT);
+  pinMode(DIR, OUTPUT);
+  Serial.begin(9600);
+  delay(100);
+  mover(400);    // 180°
+  delay(300);
+  mover(200);    // 90°
+  delay(300);
+  mover(0);      // origem
+}
+
+void loop() {
+  delay(1000);
+}
+"""
+
+
+def stepper_positioning() -> Schematic:
+    s = _Layout("Posicionamento: Arduino, driver STEP/DIR e motor de passo 17HS19")
+    s.probe("m1_deg", "step")
+    s.add("vdc", "V12", (-30, 16), {"p": "vm", "n": "0"}, dc="12")
+    s.add("arduino_uno", "U1", (-20, 0), {"GND": "0", "D2": "step", "D3": "dir"},
+          program=STEPPER_PROGRAM)  # fmt: skip
+    s.add("stepper_driver", "DRV1", (4, 0),
+          {"STEP": "step", "DIR": "dir", "GND": "0", "VM": "vm", "A+": "a1", "A-": "a2",
+           "B+": "b1", "B-": "b2"},
+          ifull="1.5", micro="4")  # fmt: skip
+    s.add("stepper_motor", "M1", (22, 0), {"A+": "a1", "A-": "a2", "B+": "b1", "B-": "b2"},
+          b="2e-3", jl="2e-5")  # fmt: skip
+    s.ground((-30, 24))
+    return s.tran("2.6")
+
+
 EXAMPLES: dict[str, tuple[str, Callable[[], Schematic]]] = {
     "Arduino: controle PI de temperatura (PWM)": (
         "Arduino lê o LM35 e comanda o aquecedor por MOSFET em PWM; alvo de 60 °C.",
@@ -325,5 +443,15 @@ EXAMPLES: dict[str, tuple[str, Callable[[], Schematic]]] = {
         "PID no CLP mantém 3 bar com o inversor e a bomba; o consumo sobe em 30 s e o PID "
         "compensa; o ESP32 mostra a referência do inversor.",
         pump_constant_pressure,
+    ),
+    "Partida de motor: direta × soft-starter (CLP)": (
+        "O CLP liga, ao mesmo tempo, um motor de indução por contator (partida direta) e outro "
+        "por soft-starter com limitação de corrente em 15 A; compare as correntes de partida.",
+        motor_start_comparison,
+    ),
+    "Arduino: posicionamento com motor de passo": (
+        "O Arduino gera pulsos STEP/DIR com rampa para um driver em 1/4 de passo e leva o "
+        "motor a 180°, 90° e à origem; a posição real aparece em v(m1_deg).",
+        stepper_positioning,
     ),
 }

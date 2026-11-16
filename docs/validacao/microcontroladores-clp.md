@@ -101,10 +101,11 @@ razão cíclica do programa é a que o circuito vê (±3 %).
 - Co-simulação só em análise transitória; varredura, Monte Carlo e pior caso não aceitam
   controladores; o backend em lote do ngspice também não.
 - O ladder é editado como JSON (com o diagrama ao lado); não há editor gráfico de arrastar.
-- Ainda não feitos, do plano D12: modelos de motor de indução, inversor V/f completo,
-  soft-starter, motor de passo com driver, e os exemplos de partida de motor e de posicionamento
-  com motor de passo. A planta de bombeamento é um modelo de primeira ordem.
-- SCT-013 e ZMPT101B não têm PDF na pasta; ficaram sem modelo. Termopar (IEC 60584) não foi feito.
+- Motor de indução, inversor V/f, soft-starter, motor de passo com driver, termopar e os exemplos
+  de partida e de posicionamento foram feitos em 2026-11-16: veja
+  [acionamentos-termopar.md](acionamentos-termopar.md). A planta de bombeamento continua um
+  modelo de primeira ordem.
+- SCT-013 e ZMPT101B não têm PDF na pasta; ficaram sem modelo.
 - Os sensores da co-simulação ainda não são registros do catálogo (não há esquema de categoria
   para sensor, transmissor, microcontrolador e CLP); os valores vêm dos datasheets citados acima.
 

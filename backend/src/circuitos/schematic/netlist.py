@@ -32,6 +32,7 @@ from circuitos.schematic.cosim_symbols import (
     catalogue_value,
     emit_device,
 )
+from circuitos.schematic.drive_symbols import max_step as drive_max_step
 from circuitos.schematic.library import (
     element_name,
     param,
@@ -205,6 +206,12 @@ def _resolve(ref: NetRef, conn: Connectivity, sch: Schematic) -> str:
         if node is None:
             if ref.net.lower() in conn.nets:
                 return ref.net.lower()
+            # internal node of a device model, documented as <ref>_x (v(m1_rpm), v(h1_temp))
+            owner = ref.net.lower().split("_", 1)[0]
+            if "_" in ref.net and any(
+                c.ref.lower() == owner and c.kind in COSIM_KINDS for c in sch.components
+            ):
+                return ref.net.lower()
             raise SchematicError(f"Rótulo {ref.net!r} não existe")
         return node
     if ref.pin is not None:
@@ -293,6 +300,9 @@ def analysis_card(a: Analysis, sch: Schematic, conn: Connectivity) -> str:
             tstep = format_value(parse_value(tstop) / 1000)
         card = f".tran {tstep} {tstop}"
         tstart, tmax = p.get("tstart", ""), p.get("tmax", "")
+        cap = drive_max_step(sch.components)
+        if cap is not None and (try_parse(tmax) or math.inf) > cap:
+            tmax = format_value(cap, 4)
         if tstart or tmax:
             card += f" {tstart or '0'}"
         if tmax:

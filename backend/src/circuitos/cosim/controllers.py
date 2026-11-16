@@ -98,6 +98,12 @@ def controller_lines(
     pins = {k: v.lower() for k, v in pins.items()}
     if kind == "plc":
         return _plc_lines(x, ref, params, pins)
+    if kind == "stepper_driver":
+        from circuitos.schematic.drive_symbols import stepper_driver_lines
+
+        spec = ControllerSpec(ref, kind, params, pins, pins["GND"])
+        spec.sources = {f"v{x}_tick": "tick", f"v{x}_refa": "ia", f"v{x}_refb": "ib"}
+        return stepper_driver_lines(x, pins, params), spec
     board = BOARDS[kind]
     gnd = pins["GND"]
     spec = ControllerSpec(ref, kind, params, pins, gnd)

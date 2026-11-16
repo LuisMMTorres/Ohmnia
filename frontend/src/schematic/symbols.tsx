@@ -520,6 +520,13 @@ const SHORT: Record<string, string> = {
   heater: "AQUEC.",
   switch_manual: "BOTÃO",
   pump_plant: "INV+BOMBA",
+  induction_motor: "M 3~",
+  vfd: "INVERSOR",
+  soft_starter: "SOFT-STARTER",
+  contactor: "CONTATOR",
+  stepper_motor: "M PASSO",
+  stepper_driver: "DRIVER",
+  thermocouple: "TC",
 };
 
 function moduleBox(c: Component, sym: SymbolDef): ReactNode[] {
