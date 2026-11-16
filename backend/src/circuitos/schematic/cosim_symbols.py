@@ -130,8 +130,10 @@ _CONTROLLER_COMMON = (
         "média",
         type="choice",
         choices=("média", "chaveado"),
-        help="média: tensão média (rápido); chaveado: onda quadrada na frequência da placa "
-        "(passo de simulação menor).",
+        help="média: o pino entrega a tensão média (rápido); vale para cargas que filtram, "
+        "como filtro RC, LED visto pelo olho ou motor, mas não para o gate de um MOSFET usado "
+        "como chave, que ficaria na região linear. chaveado: onda quadrada na frequência da "
+        "placa (passo de simulação menor, simulação mais longa).",
     ),
 )
 

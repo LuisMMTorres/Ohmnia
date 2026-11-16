@@ -29,6 +29,7 @@ import {
 import { BreadboardView, PinoutSource } from "../breadboard/BreadboardView";
 import { useBreadboardSpec, useResolved } from "../breadboard/hooks";
 import { PackagePreview } from "../breadboard/PackageArt";
+import { ProgramEditor } from "../cosim/ProgramEditor";
 import { SimulatorPage } from "./SimulatorPage";
 
 const STORAGE = "circuitos.schematic";
@@ -91,12 +92,19 @@ function SchematicWorkspace() {
   const bbSpec = useBreadboardSpec();
   const { resolved } = useResolved(sch);
   const fileRef = useRef<HTMLInputElement>(null);
+  const [cosimExamples, setCosimExamples] = useState<
+    { name: string; description: string; schematic: Schematic }[]
+  >([]);
 
   useEffect(() => {
     schematicApi
       .library()
       .then(setLibrary)
       .catch((e: Error) => setError(e.message));
+    schematicApi
+      .examples()
+      .then(setCosimExamples)
+      .catch(() => setCosimExamples([]));
   }, []);
   useEffect(() => {
     try {
@@ -284,12 +292,25 @@ function SchematicWorkspace() {
           onChange={(e) => {
             const ex = SCHEMATIC_EXAMPLES[e.target.value];
             if (ex) replace(ex());
+            const co = cosimExamples.find((c) => `mcu:${c.name}` === e.target.value);
+            if (co) replace(structuredClone(co.schematic));
           }}
         >
           <option value="">Exemplos…</option>
-          {Object.keys(SCHEMATIC_EXAMPLES).map((k) => (
-            <option key={k}>{k}</option>
-          ))}
+          <optgroup label="Circuitos">
+            {Object.keys(SCHEMATIC_EXAMPLES).map((k) => (
+              <option key={k}>{k}</option>
+            ))}
+          </optgroup>
+          {cosimExamples.length > 0 && (
+            <optgroup label="Microcontroladores e CLP">
+              {cosimExamples.map((c) => (
+                <option key={c.name} value={`mcu:${c.name}`} title={c.description}>
+                  {c.name}
+                </option>
+              ))}
+            </optgroup>
+          )}
         </select>
         <button className="secondary" onClick={() => replace(emptySchematic())}>
           Novo
@@ -664,6 +685,7 @@ function ParamInput({
   onChange: (v: string) => void;
 }) {
   const unit = def.unit ? ` (${def.unit})` : "";
+  if (def.type === "code") return <CodeParam def={def} value={value} onChange={onChange} />;
   if (def.type === "choice")
     return (
       <label title={def.help}>
@@ -685,6 +707,38 @@ function ParamInput({
         onChange={(e) => onChange(e.target.value)}
       />
     </label>
+  );
+}
+
+function CodeParam({
+  def,
+  value,
+  onChange,
+}: {
+  def: ParamDef;
+  value: string | undefined;
+  onChange: (v: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const text = value ?? def.default;
+  const first = text.split("\n").find((l) => l.trim()) ?? "";
+  return (
+    <div className="code-param">
+      <span>{def.label}</span>
+      <button className="secondary small" onClick={() => setOpen(true)}>
+        Editar
+      </button>
+      <code className="small muted">{first.slice(0, 40)}</code>
+      {open && (
+        <ProgramEditor
+          title={def.label}
+          kind={def.name}
+          value={text}
+          onSave={onChange}
+          onClose={() => setOpen(false)}
+        />
+      )}
+    </div>
   );
 }
 

@@ -100,7 +100,7 @@ export interface ParamDef {
   label: string;
   unit: string;
   default: string;
-  type: "number" | "text" | "choice";
+  type: "number" | "text" | "choice" | "code";
   choices: string[];
   optional: boolean;
   help: string;

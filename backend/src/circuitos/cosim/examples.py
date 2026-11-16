@@ -6,21 +6,26 @@ co-simulate. The tests run every one of them and check the physical result.
 
 from __future__ import annotations
 
+import hashlib
 from collections.abc import Callable
 
 from circuitos.schematic.library import pin_defs, pin_positions
-from circuitos.schematic.model import Analysis, Component, NetLabel, Schematic
+from circuitos.schematic.model import Analysis, Component, NetLabel, NetRef, Probe, Schematic
 
 
 class _Layout:
     def __init__(self, title: str):
         self.sch = Schematic(title=title)
         self._n = 0
+        # ids unique per example, so the editor sees a new document and frames it
+        self._id = "x" + hashlib.sha1(title.encode()).hexdigest()[:6]
 
     def add(self, kind: str, ref: str, at: tuple[int, int], nodes: dict[str, str],
             **params: str) -> Component:  # fmt: skip
         self._n += 1
-        comp = Component(id=f"c{self._n}", kind=kind, ref=ref, x=at[0], y=at[1], params=params)
+        comp = Component(
+            id=f"{self._id}c{self._n}", kind=kind, ref=ref, x=at[0], y=at[1], params=params
+        )
         pos = pin_positions(comp)
         self.sch.components.append(comp)
         for p in pin_defs(comp):
@@ -28,15 +33,28 @@ class _Layout:
             if node is None:
                 continue  # unconnected pin: its own node
             x, y = pos[p.name]
-            self.sch.labels.append(NetLabel(id=f"l{len(self.sch.labels)}", name=node, x=x, y=y))
+            self.sch.labels.append(
+                NetLabel(id=f"{self._id}l{len(self.sch.labels)}", name=node, x=x, y=y)
+            )
         return comp
 
     def ground(self, at: tuple[int, int]) -> None:
         self._n += 1
         self.sch.components.append(
-            Component(id=f"c{self._n}", kind="ground", ref=f"GND{self._n}", x=at[0], y=at[1])
+            Component(
+                id=f"{self._id}c{self._n}", kind="ground", ref=f"GND{self._n}", x=at[0], y=at[1]
+            )
         )
-        self.sch.labels.append(NetLabel(id=f"l{len(self.sch.labels)}", name="0", x=at[0], y=at[1]))
+        self.sch.labels.append(
+            NetLabel(id=f"{self._id}l{len(self.sch.labels)}", name="0", x=at[0], y=at[1])
+        )
+
+    def probe(self, *nets: str) -> None:
+        """Voltage probes on labelled nets: the oscilloscope opens on them."""
+        for net in nets:
+            self.sch.probes.append(
+                Probe(id=f"{self._id}p{len(self.sch.probes)}", kind="v", target=NetRef(net=net))
+            )
 
     def tran(self, tstop: str) -> Schematic:
         self.sch.analyses = [Analysis(kind="tran", params={"tstop": tstop})]
@@ -45,14 +63,19 @@ class _Layout:
 
 # ------------------------------------------------------------------------------------- E1
 
-PWM_TEMPERATURE = """// Controle PI de temperatura: LM35 em A0, MOSFET no pino 9 (PWM)
-const float SETPOINT = 60.0;   // °C
-const float KP = 40.0;         // passos de PWM por °C
-const float KI = 4.0;          // passos de PWM por °C·s
+PWM_TEMPERATURE = """// Controle PI de temperatura: LM35 em A0, MOSFET no pino 9.
+// PWM lento (proporcional no tempo, janela de 1 s), como se faz com aquecedores e relés de
+// estado sólido: o MOSFET chaveia totalmente e a potência média é a razão cíclica vezes
+// a potência plena. (analogWrite a 490 Hz também funciona, com "PWM = chaveado" na placa,
+// mas exige passo de ~50 µs e uma simulação 40 vezes mais longa.)
+const float SETPOINT = 60.0;          // °C
+const float KP = 20.0;                // passos (0-255) por °C
+const float KI = 2.0;                 // passos por °C·s
+const unsigned long JANELA = 1000;    // ms
 float integral = 0;
 float temperatura;
-int pwm;
-unsigned long ultimo = 0;
+int pwm = 0;
+unsigned long inicio = 0, ultimoSerial = 0;
 
 void setup() {
   pinMode(9, OUTPUT);
@@ -60,23 +83,28 @@ void setup() {
 }
 
 void loop() {
-  temperatura = analogRead(A0) * 5.0 / 1023.0 * 100.0;   // LM35: 10 mV/°C
-  float erro = SETPOINT - temperatura;
-  integral = constrain(integral + KI * erro * 0.1, 0, 255);
-  pwm = constrain(KP * erro + integral, 0, 255);
-  analogWrite(9, pwm);
-  if (millis() - ultimo >= 5000) {
-    ultimo = millis();
+  unsigned long agora = millis();
+  if (agora - inicio >= JANELA || agora == 0) {           // PI uma vez por janela
+    inicio = agora;
+    temperatura = analogRead(A0) * 5.0 / 1023.0 * 100.0;  // LM35: 10 mV/°C
+    float erro = SETPOINT - temperatura;
+    integral = constrain(integral + KI * erro * JANELA / 1000.0, 0, 255);
+    pwm = constrain(KP * erro + integral, 0, 255);
+  }
+  digitalWrite(9, agora - inicio < (unsigned long)pwm * JANELA / 255 ? HIGH : LOW);
+  if (agora - ultimoSerial >= 5000) {
+    ultimoSerial = agora;
     Serial.print("T = "); Serial.print(temperatura, 1);
     Serial.print(" °C  PWM = "); Serial.println(pwm);
   }
-  delay(100);
+  delay(10);
 }
 """
 
 
 def arduino_pwm_temperature() -> Schematic:
     s = _Layout("Arduino: controle PI de temperatura (LM35, MOSFET, aquecedor)")
+    s.probe("t_sig", "gate")
     s.add("arduino_uno", "U1", (0, 0), {"GND": "0", "5V": "v5", "A0": "t_sig", "D9": "d9"},
           program=PWM_TEMPERATURE)  # fmt: skip
     s.add("lm35", "S1", (-22, -6), {"VS": "v5", "GND": "0", "OUT": "t_sig"}, temp="v(h1_temp)")
@@ -125,6 +153,7 @@ void loop() {
 
 def esp32_energy_meter() -> Schematic:
     s = _Layout("ESP32: medidor de energia (ACS712 e divisor de tensão)")
+    s.probe("vm", "im")
     s.add("vsin", "V1", (-40, 0), {"p": "fase", "n": "0"}, amplitude="179.6", freq="60")
     s.add("acs712", "S1", (-24, 0), {"IP+": "fase", "IP-": "carga", "VCC": "v5", "GND": "0",
                                      "OUT": "acs"})  # fmt: skip
@@ -161,6 +190,7 @@ LOOP_LADDER = """{
 
 def plc_4_20ma_loop() -> Schematic:
     s = _Layout("CLP: laço 4-20 mA de temperatura com histerese em ladder")
+    s.probe("ai0", "i0", "h_a")
     s.add("vdc", "V1", (-36, 0), {"p": "p24", "n": "0"}, dc="24")
     s.add("tx420", "TT1", (-22, 6), {"+": "p24", "-": "ai0"}, x="v(h1_temp)", lo="0", hi="150")
     s.add("plc", "CLP1", (0, 0),
@@ -202,6 +232,7 @@ END_IF;
 
 def esp32_plc_conditioner() -> Schematic:
     s = _Layout("ESP32 + CLP: o ESP32 condiciona o sensor e entrega 0-10 V ao CLP")
+    s.probe("lm", "dac", "ai", "fan")
     s.add("vdc", "V5", (-44, -10), {"p": "v5", "n": "0"}, dc="5")
     s.add("lm35", "S1", (-32, -4), {"VS": "v5", "GND": "0", "OUT": "lm"}, temp="0 20 20 90")
     s.add("esp32_devkitc", "U1", (-14, 0), {"GND": "0", "IO34": "lm", "IO25": "dac"},
@@ -251,6 +282,7 @@ void loop() {
 
 def pump_constant_pressure() -> Schematic:
     s = _Layout("Bombeamento com pressão constante: CLP (PID), inversor, bomba e ESP32")
+    s.probe("ref", "ai0", "run")
     s.add("vdc", "V24", (-40, 0), {"p": "p24", "n": "0"}, dc="24")
     s.add("switch_manual", "B1", (-26, -8), {"1": "p24", "2": "i0"}, state="0 0 1 0 1.001 1")
     s.add("plc", "CLP1", (0, 0),

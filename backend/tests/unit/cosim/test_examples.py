@@ -40,6 +40,14 @@ def test_e1_arduino_pi_reaches_the_set_point(backend):
     assert abs(late.mean() - 60.0) < 1.5, late.mean()
     assert temp.max() < 75  # no large overshoot
     assert any("T = " in line[1] for line in res.summary["cosim"]["serial"]["U1"])
+    # slow PWM: the MOSFET is driven fully on or off, never held in its linear region
+    gate = tran.vectors["v(gate)"].data
+    assert np.mean((gate < 0.5) | (gate > 4.5)) > 0.99
+    # the duty the program computes is the duty the circuit sees (uniform grid, last 20 s)
+    grid = np.arange(40.0, 60.0, 1e-3)
+    duty_circuit = np.mean(np.interp(grid, t, gate) > 2.5)
+    duty_program = np.mean(np.interp(grid, t, tran.vectors["u1.pwm"].data)) / 255
+    assert duty_circuit == pytest.approx(duty_program, abs=0.03)
 
 
 def test_e2_esp32_energy_meter_matches_the_load(backend):

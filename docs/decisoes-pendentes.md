@@ -146,3 +146,10 @@ Para isso a Fase 11 também precisa de modelos de motor de indução (circuito e
 parâmetros de placa ou do fabricante), de bomba (curva do fabricante), do inversor (comportamental:
 rampa, V/f, limites) e do motor de passo, todos com valores de documento (regra 1).
 
+**Implementação (Fase 11, 2026-11-16, aguardando revisão).** Co-simulação com fontes `EXTERNAL`
+do ngspice; Arduino Uno e ESP32 com interpretador de subconjunto de C; CLP com ladder (JSON e
+diagrama) e texto estruturado; LM35, Pt100, ACS712, transmissor 4 a 20 mA, relé, motor CC,
+aquecedor e planta de bombeamento; cinco exemplos, incluindo o bombeamento com pressão constante.
+Ficaram para depois: motor de indução, inversor V/f, soft-starter, motor de passo, os exemplos de
+partida de motor e de posicionamento, termopar, e o esquema de categoria no catálogo. Detalhes em
+`docs/validacao/microcontroladores-clp.md`.

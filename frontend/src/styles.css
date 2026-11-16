@@ -1346,3 +1346,165 @@ button.link {
     grid-template-columns: 1fr;
   }
 }
+
+/* Phase 11: controllers, program editor, ladder, serial monitor */
+.comp rect.board {
+  fill: color-mix(in srgb, var(--accent) 8%, transparent);
+}
+.code-param {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+.code-param code {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgb(0 0 0 / 45%);
+}
+.modal {
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 12px 40px rgb(0 0 0 / 30%);
+  max-height: calc(100vh - 32px);
+  overflow: auto;
+}
+.modal.program-editor {
+  width: min(1200px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.modal.program-editor h3 {
+  margin: 0;
+}
+.program-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 12px;
+}
+@media (max-width: 800px) {
+  .program-split {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.code-area {
+  display: flex;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  height: 60vh;
+  min-height: 280px;
+  overflow: auto;
+}
+.code-area .line-numbers {
+  margin: 0;
+  padding: 8px 6px;
+  text-align: right;
+  color: var(--muted);
+  border-right: 1px solid var(--border);
+  user-select: none;
+  font:
+    13px/1.45 ui-monospace,
+    Consolas,
+    monospace;
+}
+.code-area textarea {
+  flex: 1;
+  border: 0;
+  border-radius: 0;
+  resize: none;
+  padding: 8px;
+  background: transparent;
+  color: var(--text);
+  white-space: pre;
+  overflow: hidden;
+  min-height: 100%;
+  field-sizing: content;
+  font:
+    13px/1.45 ui-monospace,
+    Consolas,
+    monospace;
+  tab-size: 2;
+}
+.code-area textarea:focus {
+  outline: none;
+}
+.ladder-view {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  height: 60vh;
+  min-height: 280px;
+  overflow: auto;
+  padding: 6px;
+}
+svg.ladder line,
+svg.ladder path {
+  stroke: var(--text);
+  stroke-width: 1.5;
+  fill: none;
+}
+svg.ladder .ld-rail {
+  stroke-width: 3;
+}
+svg.ladder .ld-box {
+  stroke: var(--text);
+  stroke-width: 1.5;
+  fill: var(--panel);
+}
+svg.ladder text {
+  fill: var(--text);
+  font-family: ui-monospace, Consolas, monospace;
+}
+svg.ladder .ld-var {
+  font-size: 12px;
+  font-weight: 600;
+}
+svg.ladder .ld-small {
+  font-size: 10px;
+}
+svg.ladder .ld-comment {
+  font-size: 11px;
+  fill: var(--muted);
+  font-family: system-ui, sans-serif;
+}
+.serial-monitor {
+  margin-top: 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 12px;
+}
+.serial-monitor summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.serial-monitor h4 {
+  margin: 8px 0 4px;
+}
+.serial-lines {
+  margin: 0;
+  max-height: 260px;
+  overflow: auto;
+  padding: 8px;
+  background: #0d1117;
+  color: #b5f5c0;
+  border-radius: 4px;
+  font:
+    12px/1.4 ui-monospace,
+    Consolas,
+    monospace;
+}
