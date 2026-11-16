@@ -1,0 +1,4748 @@
+# Fila de datasheets a importar (pedidos do usuário em 2026-11-15: links de eletrônica, links de
+# instrumentação/CLP e os PDFs da pasta D:/Downloads_net/baixar_250_datasheets/Datasheets_Eletronica).
+# Só links e identificação: nenhum valor de parâmetro sai daqui (regra 1). Os valores entram
+# pela importação de PDF (Fase 8), como 'extraido', e só valem depois da revisão.
+# local: PDF já baixado no computador do usuário (caminho e SHA-256).
+# link.situacao: ok | bloqueado (403: baixar pelo navegador) | quebrado (404) | indisponivel.
+datasheets:
+- grupo: 01_Diodos_Retificadores_e_Sinal
+  arquivo: 1N4001_Vishay.pdf
+  part_number: 1N4001
+  fabricante: Vishay
+  tipo: peça
+  categoria: diode.rectifier
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\01_Diodos_Retificadores_e_Sinal\1N4001_Vishay.pdf
+    sha256: 56a77c6615c90c11993d37d94e67f335cf3a2d1fe00f25d2a1a4833834356d07
+    situacao: ok
+    nota: PDF local
+- grupo: 01_Diodos_Retificadores_e_Sinal
+  arquivo: 1N4004_Vishay.pdf
+  part_number: 1N4004
+  fabricante: Vishay
+  tipo: peça
+  categoria: diode.rectifier
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\01_Diodos_Retificadores_e_Sinal\1N4004_Vishay.pdf
+    sha256: 56a77c6615c90c11993d37d94e67f335cf3a2d1fe00f25d2a1a4833834356d07
+    situacao: ok
+    nota: PDF local
+- grupo: 01_Diodos_Retificadores_e_Sinal
+  arquivo: 1N4007_Vishay.pdf
+  part_number: 1N4007
+  fabricante: Vishay
+  tipo: peça
+  categoria: diode.rectifier
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\01_Diodos_Retificadores_e_Sinal\1N4007_Vishay.pdf
+    sha256: 56a77c6615c90c11993d37d94e67f335cf3a2d1fe00f25d2a1a4833834356d07
+    situacao: ok
+    nota: PDF local
+- grupo: 01_Diodos_Retificadores_e_Sinal
+  arquivo: 1N4148_Vishay.pdf
+  part_number: 1N4148
+  fabricante: Vishay
+  tipo: peça
+  categoria: diode.signal
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\01_Diodos_Retificadores_e_Sinal\1N4148_Vishay.pdf
+    sha256: aefe85400a427ed886a4e1c88205ceabb9f9b38044b29c6acee4bb00146a44b7
+    situacao: ok
+    nota: PDF local
+- grupo: 01_Diodos_Retificadores_e_Sinal
+  arquivo: 1N5404_Vishay.pdf
+  part_number: 1N5404
+  fabricante: Vishay
+  tipo: peça
+  categoria: diode.rectifier
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\01_Diodos_Retificadores_e_Sinal\1N5404_Vishay.pdf
+    sha256: 98702135fe01fa7a238afc5752bdb1c749f4e85ac88891baea245d79b6d1f1b2
+    situacao: ok
+    nota: PDF local
+- grupo: 01_Diodos_Retificadores_e_Sinal
+  arquivo: 1N5408_Vishay.pdf
+  part_number: 1N5408
+  fabricante: Vishay
+  tipo: peça
+  categoria: diode.rectifier
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\01_Diodos_Retificadores_e_Sinal\1N5408_Vishay.pdf
+    sha256: 98702135fe01fa7a238afc5752bdb1c749f4e85ac88891baea245d79b6d1f1b2
+    situacao: ok
+    nota: PDF local
+- grupo: 01_Diodos_Retificadores_e_Sinal
+  arquivo: 1N5819_Vishay.pdf
+  part_number: 1N5819
+  fabricante: Vishay
+  tipo: peça
+  categoria: diode.schottky
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\01_Diodos_Retificadores_e_Sinal\1N5819_Vishay.pdf
+    sha256: 4465c825da3be36cc8a180c252d5d80e7651d9dc237cd3d09822a759f39c970b
+    situacao: ok
+    nota: PDF local
+- grupo: 01_Diodos_Retificadores_e_Sinal
+  arquivo: 6A10_Diodes_Inc.pdf
+  part_number: 6A10
+  fabricante: Diodes Incorporated
+  tipo: peça
+  categoria: diode.rectifier
+  url: https://www.diodes.com/assets/Datasheets/ds28009.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+- grupo: 01_Diodos_Retificadores_e_Sinal
+  arquivo: MBR20100CT_onsemi.pdf
+  part_number: MBR20100CT
+  fabricante: onsemi
+  tipo: peça
+  categoria: diode.schottky
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\01_Diodos_Retificadores_e_Sinal\MBR20100CT_onsemi.pdf
+    sha256: 28163311260f34bbcaafa7da78d320b79e09e900e75fe8cd31bea7b359809870
+    situacao: ok
+    nota: PDF local
+- grupo: 01_Diodos_Retificadores_e_Sinal
+  arquivo: UF4007_Vishay.pdf
+  part_number: UF4007
+  fabricante: Vishay
+  tipo: peça
+  categoria: diode.fast
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\01_Diodos_Retificadores_e_Sinal\UF4007_Vishay.pdf
+    sha256: eb199ce364ed2793454b4e91e1af50ef12be2889a096ce32420fa21faf8e358c
+    situacao: ok
+    nota: PDF local
+- grupo: 02_Diodos_Zener
+  arquivo: 1N4732A_Vishay.pdf
+  part_number: 1N4732A
+  fabricante: Vishay
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Diodos Zener” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\02_Diodos_Zener\1N4732A_Vishay.pdf
+    sha256: eb8913e493841b5d9e32c25ee452764810d6a2acb8f800203f8953df28203f79
+    situacao: ok
+    nota: PDF local
+- grupo: 02_Diodos_Zener
+  arquivo: 1N4733A_Vishay.pdf
+  part_number: 1N4733A
+  fabricante: Vishay
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Diodos Zener” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\02_Diodos_Zener\1N4733A_Vishay.pdf
+    sha256: eb8913e493841b5d9e32c25ee452764810d6a2acb8f800203f8953df28203f79
+    situacao: ok
+    nota: PDF local
+- grupo: 02_Diodos_Zener
+  arquivo: 1N4735A_Vishay.pdf
+  part_number: 1N4735A
+  fabricante: Vishay
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Diodos Zener” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\02_Diodos_Zener\1N4735A_Vishay.pdf
+    sha256: eb8913e493841b5d9e32c25ee452764810d6a2acb8f800203f8953df28203f79
+    situacao: ok
+    nota: PDF local
+- grupo: 02_Diodos_Zener
+  arquivo: 1N4739A_Vishay.pdf
+  part_number: 1N4739A
+  fabricante: Vishay
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Diodos Zener” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\02_Diodos_Zener\1N4739A_Vishay.pdf
+    sha256: eb8913e493841b5d9e32c25ee452764810d6a2acb8f800203f8953df28203f79
+    situacao: ok
+    nota: PDF local
+- grupo: 02_Diodos_Zener
+  arquivo: 1N4742A_Vishay.pdf
+  part_number: 1N4742A
+  fabricante: Vishay
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Diodos Zener” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\02_Diodos_Zener\1N4742A_Vishay.pdf
+    sha256: eb8913e493841b5d9e32c25ee452764810d6a2acb8f800203f8953df28203f79
+    situacao: ok
+    nota: PDF local
+- grupo: 02_Diodos_Zener
+  arquivo: 1N4744A_Vishay.pdf
+  part_number: 1N4744A
+  fabricante: Vishay
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Diodos Zener” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\02_Diodos_Zener\1N4744A_Vishay.pdf
+    sha256: eb8913e493841b5d9e32c25ee452764810d6a2acb8f800203f8953df28203f79
+    situacao: ok
+    nota: PDF local
+- grupo: 02_Diodos_Zener
+  arquivo: 1N4749A_Vishay.pdf
+  part_number: 1N4749A
+  fabricante: Vishay
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Diodos Zener” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\02_Diodos_Zener\1N4749A_Vishay.pdf
+    sha256: eb8913e493841b5d9e32c25ee452764810d6a2acb8f800203f8953df28203f79
+    situacao: ok
+    nota: PDF local
+- grupo: 02_Diodos_Zener
+  arquivo: 1N5338B_onsemi.pdf
+  part_number: 1N5338B
+  fabricante: onsemi
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Diodos Zener” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\02_Diodos_Zener\1N5338B_onsemi.pdf
+    sha256: 7851bed88079a7574756115bb9ae45fbbf2db993530988dd7b4e59c2cdd36b63
+    situacao: ok
+    nota: PDF local
+- grupo: 02_Diodos_Zener
+  arquivo: 1N5349B_onsemi.pdf
+  part_number: 1N5349B
+  fabricante: onsemi
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Diodos Zener” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\02_Diodos_Zener\1N5349B_onsemi.pdf
+    sha256: 7851bed88079a7574756115bb9ae45fbbf2db993530988dd7b4e59c2cdd36b63
+    situacao: ok
+    nota: PDF local
+- grupo: 02_Diodos_Zener
+  arquivo: 1N746A_Vishay.pdf
+  part_number: 1N746A
+  fabricante: Vishay
+  tipo: peça
+  categoria: diode.zener
+  url: https://www.vishay.com/docs/85504/1n746.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+- grupo: 03_Transistores_Bipolares_TJB
+  arquivo: 2N2222A_onsemi.pdf
+  part_number: 2N2222A
+  fabricante: onsemi
+  tipo: peça
+  categoria: bjt.npn
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\03_Transistores_Bipolares_TJB\2N2222A_onsemi.pdf
+    sha256: e67cb25a25529a21b464d2422c676b1c6194efd1069c8162425f4fdeda443618
+    situacao: ok
+    nota: PDF local
+- grupo: 03_Transistores_Bipolares_TJB
+  arquivo: 2N2907A_onsemi.pdf
+  part_number: 2N2907A
+  fabricante: onsemi
+  tipo: peça
+  categoria: bjt.pnp
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\03_Transistores_Bipolares_TJB\2N2907A_onsemi.pdf
+    sha256: 6fe901e5463660448f18648fd8515b5fb0fbac8b2f9bc5ba7ff2b79e457b04ae
+    situacao: invalido
+    nota: 'página HTML salva no lugar do PDF: baixe de novo pelo navegador'
+- grupo: 03_Transistores_Bipolares_TJB
+  arquivo: BC327_onsemi.pdf
+  part_number: BC327
+  fabricante: onsemi
+  tipo: peça
+  categoria: bjt.pnp
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\03_Transistores_Bipolares_TJB\BC327_onsemi.pdf
+    sha256: afffb7b0264c2a1d3a55dd2876b37e84e865c27ca2867cb1d049da4849ae8ac9
+    situacao: ok
+    nota: PDF local
+- grupo: 03_Transistores_Bipolares_TJB
+  arquivo: BC337_onsemi.pdf
+  part_number: BC337
+  fabricante: onsemi
+  tipo: peça
+  categoria: bjt.npn
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\03_Transistores_Bipolares_TJB\BC337_onsemi.pdf
+    sha256: 24a983d24cdb24194fa0c37de07aad6329fa621753954107ec0ab58640ce42f2
+    situacao: invalido
+    nota: 'página HTML salva no lugar do PDF: baixe de novo pelo navegador'
+- grupo: 03_Transistores_Bipolares_TJB
+  arquivo: BC547_onsemi.pdf
+  part_number: BC547
+  fabricante: onsemi
+  tipo: peça
+  categoria: bjt.npn
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\03_Transistores_Bipolares_TJB\BC547_onsemi.pdf
+    sha256: 55620e4787cc8d87e60d2448732624d77691a1f97657365ae0637b07490e4167
+    situacao: ok
+    nota: PDF local
+- grupo: 03_Transistores_Bipolares_TJB
+  arquivo: BC557_onsemi.pdf
+  part_number: BC557
+  fabricante: onsemi
+  tipo: peça
+  categoria: bjt.pnp
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\03_Transistores_Bipolares_TJB\BC557_onsemi.pdf
+    sha256: 436569c71b3c76ccd3e6c62421bbc4db2e78d66cae504eeac19a057c0b8319b6
+    situacao: ok
+    nota: PDF local
+- grupo: 03_Transistores_Bipolares_TJB
+  arquivo: BD139_STMicro.pdf
+  part_number: BD139
+  fabricante: STMicroelectronics
+  tipo: peça
+  categoria: bjt.npn
+  url: https://www.st.com/resource/en/datasheet/bd139.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-15'
+    nota: PDF acessível
+- grupo: 03_Transistores_Bipolares_TJB
+  arquivo: BD140_STMicro.pdf
+  part_number: BD140
+  fabricante: STMicroelectronics
+  tipo: peça
+  categoria: bjt.pnp
+  url: https://www.st.com/resource/en/datasheet/bd140.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-15'
+    nota: PDF acessível
+- grupo: 03_Transistores_Bipolares_TJB
+  arquivo: TIP122_STMicro.pdf
+  part_number: TIP122
+  fabricante: STMicroelectronics
+  tipo: peça
+  categoria: bjt.npn
+  url: https://www.st.com/resource/en/datasheet/tip122.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-15'
+    nota: PDF acessível
+- grupo: 03_Transistores_Bipolares_TJB
+  arquivo: TIP41C_STMicro.pdf
+  part_number: TIP41C
+  fabricante: STMicroelectronics
+  tipo: peça
+  categoria: bjt.npn
+  url: https://www.st.com/resource/en/datasheet/tip41c.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-15'
+    nota: PDF acessível
+- grupo: 04_Transistores_JFET
+  arquivo: 2N3819_Vishay.pdf
+  part_number: 2N3819
+  fabricante: Vishay
+  tipo: peça
+  categoria: jfet.n
+  url: https://www.vishay.com/docs/70238/70238.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+- grupo: 04_Transistores_JFET
+  arquivo: 2N5457_onsemi.pdf
+  part_number: 2N5457
+  fabricante: onsemi
+  tipo: peça
+  categoria: jfet.n
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\04_Transistores_JFET\2N5457_onsemi.pdf
+    sha256: d547280c34509502772575b907afb58426da1e4795766b036d3a3e46eefcaf66
+    situacao: ok
+    nota: PDF local
+- grupo: 04_Transistores_JFET
+  arquivo: 2N5458_onsemi.pdf
+  part_number: 2N5458
+  fabricante: onsemi
+  tipo: peça
+  categoria: jfet.n
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\04_Transistores_JFET\2N5458_onsemi.pdf
+    sha256: d547280c34509502772575b907afb58426da1e4795766b036d3a3e46eefcaf66
+    situacao: ok
+    nota: PDF local
+- grupo: 04_Transistores_JFET
+  arquivo: 2N5460_onsemi.pdf
+  part_number: 2N5460
+  fabricante: onsemi
+  tipo: peça
+  categoria: null
+  sem_categoria: 'JFET canal P: ainda sem esquema de categoria'
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\04_Transistores_JFET\2N5460_onsemi.pdf
+    sha256: 48aba5b2d3f5f05af7e3b215b5d3eb90d42a8e869103371eac94a8cda0cef25e
+    situacao: ok
+    nota: PDF local
+- grupo: 04_Transistores_JFET
+  arquivo: BF245A_onsemi.pdf
+  part_number: BF245A
+  fabricante: onsemi
+  tipo: peça
+  categoria: jfet.n
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\04_Transistores_JFET\BF245A_onsemi.pdf
+    sha256: 4c7b8233c4266515470e88cf33a1057ef1b4afee97643e76fc60d263e3e11a37
+    situacao: ok
+    nota: PDF local
+- grupo: 04_Transistores_JFET
+  arquivo: BF245B_onsemi.pdf
+  part_number: BF245B
+  fabricante: onsemi
+  tipo: peça
+  categoria: jfet.n
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\04_Transistores_JFET\BF245B_onsemi.pdf
+    sha256: 4c7b8233c4266515470e88cf33a1057ef1b4afee97643e76fc60d263e3e11a37
+    situacao: ok
+    nota: PDF local
+- grupo: 04_Transistores_JFET
+  arquivo: J111_onsemi.pdf
+  part_number: J111
+  fabricante: onsemi
+  tipo: peça
+  categoria: jfet.n
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\04_Transistores_JFET\J111_onsemi.pdf
+    sha256: 26966aed1bfb7aeb353fd83f157b09afb78c9ae2627b8b7884e3cb14de528d34
+    situacao: ok
+    nota: PDF local
+- grupo: 04_Transistores_JFET
+  arquivo: J112_onsemi.pdf
+  part_number: J112
+  fabricante: onsemi
+  tipo: peça
+  categoria: jfet.n
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\04_Transistores_JFET\J112_onsemi.pdf
+    sha256: 26966aed1bfb7aeb353fd83f157b09afb78c9ae2627b8b7884e3cb14de528d34
+    situacao: ok
+    nota: PDF local
+- grupo: 04_Transistores_JFET
+  arquivo: J175_onsemi.pdf
+  part_number: J175
+  fabricante: onsemi
+  tipo: peça
+  categoria: null
+  sem_categoria: 'JFET canal P: ainda sem esquema de categoria'
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\04_Transistores_JFET\J175_onsemi.pdf
+    sha256: 24a983d24cdb24194fa0c37de07aad6329fa621753954107ec0ab58640ce42f2
+    situacao: invalido
+    nota: 'página HTML salva no lugar do PDF: baixe de novo pelo navegador'
+- grupo: 04_Transistores_JFET
+  arquivo: MPF102_onsemi.pdf
+  part_number: MPF102
+  fabricante: onsemi
+  tipo: peça
+  categoria: jfet.n
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\04_Transistores_JFET\MPF102_onsemi.pdf
+    sha256: c6022bcb4a809a5da956dc8530ac57f4697fe65983435ebfecddc5eca66e80e7
+    situacao: ok
+    nota: PDF local
+- grupo: 05_Transistores_MOSFET
+  arquivo: 2N7000_Vishay.pdf
+  part_number: 2N7000
+  fabricante: Vishay
+  tipo: peça
+  categoria: mosfet.n
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\05_Transistores_MOSFET\2N7000_Vishay.pdf
+    sha256: dce5e8b79baaf31453db65604ebc4cdb65a3d3eeaba12823e1a3c22f7fdaecad
+    situacao: ok
+    nota: PDF local
+- grupo: 05_Transistores_MOSFET
+  arquivo: BS170_onsemi.pdf
+  part_number: BS170
+  fabricante: onsemi
+  tipo: peça
+  categoria: mosfet.n
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\05_Transistores_MOSFET\BS170_onsemi.pdf
+    sha256: 24a983d24cdb24194fa0c37de07aad6329fa621753954107ec0ab58640ce42f2
+    situacao: invalido
+    nota: 'página HTML salva no lugar do PDF: baixe de novo pelo navegador'
+- grupo: 05_Transistores_MOSFET
+  arquivo: BS250_Vishay.pdf
+  part_number: BS250
+  fabricante: Vishay
+  tipo: peça
+  categoria: null
+  url: https://www.vishay.com/docs/70209/70209.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'MOSFET canal P: ainda sem esquema de categoria'
+- grupo: 05_Transistores_MOSFET
+  arquivo: IRF540N_Infineon.pdf
+  part_number: IRF540N
+  fabricante: Infineon
+  tipo: peça
+  categoria: mosfet.n
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\05_Transistores_MOSFET\IRF540N_Infineon.pdf
+    sha256: a3fd62a76cc88828f98f0c9bc541d62c225109ad1319fad93c75e92eb9653155
+    situacao: ok
+    nota: PDF local
+- grupo: 05_Transistores_MOSFET
+  arquivo: IRF640N_Infineon.pdf
+  part_number: IRF640N
+  fabricante: Infineon
+  tipo: peça
+  categoria: mosfet.n
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\05_Transistores_MOSFET\IRF640N_Infineon.pdf
+    sha256: 266d6b55ffa23d0d81072a3586fbe4a47c32fe0fc7e9b36dcaa524c52aaf1a35
+    situacao: ok
+    nota: PDF local
+- grupo: 05_Transistores_MOSFET
+  arquivo: IRF740_Vishay.pdf
+  part_number: IRF740
+  fabricante: Vishay
+  tipo: peça
+  categoria: mosfet.n
+  url: https://www.vishay.com/docs/91054/irf740.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+- grupo: 05_Transistores_MOSFET
+  arquivo: IRF840_Vishay.pdf
+  part_number: IRF840
+  fabricante: Vishay
+  tipo: peça
+  categoria: mosfet.n
+  url: https://www.vishay.com/docs/91070/irf840.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+- grupo: 05_Transistores_MOSFET
+  arquivo: IRF9540N_Infineon.pdf
+  part_number: IRF9540N
+  fabricante: Infineon
+  tipo: peça
+  categoria: null
+  sem_categoria: 'MOSFET canal P: ainda sem esquema de categoria'
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\05_Transistores_MOSFET\IRF9540N_Infineon.pdf
+    sha256: 1154632fb4e57ba48ec035da6857e01fe348f983b37d3a6b7dcc36751773b541
+    situacao: ok
+    nota: 'PDF local; quase sem texto (digitalizado: precisa de OCR); “IRF9540N” não aparece nas 3 primeiras páginas:
+      confira se é o documento certo'
+- grupo: 05_Transistores_MOSFET
+  arquivo: IRFZ44N_Infineon.pdf
+  part_number: IRFZ44N
+  fabricante: Infineon
+  tipo: peça
+  categoria: mosfet.n
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\05_Transistores_MOSFET\IRFZ44N_Infineon.pdf
+    sha256: 954d7134ce3acc1853d0cd1c6b82a85cf383823ad1ceadc916176705f0774b1c
+    situacao: ok
+    nota: PDF local
+- grupo: 05_Transistores_MOSFET
+  arquivo: IRLZ44N_Infineon.pdf
+  part_number: IRLZ44N
+  fabricante: Infineon
+  tipo: peça
+  categoria: mosfet.n
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\05_Transistores_MOSFET\IRLZ44N_Infineon.pdf
+    sha256: b4f1361a4486b8ec84206012a3e4a985111203d140fa6da8d4190b867c9ba077
+    situacao: ok
+    nota: 'PDF local; “IRLZ44N” não aparece nas 3 primeiras páginas: confira se é o documento certo'
+- grupo: 06_Amplificadores_Operacionais_e_Comparadores
+  arquivo: LM311_TI.pdf
+  part_number: LM311
+  fabricante: TI
+  tipo: peça
+  categoria: comparator
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\06_Amplificadores_Operacionais_e_Comparadores\LM311_TI.pdf
+    sha256: 1877bb45737cb7e83537fb4e958b2c897cdd0376020804ed6e3f9deed0af0b49
+    situacao: ok
+    nota: PDF local
+- grupo: 06_Amplificadores_Operacionais_e_Comparadores
+  arquivo: LM324_TI.pdf
+  part_number: LM324
+  fabricante: TI
+  tipo: peça
+  categoria: opamp
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\06_Amplificadores_Operacionais_e_Comparadores\LM324_TI.pdf
+    sha256: 8161ad748420ae0594ad1919a34b34acd4858b822c04a8066b5fc95ddbda8963
+    situacao: ok
+    nota: PDF local
+- grupo: 06_Amplificadores_Operacionais_e_Comparadores
+  arquivo: LM358_TI.pdf
+  part_number: LM358
+  fabricante: TI
+  tipo: peça
+  categoria: opamp
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\06_Amplificadores_Operacionais_e_Comparadores\LM358_TI.pdf
+    sha256: 8277dff7b89138c63b3582d37f378065a1dea3cae5ed1e2926ddc2779eb7e3a2
+    situacao: ok
+    nota: PDF local
+- grupo: 06_Amplificadores_Operacionais_e_Comparadores
+  arquivo: LM393_TI.pdf
+  part_number: LM393
+  fabricante: TI
+  tipo: peça
+  categoria: comparator
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\06_Amplificadores_Operacionais_e_Comparadores\LM393_TI.pdf
+    sha256: a1f63934820e27c1f345a4d2c01c46fa2d58591df0f406a1bfca0fe97d8731bb
+    situacao: ok
+    nota: PDF local
+- grupo: 06_Amplificadores_Operacionais_e_Comparadores
+  arquivo: LM741_TI.pdf
+  part_number: LM741
+  fabricante: TI
+  tipo: peça
+  categoria: opamp
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\06_Amplificadores_Operacionais_e_Comparadores\LM741_TI.pdf
+    sha256: 6f3bf3cbce352c73a8f3e7506023ab1f5d12549834840e0227d6bb37de6c48db
+    situacao: ok
+    nota: PDF local
+- grupo: 06_Amplificadores_Operacionais_e_Comparadores
+  arquivo: NE5532_TI.pdf
+  part_number: NE5532
+  fabricante: TI
+  tipo: peça
+  categoria: opamp
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\06_Amplificadores_Operacionais_e_Comparadores\NE5532_TI.pdf
+    sha256: d9ab074bb64a1a0374f2c353f0b7854ee55e8a95e6de44c336a1084749fdbcb0
+    situacao: ok
+    nota: PDF local
+- grupo: 06_Amplificadores_Operacionais_e_Comparadores
+  arquivo: OP07_TI.pdf
+  part_number: OP07
+  fabricante: TI
+  tipo: peça
+  categoria: opamp
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\06_Amplificadores_Operacionais_e_Comparadores\OP07_TI.pdf
+    sha256: 7c60ae82015fc93918d5fcd97f8507976f46c76f68b6124e33469b7023a26669
+    situacao: ok
+    nota: PDF local
+- grupo: 06_Amplificadores_Operacionais_e_Comparadores
+  arquivo: TL071_TI.pdf
+  part_number: TL071
+  fabricante: TI
+  tipo: peça
+  categoria: opamp
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\06_Amplificadores_Operacionais_e_Comparadores\TL071_TI.pdf
+    sha256: d6e672f79ba4941d864de72e5d93983e5fd3dbe50f3bcbaac3d83d5007333689
+    situacao: ok
+    nota: PDF local
+- grupo: 06_Amplificadores_Operacionais_e_Comparadores
+  arquivo: TL072_TI.pdf
+  part_number: TL072
+  fabricante: TI
+  tipo: peça
+  categoria: opamp
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\06_Amplificadores_Operacionais_e_Comparadores\TL072_TI.pdf
+    sha256: d6e672f79ba4941d864de72e5d93983e5fd3dbe50f3bcbaac3d83d5007333689
+    situacao: ok
+    nota: PDF local
+- grupo: 06_Amplificadores_Operacionais_e_Comparadores
+  arquivo: TL074_TI.pdf
+  part_number: TL074
+  fabricante: TI
+  tipo: peça
+  categoria: opamp
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\06_Amplificadores_Operacionais_e_Comparadores\TL074_TI.pdf
+    sha256: d6e672f79ba4941d864de72e5d93983e5fd3dbe50f3bcbaac3d83d5007333689
+    situacao: ok
+    nota: PDF local
+- grupo: 07_Reguladores_Temporizadores_e_Amp_Potencia
+  arquivo: LM2596_TI.pdf
+  part_number: LM2596
+  fabricante: TI
+  tipo: peça
+  categoria: null
+  sem_categoria: 'regulador chaveado integrado: ainda sem esquema de categoria'
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\07_Reguladores_Temporizadores_e_Amp_Potencia\LM2596_TI.pdf
+    sha256: 2eec90879908cf711b84d4f0c5d534c3cd12c576d25254b7019247435af4ab0f
+    situacao: ok
+    nota: PDF local
+- grupo: 07_Reguladores_Temporizadores_e_Amp_Potencia
+  arquivo: LM317_TI.pdf
+  part_number: LM317
+  fabricante: TI
+  tipo: peça
+  categoria: regulator.positive
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\07_Reguladores_Temporizadores_e_Amp_Potencia\LM317_TI.pdf
+    sha256: 1646fb2e4f8cf8c2cbd93aaf22edad368571619ad062476deca8ee29f95c65d3
+    situacao: ok
+    nota: PDF local
+- grupo: 07_Reguladores_Temporizadores_e_Amp_Potencia
+  arquivo: LM337_TI.pdf
+  part_number: LM337
+  fabricante: TI
+  tipo: peça
+  categoria: regulator.negative
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\07_Reguladores_Temporizadores_e_Amp_Potencia\LM337_TI.pdf
+    sha256: 9314cd867e85589c17f6a6007396863f2dd2e7622d8e480570d119b09632a4db
+    situacao: ok
+    nota: PDF local
+- grupo: 07_Reguladores_Temporizadores_e_Amp_Potencia
+  arquivo: LM386_TI.pdf
+  part_number: LM386
+  fabricante: TI
+  tipo: peça
+  categoria: null
+  sem_categoria: 'amplificador de áudio integrado: ainda sem esquema de categoria'
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\07_Reguladores_Temporizadores_e_Amp_Potencia\LM386_TI.pdf
+    sha256: 69fc35afb00c6e254b15916dc245702562e4d13ac4c17d7210321e97a7e606d9
+    situacao: ok
+    nota: PDF local
+- grupo: 07_Reguladores_Temporizadores_e_Amp_Potencia
+  arquivo: LM7805_TI.pdf
+  part_number: LM7805
+  fabricante: TI
+  tipo: peça
+  categoria: regulator.positive
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\07_Reguladores_Temporizadores_e_Amp_Potencia\LM7805_TI.pdf
+    sha256: 49391342cf3b05f89ae94607257ef03f678ae9f1a3bdd388252adb8b00da043d
+    situacao: ok
+    nota: PDF local
+- grupo: 07_Reguladores_Temporizadores_e_Amp_Potencia
+  arquivo: LM7812_TI.pdf
+  part_number: LM7812
+  fabricante: TI
+  tipo: peça
+  categoria: regulator.positive
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\07_Reguladores_Temporizadores_e_Amp_Potencia\LM7812_TI.pdf
+    sha256: 49391342cf3b05f89ae94607257ef03f678ae9f1a3bdd388252adb8b00da043d
+    situacao: ok
+    nota: PDF local
+- grupo: 07_Reguladores_Temporizadores_e_Amp_Potencia
+  arquivo: LM7912_TI.pdf
+  part_number: LM7912
+  fabricante: TI
+  tipo: peça
+  categoria: regulator.negative
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\07_Reguladores_Temporizadores_e_Amp_Potencia\LM7912_TI.pdf
+    sha256: 392f4584b1435508c4ea2cbb98fdfe0b36bb25b33bf21e593621749567aa0913
+    situacao: ok
+    nota: PDF local
+- grupo: 07_Reguladores_Temporizadores_e_Amp_Potencia
+  arquivo: NE555_TI.pdf
+  part_number: NE555
+  fabricante: TI
+  tipo: peça
+  categoria: timer
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\07_Reguladores_Temporizadores_e_Amp_Potencia\NE555_TI.pdf
+    sha256: a3756e59fd06d0ba736edf9ffe71d99d2aae33fb7e49fedc86165a241179f4a6
+    situacao: ok
+    nota: PDF local
+- grupo: 07_Reguladores_Temporizadores_e_Amp_Potencia
+  arquivo: TDA2030A_STMicro.pdf
+  part_number: TDA2030A
+  fabricante: STMicroelectronics
+  tipo: peça
+  categoria: null
+  url: https://www.st.com/resource/en/datasheet/tda2030a.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-15'
+    nota: PDF acessível
+  sem_categoria: 'amplificador de áudio integrado: ainda sem esquema de categoria'
+- grupo: 07_Reguladores_Temporizadores_e_Amp_Potencia
+  arquivo: XR2206_SparkFun.pdf
+  part_number: XR2206
+  fabricante: SparkFun
+  tipo: peça
+  categoria: null
+  sem_categoria: 'gerador de funções integrado: ainda sem esquema de categoria'
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\07_Reguladores_Temporizadores_e_Amp_Potencia\XR2206_SparkFun.pdf
+    sha256: fc8e96fcc735012bf082d622288d7f5956fad3e41564c8c9ac7a76c0ee03f92a
+    situacao: ok
+    nota: PDF local
+- grupo: 08_Tiristores_SCR
+  arquivo: 2N5060_onsemi.pdf
+  part_number: 2N5060
+  fabricante: onsemi
+  tipo: peça
+  categoria: thyristor.scr
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\08_Tiristores_SCR\2N5060_onsemi.pdf
+    sha256: 04b919e27f052fc7c68096787fb79b3763727b87af11ba4351d3464e4b077733
+    situacao: invalido
+    nota: 'página HTML salva no lugar do PDF: baixe de novo pelo navegador'
+- grupo: 08_Tiristores_SCR
+  arquivo: BT151-500R_WeEn.pdf
+  part_number: BT151-500R
+  fabricante: WeEn
+  tipo: peça
+  categoria: thyristor.scr
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\08_Tiristores_SCR\BT151-500R_WeEn.pdf
+    sha256: c6923cb1d01cbc60d12fccf207d1d9c287398bf90260b9abbd983757b83a9dcf
+    situacao: invalido
+    nota: 'página HTML salva no lugar do PDF: baixe de novo pelo navegador'
+- grupo: 08_Tiristores_SCR
+  arquivo: BT152-600R_WeEn.pdf
+  part_number: BT152-600R
+  fabricante: WeEn
+  tipo: peça
+  categoria: thyristor.scr
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\08_Tiristores_SCR\BT152-600R_WeEn.pdf
+    sha256: c6923cb1d01cbc60d12fccf207d1d9c287398bf90260b9abbd983757b83a9dcf
+    situacao: invalido
+    nota: 'página HTML salva no lugar do PDF: baixe de novo pelo navegador'
+- grupo: 08_Tiristores_SCR
+  arquivo: C106D_onsemi.pdf
+  part_number: C106D
+  fabricante: onsemi
+  tipo: peça
+  categoria: thyristor.scr
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\08_Tiristores_SCR\C106D_onsemi.pdf
+    sha256: 24a983d24cdb24194fa0c37de07aad6329fa621753954107ec0ab58640ce42f2
+    situacao: invalido
+    nota: 'página HTML salva no lugar do PDF: baixe de novo pelo navegador'
+- grupo: 08_Tiristores_SCR
+  arquivo: MCR100-6_onsemi.pdf
+  part_number: MCR100-6
+  fabricante: onsemi
+  tipo: peça
+  categoria: thyristor.scr
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\08_Tiristores_SCR\MCR100-6_onsemi.pdf
+    sha256: 24a983d24cdb24194fa0c37de07aad6329fa621753954107ec0ab58640ce42f2
+    situacao: invalido
+    nota: 'página HTML salva no lugar do PDF: baixe de novo pelo navegador'
+- grupo: 08_Tiristores_SCR
+  arquivo: TIC106D_Bourns.pdf
+  part_number: TIC106D
+  fabricante: Bourns
+  tipo: peça
+  categoria: thyristor.scr
+  url: https://www.bourns.com/docs/Product-Datasheets/tic106.pdf
+  link:
+    situacao: bloqueado
+    verificado_em: '2026-11-15'
+    nota: 'o site recusa o download automático (HTTP 403): baixe pelo navegador e envie o PDF'
+- grupo: 08_Tiristores_SCR
+  arquivo: TIC106M_Bourns.pdf
+  part_number: TIC106M
+  fabricante: Bourns
+  tipo: peça
+  categoria: thyristor.scr
+  url: https://www.bourns.com/docs/Product-Datasheets/tic106.pdf
+  link:
+    situacao: bloqueado
+    verificado_em: '2026-11-15'
+    nota: 'o site recusa o download automático (HTTP 403): baixe pelo navegador e envie o PDF'
+- grupo: 08_Tiristores_SCR
+  arquivo: TIC116D_Bourns.pdf
+  part_number: TIC116D
+  fabricante: Bourns
+  tipo: peça
+  categoria: thyristor.scr
+  url: https://www.bourns.com/docs/Product-Datasheets/tic116.pdf
+  link:
+    situacao: bloqueado
+    verificado_em: '2026-11-15'
+    nota: 'o site recusa o download automático (HTTP 403): baixe pelo navegador e envie o PDF'
+- grupo: 08_Tiristores_SCR
+  arquivo: TIC126M_Bourns.pdf
+  part_number: TIC126M
+  fabricante: Bourns
+  tipo: peça
+  categoria: thyristor.scr
+  url: https://www.bourns.com/docs/Product-Datasheets/tic126.pdf
+  link:
+    situacao: bloqueado
+    verificado_em: '2026-11-15'
+    nota: 'o site recusa o download automático (HTTP 403): baixe pelo navegador e envie o PDF'
+- grupo: 08_Tiristores_SCR
+  arquivo: TYN625_STMicro.pdf
+  part_number: TYN625
+  fabricante: STMicroelectronics
+  tipo: peça
+  categoria: thyristor.scr
+  url: https://www.st.com/resource/en/datasheet/tyn625.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-15'
+    nota: PDF acessível
+- grupo: 09_TRIACs
+  arquivo: BT131-600_WeEn.pdf
+  part_number: BT131-600
+  fabricante: WeEn
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “TRIACs” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\09_TRIACs\BT131-600_WeEn.pdf
+    sha256: c6923cb1d01cbc60d12fccf207d1d9c287398bf90260b9abbd983757b83a9dcf
+    situacao: invalido
+    nota: 'página HTML salva no lugar do PDF: baixe de novo pelo navegador'
+- grupo: 09_TRIACs
+  arquivo: BT134-600E_WeEn.pdf
+  part_number: BT134-600E
+  fabricante: WeEn
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “TRIACs” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\09_TRIACs\BT134-600E_WeEn.pdf
+    sha256: c6923cb1d01cbc60d12fccf207d1d9c287398bf90260b9abbd983757b83a9dcf
+    situacao: invalido
+    nota: 'página HTML salva no lugar do PDF: baixe de novo pelo navegador'
+- grupo: 09_TRIACs
+  arquivo: BT136-600_WeEn.pdf
+  part_number: BT136-600
+  fabricante: WeEn
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “TRIACs” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\09_TRIACs\BT136-600_WeEn.pdf
+    sha256: c6923cb1d01cbc60d12fccf207d1d9c287398bf90260b9abbd983757b83a9dcf
+    situacao: invalido
+    nota: 'página HTML salva no lugar do PDF: baixe de novo pelo navegador'
+- grupo: 09_TRIACs
+  arquivo: BT137-600_WeEn.pdf
+  part_number: BT137-600
+  fabricante: WeEn
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “TRIACs” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\09_TRIACs\BT137-600_WeEn.pdf
+    sha256: c6923cb1d01cbc60d12fccf207d1d9c287398bf90260b9abbd983757b83a9dcf
+    situacao: invalido
+    nota: 'página HTML salva no lugar do PDF: baixe de novo pelo navegador'
+- grupo: 09_TRIACs
+  arquivo: BT138-600_WeEn.pdf
+  part_number: BT138-600
+  fabricante: WeEn
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “TRIACs” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\09_TRIACs\BT138-600_WeEn.pdf
+    sha256: c6923cb1d01cbc60d12fccf207d1d9c287398bf90260b9abbd983757b83a9dcf
+    situacao: invalido
+    nota: 'página HTML salva no lugar do PDF: baixe de novo pelo navegador'
+- grupo: 09_TRIACs
+  arquivo: BT139-600_WeEn.pdf
+  part_number: BT139-600
+  fabricante: WeEn
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “TRIACs” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\09_TRIACs\BT139-600_WeEn.pdf
+    sha256: c6923cb1d01cbc60d12fccf207d1d9c287398bf90260b9abbd983757b83a9dcf
+    situacao: invalido
+    nota: 'página HTML salva no lugar do PDF: baixe de novo pelo navegador'
+- grupo: 09_TRIACs
+  arquivo: BTA16-600B_STMicro.pdf
+  part_number: BTA16-600B
+  fabricante: STMicroelectronics
+  tipo: peça
+  categoria: thyristor.triac
+  url: https://www.st.com/resource/en/datasheet/bta16.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-15'
+    nota: PDF acessível
+- grupo: 09_TRIACs
+  arquivo: BTA24-600BW_STMicro.pdf
+  part_number: BTA24-600BW
+  fabricante: STMicroelectronics
+  tipo: peça
+  categoria: thyristor.triac
+  url: https://www.st.com/resource/en/datasheet/bta24.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-15'
+    nota: PDF acessível
+- grupo: 09_TRIACs
+  arquivo: MAC97A6_onsemi.pdf
+  part_number: MAC97A6
+  fabricante: onsemi
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “TRIACs” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\09_TRIACs\MAC97A6_onsemi.pdf
+    sha256: 24a983d24cdb24194fa0c37de07aad6329fa621753954107ec0ab58640ce42f2
+    situacao: invalido
+    nota: 'página HTML salva no lugar do PDF: baixe de novo pelo navegador'
+- grupo: 09_TRIACs
+  arquivo: Z0103MA_STMicro.pdf
+  part_number: Z0103MA
+  fabricante: STMicroelectronics
+  tipo: peça
+  categoria: thyristor.triac
+  url: https://www.st.com/resource/en/datasheet/z01.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-15'
+    nota: PDF acessível
+- grupo: 10_DIACs_IGBTs_e_Comando
+  arquivo: 2N2646_Central_Semi.pdf
+  part_number: 2N2646
+  fabricante: Central Semiconductor
+  tipo: peça
+  categoria: null
+  url: https://my.centralsemi.com/datasheets/2N2646.PDF
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'transistor de unijunção (UJT): ainda sem esquema de categoria'
+- grupo: 10_DIACs_IGBTs_e_Comando
+  arquivo: DB3_STMicro.pdf
+  part_number: DB3
+  fabricante: STMicroelectronics
+  tipo: peça
+  categoria: thyristor.diac
+  url: https://www.st.com/resource/en/datasheet/db3.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-15'
+    nota: PDF acessível
+- grupo: 10_DIACs_IGBTs_e_Comando
+  arquivo: DB4_STMicro.pdf
+  part_number: DB4
+  fabricante: STMicroelectronics
+  tipo: peça
+  categoria: thyristor.diac
+  url: https://www.st.com/resource/en/datasheet/db3.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-15'
+    nota: PDF acessível
+- grupo: 10_DIACs_IGBTs_e_Comando
+  arquivo: DB6_STMicro.pdf
+  part_number: DB6
+  fabricante: STMicroelectronics
+  tipo: peça
+  categoria: thyristor.diac
+  url: https://www.st.com/resource/en/datasheet/db6.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+- grupo: 10_DIACs_IGBTs_e_Comando
+  arquivo: FGA25N120ANTD_onsemi.pdf
+  part_number: FGA25N120ANTD
+  fabricante: onsemi
+  tipo: peça
+  categoria: igbt.n
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\10_DIACs_IGBTs_e_Comando\FGA25N120ANTD_onsemi.pdf
+    sha256: 24a983d24cdb24194fa0c37de07aad6329fa621753954107ec0ab58640ce42f2
+    situacao: invalido
+    nota: 'página HTML salva no lugar do PDF: baixe de novo pelo navegador'
+- grupo: 10_DIACs_IGBTs_e_Comando
+  arquivo: HT-32_Littelfuse.pdf
+  part_number: HT-32
+  fabricante: Littelfuse
+  tipo: peça
+  categoria: thyristor.diac
+  url: https://www.littelfuse.com/media?resourcetype=datasheets&itemid=e986e5e9-6b39-4d25-8306-3b7e208100f1&filename=littelfuse-thyristor-ht-datasheet
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+- grupo: 10_DIACs_IGBTs_e_Comando
+  arquivo: IR2110_Infineon.pdf
+  part_number: IR2110
+  fabricante: Infineon
+  tipo: peça
+  categoria: gate_driver
+  url: https://www.infineon.com/dgdl/Infineon-IR2110-DataSheet-v01_00-EN.pdf?fileId=5546d462533600a4015355c80333167e
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+- grupo: 10_DIACs_IGBTs_e_Comando
+  arquivo: IRG4BC30W_Infineon.pdf
+  part_number: IRG4BC30W
+  fabricante: Infineon
+  tipo: peça
+  categoria: igbt.n
+  url: https://www.infineon.com/dgdl/Infineon-IRG4BC30W-DataSheet-v01_01-EN.pdf?fileId=5546d462533600a4015356445f6422db
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+- grupo: 10_DIACs_IGBTs_e_Comando
+  arquivo: K1050E70_Littelfuse.pdf
+  part_number: K1050E70
+  fabricante: Littelfuse
+  tipo: peça
+  categoria: null
+  url: https://www.littelfuse.com/media?resourcetype=datasheets&itemid=c8140118-50a6-4f25-8306-3b7e208100f1&filename=littelfuse-thyristor-kxxxey-datasheet
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'SIDAC: ainda sem esquema de categoria'
+- grupo: 10_DIACs_IGBTs_e_Comando
+  arquivo: SG3525A_onsemi.pdf
+  part_number: SG3525A
+  fabricante: onsemi
+  tipo: peça
+  categoria: null
+  sem_categoria: 'controlador PWM: ainda sem esquema de categoria'
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\10_DIACs_IGBTs_e_Comando\SG3525A_onsemi.pdf
+    sha256: aa275c22984d6ba76038fea20a7c1b1e8eae0c1a5258cc46876a5187f505b022
+    situacao: ok
+    nota: PDF local
+- grupo: 11_Optoacopladores_e_Isoladores
+  arquivo: 4N25_Vishay.pdf
+  part_number: 4N25
+  fabricante: Vishay
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Optoacopladores e Isoladores” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\11_Optoacopladores_e_Isoladores\4N25_Vishay.pdf
+    sha256: 27002435c523e03676cd50dea6779cd574a4a11fbb0cb5723d34a00d8c127052
+    situacao: ok
+    nota: PDF local
+- grupo: 11_Optoacopladores_e_Isoladores
+  arquivo: 4N33_Vishay.pdf
+  part_number: 4N33
+  fabricante: Vishay
+  tipo: peça
+  categoria: null
+  url: https://www.vishay.com/docs/81865/4n32.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: grupo “Optoacopladores e Isoladores” ainda sem esquema de categoria
+- grupo: 11_Optoacopladores_e_Isoladores
+  arquivo: 4N35_Vishay.pdf
+  part_number: 4N35
+  fabricante: Vishay
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Optoacopladores e Isoladores” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\11_Optoacopladores_e_Isoladores\4N35_Vishay.pdf
+    sha256: 36e7fc654f6098e7d1bd7a53880f62e58454cd2d1d6baeac05852ee379e46bb2
+    situacao: ok
+    nota: PDF local
+- grupo: 11_Optoacopladores_e_Isoladores
+  arquivo: 6N137_Vishay.pdf
+  part_number: 6N137
+  fabricante: Vishay
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Optoacopladores e Isoladores” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\11_Optoacopladores_e_Isoladores\6N137_Vishay.pdf
+    sha256: e838b59beab53ddad0fedf094df8bd32fc35297fda7d500fd24ddd188924f6d2
+    situacao: ok
+    nota: PDF local
+- grupo: 11_Optoacopladores_e_Isoladores
+  arquivo: MOC3021_onsemi.pdf
+  part_number: MOC3021
+  fabricante: onsemi
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Optoacopladores e Isoladores” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\11_Optoacopladores_e_Isoladores\MOC3021_onsemi.pdf
+    sha256: 293b3d919111224ffefade728d5ee8e73510445e0fabdd282139a8973509d763
+    situacao: ok
+    nota: PDF local
+- grupo: 11_Optoacopladores_e_Isoladores
+  arquivo: MOC3041_onsemi.pdf
+  part_number: MOC3041
+  fabricante: onsemi
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Optoacopladores e Isoladores” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\11_Optoacopladores_e_Isoladores\MOC3041_onsemi.pdf
+    sha256: ce183da340c3179741180c34453249b2f60ca1b12dfac47da037869b0f992ee9
+    situacao: ok
+    nota: PDF local
+- grupo: 11_Optoacopladores_e_Isoladores
+  arquivo: PC817_Sharp.pdf
+  part_number: PC817
+  fabricante: Sharp
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Optoacopladores e Isoladores” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\11_Optoacopladores_e_Isoladores\PC817_Sharp.pdf
+    sha256: a485f78cde6091c805dc38d94e3becf440495439d94862c0a80234a8c0f56abd
+    situacao: ok
+    nota: PDF local
+- grupo: 11_Optoacopladores_e_Isoladores
+  arquivo: TIL111_onsemi.pdf
+  part_number: TIL111
+  fabricante: onsemi
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Optoacopladores e Isoladores” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\11_Optoacopladores_e_Isoladores\TIL111_onsemi.pdf
+    sha256: 24a983d24cdb24194fa0c37de07aad6329fa621753954107ec0ab58640ce42f2
+    situacao: invalido
+    nota: 'página HTML salva no lugar do PDF: baixe de novo pelo navegador'
+- grupo: 11_Optoacopladores_e_Isoladores
+  arquivo: TLP250_Toshiba.pdf
+  part_number: TLP250
+  fabricante: Toshiba
+  tipo: peça
+  categoria: null
+  url: https://toshiba.semicon-storage.com/info/docget.jsp?did=16736&prodName=TLP250
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: grupo “Optoacopladores e Isoladores” ainda sem esquema de categoria
+- grupo: 11_Optoacopladores_e_Isoladores
+  arquivo: TLP521-4_Toshiba.pdf
+  part_number: TLP521-4
+  fabricante: Toshiba
+  tipo: peça
+  categoria: null
+  url: https://toshiba.semicon-storage.com/info/docget.jsp?did=16883&prodName=TLP521-4
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: grupo “Optoacopladores e Isoladores” ainda sem esquema de categoria
+- grupo: 12_Chaves_e_Botoes
+  arquivo: 219-8LPST_CTS.pdf
+  part_number: 219-8LPST
+  fabricante: CTS
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Chaves e Botoes” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\12_Chaves_e_Botoes\219-8LPST_CTS.pdf
+    sha256: 295865d1f06f93ecde67625b4cfcbb4c8f54cc855423c85b6d0c95c442bedb05
+    situacao: ok
+    nota: 'PDF local; “219-8LPST” não aparece nas 3 primeiras páginas: confira se é o documento certo'
+- grupo: 12_Chaves_e_Botoes
+  arquivo: B3F-1000_Omron.pdf
+  part_number: B3F-1000
+  fabricante: Omron
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Chaves e Botoes” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\12_Chaves_e_Botoes\B3F-1000_Omron.pdf
+    sha256: be9cf69e5f43fb7689448a2097c19858e5643c0e2e49cd77d018881543e27a1f
+    situacao: ok
+    nota: PDF local
+- grupo: 12_Chaves_e_Botoes
+  arquivo: EC11_Alps_Alpine.pdf
+  part_number: EC11
+  fabricante: Alps Alpine
+  tipo: peça
+  categoria: null
+  url: https://tech.alpsalpine.com/assets/products/catalog/ec11.en.pdf
+  link:
+    situacao: bloqueado
+    verificado_em: '2026-11-15'
+    nota: 'o site recusa o download automático (HTTP 403): baixe pelo navegador e envie o PDF'
+  sem_categoria: grupo “Chaves e Botoes” ainda sem esquema de categoria
+- grupo: 12_Chaves_e_Botoes
+  arquivo: KCD1-101_CW_Ind.pdf
+  part_number: KCD1-101
+  fabricante: C&W Industries
+  tipo: peça
+  categoria: null
+  url: https://www.cwind.com/assets/files/products/switches/rocker/GRS-4011.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: grupo “Chaves e Botoes” ainda sem esquema de categoria
+- grupo: 12_Chaves_e_Botoes
+  arquivo: MTS-102_NKK.pdf
+  part_number: MTS-102
+  fabricante: NKK
+  tipo: peça
+  categoria: null
+  url: https://www.nkkswitches.com/pdf/MtogglesBushing.pdf
+  link:
+    situacao: bloqueado
+    verificado_em: '2026-11-15'
+    nota: 'o site recusa o download automático (HTTP 403): baixe pelo navegador e envie o PDF'
+  sem_categoria: grupo “Chaves e Botoes” ainda sem esquema de categoria
+- grupo: 12_Chaves_e_Botoes
+  arquivo: MTS-202_NKK.pdf
+  part_number: MTS-202
+  fabricante: NKK
+  tipo: peça
+  categoria: null
+  url: https://www.nkkswitches.com/pdf/MtogglesBushing.pdf
+  link:
+    situacao: bloqueado
+    verificado_em: '2026-11-15'
+    nota: 'o site recusa o download automático (HTTP 403): baixe pelo navegador e envie o PDF'
+  sem_categoria: grupo “Chaves e Botoes” ainda sem esquema de categoria
+- grupo: 12_Chaves_e_Botoes
+  arquivo: ORD324_Standex.pdf
+  part_number: ORD324
+  fabricante: Standex
+  tipo: peça
+  categoria: null
+  url: https://standexelectronics.com/wp-content/uploads/2019/04/ORD324.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: grupo “Chaves e Botoes” ainda sem esquema de categoria
+- grupo: 12_Chaves_e_Botoes
+  arquivo: PBS-110_Switchcraft.pdf
+  part_number: PBS-110
+  fabricante: Switchcraft
+  tipo: peça
+  categoria: null
+  url: https://www.switchcraft.com/assets/1/24/pb_series_cd.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: o endereço abre uma página, não o PDF
+  sem_categoria: grupo “Chaves e Botoes” ainda sem esquema de categoria
+- grupo: 12_Chaves_e_Botoes
+  arquivo: SS-12D00_CK.pdf
+  part_number: SS-12D00
+  fabricante: CK
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Chaves e Botoes” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\12_Chaves_e_Botoes\SS-12D00_CK.pdf
+    sha256: 0073136a912d6b753fe9aa94a614be904186e9672c23f7ac25f856cd9df9d332
+    situacao: invalido
+    nota: 'página HTML salva no lugar do PDF: baixe de novo pelo navegador'
+- grupo: 12_Chaves_e_Botoes
+  arquivo: V-15-1C25_Omron.pdf
+  part_number: V-15-1C25
+  fabricante: Omron
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Chaves e Botoes” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\12_Chaves_e_Botoes\V-15-1C25_Omron.pdf
+    sha256: b14f1a220454e10514c96e9991b82df2fbc29286f9d203bd062a140bd7ac308c
+    situacao: ok
+    nota: 'PDF local; “V-15-1C25” não aparece nas 3 primeiras páginas: confira se é o documento certo'
+- grupo: 13_LEDs_e_Displays_Optoeletronicos
+  arquivo: HDSP-5103_Broadcom.pdf
+  part_number: HDSP-5103
+  fabricante: Broadcom
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “LEDs e Displays Optoeletronicos” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\13_LEDs_e_Displays_Optoeletronicos\HDSP-5103_Broadcom.pdf
+    sha256: aa3ae45fd655ff82b1cc47330f362e8487df02b4ec8e24931a4198168edc8769
+    situacao: ok
+    nota: 'PDF local; “HDSP-5103” não aparece nas 3 primeiras páginas: confira se é o documento certo'
+- grupo: 13_LEDs_e_Displays_Optoeletronicos
+  arquivo: HLMP-3301_Broadcom.pdf
+  part_number: HLMP-3301
+  fabricante: Broadcom
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “LEDs e Displays Optoeletronicos” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\13_LEDs_e_Displays_Optoeletronicos\HLMP-3301_Broadcom.pdf
+    sha256: 60265edb05defd49eeacae5dfd1c2bac12ea1031015f4fb0030a7b53e0e7b900
+    situacao: ok
+    nota: PDF local
+- grupo: 13_LEDs_e_Displays_Optoeletronicos
+  arquivo: HLMP-3401_Broadcom.pdf
+  part_number: HLMP-3401
+  fabricante: Broadcom
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “LEDs e Displays Optoeletronicos” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\13_LEDs_e_Displays_Optoeletronicos\HLMP-3401_Broadcom.pdf
+    sha256: 60265edb05defd49eeacae5dfd1c2bac12ea1031015f4fb0030a7b53e0e7b900
+    situacao: ok
+    nota: PDF local
+- grupo: 13_LEDs_e_Displays_Optoeletronicos
+  arquivo: HLMP-3507_Broadcom.pdf
+  part_number: HLMP-3507
+  fabricante: Broadcom
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “LEDs e Displays Optoeletronicos” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\13_LEDs_e_Displays_Optoeletronicos\HLMP-3507_Broadcom.pdf
+    sha256: 60265edb05defd49eeacae5dfd1c2bac12ea1031015f4fb0030a7b53e0e7b900
+    situacao: ok
+    nota: PDF local
+- grupo: 13_LEDs_e_Displays_Optoeletronicos
+  arquivo: IR333C_Everlight.pdf
+  part_number: IR333C
+  fabricante: Everlight
+  tipo: peça
+  categoria: null
+  url: https://www.everlight.com/file/ProductFile/IR333-A.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: grupo “LEDs e Displays Optoeletronicos” ainda sem esquema de categoria
+- grupo: 13_LEDs_e_Displays_Optoeletronicos
+  arquivo: LXZ1-PM01_Lumileds.pdf
+  part_number: LXZ1-PM01
+  fabricante: Lumileds
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “LEDs e Displays Optoeletronicos” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\13_LEDs_e_Displays_Optoeletronicos\LXZ1-PM01_Lumileds.pdf
+    sha256: 055fa74b6618dca4c10ac382a0073258813ab796d22ad50b8476f6803b8038d3
+    situacao: invalido
+    nota: 'página HTML salva no lugar do PDF: baixe de novo pelo navegador'
+- grupo: 13_LEDs_e_Displays_Optoeletronicos
+  arquivo: OSTB5131A_OptoSupply.pdf
+  part_number: OSTB5131A
+  fabricante: OptoSupply
+  tipo: peça
+  categoria: null
+  url: https://www.optosupply.com/uppic/20161013151025.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: grupo “LEDs e Displays Optoeletronicos” ainda sem esquema de categoria
+- grupo: 13_LEDs_e_Displays_Optoeletronicos
+  arquivo: WP7113PWC-A_Kingbright.pdf
+  part_number: WP7113PWC-A
+  fabricante: Kingbright
+  tipo: peça
+  categoria: null
+  url: https://www.kingbrightusa.com/images/catalog/SPEC/WP7113PWC-A.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: grupo “LEDs e Displays Optoeletronicos” ainda sem esquema de categoria
+- grupo: 13_LEDs_e_Displays_Optoeletronicos
+  arquivo: WP7113QBC-D_Kingbright.pdf
+  part_number: WP7113QBC-D
+  fabricante: Kingbright
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “LEDs e Displays Optoeletronicos” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\13_LEDs_e_Displays_Optoeletronicos\WP7113QBC-D_Kingbright.pdf
+    sha256: ff6fcadbd0c1616d3a2db19c43754dd22731ae50bc7efdc9c3c531c13487eca5
+    situacao: ok
+    nota: PDF local
+- grupo: 13_LEDs_e_Displays_Optoeletronicos
+  arquivo: WS2812B_Worldsemi.pdf
+  part_number: WS2812B
+  fabricante: Worldsemi
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “LEDs e Displays Optoeletronicos” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\13_LEDs_e_Displays_Optoeletronicos\WS2812B_Worldsemi.pdf
+    sha256: 670517e400d01f76e91187e173c9bb105e5470741604f81243364c5f13d37448
+    situacao: ok
+    nota: PDF local
+- grupo: 14_Resistores
+  arquivo: Serie_4608X_Bourns.pdf
+  part_number: 4608X
+  fabricante: Bourns
+  tipo: série
+  categoria: null
+  sem_categoria: grupo “Resistores” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\14_Resistores\Serie_4608X_Bourns.pdf
+    sha256: 36da6e1ae18f53a75e9fac254962133de9195b7f188ba9930ccd0970629348bb
+    situacao: ok
+    nota: PDF local
+- grupo: 14_Resistores
+  arquivo: Serie_CFR-25_Yageo.pdf
+  part_number: CFR-25
+  fabricante: Yageo
+  tipo: série
+  categoria: null
+  url: https://www.yageo.com/upload/media/product/productsearch/datasheet/lr/Yageo_LR_CFR_2013.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: grupo “Resistores” ainda sem esquema de categoria
+- grupo: 14_Resistores
+  arquivo: Serie_LVR_Vishay.pdf
+  part_number: LVR
+  fabricante: Vishay
+  tipo: série
+  categoria: null
+  sem_categoria: grupo “Resistores” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\14_Resistores\Serie_LVR_Vishay.pdf
+    sha256: 29e2c361e9df5a50387b3c86c44ae3a5998257abfe24bd2d309075343d03086a
+    situacao: ok
+    nota: PDF local
+- grupo: 14_Resistores
+  arquivo: Serie_MFR-25_Yageo.pdf
+  part_number: MFR-25
+  fabricante: Yageo
+  tipo: série
+  categoria: null
+  url: https://www.yageo.com/upload/media/product/productsearch/datasheet/lr/Yageo_LR_MFR_2013.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: grupo “Resistores” ainda sem esquema de categoria
+- grupo: 14_Resistores
+  arquivo: Serie_MFR-50_Yageo.pdf
+  part_number: MFR-50
+  fabricante: Yageo
+  tipo: série
+  categoria: null
+  url: https://www.yageo.com/upload/media/product/productsearch/datasheet/lr/Yageo_LR_MFR_2013.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: grupo “Resistores” ainda sem esquema de categoria
+- grupo: 14_Resistores
+  arquivo: Serie_PR01_Vishay.pdf
+  part_number: PR01
+  fabricante: Vishay
+  tipo: série
+  categoria: null
+  sem_categoria: grupo “Resistores” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\14_Resistores\Serie_PR01_Vishay.pdf
+    sha256: 1b65216400497850afb3e740f378a10a77cd584809e647ae7fcdb707d9b6a2bc
+    situacao: ok
+    nota: PDF local
+- grupo: 14_Resistores
+  arquivo: Serie_PR02_Vishay.pdf
+  part_number: PR02
+  fabricante: Vishay
+  tipo: série
+  categoria: null
+  sem_categoria: grupo “Resistores” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\14_Resistores\Serie_PR02_Vishay.pdf
+    sha256: 1b65216400497850afb3e740f378a10a77cd584809e647ae7fcdb707d9b6a2bc
+    situacao: ok
+    nota: PDF local
+- grupo: 14_Resistores
+  arquivo: Serie_SQP_10W_Yageo.pdf
+  part_number: SQP 10W
+  fabricante: Yageo
+  tipo: série
+  categoria: null
+  url: https://www.yageo.com/upload/media/product/productsearch/datasheet/lr/Yageo_LR_SQP_2013.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: grupo “Resistores” ainda sem esquema de categoria
+- grupo: 14_Resistores
+  arquivo: Serie_SQP_5W_Yageo.pdf
+  part_number: SQP 5W
+  fabricante: Yageo
+  tipo: série
+  categoria: null
+  url: https://www.yageo.com/upload/media/product/productsearch/datasheet/lr/Yageo_LR_SQP_2013.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: grupo “Resistores” ainda sem esquema de categoria
+- grupo: 14_Resistores
+  arquivo: Serie_WH25_TT_Electronics.pdf
+  part_number: WH25
+  fabricante: TT Electronics
+  tipo: série
+  categoria: null
+  sem_categoria: grupo “Resistores” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\14_Resistores\Serie_WH25_TT_Electronics.pdf
+    sha256: 53392272e6943ad0efea3dc9b88d430a360c5f61d25bc67616d9b9c4e9a451d1
+    situacao: ok
+    nota: PDF local
+- grupo: 15_Potenciometros_Lineares
+  arquivo: 3296W-1-103LF_Bourns.pdf
+  part_number: 3296W-1-103LF
+  fabricante: Bourns
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Potenciometros Lineares” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\15_Potenciometros_Lineares\3296W-1-103LF_Bourns.pdf
+    sha256: 8492a5d67ee2785d4716ec3131b8fa6f9aaef9fa9e9eff65999b1d1a50d9baef
+    situacao: ok
+    nota: PDF local
+- grupo: 15_Potenciometros_Lineares
+  arquivo: 3386P-1-103LF_Bourns.pdf
+  part_number: 3386P-1-103LF
+  fabricante: Bourns
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Potenciometros Lineares” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\15_Potenciometros_Lineares\3386P-1-103LF_Bourns.pdf
+    sha256: 2b4a3fb768cfe410a96275377ef45214ec33dc0873d91d44d31e6119e8ea06bb
+    situacao: ok
+    nota: PDF local
+- grupo: 15_Potenciometros_Lineares
+  arquivo: 3590S-2-103L_Bourns.pdf
+  part_number: 3590S-2-103L
+  fabricante: Bourns
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Potenciometros Lineares” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\15_Potenciometros_Lineares\3590S-2-103L_Bourns.pdf
+    sha256: 18a28fbd2c9ac088d0d2fa1e031f475d9b7ea64b1a2f5ec874b16fa9aba2192e
+    situacao: ok
+    nota: PDF local
+- grupo: 15_Potenciometros_Lineares
+  arquivo: PDB181-K420K-103B_Bourns.pdf
+  part_number: PDB181-K420K-103B
+  fabricante: Bourns
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Potenciometros Lineares” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\15_Potenciometros_Lineares\PDB181-K420K-103B_Bourns.pdf
+    sha256: 19697d1dc7271301b6884bca870e0c6a3e778673df2c8703a61d342c1d10972d
+    situacao: ok
+    nota: PDF local
+- grupo: 15_Potenciometros_Lineares
+  arquivo: PDB181-K420K-254B_Bourns.pdf
+  part_number: PDB181-K420K-254B
+  fabricante: Bourns
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Potenciometros Lineares” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\15_Potenciometros_Lineares\PDB181-K420K-254B_Bourns.pdf
+    sha256: 19697d1dc7271301b6884bca870e0c6a3e778673df2c8703a61d342c1d10972d
+    situacao: ok
+    nota: PDF local
+- grupo: 15_Potenciometros_Lineares
+  arquivo: PDB181-K420K-503B_Bourns.pdf
+  part_number: PDB181-K420K-503B
+  fabricante: Bourns
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Potenciometros Lineares” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\15_Potenciometros_Lineares\PDB181-K420K-503B_Bourns.pdf
+    sha256: 19697d1dc7271301b6884bca870e0c6a3e778673df2c8703a61d342c1d10972d
+    situacao: ok
+    nota: PDF local
+- grupo: 15_Potenciometros_Lineares
+  arquivo: PTA4543-2015DPB103_Bourns.pdf
+  part_number: PTA4543-2015DPB103
+  fabricante: Bourns
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Potenciometros Lineares” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\15_Potenciometros_Lineares\PTA4543-2015DPB103_Bourns.pdf
+    sha256: 834c576027bb26f3f0983f35cf2ac48e6357bfe508f1a471ccb9f82488760d55
+    situacao: ok
+    nota: PDF local
+- grupo: 15_Potenciometros_Lineares
+  arquivo: PTV09A-4020F-B103_Bourns.pdf
+  part_number: PTV09A-4020F-B103
+  fabricante: Bourns
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Potenciometros Lineares” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\15_Potenciometros_Lineares\PTV09A-4020F-B103_Bourns.pdf
+    sha256: 411cdb6a62e61f9c5bc2df76ed64ee21d7bcfbee035c1ba36beff08c43f28558
+    situacao: ok
+    nota: PDF local
+- grupo: 15_Potenciometros_Lineares
+  arquivo: PTV09A-4020F-B104_Bourns.pdf
+  part_number: PTV09A-4020F-B104
+  fabricante: Bourns
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Potenciometros Lineares” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\15_Potenciometros_Lineares\PTV09A-4020F-B104_Bourns.pdf
+    sha256: 411cdb6a62e61f9c5bc2df76ed64ee21d7bcfbee035c1ba36beff08c43f28558
+    situacao: ok
+    nota: PDF local
+- grupo: 15_Potenciometros_Lineares
+  arquivo: RA20NASD102A_Vishay.pdf
+  part_number: RA20NASD102A
+  fabricante: Vishay
+  tipo: peça
+  categoria: null
+  url: https://www.vishay.com/docs/32001/ra20.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: grupo “Potenciometros Lineares” ainda sem esquema de categoria
+- grupo: 16_Capacitores
+  arquivo: Serie_B32922_X2_TDK.pdf
+  part_number: B32922 X2
+  fabricante: TDK
+  tipo: série
+  categoria: null
+  url: https://www.tdk-electronics.tdk.com/inf/20/20/db/fc_2009/MKP_B32921_928.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: grupo “Capacitores” ainda sem esquema de categoria
+- grupo: 16_Capacitores
+  arquivo: Serie_K_100nF_Vishay.pdf
+  part_number: K 100nF
+  fabricante: Vishay
+  tipo: série
+  categoria: null
+  sem_categoria: grupo “Capacitores” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\16_Capacitores\Serie_K_100nF_Vishay.pdf
+    sha256: 555cf6e7062fe1de1962ee38c5b8cfcff0c9cab469d563599ec6505b70485457
+    situacao: ok
+    nota: PDF local
+- grupo: 16_Capacitores
+  arquivo: Serie_K_10pF-1nF_Vishay.pdf
+  part_number: K 10pF-1nF
+  fabricante: Vishay
+  tipo: série
+  categoria: null
+  sem_categoria: grupo “Capacitores” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\16_Capacitores\Serie_K_10pF-1nF_Vishay.pdf
+    sha256: 555cf6e7062fe1de1962ee38c5b8cfcff0c9cab469d563599ec6505b70485457
+    situacao: ok
+    nota: PDF local
+- grupo: 16_Capacitores
+  arquivo: Serie_LGU_470uF_400V_Nichicon.pdf
+  part_number: LGU 470uF 400V
+  fabricante: Nichicon
+  tipo: série
+  categoria: null
+  url: https://www.nichicon.co.jp/english/series_items/tech_pdf/e-lgu.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: grupo “Capacitores” ainda sem esquema de categoria
+- grupo: 16_Capacitores
+  arquivo: Serie_MKP4_WIMA.pdf
+  part_number: MKP4
+  fabricante: WIMA
+  tipo: série
+  categoria: null
+  sem_categoria: grupo “Capacitores” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\16_Capacitores\Serie_MKP4_WIMA.pdf
+    sha256: 0ed7b6f614910b8375a84639d14ae995fa58c80ec614b3e129ca32ee3a7753f7
+    situacao: ok
+    nota: PDF local
+- grupo: 16_Capacitores
+  arquivo: Serie_MKS2_WIMA.pdf
+  part_number: MKS2
+  fabricante: WIMA
+  tipo: série
+  categoria: null
+  sem_categoria: grupo “Capacitores” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\16_Capacitores\Serie_MKS2_WIMA.pdf
+    sha256: 2a64392db00b639b6d0fca1d9e1a3aa38c1a5138ca6796a713914a9918d05fe9
+    situacao: ok
+    nota: PDF local
+- grupo: 16_Capacitores
+  arquivo: Serie_TAP_10uF_35V_Kyocera_AVX.pdf
+  part_number: TAP 10uF 35V
+  fabricante: Kyocera AVX
+  tipo: série
+  categoria: null
+  sem_categoria: grupo “Capacitores” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\16_Capacitores\Serie_TAP_10uF_35V_Kyocera_AVX.pdf
+    sha256: eca2050b3c46f8cf1504a72840e4b8ef86408edc76582d15f6a38d11e168ee8a
+    situacao: ok
+    nota: PDF local
+- grupo: 16_Capacitores
+  arquivo: Serie_UHE_1000uF_35V_Nichicon.pdf
+  part_number: UHE 1000uF 35V
+  fabricante: Nichicon
+  tipo: série
+  categoria: null
+  url: https://www.nichicon.co.jp/english/series_items/tech_pdf/e-uhe.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: grupo “Capacitores” ainda sem esquema de categoria
+- grupo: 16_Capacitores
+  arquivo: Serie_UVR_100uF_50V_Nichicon.pdf
+  part_number: UVR 100uF 50V
+  fabricante: Nichicon
+  tipo: série
+  categoria: null
+  url: https://www.nichicon.co.jp/english/series_items/tech_pdf/e-uvr.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: grupo “Capacitores” ainda sem esquema de categoria
+- grupo: 16_Capacitores
+  arquivo: Serie_UVR_10uF_50V_Nichicon.pdf
+  part_number: UVR 10uF 50V
+  fabricante: Nichicon
+  tipo: série
+  categoria: null
+  url: https://www.nichicon.co.jp/english/series_items/tech_pdf/e-uvr.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: grupo “Capacitores” ainda sem esquema de categoria
+- grupo: 17_Indutores_Transformadores_e_Magneticos
+  arquivo: Serie_2100LL_Bourns.pdf
+  part_number: 2100LL
+  fabricante: Bourns
+  tipo: série
+  categoria: null
+  sem_categoria: grupo “Indutores Transformadores e Magneticos” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\17_Indutores_Transformadores_e_Magneticos\Serie_2100LL_Bourns.pdf
+    sha256: 25b6d39c01aeae9f1a9e424d4271a700b1438551f00fb8a86fa09f0967fb7c9e
+    situacao: ok
+    nota: PDF local
+- grupo: 17_Indutores_Transformadores_e_Magneticos
+  arquivo: Serie_2200LL_Bourns.pdf
+  part_number: 2200LL
+  fabricante: Bourns
+  tipo: série
+  categoria: null
+  sem_categoria: grupo “Indutores Transformadores e Magneticos” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\17_Indutores_Transformadores_e_Magneticos\Serie_2200LL_Bourns.pdf
+    sha256: 469a1f9b88bd7e7541ea36abc70f968da654ee591913c1c77095dee3da91d4cd
+    situacao: ok
+    nota: PDF local
+- grupo: 17_Indutores_Transformadores_e_Magneticos
+  arquivo: Serie_78F_Bourns.pdf
+  part_number: 78F
+  fabricante: Bourns
+  tipo: série
+  categoria: null
+  url: https://www.bourns.com/docs/Product-Datasheets/78F.pdf
+  link:
+    situacao: bloqueado
+    verificado_em: '2026-11-15'
+    nota: 'o site recusa o download automático (HTTP 403): baixe pelo navegador e envie o PDF'
+  sem_categoria: grupo “Indutores Transformadores e Magneticos” ainda sem esquema de categoria
+- grupo: 17_Indutores_Transformadores_e_Magneticos
+  arquivo: Serie_B82721_TDK.pdf
+  part_number: B82721
+  fabricante: TDK
+  tipo: série
+  categoria: null
+  url: https://www.tdk-electronics.tdk.com/inf/30/db/ind_2008/b82721a_k.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: grupo “Indutores Transformadores e Magneticos” ainda sem esquema de categoria
+- grupo: 17_Indutores_Transformadores_e_Magneticos
+  arquivo: Nucleo_ETD34_N87_TDK.pdf
+  part_number: ETD34 N87
+  fabricante: TDK
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Indutores Transformadores e Magneticos” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\17_Indutores_Transformadores_e_Magneticos\Nucleo_ETD34_N87_TDK.pdf
+    sha256: 0ebca254f0485d5b2c4d8ef87420c9d36c8e31a84fbc6f5ad7039ad3de08137a
+    situacao: ok
+    nota: PDF local
+- grupo: 17_Indutores_Transformadores_e_Magneticos
+  arquivo: PE-63587NL_Pulse.pdf
+  part_number: PE-63587NL
+  fabricante: Pulse
+  tipo: peça
+  categoria: null
+  url: https://productfinder.pulseelectronics.com/api/open/part-attachments/datasheet/PE-63587NL
+  link:
+    situacao: indisponivel
+    verificado_em: '2026-11-15'
+    nota: 'sem resposta válida (URLError: <urlopen error timed out>)'
+  sem_categoria: grupo “Indutores Transformadores e Magneticos” ainda sem esquema de categoria
+- grupo: 17_Indutores_Transformadores_e_Magneticos
+  arquivo: Serie_RLB0914_Bourns.pdf
+  part_number: RLB0914
+  fabricante: Bourns
+  tipo: série
+  categoria: null
+  url: https://www.bourns.com/docs/Product-Datasheets/RLB0914.pdf
+  link:
+    situacao: bloqueado
+    verificado_em: '2026-11-15'
+    nota: 'o site recusa o download automático (HTTP 403): baixe pelo navegador e envie o PDF'
+  sem_categoria: grupo “Indutores Transformadores e Magneticos” ainda sem esquema de categoria
+- grupo: 17_Indutores_Transformadores_e_Magneticos
+  arquivo: Serie_SRR1260_Bourns.pdf
+  part_number: SRR1260
+  fabricante: Bourns
+  tipo: série
+  categoria: null
+  sem_categoria: grupo “Indutores Transformadores e Magneticos” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\17_Indutores_Transformadores_e_Magneticos\Serie_SRR1260_Bourns.pdf
+    sha256: 63df6a6f7b86505210bf5ceb5a374ddbccfabf002331b3cc95877dc1b38b1e5f
+    situacao: ok
+    nota: PDF local
+- grupo: 17_Indutores_Transformadores_e_Magneticos
+  arquivo: Nucleo_T106-26_Micrometals.pdf
+  part_number: T106-26
+  fabricante: Micrometals
+  tipo: peça
+  categoria: null
+  url: https://www.micrometals.com/images/downloads/QPL/T106-26.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: grupo “Indutores Transformadores e Magneticos” ainda sem esquema de categoria
+- grupo: 17_Indutores_Transformadores_e_Magneticos
+  arquivo: Serie_VPT24-1040_Triad.pdf
+  part_number: VPT24-1040
+  fabricante: Triad
+  tipo: série
+  categoria: null
+  sem_categoria: grupo “Indutores Transformadores e Magneticos” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\17_Indutores_Transformadores_e_Magneticos\Serie_VPT24-1040_Triad.pdf
+    sha256: 31bb681e022955d7adae44137fe40dd63af6ad757738d736a42a02e6bdc52900
+    situacao: ok
+    nota: PDF local
+- grupo: 18_Termistores_PTC_NTC_e_Varistores
+  arquivo: B57164K0103J000_TDK.pdf
+  part_number: B57164K0103J000
+  fabricante: TDK
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Termistores PTC NTC e Varistores” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\18_Termistores_PTC_NTC_e_Varistores\B57164K0103J000_TDK.pdf
+    sha256: bb6a370610520239a32dc9506ee0538d10302e0ab95aae81442ec318c7d2e632
+    situacao: ok
+    nota: PDF local
+- grupo: 18_Termistores_PTC_NTC_e_Varistores
+  arquivo: B59850C0120A070_TDK.pdf
+  part_number: B59850C0120A070
+  fabricante: TDK
+  tipo: peça
+  categoria: null
+  url: https://www.tdk-electronics.tdk.com/inf/55/db/ptc/PTC_Limit_Sensors_SMD_Leaded.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: grupo “Termistores PTC NTC e Varistores” ainda sem esquema de categoria
+- grupo: 18_Termistores_PTC_NTC_e_Varistores
+  arquivo: KTY81-110_NXP.pdf
+  part_number: KTY81-110
+  fabricante: NXP
+  tipo: peça
+  categoria: null
+  url: https://www.nxp.com/docs/en/data-sheet/KTY81_SER.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-15'
+    nota: PDF acessível
+  sem_categoria: grupo “Termistores PTC NTC e Varistores” ainda sem esquema de categoria
+- grupo: 18_Termistores_PTC_NTC_e_Varistores
+  arquivo: NTC_10D-11_TDK.pdf
+  part_number: NTC 10D-11
+  fabricante: TDK
+  tipo: peça
+  categoria: null
+  url: https://www.tdk-electronics.tdk.com/inf/50/db/icl_16/NTC_ICL_S153.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: grupo “Termistores PTC NTC e Varistores” ainda sem esquema de categoria
+- grupo: 18_Termistores_PTC_NTC_e_Varistores
+  arquivo: NTCLE100E3103JB0_Vishay.pdf
+  part_number: NTCLE100E3103JB0
+  fabricante: Vishay
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Termistores PTC NTC e Varistores” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\18_Termistores_PTC_NTC_e_Varistores\NTCLE100E3103JB0_Vishay.pdf
+    sha256: f9d6153738198dc705ed681c3b55e70a6571f8fee13a4ed7b2b41e49973cb9c9
+    situacao: ok
+    nota: PDF local
+- grupo: 18_Termistores_PTC_NTC_e_Varistores
+  arquivo: RXEF050_Littelfuse.pdf
+  part_number: RXEF050
+  fabricante: Littelfuse
+  tipo: peça
+  categoria: null
+  url: https://www.littelfuse.com/media?resourcetype=datasheets&itemid=8a4b2b10-08e4-4a22-9f43-975657e4f82e&filename=littelfuse-poly-switch-rxef-datasheet
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: grupo “Termistores PTC NTC e Varistores” ainda sem esquema de categoria
+- grupo: 18_Termistores_PTC_NTC_e_Varistores
+  arquivo: RXEF110_Littelfuse.pdf
+  part_number: RXEF110
+  fabricante: Littelfuse
+  tipo: peça
+  categoria: null
+  url: https://www.littelfuse.com/media?resourcetype=datasheets&itemid=8a4b2b10-08e4-4a22-9f43-975657e4f82e&filename=littelfuse-poly-switch-rxef-datasheet
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: grupo “Termistores PTC NTC e Varistores” ainda sem esquema de categoria
+- grupo: 18_Termistores_PTC_NTC_e_Varistores
+  arquivo: S10K130_TDK.pdf
+  part_number: S10K130
+  fabricante: TDK
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Termistores PTC NTC e Varistores” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\18_Termistores_PTC_NTC_e_Varistores\S10K130_TDK.pdf
+    sha256: 0f741b20f56ee3e323b2dec95805ea0c2ddcb559dee67d6abf0c6ca34046db1f
+    situacao: ok
+    nota: 'PDF local; “S10K130” não aparece nas 3 primeiras páginas: confira se é o documento certo'
+- grupo: 18_Termistores_PTC_NTC_e_Varistores
+  arquivo: S14K275_TDK.pdf
+  part_number: S14K275
+  fabricante: TDK
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Termistores PTC NTC e Varistores” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\18_Termistores_PTC_NTC_e_Varistores\S14K275_TDK.pdf
+    sha256: 0f741b20f56ee3e323b2dec95805ea0c2ddcb559dee67d6abf0c6ca34046db1f
+    situacao: ok
+    nota: 'PDF local; “S14K275” não aparece nas 3 primeiras páginas: confira se é o documento certo'
+- grupo: 18_Termistores_PTC_NTC_e_Varistores
+  arquivo: S20K385_TDK.pdf
+  part_number: S20K385
+  fabricante: TDK
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Termistores PTC NTC e Varistores” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\18_Termistores_PTC_NTC_e_Varistores\S20K385_TDK.pdf
+    sha256: 0f741b20f56ee3e323b2dec95805ea0c2ddcb559dee67d6abf0c6ca34046db1f
+    situacao: ok
+    nota: 'PDF local; “S20K385” não aparece nas 3 primeiras páginas: confira se é o documento certo'
+- grupo: 19_Fusiveis_e_Protecao_Sobrecorrente
+  arquivo: Serie_170M_Eaton.pdf
+  part_number: 170M
+  fabricante: Eaton
+  tipo: série
+  categoria: null
+  url: https://www.eaton.com/content/dam/eaton/products/electrical-circuit-protection/fuses/data-sheets/bus-ele-ds-170m-square-body.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: grupo “Fusiveis e Protecao Sobrecorrente” ainda sem esquema de categoria
+- grupo: 19_Fusiveis_e_Protecao_Sobrecorrente
+  arquivo: Serie_215_Littelfuse.pdf
+  part_number: '215'
+  fabricante: Littelfuse
+  tipo: série
+  categoria: null
+  url: https://www.littelfuse.com/media?resourcetype=datasheets&itemid=3e503c13-8573-4f7c-8002-001188241401&filename=littelfuse-fuse-215-datasheet
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: grupo “Fusiveis e Protecao Sobrecorrente” ainda sem esquema de categoria
+- grupo: 19_Fusiveis_e_Protecao_Sobrecorrente
+  arquivo: Serie_217_Littelfuse.pdf
+  part_number: '217'
+  fabricante: Littelfuse
+  tipo: série
+  categoria: null
+  url: https://www.littelfuse.com/media?resourcetype=datasheets&itemid=940e6002-0255-43c9-9431-208568621401&filename=littelfuse-fuse-217-datasheet
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: grupo “Fusiveis e Protecao Sobrecorrente” ainda sem esquema de categoria
+- grupo: 19_Fusiveis_e_Protecao_Sobrecorrente
+  arquivo: Serie_218_Littelfuse.pdf
+  part_number: '218'
+  fabricante: Littelfuse
+  tipo: série
+  categoria: null
+  url: https://www.littelfuse.com/media?resourcetype=datasheets&itemid=70001c13-8573-4f7c-8002-001188241401&filename=littelfuse-fuse-218-datasheet
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: grupo “Fusiveis e Protecao Sobrecorrente” ainda sem esquema de categoria
+- grupo: 19_Fusiveis_e_Protecao_Sobrecorrente
+  arquivo: Serie_257_Littelfuse.pdf
+  part_number: '257'
+  fabricante: Littelfuse
+  tipo: série
+  categoria: null
+  url: https://www.littelfuse.com/media?resourcetype=datasheets&itemid=5f6e7d8c-9b0a-1c2d-3e4f-5a6b7c8d9e0f&filename=littelfuse-fuse-257-datasheet
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: grupo “Fusiveis e Protecao Sobrecorrente” ainda sem esquema de categoria
+- grupo: 19_Fusiveis_e_Protecao_Sobrecorrente
+  arquivo: Serie_312_Littelfuse.pdf
+  part_number: '312'
+  fabricante: Littelfuse
+  tipo: série
+  categoria: null
+  url: https://www.littelfuse.com/media?resourcetype=datasheets&itemid=2c3b3c13-8573-4f7c-8002-001188241401&filename=littelfuse-fuse-312-datasheet
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: grupo “Fusiveis e Protecao Sobrecorrente” ainda sem esquema de categoria
+- grupo: 19_Fusiveis_e_Protecao_Sobrecorrente
+  arquivo: Serie_313_Littelfuse.pdf
+  part_number: '313'
+  fabricante: Littelfuse
+  tipo: série
+  categoria: null
+  url: https://www.littelfuse.com/media?resourcetype=datasheets&itemid=1a2b3c13-8573-4f7c-8002-001188241401&filename=littelfuse-fuse-313-datasheet
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: grupo “Fusiveis e Protecao Sobrecorrente” ainda sem esquema de categoria
+- grupo: 19_Fusiveis_e_Protecao_Sobrecorrente
+  arquivo: Serie_392_Littelfuse.pdf
+  part_number: '392'
+  fabricante: Littelfuse
+  tipo: série
+  categoria: null
+  url: https://www.littelfuse.com/media?resourcetype=datasheets&itemid=9a8b7c6d-5e4f-3a2b-1c0d-9e8f7a6b5c4d&filename=littelfuse-fuse-392-datasheet
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: grupo “Fusiveis e Protecao Sobrecorrente” ainda sem esquema de categoria
+- grupo: 19_Fusiveis_e_Protecao_Sobrecorrente
+  arquivo: Serie_60R_Littelfuse.pdf
+  part_number: 60R
+  fabricante: Littelfuse
+  tipo: série
+  categoria: null
+  url: https://www.littelfuse.com/media?resourcetype=datasheets&itemid=7c8d9e0f-1a2b-3c4d-5e6f-7a8b9c0d1e2f&filename=littelfuse-polyswitch-60r-datasheet
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: grupo “Fusiveis e Protecao Sobrecorrente” ainda sem esquema de categoria
+- grupo: 19_Fusiveis_e_Protecao_Sobrecorrente
+  arquivo: Serie_SF-E_Schott.pdf
+  part_number: SF-E
+  fabricante: Schott
+  tipo: série
+  categoria: null
+  url: https://www.schott.com/-/media/project/onex/shared/us/electronics-packaging/thermal-cutoffs/sf-e-series-datasheet.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: grupo “Fusiveis e Protecao Sobrecorrente” ainda sem esquema de categoria
+- grupo: 20_Reles_Eletromecanicos_e_SSR
+  arquivo: 40.52.9.012.0000_Finder.pdf
+  part_number: 40.52.9.012.0000
+  fabricante: Finder
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Reles Eletromecanicos e SSR” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\20_Reles_Eletromecanicos_e_SSR\40.52.9.012.0000_Finder.pdf
+    sha256: 6b79746957d82d1aeca0ce2bd7d8c91643e067a0e50d3ee00853ebe642341657
+    situacao: ok
+    nota: 'PDF local; “40.52.9.012.0000” não aparece nas 3 primeiras páginas: confira se é o documento certo'
+- grupo: 20_Reles_Eletromecanicos_e_SSR
+  arquivo: CPC1017N_IXYS.pdf
+  part_number: CPC1017N
+  fabricante: IXYS
+  tipo: peça
+  categoria: null
+  url: https://www.littelfuse.com/media?resourcetype=datasheets&itemid=4d5e6f7a-8b9c-0d1e-2f3a-4b5c6d7e8f9a&filename=littelfuse-ixys-cpc1017n-datasheet
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: grupo “Reles Eletromecanicos e SSR” ainda sem esquema de categoria
+- grupo: 20_Reles_Eletromecanicos_e_SSR
+  arquivo: D2425-10_Crydom.pdf
+  part_number: D2425-10
+  fabricante: Crydom
+  tipo: peça
+  categoria: null
+  url: https://www.sensata.com/sites/default/files/a/sensata-series-1-ac-panel-mount-datasheet.pdf
+  link:
+    situacao: bloqueado
+    verificado_em: '2026-11-15'
+    nota: 'o site recusa o download automático (HTTP 403): baixe pelo navegador e envie o PDF'
+  sem_categoria: grupo “Reles Eletromecanicos e SSR” ainda sem esquema de categoria
+- grupo: 20_Reles_Eletromecanicos_e_SSR
+  arquivo: G3MB-202P-DC5_Omron.pdf
+  part_number: G3MB-202P-DC5
+  fabricante: Omron
+  tipo: peça
+  categoria: null
+  url: https://omronfs.omron.com/en_US/ecb/products/pdf/en-g3mb.pdf
+  link:
+    situacao: bloqueado
+    verificado_em: '2026-11-15'
+    nota: 'o site recusa o download automático (HTTP 403): baixe pelo navegador e envie o PDF'
+  sem_categoria: grupo “Reles Eletromecanicos e SSR” ainda sem esquema de categoria
+- grupo: 20_Reles_Eletromecanicos_e_SSR
+  arquivo: G5LE-1-DC12_Omron.pdf
+  part_number: G5LE-1-DC12
+  fabricante: Omron
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Reles Eletromecanicos e SSR” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\20_Reles_Eletromecanicos_e_SSR\G5LE-1-DC12_Omron.pdf
+    sha256: faf3b16409722ace13979dec61565d44942894d59509fdaa68a408ed2eba1827
+    situacao: ok
+    nota: PDF local
+- grupo: 20_Reles_Eletromecanicos_e_SSR
+  arquivo: G5V-1-DC5_Omron.pdf
+  part_number: G5V-1-DC5
+  fabricante: Omron
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Reles Eletromecanicos e SSR” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\20_Reles_Eletromecanicos_e_SSR\G5V-1-DC5_Omron.pdf
+    sha256: 1d264d1ebbd17bd1dbac42133ffbd27d31ced85ad549a8bd28f0381df848dd0f
+    situacao: ok
+    nota: PDF local
+- grupo: 20_Reles_Eletromecanicos_e_SSR
+  arquivo: SRD-05VDC-SL-C_Songle.pdf
+  part_number: SRD-05VDC-SL-C
+  fabricante: Songle
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Reles Eletromecanicos e SSR” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\20_Reles_Eletromecanicos_e_SSR\SRD-05VDC-SL-C_Songle.pdf
+    sha256: 9967e9a62db84c578fc8dc55f0d76fd95777a4c84ad1f2754477f43dac515e46
+    situacao: ok
+    nota: 'PDF local; “SRD-05VDC-SL-C” não aparece nas 3 primeiras páginas: confira se é o documento certo'
+- grupo: 20_Reles_Eletromecanicos_e_SSR
+  arquivo: SSR-25DA_Fotek.pdf
+  part_number: SSR-25DA
+  fabricante: Fotek
+  tipo: peça
+  categoria: null
+  url: https://www.fotek.com.tw/pdf/etc_34.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: grupo “Reles Eletromecanicos e SSR” ainda sem esquema de categoria
+- grupo: 20_Reles_Eletromecanicos_e_SSR
+  arquivo: SSR-25DD_Fotek.pdf
+  part_number: SSR-25DD
+  fabricante: Fotek
+  tipo: peça
+  categoria: null
+  url: https://www.fotek.com.tw/pdf/etc_34.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: grupo “Reles Eletromecanicos e SSR” ainda sem esquema de categoria
+- grupo: 20_Reles_Eletromecanicos_e_SSR
+  arquivo: T9AS1D12-12_TE.pdf
+  part_number: T9AS1D12-12
+  fabricante: TE Connectivity
+  tipo: peça
+  categoria: null
+  url: https://www.te.com/commerce/DocumentDelivery/DDEController?Action=srchrtrv&DocNm=1308242_T9A&DocType=DS&DocLang=EN
+  link:
+    situacao: indisponivel
+    verificado_em: '2026-11-15'
+    nota: sem resposta válida (500)
+  sem_categoria: grupo “Reles Eletromecanicos e SSR” ainda sem esquema de categoria
+- grupo: 21_CIs_Eletronica_Digital
+  arquivo: 74HC00_TI.pdf
+  part_number: 74HC00
+  fabricante: TI
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “CIs Eletronica Digital” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\21_CIs_Eletronica_Digital\74HC00_TI.pdf
+    sha256: 3d3bdace13c7ebeb542e516ae670fc9d7b0b551f9d5222579294e330af38c111
+    situacao: ok
+    nota: PDF local
+- grupo: 21_CIs_Eletronica_Digital
+  arquivo: 74HC02_TI.pdf
+  part_number: 74HC02
+  fabricante: TI
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “CIs Eletronica Digital” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\21_CIs_Eletronica_Digital\74HC02_TI.pdf
+    sha256: f64ad49f1186e95c8acfd054d85689416cce3077e8ba8d245997bb677022f3ef
+    situacao: ok
+    nota: PDF local
+- grupo: 21_CIs_Eletronica_Digital
+  arquivo: 74HC04_TI.pdf
+  part_number: 74HC04
+  fabricante: TI
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “CIs Eletronica Digital” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\21_CIs_Eletronica_Digital\74HC04_TI.pdf
+    sha256: a48266c5ce3f22a87a30cd78b0fdb80e99820220534b215a11a9b67a35f41101
+    situacao: ok
+    nota: PDF local
+- grupo: 21_CIs_Eletronica_Digital
+  arquivo: 74HC08_TI.pdf
+  part_number: 74HC08
+  fabricante: TI
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “CIs Eletronica Digital” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\21_CIs_Eletronica_Digital\74HC08_TI.pdf
+    sha256: 0d125beb415972726a34eb93fbb7ce093909319f4252593fab37a7e77541e363
+    situacao: ok
+    nota: PDF local
+- grupo: 21_CIs_Eletronica_Digital
+  arquivo: 74HC14_TI.pdf
+  part_number: 74HC14
+  fabricante: TI
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “CIs Eletronica Digital” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\21_CIs_Eletronica_Digital\74HC14_TI.pdf
+    sha256: 24911ae018ad9bf6f8f069158b8689d0d941e3cde9f48924e2421276ae10e397
+    situacao: ok
+    nota: PDF local
+- grupo: 21_CIs_Eletronica_Digital
+  arquivo: 74HC32_TI.pdf
+  part_number: 74HC32
+  fabricante: TI
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “CIs Eletronica Digital” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\21_CIs_Eletronica_Digital\74HC32_TI.pdf
+    sha256: 18adcf7e59d693f9857a32200c28faf72bc84ac64f619411001bececd4fa96f0
+    situacao: ok
+    nota: PDF local
+- grupo: 21_CIs_Eletronica_Digital
+  arquivo: 74HC74_TI.pdf
+  part_number: 74HC74
+  fabricante: TI
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “CIs Eletronica Digital” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\21_CIs_Eletronica_Digital\74HC74_TI.pdf
+    sha256: a4043d37d693a2997900a0542dd226b9b61285794f3c1a541adb99cc7dcb1ae2
+    situacao: ok
+    nota: PDF local
+- grupo: 21_CIs_Eletronica_Digital
+  arquivo: 74HC86_TI.pdf
+  part_number: 74HC86
+  fabricante: TI
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “CIs Eletronica Digital” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\21_CIs_Eletronica_Digital\74HC86_TI.pdf
+    sha256: 695a554fd72f6e9aaed4650af27c6ba419c6635bb241587f486c70fe564a3906
+    situacao: ok
+    nota: PDF local
+- grupo: 21_CIs_Eletronica_Digital
+  arquivo: CD4017BE_TI.pdf
+  part_number: CD4017BE
+  fabricante: TI
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “CIs Eletronica Digital” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\21_CIs_Eletronica_Digital\CD4017BE_TI.pdf
+    sha256: bbb6f63e1110f9053191d091b179f0032becac857b4e1469a0c4e6616ad74bd5
+    situacao: ok
+    nota: PDF local
+- grupo: 21_CIs_Eletronica_Digital
+  arquivo: CD4511BE_TI.pdf
+  part_number: CD4511BE
+  fabricante: TI
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “CIs Eletronica Digital” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\21_CIs_Eletronica_Digital\CD4511BE_TI.pdf
+    sha256: 455358b096cbbe9e24d49173ecda0c3b0b4999daa15c63d6e41d46b732a3adeb
+    situacao: ok
+    nota: PDF local
+- grupo: 22_Placas_Microcontroladores_e_Desenvolvimento
+  arquivo: Arduino_Nano.pdf
+  part_number: Arduino
+  fabricante: Nano
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Placas Microcontroladores e Desenvolvimento” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\22_Placas_Microcontroladores_e_Desenvolvimento\Arduino_Nano.pdf
+    sha256: 96c7bf83154dfc48bfc5f139d6394e2ce52203a96f1cfaac88d2a86402c7ca3a
+    situacao: ok
+    nota: PDF local
+- grupo: 22_Placas_Microcontroladores_e_Desenvolvimento
+  arquivo: Arduino_Mega_2560.pdf
+  part_number: Arduino Mega
+  fabricante: '2560'
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Placas Microcontroladores e Desenvolvimento” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\22_Placas_Microcontroladores_e_Desenvolvimento\Arduino_Mega_2560.pdf
+    sha256: 6caa5a430d168ec3a47ba72b2108423e7d537775f737e9bf3d29314592e3e1fe
+    situacao: ok
+    nota: PDF local
+- grupo: 22_Placas_Microcontroladores_e_Desenvolvimento
+  arquivo: Arduino_Uno_R3.pdf
+  part_number: Arduino Uno
+  fabricante: R3
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Placas Microcontroladores e Desenvolvimento” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\22_Placas_Microcontroladores_e_Desenvolvimento\Arduino_Uno_R3.pdf
+    sha256: 7f65af3cfa63c602fbab3a44551df533d1934149dff9404121d5f63ca460d496
+    situacao: ok
+    nota: PDF local
+- grupo: 22_Placas_Microcontroladores_e_Desenvolvimento
+  arquivo: ESP32-DevKitC_Espressif.pdf
+  part_number: ESP32-DevKitC
+  fabricante: Espressif
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Placas Microcontroladores e Desenvolvimento” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\22_Placas_Microcontroladores_e_Desenvolvimento\ESP32-DevKitC_Espressif.pdf
+    sha256: fe7dced2f6077f983dcd7df0e72b6f6c8b7b77fd6de2ff1a0efceffe3fd1e1fa
+    situacao: ok
+    nota: PDF local
+- grupo: 22_Placas_Microcontroladores_e_Desenvolvimento
+  arquivo: ESP32-S3-DevKitC-1_Espressif.pdf
+  part_number: ESP32-S3-DevKitC-1
+  fabricante: Espressif
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Placas Microcontroladores e Desenvolvimento” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\22_Placas_Microcontroladores_e_Desenvolvimento\ESP32-S3-DevKitC-1_Espressif.pdf
+    sha256: 2d5a7cb7fd559d8d972bd88db32669c0196d23f22d7afaafb0f63d099b589a3f
+    situacao: ok
+    nota: PDF local
+- grupo: 22_Placas_Microcontroladores_e_Desenvolvimento
+  arquivo: NodeMCU_ESP8266_Espressif.pdf
+  part_number: NodeMCU ESP8266
+  fabricante: Espressif
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Placas Microcontroladores e Desenvolvimento” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\22_Placas_Microcontroladores_e_Desenvolvimento\NodeMCU_ESP8266_Espressif.pdf
+    sha256: 3a038e2fd3040ad06d95d41b16afc8292090339e9f8e728ce46a83db439cecf1
+    situacao: ok
+    nota: 'PDF local; “NodeMCU” não aparece nas 3 primeiras páginas: confira se é o documento certo'
+- grupo: 22_Placas_Microcontroladores_e_Desenvolvimento
+  arquivo: Raspberry_Pi_Pico_RP2040.pdf
+  part_number: Raspberry Pi Pico
+  fabricante: RP2040
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Placas Microcontroladores e Desenvolvimento” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\22_Placas_Microcontroladores_e_Desenvolvimento\Raspberry_Pi_Pico_RP2040.pdf
+    sha256: 757ff485227493b9fcc0c2c96c4dea9de020e1d8b2b11e2aa4f9ee8b25aa89eb
+    situacao: ok
+    nota: PDF local
+- grupo: 22_Placas_Microcontroladores_e_Desenvolvimento
+  arquivo: STM32F103C8T6_STMicro.pdf
+  part_number: STM32F103C8T6
+  fabricante: STMicroelectronics
+  tipo: peça
+  categoria: null
+  url: https://www.st.com/resource/en/datasheet/stm32f103c8.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-15'
+    nota: PDF acessível
+  sem_categoria: grupo “Placas Microcontroladores e Desenvolvimento” ainda sem esquema de categoria
+- grupo: 22_Placas_Microcontroladores_e_Desenvolvimento
+  arquivo: STM32F446RE_Nucleo_STMicro.pdf
+  part_number: STM32F446RE
+  fabricante: STMicroelectronics
+  tipo: peça
+  categoria: null
+  url: https://www.st.com/resource/en/datasheet/stm32f446re.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-15'
+    nota: PDF acessível
+  sem_categoria: grupo “Placas Microcontroladores e Desenvolvimento” ainda sem esquema de categoria
+- grupo: 22_Placas_Microcontroladores_e_Desenvolvimento
+  arquivo: TI_LaunchPad_F28379D.pdf
+  part_number: TI LaunchPad
+  fabricante: F28379D
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Placas Microcontroladores e Desenvolvimento” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\22_Placas_Microcontroladores_e_Desenvolvimento\TI_LaunchPad_F28379D.pdf
+    sha256: 6f6ab0c0a4e2fe6ffb03e8ceb7767f9a0110b9da0f353c8d147646dec367d1d4
+    situacao: ok
+    nota: PDF local
+- grupo: 23_Sensores_Eletricos_Opticos_e_LM35
+  arquivo: A3144_Allegro.pdf
+  part_number: A3144
+  fabricante: Allegro
+  tipo: peça
+  categoria: null
+  url: https://www.mpja.com/download/a3144eul.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: grupo “Sensores Eletricos Opticos e LM35” ainda sem esquema de categoria
+- grupo: 23_Sensores_Eletricos_Opticos_e_LM35
+  arquivo: ACS712_Allegro.pdf
+  part_number: ACS712
+  fabricante: Allegro
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Sensores Eletricos Opticos e LM35” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\23_Sensores_Eletricos_Opticos_e_LM35\ACS712_Allegro.pdf
+    sha256: 21b345f7a98d36947d5562218b0bc730b80609b614e9fc4374f56993011466b9
+    situacao: ok
+    nota: PDF local
+- grupo: 23_Sensores_Eletricos_Opticos_e_LM35
+  arquivo: GL5528_LDR_Token.pdf
+  part_number: GL5528 LDR
+  fabricante: Token
+  tipo: peça
+  categoria: null
+  url: https://www.token.com.tw/pdf/resistor/cds-resistor-gl55.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: grupo “Sensores Eletricos Opticos e LM35” ainda sem esquema de categoria
+- grupo: 23_Sensores_Eletricos_Opticos_e_LM35
+  arquivo: INA219_TI.pdf
+  part_number: INA219
+  fabricante: TI
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Sensores Eletricos Opticos e LM35” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\23_Sensores_Eletricos_Opticos_e_LM35\INA219_TI.pdf
+    sha256: 58004eda854d07478e6fc6f4398c114f60a3bcf18d4877471c7c1a306d1fa1cb
+    situacao: ok
+    nota: PDF local
+- grupo: 23_Sensores_Eletricos_Opticos_e_LM35
+  arquivo: LM35DT_TI.pdf
+  part_number: LM35DT
+  fabricante: TI
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Sensores Eletricos Opticos e LM35” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\23_Sensores_Eletricos_Opticos_e_LM35\LM35DT_TI.pdf
+    sha256: 1f870e659a86c45a6a86d1750f29a17a9655ab23a8f5ee4a5172f4df71fe7608
+    situacao: ok
+    nota: PDF local
+- grupo: 23_Sensores_Eletricos_Opticos_e_LM35
+  arquivo: LM35DZ_TI.pdf
+  part_number: LM35DZ
+  fabricante: TI
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Sensores Eletricos Opticos e LM35” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\23_Sensores_Eletricos_Opticos_e_LM35\LM35DZ_TI.pdf
+    sha256: 1f870e659a86c45a6a86d1750f29a17a9655ab23a8f5ee4a5172f4df71fe7608
+    situacao: ok
+    nota: 'PDF local; “LM35DZ” não aparece nas 3 primeiras páginas: confira se é o documento certo'
+- grupo: 23_Sensores_Eletricos_Opticos_e_LM35
+  arquivo: MPU-6050_TDK_InvenSense.pdf
+  part_number: MPU-6050
+  fabricante: TDK InvenSense
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Sensores Eletricos Opticos e LM35” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\23_Sensores_Eletricos_Opticos_e_LM35\MPU-6050_TDK_InvenSense.pdf
+    sha256: bb8d3920aae6419f580545e00fba19051318d3b6003e81adea9b630706e981b0
+    situacao: invalido
+    nota: 'página HTML salva no lugar do PDF: baixe de novo pelo navegador'
+- grupo: 23_Sensores_Eletricos_Opticos_e_LM35
+  arquivo: SCT-013-000_YHDC.pdf
+  part_number: SCT-013-000
+  fabricante: YHDC
+  tipo: peça
+  categoria: null
+  url: https://www.poweruc.pl/wp-content/uploads/2018/05/SCT013-000_datasheet.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: grupo “Sensores Eletricos Opticos e LM35” ainda sem esquema de categoria
+- grupo: 23_Sensores_Eletricos_Opticos_e_LM35
+  arquivo: TMP36GT9Z_Analog_Dev.pdf
+  part_number: TMP36GT9Z
+  fabricante: Analog Devices
+  tipo: peça
+  categoria: null
+  url: https://www.analog.com/media/en/technical-documentation/data-sheets/TMP35_36_37.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-15'
+    nota: PDF acessível
+  sem_categoria: grupo “Sensores Eletricos Opticos e LM35” ainda sem esquema de categoria
+- grupo: 23_Sensores_Eletricos_Opticos_e_LM35
+  arquivo: ZMPT101B_Zeming.pdf
+  part_number: ZMPT101B
+  fabricante: Zeming
+  tipo: peça
+  categoria: null
+  url: https://www.52solution.com/data/attachment/201908/21/zmpt101b.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: grupo “Sensores Eletricos Opticos e LM35” ainda sem esquema de categoria
+- grupo: 24_Sensores_Temperatura_Umidade_Pressao_Vazao_Nivel
+  arquivo: BME280_Bosch.pdf
+  part_number: BME280
+  fabricante: Bosch
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Sensores Temperatura Umidade Pressao Vazao Nivel” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\24_Sensores_Temperatura_Umidade_Pressao_Vazao_Nivel\BME280_Bosch.pdf
+    sha256: a2ccdb449fec94380742fe8eec851a11d9bd4142252d332b34682b4deecd7d89
+    situacao: ok
+    nota: PDF local
+- grupo: 24_Sensores_Temperatura_Umidade_Pressao_Vazao_Nivel
+  arquivo: BMP280_Bosch.pdf
+  part_number: BMP280
+  fabricante: Bosch
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Sensores Temperatura Umidade Pressao Vazao Nivel” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\24_Sensores_Temperatura_Umidade_Pressao_Vazao_Nivel\BMP280_Bosch.pdf
+    sha256: 473ff27d9df698b4757e36b36209f83b9f637b592c999d5fabe2a9453a488da6
+    situacao: ok
+    nota: PDF local
+- grupo: 24_Sensores_Temperatura_Umidade_Pressao_Vazao_Nivel
+  arquivo: DHT11_Aosong.pdf
+  part_number: DHT11
+  fabricante: Aosong
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Sensores Temperatura Umidade Pressao Vazao Nivel” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\24_Sensores_Temperatura_Umidade_Pressao_Vazao_Nivel\DHT11_Aosong.pdf
+    sha256: 19c1eb6121285d2a92905e71dd6d6f1d2c8c8be3f16a3edcea9beb6ceca54967
+    situacao: invalido
+    nota: 'página HTML salva no lugar do PDF: baixe de novo pelo navegador'
+- grupo: 24_Sensores_Temperatura_Umidade_Pressao_Vazao_Nivel
+  arquivo: DHT22_AM2302_Aosong.pdf
+  part_number: DHT22 AM2302
+  fabricante: Aosong
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Sensores Temperatura Umidade Pressao Vazao Nivel” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\24_Sensores_Temperatura_Umidade_Pressao_Vazao_Nivel\DHT22_AM2302_Aosong.pdf
+    sha256: c91441a385cdf58f5f0ae50b194f294d5d1f0faeaac9a010efacb7ecf21be448
+    situacao: ok
+    nota: PDF local
+- grupo: 24_Sensores_Temperatura_Umidade_Pressao_Vazao_Nivel
+  arquivo: DS18B20_Analog_Dev.pdf
+  part_number: DS18B20
+  fabricante: Analog Devices
+  tipo: peça
+  categoria: null
+  url: https://www.analog.com/media/en/technical-documentation/data-sheets/DS18B20.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-15'
+    nota: PDF acessível
+  sem_categoria: grupo “Sensores Temperatura Umidade Pressao Vazao Nivel” ainda sem esquema de categoria
+- grupo: 24_Sensores_Temperatura_Umidade_Pressao_Vazao_Nivel
+  arquivo: HC-SR04_SparkFun.pdf
+  part_number: HC-SR04
+  fabricante: SparkFun
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Sensores Temperatura Umidade Pressao Vazao Nivel” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\24_Sensores_Temperatura_Umidade_Pressao_Vazao_Nivel\HC-SR04_SparkFun.pdf
+    sha256: 4ebdc3e1f70d84a1ca856d8fcd7f8b1f9e548a94e4012cd86d14ca0b30543b06
+    situacao: ok
+    nota: PDF local
+- grupo: 24_Sensores_Temperatura_Umidade_Pressao_Vazao_Nivel
+  arquivo: MAX6675_Analog_Dev.pdf
+  part_number: MAX6675
+  fabricante: Analog Devices
+  tipo: peça
+  categoria: null
+  url: https://www.analog.com/media/en/technical-documentation/data-sheets/MAX6675.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-15'
+    nota: PDF acessível
+  sem_categoria: grupo “Sensores Temperatura Umidade Pressao Vazao Nivel” ainda sem esquema de categoria
+- grupo: 24_Sensores_Temperatura_Umidade_Pressao_Vazao_Nivel
+  arquivo: MPX5700DP_NXP.pdf
+  part_number: MPX5700DP
+  fabricante: NXP
+  tipo: peça
+  categoria: null
+  url: https://www.nxp.com/docs/en/data-sheet/MPX5700.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-15'
+    nota: PDF acessível
+  sem_categoria: grupo “Sensores Temperatura Umidade Pressao Vazao Nivel” ainda sem esquema de categoria
+- grupo: 24_Sensores_Temperatura_Umidade_Pressao_Vazao_Nivel
+  arquivo: SHT31-D_Sensirion.pdf
+  part_number: SHT31-D
+  fabricante: Sensirion
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Sensores Temperatura Umidade Pressao Vazao Nivel” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\24_Sensores_Temperatura_Umidade_Pressao_Vazao_Nivel\SHT31-D_Sensirion.pdf
+    sha256: 095b1853e7f4328f5897c9ca6c392a7dd8b0202eda66b0a2629f9cb840dd496d
+    situacao: ok
+    nota: 'PDF local; “SHT31-D” não aparece nas 3 primeiras páginas: confira se é o documento certo'
+- grupo: 24_Sensores_Temperatura_Umidade_Pressao_Vazao_Nivel
+  arquivo: YF-S201_Seeed_Studio.pdf
+  part_number: YF-S201
+  fabricante: Seeed Studio
+  tipo: peça
+  categoria: null
+  url: https://www.hobbytronics.co.uk/datasheets/sensors/YF-S201.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: grupo “Sensores Temperatura Umidade Pressao Vazao Nivel” ainda sem esquema de categoria
+- grupo: 25_Perifericos_Drivers_e_Interfaces
+  arquivo: 74HC595_TI.pdf
+  part_number: 74HC595
+  fabricante: TI
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Perifericos Drivers e Interfaces” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\25_Perifericos_Drivers_e_Interfaces\74HC595_TI.pdf
+    sha256: 5a6a5aeecc79a2d4bf4e15aae681e0f99cb13b54d6524be253a6844c898eeb0d
+    situacao: ok
+    nota: PDF local
+- grupo: 25_Perifericos_Drivers_e_Interfaces
+  arquivo: ADS1115_TI.pdf
+  part_number: ADS1115
+  fabricante: TI
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Perifericos Drivers e Interfaces” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\25_Perifericos_Drivers_e_Interfaces\ADS1115_TI.pdf
+    sha256: eefff4d412ce2dcd7e659f47238edc9b2fa02e5971f2625af730502033701834
+    situacao: ok
+    nota: PDF local
+- grupo: 25_Perifericos_Drivers_e_Interfaces
+  arquivo: BSS138_onsemi.pdf
+  part_number: BSS138
+  fabricante: onsemi
+  tipo: peça
+  categoria: mosfet.n
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\25_Perifericos_Drivers_e_Interfaces\BSS138_onsemi.pdf
+    sha256: b526741d458af7ca894050acbeae22f21006a0409b5e42a37757af7f4d599a0e
+    situacao: ok
+    nota: PDF local
+- grupo: 25_Perifericos_Drivers_e_Interfaces
+  arquivo: HD44780_Hitachi.pdf
+  part_number: HD44780
+  fabricante: Hitachi
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Perifericos Drivers e Interfaces” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\25_Perifericos_Drivers_e_Interfaces\HD44780_Hitachi.pdf
+    sha256: 4324d67ec14fc8e7ba8cf7db7256749c9b80b94b3f8bedfa614a0d2839c7dea9
+    situacao: ok
+    nota: PDF local
+- grupo: 25_Perifericos_Drivers_e_Interfaces
+  arquivo: L298N_STMicro.pdf
+  part_number: L298N
+  fabricante: STMicroelectronics
+  tipo: peça
+  categoria: null
+  url: https://www.st.com/resource/en/datasheet/l298.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-15'
+    nota: PDF acessível
+  sem_categoria: grupo “Perifericos Drivers e Interfaces” ainda sem esquema de categoria
+- grupo: 25_Perifericos_Drivers_e_Interfaces
+  arquivo: MAX485_Analog_Dev.pdf
+  part_number: MAX485
+  fabricante: Analog Devices
+  tipo: peça
+  categoria: null
+  url: https://www.analog.com/media/en/technical-documentation/data-sheets/MAX1487-MAX491.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-15'
+    nota: PDF acessível
+  sem_categoria: grupo “Perifericos Drivers e Interfaces” ainda sem esquema de categoria
+- grupo: 25_Perifericos_Drivers_e_Interfaces
+  arquivo: MCP4725_Microchip.pdf
+  part_number: MCP4725
+  fabricante: Microchip
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Perifericos Drivers e Interfaces” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\25_Perifericos_Drivers_e_Interfaces\MCP4725_Microchip.pdf
+    sha256: 746d95dfdaaf0a9da4698e2c0a201ac2736d8589a752ab0dcd903f4a1603077d
+    situacao: ok
+    nota: PDF local
+- grupo: 25_Perifericos_Drivers_e_Interfaces
+  arquivo: PCF8574_TI.pdf
+  part_number: PCF8574
+  fabricante: TI
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Perifericos Drivers e Interfaces” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\25_Perifericos_Drivers_e_Interfaces\PCF8574_TI.pdf
+    sha256: 6625fa40247dc17f8526554783838e194f2ee7ecbab3e6443ad9b3603726e2d8
+    situacao: ok
+    nota: PDF local
+- grupo: 25_Perifericos_Drivers_e_Interfaces
+  arquivo: SSD1306_Solomon_Systech.pdf
+  part_number: SSD1306
+  fabricante: Solomon Systech
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Perifericos Drivers e Interfaces” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\25_Perifericos_Drivers_e_Interfaces\SSD1306_Solomon_Systech.pdf
+    sha256: d55f875357de96d8c0e92153a389acc57e8bab4db7a0687f2e0bd3362f0036f6
+    situacao: ok
+    nota: PDF local
+- grupo: 25_Perifericos_Drivers_e_Interfaces
+  arquivo: ULN2003A_TI.pdf
+  part_number: ULN2003A
+  fabricante: TI
+  tipo: peça
+  categoria: null
+  sem_categoria: grupo “Perifericos Drivers e Interfaces” ainda sem esquema de categoria
+  local:
+    caminho: D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica\25_Perifericos_Drivers_e_Interfaces\ULN2003A_TI.pdf
+    sha256: ba83a908675b45c41e84fb06ea390efb10f4b7a358edfee656f87a968dd1d62f
+    situacao: ok
+    nota: PDF local
+- grupo: 26_Temperatura_RTD_e_Termopar
+  arquivo: Catalogo-Termopares-ECIL_ECIL.pdf
+  part_number: Catalogo-Termopares-ECIL
+  fabricante: ECIL
+  tipo: peça
+  categoria: null
+  url: https://www.ecil.com.br/wp-content/uploads/2021/05/Catalogo-Termopares-ECIL.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 26_Temperatura_RTD_e_Termopar
+  arquivo: Catalogo-Termopares-ECIL_ECIL.pdf
+  part_number: Catalogo-Termopares-ECIL
+  fabricante: ECIL
+  tipo: peça
+  categoria: null
+  url: https://www.ecil.com.br/wp-content/uploads/2021/05/Catalogo-Termopares-ECIL.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 26_Temperatura_RTD_e_Termopar
+  arquivo: RTD-Catalog_Minco.pdf
+  part_number: RTD-Catalog
+  fabricante: Minco
+  tipo: peça
+  categoria: null
+  url: https://www.minco.com/wp-content/uploads/2020/08/RTD-Catalog.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 26_Temperatura_RTD_e_Termopar
+  arquivo: RTD-Catalog_Minco.pdf
+  part_number: RTD-Catalog
+  fabricante: Minco
+  tipo: peça
+  categoria: null
+  url: https://www.minco.com/wp-content/uploads/2020/08/RTD-Catalog.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 26_Temperatura_RTD_e_Termopar
+  arquivo: S55720-S102_Siemens.pdf
+  part_number: S55720-S102
+  fabricante: Siemens
+  tipo: peça
+  categoria: null
+  url: https://hit.sbt.siemens.com/RWD/app.aspx?RC=HQEU&lang=en&MODULE=Catalog&ACTION=ShowProduct&KEY=S55720-S102
+  link:
+    situacao: indisponivel
+    verificado_em: '2026-11-15'
+    nota: 'sem resposta válida (URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed:
+      unable to get local issuer certificate (_ssl.c:1010)>)'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 26_Temperatura_RTD_e_Termopar
+  arquivo: Sec03_MI_Thermocouples_Pyromation.pdf
+  part_number: Sec03 MI Thermocouples
+  fabricante: Pyromation
+  tipo: peça
+  categoria: null
+  url: https://www.pyromation.com/Downloads/Catalog/Sec03_MI_Thermocouples.pdf
+  link:
+    situacao: indisponivel
+    verificado_em: '2026-11-15'
+    nota: 'sem resposta válida (URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed:
+      unable to get local issuer certificate (_ssl.c:1010)>)'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 26_Temperatura_RTD_e_Termopar
+  arquivo: TI00137T09EN_0213_EndressHauser.pdf
+  part_number: TI00137T09EN 0213
+  fabricante: Endress+Hauser
+  tipo: peça
+  categoria: null
+  url: https://portal.endress.com/wa001/dla/5000516/0935/000/02/TI00137T09EN_0213.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 26_Temperatura_RTD_e_Termopar
+  arquivo: TI00138T09EN_0213_EndressHauser.pdf
+  part_number: TI00138T09EN 0213
+  fabricante: Endress+Hauser
+  tipo: peça
+  categoria: null
+  url: https://portal.endress.com/wa001/dla/5000516/0939/000/02/TI00138T09EN_0213.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 26_Temperatura_RTD_e_Termopar
+  arquivo: TI01125T09EN_0214_EndressHauser.pdf
+  part_number: TI01125T09EN 0214
+  fabricante: Endress+Hauser
+  tipo: peça
+  categoria: null
+  url: https://portal.endress.com/wa001/dla/5000728/6890/000/01/TI01125T09EN_0214.pdf
+  link:
+    situacao: indisponivel
+    verificado_em: '2026-11-15'
+    nota: 'sem resposta válida (TimeoutError: The read operation timed out)'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 26_Temperatura_RTD_e_Termopar
+  arquivo: belimo_01DT-1BH_datasheet_en-gb_Belimo.pdf
+  part_number: belimo 01DT-1BH datasheet en-gb
+  fabricante: Belimo
+  tipo: peça
+  categoria: null
+  url: https://www.belimo.com/mam/general-documents/datasheets/en-gb/belimo_01DT-1BH_datasheet_en-gb.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 26_Temperatura_RTD_e_Termopar
+  arquivo: ds_te6001_en_co_WIKA.pdf
+  part_number: ds te6001 en co
+  fabricante: WIKA
+  tipo: peça
+  categoria: null
+  url: https://www.wika.com/media/Data-sheets/Temperature/Resistance-thermometers/ds_te6001_en_co.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-15'
+    nota: PDF acessível
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 26_Temperatura_RTD_e_Termopar
+  arquivo: ds_te6040_en_co_WIKA.pdf
+  part_number: ds te6040 en co
+  fabricante: WIKA
+  tipo: peça
+  categoria: null
+  url: https://www.wika.com/media/Data-sheets/Temperature/Resistance-thermometers/ds_te6040_en_co.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-15'
+    nota: PDF acessível
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 26_Temperatura_RTD_e_Termopar
+  arquivo: ds_te6550_en_co_WIKA.pdf
+  part_number: ds te6550 en co
+  fabricante: WIKA
+  tipo: peça
+  categoria: null
+  url: https://www.wika.com/media/Data-sheets/Temperature/Thermocouples/ds_te6550_en_co.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-15'
+    nota: PDF acessível
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 26_Temperatura_RTD_e_Termopar
+  arquivo: ds_te6580_en_co_WIKA.pdf
+  part_number: ds te6580 en co
+  fabricante: WIKA
+  tipo: peça
+  categoria: null
+  url: https://www.wika.com/media/Data-sheets/Temperature/Thermocouples/ds_te6580_en_co.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-15'
+    nota: PDF acessível
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 26_Temperatura_RTD_e_Termopar
+  arquivo: folheto_sensores_temperatura_pt100_pt_Novus.pdf
+  part_number: folheto sensores temperatura pt100 pt
+  fabricante: Novus
+  tipo: peça
+  categoria: null
+  url: https://www.novus.com.br/downloads/Arquivos/folheto_sensores_temperatura_pt100_pt.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 26_Temperatura_RTD_e_Termopar
+  arquivo: t90.2003en_JUMO.pdf
+  part_number: t90.2003en
+  fabricante: JUMO
+  tipo: peça
+  categoria: null
+  url: https://www.jumo.de/attachments/JUMO/attachmentdownload?id=25981&filename=t90.2003en.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 26_Temperatura_RTD_e_Termopar
+  arquivo: tabela_termopares_Novus.pdf
+  part_number: tabela termopares
+  fabricante: Novus
+  tipo: peça
+  categoria: null
+  url: https://www.novus.com.br/downloads/Arquivos/tabela_termopares.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 26_Temperatura_RTD_e_Termopar
+  arquivo: thermocouple-type-c-celsius_Omega.pdf
+  part_number: thermocouple-type-c-celsius
+  fabricante: Omega
+  tipo: peça
+  categoria: null
+  url: https://assets.omega.com/pdf/tables_and_graphs/thermocouple-type-c-celsius.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-15'
+    nota: PDF acessível
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 26_Temperatura_RTD_e_Termopar
+  arquivo: thermocouple-type-e-celsius_Omega.pdf
+  part_number: thermocouple-type-e-celsius
+  fabricante: Omega
+  tipo: peça
+  categoria: null
+  url: https://assets.omega.com/pdf/tables_and_graphs/thermocouple-type-e-celsius.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-15'
+    nota: PDF acessível
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 26_Temperatura_RTD_e_Termopar
+  arquivo: thermocouple-type-k-celsius_Omega.pdf
+  part_number: thermocouple-type-k-celsius
+  fabricante: Omega
+  tipo: peça
+  categoria: null
+  url: https://assets.omega.com/pdf/tables_and_graphs/thermocouple-type-k-celsius.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-15'
+    nota: PDF acessível
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 27_CLP_e_IHM
+  arquivo: 2080-um002_-en-e_Rockwell_Automation.pdf
+  part_number: 2080-um002 -en-e
+  fabricante: Rockwell Automation
+  tipo: peça
+  categoria: null
+  url: https://literature.rockwellautomation.com/idc/groups/literature/documents/um/2080-um002_-en-e.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-15'
+    nota: PDF acessível
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 27_CLP_e_IHM
+  arquivo: 5069-td001_-en-p_Rockwell_Automation.pdf
+  part_number: 5069-td001 -en-p
+  fabricante: Rockwell Automation
+  tipo: peça
+  categoria: null
+  url: https://literature.rockwellautomation.com/idc/groups/literature/documents/td/5069-td001_-en-p.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-15'
+    nota: PDF acessível
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 27_CLP_e_IHM
+  arquivo: EIO0000001360_Schneider_Electric.pdf
+  part_number: EIO0000001360
+  fabricante: Schneider Electric
+  tipo: peça
+  categoria: null
+  url: https://download.schneider-electric.com/files?p_Doc_Ref=EIO0000001360
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 27_CLP_e_IHM
+  arquivo: EIO0000001432_Schneider_Electric.pdf
+  part_number: EIO0000001432
+  fabricante: Schneider Electric
+  tipo: peça
+  categoria: null
+  url: https://download.schneider-electric.com/files?p_Doc_Ref=EIO0000001432
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 27_CLP_e_IHM
+  arquivo: HMIGTO4310_Schneider_Electric.pdf
+  part_number: HMIGTO4310
+  fabricante: Schneider Electric
+  tipo: peça
+  categoria: null
+  url: https://download.schneider-electric.com/files?p_Doc_Ref=HMIGTO4310_DATASHEET
+  link:
+    situacao: indisponivel
+    verificado_em: '2026-11-15'
+    nota: sem resposta válida (206)
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 27_CLP_e_IHM
+  arquivo: WEG-clic02-manual-do-usuario-10000436522-manual-portugues-br_WEG.pdf
+  part_number: WEG-clic02-manual-do-usuario-10000436522-manual-portugues-br
+  fabricante: WEG
+  tipo: peça
+  categoria: null
+  url: https://static.weg.net/medias/downloadcenter/h0a/h3d/WEG-clic02-manual-do-usuario-10000436522-manual-portugues-br.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 27_CLP_e_IHM
+  arquivo: WEG-plc300-manual-do-usuario-10001483024-manual-portugues-br_WEG.pdf
+  part_number: WEG-plc300-manual-do-usuario-10001483024-manual-portugues-br
+  fabricante: WEG
+  tipo: peça
+  categoria: null
+  url: https://static.weg.net/medias/downloadcenter/h52/h85/WEG-plc300-manual-do-usuario-10001483024-manual-portugues-br.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 27_CLP_e_IHM
+  arquivo: WEG-plc500-manual-do-usuario-10009567410-manual-portugues-br_WEG.pdf
+  part_number: WEG-plc500-manual-do-usuario-10009567410-manual-portugues-br
+  fabricante: WEG
+  tipo: peça
+  categoria: null
+  url: https://static.weg.net/medias/downloadcenter/h3c/h91/WEG-plc500-manual-do-usuario-10009567410-manual-portugues-br.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 27_CLP_e_IHM
+  arquivo: hmi_basic_panels_2nd_gen_operating_instructions_en-US_en-US_Siemens.pdf
+  part_number: hmi basic panels 2nd gen operating instructions en-US en-US
+  fabricante: Siemens
+  tipo: peça
+  categoria: null
+  url: https://cache.industry.siemens.com/dl/files/458/90114458/att_74252/v1/hmi_basic_panels_2nd_gen_operating_instructions_en-US_en-US.pdf
+  link:
+    situacao: indisponivel
+    verificado_em: '2026-11-15'
+    nota: 'sem resposta válida (URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed:
+      unable to get local issuer certificate (_ssl.c:1010)>)'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 27_CLP_e_IHM
+  arquivo: logo_system_manual_en-US_en-US_Siemens.pdf
+  part_number: logo system manual en-US en-US
+  fabricante: Siemens
+  tipo: peça
+  categoria: null
+  url: https://cache.industry.siemens.com/dl/files/461/109741461/att_900050/v1/logo_system_manual_en-US_en-US.pdf
+  link:
+    situacao: indisponivel
+    verificado_em: '2026-11-15'
+    nota: 'sem resposta válida (URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed:
+      unable to get local issuer certificate (_ssl.c:1010)>)'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 27_CLP_e_IHM
+  arquivo: s71200_system_manual_en-US_en-US_Siemens.pdf
+  part_number: s71200 system manual en-US en-US
+  fabricante: Siemens
+  tipo: peça
+  categoria: null
+  url: https://cache.industry.siemens.com/dl/files/241/109759241/att_965214/v1/s71200_system_manual_en-US_en-US.pdf
+  link:
+    situacao: indisponivel
+    verificado_em: '2026-11-15'
+    nota: 'sem resposta válida (URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed:
+      unable to get local issuer certificate (_ssl.c:1010)>)'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 27_CLP_e_IHM
+  arquivo: s71500_cpu1511_1_pn_manual_en-US_en-US_Siemens.pdf
+  part_number: s71500 cpu1511 1 pn manual en-US en-US
+  fabricante: Siemens
+  tipo: peça
+  categoria: null
+  url: https://cache.industry.siemens.com/dl/files/740/59191740/att_898137/v1/s71500_cpu1511_1_pn_manual_en-US_en-US.pdf
+  link:
+    situacao: indisponivel
+    verificado_em: '2026-11-15'
+    nota: 'sem resposta válida (URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed:
+      unable to get local issuer certificate (_ssl.c:1010)>)'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 28_Sensores_Proximidade_e_Magneticos
+  arquivo: 084014_eng_PepperlFuchs.pdf
+  part_number: 084014 eng
+  fabricante: Pepperl+Fuchs
+  tipo: peça
+  categoria: null
+  url: https://files.pepperl-fuchs.com/webcat/navi/productInfo/pds/084014_eng.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-15'
+    nota: PDF acessível
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 28_Sensores_Proximidade_e_Magneticos
+  arquivo: 087777_eng_PepperlFuchs.pdf
+  part_number: 087777 eng
+  fabricante: Pepperl+Fuchs
+  tipo: peça
+  categoria: null
+  url: https://files.pepperl-fuchs.com/webcat/navi/productInfo/pds/087777_eng.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-15'
+    nota: PDF acessível
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 28_Sensores_Proximidade_e_Magneticos
+  arquivo: 106445_eng_PepperlFuchs.pdf
+  part_number: 106445 eng
+  fabricante: Pepperl+Fuchs
+  tipo: peça
+  categoria: null
+  url: https://files.pepperl-fuchs.com/webcat/navi/productInfo/pds/106445_eng.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-15'
+    nota: PDF acessível
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 28_Sensores_Proximidade_e_Magneticos
+  arquivo: 106635_eng_PepperlFuchs.pdf
+  part_number: 106635 eng
+  fabricante: Pepperl+Fuchs
+  tipo: peça
+  categoria: null
+  url: https://files.pepperl-fuchs.com/webcat/navi/productInfo/pds/106635_eng.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-15'
+    nota: PDF acessível
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 28_Sensores_Proximidade_e_Magneticos
+  arquivo: 184369_eng_PepperlFuchs.pdf
+  part_number: 184369 eng
+  fabricante: Pepperl+Fuchs
+  tipo: peça
+  categoria: null
+  url: https://files.pepperl-fuchs.com/webcat/navi/productInfo/pds/184369_eng.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-15'
+    nota: PDF acessível
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 28_Sensores_Proximidade_e_Magneticos
+  arquivo: 1gt-series-datasheet-005889-2-en_Honeywell.pdf
+  part_number: 1gt-series-datasheet-005889-2-en
+  fabricante: Honeywell
+  tipo: peça
+  categoria: null
+  url: https://sps.honeywell.com/content/dam/honeywell-edta/sps/siot/ja/products/sensors/magnetic-sensors/speed-and-direction-sensors/1gt-series/documents/1gt-series-datasheet-005889-2-en.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 28_Sensores_Proximidade_e_Magneticos
+  arquivo: 9106834456606_ifm.pdf
+  part_number: '9106834456606'
+  fabricante: ifm
+  tipo: peça
+  categoria: null
+  url: https://www.ifm.com/medias/sys_master/hd8/h22/9106834456606.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 28_Sensores_Proximidade_e_Magneticos
+  arquivo: 9106841665566_ifm.pdf
+  part_number: '9106841665566'
+  fabricante: ifm
+  tipo: peça
+  categoria: null
+  url: https://www.ifm.com/medias/sys_master/h5a/h79/9106841665566.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 28_Sensores_Proximidade_e_Magneticos
+  arquivo: Baumer_IWFM-08U9501-S35A_EN_20221116_DS_Baumer.pdf
+  part_number: Baumer IWFM-08U9501-S35A EN 20221116 DS
+  fabricante: Baumer
+  tipo: peça
+  categoria: null
+  url: https://www.baumer.com/medias/__secure__/Baumer_IWFM-08U9501-S35A_EN_20221116_DS.pdf
+  link:
+    situacao: bloqueado
+    verificado_em: '2026-11-15'
+    nota: 'o site recusa o download automático (HTTP 403): baixe pelo navegador e envie o PDF'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 28_Sensores_Proximidade_e_Magneticos
+  arquivo: CM18-08BNP-KC1_SICK.pdf
+  part_number: CM18-08BNP-KC1
+  fabricante: SICK
+  tipo: peça
+  categoria: null
+  url: https://cdn.sick.com/media/pdf/8/08/908/dataSheet_CM18-08BNP-KC1_6058148_en.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 28_Sensores_Proximidade_e_Magneticos
+  arquivo: CM30-16BNP-KC1_SICK.pdf
+  part_number: CM30-16BNP-KC1
+  fabricante: SICK
+  tipo: peça
+  categoria: null
+  url: https://cdn.sick.com/media/pdf/0/10/910/dataSheet_CM30-16BNP-KC1_6058150_en.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 28_Sensores_Proximidade_e_Magneticos
+  arquivo: D-M9_SMC.pdf
+  part_number: D-M9
+  fabricante: SMC
+  tipo: peça
+  categoria: null
+  url: https://www.smcworld.com/assets/manual/en-jp/files/D-M9.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 28_Sensores_Proximidade_e_Magneticos
+  arquivo: D15000100122438_Festo.pdf
+  part_number: D15000100122438
+  fabricante: Festo
+  tipo: peça
+  categoria: null
+  url: https://www.festo.com/media/pim/438/D15000100122438.PDF
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 28_Sensores_Proximidade_e_Magneticos
+  arquivo: DRW_912627_00_000_Balluff.pdf
+  part_number: DRW 912627 00 000
+  fabricante: Balluff
+  tipo: peça
+  categoria: null
+  url: https://assets.balluff.com/WebBinary1/DRW_912627_00_000.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 28_Sensores_Proximidade_e_Magneticos
+  arquivo: DS_BCS00P7_EN_Balluff.pdf
+  part_number: DS BCS00P7 EN
+  fabricante: Balluff
+  tipo: peça
+  categoria: null
+  url: https://assets.balluff.com/WebBinary1/DS_BCS00P7_EN.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 28_Sensores_Proximidade_e_Magneticos
+  arquivo: IF5597_ifm.pdf
+  part_number: IF5597
+  fabricante: ifm
+  tipo: peça
+  categoria: null
+  url: https://www.ifm.com/gb/en/product/IF5597?tab=documents
+  link:
+    situacao: indisponivel
+    verificado_em: '2026-11-15'
+    nota: sem resposta válida (206)
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 28_Sensores_Proximidade_e_Magneticos
+  arquivo: IME12-04BPSZC0S_SICK.pdf
+  part_number: IME12-04BPSZC0S
+  fabricante: SICK
+  tipo: peça
+  categoria: null
+  url: https://cdn.sick.com/media/pdf/5/15/315/dataSheet_IME12-04BPSZC0S_1040764_en.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 28_Sensores_Proximidade_e_Magneticos
+  arquivo: IME18-08BPSZC0S_SICK.pdf
+  part_number: IME18-08BPSZC0S
+  fabricante: SICK
+  tipo: peça
+  categoria: null
+  url: https://cdn.sick.com/media/pdf/8/18/618/dataSheet_IME18-08BPSZC0S_1040964_en.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 28_Sensores_Proximidade_e_Magneticos
+  arquivo: IME30-15BPSZC0S_SICK.pdf
+  part_number: IME30-15BPSZC0S
+  fabricante: SICK
+  tipo: peça
+  categoria: null
+  url: https://cdn.sick.com/media/pdf/4/14/914/dataSheet_IME30-15BPSZC0S_1041024_en.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 28_Sensores_Proximidade_e_Magneticos
+  arquivo: MM12-60APS-ZC0_SICK.pdf
+  part_number: MM12-60APS-ZC0
+  fabricante: SICK
+  tipo: peça
+  categoria: null
+  url: https://cdn.sick.com/media/pdf/2/12/412/dataSheet_MM12-60APS-ZC0_1040070_en.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 28_Sensores_Proximidade_e_Magneticos
+  arquivo: MZC1-2V2PS-KP0_SICK.pdf
+  part_number: MZC1-2V2PS-KP0
+  fabricante: SICK
+  tipo: peça
+  categoria: null
+  url: https://cdn.sick.com/media/pdf/8/28/428/dataSheet_MZC1-2V2PS-KP0_1059736_en.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 28_Sensores_Proximidade_e_Magneticos
+  arquivo: MZT8-03VPS-KP0_SICK.pdf
+  part_number: MZT8-03VPS-KP0
+  fabricante: SICK
+  tipo: peça
+  categoria: null
+  url: https://cdn.sick.com/media/pdf/1/21/821/dataSheet_MZT8-03VPS-KP0_1044458_en.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 28_Sensores_Proximidade_e_Magneticos
+  arquivo: XS112B3PAM12_Schneider_Electric.pdf
+  part_number: XS112B3PAM12
+  fabricante: Schneider Electric
+  tipo: peça
+  categoria: null
+  url: https://download.schneider-electric.com/files?p_Doc_Ref=XS112B3PAM12_DATASHEET
+  link:
+    situacao: indisponivel
+    verificado_em: '2026-11-15'
+    nota: sem resposta válida (206)
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 28_Sensores_Proximidade_e_Magneticos
+  arquivo: XS618B1MAL2_Schneider_Electric.pdf
+  part_number: XS618B1MAL2
+  fabricante: Schneider Electric
+  tipo: peça
+  categoria: null
+  url: https://download.schneider-electric.com/files?p_Doc_Ref=XS618B1MAL2_DATASHEET
+  link:
+    situacao: indisponivel
+    verificado_em: '2026-11-15'
+    nota: sem resposta válida (206)
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 28_Sensores_Proximidade_e_Magneticos
+  arquivo: XT118B1PAL2_Schneider_Electric.pdf
+  part_number: XT118B1PAL2
+  fabricante: Schneider Electric
+  tipo: peça
+  categoria: null
+  url: https://download.schneider-electric.com/files?p_Doc_Ref=XT118B1PAL2_DATASHEET
+  link:
+    situacao: indisponivel
+    verificado_em: '2026-11-15'
+    nota: sem resposta válida (206)
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 28_Sensores_Proximidade_e_Magneticos
+  arquivo: XT130B1FAL2_Schneider_Electric.pdf
+  part_number: XT130B1FAL2
+  fabricante: Schneider Electric
+  tipo: peça
+  categoria: null
+  url: https://download.schneider-electric.com/files?p_Doc_Ref=XT130B1FAL2_DATASHEET
+  link:
+    situacao: indisponivel
+    verificado_em: '2026-11-15'
+    nota: sem resposta válida (206)
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 28_Sensores_Proximidade_e_Magneticos
+  arquivo: has_50..600-s_LEM.pdf
+  part_number: has 50..600-s
+  fabricante: LEM
+  tipo: peça
+  categoria: null
+  url: https://www.lem.com/sites/default/files/products_datasheets/has_50..600-s.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 28_Sensores_Proximidade_e_Magneticos
+  arquivo: la_55-p_e_LEM.pdf
+  part_number: la 55-p e
+  fabricante: LEM
+  tipo: peça
+  categoria: null
+  url: https://www.lem.com/sites/default/files/products_datasheets/la_55-p_e.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: o endereço abre uma página, não o PDF
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 28_Sensores_Proximidade_e_Magneticos
+  arquivo: sndh-t-series-datasheet-32305128-a-en_Honeywell.pdf
+  part_number: sndh-t-series-datasheet-32305128-a-en
+  fabricante: Honeywell
+  tipo: peça
+  categoria: null
+  url: https://sps.honeywell.com/content/dam/honeywell-edta/sps/siot/ja/products/sensors/magnetic-sensors/speed-and-direction-sensors/sndh-t-series/documents/sndh-t-series-datasheet-32305128-a-en.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 28_Sensores_Proximidade_e_Magneticos
+  arquivo: ss39et-ss49e-ss59et-series-product-sheet-005850-3-en_Honeywell.pdf
+  part_number: ss39et-ss49e-ss59et-series-product-sheet-005850-3-en
+  fabricante: Honeywell
+  tipo: peça
+  categoria: null
+  url: https://sps.honeywell.com/content/dam/honeywell-edta/sps/siot/ja/products/sensors/magnetic-sensors/linear-and-angle-sensor-ics/ss39et-ss49e-ss59et-series/documents/ss39et-ss49e-ss59et-series-product-sheet-005850-3-en.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 29_Sensores_Fotoeletricos
+  arquivo: C4P-SA03010A00_SICK.pdf
+  part_number: C4P-SA03010A00
+  fabricante: SICK
+  tipo: peça
+  categoria: null
+  url: https://cdn.sick.com/media/pdf/4/54/954/dataSheet_C4P-SA03010A00_1211495_en.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 29_Sensores_Fotoeletricos
+  arquivo: CS81-P3612_SICK.pdf
+  part_number: CS81-P3612
+  fabricante: SICK
+  tipo: peça
+  categoria: null
+  url: https://cdn.sick.com/media/pdf/0/20/320/dataSheet_CS81-P3612_1028219_en.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 29_Sensores_Fotoeletricos
+  arquivo: DS_BOS013M_EN_Balluff.pdf
+  part_number: DS BOS013M EN
+  fabricante: Balluff
+  tipo: peça
+  categoria: null
+  url: https://assets.balluff.com/WebBinary1/DS_BOS013M_EN.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 29_Sensores_Fotoeletricos
+  arquivo: KT5W-2P1116_SICK.pdf
+  part_number: KT5W-2P1116
+  fabricante: SICK
+  tipo: peça
+  categoria: null
+  url: https://cdn.sick.com/media/pdf/3/23/323/dataSheet_KT5W-2P1116_1018044_en.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 29_Sensores_Fotoeletricos
+  arquivo: WL12G-3B2531_SICK.pdf
+  part_number: WL12G-3B2531
+  fabricante: SICK
+  tipo: peça
+  categoria: null
+  url: https://cdn.sick.com/media/pdf/6/26/226/dataSheet_WL12G-3B2531_1041456_en.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 29_Sensores_Fotoeletricos
+  arquivo: WLL180T-P434_SICK.pdf
+  part_number: WLL180T-P434
+  fabricante: SICK
+  tipo: peça
+  categoria: null
+  url: https://cdn.sick.com/media/pdf/2/22/722/dataSheet_WLL180T-P434_6039095_en.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 29_Sensores_Fotoeletricos
+  arquivo: WSE12-3P2431_SICK.pdf
+  part_number: WSE12-3P2431
+  fabricante: SICK
+  tipo: peça
+  categoria: null
+  url: https://cdn.sick.com/media/pdf/5/25/125/dataSheet_WSE12-3P2431_1041455_en.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 29_Sensores_Fotoeletricos
+  arquivo: WTB4FP-22161120A00_SICK.pdf
+  part_number: WTB4FP-22161120A00
+  fabricante: SICK
+  tipo: peça
+  categoria: null
+  url: https://cdn.sick.com/media/pdf/1/01/301/dataSheet_WTB4FP-22161120A00_1222911_en.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 29_Sensores_Fotoeletricos
+  arquivo: XUB5BPANL2_Schneider_Electric.pdf
+  part_number: XUB5BPANL2
+  fabricante: Schneider Electric
+  tipo: peça
+  categoria: null
+  url: https://download.schneider-electric.com/files?p_Doc_Ref=XUB5BPANL2_DATASHEET
+  link:
+    situacao: indisponivel
+    verificado_em: '2026-11-15'
+    nota: sem resposta válida (206)
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 29_Sensores_Fotoeletricos
+  arquivo: XUK1ARCNL2_Schneider_Electric.pdf
+  part_number: XUK1ARCNL2
+  fabricante: Schneider Electric
+  tipo: peça
+  categoria: null
+  url: https://download.schneider-electric.com/files?p_Doc_Ref=XUK1ARCNL2_DATASHEET
+  link:
+    situacao: indisponivel
+    verificado_em: '2026-11-15'
+    nota: sem resposta válida (206)
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 30_Forca_Carga_e_Posicao_Linear
+  arquivo: B00105_HBM.pdf
+  part_number: B00105
+  fabricante: HBM
+  tipo: peça
+  categoria: null
+  url: https://www.hbm.com/fileadmin/mediapool/hbmdoc/technical/B00105.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 30_Forca_Carga_e_Posicao_Linear
+  arquivo: B01587_HBM.pdf
+  part_number: B01587
+  fabricante: HBM
+  tipo: peça
+  categoria: null
+  url: https://www.hbm.com/fileadmin/mediapool/hbmdoc/technical/B01587.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 30_Forca_Carga_e_Posicao_Linear
+  arquivo: B03846_HBM.pdf
+  part_number: B03846
+  fabricante: HBM
+  tipo: peça
+  categoria: null
+  url: https://www.hbm.com/fileadmin/mediapool/hbmdoc/technical/B03846.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 30_Forca_Carga_e_Posicao_Linear
+  arquivo: LTH_e_Novotechnik.pdf
+  part_number: LTH e
+  fabricante: Novotechnik
+  tipo: peça
+  categoria: null
+  url: https://www.novotechnik.de/fileadmin/user_upload/pdfs/kataloge_flyer/LTH_e.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 30_Forca_Carga_e_Posicao_Linear
+  arquivo: P6500_e_Novotechnik.pdf
+  part_number: P6500 e
+  fabricante: Novotechnik
+  tipo: peça
+  categoria: null
+  url: https://www.novotechnik.de/fileadmin/user_upload/pdfs/kataloge_flyer/P6500_e.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 30_Forca_Carga_e_Posicao_Linear
+  arquivo: S01265_HBM.pdf
+  part_number: S01265
+  fabricante: HBM
+  tipo: peça
+  categoria: null
+  url: https://www.hbm.com/fileadmin/mediapool/hbmdoc/technical/S01265.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-15'
+    nota: PDF acessível
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 30_Forca_Carga_e_Posicao_Linear
+  arquivo: TLH_e_Novotechnik.pdf
+  part_number: TLH e
+  fabricante: Novotechnik
+  tipo: peça
+  categoria: null
+  url: https://www.novotechnik.de/fileadmin/user_upload/pdfs/kataloge_flyer/TLH_e.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 30_Forca_Carga_e_Posicao_Linear
+  arquivo: fsrguide_Interlink_(guia_SparkFun).pdf
+  part_number: fsrguide
+  fabricante: Interlink (guia SparkFun)
+  tipo: peça
+  categoria: null
+  url: https://www.sparkfun.com/datasheets/Sensors/Pressure/fsrguide.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-15'
+    nota: PDF acessível
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 31_Nivel
+  arquivo: DS_BUS0021_EN_Balluff.pdf
+  part_number: DS BUS0021 EN
+  fabricante: Balluff
+  tipo: peça
+  categoria: null
+  url: https://assets.balluff.com/WebBinary1/DS_BUS0021_EN.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 31_Nivel
+  arquivo: TI00365F00EN_1310_EndressHauser.pdf
+  part_number: TI00365F00EN 1310
+  fabricante: Endress+Hauser
+  tipo: peça
+  categoria: null
+  url: https://portal.endress.com/wa001/dla/5000277/4639/000/03/TI00365F00EN_1310.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 31_Nivel
+  arquivo: TI00401F00EN_0511_EndressHauser.pdf
+  part_number: TI00401F00EN 0511
+  fabricante: Endress+Hauser
+  tipo: peça
+  categoria: null
+  url: https://portal.endress.com/wa001/dla/5000277/4535/000/03/TI00401F00EN_0511.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 31_Nivel
+  arquivo: TI00405F00EN_0611_EndressHauser.pdf
+  part_number: TI00405F00EN 0611
+  fabricante: Endress+Hauser
+  tipo: peça
+  categoria: null
+  url: https://portal.endress.com/wa001/dla/5000277/4547/000/03/TI00405F00EN_0611.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 31_Nivel
+  arquivo: TI00426F00EN_0313_EndressHauser.pdf
+  part_number: TI00426F00EN 0313
+  fabricante: Endress+Hauser
+  tipo: peça
+  categoria: null
+  url: https://portal.endress.com/wa001/dla/5000605/2085/000/02/TI00426F00EN_0313.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 31_Nivel
+  arquivo: TI00450F00EN_0111_EndressHauser.pdf
+  part_number: TI00450F00EN 0111
+  fabricante: Endress+Hauser
+  tipo: peça
+  categoria: null
+  url: https://portal.endress.com/wa001/dla/5000419/8512/000/01/TI00450F00EN_0111.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 31_Nivel
+  arquivo: TI01001F00EN_0412_EndressHauser.pdf
+  part_number: TI01001F00EN 0412
+  fabricante: Endress+Hauser
+  tipo: peça
+  categoria: null
+  url: https://portal.endress.com/wa001/dla/5000436/3243/000/02/TI01001F00EN_0412.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 31_Nivel
+  arquivo: TI01247F00EN_0116_EndressHauser.pdf
+  part_number: TI01247F00EN 0116
+  fabricante: Endress+Hauser
+  tipo: peça
+  categoria: null
+  url: https://portal.endress.com/wa001/dla/5001016/2893/000/01/TI01247F00EN_0116.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 31_Nivel
+  arquivo: TI01395F00EN_0119_EndressHauser.pdf
+  part_number: TI01395F00EN 0119
+  fabricante: Endress+Hauser
+  tipo: peça
+  categoria: null
+  url: https://portal.endress.com/wa001/dla/5001264/6871/000/01/TI01395F00EN_0119.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 31_Nivel
+  arquivo: UM18-218127111_SICK.pdf
+  part_number: UM18-218127111
+  fabricante: SICK
+  tipo: peça
+  categoria: null
+  url: https://cdn.sick.com/media/pdf/5/15/715/dataSheet_UM18-218127111_6048394_en.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 31_Nivel
+  arquivo: UM30-213113_SICK.pdf
+  part_number: UM30-213113
+  fabricante: SICK
+  tipo: peça
+  categoria: null
+  url: https://cdn.sick.com/media/pdf/9/09/709/dataSheet_UM30-213113_6037664_en.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 31_Nivel
+  arquivo: UM30-215113_SICK.pdf
+  part_number: UM30-215113
+  fabricante: SICK
+  tipo: peça
+  categoria: null
+  url: https://cdn.sick.com/media/pdf/1/11/711/dataSheet_UM30-215113_6037666_en.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 31_Nivel
+  arquivo: WEG-reles-de-nivel-snr-manual-portugues-br_WEG.pdf
+  part_number: WEG-reles-de-nivel-snr-manual-portugues-br
+  fabricante: WEG
+  tipo: peça
+  categoria: null
+  url: https://static.weg.net/medias/downloadcenter/h61/h58/WEG-reles-de-nivel-snr-manual-portugues-br.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 31_Nivel
+  arquivo: XX630A1PCM12_Schneider_Electric.pdf
+  part_number: XX630A1PCM12
+  fabricante: Schneider Electric
+  tipo: peça
+  categoria: null
+  url: https://download.schneider-electric.com/files?p_Doc_Ref=XX630A1PCM12_DATASHEET
+  link:
+    situacao: indisponivel
+    verificado_em: '2026-11-15'
+    nota: sem resposta válida (206)
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 31_Nivel
+  arquivo: ds_lm5001_en_co_WIKA.pdf
+  part_number: ds lm5001 en co
+  fabricante: WIKA
+  tipo: peça
+  categoria: null
+  url: https://www.wika.com/media/Data-sheets/Level/Float-switches/ds_lm5001_en_co.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 31_Nivel
+  arquivo: ls-7-series-datasheet_Gems_Sensors.pdf
+  part_number: ls-7-series-datasheet
+  fabricante: Gems Sensors
+  tipo: peça
+  categoria: null
+  url: https://www.gemssensors.com/docs/default-source/resource-files/data-sheets/ls-7-series-datasheet.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 31_Nivel
+  arquivo: pi_vegapuls_6x_en_VEGA.pdf
+  part_number: pi vegapuls 6x en
+  fabricante: VEGA
+  tipo: peça
+  categoria: null
+  url: https://www.vega.com/-/media/pdf-files/product-information/pi_vegapuls_6x_en.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 31_Nivel
+  arquivo: pi_vegawave_61_en_VEGA.pdf
+  part_number: pi vegawave 61 en
+  fabricante: VEGA
+  tipo: peça
+  categoria: null
+  url: https://www.vega.com/-/media/pdf-files/product-information/pi_vegawave_61_en.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 31_Nivel
+  arquivo: rotonivo-rn3000-technical-information-en_UWT.pdf
+  part_number: rotonivo-rn3000-technical-information-en
+  fabricante: UWT
+  tipo: peça
+  categoria: null
+  url: https://www.uwtgroup.com/media/1262/rotonivo-rn3000-technical-information-en.pdf
+  link:
+    situacao: indisponivel
+    verificado_em: '2026-11-15'
+    nota: 'sem resposta válida (URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed:
+      unable to get local issuer certificate (_ssl.c:1010)>)'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 32_Pressao
+  arquivo: 133981_eng_PepperlFuchs.pdf
+  part_number: 133981 eng
+  fabricante: Pepperl+Fuchs
+  tipo: peça
+  categoria: null
+  url: https://files.pepperl-fuchs.com/webcat/navi/productInfo/pds/133981_eng.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-15'
+    nota: PDF acessível
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 32_Pressao
+  arquivo: 188565_eng_PepperlFuchs.pdf
+  part_number: 188565 eng
+  fabricante: Pepperl+Fuchs
+  tipo: peça
+  categoria: null
+  url: https://files.pepperl-fuchs.com/webcat/navi/productInfo/pds/188565_eng.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-15'
+    nota: PDF acessível
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 32_Pressao
+  arquivo: 9106859065374_ifm.pdf
+  part_number: '9106859065374'
+  fabricante: ifm
+  tipo: peça
+  categoria: null
+  url: https://www.ifm.com/medias/sys_master/h59/h98/9106859065374.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 32_Pressao
+  arquivo: A5E42673704_AA_en-US_Siemens.pdf
+  part_number: A5E42673704 AA en-US
+  fabricante: Siemens
+  tipo: peça
+  categoria: null
+  url: https://cache.industry.siemens.com/dl/files/909/109761909/att_971492/v1/A5E42673704_AA_en-US.pdf
+  link:
+    situacao: indisponivel
+    verificado_em: '2026-11-15'
+    nota: 'sem resposta válida (URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed:
+      unable to get local issuer certificate (_ssl.c:1010)>)'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 32_Pressao
+  arquivo: TI00383P00EN_1412_EndressHauser.pdf
+  part_number: TI00383P00EN 1412
+  fabricante: Endress+Hauser
+  tipo: peça
+  categoria: null
+  url: https://portal.endress.com/wa001/dla/5000277/4591/000/04/TI00383P00EN_1412.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 32_Pressao
+  arquivo: TI00436P00EN_0412_EndressHauser.pdf
+  part_number: TI00436P00EN 0412
+  fabricante: Endress+Hauser
+  tipo: peça
+  categoria: null
+  url: https://portal.endress.com/wa001/dla/5000436/3271/000/02/TI00436P00EN_0412.pdf
+  link:
+    situacao: indisponivel
+    verificado_em: '2026-11-15'
+    nota: 'sem resposta válida (TimeoutError: The read operation timed out)'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 32_Pressao
+  arquivo: TI01132P00EN_0114_EndressHauser.pdf
+  part_number: TI01132P00EN 0114
+  fabricante: Endress+Hauser
+  tipo: peça
+  categoria: null
+  url: https://portal.endress.com/wa001/dla/5000729/0172/000/01/TI01132P00EN_0114.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 32_Pressao
+  arquivo: XMLP016BC21V_Schneider_Electric.pdf
+  part_number: XMLP016BC21V
+  fabricante: Schneider Electric
+  tipo: peça
+  categoria: null
+  url: https://download.schneider-electric.com/files?p_Doc_Ref=XMLP016BC21V_DATASHEET
+  link:
+    situacao: indisponivel
+    verificado_em: '2026-11-15'
+    nota: sem resposta válida (206)
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 32_Pressao
+  arquivo: ds_pe8160_en_co_WIKA.pdf
+  part_number: ds pe8160 en co
+  fabricante: WIKA
+  tipo: peça
+  categoria: null
+  url: https://www.wika.com/media/Data-sheets/Pressure/Pressure-sensors/ds_pe8160_en_co.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-15'
+    nota: PDF acessível
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 32_Pressao
+  arquivo: ds_pe8161_en_co_WIKA.pdf
+  part_number: ds pe8161 en co
+  fabricante: WIKA
+  tipo: peça
+  categoria: null
+  url: https://www.wika.com/media/Data-sheets/Pressure/Pressure-sensors/ds_pe8161_en_co.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-15'
+    nota: PDF acessível
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 32_Pressao
+  arquivo: product-data-sheet-rosemount-3051-coplanar-pressure-transmitter-en-79964_Emerson.pdf
+  part_number: product-data-sheet-rosemount-3051-coplanar-pressure-transmitter-en-79964
+  fabricante: Emerson
+  tipo: peça
+  categoria: null
+  url: https://www.emerson.com/documents/automation/product-data-sheet-rosemount-3051-coplanar-pressure-transmitter-en-79964.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: o endereço abre uma página, não o PDF
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 32_Pressao
+  arquivo: sitrans_p200_datasheet_en-US_Siemens.pdf
+  part_number: sitrans p200 datasheet en-US
+  fabricante: Siemens
+  tipo: peça
+  categoria: null
+  url: https://cache.industry.siemens.com/dl/files/046/109749046/att_925444/v1/sitrans_p200_datasheet_en-US.pdf
+  link:
+    situacao: indisponivel
+    verificado_em: '2026-11-15'
+    nota: 'sem resposta válida (URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed:
+      unable to get local issuer certificate (_ssl.c:1010)>)'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 32_Pressao
+  arquivo: sitrans_p320_p420_datasheet_en-US_Siemens.pdf
+  part_number: sitrans p320 p420 datasheet en-US
+  fabricante: Siemens
+  tipo: peça
+  categoria: null
+  url: https://cache.industry.siemens.com/dl/files/139/109761139/att_968941/v1/sitrans_p320_p420_datasheet_en-US.pdf
+  link:
+    situacao: indisponivel
+    verificado_em: '2026-11-15'
+    nota: 'sem resposta válida (URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed:
+      unable to get local issuer certificate (_ssl.c:1010)>)'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 33_Vazao
+  arquivo: 9106871582750_ifm.pdf
+  part_number: '9106871582750'
+  fabricante: ifm
+  tipo: peça
+  categoria: null
+  url: https://www.ifm.com/medias/sys_master/h2e/h1a/9106871582750.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 33_Vazao
+  arquivo: 9106875777054_ifm.pdf
+  part_number: '9106875777054'
+  fabricante: ifm
+  tipo: peça
+  categoria: null
+  url: https://www.ifm.com/medias/sys_master/h9a/h34/9106875777054.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 33_Vazao
+  arquivo: TD_H250M40_en_210426_4001025607_R08_KROHNE.pdf
+  part_number: TD H250M40 en 210426 4001025607 R08
+  fabricante: KROHNE
+  tipo: peça
+  categoria: null
+  url: https://cdn.krohne.com/dlc/TD_H250M40_en_210426_4001025607_R08.pdf
+  link:
+    situacao: indisponivel
+    verificado_em: '2026-11-15'
+    nota: 'sem resposta válida (URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed:
+      unable to get local issuer certificate (_ssl.c:1010)>)'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 33_Vazao
+  arquivo: TI01063D06EN_0213_EndressHauser.pdf
+  part_number: TI01063D06EN 0213
+  fabricante: Endress+Hauser
+  tipo: peça
+  categoria: null
+  url: https://portal.endress.com/wa001/dla/5000605/2061/000/02/TI01063D06EN_0213.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 33_Vazao
+  arquivo: TI01076D06EN_0113_EndressHauser.pdf
+  part_number: TI01076D06EN 0113
+  fabricante: Endress+Hauser
+  tipo: peça
+  categoria: null
+  url: https://portal.endress.com/wa001/dla/5000643/5214/000/01/TI01076D06EN_0113.pdf
+  link:
+    situacao: indisponivel
+    verificado_em: '2026-11-15'
+    nota: 'sem resposta válida (TimeoutError: The read operation timed out)'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 33_Vazao
+  arquivo: TI01220D06EN_0116_EndressHauser.pdf
+  part_number: TI01220D06EN 0116
+  fabricante: Endress+Hauser
+  tipo: peça
+  categoria: null
+  url: https://portal.endress.com/wa001/dla/5001053/8357/000/01/TI01220D06EN_0116.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 33_Vazao
+  arquivo: TI01224D06EN_0116_EndressHauser.pdf
+  part_number: TI01224D06EN 0116
+  fabricante: Endress+Hauser
+  tipo: peça
+  categoria: null
+  url: https://portal.endress.com/wa001/dla/5001053/8373/000/01/TI01224D06EN_0116.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 33_Vazao
+  arquivo: fls-f3-00-paddlewheel-flow-sensor-datasheet-en_GF_Piping_Systems.pdf
+  part_number: fls-f3-00-paddlewheel-flow-sensor-datasheet-en
+  fabricante: GF Piping Systems
+  tipo: peça
+  categoria: null
+  url: https://www.gfps.com/content/dam/gfps/com/datasheets/en/fls-f3-00-paddlewheel-flow-sensor-datasheet-en.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 33_Vazao
+  arquivo: product-data-sheet-rosemount-3051sfa-annubar-flowmeter-en-79976_Emerson.pdf
+  part_number: product-data-sheet-rosemount-3051sfa-annubar-flowmeter-en-79976
+  fabricante: Emerson
+  tipo: peça
+  categoria: null
+  url: https://www.emerson.com/documents/automation/product-data-sheet-rosemount-3051sfa-annubar-flowmeter-en-79976.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: o endereço abre uma página, não o PDF
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 33_Vazao
+  arquivo: sitrans_fm_mag5100w_datasheet_en-US_Siemens.pdf
+  part_number: sitrans fm mag5100w datasheet en-US
+  fabricante: Siemens
+  tipo: peça
+  categoria: null
+  url: https://cache.industry.siemens.com/dl/files/745/109747745/att_921088/v1/sitrans_fm_mag5100w_datasheet_en-US.pdf
+  link:
+    situacao: indisponivel
+    verificado_em: '2026-11-15'
+    nota: 'sem resposta válida (URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed:
+      unable to get local issuer certificate (_ssl.c:1010)>)'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 34_Encoders_e_Posicao
+  arquivo: AFM60A-S4NB018x12_SICK.pdf
+  part_number: AFM60A-S4NB018x12
+  fabricante: SICK
+  tipo: peça
+  categoria: null
+  url: https://cdn.sick.com/media/pdf/0/20/920/dataSheet_AFM60A-S4NB018x12_1037444_en.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 34_Encoders_e_Posicao
+  arquivo: BCG08-A1KM03PP_SICK.pdf
+  part_number: BCG08-A1KM03PP
+  fabricante: SICK
+  tipo: peça
+  categoria: null
+  url: https://cdn.sick.com/media/pdf/0/20/820/dataSheet_BCG08-A1KM03PP_6039747_en.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 34_Encoders_e_Posicao
+  arquivo: DBS36E-BBCP02500_SICK.pdf
+  part_number: DBS36E-BBCP02500
+  fabricante: SICK
+  tipo: peça
+  categoria: null
+  url: https://cdn.sick.com/media/pdf/3/23/923/dataSheet_DBS36E-BBCP02500_1060812_en.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 34_Encoders_e_Posicao
+  arquivo: DFS60B-S4PA01024_SICK.pdf
+  part_number: DFS60B-S4PA01024
+  fabricante: SICK
+  tipo: peça
+  categoria: null
+  url: https://cdn.sick.com/media/pdf/5/25/125/dataSheet_DFS60B-S4PA01024_1036766_en.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 34_Encoders_e_Posicao
+  arquivo: DS_BTL020A_EN_Balluff.pdf
+  part_number: DS BTL020A EN
+  fabricante: Balluff
+  tipo: peça
+  categoria: null
+  url: https://assets.balluff.com/WebBinary1/DS_BTL020A_EN.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 34_Encoders_e_Posicao
+  arquivo: DW-AD-509-M12_Contrinex.pdf
+  part_number: DW-AD-509-M12
+  fabricante: Contrinex
+  tipo: peça
+  categoria: null
+  url: https://www.contrinex.com/datasheets/DW-AD-509-M12.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 34_Encoders_e_Posicao
+  arquivo: R-Series_V_Analog_Datasheet_EN_Temposonics.pdf
+  part_number: R-Series V Analog Datasheet EN
+  fabricante: Temposonics
+  tipo: peça
+  categoria: null
+  url: https://www.temposonics.com/fileadmin/media/Documents/Datasheets/R-Series_V_Analog_Datasheet_EN.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 34_Encoders_e_Posicao
+  arquivo: TMS22-PKH090_SICK.pdf
+  part_number: TMS22-PKH090
+  fabricante: SICK
+  tipo: peça
+  categoria: null
+  url: https://cdn.sick.com/media/pdf/9/19/919/dataSheet_TMS22-PKH090_1092420_en.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 34_Encoders_e_Posicao
+  arquivo: XCC1510PS10X_Schneider_Electric.pdf
+  part_number: XCC1510PS10X
+  fabricante: Schneider Electric
+  tipo: peça
+  categoria: null
+  url: https://download.schneider-electric.com/files?p_Doc_Ref=XCC1510PS10X_DATASHEET
+  link:
+    situacao: indisponivel
+    verificado_em: '2026-11-15'
+    nota: sem resposta válida (206)
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 34_Encoders_e_Posicao
+  arquivo: en-e6b2_c_Omron.pdf
+  part_number: en-e6b2 c
+  fabricante: Omron
+  tipo: peça
+  categoria: null
+  url: https://omronfs.omron.com/en_US/ecb/products/pdf/en-e6b2_c.pdf
+  link:
+    situacao: bloqueado
+    verificado_em: '2026-11-15'
+    nota: 'o site recusa o download automático (HTTP 403): baixe pelo navegador e envie o PDF'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 35_Atuadores_e_Valvulas
+  arquivo: AI190886428382en-000801_Danfoss.pdf
+  part_number: AI190886428382en-000801
+  fabricante: Danfoss
+  tipo: peça
+  categoria: null
+  url: https://assets.danfoss.com/documents/latest/193524/AI190886428382en-000801.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 35_Atuadores_e_Valvulas
+  arquivo: D15000100122371_Festo.pdf
+  part_number: D15000100122371
+  fabricante: Festo
+  tipo: peça
+  categoria: null
+  url: https://www.festo.com/media/pim/371/D15000100122371.PDF
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 35_Atuadores_e_Valvulas
+  arquivo: D15000100122652_Festo.pdf
+  part_number: D15000100122652
+  fabricante: Festo
+  tipo: peça
+  categoria: null
+  url: https://www.festo.com/media/pim/652/D15000100122652.PDF
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 35_Atuadores_e_Valvulas
+  arquivo: D15000100122882_Festo.pdf
+  part_number: D15000100122882
+  fabricante: Festo
+  tipo: peça
+  categoria: null
+  url: https://www.festo.com/media/pim/882/D15000100122882.PDF
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 35_Atuadores_e_Valvulas
+  arquivo: D15000100123083_Festo.pdf
+  part_number: D15000100123083
+  fabricante: Festo
+  tipo: peça
+  categoria: null
+  url: https://www.festo.com/media/pim/083/D15000100123083.PDF
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 35_Atuadores_e_Valvulas
+  arquivo: PI_Beta_4_5_EN_ProMinent.pdf
+  part_number: PI Beta 4 5 EN
+  fabricante: ProMinent
+  tipo: peça
+  categoria: null
+  url: https://www.prominent.com/media/Documents/Product-Information/PI_Beta_4_5_EN.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 35_Atuadores_e_Valvulas
+  arquivo: SA_SAR_07_2_16_2_3_ph_AC_en_AUMA.pdf
+  part_number: SA SAR 07 2 16 2 3 ph AC en
+  fabricante: AUMA
+  tipo: peça
+  categoria: null
+  url: https://www.auma.com/fileadmin/Downloads/Datasheets/SA_SAR_07_2_16_2_3_ph_AC_en.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 35_Atuadores_e_Valvulas
+  arquivo: sipart_ps2_datasheet_en-US_Siemens.pdf
+  part_number: sipart ps2 datasheet en-US
+  fabricante: Siemens
+  tipo: peça
+  categoria: null
+  url: https://cache.industry.siemens.com/dl/files/979/109747979/att_922001/v1/sipart_ps2_datasheet_en-US.pdf
+  link:
+    situacao: indisponivel
+    verificado_em: '2026-11-15'
+    nota: 'sem resposta válida (URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed:
+      unable to get local issuer certificate (_ssl.c:1010)>)'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 35_Atuadores_e_Valvulas
+  arquivo: t8015en_SAMSON.pdf
+  part_number: t8015en
+  fabricante: SAMSON
+  tipo: peça
+  categoria: null
+  url: https://www.samsongroup.com/document/t8015en.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 36_Transmissores_Condicionadores_e_Controladores
+  arquivo: TI00088R09EN_0711_EndressHauser.pdf
+  part_number: TI00088R09EN 0711
+  fabricante: Endress+Hauser
+  tipo: peça
+  categoria: null
+  url: https://portal.endress.com/wa001/dla/5000277/4683/000/03/TI00088R09EN_0711.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 36_Transmissores_Condicionadores_e_Controladores
+  arquivo: TI01010T09EN_0313_EndressHauser.pdf
+  part_number: TI01010T09EN 0313
+  fabricante: Endress+Hauser
+  tipo: peça
+  categoria: null
+  url: https://portal.endress.com/wa001/dla/5000605/2097/000/02/TI01010T09EN_0313.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 36_Transmissores_Condicionadores_e_Controladores
+  arquivo: dts_800p_en_Gefran.pdf
+  part_number: dts 800p en
+  fabricante: Gefran
+  tipo: peça
+  categoria: null
+  url: https://www.gefran.com/media/0l5b2p4a/dts_800p_en.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 36_Transmissores_Condicionadores_e_Controladores
+  arquivo: dts_gts_en_Gefran.pdf
+  part_number: dts gts en
+  fabricante: Gefran
+  tipo: peça
+  categoria: null
+  url: https://www.gefran.com/media/b01p05p2/dts_gts_en.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 36_Transmissores_Condicionadores_e_Controladores
+  arquivo: manual_n1200_portugues_Novus.pdf
+  part_number: manual n1200 portugues
+  fabricante: Novus
+  tipo: peça
+  categoria: null
+  url: https://www.novus.com.br/downloads/Arquivos/manual_n1200_portugues.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 36_Transmissores_Condicionadores_e_Controladores
+  arquivo: manual_txrail_usb_portugues_Novus.pdf
+  part_number: manual txrail usb portugues
+  fabricante: Novus
+  tipo: peça
+  categoria: null
+  url: https://www.novus.com.br/downloads/Arquivos/manual_txrail_usb_portugues.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-15'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 36_Transmissores_Condicionadores_e_Controladores
+  arquivo: repeater-power-supply-macx-mcr-ex-sl-rpssi-2865340_Phoenix_Contact.pdf
+  part_number: repeater-power-supply-macx-mcr-ex-sl-rpssi-2865340
+  fabricante: Phoenix Contact
+  tipo: peça
+  categoria: null
+  url: https://www.phoenixcontact.com/en-pc/products/repeater-power-supply-macx-mcr-ex-sl-rpssi-2865340?tab=downloads
+  link:
+    situacao: bloqueado
+    verificado_em: '2026-11-15'
+    nota: 'o site recusa o download automático (HTTP 403): baixe pelo navegador e envie o PDF'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 36_Transmissores_Condicionadores_e_Controladores
+  arquivo: signal-conditioner-mini-mcr-2-ui-ui-2902037_Phoenix_Contact.pdf
+  part_number: signal-conditioner-mini-mcr-2-ui-ui-2902037
+  fabricante: Phoenix Contact
+  tipo: peça
+  categoria: null
+  url: https://www.phoenixcontact.com/en-pc/products/signal-conditioner-mini-mcr-2-ui-ui-2902037?tab=downloads
+  link:
+    situacao: bloqueado
+    verificado_em: '2026-11-15'
+    nota: 'o site recusa o download automático (HTTP 403): baixe pelo navegador e envie o PDF'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 36_Transmissores_Condicionadores_e_Controladores
+  arquivo: sitrans_th320_th420_datasheet_en-US_Siemens.pdf
+  part_number: sitrans th320 th420 datasheet en-US
+  fabricante: Siemens
+  tipo: peça
+  categoria: null
+  url: https://cache.industry.siemens.com/dl/files/372/109764372/att_978512/v1/sitrans_th320_th420_datasheet_en-US.pdf
+  link:
+    situacao: indisponivel
+    verificado_em: '2026-11-15'
+    nota: 'sem resposta válida (URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed:
+      unable to get local issuer certificate (_ssl.c:1010)>)'
+  sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'

@@ -6,12 +6,15 @@ import {
   type DesignOut,
   type MarginStatus,
   type Policy,
+  type ProjectDocument,
   type Quantity,
   type SimulateOut,
 } from "../api";
 import { CalcSteps } from "../components/CalcSteps";
 import { SignalPlot, type Trace } from "../components/SignalPlot";
 import { formatEng, unitSymbol } from "../format";
+import { BomTab } from "./design/BomTab";
+import { ProjectBar } from "./design/ProjectBar";
 import {
   type Field,
   fieldsFromSchema,
@@ -24,10 +27,11 @@ import {
   visible,
 } from "./design/specForm";
 
-type Tab = "resultados" | "componentes" | "ondas" | "esquematico" | "memoria";
+type Tab = "resultados" | "componentes" | "materiais" | "ondas" | "esquematico" | "memoria";
 const TABS: [Tab, string][] = [
   ["resultados", "Resultados"],
   ["componentes", "Componentes e margens"],
+  ["materiais", "Lista de materiais"],
   ["ondas", "Formas de onda"],
   ["esquematico", "Esquemático"],
   ["memoria", "Memória de cálculo"],
@@ -63,6 +67,8 @@ export function DesignPage() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [tab, setTab] = useState<Tab>("resultados");
+  const [costs, setCosts] = useState<Record<string, number>>({});
+  const [project, setProject] = useState<ProjectDocument | null>(null);
   const latest = useRef(0);
 
   useEffect(() => {
@@ -85,6 +91,8 @@ export function DesignPage() {
     [info],
   );
   const body: DesignIn = useMemo(() => ({ spec, policy, locks }), [spec, policy, locks]);
+  // exports also carry the BOM costs and the project name (they do not change the design)
+  const exportBody: DesignIn = { ...body, costs, project: project?.name ?? null };
 
   // Re-run the design (debounced) whenever an input changes; the simulation must be re-run.
   useEffect(() => {
@@ -115,6 +123,7 @@ export function DesignPage() {
     setModuleId(id);
     setSpec(m.defaults);
     setLocks({});
+    setCosts({});
     setOut(null);
     setSvg("");
   };
@@ -129,16 +138,46 @@ export function DesignPage() {
       .finally(() => setSimBusy(false));
   };
 
-  const download = (kind: "bom" | "report" | "netlist") => {
+  const openProject = (doc: ProjectDocument) => {
+    setModuleId(doc.module_id);
+    setSpec(doc.current.spec);
+    setPolicy(doc.current.policy);
+    setLocks(doc.current.locks);
+    setCosts(doc.current.costs);
+    setSim(null);
+  };
+
+  type Export =
+    | "report-html"
+    | "report-pdf"
+    | "bom-csv"
+    | "bom-xlsx"
+    | "bom-pdf"
+    | "netlist"
+    | "kicad";
+  const download = (kind: Export) => {
+    if (!kind) return;
+    const base = project ? project.name.replace(/[^\p{L}\p{N}-]+/gu, "-") : moduleId;
     if (kind === "netlist") {
-      if (out) saveBlob(new Blob([out.netlist], { type: "text/plain" }), `${moduleId}.cir`);
+      if (out) saveBlob(new Blob([out.netlist], { type: "text/plain" }), `${base}.cir`);
       return;
     }
-    const p = kind === "bom" ? design.bom(moduleId, body) : design.report(moduleId, body, true);
-    p.then((b) =>
-      saveBlob(b, kind === "bom" ? `${moduleId}-bom.csv` : `${moduleId}-relatorio.html`),
-    ).catch((e: Error) => setError(e.message));
+    const jobs: Record<Exclude<Export, "netlist">, [() => Promise<Blob>, string]> = {
+      "report-html": [() => design.report(moduleId, exportBody, true), `${base}-relatorio.html`],
+      "report-pdf": [() => design.reportPdf(moduleId, exportBody, true), `${base}-relatorio.pdf`],
+      "bom-csv": [() => design.bomFile(moduleId, exportBody, "csv"), `${base}-materiais.csv`],
+      "bom-xlsx": [() => design.bomFile(moduleId, exportBody, "xlsx"), `${base}-materiais.xlsx`],
+      "bom-pdf": [() => design.bomFile(moduleId, exportBody, "pdf"), `${base}-materiais.pdf`],
+      kicad: [() => design.kicad(moduleId, exportBody), `${base}.net`],
+    };
+    const [fn, name] = jobs[kind];
+    setExporting(true);
+    fn()
+      .then((b) => saveBlob(b, name))
+      .catch((e: Error) => setError(e.message))
+      .finally(() => setExporting(false));
   };
+  const [exporting, setExporting] = useState(false);
 
   const setField = (key: string, value: unknown) => setSpec((s) => ({ ...s, [key]: value }));
 
@@ -188,19 +227,33 @@ export function DesignPage() {
       </section>
 
       <section className="panel" aria-label="Projeto">
+        <ProjectBar
+          state={{ moduleId, spec, policy, locks, costs }}
+          project={project}
+          onProject={setProject}
+          onOpen={openProject}
+          onError={setError}
+        />
         <div className="row design-head">
           <strong>{info?.title}</strong>
           <span className="muted small">{busy ? "calculando…" : out ? "atualizado" : ""}</span>
           <span className="grow" />
-          <button className="secondary" disabled={!out} onClick={() => download("bom")}>
-            Lista de materiais (CSV)
-          </button>
-          <button className="secondary" disabled={!out} onClick={() => download("netlist")}>
-            Netlist
-          </button>
-          <button disabled={!out} onClick={() => download("report")}>
-            Relatório
-          </button>
+          {exporting && <span className="muted small">gerando…</span>}
+          <select
+            aria-label="Exportar"
+            value=""
+            disabled={!out || exporting}
+            onChange={(e) => download(e.target.value as Export)}
+          >
+            <option value="">Exportar…</option>
+            <option value="report-pdf">Relatório (PDF)</option>
+            <option value="report-html">Relatório (HTML, imprimível)</option>
+            <option value="bom-xlsx">Lista de materiais (XLSX)</option>
+            <option value="bom-pdf">Lista de materiais (PDF)</option>
+            <option value="bom-csv">Lista de materiais (CSV)</option>
+            <option value="netlist">Netlist SPICE</option>
+            <option value="kicad">Netlist KiCad (.net)</option>
+          </select>
         </div>
         {error && (
           <div className="error" role="alert">
@@ -242,6 +295,9 @@ export function DesignPage() {
               })
             }
           />
+        )}
+        {out && tab === "materiais" && (
+          <BomTab moduleId={moduleId} body={body} costs={costs} onCosts={setCosts} version={out} />
         )}
         {out && tab === "ondas" && (
           <Waves

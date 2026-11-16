@@ -12,6 +12,7 @@ import { PdfPage } from "../components/PdfPage";
 import { unitSymbol } from "../format";
 import { CATEGORY_LABEL } from "./CatalogPage";
 import { ComponentReview } from "./ComponentReview";
+import { QueuePanel } from "./import/QueuePanel";
 
 const METHOD_LABEL: Record<Candidate["method"], string> = {
   regras: "regras",
@@ -250,6 +251,13 @@ export function ImportPage() {
               {error}
             </div>
           )}
+          <QueuePanel
+            useLlm={useLlm}
+            onJob={(j) => {
+              open(j);
+              refresh();
+            }}
+          />
           <h3>Importações anteriores</h3>
           {list.length === 0 ? (
             <p className="small muted">Nenhuma ainda.</p>

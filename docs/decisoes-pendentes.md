@@ -64,3 +64,40 @@ Pergunta: segue alguma referência formal de derating (norma ou manual de empres
 ## D10. Licença do software
 
 - **Recomendado:** licença aberta (MIT ou GPL-3.0), compatível com ngspice e adequada para uso por outras instituições. Confirmar preferência ou se o projeto será fechado.
+
+## D11. Vista de protoboard (pedido do usuário em 2026-11-15, após a Fase 9)
+
+Cada circuito deve poder ser projetado em duas vistas: o esquemático 2D (simbologia) e a montagem
+como numa protoboard (componente real, pelo encapsulamento). Decidido pelo usuário:
+
+- **Onde:** no simulador livre (montagem manual) e no assistente de projeto (montagem gerada do
+  circuito projetado, também usada no roteiro de prática).
+- **Vínculo:** as duas vistas são o mesmo circuito. O que for ligado na protoboard é comparado com
+  o esquemático; o sistema aponta ligação faltando, sobrando ou trocada.
+- **Encapsulamentos:** desenhados pelo sistema em SVG a partir das dimensões (DO-41, TO-92, TO-220,
+  DIP-8, resistor com faixas de cor, eletrolítico…). A **pinagem de cada peça vem do datasheet, com
+  fonte**, como os demais parâmetros (regra 1): sem pinagem conferida, a peça aparece na
+  protoboard com aviso e não entra na conferência automática.
+- Planejado como Fase 10 (ver roadmap).
+
+## D12. Instrumentação industrial e CLP (pedido do usuário em 2026-11-15, após a Fase 9) **PENDENTE**
+
+O usuário quer, além de simular e projetar circuitos de eletrônica, simular circuitos de
+eletrônica junto com circuitos de instrumentação e CLP. Os 150 datasheets de instrumentação e CLP
+que ele listou já estão na fila de importação (`data/datasheet-queue.yaml`, grupos 26 a 36:
+RTD e termopar, CLP e IHM, sensores de proximidade, fotoelétricos, força e carga, nível,
+pressão, vazão, encoders, atuadores e válvulas, transmissores e condicionadores), marcados
+"ainda sem esquema de categoria", porque o catálogo não tem como representá-los.
+
+A decidir com o usuário antes de planejar a fase:
+
+- **O que é "simular CLP":** lógica ladder ou IEC 61131-3 (ST, FBD) executada em ciclo de
+  varredura e acoplada ao circuito elétrico (entradas digitais e analógicas lidas do circuito,
+  saídas acionando relé, transistor ou contator), ou apenas o comportamento elétrico das entradas
+  e saídas do CLP (níveis, impedância, 4 a 20 mA, 0 a 10 V).
+- **Modelos de sensores e transmissores:** curva de Pt100 e termopar por norma (IEC 60751,
+  IEC 60584), sensor como fonte comandada no ngspice, laço de 4 a 20 mA com carga e tensão de
+  alimentação; sensores de catálogo entram só com valores do datasheet (regra 1).
+- **Esquema de categoria** para sensor, transmissor, atuador e CLP, com os parâmetros que a
+  seleção e a simulação precisam.
+- **Ordem:** proposta é tratar depois da Fase 10 (protoboard), como Fase 11.

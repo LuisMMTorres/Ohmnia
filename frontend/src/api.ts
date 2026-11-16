@@ -364,6 +364,25 @@ export interface ImportJob {
   created_at: string;
   updated_at: string;
 }
+export interface QueueItem {
+  index: number;
+  grupo: string;
+  arquivo: string;
+  part_number: string;
+  fabricante: string;
+  tipo: "peça" | "série";
+  categoria: string | null;
+  sem_categoria: string | null;
+  url: string | null;
+  link: {
+    situacao: "ok" | "bloqueado" | "quebrado" | "indisponivel";
+    verificado_em: string;
+    nota: string;
+  } | null;
+  local: { caminho: string; sha256: string; situacao: "ok" | "invalido"; nota: string } | null;
+  importable: boolean;
+  no_catalogo: string[];
+}
 export interface ImportSummary {
   id: string;
   filename: string;
@@ -472,6 +491,9 @@ export const imports = {
     tolerance = 60,
   ) =>
     post<[number, number][]>(`/datasheets/${sha}/pages/${page}/trace`, { rect, colour, tolerance }),
+  queue: () => request<QueueItem[]>("/datasheet-queue"),
+  importQueued: (index: number, use_llm: boolean) =>
+    post<ImportJob>(`/datasheet-queue/${index}/import`, { use_llm }),
   addCurve: (componentId: string, body: CurveIn) =>
     post<ComponentDetail>(`/components/${componentId}/curves`, body),
   deleteCurve: (componentId: string, curveId: string) =>
@@ -736,6 +758,8 @@ export interface DesignIn {
   spec: Record<string, unknown>;
   policy: Policy;
   locks: Record<string, string>;
+  costs?: Record<string, number>;
+  project?: string | null;
 }
 export interface Role {
   designator: string;
@@ -851,8 +875,104 @@ export const design = {
     request<SimulateOut>(`/design/${id}/simulate`, { method: "POST", body: JSON.stringify(body) }),
   schematic: (id: string, body: DesignIn) => postBlob(`/design/${id}/schematic.svg`, body),
   bom: (id: string, body: DesignIn) => postBlob(`/design/${id}/bom.csv`, body),
+  bomFile: (id: string, body: DesignIn, fmt: "csv" | "xlsx" | "pdf") =>
+    postBlob(`/design/${id}/bom.${fmt}`, body),
+  bomLines: (id: string, body: DesignIn) =>
+    request<BomOut>(`/design/${id}/bom`, { method: "POST", body: JSON.stringify(body) }),
   report: (id: string, body: DesignIn, simulate: boolean) =>
     postBlob(`/design/${id}/report.html?simulate=${simulate}`, body),
+  reportPdf: (id: string, body: DesignIn, simulate: boolean) =>
+    postBlob(`/design/${id}/report.pdf?simulate=${simulate}`, body),
+  kicad: (id: string, body: DesignIn) => postBlob(`/design/${id}/kicad.net`, body),
+};
+
+export interface BomLine {
+  designator: string;
+  designators: string[];
+  quantity: number;
+  description: string;
+  part_number: string;
+  manufacturer: string;
+  value: string;
+  note: string;
+  parameter: string;
+  stress: string;
+  rating: string;
+  margin_pct: number | null;
+  margin_status: string;
+  tj: string;
+  tj_max: string;
+  heatsink: string;
+  datasheet: string | null;
+  unit_cost: number | null;
+  total_cost: number | null;
+  cost_key: string;
+}
+export interface BomOut {
+  title: string;
+  lines: BomLine[];
+  total_cost: number | null;
+}
+
+// ---------------------------------------------------------------------- projects ------
+
+export interface Revision {
+  number: number;
+  saved_at: string;
+  spec: Record<string, unknown>;
+  policy: Policy;
+  locks: Record<string, string>;
+  costs: Record<string, number>;
+  note: string | null;
+}
+export interface ProjectDocument {
+  format: "circuitos-projeto";
+  format_version: number;
+  id: string;
+  name: string;
+  module_id: string;
+  description: string;
+  created_at: string;
+  updated_at: string;
+  current: Revision;
+  history: Revision[];
+}
+export interface ProjectSummary {
+  id: string;
+  name: string;
+  module_id: string;
+  revision: number;
+  updated_at: string;
+}
+interface ProjectContent {
+  spec: Record<string, unknown>;
+  policy: Policy;
+  locks: Record<string, string>;
+  costs: Record<string, number>;
+  note?: string | null;
+}
+
+export const projects = {
+  list: () => request<ProjectSummary[]>("/projects"),
+  get: (id: string) => request<ProjectDocument>(`/projects/${id}`),
+  create: (name: string, module_id: string, content: ProjectContent) =>
+    request<ProjectDocument>("/projects", {
+      method: "POST",
+      body: JSON.stringify({ name, module_id, ...content }),
+    }),
+  save: (id: string, content: ProjectContent & { name?: string }) =>
+    request<ProjectDocument>(`/projects/${id}`, { method: "PUT", body: JSON.stringify(content) }),
+  restore: (id: string, n: number) =>
+    request<ProjectDocument>(`/projects/${id}/restore/${n}`, { method: "POST" }),
+  duplicate: (id: string, name?: string) =>
+    request<ProjectDocument>(`/projects/${id}/duplicate`, {
+      method: "POST",
+      body: JSON.stringify({ name }),
+    }),
+  remove: (id: string) => request<{ status: string }>(`/projects/${id}`, { method: "DELETE" }),
+  fileUrl: (id: string) => `${BASE}/projects/${id}/file`,
+  importFile: (text: string) =>
+    request<ProjectDocument>("/projects/import", { method: "POST", body: text }),
 };
 
 // ------------------------------------------------------------------- schematic simulator
@@ -926,6 +1046,7 @@ export const schematicApi = {
       method: "POST",
       body: JSON.stringify({ schematic }),
     }),
+  kicad: (schematic: Schematic) => postBlob("/schematic/kicad.net", { schematic }),
   importNetlist: (netlist: string) =>
     request<{ schematic: Schematic; warnings: string[] }>("/schematic/import", {
       method: "POST",

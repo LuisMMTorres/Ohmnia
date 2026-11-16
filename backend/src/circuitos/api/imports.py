@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import re
+import urllib.error
 import uuid
+from pathlib import Path
 from typing import Annotated, Literal
 
 import pymupdf
@@ -35,7 +37,9 @@ from circuitos.datasheets.imports import (
     start_import,
 )
 from circuitos.datasheets.mapping import Candidate
+from circuitos.datasheets.queue import QueueItem, load_queue
 from circuitos.datasheets.spice_import import check_model, parse_models
+from circuitos.datasheets.store import DatasheetStore
 
 router = APIRouter(prefix="/api/v1")
 
@@ -380,3 +384,95 @@ def delete_model(request: Request, component_id: uuid.UUID, model_id: str) -> Co
     if len(models) == len(record.spice_models):
         raise HTTPException(404, "Modelo não encontrado")
     return _save(request, record.model_copy(update={"spice_models": models}))
+
+
+# ---------------------------------------------------------------------- datasheet queue --
+
+
+def _norm_part(name: str) -> str:
+    return re.sub(r"[^A-Z0-9]", "", name.upper())
+
+
+def _same_part(record: ComponentRecord, queued: str) -> bool:
+    """Exact part number, or the record's declared family (LM358P belongs to family LM358).
+
+    A prefix match would be wrong: IRF540 and IRF540N are different parts.
+    """
+    want = _norm_part(queued)
+    names = [record.part_number, *re.split(r"[/,;]", record.family or "")]
+    return any(_norm_part(n) == want for n in names if n.strip())
+
+
+@router.get("/datasheet-queue")
+def datasheet_queue(request: Request) -> list[QueueItem]:
+    """Datasheets the user listed for import, with link status and catalogue matches."""
+    repo = _repo(request)
+    items = load_queue()
+    for item in items:
+        found = repo.search(text=item.part_number)
+        item.no_catalogo = [
+            f"{r.manufacturer} {r.part_number} ({r.review.status})"
+            for r in found
+            if _same_part(r, item.part_number)
+        ]
+    return items
+
+
+class QueueImportIn(BaseModel):
+    use_llm: bool = False
+
+
+def _queued_pdf(store: DatasheetStore, item: QueueItem) -> str:
+    """The PDF of a queue item: already stored, the local copy, or downloaded from the link."""
+    local = item.local
+    if local is not None and local.situacao == "ok":
+        if store.has(local.sha256):
+            return local.sha256
+        path = Path(local.caminho)
+        if path.exists():
+            try:
+                sha = store.add(path.read_bytes())
+            except DataIntegrityError as exc:
+                raise HTTPException(422, f"{item.arquivo}: {exc}") from exc
+            if sha != local.sha256:
+                raise HTTPException(
+                    409,
+                    f"{path} mudou desde a verificação (hash diferente); confira o arquivo",
+                )
+            return sha
+        if item.url is None:
+            raise HTTPException(404, f"Arquivo local não encontrado: {path}")
+    if item.url is None or item.link is None or item.link.situacao != "ok":
+        raise HTTPException(422, f"{item.arquivo}: sem PDF local válido nem link que funcione")
+    try:
+        return store.fetch(item.url)
+    except DataIntegrityError as exc:
+        raise HTTPException(422, f"{item.arquivo}: o endereço não devolveu um PDF ({exc})") from exc
+    except (urllib.error.URLError, TimeoutError, OSError) as exc:
+        raise HTTPException(
+            502,
+            f"Não foi possível baixar {item.url}: {exc}. Baixe pelo navegador e envie o PDF "
+            "na tela de importação.",
+        ) from exc
+
+
+@router.post("/datasheet-queue/{index}/import")
+def import_from_queue(request: Request, index: int, body: QueueImportIn) -> ImportJob:
+    """Download this one PDF and open an import job with the queue's identification."""
+    items = load_queue()
+    if not 0 <= index < len(items):
+        raise HTTPException(404, "Item da fila não encontrado")
+    item = items[index]
+    store = _store(request)
+    sha = _queued_pdf(store, item)
+    meta = ImportMeta(
+        manufacturer=item.fabricante,
+        part_number=item.part_number,
+        category=item.categoria or "",
+        url=item.url if item.link is not None and item.link.situacao == "ok" else None,
+    )
+    try:
+        job = start_import(store, sha, item.arquivo, meta, use_llm=body.use_llm)
+    except (CircuitosError, RuntimeError) as exc:
+        raise HTTPException(422, str(exc)) from exc
+    return _imports(request).save(job)

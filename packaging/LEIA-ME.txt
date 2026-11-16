@@ -1,0 +1,32 @@
+Ohmnia: projeto e simulação de circuitos - pacote para Windows (64 bits)
+=================================================================
+
+Como usar
+---------
+1. Descompacte a pasta "Ohmnia" em qualquer lugar (por exemplo, Documentos).
+2. Dê dois cliques em Ohmnia.exe.
+3. O navegador abre em http://127.0.0.1:8000/ . Se não abrir, digite esse endereço.
+4. A janela preta mostra o registro do servidor. Fechar essa janela encerra o programa.
+
+O pacote já traz o ngspice (simulador) e o catálogo de componentes. Não precisa instalar
+Python nem Node.js.
+
+Onde ficam os seus dados
+------------------------
+Na pasta do usuário, em .circuitos (por exemplo C:\Users\<nome>\.circuitos):
+  - catalog.db: catálogo com as suas revisões, projetos salvos e importações;
+  - datasheets\: PDFs baixados ou enviados.
+Para fazer cópia de segurança, copie essa pasta. Atualizar o programa não apaga os dados.
+
+Opcional
+--------
+- OCR de datasheets digitalizados: instale o Tesseract (winget install tesseract-ocr.tesseract).
+- Extração de datasheets com modelo de linguagem: exige a instalação a partir do código-fonte
+  (uv sync --extra llm) e uma chave da API da Anthropic. Veja o manual.
+
+Problemas
+---------
+- "Porta 8000 em uso": feche a outra cópia do programa (ou rode Ohmnia.exe --port 8001).
+- Antivírus: alguns bloqueiam executáveis novos sem assinatura; libere a pasta Ohmnia.
+
+Manual completo: pasta manual\ ao lado deste arquivo.

@@ -17,7 +17,14 @@ import pymupdf
 
 from circuitos.core.errors import DataIntegrityError
 
-_USER_AGENT = "Mozilla/5.0 (compatible; circuitos-datasheet-fetcher)"
+_USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) circuitos-datasheet-fetcher"
+# Some manufacturer sites (st.com) hold the connection open when these headers are missing.
+_HEADERS = {
+    "User-Agent": _USER_AGENT,
+    "Accept": "application/pdf,*/*",
+    "Accept-Language": "en-US,en;q=0.9",
+    "Accept-Encoding": "identity",
+}
 
 
 def data_dir() -> Path:
@@ -53,7 +60,7 @@ class DatasheetStore:
         """Download a datasheet (if not cached) and verify its hash."""
         if expected_sha256 and self.has(expected_sha256):
             return expected_sha256
-        request = urllib.request.Request(url, headers={"User-Agent": _USER_AGENT})
+        request = urllib.request.Request(url, headers=_HEADERS)
         with urllib.request.urlopen(request, timeout=timeout) as response:
             content = response.read()
         digest = self.add(content)

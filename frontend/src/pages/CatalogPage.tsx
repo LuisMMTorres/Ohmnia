@@ -17,6 +17,16 @@ export const CATEGORY_LABEL: Record<string, string> = {
   "thyristor.diac": "DIAC",
   "heatsink.extrusion": "Dissipador (perfil)",
   "magnetic.core": "Núcleo magnético",
+  "magnetic.bobbin": "Carretel",
+  "magnetic.material": "Material magnético",
+  "jfet.n": "JFET canal N",
+  "igbt.n": "IGBT canal N",
+  opamp: "Amplificador operacional",
+  comparator: "Comparador",
+  "regulator.positive": "Regulador linear positivo",
+  "regulator.negative": "Regulador linear negativo",
+  timer: "Temporizador",
+  gate_driver: "Driver de gate",
 };
 
 export const REVIEW_LABEL: Record<string, string> = {

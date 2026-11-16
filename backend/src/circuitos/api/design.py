@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import uuid
+from collections.abc import Callable
 from typing import Any, Literal
 
 import numpy as np
@@ -16,8 +17,8 @@ from circuitos.design import registry
 from circuitos.design.base import Circuit, DesignResult, SimComparison
 from circuitos.design.engine import Device, TopologyModule, run
 from circuitos.design.verify import compare_full, netlist_with_analysis
-from circuitos.reports import outputs, report
-from circuitos.reports.common import bom_csv
+from circuitos.reports import bom, kicad, outputs, pdf, report
+from circuitos.reports.sections import SimWaves
 from circuitos.selection.derating import DeratingPolicy
 
 router = APIRouter(prefix="/api/v1/design")
@@ -38,6 +39,8 @@ class DesignIn(BaseModel):
     spec: dict[str, Any] = Field(default_factory=dict)
     policy: Literal["didatico", "industrial"] = "didatico"
     locks: dict[str, uuid.UUID] = Field(default_factory=dict)
+    costs: dict[str, float] = Field(default_factory=dict)  # part number → unit cost (BOM)
+    project: str | None = None  # project name for the report title
 
 
 class CandidateOut(BaseModel):
@@ -199,14 +202,104 @@ def schematic(request: Request, module_id: str, body: DesignIn) -> Response:
     return Response(svg, media_type="image/svg+xml")
 
 
+def _datasheet_link(repo: ComponentRepository) -> Callable[[uuid.UUID], str | None]:
+    def link(component_id: uuid.UUID) -> str | None:
+        record = repo.get_or_none(component_id)
+        if record is None:
+            return None
+        return next((str(d.url) for d in record.datasheets if d.url), None)
+
+    return link
+
+
+def _bom_lines(request: Request, module_id: str, body: DesignIn) -> tuple[str, list[bom.BomLine]]:
+    module, spec, result, _, circuit = _design(request, module_id, body)
+    rows = outputs.bom(module, spec, result)
+    lines = bom.build(rows, result, _datasheet_link(_repo(request)), body.costs)
+    return f"{module.title} — {circuit.title}", lines
+
+
 @router.post("/{module_id}/bom.csv")
-def bom(request: Request, module_id: str, body: DesignIn) -> Response:
-    module, spec, result, _, _ = _design(request, module_id, body)
-    text = bom_csv(outputs.bom(module, spec, result))
+def bom_csv_out(request: Request, module_id: str, body: DesignIn) -> Response:
+    _, lines = _bom_lines(request, module_id, body)
     return Response(
-        "﻿" + text,  # BOM so spreadsheet programs read the accents
+        bom.to_csv(lines),  # UTF-8 with BOM so spreadsheet programs read the accents
         media_type="text/csv; charset=utf-8",
         headers={"Content-Disposition": f'attachment; filename="{module_id}-bom.csv"'},
+    )
+
+
+@router.post("/{module_id}/bom.xlsx")
+def bom_xlsx_out(request: Request, module_id: str, body: DesignIn) -> Response:
+    title, lines = _bom_lines(request, module_id, body)
+    return Response(
+        bom.to_xlsx(lines, title),
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        headers={"Content-Disposition": f'attachment; filename="{module_id}-bom.xlsx"'},
+    )
+
+
+@router.post("/{module_id}/bom.pdf")
+def bom_pdf_out(request: Request, module_id: str, body: DesignIn) -> Response:
+    title, lines = _bom_lines(request, module_id, body)
+    subtitle = f"Política de margens: {body.policy}. Margem = (nominal / esforço − 1)·100."
+    return Response(
+        bom.to_pdf(lines, f"Lista de materiais — {title}", subtitle),
+        media_type="application/pdf",
+        headers={"Content-Disposition": f'attachment; filename="{module_id}-bom.pdf"'},
+    )
+
+
+class BomOut(BaseModel):
+    title: str
+    lines: list[dict[str, Any]]
+    total_cost: float | None
+
+
+@router.post("/{module_id}/bom")
+def bom_json(request: Request, module_id: str, body: DesignIn) -> BomOut:
+    title, lines = _bom_lines(request, module_id, body)
+    return BomOut(
+        title=title,
+        lines=[
+            {
+                **vars(line),
+                "designator": line.designator,
+                "total_cost": line.total_cost,
+                "cost_key": line.cost_key,
+            }
+            for line in lines
+        ],
+        total_cost=bom.total_cost(lines),
+    )
+
+
+def _waves(out: SimulateOut) -> SimWaves:
+    return SimWaves(
+        t_s=[v / 1e3 for v in out.t_ms],
+        traces={k: (v.unit, v.values) for k, v in out.traces.items()},
+        bode_f=out.bode_f,
+        bode={k: v.values for k, v in out.bode.items()},
+    )
+
+
+def _report_ctx_args(
+    request: Request, module_id: str, body: DesignIn, simulate: bool
+) -> tuple[
+    Any, BaseModel, DesignResult, list[SimComparison] | None, SimWaves | None, list[bom.BomLine]
+]:
+    module, spec, result, _, circuit = _design(request, module_id, body)
+    sim_out = _simulate(circuit, result) if simulate else None
+    lines = bom.build(
+        outputs.bom(module, spec, result), result, _datasheet_link(_repo(request)), body.costs
+    )
+    return (
+        module,
+        spec,
+        result,
+        sim_out.comparisons if sim_out else None,
+        _waves(sim_out) if sim_out else None,
+        lines,
     )
 
 
@@ -214,9 +307,42 @@ def bom(request: Request, module_id: str, body: DesignIn) -> Response:
 def report_html(
     request: Request, module_id: str, body: DesignIn, simulate: bool = True
 ) -> HTMLResponse:
-    module, spec, result, _, circuit = _design(request, module_id, body)
-    sim = _simulate(circuit, result).comparisons if simulate else None
-    html = report.render(module, spec, result, body.policy, sim)
+    module, spec, result, sim, waves, lines = _report_ctx_args(request, module_id, body, simulate)
+    html = report.render(module, spec, result, body.policy, sim, waves, lines, body.project)
     return HTMLResponse(
         html, headers={"Content-Disposition": f'inline; filename="{module_id}-relatorio.html"'}
+    )
+
+
+@router.post("/{module_id}/report.pdf")
+def report_pdf(request: Request, module_id: str, body: DesignIn, simulate: bool = True) -> Response:
+    module, spec, result, sim, waves, lines = _report_ctx_args(request, module_id, body, simulate)
+    ctx = report.context(
+        module, spec, result, body.policy, sim, waves, lines, body.project, figure_format="png"
+    )
+    return Response(
+        pdf.render_pdf(ctx),
+        media_type="application/pdf",
+        headers={"Content-Disposition": f'attachment; filename="{module_id}-relatorio.pdf"'},
+    )
+
+
+@router.post("/{module_id}/kicad.net")
+def kicad_netlist(request: Request, module_id: str, body: DesignIn) -> Response:
+    """KiCad netlist with the parts of the bill of materials (model elements left out)."""
+    module, spec, result, _, circuit = _design(request, module_id, body)
+    keep = {r.designator for r in outputs.bom(module, spec, result)}
+    repo = _repo(request)
+    packages: dict[str, str] = {}
+    for c in result.selection:
+        record = repo.get_or_none(c.component_id)
+        if record is not None and record.package:
+            packages[c.designator] = record.package
+    text = kicad.to_kicad(
+        netlist_with_analysis(circuit), f"{module.title} — {circuit.title}", keep, packages
+    )
+    return Response(
+        text,
+        media_type="text/plain; charset=utf-8",
+        headers={"Content-Disposition": f'attachment; filename="{module_id}.net"'},
     )

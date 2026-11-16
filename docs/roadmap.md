@@ -137,6 +137,27 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 - ✅ Ambiente Windows: DLL do ngspice, memória insuficiente classificada
 - ✅ [validacao/importacao-datasheets.md](validacao/importacao-datasheets.md)
 
-## Fase 9 — Relatórios, empacotamento e documentação ⏳
+## Fase 9 — Relatórios, empacotamento e documentação ✅ (aprovada em 2026-11-15)
 
-- ⏳ Relatórios completos, exportação KiCad (se viável), instalador, manual, guia de extensão
+- ✅ Relatório completo em HTML (imprimível) e PDF: formas de onda (cálculo × ngspice), limites de operação, BOM com margens
+- ✅ Lista de materiais com esforço × nominal × margem, Tj, dissipador, datasheet, custo; CSV, XLSX e PDF
+- ✅ Projetos: salvar, abrir, duplicar, revisões e restauração; arquivo aberto `.circuito.json`
+- ✅ Exportação KiCad (netlist `.net`) do projeto e do simulador; ➡️ `.kicad_sch` fora do escopo
+- ✅ Pacote para Windows (PyInstaller, com ngspice e catálogo) e `LEIA-ME.txt`
+- ✅ [Manual do usuário](manual/README.md) e [guia de extensão](guia-extensao.md)
+- ✅ [validacao/relatorios-empacotamento.md](validacao/relatorios-empacotamento.md)
+
+## Fase 10 — Vista de protoboard ⏳ (pedido em 2026-11-15, decisão D11)
+
+- ⏳ Simbologia real (encapsulamento em SVG) para cada componente, ao lado do símbolo 2D
+- ⏳ Pinagem por peça no catálogo, com fonte no datasheet e revisão
+- ⏳ Protoboard (830 pontos, barramentos) com montagem manual no simulador
+- ⏳ Montagem gerada a partir do circuito do assistente de projeto (e no roteiro de prática)
+- ⏳ Conferência protoboard × esquemático (ligação faltando, sobrando, trocada)
+
+## Fase 11 ⏳ Instrumentação industrial e CLP (pedido em 2026-11-15, decisão D12, escopo a definir)
+
+- ✅ 150 datasheets de instrumentação e CLP na fila de importação (grupos 26 a 36)
+- ⏳ Definir com o usuário o que "simular CLP" cobre (lógica em ciclo de varredura acoplada ao circuito ou só o comportamento elétrico das E/S)
+- ⏳ Esquema de categoria para sensor, transmissor, atuador e CLP
+- ⏳ Modelos de sensor (Pt100, termopar) e laço de 4 a 20 mA no ngspice

@@ -180,3 +180,102 @@ def test_simulate_filter_returns_bode(client):
     body = r.json()
     assert body["ok"], body["comparisons"]
     assert body["bode_f"] and body["bode"]
+
+
+def test_bom_lines_carry_margins_temperature_and_datasheet(client):
+    r = client.post(
+        "/api/v1/design/DM-RET1/bom", json={"spec": {"topology": "ponte", "filter": "C"}}
+    )
+    assert r.status_code == 200, r.text
+    body = r.json()
+    diodes = next(line for line in body["lines"] if line["designators"][0].startswith("D"))
+    assert diodes["margin_pct"] is not None and diodes["parameter"]
+    assert diodes["stress"] and diodes["rating"]
+    assert diodes["tj"].endswith("°C")
+    assert diodes["datasheet"] and diodes["datasheet"].startswith("http")
+    assert body["total_cost"] is None
+
+
+def test_bom_costs_xlsx_and_pdf(client):
+    import io
+
+    import openpyxl
+    import pymupdf
+
+    first = client.post("/api/v1/design/DM-RET1/bom", json={"spec": {}}).json()["lines"][0]
+    spec = {"spec": {}, "costs": {first["cost_key"]: 2.5}}
+    body = client.post("/api/v1/design/DM-RET1/bom", json=spec).json()
+    assert body["total_cost"] == pytest.approx(2.5 * first["quantity"])
+
+    x = client.post("/api/v1/design/DM-RET1/bom.xlsx", json=spec)
+    assert x.status_code == 200
+    wb = openpyxl.load_workbook(io.BytesIO(x.content))
+    ws = wb["Lista de materiais"]
+    assert ws.cell(row=2, column=10).value == "Margem (%)"
+    assert ws.cell(row=ws.max_row, column=1).value == "Total"
+    assert "Verificações" in wb.sheetnames
+
+    p = client.post("/api/v1/design/DM-RET1/bom.pdf", json=spec)
+    assert p.status_code == 200 and p.headers["content-type"] == "application/pdf"
+    with pymupdf.open(stream=p.content, filetype="pdf") as doc:
+        text = doc[0].get_text()
+    assert "Lista de materiais" in text and first["part_number"] in text
+
+
+def test_bom_groups_identical_parts():
+    from circuitos.reports.bom import BomLine, group
+
+    a = BomLine(["R1"], 1, "Resistor", "(a escolher)", "", "1 kΩ", "")
+    b = BomLine(["R2"], 1, "Resistor", "(a escolher)", "", "1 kΩ", "")
+    c = BomLine(["R3"], 1, "Resistor", "(a escolher)", "", "2,2 kΩ", "")
+    merged = group([a, b, c])
+    assert [m.designator for m in merged] == ["R1, R2", "R3"]
+    assert merged[0].quantity == 2
+
+
+@pytest.mark.ngspice
+def test_report_html_has_waveforms_limits_and_bom_margins(client):
+    r = client.post(
+        "/api/v1/design/DM-RET1/report.html", json={"spec": {}, "project": "Fonte 12 V"}
+    )
+    assert r.status_code == 200
+    html = r.text
+    assert "<h1>Fonte 12 V</h1>" in html
+    assert "Formas de onda" in html and "(ngspice)" in html
+    assert "Limites de operação" in html and 'class="verdict' in html
+    assert "Esforço × nominal" in html
+    assert "window.print()" in html
+
+
+def test_report_pdf_for_every_module(client):
+    import pymupdf
+
+    from circuitos.design import registry
+    from circuitos.reports.pdf import equation_png
+
+    failed_eq = 0
+    total_eq = 0
+    for module_id in registry.MODULES:
+        r = client.post(f"/api/v1/design/{module_id}/report.pdf?simulate=false", json={"spec": {}})
+        assert r.status_code == 200, (module_id, r.text[:300])
+        with pymupdf.open(stream=r.content, filetype="pdf") as doc:
+            text = "".join(p.get_text() for p in doc)
+            assert "Memória de cálculo" in text and "Limites de operação" in text, module_id
+            assert "página 1 de" in text
+        design = client.post(f"/api/v1/design/{module_id}", json={"spec": {}}).json()
+        for step in design["result"]["steps"]:
+            total_eq += 1
+            failed_eq += equation_png(step["latex"]) is None
+    # equations mathtext cannot read are printed as LaTeX source; keep that rare
+    assert total_eq > 100
+    assert failed_eq / total_eq < 0.05, f"{failed_eq} de {total_eq} equações sem renderização"
+
+
+def test_kicad_netlist_of_a_design(client):
+    r = client.post("/api/v1/design/DM-RET1/kicad.net", json={"spec": {"topology": "ponte"}})
+    assert r.status_code == 200
+    text = r.text
+    assert text.startswith('(export (version "E")')
+    assert text.count("(") == text.count(")")
+    assert '(comp (ref "D' in text or '(comp (ref "d' in text
+    assert "Fora da netlist" in text  # sources and model elements are listed, not placed
