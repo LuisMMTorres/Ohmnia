@@ -5226,3 +5226,363 @@ datasheets:
     situacao: quebrado
     verificado_em: '2026-11-16'
     nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: 14HS13-0804S_StepperOnline.pdf
+  part_number: 14HS13-0804S
+  fabricante: StepperOnline (OMC)
+  tipo: peça
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://www.omc-stepperonline.com/download/14HS13-0804S.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: 17HS19-2004S1_StepperOnline.pdf
+  part_number: 17HS19-2004S1
+  fabricante: StepperOnline (OMC)
+  tipo: peça
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://www.omc-stepperonline.com/download/17HS19-2004S1.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: 23HS22-2804S_StepperOnline.pdf
+  part_number: 23HS22-2804S
+  fabricante: StepperOnline (OMC)
+  tipo: peça
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://www.omc-stepperonline.com/download/23HS22-2804S.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: 23HS45-4204S_StepperOnline.pdf
+  part_number: 23HS45-4204S
+  fabricante: StepperOnline (OMC)
+  tipo: peça
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://www.omc-stepperonline.com/download/23HS45-4204S.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: 34HS46-5004D_StepperOnline.pdf
+  part_number: 34HS46-5004D
+  fabricante: StepperOnline (OMC)
+  tipo: peça
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://www.omc-stepperonline.com/download/34HS46-5004D.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: 34HS59-5004S_StepperOnline.pdf
+  part_number: 34HS59-5004S
+  fabricante: StepperOnline (OMC)
+  tipo: peça
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://www.omc-stepperonline.com/download/34HS59-5004S.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: Serie_3RW5_Siemens.pdf
+  part_number: 3RW5
+  fabricante: Siemens
+  tipo: série
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://cache.industry.siemens.com/dl/files/312/109748312/att_924115/v1/sirius_3rw5_soft_starter_manual_en-US.pdf
+  link:
+    situacao: indisponivel
+    verificado_em: '2026-11-16'
+    nota: 'certificado do site não verificado no teste automático: abra pelo navegador'
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: 42HS48-6004S_StepperOnline.pdf
+  part_number: 42HS48-6004S
+  fabricante: StepperOnline (OMC)
+  tipo: peça
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://www.omc-stepperonline.com/download/42HS48-6004S.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: Serie_AR_Oriental_Motor.pdf
+  part_number: AR
+  fabricante: Oriental Motor
+  tipo: série
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://www.orientalmotor.com/products/pdfs/2021-2022/C/AR_Series.pdf
+  link:
+    situacao: bloqueado
+    verificado_em: '2026-11-16'
+    nota: 'o site recusa o download automático (HTTP 403): baixe pelo navegador e envie o PDF'
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: CFW100_WEG.pdf
+  part_number: CFW100
+  fabricante: WEG
+  tipo: peça
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://static.weg.net/medias/downloadcenter/h0a/h5a/WEG-cfw100-manual-do-usuario-10002153683-manual-portugues-br.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: CFW11_WEG.pdf
+  part_number: CFW11
+  fabricante: WEG
+  tipo: peça
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://static.weg.net/medias/downloadcenter/h88/h30/WEG-cfw11-manual-do-usuario-0899.5553-manual-portugues-br.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: Serie_CFW11W_WEG.pdf
+  part_number: CFW11W
+  fabricante: WEG
+  tipo: série
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://static.weg.net/medias/downloadcenter/h94/h71/WEG-cfw11w-inversores-de-frequencia-50039812-catalogo-portugues-br.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: CFW300_WEG.pdf
+  part_number: CFW300
+  fabricante: WEG
+  tipo: peça
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://static.weg.net/medias/downloadcenter/h52/h85/WEG-cfw300-manual-do-usuario-10003706716-manual-portugues-br.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: CFW500_WEG.pdf
+  part_number: CFW500
+  fabricante: WEG
+  tipo: peça
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://static.weg.net/medias/downloadcenter/h3c/h91/WEG-cfw500-manual-do-usuario-10001925674-manual-portugues-br.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: CFW501_WEG.pdf
+  part_number: CFW501
+  fabricante: WEG
+  tipo: peça
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://static.weg.net/medias/downloadcenter/h22/h19/WEG-cfw501-manual-do-usuario-10004321890-manual-portugues-br.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: CFW700_WEG.pdf
+  part_number: CFW700
+  fabricante: WEG
+  tipo: peça
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://static.weg.net/medias/downloadcenter/h61/h58/WEG-cfw700-manual-do-usuario-10001053752-manual-portugues-br.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: CFW900_WEG.pdf
+  part_number: CFW900
+  fabricante: WEG
+  tipo: peça
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://static.weg.net/medias/downloadcenter/h15/h42/WEG-cfw900-manual-do-usuario-10009914251-manual-portugues-br.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: EAV64301_Schneider_Electric.pdf
+  part_number: EAV64301
+  fabricante: Schneider Electric
+  tipo: peça
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://download.schneider-electric.com/files?p_Doc_Ref=EAV64301
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: Serie_MV2_WEG.pdf
+  part_number: MV2
+  fabricante: WEG
+  tipo: série
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://static.weg.net/medias/downloadcenter/h77/h64/WEG-mv2-inversores-de-media-tensao-50028419-catalogo-portugues-br.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: MW500_WEG.pdf
+  part_number: MW500
+  fabricante: WEG
+  tipo: peça
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://static.weg.net/medias/downloadcenter/h41/h12/WEG-mw500-manual-do-usuario-10004123654-manual-portugues-br.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: Serie_Motores_de_Passo_Kalatec.pdf
+  part_number: Motores de Passo
+  fabricante: Kalatec
+  tipo: série
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://www.kalatec.com.br/wp-content/uploads/2020/05/Catalogo-Motores-de-Passo-Kalatec.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: Serie_PKP_Oriental_Motor.pdf
+  part_number: PKP
+  fabricante: Oriental Motor
+  tipo: série
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://www.orientalmotor.com/products/pdfs/2021-2022/C/PKP_Series.pdf
+  link:
+    situacao: bloqueado
+    verificado_em: '2026-11-16'
+    nota: 'o site recusa o download automático (HTTP 403): baixe pelo navegador e envie o PDF'
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: Serie_PSTX_ABB.pdf
+  part_number: PSTX
+  fabricante: ABB
+  tipo: série
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://library.e.abb.com/public/381b15a4321c4728a567890123456789/PSTX_Catalog_1SFC132009C0201.pdf
+  link:
+    situacao: bloqueado
+    verificado_em: '2026-11-16'
+    nota: 'o site recusa o download automático (HTTP 403): baixe pelo navegador e envie o PDF'
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: Serie_SMC-50_Rockwell_Automation.pdf
+  part_number: SMC-50
+  fabricante: Rockwell Automation
+  tipo: série
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://literature.rockwellautomation.com/idc/groups/literature/documents/um/150-um008_-en-p.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: SSW05_WEG.pdf
+  part_number: SSW05
+  fabricante: WEG
+  tipo: peça
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://static.weg.net/medias/downloadcenter/h05/h89/WEG-ssw05-manual-do-usuario-0899.5146-manual-portugues-br.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: SSW06_WEG.pdf
+  part_number: SSW06
+  fabricante: WEG
+  tipo: peça
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://static.weg.net/medias/downloadcenter/h31/h74/WEG-ssw06-manual-do-usuario-0899.5243-manual-portugues-br.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: SSW07_WEG.pdf
+  part_number: SSW07
+  fabricante: WEG
+  tipo: peça
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://static.weg.net/medias/downloadcenter/h65/h28/WEG-ssw07-manual-do-usuario-0899.5464-manual-portugues-br.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: SSW08_WEG.pdf
+  part_number: SSW08
+  fabricante: WEG
+  tipo: peça
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://static.weg.net/medias/downloadcenter/h92/h55/WEG-ssw08-manual-do-usuario-10000123456-manual-portugues-br.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: Serie_SSW7000_WEG.pdf
+  part_number: SSW7000
+  fabricante: WEG
+  tipo: série
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://static.weg.net/medias/downloadcenter/h44/h62/WEG-ssw7000-soft-starter-media-tensao-50031428-catalogo-portugues-br.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: SSW900_WEG.pdf
+  part_number: SSW900
+  fabricante: WEG
+  tipo: peça
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://static.weg.net/medias/downloadcenter/h18/h49/WEG-ssw900-manual-do-usuario-10006324581-manual-portugues-br.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'

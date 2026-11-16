@@ -125,3 +125,24 @@ essencial para o sistema. Escolhas:
   (grupo 37). ACS712 e INA219 já têm PDF válido na pasta local do usuário; SCT-013 e ZMPT101B não
   têm PDF acessível (link quebrado nas duas listas) e precisam ser baixados pelo navegador antes
   do exemplo 1.
+
+**Pedido complementar (2026-11-16):** exemplos que integrem inversores de frequência, CLP,
+microcontroladores, motores e bombas. Os 30 manuais e catálogos de acionamentos enviados no mesmo
+dia (inversores CFW e MW500 e soft-starters SSW da WEG, soft-starters Siemens, Schneider, ABB e
+Rockwell, motores de passo StepperOnline, Oriental Motor e Kalatec) estão na fila (grupo 38); só
+8 abrem o PDF, e os 16 links da WEG dão 404 (endereços inexistentes). Exemplos propostos para a
+Fase 11, sujeitos ao seu ajuste:
+
+5. **Bombeamento com pressão constante:** transmissor de pressão 4 a 20 mA na entrada analógica
+   do CLP, PID no CLP, referência 0 a 10 V ao inversor de frequência (controle V/f), motor de
+   indução trifásico com bomba centrífuga (carga com conjugado quadrático); ESP32 como supervisão
+   (lê corrente e pressão e mostra no Serial).
+6. **Partida de motor:** CLP comanda partida direta, por soft-starter e por inversor; o sistema
+   compara corrente de partida, conjugado e tempo de aceleração.
+7. **Posicionamento com motor de passo:** Arduino gera passo e direção para um driver de motor de
+   passo; o CLP dá a ordem de ciclo e recebe o fim de curso.
+
+Para isso a Fase 11 também precisa de modelos de motor de indução (circuito equivalente com
+parâmetros de placa ou do fabricante), de bomba (curva do fabricante), do inversor (comportamental:
+rampa, V/f, limites) e do motor de passo, todos com valores de documento (regra 1).
+
