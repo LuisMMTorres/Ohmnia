@@ -147,7 +147,7 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 - ✅ [Manual do usuário](manual/README.md) e [guia de extensão](guia-extensao.md)
 - ✅ [validacao/relatorios-empacotamento.md](validacao/relatorios-empacotamento.md)
 
-## Fase 10 — Vista de protoboard 👀 (aguardando aprovação; pedido em 2026-11-15, decisão D11)
+## Fase 10 — Vista de protoboard ✅ (aprovada em 2026-11-16; pedido em 2026-11-15, decisão D11)
 
 - ✅ Simbologia real (encapsulamento desenhado em SVG) ao lado do símbolo 2D, no simulador e no catálogo
 - ✅ Pinagem por peça no catálogo, com fonte no datasheet e status de revisão (13 registros, 74 peças)

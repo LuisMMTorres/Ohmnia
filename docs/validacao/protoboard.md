@@ -1,6 +1,6 @@
 # Validação: vista de protoboard (Fase 10, decisão D11)
 
-Data: 2026-11-16. Status: aguardando a sua aprovação.
+Data: 2026-11-16. Status: aprovada em 2026-11-16.
 
 O circuito passa a ter duas vistas, o esquemático 2D e a montagem numa protoboard de 830 pontos
 com as peças reais, e as duas são conferidas uma contra a outra. Manual: `docs/manual/07-protoboard.md`.
