@@ -80,7 +80,7 @@ como numa protoboard (componente real, pelo encapsulamento). Decidido pelo usuá
   protoboard com aviso e não entra na conferência automática.
 - Planejado como Fase 10 (ver roadmap).
 
-## D12. Instrumentação industrial e CLP (pedido do usuário em 2026-11-15, após a Fase 9) **PENDENTE**
+## D12. Instrumentação industrial, microcontroladores e CLP (pedido do usuário em 2026-11-15) **DECIDIDA (2026-11-16)**
 
 O usuário quer, além de simular e projetar circuitos de eletrônica, simular circuitos de
 eletrônica junto com circuitos de instrumentação e CLP. Os 150 datasheets de instrumentação e CLP
@@ -101,3 +101,27 @@ A decidir com o usuário antes de planejar a fase:
 - **Esquema de categoria** para sensor, transmissor, atuador e CLP, com os parâmetros que a
   seleção e a simulação precisam.
 - **Ordem:** proposta é tratar depois da Fase 10 (protoboard), como Fase 11.
+
+**Decisão do usuário (2026-11-16).** A integração entre microcontroladores, eletrônica e CLP é
+essencial para o sistema. Escolhas:
+
+- **ESP32 e Arduino:** programa no estilo Arduino (`setup()`/`loop()`, `analogRead`,
+  `digitalWrite`, `analogWrite` em PWM, `delay`, `millis`, `Serial`) interpretado pelo sistema e
+  co-simulado com o ngspice: o ADC lê tensões do circuito e os pinos acionam o circuito. Não roda
+  o firmware compilado.
+- **CLP:** ladder e texto estruturado (IEC 61131-3) em ciclo de varredura, com entradas digitais
+  24 V, analógicas 4 a 20 mA e 0 a 10 V e saídas a relé ou transistor ligadas ao circuito.
+- **Ordem:** terminar a Fase 10 (protoboard) e fazer a integração como Fase 11.
+- **Projetos de exemplo**, com sensores do catálogo (importados com fonte, regra 1):
+  1. medidor de energia com ESP32 (ZMPT101B para tensão, SCT-013 ou ACS712 para corrente,
+     condicionamento com amp-op, tensão e corrente RMS, potência e fator de potência);
+  2. controle PWM com Arduino (sensor lido pelo Arduino, carga acionada por MOSFET ou driver em
+     malha fechada);
+  3. laço de 4 a 20 mA no CLP (Pt100 e transmissor na entrada analógica, ladder com histerese
+     acionando relé ou contator);
+  4. ESP32 e CLP integrados (o ESP32 mede e condiciona o sensor e entrega 0 a 10 V ou 4 a 20 mA ao
+     CLP, que decide e aciona o atuador).
+- Os 40 links de sensores de corrente, tensão e energia enviados no mesmo dia estão na fila
+  (grupo 37). ACS712 e INA219 já têm PDF válido na pasta local do usuário; SCT-013 e ZMPT101B não
+  têm PDF acessível (link quebrado nas duas listas) e precisam ser baixados pelo navegador antes
+  do exemplo 1.

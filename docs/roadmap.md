@@ -155,9 +155,11 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 - ⏳ Montagem gerada a partir do circuito do assistente de projeto (e no roteiro de prática)
 - ⏳ Conferência protoboard × esquemático (ligação faltando, sobrando, trocada)
 
-## Fase 11 ⏳ Instrumentação industrial e CLP (pedido em 2026-11-15, decisão D12, escopo a definir)
+## Fase 11 ⏳ Microcontroladores, CLP e instrumentação (decisão D12, decidida em 2026-11-16)
 
-- ✅ 150 datasheets de instrumentação e CLP na fila de importação (grupos 26 a 36)
-- ⏳ Definir com o usuário o que "simular CLP" cobre (lógica em ciclo de varredura acoplada ao circuito ou só o comportamento elétrico das E/S)
-- ⏳ Esquema de categoria para sensor, transmissor, atuador e CLP
-- ⏳ Modelos de sensor (Pt100, termopar) e laço de 4 a 20 mA no ngspice
+- ✅ Datasheets de instrumentação, CLP e sensores de corrente, tensão e energia na fila (grupos 26 a 37)
+- ⏳ Esquema de categoria para sensor, transmissor, atuador, microcontrolador e CLP
+- ⏳ ESP32 e Arduino: programa estilo Arduino interpretado e co-simulado com o ngspice (ADC, GPIO, PWM, Serial)
+- ⏳ CLP: ladder e texto estruturado em ciclo de varredura, E/S 24 V, 4 a 20 mA e 0 a 10 V ligadas ao circuito
+- ⏳ Modelos de sensor (Pt100, termopar, ACS712, ZMPT101B, SCT-013) com valores do datasheet
+- ⏳ Exemplos: medidor de energia com ESP32; controle PWM com Arduino; laço de 4 a 20 mA no CLP; ESP32 e CLP integrados

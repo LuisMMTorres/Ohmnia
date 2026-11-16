@@ -4746,3 +4746,483 @@ datasheets:
     nota: 'sem resposta válida (URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed:
       unable to get local issuer certificate (_ssl.c:1010)>)'
   sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: ACPL-C87x_Broadcom.pdf
+  part_number: ACPL-C87x
+  fabricante: Broadcom
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.broadcom.com/docs/AV02-0170EN
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: ACS712_Allegro.pdf
+  part_number: ACS712
+  fabricante: Allegro MicroSystems
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.allegromicro.com/-/media/files/datasheets/acs712-datasheet.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: ACS758_Allegro.pdf
+  part_number: ACS758
+  fabricante: Allegro MicroSystems
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.allegromicro.com/-/media/files/datasheets/acs758-datasheet.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: ACS770_Allegro.pdf
+  part_number: ACS770
+  fabricante: Allegro MicroSystems
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.allegromicro.com/-/media/files/datasheets/acs770-datasheet.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: ADE7753_Analog_Dev.pdf
+  part_number: ADE7753
+  fabricante: Analog Devices
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/ade7753.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: ADE7953_Analog_Dev.pdf
+  part_number: ADE7953
+  fabricante: Analog Devices
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.analog.com/media/en/technical-documentation/data-sheets/ADE7953.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: ADE9000_Analog_Dev.pdf
+  part_number: ADE9000
+  fabricante: Analog Devices
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.analog.com/media/en/technical-documentation/data-sheets/ADE9000.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: AMC1301_TI.pdf
+  part_number: AMC1301
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/amc1301.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: AMC1311_TI.pdf
+  part_number: AMC1311
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/amc1311.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: Serie_AT_NK_Technologies.pdf
+  part_number: AT
+  fabricante: NK Technologies
+  tipo: série
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.nktechnologies.com/wp-content/uploads/2020/03/AT-Series-AC-Current-Transducer-Datasheet.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: Serie_CBI_Sensata.pdf
+  part_number: CBI
+  fabricante: Sensata
+  tipo: série
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.sensata.com/sites/default/files/a/sensata-cbi-series-ac-current-transducers-datasheet.pdf
+  link:
+    situacao: bloqueado
+    verificado_em: '2026-11-16'
+    nota: 'o site recusa o download automático (HTTP 403): baixe pelo navegador e envie o PDF'
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: CR4100_CR_Magnetics.pdf
+  part_number: CR4100
+  fabricante: CR Magnetics
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.crmagnetics.com/Assets/ProductPDFs/CR4100.pdf
+  link:
+    situacao: bloqueado
+    verificado_em: '2026-11-16'
+    nota: 'o site recusa o download automático (HTTP 403): baixe pelo navegador e envie o PDF'
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: CR4500_CR_Magnetics.pdf
+  part_number: CR4500
+  fabricante: CR Magnetics
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.crmagnetics.com/Assets/ProductPDFs/CR4500.pdf
+  link:
+    situacao: bloqueado
+    verificado_em: '2026-11-16'
+    nota: 'o site recusa o download automático (HTTP 403): baixe pelo navegador e envie o PDF'
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: CS5463_Cirrus.pdf
+  part_number: CS5463
+  fabricante: Cirrus Logic
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.cirrus.com/products/cs5463/
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: o endereço abre uma página, não o PDF
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: Serie_CSS2H-2512_Bourns.pdf
+  part_number: CSS2H-2512
+  fabricante: Bourns
+  tipo: série
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.bourns.com/docs/Product-Datasheets/css2h-2512.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: DVL_1000_LEM.pdf
+  part_number: DVL 1000
+  fabricante: LEM
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.lem.com/sites/default/files/products_datasheets/dvl_1000.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: o endereço abre uma página, não o PDF
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: Serie_HAS_50-600-S_LEM.pdf
+  part_number: HAS 50-600-S
+  fabricante: LEM
+  tipo: série
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.lem.com/sites/default/files/products_datasheets/has_50..600-s.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: Serie_HO_6-P_SP33_LEM.pdf
+  part_number: HO 6-P SP33
+  fabricante: LEM
+  tipo: série
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.lem.com/sites/default/files/products_datasheets/ho_6-p_sp33_series.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: INA219_TI.pdf
+  part_number: INA219
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/ina219.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: INA226_TI.pdf
+  part_number: INA226
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/ina226.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: INA238_TI.pdf
+  part_number: INA238
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/ina238.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: INA260_TI.pdf
+  part_number: INA260
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/ina260.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: INA3221_TI.pdf
+  part_number: INA3221
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/ina3221.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: LA_55-P_LEM.pdf
+  part_number: LA 55-P
+  fabricante: LEM
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.lem.com/sites/default/files/products_datasheets/la_55-p_e.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: o endereço abre uma página, não o PDF
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: LT_308-S7_SP1_LEM.pdf
+  part_number: LT 308-S7 SP1
+  fabricante: LEM
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.lem.com/sites/default/files/products_datasheets/lt_308-s7_sp1.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: LTC2945_Analog_Dev.pdf
+  part_number: LTC2945
+  fabricante: Analog Devices
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.analog.com/media/en/technical-documentation/data-sheets/2945fa.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: LTC2946_Analog_Dev.pdf
+  part_number: LTC2946
+  fabricante: Analog Devices
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.analog.com/media/en/technical-documentation/data-sheets/2946fa.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: LTC4151_Analog_Dev.pdf
+  part_number: LTC4151
+  fabricante: Analog Devices
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.analog.com/media/en/technical-documentation/data-sheets/4151fc.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: LV_25-P_LEM.pdf
+  part_number: LV 25-P
+  fabricante: LEM
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.lem.com/sites/default/files/products_datasheets/lv_25-p.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: o endereço abre uma página, não o PDF
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: Serie_LVR_Vishay.pdf
+  part_number: LVR
+  fabricante: Vishay
+  tipo: série
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.vishay.com/docs/30206/lvr.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: MACX_MCR-VDC-PT_Phoenix_Contact.pdf
+  part_number: MACX MCR-VDC-PT
+  fabricante: Phoenix Contact
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.phoenixcontact.com/en-pc/products/voltage-transducer-macx-mcr-vdc-pt-2906242?tab=downloads
+  link:
+    situacao: bloqueado
+    verificado_em: '2026-11-16'
+    nota: 'o site recusa o download automático (HTTP 403): baixe pelo navegador e envie o PDF'
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: MCP39F511_Microchip.pdf
+  part_number: MCP39F511
+  fabricante: Microchip
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://ww1.microchip.com/downloads/en/DeviceDoc/20005208B.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: o endereço abre uma página, não o PDF
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: MLX91220_Melexis.pdf
+  part_number: MLX91220
+  fabricante: Melexis
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.melexis.com/en/documents/documentation/datasheets/datasheet-mlx91220
+  link:
+    situacao: bloqueado
+    verificado_em: '2026-11-16'
+    nota: 'o site recusa o download automático (HTTP 403): baixe pelo navegador e envie o PDF'
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: Serie_PBV_Isabellenhuette.pdf
+  part_number: PBV
+  fabricante: Isabellenhütte
+  tipo: série
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.isabellenhuette.de/fileadmin/Daten/Praezisionswiderstaende/PBV.PDF
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: Serie_PMR_ROHM.pdf
+  part_number: PMR
+  fabricante: ROHM
+  tipo: série
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.rohm.com/products/resistors/current-detection-resistors/pmr-series
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: SCT-013-000_YHDC.pdf
+  part_number: SCT-013-000
+  fabricante: YHDC
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.poweruc.pl/wp-content/uploads/2018/05/SCT013-000_datasheet.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: TMCS1100_TI.pdf
+  part_number: TMCS1100
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/tmcs1100.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: Serie_Transdutores_WEG.pdf
+  part_number: Transdutores
+  fabricante: WEG
+  tipo: série
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.weg.net/catalog/weg/BR/pt/Automa%C3%A7%C3%A3o-e-Controle-Industrial/Rel%C3%A9s-de-Prote%C3%A7%C3%A3o/Transdutores-de-Medida/Transdutor-de-Corrente-e-Tens%C3%A3o/p/MKT_WDC_BRAZIL_TRANSDUCERS
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: Serie_ULR_TT_Electronics.pdf
+  part_number: ULR
+  fabricante: TT Electronics
+  tipo: série
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.ttelectronics.com/TTElectronics/media/ProductFiles/Datasheet/ULR.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: ZMPT101B_Qingxian.pdf
+  part_number: ZMPT101B
+  fabricante: Qingxian Zeming
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.52solution.com/data/attachment/201908/21/zmpt101b.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
