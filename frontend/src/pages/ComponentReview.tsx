@@ -1,3 +1,4 @@
+import { CataloguePinout } from "../breadboard/CataloguePinout";
 import { useEffect, useMemo, useState } from "react";
 import { catalog, ComponentDetail, Parameter, ParamStatus } from "../api";
 import { formatRaw, formatEng, unitSymbol } from "../format";
@@ -180,6 +181,7 @@ export function ComponentReview({ id, onBack }: { id: string; onBack: () => void
           {record.manufacturer} · {detail.schema_.description} · {record.package}
           {record.family ? ` · família ${record.family}` : ""}
         </p>
+        <CataloguePinout record={record} />
         <p className="small">
           {record.datasheets.map((d) => (
             <span key={d.id}>

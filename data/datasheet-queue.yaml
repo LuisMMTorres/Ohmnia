@@ -4746,3 +4746,1363 @@ datasheets:
     nota: 'sem resposta válida (URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed:
       unable to get local issuer certificate (_ssl.c:1010)>)'
   sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: ACPL-C87x_Broadcom.pdf
+  part_number: ACPL-C87x
+  fabricante: Broadcom
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.broadcom.com/docs/AV02-0170EN
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: ACS712_Allegro.pdf
+  part_number: ACS712
+  fabricante: Allegro MicroSystems
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.allegromicro.com/-/media/files/datasheets/acs712-datasheet.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: ACS758_Allegro.pdf
+  part_number: ACS758
+  fabricante: Allegro MicroSystems
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.allegromicro.com/-/media/files/datasheets/acs758-datasheet.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: ACS770_Allegro.pdf
+  part_number: ACS770
+  fabricante: Allegro MicroSystems
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.allegromicro.com/-/media/files/datasheets/acs770-datasheet.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: ADE7753_Analog_Dev.pdf
+  part_number: ADE7753
+  fabricante: Analog Devices
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/ade7753.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: ADE7953_Analog_Dev.pdf
+  part_number: ADE7953
+  fabricante: Analog Devices
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.analog.com/media/en/technical-documentation/data-sheets/ADE7953.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: ADE9000_Analog_Dev.pdf
+  part_number: ADE9000
+  fabricante: Analog Devices
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.analog.com/media/en/technical-documentation/data-sheets/ADE9000.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: AMC1301_TI.pdf
+  part_number: AMC1301
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/amc1301.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: AMC1311_TI.pdf
+  part_number: AMC1311
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/amc1311.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: Serie_AT_NK_Technologies.pdf
+  part_number: AT
+  fabricante: NK Technologies
+  tipo: série
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.nktechnologies.com/wp-content/uploads/2020/03/AT-Series-AC-Current-Transducer-Datasheet.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: Serie_CBI_Sensata.pdf
+  part_number: CBI
+  fabricante: Sensata
+  tipo: série
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.sensata.com/sites/default/files/a/sensata-cbi-series-ac-current-transducers-datasheet.pdf
+  link:
+    situacao: bloqueado
+    verificado_em: '2026-11-16'
+    nota: 'o site recusa o download automático (HTTP 403): baixe pelo navegador e envie o PDF'
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: CR4100_CR_Magnetics.pdf
+  part_number: CR4100
+  fabricante: CR Magnetics
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.crmagnetics.com/Assets/ProductPDFs/CR4100.pdf
+  link:
+    situacao: bloqueado
+    verificado_em: '2026-11-16'
+    nota: 'o site recusa o download automático (HTTP 403): baixe pelo navegador e envie o PDF'
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: CR4500_CR_Magnetics.pdf
+  part_number: CR4500
+  fabricante: CR Magnetics
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.crmagnetics.com/Assets/ProductPDFs/CR4500.pdf
+  link:
+    situacao: bloqueado
+    verificado_em: '2026-11-16'
+    nota: 'o site recusa o download automático (HTTP 403): baixe pelo navegador e envie o PDF'
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: CS5463_Cirrus.pdf
+  part_number: CS5463
+  fabricante: Cirrus Logic
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.cirrus.com/products/cs5463/
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: o endereço abre uma página, não o PDF
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: Serie_CSS2H-2512_Bourns.pdf
+  part_number: CSS2H-2512
+  fabricante: Bourns
+  tipo: série
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.bourns.com/docs/Product-Datasheets/css2h-2512.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: DVL_1000_LEM.pdf
+  part_number: DVL 1000
+  fabricante: LEM
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.lem.com/sites/default/files/products_datasheets/dvl_1000.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: o endereço abre uma página, não o PDF
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: Serie_HAS_50-600-S_LEM.pdf
+  part_number: HAS 50-600-S
+  fabricante: LEM
+  tipo: série
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.lem.com/sites/default/files/products_datasheets/has_50..600-s.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: Serie_HO_6-P_SP33_LEM.pdf
+  part_number: HO 6-P SP33
+  fabricante: LEM
+  tipo: série
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.lem.com/sites/default/files/products_datasheets/ho_6-p_sp33_series.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: INA219_TI.pdf
+  part_number: INA219
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/ina219.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: INA226_TI.pdf
+  part_number: INA226
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/ina226.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: INA238_TI.pdf
+  part_number: INA238
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/ina238.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: INA260_TI.pdf
+  part_number: INA260
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/ina260.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: INA3221_TI.pdf
+  part_number: INA3221
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/ina3221.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: LA_55-P_LEM.pdf
+  part_number: LA 55-P
+  fabricante: LEM
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.lem.com/sites/default/files/products_datasheets/la_55-p_e.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: o endereço abre uma página, não o PDF
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: LT_308-S7_SP1_LEM.pdf
+  part_number: LT 308-S7 SP1
+  fabricante: LEM
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.lem.com/sites/default/files/products_datasheets/lt_308-s7_sp1.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: LTC2945_Analog_Dev.pdf
+  part_number: LTC2945
+  fabricante: Analog Devices
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.analog.com/media/en/technical-documentation/data-sheets/2945fa.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: LTC2946_Analog_Dev.pdf
+  part_number: LTC2946
+  fabricante: Analog Devices
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.analog.com/media/en/technical-documentation/data-sheets/2946fa.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: LTC4151_Analog_Dev.pdf
+  part_number: LTC4151
+  fabricante: Analog Devices
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.analog.com/media/en/technical-documentation/data-sheets/4151fc.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: LV_25-P_LEM.pdf
+  part_number: LV 25-P
+  fabricante: LEM
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.lem.com/sites/default/files/products_datasheets/lv_25-p.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: o endereço abre uma página, não o PDF
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: Serie_LVR_Vishay.pdf
+  part_number: LVR
+  fabricante: Vishay
+  tipo: série
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.vishay.com/docs/30206/lvr.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: MACX_MCR-VDC-PT_Phoenix_Contact.pdf
+  part_number: MACX MCR-VDC-PT
+  fabricante: Phoenix Contact
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.phoenixcontact.com/en-pc/products/voltage-transducer-macx-mcr-vdc-pt-2906242?tab=downloads
+  link:
+    situacao: bloqueado
+    verificado_em: '2026-11-16'
+    nota: 'o site recusa o download automático (HTTP 403): baixe pelo navegador e envie o PDF'
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: MCP39F511_Microchip.pdf
+  part_number: MCP39F511
+  fabricante: Microchip
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://ww1.microchip.com/downloads/en/DeviceDoc/20005208B.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: o endereço abre uma página, não o PDF
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: MLX91220_Melexis.pdf
+  part_number: MLX91220
+  fabricante: Melexis
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.melexis.com/en/documents/documentation/datasheets/datasheet-mlx91220
+  link:
+    situacao: bloqueado
+    verificado_em: '2026-11-16'
+    nota: 'o site recusa o download automático (HTTP 403): baixe pelo navegador e envie o PDF'
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: Serie_PBV_Isabellenhuette.pdf
+  part_number: PBV
+  fabricante: Isabellenhütte
+  tipo: série
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.isabellenhuette.de/fileadmin/Daten/Praezisionswiderstaende/PBV.PDF
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: Serie_PMR_ROHM.pdf
+  part_number: PMR
+  fabricante: ROHM
+  tipo: série
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.rohm.com/products/resistors/current-detection-resistors/pmr-series
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: SCT-013-000_YHDC.pdf
+  part_number: SCT-013-000
+  fabricante: YHDC
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.poweruc.pl/wp-content/uploads/2018/05/SCT013-000_datasheet.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: TMCS1100_TI.pdf
+  part_number: TMCS1100
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/tmcs1100.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: Serie_Transdutores_WEG.pdf
+  part_number: Transdutores
+  fabricante: WEG
+  tipo: série
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.weg.net/catalog/weg/BR/pt/Automa%C3%A7%C3%A3o-e-Controle-Industrial/Rel%C3%A9s-de-Prote%C3%A7%C3%A3o/Transdutores-de-Medida/Transdutor-de-Corrente-e-Tens%C3%A3o/p/MKT_WDC_BRAZIL_TRANSDUCERS
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: Serie_ULR_TT_Electronics.pdf
+  part_number: ULR
+  fabricante: TT Electronics
+  tipo: série
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.ttelectronics.com/TTElectronics/media/ProductFiles/Datasheet/ULR.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 37_Sensores_de_Corrente_Tensao_e_Energia
+  arquivo: ZMPT101B_Qingxian.pdf
+  part_number: ZMPT101B
+  fabricante: Qingxian Zeming
+  tipo: peça
+  categoria: null
+  sem_categoria: 'sensor de corrente/tensão ou medidor de energia: categoria prevista na Fase 11 (decisão D12)'
+  url: https://www.52solution.com/data/attachment/201908/21/zmpt101b.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante'
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: 14HS13-0804S_StepperOnline.pdf
+  part_number: 14HS13-0804S
+  fabricante: StepperOnline (OMC)
+  tipo: peça
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://www.omc-stepperonline.com/download/14HS13-0804S.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: 17HS19-2004S1_StepperOnline.pdf
+  part_number: 17HS19-2004S1
+  fabricante: StepperOnline (OMC)
+  tipo: peça
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://www.omc-stepperonline.com/download/17HS19-2004S1.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: 23HS22-2804S_StepperOnline.pdf
+  part_number: 23HS22-2804S
+  fabricante: StepperOnline (OMC)
+  tipo: peça
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://www.omc-stepperonline.com/download/23HS22-2804S.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: 23HS45-4204S_StepperOnline.pdf
+  part_number: 23HS45-4204S
+  fabricante: StepperOnline (OMC)
+  tipo: peça
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://www.omc-stepperonline.com/download/23HS45-4204S.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: 34HS46-5004D_StepperOnline.pdf
+  part_number: 34HS46-5004D
+  fabricante: StepperOnline (OMC)
+  tipo: peça
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://www.omc-stepperonline.com/download/34HS46-5004D.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: 34HS59-5004S_StepperOnline.pdf
+  part_number: 34HS59-5004S
+  fabricante: StepperOnline (OMC)
+  tipo: peça
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://www.omc-stepperonline.com/download/34HS59-5004S.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: Serie_3RW5_Siemens.pdf
+  part_number: 3RW5
+  fabricante: Siemens
+  tipo: série
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://cache.industry.siemens.com/dl/files/312/109748312/att_924115/v1/sirius_3rw5_soft_starter_manual_en-US.pdf
+  link:
+    situacao: indisponivel
+    verificado_em: '2026-11-16'
+    nota: 'certificado do site não verificado no teste automático: abra pelo navegador'
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: 42HS48-6004S_StepperOnline.pdf
+  part_number: 42HS48-6004S
+  fabricante: StepperOnline (OMC)
+  tipo: peça
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://www.omc-stepperonline.com/download/42HS48-6004S.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: Serie_AR_Oriental_Motor.pdf
+  part_number: AR
+  fabricante: Oriental Motor
+  tipo: série
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://www.orientalmotor.com/products/pdfs/2021-2022/C/AR_Series.pdf
+  link:
+    situacao: bloqueado
+    verificado_em: '2026-11-16'
+    nota: 'o site recusa o download automático (HTTP 403): baixe pelo navegador e envie o PDF'
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: CFW100_WEG.pdf
+  part_number: CFW100
+  fabricante: WEG
+  tipo: peça
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://static.weg.net/medias/downloadcenter/h0a/h5a/WEG-cfw100-manual-do-usuario-10002153683-manual-portugues-br.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: CFW11_WEG.pdf
+  part_number: CFW11
+  fabricante: WEG
+  tipo: peça
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://static.weg.net/medias/downloadcenter/h88/h30/WEG-cfw11-manual-do-usuario-0899.5553-manual-portugues-br.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: Serie_CFW11W_WEG.pdf
+  part_number: CFW11W
+  fabricante: WEG
+  tipo: série
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://static.weg.net/medias/downloadcenter/h94/h71/WEG-cfw11w-inversores-de-frequencia-50039812-catalogo-portugues-br.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: CFW300_WEG.pdf
+  part_number: CFW300
+  fabricante: WEG
+  tipo: peça
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://static.weg.net/medias/downloadcenter/h52/h85/WEG-cfw300-manual-do-usuario-10003706716-manual-portugues-br.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: CFW500_WEG.pdf
+  part_number: CFW500
+  fabricante: WEG
+  tipo: peça
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://static.weg.net/medias/downloadcenter/h3c/h91/WEG-cfw500-manual-do-usuario-10001925674-manual-portugues-br.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: CFW501_WEG.pdf
+  part_number: CFW501
+  fabricante: WEG
+  tipo: peça
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://static.weg.net/medias/downloadcenter/h22/h19/WEG-cfw501-manual-do-usuario-10004321890-manual-portugues-br.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: CFW700_WEG.pdf
+  part_number: CFW700
+  fabricante: WEG
+  tipo: peça
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://static.weg.net/medias/downloadcenter/h61/h58/WEG-cfw700-manual-do-usuario-10001053752-manual-portugues-br.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: CFW900_WEG.pdf
+  part_number: CFW900
+  fabricante: WEG
+  tipo: peça
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://static.weg.net/medias/downloadcenter/h15/h42/WEG-cfw900-manual-do-usuario-10009914251-manual-portugues-br.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: EAV64301_Schneider_Electric.pdf
+  part_number: EAV64301
+  fabricante: Schneider Electric
+  tipo: peça
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://download.schneider-electric.com/files?p_Doc_Ref=EAV64301
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: Serie_MV2_WEG.pdf
+  part_number: MV2
+  fabricante: WEG
+  tipo: série
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://static.weg.net/medias/downloadcenter/h77/h64/WEG-mv2-inversores-de-media-tensao-50028419-catalogo-portugues-br.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: MW500_WEG.pdf
+  part_number: MW500
+  fabricante: WEG
+  tipo: peça
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://static.weg.net/medias/downloadcenter/h41/h12/WEG-mw500-manual-do-usuario-10004123654-manual-portugues-br.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: Serie_Motores_de_Passo_Kalatec.pdf
+  part_number: Motores de Passo
+  fabricante: Kalatec
+  tipo: série
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://www.kalatec.com.br/wp-content/uploads/2020/05/Catalogo-Motores-de-Passo-Kalatec.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: Serie_PKP_Oriental_Motor.pdf
+  part_number: PKP
+  fabricante: Oriental Motor
+  tipo: série
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://www.orientalmotor.com/products/pdfs/2021-2022/C/PKP_Series.pdf
+  link:
+    situacao: bloqueado
+    verificado_em: '2026-11-16'
+    nota: 'o site recusa o download automático (HTTP 403): baixe pelo navegador e envie o PDF'
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: Serie_PSTX_ABB.pdf
+  part_number: PSTX
+  fabricante: ABB
+  tipo: série
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://library.e.abb.com/public/381b15a4321c4728a567890123456789/PSTX_Catalog_1SFC132009C0201.pdf
+  link:
+    situacao: bloqueado
+    verificado_em: '2026-11-16'
+    nota: 'o site recusa o download automático (HTTP 403): baixe pelo navegador e envie o PDF'
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: Serie_SMC-50_Rockwell_Automation.pdf
+  part_number: SMC-50
+  fabricante: Rockwell Automation
+  tipo: série
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://literature.rockwellautomation.com/idc/groups/literature/documents/um/150-um008_-en-p.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: SSW05_WEG.pdf
+  part_number: SSW05
+  fabricante: WEG
+  tipo: peça
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://static.weg.net/medias/downloadcenter/h05/h89/WEG-ssw05-manual-do-usuario-0899.5146-manual-portugues-br.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: SSW06_WEG.pdf
+  part_number: SSW06
+  fabricante: WEG
+  tipo: peça
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://static.weg.net/medias/downloadcenter/h31/h74/WEG-ssw06-manual-do-usuario-0899.5243-manual-portugues-br.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: SSW07_WEG.pdf
+  part_number: SSW07
+  fabricante: WEG
+  tipo: peça
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://static.weg.net/medias/downloadcenter/h65/h28/WEG-ssw07-manual-do-usuario-0899.5464-manual-portugues-br.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: SSW08_WEG.pdf
+  part_number: SSW08
+  fabricante: WEG
+  tipo: peça
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://static.weg.net/medias/downloadcenter/h92/h55/WEG-ssw08-manual-do-usuario-10000123456-manual-portugues-br.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: Serie_SSW7000_WEG.pdf
+  part_number: SSW7000
+  fabricante: WEG
+  tipo: série
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://static.weg.net/medias/downloadcenter/h44/h62/WEG-ssw7000-soft-starter-media-tensao-50031428-catalogo-portugues-br.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 38_Acionamentos_Inversores_Soft-starters_e_Motores_de_Passo
+  arquivo: SSW900_WEG.pdf
+  part_number: SSW900
+  fabricante: WEG
+  tipo: peça
+  categoria: null
+  sem_categoria: 'acionamento (inversor de frequência, soft-starter ou motor de passo): ainda sem esquema de categoria'
+  url: https://static.weg.net/medias/downloadcenter/h18/h49/WEG-ssw900-manual-do-usuario-10006324581-manual-portugues-br.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: 1B22_Analog_Dev.pdf
+  part_number: 1B22
+  fabricante: Analog Devices
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.analog.com/media/en/technical-documentation/data-sheets/1B22.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: Serie_ACT20P_Weidmuller.pdf
+  part_number: ACT20P
+  fabricante: Weidmüller
+  tipo: série
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.weidmuller.com/en/products/electronics/signal_conditioners/act20p.jsp
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: AD5420_Analog_Dev.pdf
+  part_number: AD5420
+  fabricante: Analog Devices
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.analog.com/media/en/technical-documentation/data-sheets/AD5420.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: AD5421_Analog_Dev.pdf
+  part_number: AD5421
+  fabricante: Analog Devices
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.analog.com/media/en/technical-documentation/data-sheets/AD5421.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: AD5422_Analog_Dev.pdf
+  part_number: AD5422
+  fabricante: Analog Devices
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.analog.com/media/en/technical-documentation/data-sheets/AD5422.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: AD5662_Analog_Dev.pdf
+  part_number: AD5662
+  fabricante: Analog Devices
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.analog.com/media/en/technical-documentation/data-sheets/AD5662.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: AD5724R-AD5734R-AD5754R_Analog_Dev.pdf
+  part_number: AD5724R-AD5734R-AD5754R
+  fabricante: Analog Devices
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.analog.com/media/en/technical-documentation/data-sheets/AD5724R_5734R_5754R.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: AD5755-1_Analog_Dev.pdf
+  part_number: AD5755-1
+  fabricante: Analog Devices
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.analog.com/media/en/technical-documentation/data-sheets/AD5755-1.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: AD694_Analog_Dev.pdf
+  part_number: AD694
+  fabricante: Analog Devices
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.analog.com/media/en/technical-documentation/data-sheets/AD694.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: AD7606_Analog_Dev.pdf
+  part_number: AD7606
+  fabricante: Analog Devices
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.analog.com/media/en/technical-documentation/data-sheets/AD7606.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: AD7793_Analog_Dev.pdf
+  part_number: AD7793
+  fabricante: Analog Devices
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.analog.com/media/en/technical-documentation/data-sheets/AD7793.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: ADS1015_TI.pdf
+  part_number: ADS1015
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/ads1015.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: ADS1115_TI.pdf
+  part_number: ADS1115
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/ads1115.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: ADS1220_TI.pdf
+  part_number: ADS1220
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/ads1220.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: ADS1256_TI.pdf
+  part_number: ADS1256
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/ads1256.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: ADS8688_TI.pdf
+  part_number: ADS8688
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/ads8688.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: DAC161S997_TI.pdf
+  part_number: DAC161S997
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/dac161s997.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: DAC8552_TI.pdf
+  part_number: DAC8552
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/dac8552.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: DAC8562_TI.pdf
+  part_number: DAC8562
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/dac8562.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: DAC8760_TI.pdf
+  part_number: DAC8760
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/dac8760.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: DAC8775_TI.pdf
+  part_number: DAC8775
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/dac8775.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: DS21295D_Microchip.pdf
+  part_number: DS21295D
+  fabricante: Microchip
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://ww1.microchip.com/downloads/en/DeviceDoc/21295d.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: DS22088C_Microchip.pdf
+  part_number: DS22088C
+  fabricante: Microchip
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://ww1.microchip.com/downloads/en/DeviceDoc/22088c.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: DS22248A_Microchip.pdf
+  part_number: DS22248A
+  fabricante: Microchip
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://ww1.microchip.com/downloads/en/DeviceDoc/22248a.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: LTC2400_Analog_Dev.pdf
+  part_number: LTC2400
+  fabricante: Analog Devices
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.analog.com/media/en/technical-documentation/data-sheets/LTC2400.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: LTC2668_Analog_Dev.pdf
+  part_number: LTC2668
+  fabricante: Analog Devices
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.analog.com/media/en/technical-documentation/data-sheets/LTC2668.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: MACX_MCR-SL-UI-UI_Phoenix_Contact.pdf
+  part_number: MACX MCR-SL-UI-UI
+  fabricante: Phoenix Contact
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.phoenixcontact.com/en-pc/products/isolating-amplifier-macx-mcr-sl-ui-ui-2811459?tab=downloads
+  link:
+    situacao: bloqueado
+    verificado_em: '2026-11-16'
+    nota: 'o site recusa o download automático (HTTP 403): baixe pelo navegador e envie o PDF'
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: MCP4725_TI.pdf
+  part_number: MCP4725
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/mcp4725.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: MINI_MCR-2-UI-UI_Phoenix_Contact.pdf
+  part_number: MINI MCR-2-UI-UI
+  fabricante: Phoenix Contact
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.phoenixcontact.com/en-pc/products/signal-conditioner-mini-mcr-2-ui-ui-2902037?tab=downloads
+  link:
+    situacao: bloqueado
+    verificado_em: '2026-11-16'
+    nota: 'o site recusa o download automático (HTTP 403): baixe pelo navegador e envie o PDF'
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: RCV420_TI.pdf
+  part_number: RCV420
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/rcv420.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: TI00088R_EndressHauser.pdf
+  part_number: TI00088R
+  fabricante: Endress+Hauser
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://portal.endress.com/wa001/dla/5000277/4683/000/03/TI00088R09EN_0711.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: TxBlock-USB_Novus.pdf
+  part_number: TxBlock-USB
+  fabricante: Novus
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.novus.com.br/downloads/Arquivos/manual_txblock_usb_portugues.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: TxRail-USB_Novus.pdf
+  part_number: TxRail-USB
+  fabricante: Novus
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.novus.com.br/downloads/Arquivos/manual_txrail_usb_portugues.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: XTR105_TI.pdf
+  part_number: XTR105
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/xtr105.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: XTR106_TI.pdf
+  part_number: XTR106
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/xtr106.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: XTR108_TI.pdf
+  part_number: XTR108
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/xtr108.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: XTR111_TI.pdf
+  part_number: XTR111
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/xtr111.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: XTR115_TI.pdf
+  part_number: XTR115
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/xtr115.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: XTR116_TI.pdf
+  part_number: XTR116
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/xtr116.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: XTR117_TI.pdf
+  part_number: XTR117
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/xtr117.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível

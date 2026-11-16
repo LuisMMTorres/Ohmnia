@@ -144,3 +144,24 @@ parameters:
 per_part: {}
 parts:
   MPF102: {}
+
+# Pinagem para a vista de protoboard (Fase 10), transcrita do mesmo datasheet (mesmo
+# SHA-256 do PDF da pasta do usuário). status extraido: falta a sua revisão.
+pinout:
+  package: to-92
+  pins:
+  - pin: "1"
+    name: "DRAIN"
+    role: d
+  - pin: "2"
+    name: "SOURCE"
+    role: s
+  - pin: "3"
+    name: "GATE"
+    role: g
+  source:
+    page: 7
+    location: "Case 29-11, STYLE 5: pin 1 drain, 2 source, 3 gate (p. 1: STYLE 5)"
+  status: extraido
+  note: "Numeração conforme o desenho do encapsulamento TO-92 (case 29-11): com a face plana para a frente e os terminais para baixo, o pino 1 fica à esquerda."
+catalog_revision: 2

@@ -76,3 +76,21 @@ parameters:
     {max: 4, unit: ns, status: extraido, conditions: {IF: 10 mA, VR: 6 V, RL: 100 ohm},
      note: "iR = 0,1 × IR",
      source: {page: 2, location: "Electrical characteristics — reverse recovery time"}}
+
+# Pinagem para a vista de protoboard (Fase 10), transcrita do mesmo datasheet (mesmo
+# SHA-256 do PDF da pasta do usuário). status extraido: falta a sua revisão.
+pinout:
+  package: do-35
+  pins:
+  - pin: "1"
+    name: "Catodo (faixa)"
+    role: k
+  - pin: "2"
+    name: "Anodo"
+    role: a
+  source:
+    page: 1
+    location: "Mechanical data — Cathode band color: black (desenho DO-35 na p. 3: cathode identification)"
+  status: extraido
+  note: "Faixa preta = catodo."
+catalog_revision: 2

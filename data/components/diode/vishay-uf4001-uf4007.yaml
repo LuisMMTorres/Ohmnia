@@ -64,3 +64,21 @@ parts:
   UF4005: {VRRM: 600, VRMS: 420, VDC: 600, VF: 1.7, IR: {}, IR@100C: {}, trr: 75}
   UF4006: {VRRM: 800, VRMS: 560, VDC: 800, VF: 1.7, IR: {}, IR@100C: {}, trr: 75}
   UF4007: {VRRM: 1000, VRMS: 700, VDC: 1000, VF: 1.7, IR: {}, IR@100C: {}, trr: 75}
+
+# Pinagem para a vista de protoboard (Fase 10), transcrita do mesmo datasheet (mesmo
+# SHA-256 do PDF da pasta do usuário). status extraido: falta a sua revisão.
+pinout:
+  package: do-41
+  pins:
+  - pin: "1"
+    name: "Catodo (faixa)"
+    role: k
+  - pin: "2"
+    name: "Anodo"
+    role: a
+  source:
+    page: 1
+    location: "Mechanical data — Polarity: color band denotes cathode end"
+  status: extraido
+  note: "Faixa pintada = catodo."
+catalog_revision: 2

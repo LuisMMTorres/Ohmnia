@@ -1,3 +1,4 @@
+import type { Breadboard } from "../breadboard/types";
 /** Schematic document and symbol library, mirroring backend circuitos/schematic/model.py. */
 
 export type Point = [number, number];
@@ -91,6 +92,7 @@ export interface Schematic {
   params: Record<string, string>;
   temperature: string;
   directives: string;
+  breadboard?: Breadboard | null; // the same circuit on a breadboard (Fase 10)
 }
 
 export interface ParamDef {

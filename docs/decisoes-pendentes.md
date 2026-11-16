@@ -65,7 +65,7 @@ Pergunta: segue alguma referência formal de derating (norma ou manual de empres
 
 - **Recomendado:** licença aberta (MIT ou GPL-3.0), compatível com ngspice e adequada para uso por outras instituições. Confirmar preferência ou se o projeto será fechado.
 
-## D11. Vista de protoboard (pedido do usuário em 2026-11-15, após a Fase 9)
+## D11. Vista de protoboard (pedido do usuário em 2026-11-15, após a Fase 9) **IMPLEMENTADA na Fase 10**
 
 Cada circuito deve poder ser projetado em duas vistas: o esquemático 2D (simbologia) e a montagem
 como numa protoboard (componente real, pelo encapsulamento). Decidido pelo usuário:
@@ -80,7 +80,7 @@ como numa protoboard (componente real, pelo encapsulamento). Decidido pelo usuá
   protoboard com aviso e não entra na conferência automática.
 - Planejado como Fase 10 (ver roadmap).
 
-## D12. Instrumentação industrial e CLP (pedido do usuário em 2026-11-15, após a Fase 9) **PENDENTE**
+## D12. Instrumentação industrial, microcontroladores e CLP (pedido do usuário em 2026-11-15) **DECIDIDA (2026-11-16)**
 
 O usuário quer, além de simular e projetar circuitos de eletrônica, simular circuitos de
 eletrônica junto com circuitos de instrumentação e CLP. Os 150 datasheets de instrumentação e CLP
@@ -101,3 +101,48 @@ A decidir com o usuário antes de planejar a fase:
 - **Esquema de categoria** para sensor, transmissor, atuador e CLP, com os parâmetros que a
   seleção e a simulação precisam.
 - **Ordem:** proposta é tratar depois da Fase 10 (protoboard), como Fase 11.
+
+**Decisão do usuário (2026-11-16).** A integração entre microcontroladores, eletrônica e CLP é
+essencial para o sistema. Escolhas:
+
+- **ESP32 e Arduino:** programa no estilo Arduino (`setup()`/`loop()`, `analogRead`,
+  `digitalWrite`, `analogWrite` em PWM, `delay`, `millis`, `Serial`) interpretado pelo sistema e
+  co-simulado com o ngspice: o ADC lê tensões do circuito e os pinos acionam o circuito. Não roda
+  o firmware compilado.
+- **CLP:** ladder e texto estruturado (IEC 61131-3) em ciclo de varredura, com entradas digitais
+  24 V, analógicas 4 a 20 mA e 0 a 10 V e saídas a relé ou transistor ligadas ao circuito.
+- **Ordem:** terminar a Fase 10 (protoboard) e fazer a integração como Fase 11.
+- **Projetos de exemplo**, com sensores do catálogo (importados com fonte, regra 1):
+  1. medidor de energia com ESP32 (ZMPT101B para tensão, SCT-013 ou ACS712 para corrente,
+     condicionamento com amp-op, tensão e corrente RMS, potência e fator de potência);
+  2. controle PWM com Arduino (sensor lido pelo Arduino, carga acionada por MOSFET ou driver em
+     malha fechada);
+  3. laço de 4 a 20 mA no CLP (Pt100 e transmissor na entrada analógica, ladder com histerese
+     acionando relé ou contator);
+  4. ESP32 e CLP integrados (o ESP32 mede e condiciona o sensor e entrega 0 a 10 V ou 4 a 20 mA ao
+     CLP, que decide e aciona o atuador).
+- Os 40 links de sensores de corrente, tensão e energia enviados no mesmo dia estão na fila
+  (grupo 37). ACS712 e INA219 já têm PDF válido na pasta local do usuário; SCT-013 e ZMPT101B não
+  têm PDF acessível (link quebrado nas duas listas) e precisam ser baixados pelo navegador antes
+  do exemplo 1.
+
+**Pedido complementar (2026-11-16):** exemplos que integrem inversores de frequência, CLP,
+microcontroladores, motores e bombas. Os 30 manuais e catálogos de acionamentos enviados no mesmo
+dia (inversores CFW e MW500 e soft-starters SSW da WEG, soft-starters Siemens, Schneider, ABB e
+Rockwell, motores de passo StepperOnline, Oriental Motor e Kalatec) estão na fila (grupo 38); só
+8 abrem o PDF, e os 16 links da WEG dão 404 (endereços inexistentes). Exemplos propostos para a
+Fase 11, sujeitos ao seu ajuste:
+
+5. **Bombeamento com pressão constante:** transmissor de pressão 4 a 20 mA na entrada analógica
+   do CLP, PID no CLP, referência 0 a 10 V ao inversor de frequência (controle V/f), motor de
+   indução trifásico com bomba centrífuga (carga com conjugado quadrático); ESP32 como supervisão
+   (lê corrente e pressão e mostra no Serial).
+6. **Partida de motor:** CLP comanda partida direta, por soft-starter e por inversor; o sistema
+   compara corrente de partida, conjugado e tempo de aceleração.
+7. **Posicionamento com motor de passo:** Arduino gera passo e direção para um driver de motor de
+   passo; o CLP dá a ordem de ciclo e recebe o fim de curso.
+
+Para isso a Fase 11 também precisa de modelos de motor de indução (circuito equivalente com
+parâmetros de placa ou do fabricante), de bomba (curva do fabricante), do inversor (comportamental:
+rampa, V/f, limites) e do motor de passo, todos com valores de documento (regra 1).
+

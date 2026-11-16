@@ -9,6 +9,7 @@ import {
   type NetlistOut,
   type PartOut,
 } from "../api";
+import type { PackageSpec, PartView } from "../breadboard/types";
 import { SCHEMATIC_EXAMPLES } from "../schematic/examples";
 import { ResultsView } from "../schematic/ResultsView";
 import { SchematicEditor, type Selection, type Tool } from "../schematic/SchematicEditor";
@@ -25,6 +26,9 @@ import {
   type Schematic,
   type SymbolDef,
 } from "../schematic/types";
+import { BreadboardView, PinoutSource } from "../breadboard/BreadboardView";
+import { useBreadboardSpec, useResolved } from "../breadboard/hooks";
+import { PackagePreview } from "../breadboard/PackageArt";
 import { SimulatorPage } from "./SimulatorPage";
 
 const STORAGE = "circuitos.schematic";
@@ -83,6 +87,9 @@ function SchematicWorkspace() {
   const [warnings, setWarnings] = useState<string[]>([]);
   const [panel, setPanel] = useState<"analyses" | "sweep" | "params" | "netlist">("analyses");
   const [importText, setImportText] = useState<string | null>(null);
+  const [view, setView] = useState<"esquematico" | "protoboard">("esquematico");
+  const bbSpec = useBreadboardSpec();
+  const { resolved } = useResolved(sch);
   const fileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -251,6 +258,20 @@ function SchematicWorkspace() {
   return (
     <main className="schematic-page">
       <div className="toolbar row wrap">
+        <div className="segmented" role="group" aria-label="Vista">
+          <button
+            className={view === "esquematico" ? "tab active" : "tab"}
+            onClick={() => setView("esquematico")}
+          >
+            Esquemático 2D
+          </button>
+          <button
+            className={view === "protoboard" ? "tab active" : "tab"}
+            onClick={() => setView("protoboard")}
+          >
+            Protoboard
+          </button>
+        </div>
         <input
           className="title-input"
           aria-label="Título do circuito"
@@ -344,160 +365,171 @@ function SchematicWorkspace() {
         </div>
       )}
 
-      <div className="schematic-layout">
-        <aside className="panel palette" aria-label="Biblioteca de símbolos">
-          <div className="tools">
-            {(
-              [
-                [{ kind: "select" }, "Selecionar"],
-                [{ kind: "wire" }, "Fio (W)"],
-                [{ kind: "label" }, "Rótulo de nó"],
-                [{ kind: "probe", probe: "v" }, "Ponta V"],
-                [{ kind: "probe", probe: "vdiff" }, "Ponta V diferencial"],
-                [{ kind: "probe", probe: "i" }, "Ponta I"],
-                [{ kind: "probe", probe: "p" }, "Potência"],
-              ] as [Tool, string][]
-            ).map(([t, label]) => (
-              <button
-                key={label}
-                className={JSON.stringify(t) === JSON.stringify(tool) ? "tool active" : "tool"}
-                onClick={() => setTool(t)}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
-          {groups.map((g) => (
-            <details key={g} open>
-              <summary>{g}</summary>
-              {library.symbols
-                .filter((s) => s.group === g)
-                .map((s) => (
-                  <button
-                    key={s.kind}
-                    className={
-                      tool.kind === "place" && tool.symbol === s.kind
-                        ? "palette-item active"
-                        : "palette-item"
-                    }
-                    title={s.description || s.label}
-                    onClick={() => setTool({ kind: "place", symbol: s.kind })}
-                  >
-                    {s.label}
-                  </button>
-                ))}
-            </details>
-          ))}
-        </aside>
-
-        <SchematicEditor
-          schematic={sch}
-          library={symbols}
-          tool={tool}
-          setTool={setTool}
-          selection={selection}
-          setSelection={setSelection}
-          onChange={change}
-          probeColors={probeColors}
-        />
-
-        <aside className="panel properties" aria-label="Propriedades">
-          {selectedComp ? (
-            <ComponentProps
-              comp={selectedComp}
-              sym={symbols[selectedComp.kind]}
-              onChange={(c) =>
-                change({ ...sch, components: sch.components.map((x) => (x.id === c.id ? c : x)) })
-              }
-              onDelete={() => {
-                change({
-                  ...sch,
-                  components: sch.components.filter((x) => x.id !== selectedComp.id),
-                  probes: sch.probes.filter((p) => p.component !== selectedComp.ref),
-                });
-                setSelection(null);
-              }}
-              refsInUse={sch.components
-                .filter((x) => x.id !== selectedComp.id)
-                .map((x) => x.ref.toLowerCase())}
-            />
-          ) : selectedLabel ? (
-            <div>
-              <h3>Rótulo de nó</h3>
-              <label>
-                Nome do nó
-                <input
-                  value={selectedLabel.name}
-                  onChange={(e) =>
-                    change({
-                      ...sch,
-                      labels: sch.labels.map((l) =>
-                        l.id === selectedLabel.id
-                          ? { ...l, name: e.target.value.replace(/[^A-Za-z0-9_+-]/g, "") || "n" }
-                          : l,
-                      ),
-                    })
-                  }
-                />
-              </label>
-              <p className="small muted">
-                Rótulos de mesmo nome são o mesmo nó; “0” ou “gnd” é a terra.
-              </p>
+      {view === "protoboard" && bbSpec ? (
+        <BreadboardView schematic={sch} onChange={change} spec={bbSpec} resolved={resolved} />
+      ) : (
+        <div className="schematic-layout">
+          <aside className="panel palette" aria-label="Biblioteca de símbolos">
+            <div className="tools">
+              {(
+                [
+                  [{ kind: "select" }, "Selecionar"],
+                  [{ kind: "wire" }, "Fio (W)"],
+                  [{ kind: "label" }, "Rótulo de nó"],
+                  [{ kind: "probe", probe: "v" }, "Ponta V"],
+                  [{ kind: "probe", probe: "vdiff" }, "Ponta V diferencial"],
+                  [{ kind: "probe", probe: "i" }, "Ponta I"],
+                  [{ kind: "probe", probe: "p" }, "Potência"],
+                ] as [Tool, string][]
+              ).map(([t, label]) => (
+                <button
+                  key={label}
+                  className={JSON.stringify(t) === JSON.stringify(tool) ? "tool active" : "tool"}
+                  onClick={() => setTool(t)}
+                >
+                  {label}
+                </button>
+              ))}
             </div>
-          ) : selection?.kind === "wire" ? (
-            <div>
-              <h3>Fio</h3>
-              <button
-                className="secondary"
-                onClick={() => {
-                  change({ ...sch, wires: sch.wires.filter((w) => w.id !== selection.id) });
+            {groups.map((g) => (
+              <details key={g} open>
+                <summary>{g}</summary>
+                {library.symbols
+                  .filter((s) => s.group === g)
+                  .map((s) => (
+                    <button
+                      key={s.kind}
+                      className={
+                        tool.kind === "place" && tool.symbol === s.kind
+                          ? "palette-item active"
+                          : "palette-item"
+                      }
+                      title={s.description || s.label}
+                      onClick={() => setTool({ kind: "place", symbol: s.kind })}
+                    >
+                      {s.label}
+                    </button>
+                  ))}
+              </details>
+            ))}
+          </aside>
+
+          <SchematicEditor
+            schematic={sch}
+            library={symbols}
+            tool={tool}
+            setTool={setTool}
+            selection={selection}
+            setSelection={setSelection}
+            onChange={change}
+            probeColors={probeColors}
+          />
+
+          <aside className="panel properties" aria-label="Propriedades">
+            {selectedComp ? (
+              <ComponentProps
+                comp={selectedComp}
+                sym={symbols[selectedComp.kind]}
+                onChange={(c) =>
+                  change({ ...sch, components: sch.components.map((x) => (x.id === c.id ? c : x)) })
+                }
+                onDelete={() => {
+                  change({
+                    ...sch,
+                    components: sch.components.filter((x) => x.id !== selectedComp.id),
+                    probes: sch.probes.filter((p) => p.component !== selectedComp.ref),
+                  });
                   setSelection(null);
                 }}
-              >
-                Apagar fio
-              </button>
-            </div>
-          ) : (
-            <p className="small muted">
-              Escolha um símbolo à esquerda e clique na área de desenho. Selecione um componente
-              para editar valores ou escolher uma peça do catálogo.
-            </p>
-          )}
-          <h3>Pontas de prova</h3>
-          {sch.probes.length === 0 && (
-            <p className="small muted">Nenhuma. Use as ferramentas “Ponta”.</p>
-          )}
-          <ul className="probe-list">
-            {sch.probes.map((p) => (
-              <li key={p.id}>
-                <span className="swatch" style={{ background: probeColors[p.id] }} />
-                <input
-                  aria-label="Nome da ponta"
-                  placeholder={probeDefault(p)}
-                  value={p.name ?? ""}
-                  onChange={(e) =>
-                    change({
-                      ...sch,
-                      probes: sch.probes.map((x) =>
-                        x.id === p.id ? { ...x, name: e.target.value || null } : x,
-                      ),
-                    })
-                  }
-                />
+                refsInUse={sch.components
+                  .filter((x) => x.id !== selectedComp.id)
+                  .map((x) => x.ref.toLowerCase())}
+              />
+            ) : null}
+            {selectedComp && bbSpec && resolved && (
+              <SelectedPackage
+                view={resolved.parts.find((p) => p.ref === selectedComp.ref)}
+                packages={bbSpec.packages}
+              />
+            )}
+            {selectedComp ? null : selectedLabel ? (
+              <div>
+                <h3>Rótulo de nó</h3>
+                <label>
+                  Nome do nó
+                  <input
+                    value={selectedLabel.name}
+                    onChange={(e) =>
+                      change({
+                        ...sch,
+                        labels: sch.labels.map((l) =>
+                          l.id === selectedLabel.id
+                            ? { ...l, name: e.target.value.replace(/[^A-Za-z0-9_+-]/g, "") || "n" }
+                            : l,
+                        ),
+                      })
+                    }
+                  />
+                </label>
+                <p className="small muted">
+                  Rótulos de mesmo nome são o mesmo nó; “0” ou “gnd” é a terra.
+                </p>
+              </div>
+            ) : selection?.kind === "wire" ? (
+              <div>
+                <h3>Fio</h3>
                 <button
-                  className="secondary small-btn"
-                  aria-label="Remover ponta"
-                  onClick={() =>
-                    change({ ...sch, probes: sch.probes.filter((x) => x.id !== p.id) })
-                  }
+                  className="secondary"
+                  onClick={() => {
+                    change({ ...sch, wires: sch.wires.filter((w) => w.id !== selection.id) });
+                    setSelection(null);
+                  }}
                 >
-                  ×
+                  Apagar fio
                 </button>
-              </li>
-            ))}
-          </ul>
-        </aside>
-      </div>
+              </div>
+            ) : (
+              <p className="small muted">
+                Escolha um símbolo à esquerda e clique na área de desenho. Selecione um componente
+                para editar valores ou escolher uma peça do catálogo.
+              </p>
+            )}
+            <h3>Pontas de prova</h3>
+            {sch.probes.length === 0 && (
+              <p className="small muted">Nenhuma. Use as ferramentas “Ponta”.</p>
+            )}
+            <ul className="probe-list">
+              {sch.probes.map((p) => (
+                <li key={p.id}>
+                  <span className="swatch" style={{ background: probeColors[p.id] }} />
+                  <input
+                    aria-label="Nome da ponta"
+                    placeholder={probeDefault(p)}
+                    value={p.name ?? ""}
+                    onChange={(e) =>
+                      change({
+                        ...sch,
+                        probes: sch.probes.map((x) =>
+                          x.id === p.id ? { ...x, name: e.target.value || null } : x,
+                        ),
+                      })
+                    }
+                  />
+                  <button
+                    className="secondary small-btn"
+                    aria-label="Remover ponta"
+                    onClick={() =>
+                      change({ ...sch, probes: sch.probes.filter((x) => x.id !== p.id) })
+                    }
+                  >
+                    ×
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </aside>
+        </div>
+      )}
 
       <section className="panel analysis-panel">
         <div className="tabs" role="tablist">
@@ -1084,6 +1116,33 @@ function ParamsPanel({ sch, onChange }: { sch: Schematic; onChange: (s: Schemati
           onChange={(e) => onChange({ ...sch, directives: e.target.value })}
         />
       </label>
+    </div>
+  );
+}
+
+function SelectedPackage({
+  view,
+  packages,
+}: {
+  view: PartView | undefined;
+  packages: PackageSpec[];
+}) {
+  if (!view) return null;
+  const pkg = packages.find((p) => p.id === view.package);
+  return (
+    <div className="bb-symbol-package">
+      <h3>Encapsulamento real</h3>
+      {pkg && pkg.style !== "offboard" ? (
+        <>
+          <p className="small muted">{pkg.label}</p>
+          <PackagePreview pkg={pkg} view={view} />
+        </>
+      ) : (
+        <p className="small muted">
+          {pkg ? `${pkg.label}: fora da protoboard.` : "Sem montagem física."}
+        </p>
+      )}
+      <PinoutSource view={view} />
     </div>
   );
 }

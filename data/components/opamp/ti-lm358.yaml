@@ -159,3 +159,41 @@ parameters:
 per_part: {}
 parts:
   LM358P: {}
+
+# Pinagem para a vista de protoboard (Fase 10), transcrita do mesmo datasheet (mesmo
+# SHA-256 do PDF da pasta do usuário). status extraido: falta a sua revisão.
+pinout:
+  package: dip-8
+  pins:
+  - pin: "1"
+    name: "OUT1"
+    role: out
+    unit: A
+  - pin: "2"
+    name: "IN1–"
+    role: inn
+    unit: A
+  - pin: "3"
+    name: "IN1+"
+    role: inp
+    unit: A
+  - pin: "4"
+    name: "V–"
+    role: vee
+  - pin: "5"
+    name: "IN2+"
+    unit: B
+  - pin: "6"
+    name: "IN2–"
+    unit: B
+  - pin: "7"
+    name: "OUT2"
+    unit: B
+  - pin: "8"
+    name: "V+"
+    role: vcc
+  source:
+    page: 3
+    location: "Table 4-1 Pin Functions, coluna PDIP"
+  status: extraido
+catalog_revision: 2

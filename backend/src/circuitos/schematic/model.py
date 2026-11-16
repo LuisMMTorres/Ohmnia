@@ -12,6 +12,8 @@ from typing import Literal
 
 from pydantic import BaseModel, Field, field_validator, model_validator
 
+from circuitos.breadboard.layout import Breadboard
+
 Point = tuple[int, int]
 Rotation = Literal[0, 90, 180, 270]
 
@@ -147,6 +149,7 @@ class Schematic(BaseModel):
     params: dict[str, str] = Field(default_factory=dict)  # .param name = value
     temperature: str = "27"  # °C, .temp
     directives: str = ""  # raw SPICE: .model, .subckt, .options, .ic, unsupported elements
+    breadboard: Breadboard | None = None  # the same circuit assembled on a breadboard (Fase 10)
 
     @model_validator(mode="after")
     def _unique_refs(self) -> Schematic:

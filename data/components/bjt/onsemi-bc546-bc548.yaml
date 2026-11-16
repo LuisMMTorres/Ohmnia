@@ -780,3 +780,24 @@ parts:
       source:
         page: 2
         location: Electrical characteristics — DC current gain, IC = 100 mA, grupo C
+
+# Pinagem para a vista de protoboard (Fase 10), transcrita do mesmo datasheet (mesmo
+# SHA-256 do PDF da pasta do usuário). status extraido: falta a sua revisão.
+pinout:
+  package: to-92
+  pins:
+  - pin: "1"
+    name: "COLLECTOR"
+    role: c
+  - pin: "2"
+    name: "BASE"
+    role: b
+  - pin: "3"
+    name: "EMITTER"
+    role: e
+  source:
+    page: 7
+    location: "Case 29-11, STYLE 17: pin 1 collector, 2 base, 3 emitter (p. 1: CASE 29, STYLE 17)"
+  status: extraido
+  note: "Numeração conforme o desenho do encapsulamento TO-92 (case 29-11): com a face plana para a frente e os terminais para baixo, o pino 1 fica à esquerda."
+catalog_revision: 2
