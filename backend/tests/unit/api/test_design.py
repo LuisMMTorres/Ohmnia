@@ -180,3 +180,54 @@ def test_simulate_filter_returns_bode(client):
     body = r.json()
     assert body["ok"], body["comparisons"]
     assert body["bode_f"] and body["bode"]
+
+
+def test_bom_lines_carry_margins_temperature_and_datasheet(client):
+    r = client.post(
+        "/api/v1/design/DM-RET1/bom", json={"spec": {"topology": "ponte", "filter": "C"}}
+    )
+    assert r.status_code == 200, r.text
+    body = r.json()
+    diodes = next(line for line in body["lines"] if line["designators"][0].startswith("D"))
+    assert diodes["margin_pct"] is not None and diodes["parameter"]
+    assert diodes["stress"] and diodes["rating"]
+    assert diodes["tj"].endswith("°C")
+    assert diodes["datasheet"] and diodes["datasheet"].startswith("http")
+    assert body["total_cost"] is None
+
+
+def test_bom_costs_xlsx_and_pdf(client):
+    import io
+
+    import openpyxl
+    import pymupdf
+
+    first = client.post("/api/v1/design/DM-RET1/bom", json={"spec": {}}).json()["lines"][0]
+    spec = {"spec": {}, "costs": {first["part_number"]: 2.5}}
+    body = client.post("/api/v1/design/DM-RET1/bom", json=spec).json()
+    assert body["total_cost"] == pytest.approx(2.5 * first["quantity"])
+
+    x = client.post("/api/v1/design/DM-RET1/bom.xlsx", json=spec)
+    assert x.status_code == 200
+    wb = openpyxl.load_workbook(io.BytesIO(x.content))
+    ws = wb["Lista de materiais"]
+    assert ws.cell(row=2, column=10).value == "Margem (%)"
+    assert ws.cell(row=ws.max_row, column=1).value == "Total"
+    assert "Verificações" in wb.sheetnames
+
+    p = client.post("/api/v1/design/DM-RET1/bom.pdf", json=spec)
+    assert p.status_code == 200 and p.headers["content-type"] == "application/pdf"
+    with pymupdf.open(stream=p.content, filetype="pdf") as doc:
+        text = doc[0].get_text()
+    assert "Lista de materiais" in text and first["part_number"] in text
+
+
+def test_bom_groups_identical_parts():
+    from circuitos.reports.bom import BomLine, group
+
+    a = BomLine(["R1"], 1, "Resistor", "(a escolher)", "", "1 kΩ", "")
+    b = BomLine(["R2"], 1, "Resistor", "(a escolher)", "", "1 kΩ", "")
+    c = BomLine(["R3"], 1, "Resistor", "(a escolher)", "", "2,2 kΩ", "")
+    merged = group([a, b, c])
+    assert [m.designator for m in merged] == ["R1, R2", "R3"]
+    assert merged[0].quantity == 2

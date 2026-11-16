@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import uuid
+from collections.abc import Callable
 from typing import Any, Literal
 
 import numpy as np
@@ -16,8 +17,7 @@ from circuitos.design import registry
 from circuitos.design.base import Circuit, DesignResult, SimComparison
 from circuitos.design.engine import Device, TopologyModule, run
 from circuitos.design.verify import compare_full, netlist_with_analysis
-from circuitos.reports import outputs, report
-from circuitos.reports.common import bom_csv
+from circuitos.reports import bom, outputs, report
 from circuitos.selection.derating import DeratingPolicy
 
 router = APIRouter(prefix="/api/v1/design")
@@ -38,6 +38,7 @@ class DesignIn(BaseModel):
     spec: dict[str, Any] = Field(default_factory=dict)
     policy: Literal["didatico", "industrial"] = "didatico"
     locks: dict[str, uuid.UUID] = Field(default_factory=dict)
+    costs: dict[str, float] = Field(default_factory=dict)  # part number → unit cost (BOM)
 
 
 class CandidateOut(BaseModel):
@@ -199,14 +200,70 @@ def schematic(request: Request, module_id: str, body: DesignIn) -> Response:
     return Response(svg, media_type="image/svg+xml")
 
 
+def _datasheet_link(repo: ComponentRepository) -> Callable[[uuid.UUID], str | None]:
+    def link(component_id: uuid.UUID) -> str | None:
+        record = repo.get_or_none(component_id)
+        if record is None:
+            return None
+        return next((str(d.url) for d in record.datasheets if d.url), None)
+
+    return link
+
+
+def _bom_lines(request: Request, module_id: str, body: DesignIn) -> tuple[str, list[bom.BomLine]]:
+    module, spec, result, _, circuit = _design(request, module_id, body)
+    rows = outputs.bom(module, spec, result)
+    lines = bom.build(rows, result, _datasheet_link(_repo(request)), body.costs)
+    return f"{module.title} — {circuit.title}", lines
+
+
 @router.post("/{module_id}/bom.csv")
-def bom(request: Request, module_id: str, body: DesignIn) -> Response:
-    module, spec, result, _, _ = _design(request, module_id, body)
-    text = bom_csv(outputs.bom(module, spec, result))
+def bom_csv_out(request: Request, module_id: str, body: DesignIn) -> Response:
+    _, lines = _bom_lines(request, module_id, body)
     return Response(
-        "﻿" + text,  # BOM so spreadsheet programs read the accents
+        bom.to_csv(lines),  # UTF-8 with BOM so spreadsheet programs read the accents
         media_type="text/csv; charset=utf-8",
         headers={"Content-Disposition": f'attachment; filename="{module_id}-bom.csv"'},
+    )
+
+
+@router.post("/{module_id}/bom.xlsx")
+def bom_xlsx_out(request: Request, module_id: str, body: DesignIn) -> Response:
+    title, lines = _bom_lines(request, module_id, body)
+    return Response(
+        bom.to_xlsx(lines, title),
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        headers={"Content-Disposition": f'attachment; filename="{module_id}-bom.xlsx"'},
+    )
+
+
+@router.post("/{module_id}/bom.pdf")
+def bom_pdf_out(request: Request, module_id: str, body: DesignIn) -> Response:
+    title, lines = _bom_lines(request, module_id, body)
+    subtitle = f"Política de margens: {body.policy}. Margem = (nominal / esforço − 1)·100."
+    return Response(
+        bom.to_pdf(lines, f"Lista de materiais — {title}", subtitle),
+        media_type="application/pdf",
+        headers={"Content-Disposition": f'attachment; filename="{module_id}-bom.pdf"'},
+    )
+
+
+class BomOut(BaseModel):
+    title: str
+    lines: list[dict[str, Any]]
+    total_cost: float | None
+
+
+@router.post("/{module_id}/bom")
+def bom_json(request: Request, module_id: str, body: DesignIn) -> BomOut:
+    title, lines = _bom_lines(request, module_id, body)
+    return BomOut(
+        title=title,
+        lines=[
+            {**vars(line), "designator": line.designator, "total_cost": line.total_cost}
+            for line in lines
+        ],
+        total_cost=bom.total_cost(lines),
     )
 
 
