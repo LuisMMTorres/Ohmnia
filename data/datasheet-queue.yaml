@@ -5586,3 +5586,523 @@ datasheets:
     situacao: quebrado
     verificado_em: '2026-11-16'
     nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: 1B22_Analog_Dev.pdf
+  part_number: 1B22
+  fabricante: Analog Devices
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.analog.com/media/en/technical-documentation/data-sheets/1B22.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: Serie_ACT20P_Weidmuller.pdf
+  part_number: ACT20P
+  fabricante: Weidmüller
+  tipo: série
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.weidmuller.com/en/products/electronics/signal_conditioners/act20p.jsp
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: AD5420_Analog_Dev.pdf
+  part_number: AD5420
+  fabricante: Analog Devices
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.analog.com/media/en/technical-documentation/data-sheets/AD5420.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: AD5421_Analog_Dev.pdf
+  part_number: AD5421
+  fabricante: Analog Devices
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.analog.com/media/en/technical-documentation/data-sheets/AD5421.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: AD5422_Analog_Dev.pdf
+  part_number: AD5422
+  fabricante: Analog Devices
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.analog.com/media/en/technical-documentation/data-sheets/AD5422.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: AD5662_Analog_Dev.pdf
+  part_number: AD5662
+  fabricante: Analog Devices
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.analog.com/media/en/technical-documentation/data-sheets/AD5662.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: AD5724R-AD5734R-AD5754R_Analog_Dev.pdf
+  part_number: AD5724R-AD5734R-AD5754R
+  fabricante: Analog Devices
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.analog.com/media/en/technical-documentation/data-sheets/AD5724R_5734R_5754R.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: AD5755-1_Analog_Dev.pdf
+  part_number: AD5755-1
+  fabricante: Analog Devices
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.analog.com/media/en/technical-documentation/data-sheets/AD5755-1.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: AD694_Analog_Dev.pdf
+  part_number: AD694
+  fabricante: Analog Devices
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.analog.com/media/en/technical-documentation/data-sheets/AD694.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: AD7606_Analog_Dev.pdf
+  part_number: AD7606
+  fabricante: Analog Devices
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.analog.com/media/en/technical-documentation/data-sheets/AD7606.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: AD7793_Analog_Dev.pdf
+  part_number: AD7793
+  fabricante: Analog Devices
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.analog.com/media/en/technical-documentation/data-sheets/AD7793.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: ADS1015_TI.pdf
+  part_number: ADS1015
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/ads1015.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: ADS1115_TI.pdf
+  part_number: ADS1115
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/ads1115.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: ADS1220_TI.pdf
+  part_number: ADS1220
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/ads1220.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: ADS1256_TI.pdf
+  part_number: ADS1256
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/ads1256.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: ADS8688_TI.pdf
+  part_number: ADS8688
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/ads8688.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: DAC161S997_TI.pdf
+  part_number: DAC161S997
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/dac161s997.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: DAC8552_TI.pdf
+  part_number: DAC8552
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/dac8552.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: DAC8562_TI.pdf
+  part_number: DAC8562
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/dac8562.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: DAC8760_TI.pdf
+  part_number: DAC8760
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/dac8760.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: DAC8775_TI.pdf
+  part_number: DAC8775
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/dac8775.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: DS21295D_Microchip.pdf
+  part_number: DS21295D
+  fabricante: Microchip
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://ww1.microchip.com/downloads/en/DeviceDoc/21295d.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: DS22088C_Microchip.pdf
+  part_number: DS22088C
+  fabricante: Microchip
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://ww1.microchip.com/downloads/en/DeviceDoc/22088c.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: DS22248A_Microchip.pdf
+  part_number: DS22248A
+  fabricante: Microchip
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://ww1.microchip.com/downloads/en/DeviceDoc/22248a.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: LTC2400_Analog_Dev.pdf
+  part_number: LTC2400
+  fabricante: Analog Devices
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.analog.com/media/en/technical-documentation/data-sheets/LTC2400.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: LTC2668_Analog_Dev.pdf
+  part_number: LTC2668
+  fabricante: Analog Devices
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.analog.com/media/en/technical-documentation/data-sheets/LTC2668.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: MACX_MCR-SL-UI-UI_Phoenix_Contact.pdf
+  part_number: MACX MCR-SL-UI-UI
+  fabricante: Phoenix Contact
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.phoenixcontact.com/en-pc/products/isolating-amplifier-macx-mcr-sl-ui-ui-2811459?tab=downloads
+  link:
+    situacao: bloqueado
+    verificado_em: '2026-11-16'
+    nota: 'o site recusa o download automático (HTTP 403): baixe pelo navegador e envie o PDF'
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: MCP4725_TI.pdf
+  part_number: MCP4725
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/mcp4725.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: MINI_MCR-2-UI-UI_Phoenix_Contact.pdf
+  part_number: MINI MCR-2-UI-UI
+  fabricante: Phoenix Contact
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.phoenixcontact.com/en-pc/products/signal-conditioner-mini-mcr-2-ui-ui-2902037?tab=downloads
+  link:
+    situacao: bloqueado
+    verificado_em: '2026-11-16'
+    nota: 'o site recusa o download automático (HTTP 403): baixe pelo navegador e envie o PDF'
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: RCV420_TI.pdf
+  part_number: RCV420
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/rcv420.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: TI00088R_EndressHauser.pdf
+  part_number: TI00088R
+  fabricante: Endress+Hauser
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://portal.endress.com/wa001/dla/5000277/4683/000/03/TI00088R09EN_0711.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: TxBlock-USB_Novus.pdf
+  part_number: TxBlock-USB
+  fabricante: Novus
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.novus.com.br/downloads/Arquivos/manual_txblock_usb_portugues.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: TxRail-USB_Novus.pdf
+  part_number: TxRail-USB
+  fabricante: Novus
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.novus.com.br/downloads/Arquivos/manual_txrail_usb_portugues.pdf
+  link:
+    situacao: quebrado
+    verificado_em: '2026-11-16'
+    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante'
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: XTR105_TI.pdf
+  part_number: XTR105
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/xtr105.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: XTR106_TI.pdf
+  part_number: XTR106
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/xtr106.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: XTR108_TI.pdf
+  part_number: XTR108
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/xtr108.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: XTR111_TI.pdf
+  part_number: XTR111
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/xtr111.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: XTR115_TI.pdf
+  part_number: XTR115
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/xtr115.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: XTR116_TI.pdf
+  part_number: XTR116
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/xtr116.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
+- grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
+  arquivo: XTR117_TI.pdf
+  part_number: XTR117
+  fabricante: Texas Instruments
+  tipo: peça
+  categoria: null
+  sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
+    11 (decisão D12)'
+  url: https://www.ti.com/lit/ds/symlink/xtr117.pdf
+  link:
+    situacao: ok
+    verificado_em: '2026-11-16'
+    nota: PDF acessível
