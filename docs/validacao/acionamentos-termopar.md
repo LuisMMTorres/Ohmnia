@@ -1,6 +1,6 @@
 # Validação: acionamentos, motor de passo e termopar (pendências da Fase 11, decisão D12)
 
-Data: 2026-11-16. Status: aguardando sua revisão.
+Data: 2026-11-16. Status: aprovada em 2026-11-16.
 
 Fecha o que a Fase 11 deixou de fora: motor de indução, inversor de frequência V/f completo,
 soft-starter, motor de passo com driver, os exemplos de partida de motor e de posicionamento, e o
