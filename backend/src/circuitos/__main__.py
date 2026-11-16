@@ -18,7 +18,9 @@ def main() -> None:
     if not args.no_browser:
         url = f"http://{args.host}:{args.port}/"
         threading.Timer(1.5, webbrowser.open, args=(url,)).start()
-    uvicorn.run("circuitos.api.app:app", host=args.host, port=args.port)
+    from circuitos.api.app import app  # an object, not a string: works inside the installer
+
+    uvicorn.run(app, host=args.host, port=args.port)
 
 
 if __name__ == "__main__":
