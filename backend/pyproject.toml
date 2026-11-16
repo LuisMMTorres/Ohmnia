@@ -94,6 +94,7 @@ source_modules = [
     "circuitos.schematic",
     "circuitos.reports",
     "circuitos.datasheets",
+    "circuitos.projects",
 ]
 forbidden_modules = ["fastapi", "circuitos.api", "starlette", "uvicorn"]
 

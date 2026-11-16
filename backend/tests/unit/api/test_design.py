@@ -231,3 +231,41 @@ def test_bom_groups_identical_parts():
     merged = group([a, b, c])
     assert [m.designator for m in merged] == ["R1, R2", "R3"]
     assert merged[0].quantity == 2
+
+
+@pytest.mark.ngspice
+def test_report_html_has_waveforms_limits_and_bom_margins(client):
+    r = client.post(
+        "/api/v1/design/DM-RET1/report.html", json={"spec": {}, "project": "Fonte 12 V"}
+    )
+    assert r.status_code == 200
+    html = r.text
+    assert "<h1>Fonte 12 V</h1>" in html
+    assert "Formas de onda" in html and "(ngspice)" in html
+    assert "Limites de operação" in html and 'class="verdict' in html
+    assert "Esforço × nominal" in html
+    assert "window.print()" in html
+
+
+def test_report_pdf_for_every_module(client):
+    import pymupdf
+
+    from circuitos.design import registry
+    from circuitos.reports.pdf import equation_png
+
+    failed_eq = 0
+    total_eq = 0
+    for module_id in registry.MODULES:
+        r = client.post(f"/api/v1/design/{module_id}/report.pdf?simulate=false", json={"spec": {}})
+        assert r.status_code == 200, (module_id, r.text[:300])
+        with pymupdf.open(stream=r.content, filetype="pdf") as doc:
+            text = "".join(p.get_text() for p in doc)
+            assert "Memória de cálculo" in text and "Limites de operação" in text, module_id
+            assert "página 1 de" in text
+        design = client.post(f"/api/v1/design/{module_id}", json={"spec": {}}).json()
+        for step in design["result"]["steps"]:
+            total_eq += 1
+            failed_eq += equation_png(step["latex"]) is None
+    # equations mathtext cannot read are printed as LaTeX source; keep that rare
+    assert total_eq > 100
+    assert failed_eq / total_eq < 0.05, f"{failed_eq} de {total_eq} equações sem renderização"

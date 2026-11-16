@@ -16,6 +16,10 @@ from circuitos.core.units import QuantityModel, format_eng
 from circuitos.design.base import DesignResult, SimComparison
 
 from . import outputs
+from .bom import BomLine
+from .bom import build as bom_build
+from .bom import total_cost as bom_total
+from .sections import FigFormat, SimWaves, operating_limits, waveform_figures
 
 _ENV = Environment(
     loader=FileSystemLoader(Path(__file__).parent / "templates"),
@@ -48,7 +52,7 @@ def katex_assets() -> dict[str, str]:
 
 from .labels import ENUM_LABELS, HIDDEN, LABELS, SPEC_LABELS  # noqa: E402
 
-__all__ = ["ENUM_LABELS", "HIDDEN", "LABELS", "SPEC_LABELS", "katex_assets", "render"]
+__all__ = ["ENUM_LABELS", "HIDDEN", "LABELS", "SPEC_LABELS", "context", "katex_assets", "render"]
 
 QUESTIONS: dict[str, list[str]] = {
     "DM-RET1": [
@@ -108,13 +112,18 @@ def _spec_rows(
     return rows
 
 
-def render(
+def context(
     module: Any,
     spec: BaseModel,
     result: DesignResult,
     policy: str,
     sim: list[SimComparison] | None = None,
-) -> str:
+    waves: SimWaves | None = None,
+    bom_lines: list[BomLine] | None = None,
+    project: str | None = None,
+    figure_format: FigFormat = "svg",
+) -> dict[str, Any]:
+    """Everything the HTML and the PDF report show, computed once."""
     module_id, title = module.id, module.title
     labels = outputs.labels(module)
     sim_by_key: dict[str, QuantityModel] = {}
@@ -137,29 +146,52 @@ def render(
         (labels.get(k, k), _fmt(q)) for k, q in result.summary.items() if k not in HIDDEN
     ]
     alpha = result.summary.get("alpha")
+    if bom_lines is None:
+        bom_lines = bom_build(outputs.bom(module, spec, result), result)
+    return {
+        "title": title,
+        "title_lower": title[0].lower() + title[1:],
+        "project": project,
+        "module_id": module_id,
+        "generated": dt.datetime.now().strftime("%d/%m/%Y %H:%M"),
+        "policy": policy,
+        "spec_rows": _spec_rows(spec, outputs.spec_labels(module), outputs.enum_labels(module)),
+        "schematic": outputs.schematic_svg(module, spec, result, title),
+        "summary_rows": summary_rows,
+        "summary_keys": set(result.summary),
+        "warnings": result.warnings,
+        "selection": result.selection,
+        "margins": result.margins,
+        "thermal": result.thermal,
+        "limits": operating_limits(result, policy),
+        "figures": waveform_figures(result, waves, figure_format),
+        "bom": bom_lines,
+        "bom_total": bom_total(bom_lines),
+        "sim": sim,
+        "steps": result.steps,
+        "lab": lab,
+        "safety": outputs.safety(module),
+        "practice": getattr(module, "practice", None),
+        "questions": QUESTIONS.get(module_id) or outputs.questions(module),
+        "alpha": _fmt(alpha),
+        "status": {"ok": "ok", "atencao": "atenção", "violado": "violado"},
+        "fmt": _fmt,
+        "num": lambda v: "" if v is None else f"{v:.2f}".replace(".", ","),
+    }
+
+
+def render(
+    module: Any,
+    spec: BaseModel,
+    result: DesignResult,
+    policy: str,
+    sim: list[SimComparison] | None = None,
+    waves: SimWaves | None = None,
+    bom_lines: list[BomLine] | None = None,
+    project: str | None = None,
+) -> str:
+    """HTML report (equations by KaTeX, inlined: works offline and prints to A4)."""
+    ctx = context(module, spec, result, policy, sim, waves, bom_lines, project, "svg")
     return _ENV.get_template("report.html.j2").render(
-        title=title,
-        title_lower=title[0].lower() + title[1:],
-        module_id=module_id,
-        generated=dt.datetime.now().strftime("%d/%m/%Y %H:%M"),
-        policy=policy,
-        spec_rows=_spec_rows(spec, outputs.spec_labels(module), outputs.enum_labels(module)),
-        schematic=outputs.schematic_svg(module, spec, result, title),
-        summary_rows=summary_rows,
-        summary_keys=set(result.summary),
-        warnings=result.warnings,
-        selection=result.selection,
-        margins=result.margins,
-        thermal=result.thermal,
-        bom=outputs.bom(module, spec, result),
-        sim=sim,
-        steps=result.steps,
-        lab=lab,
-        safety=outputs.safety(module),
-        practice=getattr(module, "practice", None),
-        questions=QUESTIONS.get(module_id) or outputs.questions(module),
-        alpha=_fmt(alpha),
-        status={"ok": "ok", "atencao": "atenção", "violado": "violado"},
-        fmt=_fmt,
-        katex=katex_assets(),
+        **ctx, katex=katex_assets(), svg=lambda b: b.decode("utf-8")
     )

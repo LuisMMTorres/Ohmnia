@@ -1,0 +1,73 @@
+{% set n = namespace(s=0) %}
+<h1>{{ project or title }}</h1>
+{% if project %}<p>{{ title }}</p>{% endif %}
+<p class="muted">{{ module_id }} · gerado em {{ generated }} · critério de derating "{{ policy }}" (critério de projeto, não normativo)</p>
+
+{% set n.s = n.s + 1 %}<h2>{{ n.s }}. Especificação</h2>
+<table>{% for k, v in spec_rows %}<tr><th>{{ k }}</th><td>{{ v }}</td></tr>{% endfor %}</table>
+
+{% set n.s = n.s + 1 %}<h2>{{ n.s }}. Esquemático</h2>
+<p><img src="{{ schematic_img }}" width="500"/></p>
+
+{% set n.s = n.s + 1 %}<h2>{{ n.s }}. Resultados principais</h2>
+<table><tr><th>Grandeza</th><th>Valor</th></tr>
+{% for label, value in summary_rows %}<tr><td>{{ label }}</td><td>{{ value }}</td></tr>{% endfor %}
+</table>
+{% if warnings %}<h3>Avisos</h3>{% for w in warnings %}<p class="warn">{{ w.message }}</p>{% endfor %}{% endif %}
+
+{% if figure_imgs %}{% set n.s = n.s + 1 %}<h2>{{ n.s }}. Formas de onda</h2>
+<p class="muted">Um período em regime permanente; cálculo{% if sim %} e simulação no ngspice{% endif %}.</p>
+{% for img in figure_imgs %}<p><img src="{{ img }}" width="500"/></p>{% endfor %}{% endif %}
+
+{% set n.s = n.s + 1 %}<h2>{{ n.s }}. Componentes e margens</h2>
+{% if selection %}<table><tr><th>Posição</th><th>Componente</th><th>Seleção</th></tr>
+{% for c in selection %}<tr><td>{{ c.designator }}</td><td>{{ c.part_number }} ({{ c.manufacturer }})</td><td>{{ "travado à mão" if c.locked else "automática" }}{{ "" if c.released else " · NÃO REVISADO" }}</td></tr>{% endfor %}
+</table>
+<table><tr><th>Posição</th><th>Parâmetro</th><th>Esforço</th><th>Nominal</th><th>Fator</th><th>Margem</th><th>Situação</th></tr>
+{% for m in margins %}<tr><td>{{ m.designator }}</td><td>{{ m.parameter }}</td><td>{{ fmt(m.stress) }}</td><td>{{ fmt(m.rating) }}</td><td>{{ "%.2f"|format(m.required_factor)|replace(".", ",") }}</td><td>{{ "%.0f"|format(m.margin_pct) }} %</td><td class="{{ m.status }}">{{ status[m.status] }}</td></tr>{% endfor %}
+</table>
+{% else %}<p class="muted">Nenhum componente real foi escolhido (veja os avisos).</p>{% endif %}
+{% if thermal %}<h3>Temperatura de junção</h3>
+<table><tr><th>Posição</th><th>Perda</th><th>Tj</th><th>Tj máx.</th><th>Caminho</th><th>Rθsa exigido</th><th>Situação</th></tr>
+{% for t in thermal %}<tr><td>{{ t.designator }}</td><td>{{ fmt(t.power) }}</td><td>{{ fmt(t.Tj) }}</td><td>{{ fmt(t.Tj_max) }}</td><td>{{ t.path }}</td><td>{{ fmt(t.required_Rsa) if t.required_Rsa else "—" }}</td><td class="{{ t.status }}">{{ status[t.status] }}</td></tr>{% endfor %}
+</table>{% endif %}
+
+{% set n.s = n.s + 1 %}<h2>{{ n.s }}. Limites de operação</h2>
+<p class="verdict {{ limits.status }}">{{ limits.verdict }}</p>
+{% for l in limits.lines %}<p><b>{{ l.designator }}</b>: {{ l.text }} <span class="{{ l.status }}">({{ status[l.status] }})</span></p>{% endfor %}
+{% for x in limits.notes %}<p class="muted">{{ x }}</p>{% endfor %}
+
+{% set n.s = n.s + 1 %}<h2>{{ n.s }}. Lista de materiais</h2>
+<table><tr><th>Designador</th><th>Qtd</th><th>Descrição</th><th>Código</th><th>Fabricante</th><th>Valor</th><th>Esforço × nominal</th><th>Margem</th><th>Tj</th><th>Obs.</th></tr>
+{% for r in bom %}<tr><td>{{ r.designator }}</td><td>{{ r.quantity }}</td><td>{{ r.description }}</td><td>{{ r.part_number }}</td><td>{{ r.manufacturer }}</td><td>{{ r.value }}</td><td>{% if r.parameter %}{{ r.parameter }}: {{ r.stress }} / {{ r.rating }}{% endif %}</td><td class="{{ r.margin_status }}">{% if r.margin_pct is not none %}{{ "%.0f"|format(r.margin_pct) }} %{% endif %}</td><td>{{ r.tj }}</td><td>{{ r.note }}</td></tr>{% endfor %}
+</table>
+{% if bom_total is not none %}<p>Custo total estimado: <b>{{ num(bom_total) }}</b></p>{% endif %}
+
+{% if sim %}{% set n.s = n.s + 1 %}<h2>{{ n.s }}. Conferência com a simulação (ngspice)</h2>
+<table><tr><th>Grandeza</th><th>Analítico</th><th>Simulado</th><th>Erro</th><th>Tolerância</th><th></th></tr>
+{% for c in sim %}<tr><td>{{ c.quantity }}</td><td>{{ fmt(c.analytic) }}</td><td>{{ fmt(c.simulated) }}</td><td>{{ "%.2f"|format(c.error_pct)|replace(".", ",") }} %</td><td>{{ "%.1f"|format(c.tolerance_pct)|replace(".", ",") }} %</td><td class="{{ 'ok' if c.ok else 'violado' }}">{{ "confere" if c.ok else "DIVERGE" }}</td></tr>{% endfor %}
+</table>{% endif %}
+
+{% set n.s = n.s + 1 %}<h2>{{ n.s }}. Memória de cálculo</h2>
+{% for s in steps %}<h3>{{ loop.index }}. {{ s.description }}</h3>
+<p>{{ eq(s.latex)|safe }}</p>
+<p>Resultado: <b>{{ fmt(s.output) }}</b>{% if s.inputs %} · entradas: {% for k, v in s.inputs.items() %}{{ eq(k, 8)|safe }} = {{ fmt(v) }}{{ "; " if not loop.last }}{% endfor %}{% endif %}</p>
+{% if s.assumptions %}<p class="muted">Premissas: {{ s.assumptions|join("; ") }}</p>{% endif %}
+{% if s.reference %}<p class="muted">Referência: {{ s.reference.book }}{% if s.reference.edition %}, {{ s.reference.edition }} ed.{% endif %}{% if s.reference.chapter %}, cap. {{ s.reference.chapter }}{% endif %}{% if s.reference.equation %}, eq. {{ s.reference.equation }}{% endif %}</p>{% endif %}
+{% endfor %}
+
+{% set n.s = n.s + 1 %}<h2>{{ n.s }}. Roteiro de prática</h2>
+{% if practice %}<h3>Objetivo</h3><p>{{ practice.objective }}</p>
+<h3>Segurança</h3>{% for s in safety %}<p>• {{ s }}</p>{% endfor %}
+<h3>Material</h3><p>{{ practice.material }}</p>
+<h3>Procedimento</h3>{% for p in practice.procedure %}<p>{{ loop.index }}. {{ p }}</p>{% endfor %}
+{% else %}<h3>Objetivo</h3>
+<p>Montar o {{ title_lower }}, medir as grandezas da tabela abaixo e comparar com o cálculo e a simulação, discutindo as diferenças.</p>
+<h3>Segurança</h3>{% for s in safety %}<p>• {{ s }}</p>{% endfor %}
+<h3>Material</h3><p>Componentes da lista de materiais, osciloscópio com ponteira diferencial, multímetro true RMS, alicate amperímetro.</p>
+{% endif %}
+<table><tr><th>Grandeza</th><th>Instrumento</th><th>Calculado</th><th>Simulado</th><th>Medido</th></tr>
+{% for item in lab %}<tr><td>{{ item.quantity }}</td><td>{{ item.instrument }}</td><td>{{ item.calc }}</td><td>{{ item.sim }}</td><td> </td></tr>{% endfor %}
+</table>
+<h3>Questões</h3>
+{% for q in questions %}<p>{{ loop.index }}. {{ q }}</p>{% endfor %}

@@ -23,26 +23,40 @@ document.addEventListener("DOMContentLoaded", function () {
  .warn{background:#fffbeb;border-left:3px solid #d97706;padding:6px 10px;margin:6px 0}
  .step{border:1px solid #e5e7eb;border-radius:6px;padding:8px 10px;margin:8px 0;break-inside:avoid}
  .muted{color:#6b7280;font-size:12px} svg{max-width:100%;height:auto}
- @media print{a{color:inherit}}
+ .fig{margin:8px 0;break-inside:avoid} .fig svg{width:100%;height:auto}
+ .verdict{padding:8px 12px;border-radius:6px;margin:8px 0;font-weight:600}
+ .verdict.ok{background:#ecfdf5}.verdict.atencao{background:#fffbeb}.verdict.violado{background:#fef2f2}
+ .bar{position:sticky;top:0;background:#fff;padding:6px 0;text-align:right}
+ .bar button{font:inherit;padding:4px 12px;cursor:pointer}
+ @page{size:A4;margin:16mm 14mm}
+ @media print{a{color:inherit}.bar{display:none}body{margin:0;max-width:none;font-size:11px}
+  h2{break-after:avoid}tr{break-inside:avoid}.step{break-inside:avoid}}
 </style>
 </head>
 <body>
-<h1>{{ title }}</h1>
+{% set n = namespace(s=0) %}
+<div class="bar"><button onclick="window.print()">Imprimir / salvar em PDF</button></div>
+<h1>{{ project or title }}</h1>
+{% if project %}<div>{{ title }}</div>{% endif %}
 <div class="muted">{{ module_id }} · gerado em {{ generated }} · critério de derating "{{ policy }}" (critério de projeto, não normativo)</div>
 
-<h2>1. Especificação</h2>
+{% set n.s = n.s + 1 %}<h2>{{ n.s }}. Especificação</h2>
 <table>{% for k, v in spec_rows %}<tr><th>{{ k }}</th><td>{{ v }}</td></tr>{% endfor %}</table>
 
-<h2>2. Esquemático</h2>
+{% set n.s = n.s + 1 %}<h2>{{ n.s }}. Esquemático</h2>
 {{ schematic|safe }}
 
-<h2>3. Resultados principais</h2>
+{% set n.s = n.s + 1 %}<h2>{{ n.s }}. Resultados principais</h2>
 <table><tr><th>Grandeza</th><th>Valor</th></tr>
 {% for label, value in summary_rows %}<tr><td>{{ label }}</td><td class="n">{{ value }}</td></tr>{% endfor %}
 </table>
 {% if warnings %}<h3>Avisos</h3>{% for w in warnings %}<div class="warn">{{ w.message }}</div>{% endfor %}{% endif %}
 
-<h2>4. Componentes e margens</h2>
+{% if figures %}{% set n.s = n.s + 1 %}<h2>{{ n.s }}. Formas de onda</h2>
+<p class="muted">Um período em regime permanente. Traço contínuo do cálculo{% if sim %} sobreposto à simulação no ngspice{% endif %}.</p>
+{% for f in figures %}<div class="fig">{{ svg(f.data)|safe }}</div>{% endfor %}{% endif %}
+
+{% set n.s = n.s + 1 %}<h2>{{ n.s }}. Componentes e margens</h2>
 {% if selection %}<table><tr><th>Posição</th><th>Componente</th><th>Seleção</th></tr>
 {% for c in selection %}<tr><td>{{ c.designator }}</td><td>{{ c.part_number }} ({{ c.manufacturer }})</td><td>{{ "travado à mão" if c.locked else "automática" }}{{ "" if c.released else " · NÃO REVISADO" }}</td></tr>{% endfor %}
 </table>
@@ -55,17 +69,23 @@ document.addEventListener("DOMContentLoaded", function () {
 {% for t in thermal %}<tr><td>{{ t.designator }}</td><td class="n">{{ fmt(t.power) }}</td><td class="n">{{ fmt(t.Tj) }}</td><td class="n">{{ fmt(t.Tj_max) }}</td><td>{{ t.path }}</td><td class="n">{{ fmt(t.required_Rsa) if t.required_Rsa else "—" }}</td><td class="{{ t.status }}">{{ status[t.status] }}</td></tr>{% endfor %}
 </table>{% endif %}
 
-<h2>5. Lista de materiais</h2>
-<table><tr><th>Designador</th><th>Qtd</th><th>Descrição</th><th>Código</th><th>Fabricante</th><th>Valor</th><th>Observação</th></tr>
-{% for r in bom %}<tr><td>{{ r.designator }}</td><td class="n">{{ r.quantity }}</td><td>{{ r.description }}</td><td>{{ r.part_number }}</td><td>{{ r.manufacturer }}</td><td>{{ r.value }}</td><td>{{ r.note }}</td></tr>{% endfor %}
-</table>
+{% set n.s = n.s + 1 %}<h2>{{ n.s }}. Limites de operação</h2>
+<div class="verdict {{ limits.status }}">{{ limits.verdict }}</div>
+{% if limits.lines %}<ul>{% for l in limits.lines %}<li><b>{{ l.designator }}</b>: {{ l.text }} <span class="{{ l.status }}">({{ status[l.status] }})</span></li>{% endfor %}</ul>{% endif %}
+{% if limits.notes %}<ul class="muted">{% for x in limits.notes %}<li>{{ x }}</li>{% endfor %}</ul>{% endif %}
 
-{% if sim %}<h2>6. Conferência com a simulação (ngspice)</h2>
+{% set n.s = n.s + 1 %}<h2>{{ n.s }}. Lista de materiais</h2>
+<table><tr><th>Designador</th><th>Qtd</th><th>Descrição</th><th>Código</th><th>Fabricante</th><th>Valor</th><th>Esforço × nominal</th><th>Margem</th><th>Tj</th><th>Observação</th></tr>
+{% for r in bom %}<tr><td>{{ r.designator }}</td><td class="n">{{ r.quantity }}</td><td>{{ r.description }}</td><td>{% if r.datasheet %}<a href="{{ r.datasheet }}">{{ r.part_number }}</a>{% else %}{{ r.part_number }}{% endif %}</td><td>{{ r.manufacturer }}</td><td>{{ r.value }}</td><td>{% if r.parameter %}{{ r.parameter }}: {{ r.stress }} / {{ r.rating }}{% endif %}</td><td class="n {{ r.margin_status }}">{% if r.margin_pct is not none %}{{ "%.0f"|format(r.margin_pct) }} %{% endif %}</td><td class="n">{{ r.tj }}</td><td>{{ r.note }}{% if r.heatsink and r.heatsink != "nenhum" %}{{ "; " if r.note }}dissipador {{ r.heatsink }}{% endif %}</td></tr>{% endfor %}
+</table>
+{% if bom_total is not none %}<p>Custo total estimado: <b>{{ num(bom_total) }}</b></p>{% endif %}
+
+{% if sim %}{% set n.s = n.s + 1 %}<h2>{{ n.s }}. Conferência com a simulação (ngspice)</h2>
 <table><tr><th>Grandeza</th><th>Analítico</th><th>Simulado</th><th>Erro</th><th>Tolerância</th><th></th></tr>
 {% for c in sim %}<tr><td>{{ c.quantity }}</td><td class="n">{{ fmt(c.analytic) }}</td><td class="n">{{ fmt(c.simulated) }}</td><td class="n">{{ "%.2f"|format(c.error_pct)|replace(".", ",") }} %</td><td class="n">{{ "%.1f"|format(c.tolerance_pct)|replace(".", ",") }} %</td><td class="{{ 'ok' if c.ok else 'violado' }}">{{ "confere" if c.ok else "DIVERGE" }}</td></tr>{% endfor %}
 </table>{% endif %}
 
-<h2>{{ 7 if sim else 6 }}. Memória de cálculo</h2>
+{% set n.s = n.s + 1 %}<h2>{{ n.s }}. Memória de cálculo</h2>
 {% for s in steps %}<div class="step"><b>{{ loop.index }}. {{ s.description }}</b>
 <div>\[ {{ s.latex }} \]</div>
 <div>Resultado: <b>{{ fmt(s.output) }}</b>{% if s.inputs %} · entradas: {% for k, v in s.inputs.items() %}\({{ k }}\) = {{ fmt(v) }}{{ "; " if not loop.last }}{% endfor %}{% endif %}</div>
@@ -73,7 +93,7 @@ document.addEventListener("DOMContentLoaded", function () {
 {% if s.reference %}<div class="muted">Referência: {{ s.reference.book }}{% if s.reference.edition %}, {{ s.reference.edition }} ed.{% endif %}{% if s.reference.chapter %}, cap. {{ s.reference.chapter }}{% endif %}{% if s.reference.equation %}, eq. {{ s.reference.equation }}{% endif %}</div>{% endif %}
 </div>{% endfor %}
 
-<h2>{{ 8 if sim else 7 }}. Roteiro de prática</h2>
+{% set n.s = n.s + 1 %}<h2>{{ n.s }}. Roteiro de prática</h2>
 {% if practice %}<h3>Objetivo</h3>
 <p>{{ practice.objective }}</p>
 <h3>Segurança</h3><ul>{% for s in safety %}<li>{{ s }}</li>{% endfor %}</ul>
@@ -83,7 +103,7 @@ document.addEventListener("DOMContentLoaded", function () {
 {% else %}<h3>Objetivo</h3>
 <p>Montar o {{ title_lower }}, medir as grandezas da tabela abaixo e comparar com o cálculo e a simulação, discutindo as diferenças (queda real dos dispositivos, resistência do transformador, tolerância dos componentes).</p>
 <h3>Segurança</h3><ul>{% for s in safety %}<li>{{ s }}</li>{% endfor %}</ul>
-<h3>Material</h3><p>Componentes da lista de materiais (seção 5), osciloscópio com ponteira diferencial, multímetro true RMS, alicate amperímetro{% if module_id != "DM-RET1" %}, circuito de disparo dos tiristores sincronizado com a rede{% endif %}.</p>
+<h3>Material</h3><p>Componentes da lista de materiais, osciloscópio com ponteira diferencial, multímetro true RMS, alicate amperímetro{% if module_id != "DM-RET1" %}, circuito de disparo dos tiristores sincronizado com a rede{% endif %}.</p>
 <h3>Procedimento</h3>
 <ol>
  <li>Monte o circuito do esquemático com a alimentação desligada; confira a polaridade dos {{ "tiristores e diodos" if module_id != "DM-RET1" else "diodos" }}{% if "C" in summary_keys %} e do capacitor eletrolítico{% endif %}.</li>

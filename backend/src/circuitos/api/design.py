@@ -17,7 +17,8 @@ from circuitos.design import registry
 from circuitos.design.base import Circuit, DesignResult, SimComparison
 from circuitos.design.engine import Device, TopologyModule, run
 from circuitos.design.verify import compare_full, netlist_with_analysis
-from circuitos.reports import bom, outputs, report
+from circuitos.reports import bom, outputs, pdf, report
+from circuitos.reports.sections import SimWaves
 from circuitos.selection.derating import DeratingPolicy
 
 router = APIRouter(prefix="/api/v1/design")
@@ -39,6 +40,7 @@ class DesignIn(BaseModel):
     policy: Literal["didatico", "industrial"] = "didatico"
     locks: dict[str, uuid.UUID] = Field(default_factory=dict)
     costs: dict[str, float] = Field(default_factory=dict)  # part number → unit cost (BOM)
+    project: str | None = None  # project name for the report title
 
 
 class CandidateOut(BaseModel):
@@ -267,13 +269,54 @@ def bom_json(request: Request, module_id: str, body: DesignIn) -> BomOut:
     )
 
 
+def _waves(out: SimulateOut) -> SimWaves:
+    return SimWaves(
+        t_s=[v / 1e3 for v in out.t_ms],
+        traces={k: (v.unit, v.values) for k, v in out.traces.items()},
+        bode_f=out.bode_f,
+        bode={k: v.values for k, v in out.bode.items()},
+    )
+
+
+def _report_ctx_args(
+    request: Request, module_id: str, body: DesignIn, simulate: bool
+) -> tuple[
+    Any, BaseModel, DesignResult, list[SimComparison] | None, SimWaves | None, list[bom.BomLine]
+]:
+    module, spec, result, _, circuit = _design(request, module_id, body)
+    sim_out = _simulate(circuit, result) if simulate else None
+    lines = bom.build(
+        outputs.bom(module, spec, result), result, _datasheet_link(_repo(request)), body.costs
+    )
+    return (
+        module,
+        spec,
+        result,
+        sim_out.comparisons if sim_out else None,
+        _waves(sim_out) if sim_out else None,
+        lines,
+    )
+
+
 @router.post("/{module_id}/report.html")
 def report_html(
     request: Request, module_id: str, body: DesignIn, simulate: bool = True
 ) -> HTMLResponse:
-    module, spec, result, _, circuit = _design(request, module_id, body)
-    sim = _simulate(circuit, result).comparisons if simulate else None
-    html = report.render(module, spec, result, body.policy, sim)
+    module, spec, result, sim, waves, lines = _report_ctx_args(request, module_id, body, simulate)
+    html = report.render(module, spec, result, body.policy, sim, waves, lines, body.project)
     return HTMLResponse(
         html, headers={"Content-Disposition": f'inline; filename="{module_id}-relatorio.html"'}
+    )
+
+
+@router.post("/{module_id}/report.pdf")
+def report_pdf(request: Request, module_id: str, body: DesignIn, simulate: bool = True) -> Response:
+    module, spec, result, sim, waves, lines = _report_ctx_args(request, module_id, body, simulate)
+    ctx = report.context(
+        module, spec, result, body.policy, sim, waves, lines, body.project, figure_format="png"
+    )
+    return Response(
+        pdf.render_pdf(ctx),
+        media_type="application/pdf",
+        headers={"Content-Disposition": f'attachment; filename="{module_id}-relatorio.pdf"'},
     )

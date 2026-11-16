@@ -30,13 +30,17 @@ def commercial(
     end = {"up": r"\rceil", "down": r"\rfloor", "nearest": r"\rangle"}[mode]
     out = snap(required, series, mode)  # type: ignore[arg-type]
     word = {"up": "para cima", "down": "para baixo", "nearest": "ao mais próximo"}[mode]
+    # "C_o" → "C_{o,calc}": appending "_{calc}" to a subscripted name is a double subscript
+    base, _, sub = step_id.partition("_")
+    sub = sub.strip("{}")
+    calc = f"{base}_{{{sub},calc}}" if sub else f"{step_id}_{{calc}}"
     return log.add(
         record(
             step_id,
             f"{description} (série {series}, arredondado {word})",
-            f"{step_id} = {sym} {step_id}_{{calc}} {end}_{{{series}}}",
+            f"{step_id} = {sym} {calc} {end}_{{{series}}}",
             output=out,
-            inputs={f"{step_id}_{{calc}}": required},
+            inputs={calc: required},
             assumptions=[note] if note else [],
             reference=reference,
         )
