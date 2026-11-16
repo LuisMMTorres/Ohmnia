@@ -2584,3 +2584,21 @@ parts:
       source:
         page: 2
         location: Electrical characteristics — regulator current IZM (max.) (2)
+
+# Pinagem para a vista de protoboard (Fase 10), transcrita do mesmo datasheet (mesmo
+# SHA-256 do PDF da pasta do usuário). status extraido: falta a sua revisão.
+pinout:
+  package: do-41
+  pins:
+  - pin: "1"
+    name: "Catodo (faixa)"
+    role: k
+  - pin: "2"
+    name: "Anodo"
+    role: a
+  source:
+    page: 3
+    location: "Package dimensions DO-41 — Cathode identification"
+  status: extraido
+  note: "Faixa pintada = catodo."
+catalog_revision: 2

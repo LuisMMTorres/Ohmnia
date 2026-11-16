@@ -132,3 +132,31 @@ parameters:
 per_part: {}
 parts:
   LM311P: {}
+
+# Pinagem para a vista de protoboard (Fase 10), transcrita do mesmo datasheet (mesmo
+# SHA-256 do PDF da pasta do usuário). status extraido: falta a sua revisão.
+pinout:
+  package: dip-8
+  pins:
+  - pin: "1"
+    name: "EMIT OUT"
+  - pin: "2"
+    name: "IN+"
+  - pin: "3"
+    name: "IN–"
+  - pin: "4"
+    name: "VCC–"
+  - pin: "5"
+    name: "BALANCE"
+  - pin: "6"
+    name: "BAL/STRB"
+  - pin: "7"
+    name: "COL OUT"
+  - pin: "8"
+    name: "VCC+"
+  source:
+    page: 3
+    location: "Pin Functions, coluna SOIC, PDIP"
+  status: extraido
+  note: "O simulador ainda não tem símbolo de comparador: pinagem para consulta."
+catalog_revision: 2

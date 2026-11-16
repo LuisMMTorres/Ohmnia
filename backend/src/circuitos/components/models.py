@@ -173,6 +173,39 @@ class ReviewState(BaseModel):
     created_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
 
 
+class PinFunction(BaseModel):
+    """One leg of the package, as the datasheet names it, and what it is in the schematic symbol."""
+
+    model_config = ConfigDict(frozen=True)
+
+    pin: str  # package pin number as printed ("1", "2", "3"; DIP: "1".."8")
+    name: str  # name in the datasheet ("COLLECTOR", "OUT A", "IN− A", "V+", "NC")
+    # Symbol pin it carries ("c", "b", "e", "a", "k", "inn", "inp", "out", "d", "g", "s", "mt1",
+    # "mt2"), "vcc"/"vee" for supply pins, or None for a pin the symbol does not use (NC, offset,
+    # the second unit of a dual op-amp).
+    role: str | None = None
+    unit: str | None = None  # multi-unit packages: "A", "B"
+
+
+class Pinout(BaseModel):
+    """Pinout of the main package, transcribed from the datasheet (rule 1: page and location)."""
+
+    model_config = ConfigDict(frozen=True)
+
+    package: str  # breadboard package id: "to-92", "to-220", "dip-8", "do-41"...
+    pins: list[PinFunction] = Field(min_length=1)
+    source: SourceRef
+    status: ParameterStatus = "extraido"
+    note: str | None = None
+
+    @model_validator(mode="after")
+    def _unique_pins(self) -> Pinout:
+        numbers = [p.pin for p in self.pins]
+        if len(set(numbers)) != len(numbers):
+            raise ValueError(f"Pinagem com pino repetido: {numbers}")
+        return self
+
+
 class ComponentRecord(BaseModel):
     id: UUID = Field(default_factory=uuid4)
     category: str
@@ -188,6 +221,7 @@ class ComponentRecord(BaseModel):
     review: ReviewState = Field(default_factory=ReviewState)
     tags: list[str] = Field(default_factory=list)
     family: str | None = None  # e.g. "1N4001–1N4007": parts sharing one datasheet
+    pinout: Pinout | None = None  # breadboard view (Fase 10)
     notes: list[str] = Field(default_factory=list)
     catalog_revision: int = 1  # bump in the YAML to replace the record on the next import
 
@@ -202,6 +236,9 @@ class ComponentRecord(BaseModel):
                 raise ValueError(
                     f"{key}: fonte aponta para datasheet inexistente {param.source.datasheet_id!r}"
                 )
+        if self.pinout is not None and self.pinout.source.datasheet_id not in known:
+            ds = self.pinout.source.datasheet_id
+            raise ValueError(f"Pinagem: fonte aponta para datasheet inexistente {ds!r}")
         for curve in self.curves:
             if curve.source.datasheet_id not in known:
                 raise ValueError(

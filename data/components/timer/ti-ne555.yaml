@@ -159,3 +159,31 @@ parameters:
 per_part: {}
 parts:
   NE555P: {}
+
+# Pinagem para a vista de protoboard (Fase 10), transcrita do mesmo datasheet (mesmo
+# SHA-256 do PDF da pasta do usuário). status extraido: falta a sua revisão.
+pinout:
+  package: dip-8
+  pins:
+  - pin: "1"
+    name: "GND"
+  - pin: "2"
+    name: "TRIG"
+  - pin: "3"
+    name: "OUT"
+  - pin: "4"
+    name: "RESET"
+  - pin: "5"
+    name: "CONT"
+  - pin: "6"
+    name: "THRES"
+  - pin: "7"
+    name: "DISCH"
+  - pin: "8"
+    name: "VCC"
+  source:
+    page: 3
+    location: "Table 4-1 Pin Functions, coluna D, P, PS, PW, JG"
+  status: extraido
+  note: "O simulador ainda não tem símbolo de 555: pinagem para consulta."
+catalog_revision: 2

@@ -65,3 +65,21 @@ parts:
   1N5817: {VRRM: 20, VRMS: 14, VDC: 20, VRSM: 24, VF: 0.450, VF@3.1A: 0.750, IR: {}, IR@100C: {}, Cj: {typ: 125}}
   1N5818: {VRRM: 30, VRMS: 21, VDC: 30, VRSM: 36, VF: 0.550, VF@3.1A: 0.875, IR: {}, IR@100C: {}, Cj: {typ: 110}}
   1N5819: {VRRM: 40, VRMS: 28, VDC: 40, VRSM: 48, VF: 0.600, VF@3.1A: 0.900, IR: {}, IR@100C: {}, Cj: {typ: 110}}
+
+# Pinagem para a vista de protoboard (Fase 10), transcrita do mesmo datasheet (mesmo
+# SHA-256 do PDF da pasta do usuário). status extraido: falta a sua revisão.
+pinout:
+  package: do-41
+  pins:
+  - pin: "1"
+    name: "Catodo (faixa)"
+    role: k
+  - pin: "2"
+    name: "Anodo"
+    role: a
+  source:
+    page: 1
+    location: "Mechanical data — Polarity: color band denotes the cathode end"
+  status: extraido
+  note: "Faixa pintada = catodo."
+catalog_revision: 2
