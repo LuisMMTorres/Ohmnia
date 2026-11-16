@@ -3670,13 +3670,18 @@ datasheets:
   fabricante: Endress+Hauser
   tipo: peça
   categoria: null
-  url: https://portal.endress.com/wa001/dla/5000516/0939/000/02/TI00138T09EN_0213.pdf
+  url: https://bdih-download.endress.com/file/2ca71b94bfb3dcb4be8964bcc11610e6/TI138ten.pdf
   link:
-    situacao: quebrado
+    situacao: ok
     verificado_em: '2026-11-16'
-    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante; busca em 2026-11-16: Não
-      encontrado: nenhum resultado cita este número; portal E+H exige busca por número do documento no navegador.'
+    nota: 'novo link achado em 2026-11-16 no site do fabricante (TI00138T (Technical Information, Endress+Hauser));
+      o número da peça não aparece no texto das primeiras páginas: confira o PDF; link anterior: https://portal.endress.com/wa001/dla/5000516/0939/000/02/TI00138T09EN_0213.pdf'
   sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+  local:
+    caminho: D:\Downloads_net\Claude\datasheets-baixados\26_Temperatura_RTD_e_Termopar\TI00138T09EN_0213_EndressHauser.pdf
+    sha256: 162dad8bd27aedb13212009c4afd918a4269e9edc08c7a23b4c1a702026775cf
+    situacao: ok
+    nota: baixado em 2026-11-16
 - grupo: 26_Temperatura_RTD_e_Termopar
   arquivo: TI01125T09EN_0214_EndressHauser.pdf
   part_number: TI01125T09EN 0214
@@ -4908,26 +4913,36 @@ datasheets:
   fabricante: Endress+Hauser
   tipo: peça
   categoria: null
-  url: https://portal.endress.com/wa001/dla/5000277/4639/000/03/TI00365F00EN_1310.pdf
+  url: https://bdih-download.endress.com/file/4f36608c46cdfd5f1f327c110179f251/TI00365FEN_1714.pdf
   link:
-    situacao: quebrado
+    situacao: ok
     verificado_em: '2026-11-16'
-    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante; busca em 2026-11-16: TI00365F
-      não encontrado; portal.endress.com/dla devolve HTML; sem cópia em distribuidor.'
+    nota: 'novo link achado em 2026-11-16 no site do fabricante (TI00365F (Technical Information, Endress+Hauser));
+      link anterior: https://portal.endress.com/wa001/dla/5000277/4639/000/03/TI00365F00EN_1310.pdf'
   sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+  local:
+    caminho: D:\Downloads_net\Claude\datasheets-baixados\31_Nivel\TI00365F00EN_1310_EndressHauser.pdf
+    sha256: b456d99cf55aaa0b3d93acc8d0fe9d8f5ad62f2059551aae4b543b9072f67f23
+    situacao: ok
+    nota: baixado em 2026-11-16
 - grupo: 31_Nivel
   arquivo: TI00401F00EN_0511_EndressHauser.pdf
   part_number: TI00401F00EN 0511
   fabricante: Endress+Hauser
   tipo: peça
   categoria: null
-  url: https://portal.endress.com/wa001/dla/5000277/4535/000/03/TI00401F00EN_0511.pdf
+  url: https://bdih-download.endress.com/file/6ded3f5caaf858fefd58a1959c300c32/TI00401FEN_1517.pdf
   link:
-    situacao: quebrado
+    situacao: ok
     verificado_em: '2026-11-16'
-    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante; busca em 2026-11-16: TI00401F
-      não encontrado; link devolve HTML.'
+    nota: 'novo link achado em 2026-11-16 no site do fabricante (TI00401F (Technical Information, Endress+Hauser));
+      o número da peça não aparece no texto das primeiras páginas: confira o PDF; link anterior: https://portal.endress.com/wa001/dla/5000277/4535/000/03/TI00401F00EN_0511.pdf'
   sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+  local:
+    caminho: D:\Downloads_net\Claude\datasheets-baixados\31_Nivel\TI00401F00EN_0511_EndressHauser.pdf
+    sha256: e39034ead8cff95354d1d9e120b7628d8b66a517e8a86e9668c557306ee7ea02
+    situacao: ok
+    nota: baixado em 2026-11-16
 - grupo: 31_Nivel
   arquivo: TI00405F00EN_0611_EndressHauser.pdf
   part_number: TI00405F00EN 0611
@@ -4947,13 +4962,18 @@ datasheets:
   fabricante: Endress+Hauser
   tipo: peça
   categoria: null
-  url: https://portal.endress.com/wa001/dla/5000605/2085/000/02/TI00426F00EN_0313.pdf
+  url: https://bdih-download.endress.com/file/7c97ed6f6c6116e45f4f4ff21122061f/TI00426FEN_2726-00.pdf
   link:
-    situacao: quebrado
+    situacao: ok
     verificado_em: '2026-11-16'
-    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante; busca em 2026-11-16: TI00426F
-      (Weld-in adapters/flanges, rev 14.12) só achado no Scribd (HTML, não PDF direto); não verificado.'
+    nota: 'novo link achado em 2026-11-16 no site do fabricante (TI00426F (Technical Information, Endress+Hauser));
+      o número da peça não aparece no texto das primeiras páginas: confira o PDF; link anterior: https://portal.endress.com/wa001/dla/5000605/2085/000/02/TI00426F00EN_0313.pdf'
   sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+  local:
+    caminho: D:\Downloads_net\Claude\datasheets-baixados\31_Nivel\TI00426F00EN_0313_EndressHauser.pdf
+    sha256: 06d479df0ef174374dba0d02efd83b81e895bf7b3263c156d84d00874e7c4807
+    situacao: ok
+    nota: baixado em 2026-11-16
 - grupo: 31_Nivel
   arquivo: TI00450F00EN_0111_EndressHauser.pdf
   part_number: TI00450F00EN 0111
@@ -4973,13 +4993,18 @@ datasheets:
   fabricante: Endress+Hauser
   tipo: peça
   categoria: null
-  url: https://portal.endress.com/wa001/dla/5000436/3243/000/02/TI01001F00EN_0412.pdf
+  url: https://bdih-download.endress.com/file/02cb4bc3bcc367cb700d396ab4beb660/TI01001FEN_3225-00.pdf
   link:
-    situacao: quebrado
+    situacao: ok
     verificado_em: '2026-11-16'
-    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante; busca em 2026-11-16: TI01001F
-      não encontrado; link devolve HTML.'
+    nota: 'novo link achado em 2026-11-16 no site do fabricante (TI01001F (Technical Information, Endress+Hauser));
+      o número da peça não aparece no texto das primeiras páginas: confira o PDF; link anterior: https://portal.endress.com/wa001/dla/5000436/3243/000/02/TI01001F00EN_0412.pdf'
   sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+  local:
+    caminho: D:\Downloads_net\Claude\datasheets-baixados\31_Nivel\TI01001F00EN_0412_EndressHauser.pdf
+    sha256: 70ba11ad3151b51e801410de3b64952410eff63a934fe1502a9d6a6518abad85
+    situacao: ok
+    nota: baixado em 2026-11-16
 - grupo: 31_Nivel
   arquivo: TI01247F00EN_0116_EndressHauser.pdf
   part_number: TI01247F00EN 0116
@@ -5249,26 +5274,36 @@ datasheets:
   fabricante: Endress+Hauser
   tipo: peça
   categoria: null
-  url: https://portal.endress.com/wa001/dla/5000277/4591/000/04/TI00383P00EN_1412.pdf
+  url: https://bdih-download.endress.com/file/6d03efcbb6518be5e75fdb14e26761af/TI00383PEN_3624-00.pdf
   link:
-    situacao: quebrado
+    situacao: ok
     verificado_em: '2026-11-16'
-    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante; busca em 2026-11-16: TI00383P
-      (Cerabar S, versão antiga TI383P/06.09 só em cache); não obtido PDF verificado.'
+    nota: 'novo link achado em 2026-11-16 no site do fabricante (TI00383P (Technical Information, Endress+Hauser));
+      o número da peça não aparece no texto das primeiras páginas: confira o PDF; link anterior: https://portal.endress.com/wa001/dla/5000277/4591/000/04/TI00383P00EN_1412.pdf'
   sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+  local:
+    caminho: D:\Downloads_net\Claude\datasheets-baixados\32_Pressao\TI00383P00EN_1412_EndressHauser.pdf
+    sha256: 1d9e575d41859889180454bbbbb122abe5f5f7a7a7485fd9c75e8a861be303db
+    situacao: ok
+    nota: baixado em 2026-11-16
 - grupo: 32_Pressao
   arquivo: TI00436P00EN_0412_EndressHauser.pdf
   part_number: TI00436P00EN 0412
   fabricante: Endress+Hauser
   tipo: peça
   categoria: null
-  url: https://portal.endress.com/wa001/dla/5000436/3271/000/02/TI00436P00EN_0412.pdf
+  url: https://bdih-download.endress.com/file/845cc0006a88578e76c4e6c2d441e8a4/TI00436PEN_3224-00.pdf
   link:
-    situacao: indisponivel
+    situacao: ok
     verificado_em: '2026-11-16'
-    nota: 'sem resposta válida (TimeoutError: The read operation timed out); busca em 2026-11-16: TI00436P não encontrado;
-      link devolve HTML.'
+    nota: 'novo link achado em 2026-11-16 no site do fabricante (TI00436P (Technical Information, Endress+Hauser));
+      o número da peça não aparece no texto das primeiras páginas: confira o PDF; link anterior: https://portal.endress.com/wa001/dla/5000436/3271/000/02/TI00436P00EN_0412.pdf'
   sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+  local:
+    caminho: D:\Downloads_net\Claude\datasheets-baixados\32_Pressao\TI00436P00EN_0412_EndressHauser.pdf
+    sha256: 4cea3c83af5b61e0fde04874ea656257b73db1c45aaa35dd574d16fc72209b7d
+    situacao: ok
+    nota: baixado em 2026-11-16
 - grupo: 32_Pressao
   arquivo: TI01132P00EN_0114_EndressHauser.pdf
   part_number: TI01132P00EN 0114
@@ -5481,13 +5516,18 @@ datasheets:
   fabricante: Endress+Hauser
   tipo: peça
   categoria: null
-  url: https://portal.endress.com/wa001/dla/5001053/8373/000/01/TI01224D06EN_0116.pdf
+  url: https://bdih-download.endress.com/file/ab854584a3c32e1fd7c67ecbd8df4d04/TI01224DEN_1025-00.pdf
   link:
-    situacao: quebrado
+    situacao: ok
     verificado_em: '2026-11-16'
-    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante; busca em 2026-11-16: Não
-      encontrado: código TI01224D não indexado.'
+    nota: 'novo link achado em 2026-11-16 no site do fabricante (TI01224D (Technical Information, Endress+Hauser));
+      o número da peça não aparece no texto das primeiras páginas: confira o PDF; link anterior: https://portal.endress.com/wa001/dla/5001053/8373/000/01/TI01224D06EN_0116.pdf'
   sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+  local:
+    caminho: D:\Downloads_net\Claude\datasheets-baixados\33_Vazao\TI01224D06EN_0116_EndressHauser.pdf
+    sha256: 49c09dd4bdf53cf2b7e8e9d06faedd0f4ca0d492460908091d191475837991e0
+    situacao: ok
+    nota: baixado em 2026-11-16
 - grupo: 33_Vazao
   arquivo: fls-f3-00-paddlewheel-flow-sensor-datasheet-en_GF_Piping_Systems.pdf
   part_number: fls-f3-00-paddlewheel-flow-sensor-datasheet-en
@@ -5851,13 +5891,18 @@ datasheets:
   fabricante: Endress+Hauser
   tipo: peça
   categoria: null
-  url: https://portal.endress.com/wa001/dla/5000277/4683/000/03/TI00088R09EN_0711.pdf
+  url: https://bdih-download.endress.com/file/d96729a6bdd8b4726b9ad97255d73375/TI00088REN_1621-00.pdf
   link:
-    situacao: quebrado
+    situacao: ok
     verificado_em: '2026-11-16'
-    nota: 'endereço inexistente (HTTP 404): procure o datasheet no site do fabricante; busca em 2026-11-16: Não
-      encontrado: nenhum produto associado ao código TI00088R nas buscas.'
+    nota: 'novo link achado em 2026-11-16 no site do fabricante (TI00088R (Technical Information, Endress+Hauser));
+      o número da peça não aparece no texto das primeiras páginas: confira o PDF; link anterior: https://portal.endress.com/wa001/dla/5000277/4683/000/03/TI00088R09EN_0711.pdf'
   sem_categoria: 'instrumentação industrial/CLP: ainda sem esquema de categoria (decisão D12)'
+  local:
+    caminho: D:\Downloads_net\Claude\datasheets-baixados\36_Transmissores_Condicionadores_e_Controladores\TI00088R09EN_0711_EndressHauser.pdf
+    sha256: b3d6eb2aedda4d641293109ac23549c3393e14da7bff3c2c673511a4616c8fe4
+    situacao: ok
+    nota: baixado em 2026-11-16
 - grupo: 36_Transmissores_Condicionadores_e_Controladores
   arquivo: TI01010T09EN_0313_EndressHauser.pdf
   part_number: TI01010T09EN 0313
@@ -7762,12 +7807,17 @@ datasheets:
   categoria: null
   sem_categoria: 'conversor A/D ou D/A, transmissor 4–20 mA ou condicionador de sinal: categoria prevista na Fase
     11 (decisão D12)'
-  url: https://portal.endress.com/wa001/dla/5000277/4683/000/03/TI00088R09EN_0711.pdf
+  url: https://bdih-download.endress.com/file/d96729a6bdd8b4726b9ad97255d73375/TI00088REN_1621-00.pdf
   link:
-    situacao: quebrado
+    situacao: ok
     verificado_em: '2026-11-16'
-    nota: 'endereço inexistente (HTTP 404): procure o documento no site do fabricante; busca em 2026-11-16: Documento
-      TI00088R não encontrado; portal.endress.com e bdih-download não retornaram o código.'
+    nota: 'novo link achado em 2026-11-16 no site do fabricante (TI00088R (Technical Information, Endress+Hauser));
+      link anterior: https://portal.endress.com/wa001/dla/5000277/4683/000/03/TI00088R09EN_0711.pdf'
+  local:
+    caminho: D:\Downloads_net\Claude\datasheets-baixados\39_Conversores_AD_DA_e_Transmissores_4-20mA\TI00088R_EndressHauser.pdf
+    sha256: b3d6eb2aedda4d641293109ac23549c3393e14da7bff3c2c673511a4616c8fe4
+    situacao: ok
+    nota: baixado em 2026-11-16
 - grupo: 39_Conversores_AD_DA_e_Transmissores_4-20mA
   arquivo: TxBlock-USB_Novus.pdf
   part_number: TxBlock-USB

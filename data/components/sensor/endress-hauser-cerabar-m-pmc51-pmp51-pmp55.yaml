@@ -1,0 +1,91 @@
+# Fonte: Endress+Hauser, Technical Information Cerabar M PMC51, PMP51, PMP55, TI00436P/00/EN/32.24-00 (71651079), 2024-04-01.
+part_number: Cerabar M PMC51, PMP51, PMP55
+category: sensor.pressure
+schema_version: '1.0'
+manufacturer: Endress+Hauser
+family: Cerabar M (PMC51, PMP51, PMP55)
+package: Caixa de alumínio ou aço inox, conexão de processo roscada, flange, higiênica ou selo diafragma
+lifecycle: desconhecido
+notes:
+- "Nome na fila: TI00436P00EN 0412 (índice 354); o documento baixado é a revisão 32.24-00 de 2024-04-01 (TI00436P/00/EN/32.24-00)."
+- "Valores da série PMC51 (célula cerâmica), PMP51 e PMP55 (célula metálica, PMP55 com selo diafragma); limites variam entre modelos e versões. Saídas 4-20 mA, HART 6.0, IO-Link, PROFIBUS PA e FOUNDATION Fieldbus (p. 11)."
+- "range_bar: de -1 bar a +400 bar (células de 100 mbar a 400 bar, pressão manométrica) (p. 10). Sobrepressão (OPL) 600 bar na célula de 400 bar (p. 10). Rangeabilidade até 20:1 configurável de fábrica, mais sob consulta (p. 10)."
+- "Carga máxima na saída 4-20 mA: RLmax = (UB - 11,5 V) / 23 mA (p. 12); com IO-Link: (UB - 6,5 V) / 23 mA (p. 12). Não transcrito como RL por ser função da tensão."
+- "VS: 11,5 a 30 V DC em segurança intrínseca (não para analógico); 11,5 a 45 V DC (35 V DC com conector) para outros tipos de proteção e dispositivos sem certificado (p. 12, 18). IO-Link: 18 a 30 V DC se IO-Link usado, 11,5 a 30 V se só saída analógica (p. 18). PROFIBUS PA e FOUNDATION Fieldbus 9 a 32 V DC (p. 18)."
+- "Consumo (p. 18): IO-Link < 60 mA; PROFIBUS PA 11 mA ±1 mA; FOUNDATION Fieldbus 16 mA ±1 mA."
+- "Exatidão de referência (p. 24): até ±0,10 % padrão, versão Platinum ±0,075 % (p. 1); varia com a célula e a rangeabilidade (TD), p. ex. célula 100 mbar padrão ±0,15 %. Valor transcrito é o do cabeçalho."
+- "Temperatura de processo PMC51: -40 a +100 °C (rosca ou flange), -20 a +130 °C (conexões higiênicas), até 150 °C por no máx. 60 min; com selos diafragma até 400 °C (p. 1, 43)."
+datasheets:
+- id: ds1
+  manufacturer: Endress+Hauser
+  document_number: TI00436P/00/EN/32.24-00
+  revision: '2024-04-01'
+  url: https://bdih-download.endress.com/file/845cc0006a88578e76c4e6c2d441e8a4/TI00436PEN_3224-00.pdf
+  sha256: 4cea3c83af5b61e0fde04874ea656257b73db1c45aaa35dd574d16fc72209b7d
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  range_bar:
+    min: -1
+    max: 400
+    unit: bar
+    status: extraido
+    source: {page: 10, location: Input - Measuring range 400 bar cell, excerpt: "400 bar (6 000 psi) –1 (–15) +400 (+6000)"}
+  overpressure:
+    max: 600
+    unit: bar
+    status: extraido
+    source: {page: 10, location: Input - Measuring range 400 bar cell OPL, excerpt: "20 (300) 400 (6000) 600 (9000)"}
+  accuracy:
+    typ: 0.1
+    unit: '%'
+    status: extraido
+    source: {page: 1, location: Your benefits, excerpt: "High reference accuracy up to ±0.10 % as PLATINUM version: ±0.075 %"}
+  VS:
+    min: 11.5
+    max: 45
+    unit: V
+    status: extraido
+    source: {page: 12, location: Output - Load diagram legend, excerpt: "Supply voltage 11.5 to 45 V DC (versions with plug-in connector 35 V DC)"}
+  IS:
+    max: 60
+    unit: mA
+    status: extraido
+    source: {page: 18, location: Power supply - Current consumption IO-Link, excerpt: "IO-Link < 60 mA"}
+  I_out:
+    min: 4
+    max: 20
+    unit: mA
+    status: extraido
+    source: {page: 11, location: Output - Output signal, excerpt: "4 to 20 mA analog, 2-wire"}
+  T_process:
+    max: 400
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Application - High process temperature, excerpt: "with diaphragm seals up to 400 °C (752 °F)"}
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 41, location: Environment - Ambient temperature range, excerpt: "Without LCD display: –40 to +85 °C (–40 to +185 °F)"}
+  Tstg:
+    min: -40
+    max: 90
+    unit: °C
+    status: extraido
+    source: {page: 41, location: Environment - Storage temperature range, excerpt: "Without LCD display –40 to +90 °C (–40 to +185 °F)"}
+attributes:
+  saida:
+    value: 4 a 20 mA (2 fios), 4 a 20 mA HART 6.0, IO-Link (3 fios), PROFIBUS PA, FOUNDATION Fieldbus
+    status: extraido
+    source: {page: 11, location: Output - Output signal, excerpt: "4 to 20 mA analog, 2-wire; HART 6.0; IO-Link, 3-wire; PROFIBUS PA; FOUNDATION Fieldbus"}
+  certificacoes:
+    value: SIL 2 (IEC 61508 Ed. 2.0 e IEC 61511, TÜV NORD); versões conforme ASME BPE; aprovações internacionais
+    status: extraido
+    source: {page: 1, location: Your benefits, excerpt: "Used for process pressure monitoring up to SIL 2, certified to IEC 61508 Edition 2.0 and IEC 61511 by TÜV NORD"}
+  comunicacao:
+    value: HART 6.0, IO-Link, PROFIBUS PA (Profile 3.02), FOUNDATION Fieldbus
+    status: extraido
+    source: {page: 11, location: Output - Output signal, excerpt: "HART 6.0; IO-Link; PROFIBUS PA (Profile 3.02); FOUNDATION Fieldbus"}

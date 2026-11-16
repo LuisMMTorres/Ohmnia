@@ -1,0 +1,104 @@
+# Fonte: Endress+Hauser, Technical Information Prosonic M FMU40, FMU41, FMU42, FMU43, FMU44, TI00365F/00/EN/17.14 (71275861).
+part_number: Prosonic M
+category: sensor.level
+schema_version: '1.0'
+manufacturer: Endress+Hauser
+family: Prosonic M (FMU40, FMU41, FMU42, FMU43, FMU44)
+package: Caixa F12 ou T12 (transmissor compacto)
+lifecycle: desconhecido
+notes:
+- "Nome na fila: TI00365F00EN 1310 (índice 331); o documento baixado é a revisão 17.14 (TI00365F/00/EN/17.14)."
+- "Valores da série FMU40 a FMU44; faixas e limites variam entre os modelos. Medição ultrassônica de nível sem contato; saída 4 a 20 mA com HART, PROFIBUS PA ou FOUNDATION Fieldbus (p. 1, 11)."
+- "range_m: alcance máximo em líquidos FMU40 5 m, FMU41 8 m, FMU42 10 m, FMU43 15 m, FMU44 20 m; em sólidos a granel 2, 3,5, 5, 7 e 10 m (p. 1). O valor transcrito é o máximo da série (FMU44)."
+- "VS: 2 fios HART, tensão nos terminais 8 a 36 V conforme a corrente (14 V mín. a 4 mA, 8 V mín. a 20 mA; 36 V máx. na versão padrão, 30 V Ex) (p. 14). 4 fios: 10,5 a 32 V DC ou 90 a 253 V AC (p. 14)."
+- "Exatidão: erro máximo ±0,2 % do span máximo do sensor (EN 61298-2); erro típico ±2 mm (FMU40/41) ou ±4 mm (FMU42/43/44) ou 0,2 % da distância medida, o maior (p. 15)."
+- "Tempo de reação mínimo: 2 s (2 fios FMU40 a 43), 3 s (2 fios FMU44), 0,5 s (4 fios) (p. 15). Pressão de processo 0,7 a 3 bar abs. (FMU40/41) ou 0,7 a 2,5 bar abs. (FMU42/43/44) (p. 21)."
+- "Frequência de operação aproximada: FMU40 70 kHz, FMU41 50 kHz, FMU42 42 kHz, FMU43 35 kHz, FMU44 30 kHz (p. 10). Carga mínima para HART 250 ohm (p. 11)."
+datasheets:
+- id: ds1
+  manufacturer: Endress+Hauser
+  document_number: TI00365F/00/EN/17.14
+  revision: '17.14'
+  url: https://bdih-download.endress.com/file/4f36608c46cdfd5f1f327c110179f251/TI00365FEN_1714.pdf
+  sha256: b456d99cf55aaa0b3d93acc8d0fe9d8f5ad62f2059551aae4b543b9072f67f23
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  range_m:
+    max: 20
+    unit: m
+    status: extraido
+    source: {page: 1, location: Application - Maximum measuring range, excerpt: "FMU44: 20 m (66 ft) in fluids, 10 m (33 ft) in bulk materials"}
+  accuracy:
+    max: 0.2
+    unit: '%'
+    status: extraido
+    source: {page: 15, location: Performance characteristics - Maximum measuring error, excerpt: "±0.2 % of the maximum span of the sensor"}
+  VS:
+    min: 8
+    max: 36
+    unit: V
+    status: extraido
+    source: {page: 14, location: Power supply - 2-wire HART standard terminal voltage, excerpt: "20 mA 8 V min; 36 V max (Standard)"}
+  IS:
+    min: 3.6
+    max: 22
+    unit: mA
+    status: extraido
+    source: {page: 14, location: Power consumption - Current consumption HART, excerpt: "HART 3.6 to 22 mA"}
+  I_out:
+    min: 4
+    max: 20
+    unit: mA
+    status: extraido
+    source: {page: 11, location: Output - Output signal, excerpt: "4…20 mA with HART protocol"}
+  RL:
+    max: 600
+    unit: ohm
+    status: extraido
+    source: {page: 14, location: Power supply - 4-wire active HART max. load, excerpt: "DC 10.5 to 32 V, max. load 600"}
+  t_resp:
+    min: 500
+    unit: ms
+    status: extraido
+    source: {page: 15, location: Performance characteristics - Reaction time, excerpt: "4-wire devices (FMU40/41/42/43/44): 0.5 s"}
+  T_process:
+    min: -40
+    max: 80
+    unit: °C
+    status: extraido
+    source: {page: 21, location: Process - Process temperature, excerpt: "–40°C to +80°C (–40 °F...+176 °F)"}
+  Top:
+    min: -40
+    max: 80
+    unit: °C
+    status: extraido
+    source: {page: 21, location: Environment - Ambient temperature, excerpt: "–40 °C to +80 °C (–40 °F to +176 °F)"}
+  Tstg:
+    min: -40
+    max: 80
+    unit: °C
+    status: extraido
+    source: {page: 21, location: Environment - Storage temperature, excerpt: "–40 °C to +80 °C (–40 °F to +176 °F)"}
+attributes:
+  saida:
+    value: 4 a 20 mA com HART, PROFIBUS PA ou FOUNDATION Fieldbus (conforme versão)
+    status: extraido
+    source: {page: 11, location: Output - Output signal, excerpt: "4…20 mA with HART protocol; PROFIBUS PA; FOUNDATION Fieldbus"}
+  conexao:
+    value: Prensa-cabo M20x1.5, entrada G 1/2" ou NPT 1/2", plugue M12 PROFIBUS PA ou plugue 7/8" FOUNDATION Fieldbus
+    status: extraido
+    source: {page: 14, location: Cable entry, excerpt: "Cable gland: M20x1.5; Cable entry G ½ or NPT ½; PROFIBUS PA M12 plug; FF 7/8 plug"}
+  grau_protecao:
+    value: IP68 NEMA 6P ou IP66 NEMA 4x (caixa fechada)
+    status: extraido
+    source: {page: 21, location: Environment - Ingress protection, excerpt: "IP68, NEMA 6P (24h at 1.83 m under water); IP66, NEMA 4x"}
+  comunicacao:
+    value: HART, PROFIBUS PA, FOUNDATION Fieldbus
+    status: extraido
+    source: {page: 1, location: Application - System integration, excerpt: "HART (standard), 4 to 20mA; PROFIBUS PA; FOUNDATION Fieldbus"}
+  principio:
+    value: Ultrassônico, sem contato (tempo de voo)
+    status: extraido
+    source: {page: 9, location: Input - Measured variable, excerpt: "The distance D between the sensor membrane and the product surface is measured."}

@@ -1,0 +1,83 @@
+# Fonte: Endress+Hauser, Technical Information iTEMP TMT180, TI00088R/09/EN/16.21-00, 2021-10-20.
+part_number: iTEMP TMT180
+category: instrument.transmitter
+schema_version: '1.0'
+manufacturer: Endress+Hauser
+family: iTEMP TMT180
+package: Transmissor de cabeça (DIN EN 50446 forma B), ~40 g
+lifecycle: desconhecido
+notes:
+- "Nome na fila: TI00088R09EN 0711 (índice 391) e TI00088R (índice 500); ambos são o mesmo PDF (mesmo sha256); o documento baixado é a revisão 16.21-00 (2021-10-20)."
+- "Transmissor de cabeça de 2 fios programável por PC para Pt100 (2, 3 ou 4 fios), saída analógica 4 a 20 mA ou 20 a 4 mA (p. 1-2)."
+- "Faixa de entrada (p. 2): Pt100 -200 a +650 °C (span mín. 10 K); opcional -50 a 250 °C (span mín. 10 K). Sem símbolo no schema para in_range."
+- "Carga máxima (p. 2): (Valimentação - 10 V) / 0,022 A (saída em corrente). Não transcrito como RL por ser fórmula."
+- "Exatidão (p. 3): 0,2 K ou 0,08 % (o maior); opcional 0,1 K ou 0,08 % em -50 a 250 °C; % refere-se ao span ajustado."
+- "Sinal de alarme (p. 2): ruptura/curto do sensor ≤ 3,6 mA ou ≥ 21,0 mA; sub-faixa até 3,8 mA; sobre-faixa até 20,5 mA; limite de corrente ≤ 23 mA; atraso de ligação 4 s. Corrente do sensor ≤ 0,6 mA."
+- "Ondulação residual permitida Uss ≤ 3 V com Ub ≥ 13 V, f máx. 1 kHz (p. 3). Influência da alimentação ≤ ±0,01 %/V; deriva ≤ 0,1 K/ano ou ≤ 0,05 %/ano (p. 3)."
+datasheets:
+- id: ds1
+  manufacturer: Endress+Hauser
+  document_number: TI00088R/09/EN/16.21-00
+  revision: '2021-10-20'
+  url: https://bdih-download.endress.com/file/d96729a6bdd8b4726b9ad97255d73375/TI00088REN_1621-00.pdf
+  sha256: b3d6eb2aedda4d641293109ac23549c3393e14da7bff3c2c673511a4616c8fe4
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  I_out:
+    min: 4
+    max: 20
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Output - Output signal, excerpt: "Analog, 4 to 20 mA, 20 to 4 mA"}
+  VS:
+    min: 10
+    max: 35
+    unit: V
+    status: extraido
+    source: {page: 3, location: Power supply - Supply voltage, excerpt: "Ub = 10 to 35 VDC, reverse polarity protection"}
+  IS:
+    max: 3.5
+    unit: mA
+    status: extraido
+    source: {page: 2, location: Output - Input current required, excerpt: "≤ 3.5 mA"}
+  accuracy:
+    typ: 0.08
+    unit: '%'
+    status: extraido
+    source: {page: 3, location: Performance characteristics - Maximum measured error, excerpt: "Pt100 -200 to +650 °C: 0.2 K or 0.08%"}
+  t_resp:
+    typ: 1000
+    unit: ms
+    status: extraido
+    source: {page: 3, location: Performance characteristics - Response time, excerpt: "Response time 1 s"}
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 4, location: Environment - Ambient temperature range, excerpt: "–40 to +85 °C (–40 to +185 °F)"}
+  Tstg:
+    min: -40
+    max: 100
+    unit: °C
+    status: extraido
+    source: {page: 4, location: Environment - Storage temperature, excerpt: "–40 to +100 °C (–40 to +212 °F)"}
+attributes:
+  entrada:
+    value: Pt100 (IEC 60751), 2, 3 ou 4 fios
+    status: extraido
+    source: {page: 2, location: Input - Measuring range / Connection type, excerpt: "Pt100 as per IEC 60751; 2-, 3- or 4-wire connection"}
+  saida:
+    value: 4 a 20 mA ou 20 a 4 mA, analógica, 2 fios
+    status: extraido
+    source: {page: 2, location: Output - Output signal, excerpt: "Analog, 4 to 20 mA, 20 to 4 mA"}
+  grau_protecao:
+    value: IP 00 (depende da cabeça de ligação ou caixa de campo)
+    status: extraido
+    source: {page: 4, location: Environment - Degree of protection, excerpt: "IP 00. Depends on the terminal head or field housing when installed."}
+  certificacoes:
+    value: CE (IEC/EN 61326, NAMUR NE21)
+    status: extraido
+    source: {page: 4, location: Environment - Electromagnetic compatibility, excerpt: "EMC to all relevant requirements of the IEC/EN 61326-series and NAMUR Recommendation EMC (NE21)"}

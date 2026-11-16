@@ -1,0 +1,105 @@
+# Fonte: Endress+Hauser, Technical Information Cerabar S PMC71, PMP71, PMP75, TI00383P/00/EN/36.24-00 (71651077), 2024-04-01.
+part_number: Cerabar S PMC71, PMP71, PMP75
+category: sensor.pressure
+schema_version: '1.0'
+manufacturer: Endress+Hauser
+family: Cerabar S (PMC71, PMP71, PMP75)
+package: Caixa de alumínio ou aço inox, conexão de processo roscada, flange ou selo diafragma
+lifecycle: desconhecido
+notes:
+- "Nome na fila: TI00383P00EN 1412 (índice 353); o documento baixado é a revisão 36.24-00 de 2024-04-01 (TI00383P/00/EN/36.24-00)."
+- "Valores da série PMC71 (célula cerâmica, pressão manométrica), PMP71 e PMP75 (célula metálica; PMP75 com selo diafragma); faixas e limites variam entre modelos e versões."
+- "range_bar: de -1 bar (limite inferior LRL) a +700 bar (célula de 700 bar), cobrindo as células de 100 mbar a 700 bar (p. 11-12). Sobrepressão (OPL): até 1050 bar na célula de 700 bar (p. 12). Rangeabilidade (turn down) até 100:1."
+- "VS: 4-20 mA HART 11,5 a 45 V DC em área não perigosa (10,5 V com jumper em posição sem sinal de teste), 11,5 a 30 V DC em segurança intrínseca (p. 22); 1-5 V DC 9 a 35 V DC (p. 22); PROFIBUS PA e FOUNDATION Fieldbus 9 a 32 V DC (p. 23)."
+- "Consumo (p. 23): 1-5 V DC 1,8 mA a 9 V e 0,8 mA a 35 V; PROFIBUS PA 13 mA ±1 mA; FOUNDATION Fieldbus 15,5 mA ±1 mA. Carga mínima 100 kΩ na versão 1-5 V (p. 15)."
+- "Exatidão de referência (p. 28): até ±0,025 % (melhor caso, célula 2 bar ou 4 bar versão Platinum), ±0,05 % a ±0,075 % padrão com TD ≤ 10:1; valor transcrito é o melhor caso do cabeçalho (p. 1)."
+- "Temperatura de processo (p. 47): PMC71 -25 a +125 °C (versão alta temperatura até +150 °C); sem selo diafragma até 150 °C, com selos diafragma típicos até 400 °C (p. 1). Tempo de resposta HART acíclico mín. 330 ms, típico 590 ms (p. 27)."
+datasheets:
+- id: ds1
+  manufacturer: Endress+Hauser
+  document_number: TI00383P/00/EN/36.24-00
+  revision: '2024-04-01'
+  url: https://bdih-download.endress.com/file/6d03efcbb6518be5e75fdb14e26761af/TI00383PEN_3624-00.pdf
+  sha256: 1d9e575d41859889180454bbbbb122abe5f5f7a7a7485fd9c75e8a861be303db
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  range_bar:
+    min: -1
+    max: 700
+    unit: bar
+    status: extraido
+    source: {page: 12, location: Input - Measuring range PMP71 700 bar cell, excerpt: "700 bar (10 500 psi) –1 (–15) +700 (+10500)"}
+  overpressure:
+    max: 1050
+    unit: bar
+    status: extraido
+    source: {page: 12, location: Input - Measuring range PMP71 700 bar cell OPL, excerpt: "7.0 (105) 700 (10500) 1050 (15750)"}
+  accuracy:
+    typ: 0.025
+    unit: '%'
+    status: extraido
+    source: {page: 1, location: Your benefits, excerpt: "High reference accuracy up to ±0.025 %"}
+  VS:
+    min: 11.5
+    max: 45
+    unit: V
+    status: extraido
+    source: {page: 22, location: Power supply - Supply voltage 4 to 20 mA HART, version for non-hazardous area, excerpt: "11.5 to 45 V DC"}
+  IS:
+    min: 0.8
+    max: 1.8
+    unit: mA
+    status: extraido
+    source: {page: 23, location: Power supply - Current consumption 1-5V DC, excerpt: "9 V = 1.8 mA; 35 V = 0.8 mA"}
+  I_out:
+    min: 4
+    max: 20
+    unit: mA
+    status: extraido
+    source: {page: 14, location: Output - Output signal, excerpt: "4 to 20 mA with superimposed digital communication protocol HART, 2-wire"}
+  V_out:
+    min: 1
+    max: 5
+    unit: V
+    status: extraido
+    source: {page: 14, location: Output - Output signal, excerpt: "1-5V DC, 3-wire"}
+  T_process:
+    max: 400
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Applications - High process temperatures, excerpt: "up to 400 °C (752 °F) with typical diaphragm seals"}
+  Top:
+    min: -40
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 44, location: Environment - Ambient temperature range, excerpt: "–40 to +85 °C (–40 to +185 °F)"}
+  Tstg:
+    min: -40
+    max: 90
+    unit: °C
+    status: extraido
+    source: {page: 45, location: Environment - Storage temperature range, excerpt: "–40 to +90 °C (–40 to +194 °F)"}
+attributes:
+  saida:
+    value: 4 a 20 mA HART (2 fios), 1-5 V DC (3 fios), PROFIBUS PA, FOUNDATION Fieldbus
+    status: extraido
+    source: {page: 14, location: Output - Output signal, excerpt: "4 to 20 mA ... HART; 1-5V DC, 3-wire; PROFIBUS PA; FOUNDATION Fieldbus"}
+  grau_protecao:
+    value: IP66/67 NEMA 6P (caixa de alumínio, conforme versão); IP68 em versões específicas
+    status: extraido
+    source: {page: 51, location: Mechanical construction - Degree of protection, excerpt: "Aluminum EPDM IP66/67 NEMA 6P"}
+  certificacoes:
+    value: SIL 3 (IEC 61508, TÜV SÜD) para monitoração de pressão de processo; opções Ex
+    status: extraido
+    source: {page: 1, location: Your benefits, excerpt: "Used for process pressure monitoring up to SIL 3, certified to IEC 61508 by TÜV SÜD"}
+  comunicacao:
+    value: HART, PROFIBUS PA (Profile 3.0), FOUNDATION Fieldbus
+    status: extraido
+    source: {page: 14, location: Output - Output signal, excerpt: "PROFIBUS PA (Profile 3.0); FOUNDATION Fieldbus"}
+  principio:
+    value: Célula de medição cerâmica com variação de capacitância (PMC71); células metálicas (PMP71, PMP75)
+    status: extraido
+    source: {page: 8, location: Function and system design - Ceramic process membrane, excerpt: "A pressure-dependent change in capacitance is measured at the electrodes of the ceramic substrate"}

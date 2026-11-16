@@ -1,0 +1,95 @@
+# Fonte: Endress+Hauser, Technical Information Levelflex FMP51, FMP52, FMP54, TI01001F/00/EN/32.25-00 (71705627), 2025-04-25.
+part_number: Levelflex FMP51, FMP52, FMP54
+category: sensor.level
+schema_version: '1.0'
+manufacturer: Endress+Hauser
+family: Levelflex FMP5x (radar de onda guiada)
+package: Caixa GT18/GT19/GT20 (conforme código de pedido), sonda de haste, cabo ou coaxial
+lifecycle: desconhecido
+notes:
+- "Nome na fila: TI01001F00EN 0412 (índice 336); o documento baixado é a revisão 32.25-00 de 2025-04-25 (TI01001F/00/EN/32.25-00)."
+- "Valores da série FMP51, FMP52 e FMP54; faixas variam entre os modelos e versões. Radar de onda guiada para nível e interface em líquidos (p. 1)."
+- "Pressão de processo -1 a +400 bar (p. 1); a pressão máxima depende do componente de menor classe (conexão, acessórios) (p. 62). Sem símbolo de sobrepressão no schema sensor.level."
+- "range_m: alcance máximo haste 10 m, cabo 45 m, coaxial 6 m (p. 1); transcrito o máximo da série (cabo, 45 m)."
+- "Exatidão (p. 30): distância ≤ 15 m ±2 mm; > 15 m ±10 mm (saída digital); saída analógica ±0,02 % do span adicionais; não-repetibilidade ≤ 1 mm. Valor percentual transcrito é o da saída analógica."
+- "Alimentação 2 fios 4-20 mA HART: tensão nos terminais 11,5 a 35 V (não perigosa, Ex nA, Ex ic) ou 11,5 a 30 V (Ex ia); 13,5 a 30 V (Ex d, Ex ic[ia]) (p. 25). A +2 V mínimo com módulo Bluetooth e requisitos maiores a Ta ≤ -30 °C (p. 25). Versão 4 fios 10,4 a 48 V DC ou 90 a 253 V AC (p. 27)."
+- "Consumo: HART 3,6 a 22 mA, corrente de falha ajustável 3,59 a 22,5 mA (NAMUR NE43); PROFIBUS PA 14 mA; FOUNDATION Fieldbus 15 mA (p. 27). Potência 2 fios < 0,9 W (p. 27)."
+- "Temperatura de processo -196 a +450 °C na capa (p. 1), limitada por vedação (p. 61): p. ex. FKM -30 a +150 °C, EPDM -40 a +120 °C, FFKM -20 a +200 °C; depende da versão."
+datasheets:
+- id: ds1
+  manufacturer: Endress+Hauser
+  document_number: TI01001F/00/EN/32.25-00
+  revision: '2025-04-25'
+  url: https://bdih-download.endress.com/file/02cb4bc3bcc367cb700d396ab4beb660/TI01001FEN_3225-00.pdf
+  sha256: 70ba11ad3151b51e801410de3b64952410eff63a934fe1502a9d6a6518abad85
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  range_m:
+    max: 45
+    unit: m
+    status: extraido
+    source: {page: 1, location: Application - Maximum measuring range, excerpt: "Maximum measuring range: rod 10 m (33 ft); rope 45 m (148 ft); coaxial 6 m (20 ft)"}
+  accuracy:
+    max: 0.02
+    unit: '%'
+    status: extraido
+    source: {page: 30, location: Performance characteristics - Reference accuracy (analog output), excerpt: "±0.02 %"}
+  VS:
+    min: 11.5
+    max: 35
+    unit: V
+    status: extraido
+    source: {page: 25, location: Power supply - Supply voltage 2-wire 4-20mA HART, excerpt: "Non-hazardous, Ex nA, Ex ic, CSA GP: 11.5 to 35 V"}
+  IS:
+    min: 3.6
+    max: 22
+    unit: mA
+    status: extraido
+    source: {page: 27, location: Current consumption - HART nominal current, excerpt: "3.6 to 22 mA"}
+  I_out:
+    min: 4
+    max: 20
+    unit: mA
+    status: extraido
+    source: {page: 25, location: Power supply - 2-wire 4-20mA HART, excerpt: "2-wire, 4-20mA HART, passive"}
+  T_process:
+    min: -196
+    max: 450
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Application - Process temperature, excerpt: "Process temperature: –196 to +450 °C (–320 to +842 °F)"}
+  Top:
+    min: -40
+    max: 80
+    unit: °C
+    status: extraido
+    source: {page: 52, location: Environment - Ambient temperature (Device), excerpt: "Device –40 to +80 °C (–40 to +176 °F)"}
+  Tstg:
+    min: -40
+    max: 80
+    unit: °C
+    status: extraido
+    source: {page: 60, location: Environment - Storage temperature, excerpt: "Permitted storage temperature: –40 to +80 °C (–40 to +176 °F)"}
+attributes:
+  saida:
+    value: 4 a 20 mA HART (2 fios), 4 a 20 mA HART com saída de comutação, 4-20 mA HART 4 fios, PROFIBUS PA, FOUNDATION Fieldbus
+    status: extraido
+    source: {page: 27, location: Power consumption table / Output signal, excerpt: "A: 2-wire; 4-20mA HART; K: 4-wire 90-253VAC; 4-20mA HART; L: 4-wire 10,4-48VDC"}
+  grau_protecao:
+    value: IP68 NEMA 6P (caixa fechada, 24 h a 1,83 m); IP66 NEMA 4X
+    status: extraido
+    source: {page: 60, location: Environment - Degree of protection, excerpt: "With housing closed: IP68, NEMA6P (24 h at 1.83 m (6 ft) under water)"}
+  certificacoes:
+    value: SIL2 (IEC 61508), SIL3 com redundância homogênea, WHG, aprovação naval, caldeira a vapor, proteção Ex internacional
+    status: extraido
+    source: {page: 1, location: Application / Your benefits, excerpt: "SIL2 as per IEC 61508, SIL3 for homogeneous redundancy"}
+  comunicacao:
+    value: HART (FSK ±0,5 mA, 1200 bit/s), PROFIBUS PA, FOUNDATION Fieldbus, Bluetooth (opcional)
+    status: extraido
+    source: {page: 13, location: Output - Output signal, excerpt: "HART signal coding FSK ±0.5 mA over current signal; 1 200 Bit/s"}
+  principio:
+    value: Radar de onda guiada (guided-wave radar), sonda de haste, cabo ou coaxial
+    status: extraido
+    source: {page: 1, location: Title / Application, excerpt: "Guided-wave radar; Rod, rope or coaxial probe"}

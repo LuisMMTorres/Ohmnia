@@ -1,0 +1,98 @@
+# Fonte: Endress+Hauser, Technical Information Liquicap M FMI51, FMI52, TI00401F/00/EN/15.17 (71365411).
+part_number: Liquicap M
+category: sensor.level
+schema_version: '1.0'
+manufacturer: Endress+Hauser
+family: Liquicap M (FMI51, FMI52)
+package: Sonda de haste (FMI51) ou cabo (FMI52); caixas F16, F15, F17, F13, F27, T13
+lifecycle: desconhecido
+notes:
+- "Nome na fila: TI00401F00EN 0511 (índice 332); o documento baixado é a revisão 15.17 (TI00401F/00/EN/15.17)."
+- "Medição contínua de nível capacitiva em líquidos; inserto eletrônico FEI50H (4 a 20 mA com HART) ou FEI57C (sinal PFM) (p. 24)."
+- "Valores do inserto FEI50H, salvo indicação. FEI57C: alimentação 14,8 V DC da unidade de comutação, consumo máx. 250 mW, tempo de ligação 1,5 s (p. 26-27)."
+- "Faixa de medição: capacitância span C = 25 a 4000 pF recomendado (2 a 4000 pF possível); capacitância final máx. 4000 pF (p. 24). Sem símbolo no schema para faixa em pF."
+- "Erro: não-repetibilidade máx. ±0,1 %; não-linearidade máx. ±0,5 % (DIN 61298-2) (p. 27). O valor de accuracy transcrito é a não-linearidade."
+- "Pressão de processo: sonda 10 mm -1 a 25 bar; sonda 16 mm -1 a 100 bar; sonda 22 mm -1 a 50 bar (p. 12). Alimentação 12 a 36 V DC (área não perigosa); 12 a 30 V (Ex ia); 14,4 a 30 V (Ex d) (p. 26)."
+- "Corrente de erro NE43: 22 mA; tempo de ligação FEI50H 14 s; tempo morto t1 ≤ 0,3 s (0,5 s no modo SIL); tempo de integração ajustável 0 a 60 s, padrão 1 s (p. 10, 27-28)."
+datasheets:
+- id: ds1
+  manufacturer: Endress+Hauser
+  document_number: TI00401F/00/EN/15.17
+  revision: '15.17'
+  url: https://bdih-download.endress.com/file/6ded3f5caaf858fefd58a1959c300c32/TI00401FEN_1517.pdf
+  sha256: e39034ead8cff95354d1d9e120b7628d8b66a517e8a86e9668c557306ee7ea02
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  accuracy:
+    max: 0.5
+    unit: '%'
+    status: extraido
+    source: {page: 27, location: Performance characteristics - Maximum measured error, excerpt: "Non-linearity for limit point setting (linearity) as per DIN 61298-2: max. ±0.5 %"}
+  VS:
+    min: 12
+    max: 36
+    unit: V
+    status: extraido
+    source: {page: 26, location: Power supply - Supply voltage FEI50H, excerpt: "12.0 to 36 VDC (in the non-hazardous area)"}
+  IS:
+    min: 3.8
+    max: 22
+    unit: mA
+    status: extraido
+    source: {page: 27, location: Current consumption FEI50H, excerpt: "Current consumption: 3.8 to 22 mA"}
+  I_out:
+    min: 3.8
+    max: 20.5
+    unit: mA
+    status: extraido
+    source: {page: 24, location: Output - Output signal FEI50H, excerpt: "3.8 to 20.5 mA with HART protocol"}
+  t_resp:
+    max: 300
+    unit: ms
+    status: extraido
+    source: {page: 27, location: Measured value reaction time, excerpt: "FEI50H t1 ≤ 0.3 s"}
+  T_process:
+    min: -80
+    max: 200
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Application, excerpt: "operating temperatures in the medium container of –80 °C to +200 °C"}
+  Top:
+    min: -50
+    max: 70
+    unit: °C
+    status: extraido
+    source: {page: 10, location: Operating conditions Environment - Ambient temperature range, excerpt: "–50 to +70 °C; –40 to +70 °C (with F16 housing)"}
+  Tstg:
+    min: -50
+    max: 85
+    unit: °C
+    status: extraido
+    source: {page: 10, location: Operating conditions Environment - Storage temperature, excerpt: "–50 to +85 °C"}
+attributes:
+  saida:
+    value: 4 a 20 mA com HART (FEI50H) ou PFM 60 a 2800 Hz (FEI57C)
+    status: extraido
+    source: {page: 24, location: Output - Output signal, excerpt: "FEI50H (4 to 20mA/HART Version 5.0); FEI57C (PFM)"}
+  conexao:
+    value: Prensa-cabo M20x1.5, entrada G 1/2 ou 1/2 NPT, ou conector M12
+    status: extraido
+    source: {page: 26, location: Cable entry, excerpt: "Cable gland: M20x1.5; Cable entry: G ½ or ½ NPT"}
+  grau_protecao:
+    value: IP66, IP67 ou IP68 e NEMA 4X, conforme caixa
+    status: extraido
+    source: {page: 10, location: Degree of protection, excerpt: "IP66*, IP67*, IP68*, NEMA4X** (conforme caixa)"}
+  comunicacao:
+    value: HART 5.0 (FEI50H)
+    status: extraido
+    source: {page: 24, location: Output - Output signal, excerpt: "FEI50H (4 to 20mA/HART Version 5.0)"}
+  principio:
+    value: Capacitivo (variação de capacitância entre haste e parede ou tubo de terra), 500 kHz
+    status: extraido
+    source: {page: 24, location: Input - Measured variable / Measuring range, excerpt: "Continuous measurement of change in capacitance between probe rod and container wall"}
+  certificacoes:
+    value: SIL2 (IEC 61508), Ex ia e Ex d, NAMUR NE21 e NE43, EN 61326
+    status: extraido
+    source: {page: 1, location: Your benefits, excerpt: "functional safety to SIL2 in accordance with IEC 61508"}

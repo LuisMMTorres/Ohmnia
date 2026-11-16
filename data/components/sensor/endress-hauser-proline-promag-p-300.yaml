@@ -1,0 +1,84 @@
+# Fonte: Endress+Hauser, Technical Information Proline Promag P 300, TI01224D/06/EN/10.25-00 (71745952), 2025-11-19.
+part_number: Proline Promag P 300
+category: sensor.flow
+schema_version: '1.0'
+manufacturer: Endress+Hauser
+family: Proline Promag 300
+package: Sensor flangeado com transmissor compacto ou remoto (caixa de duplo compartimento)
+lifecycle: desconhecido
+notes:
+- "Nome na fila: TI01224D06EN 0116 (índice 368); o documento baixado é a revisão 10.25-00 de 2025-11-19 (TI01224D/06/EN/10.25-00)."
+- "Medidor de vazão eletromagnético (Promag P 300) para líquidos condutivos; revestimento PTFE ou PFA, DN 15 a 600 (p. 1, 6). Valores gerais do documento; variam por diâmetro e versão."
+- "Faixa de medição típica v = 0,01 a 10 m/s com a exatidão especificada (p. 10). A faixa em vazão volumétrica depende do DN (tabela p. 10-11), não transcrita pois o schema usa m3/h genérico."
+- "Alimentação do transmissor (p. 37): opção D DC 24 V ±20 %; opção E AC 100 a 240 V (-15 a +10 %, 50/60 Hz ±4 Hz). Potência máx. 10 W (ativa); corrente máx. 400 mA (24 V) ou 200 mA (110 V ou 230 V CA); corrente de partida máx. 36 A (< 5 ms)."
+- "Exatidão (p. 52): ±0,5 % da leitura ±1 mm/s; opcional ±0,2 % da leitura ±2 mm/s."
+- "Saída em corrente 4 a 20 mA HART: carga 250 a 700 Ω, resolução 0,38 µA, tensão de circuito aberto 28,8 V DC (ativa), tensão máx. de entrada 30 V DC (passiva) (p. 13-15). Saídas de pulso/frequência/comutação também disponíveis."
+- "Temperatura do meio (p. 61): PFA -20 a +150 °C (DN 25 a 200); PFA alta temperatura -20 a +180 °C (DN 25 a 200); PTFE -40 a +130 °C (DN 15 a 600). Armazenamento: igual à faixa de operação do transmissor e do sensor (p. 60)."
+datasheets:
+- id: ds1
+  manufacturer: Endress+Hauser
+  document_number: TI01224D/06/EN/10.25-00
+  revision: '2025-11-19'
+  url: https://bdih-download.endress.com/file/ab854584a3c32e1fd7c67ecbd8df4d04/TI01224DEN_1025-00.pdf
+  sha256: 49c09dd4bdf53cf2b7e8e9d06faedd0f4ca0d492460908091d191475837991e0
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  DN:
+    min: 15
+    max: 600
+    unit: mm
+    status: extraido
+    source: {page: 6, location: Function and system design - Nominal diameter range, excerpt: "Nominal diameter range: 15 to 600 mm (½ to 24 in)"}
+  accuracy:
+    max: 0.5
+    unit: '%'
+    status: extraido
+    source: {page: 52, location: Performance characteristics - Maximum permissible error, excerpt: "Volume flow ±0.5 % o.r. ± 1 mm/s (0.04 in/s)"}
+  VS:
+    typ: 24
+    unit: V
+    status: extraido
+    source: {page: 37, location: Power supply - Supply voltage, DC option, excerpt: "Option D DC 24 V ±20%"}
+  I_out:
+    min: 4
+    max: 20
+    unit: mA
+    status: extraido
+    source: {page: 15, location: Output - Current output 4 to 20 mA HART, excerpt: "Can be set to: 4 to 20 mA NAMUR / 4 to 20 mA US / 4 to 20 mA"}
+  RL:
+    min: 250
+    max: 700
+    unit: ohm
+    status: extraido
+    source: {page: 15, location: Output - Current output 4 to 20 mA HART, Load, excerpt: "Load 250 to 700 Ω"}
+  T_process:
+    min: -40
+    max: 180
+    unit: °C
+    status: extraido
+    source: {page: 61, location: Process - Medium temperature range, excerpt: "–20 to +180 °C for PFA high-temperature; –40 to +130 °C for PTFE"}
+  Top:
+    min: -40
+    max: 60
+    unit: °C
+    status: extraido
+    source: {page: 60, location: Environment - Ambient temperature range (transmitter), excerpt: "Standard: –40 to +60 °C (–40 to +140 °F)"}
+attributes:
+  saida:
+    value: 4 a 20 mA HART (ativa ou passiva), pulso/frequência/comutação, conforme código de pedido
+    status: extraido
+    source: {page: 15, location: Output - Output signal, excerpt: "Current output 4 to 20 mA HART; Signal mode can be set to Active / Passive"}
+  grau_protecao:
+    value: IP66/67, Type 4X
+    status: extraido
+    source: {page: 60, location: Environment - Degree of protection, excerpt: "IP66/67, Type 4X enclosure, suitable for pollution degree 4"}
+  comunicacao:
+    value: HART, PROFIBUS DP, PROFIBUS PA, Modbus RS485, Modbus TCP, EtherNet/IP, PROFINET (opcionais, incl. Ethernet-APL)
+    status: extraido
+    source: {page: 16, location: Output - Protocol-specific data, excerpt: "PROFIBUS DP; PROFIBUS PA; Modbus RS485; Modbus TCP over Ethernet-APL; EtherNet/IP; PROFINET"}
+  principio:
+    value: Eletromagnético (Promag), bidirecional, revestimento PTFE ou PFA
+    status: extraido
+    source: {page: 1, location: Application / Device properties, excerpt: "Electromagnetic flowmeter; Liner made of PTFE or PFA"}
