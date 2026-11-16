@@ -1,0 +1,520 @@
+"""Symbols and SPICE models of controllers, sensors and actuators (Fase 11, decision D12).
+
+Controllers (Arduino Uno, ESP32-DevKitC, PLC) become EXTERNAL sources and input loads; the
+co-simulation (:mod:`circuitos.cosim.engine`) drives the sources from the running program.
+Sensors and actuators are behavioural SPICE models. A *stimulus* parameter (temperature,
+position, demand...) accepts a constant (``25``), a time profile as time/value pairs
+(``0 25 10 80``: 25 at 0 s, 80 at 10 s) or a node voltage (``v(h1_temp)``: the temperature of a
+heater, for instance).
+
+Default values cite their datasheet in the parameter help; the rest are didactic defaults, said
+so in the description.
+"""
+
+from __future__ import annotations
+
+import re
+from collections.abc import Callable
+
+from circuitos.schematic.model import Component
+from circuitos.schematic.symbols_base import ParamDef, PinDef, Symbol
+
+Value = Callable[[str], str]  # parameter name -> text (with overrides applied)
+
+
+def _stim(name: str, label: str, unit: str, default: str, help_: str = "") -> ParamDef:
+    return ParamDef(
+        name,
+        label,
+        unit,
+        default,
+        type="text",
+        help=(help_ + " " if help_ else "")
+        + "Constante (25), perfil no tempo em pares tempo/valor (0 25 10 80) ou tensão de um nó "
+        "(v(h1_temp)).",
+    )
+
+
+def _box_pins(left: list[str], right: list[str], half: int = 4) -> tuple[PinDef, ...]:
+    n = max(len(left), len(right))
+    top = -(n - 1)
+    pins = [PinDef(p, -half, top + 2 * i) for i, p in enumerate(left)]
+    pins += [PinDef(p, half, top + 2 * i) for i, p in enumerate(right)]
+    return tuple(pins)
+
+
+_UNO_LEFT = [f"A{i}" for i in range(6)] + ["5V", "GND"]
+_UNO_RIGHT = [f"D{i}" for i in range(2, 14)]
+_ESP_LEFT = [
+    "3V3",
+    "GND",
+    "IO36",
+    "IO39",
+    "IO34",
+    "IO35",
+    "IO32",
+    "IO33",
+    "IO25",
+    "IO26",
+    "IO27",
+    "IO14",
+    "IO12",
+]
+_ESP_RIGHT = [
+    "IO23",
+    "IO22",
+    "IO21",
+    "IO19",
+    "IO18",
+    "IO5",
+    "IO17",
+    "IO16",
+    "IO4",
+    "IO2",
+    "IO15",
+    "IO13",
+]
+_PLC_LEFT = ["L+", "M", "I0", "I1", "I2", "I3", "I4", "I5", "AI0", "AI1"]
+_PLC_RIGHT = ["Q0a", "Q0b", "Q1a", "Q1b", "Q2a", "Q2b", "Q3a", "Q3b", "AQ0"]
+
+UNO_DEFAULT = """// Pisca o LED da placa e lê A0
+void setup() {
+  pinMode(13, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  int leitura = analogRead(A0);
+  Serial.println(leitura);
+  digitalWrite(13, HIGH);
+  delay(250);
+  digitalWrite(13, LOW);
+  delay(250);
+}
+"""
+ESP_DEFAULT = """// Lê a tensão em IO34 e escreve no DAC (IO25)
+void setup() {
+  Serial.begin(115200);
+}
+
+void loop() {
+  int mv = analogReadMilliVolts(34);
+  dacWrite(25, mv * 255 / 3300);
+  Serial.printf("IO34 = %d mV\\n", mv);
+  delay(100);
+}
+"""
+PLC_LADDER_DEFAULT = (
+    '{"rungs": [{"comment": "partida e parada com selo", "branches": '
+    '[[{"type": "NO", "var": "I0"}, {"type": "NC", "var": "I1"}], '
+    '[{"type": "NO", "var": "Q0"}, {"type": "NC", "var": "I1"}]], '
+    '"coils": [{"type": "coil", "var": "Q0"}]}]}'
+)
+PLC_ST_DEFAULT = """(* Partida e parada com selo: I0 liga, I1 desliga, Q0 aciona *)
+Q0 := (I0 OR Q0) AND NOT I1;
+"""
+
+_CONTROLLER_COMMON = (
+    ParamDef(
+        "instr_us",
+        "Tempo por instrução",
+        "µs",
+        "10",
+        help="Custo didático de cada comando no tempo simulado (as placas reais são "
+        "mais rápidas; delay() continua exato).",
+    ),
+    ParamDef(
+        "pwm",
+        "PWM no circuito",
+        "",
+        "média",
+        type="choice",
+        choices=("média", "chaveado"),
+        help="média: o pino entrega a tensão média (rápido); vale para cargas que filtram, "
+        "como filtro RC, LED visto pelo olho ou motor, mas não para o gate de um MOSFET usado "
+        "como chave, que ficaria na região linear. chaveado: onda quadrada na frequência da "
+        "placa (passo de simulação menor, simulação mais longa).",
+    ),
+)
+
+COSIM_SYMBOLS: list[Symbol] = [
+    Symbol(
+        "arduino_uno",
+        "Arduino Uno R3",
+        "Controladores",
+        "X",
+        _box_pins(_UNO_LEFT, _UNO_RIGHT, 5),
+        (
+            ParamDef("program", "Programa (estilo Arduino)", "", UNO_DEFAULT, type="code"),
+            *_CONTROLLER_COMMON,
+        ),
+        description="Programa estilo Arduino co-simulado com o circuito: ADC de 10 bits (0 a "
+        "5 V), PWM nos pinos 3, 5, 6, 9, 10 e 11, saída 5 V. O pino GND precisa estar ligado.",
+        ref_prefix="U",
+    ),
+    Symbol(
+        "esp32_devkitc",
+        "ESP32-DevKitC",
+        "Controladores",
+        "X",
+        _box_pins(_ESP_LEFT, _ESP_RIGHT, 5),
+        (
+            ParamDef("program", "Programa (estilo Arduino)", "", ESP_DEFAULT, type="code"),
+            *_CONTROLLER_COMMON,
+        ),
+        description="Programa estilo Arduino (núcleo ESP32) co-simulado: ADC de 12 bits nos "
+        "pinos 32 a 39, DAC de 8 bits em 25 e 26, PWM (analogWrite, ledcWrite), saída 3,3 V.",
+        ref_prefix="U",
+    ),
+    Symbol(
+        "plc",
+        "CLP (24 V)",
+        "Controladores",
+        "X",
+        _box_pins(_PLC_LEFT, _PLC_RIGHT, 6),
+        (
+            ParamDef(
+                "language", "Linguagem", "", "ladder", type="choice", choices=("ladder", "st")
+            ),
+            ParamDef("ladder", "Programa ladder", "", PLC_LADDER_DEFAULT, type="code"),
+            ParamDef("st", "Texto estruturado (ST)", "", PLC_ST_DEFAULT, type="code"),
+            ParamDef("scan_ms", "Ciclo de varredura", "ms", "10"),
+            ParamDef(
+                "ai0", "Entrada AI0", "", "4-20mA", type="choice", choices=("4-20mA", "0-10V")
+            ),
+            ParamDef("ai1", "Entrada AI1", "", "0-10V", type="choice", choices=("4-20mA", "0-10V")),
+        ),
+        description="CLP genérico (didático): alimentação 24 V em L+/M (desliga abaixo de "
+        "19,2 V), 6 entradas digitais 24 V (liga ≥ 15 V, desliga ≤ 5 V, faixas do tipo 1 da IEC "
+        "61131-2; 4,7 kΩ), 2 entradas analógicas (4-20 mA em 250 Ω ou 0-10 V em 100 kΩ), 4 saídas "
+        "a relé (contatos Qna-Qnb) e 1 saída 0-10 V (AQ0). Variáveis: I0..I5, Q0..Q3, AI0, AI1 "
+        "(mA ou V), AQ0 (V).",
+        ref_prefix="CLP",
+    ),
+    Symbol(
+        "lm35",
+        "Sensor de temperatura LM35",
+        "Sensores",
+        "X",
+        _box_pins(["VS", "GND"], ["OUT"], 3),
+        (
+            _stim("temp", "Temperatura", "°C", "25"),
+            ParamDef(
+                "sens",
+                "Sensibilidade",
+                "V/°C",
+                "10m",
+                help="LM35 (Texas Instruments), p. 1: +10,0 mV/°C.",
+            ),
+        ),
+        description="Saída = sensibilidade × temperatura, limitada à alimentação menos 1,5 V.",
+        ref_prefix="S",
+    ),
+    Symbol(
+        "pt100",
+        "Termorresistência Pt100",
+        "Sensores",
+        "X",
+        (PinDef("1", -2, 0), PinDef("2", 2, 0)),
+        (
+            _stim("temp", "Temperatura", "°C", "25"),
+            ParamDef("r0", "R a 0 °C", "Ω", "100"),
+            ParamDef(
+                "a", "Coeficiente A", "1/°C", "3.9083e-3", help="IEC 60751 (Callendar-Van Dusen)."
+            ),
+            ParamDef("b", "Coeficiente B", "1/°C²", "-5.775e-7", help="IEC 60751, para T ≥ 0 °C."),
+        ),
+        description="R(T) = R0 (1 + A T + B T²) da IEC 60751 (faixa de 0 a 850 °C).",
+        ref_prefix="RT",
+    ),
+    Symbol(
+        "tx420",
+        "Transmissor 4-20 mA (2 fios)",
+        "Sensores",
+        "X",
+        (PinDef("+", 0, -2), PinDef("-", 0, 2)),
+        (
+            _stim("x", "Grandeza medida", "", "50"),
+            ParamDef("lo", "Início da faixa (4 mA)", "", "0"),
+            ParamDef("hi", "Fim da faixa (20 mA)", "", "100"),
+            ParamDef(
+                "vmin",
+                "Tensão mínima no transmissor",
+                "V",
+                "10",
+                help="Abaixo dela a corrente cai (laço sem tensão suficiente). Valor didático.",
+            ),
+        ),
+        description="Laço a dois fios: a corrente entra em + e sai em −, de 4 mA (início da "
+        "faixa) a 20 mA (fim), alimentado pelo próprio laço (fonte de 24 V em série com a "
+        "entrada do CLP).",
+        ref_prefix="TT",
+    ),
+    Symbol(
+        "acs712",
+        "Sensor de corrente ACS712",
+        "Sensores",
+        "X",
+        _box_pins(["IP+", "IP-"], ["VCC", "OUT", "GND"], 3),
+        (
+            ParamDef(
+                "sens",
+                "Sensibilidade",
+                "V/A",
+                "185m",
+                help="ACS712ELCTR-05B (Allegro), p. 6: 185 mV/A típico (66 a 185 mV/A, p. 1).",
+            ),
+            ParamDef(
+                "rip", "Resistência do condutor", "Ω", "1.2m", help="Allegro ACS712, p. 1: 1,2 mΩ."
+            ),
+            ParamDef("bw", "Banda", "Hz", "80k", help="Allegro ACS712, p. 1: 80 kHz."),
+        ),
+        description="Efeito Hall: saída = VCC/2 + sensibilidade × corrente de IP+ para IP− "
+        "(p. 5: saída de VCC/2 sem corrente), isolada do circuito medido.",
+        ref_prefix="S",
+    ),
+    Symbol(
+        "potentiometer",
+        "Potenciômetro",
+        "Sensores",
+        "X",
+        (PinDef("a", -2, 0), PinDef("b", 2, 0), PinDef("w", 0, 2)),
+        (
+            ParamDef("r", "Resistência total", "Ω", "10k"),
+            _stim("pos", "Posição do cursor (0 a 1)", "", "0.5"),
+        ),
+        description="Cursor (w) entre a (posição 0) e b (posição 1).",
+        ref_prefix="P",
+    ),
+    Symbol(
+        "relay",
+        "Relé",
+        "Atuadores",
+        "X",
+        _box_pins(["A1", "A2"], ["COM", "NA", "NF"], 3),
+        (
+            ParamDef("vnom", "Tensão nominal da bobina", "V", "5"),
+            ParamDef(
+                "rcoil",
+                "Resistência da bobina",
+                "Ω",
+                "70",
+                help="Songle SRD-05VDC-SL-C, p. 2: 70 Ω ±10 % na bobina de 5 V.",
+            ),
+            ParamDef(
+                "pull",
+                "Operação (fração da nominal)",
+                "",
+                "0.75",
+                help="Didático; confira a coluna Pull-In da tabela do relé.",
+            ),
+            ParamDef("ron", "Resistência do contato", "Ω", "0.1"),
+        ),
+        description="Bobina A1-A2; contato comum COM fecha com NA quando a bobina está "
+        "energizada e com NF quando não está.",
+        ref_prefix="K",
+    ),
+    Symbol(
+        "dc_motor",
+        "Motor CC",
+        "Atuadores",
+        "X",
+        (PinDef("+", -2, 0), PinDef("-", 2, 0)),
+        (
+            ParamDef("r", "Resistência de armadura", "Ω", "2"),
+            ParamDef("l", "Indutância de armadura", "H", "1m"),
+            ParamDef("ke", "Constante de FCEM", "V·s/rad", "0.01"),
+            ParamDef("kt", "Constante de torque", "N·m/A", "0.01"),
+            ParamDef("j", "Inércia", "kg·m²", "1e-5"),
+            ParamDef("b", "Atrito viscoso", "N·m·s/rad", "1e-5"),
+            _stim("tl", "Torque de carga", "N·m", "0"),
+        ),
+        description="Motor CC de ímã permanente (valores didáticos). Velocidade em rad/s no nó "
+        "<ref>_w (ex.: v(m1_w)).",
+        ref_prefix="M",
+    ),
+    Symbol(
+        "heater",
+        "Aquecedor com planta térmica",
+        "Atuadores",
+        "X",
+        (PinDef("1", -2, 0), PinDef("2", 2, 0)),
+        (
+            ParamDef("r", "Resistência elétrica", "Ω", "10"),
+            ParamDef("rth", "Resistência térmica para o ambiente", "°C/W", "5"),
+            ParamDef("cth", "Capacidade térmica", "J/°C", "20"),
+            _stim("tamb", "Temperatura ambiente", "°C", "25"),
+        ),
+        description="Resistor que aquece um corpo (valores didáticos): a temperatura, em °C, "
+        "fica no nó <ref>_temp (ex.: v(h1_temp)) e pode alimentar um sensor.",
+        ref_prefix="H",
+    ),
+    Symbol(
+        "switch_manual",
+        "Botão / chave manual",
+        "Atuadores",
+        "X",
+        (PinDef("1", -2, 0), PinDef("2", 2, 0)),
+        (
+            _stim(
+                "state",
+                "Estado (0 aberto, 1 fechado)",
+                "",
+                "0 0 1 0 1.001 1",
+                "Exemplo: aperta em 1 s.",
+            ),
+            ParamDef("ron", "Resistência fechada", "Ω", "0.01"),
+        ),
+        description="Contato operado pelo tempo (simula o operador apertando o botão).",
+        ref_prefix="B",
+    ),
+    Symbol(
+        "pump_plant",
+        "Inversor + motor + bomba (planta)",
+        "Atuadores",
+        "X",
+        _box_pins(["AI", "GND", "RUN", "COM"], ["PT+", "PT-"], 4),
+        (
+            ParamDef("fnom", "Frequência nominal", "Hz", "60"),
+            ParamDef("accel", "Rampa de aceleração (0 a fnom)", "s", "5"),
+            ParamDef("pmax", "Pressão a fnom, vazão nula", "bar", "4"),
+            _stim("demand", "Consumo (0 a 1)", "", "0.5"),
+            ParamDef("prange", "Fundo de escala do transmissor", "bar", "10"),
+            ParamDef("vmin", "Tensão mínima do transmissor", "V", "10"),
+        ),
+        description="Planta didática de bombeamento: referência 0-10 V em AI-GND dá a frequência "
+        "do inversor (rampa), RUN-COM ≥ 11 V habilita; pressão = pmax (f/fnom)² (1 − consumo/2); "
+        "transmissor de pressão 4-20 mA entre PT+ e PT−. Nós: <ref>_f (Hz), <ref>_p (bar).",
+        ref_prefix="PL",
+    ),
+]
+
+COSIM_KINDS = {s.kind for s in COSIM_SYMBOLS}
+CONTROLLER_KINDS = {"arduino_uno", "esp32_devkitc", "plc"}
+
+
+# ------------------------------------------------------------------------------ stimulus
+
+
+def stimulus(text: str) -> str:
+    """Behavioural-source expression of a stimulus parameter."""
+    t = text.strip()
+    if re.fullmatch(r"[vV]\([A-Za-z0-9_+\-,]+\)", t):
+        return t.lower()
+    nums = t.replace(",", " ").split()
+    try:
+        values = [float(x) for x in nums]
+    except ValueError as exc:
+        raise ValueError(
+            f"estímulo inválido: {text!r} (número, pares tempo/valor ou v(nó))"
+        ) from exc
+    if len(values) == 1:
+        return f"{values[0]:.9g}"
+    if len(values) % 2 or not values:
+        raise ValueError(f"estímulo {text!r}: use pares tempo/valor")
+    points = list(zip(values[::2], values[1::2], strict=True))
+    # ngspice's pwl() keeps the last slope beyond the ends: pin both ends flat
+    points = [(points[0][0] - 1e9, points[0][1]), *points, (points[-1][0] + 1e9, points[-1][1])]
+    pairs = ", ".join(f"{a:.9g}, {b:.9g}" for a, b in points)
+    return f"pwl(time, {pairs})"
+
+
+# ------------------------------------------------------------------------- device models
+
+
+def emit_device(comp: Component, n: dict[str, str], v: Value) -> list[str]:
+    ref = comp.ref
+    x = f"{ref}".lower()
+    k = comp.kind
+    if k == "lm35":
+        t = stimulus(v("temp"))
+        return [
+            f"B{x}_out {n['OUT']} {n['GND']} V = min(max(({v('sens')})*({t}), 0), "
+            f"max(V({n['VS']},{n['GND']}) - 1.5, 0))",
+            f"R{x}_q {n['VS']} {n['GND']} 50k",  # quiescent current about 60 µA at 3 V
+        ]
+    if k == "pt100":
+        t = stimulus(v("temp"))
+        r = f"({v('r0')})*(1 + ({v('a')})*({t}) + ({v('b')})*({t})*({t}))"
+        return [f"B{x} {n['1']} {n['2']} I = V({n['1']},{n['2']}) / ({r})"]
+    if k == "tx420":
+        xs = stimulus(v("x"))
+        frac = f"min(max((({xs}) - ({v('lo')}))/(({v('hi')}) - ({v('lo')})), 0), 1)"
+        return [
+            f"B{x} {n['+']} {n['-']} I = (4m + 16m*{frac}) * "
+            f"min(1, max(0, V({n['+']},{n['-']})/({v('vmin')})))",
+        ]
+    if k == "acs712":
+        m = f"{x}_m"
+        flt = f"{x}_f"
+        return [
+            f"V{x}_ip {n['IP+']} {m} DC 0",
+            f"R{x}_ip {m} {n['IP-']} {v('rip')}",
+            f"B{x}_raw {flt}_r 0 V = V({n['VCC']},{n['GND']})/2 + ({v('sens')})*I(V{x}_ip)",
+            f"R{x}_flt {flt}_r {flt} 1k",
+            f"C{x}_flt {flt} 0 {{1/(6.283185*1k*({v('bw')}))}}",
+            f"E{x}_out {n['OUT']} {n['GND']} {flt} 0 1",
+            f"R{x}_q {n['VCC']} {n['GND']} 500",  # about 10 mA supply current at 5 V
+        ]
+    if k == "potentiometer":
+        p = f"min(max({stimulus(v('pos'))}, 0.001), 0.999)"
+        r = v("r")
+        return [
+            f"B{x}_a {n['a']} {n['w']} I = V({n['a']},{n['w']}) / (({r})*({p}))",
+            f"B{x}_b {n['w']} {n['b']} I = V({n['w']},{n['b']}) / (({r})*(1-{p}))",
+        ]
+    if k == "relay":
+        return [
+            f"R{x}_coil {n['A1']} {n['A2']} {v('rcoil')}",
+            f"S{x}_na {n['COM']} {n['NA']} {n['A1']} {n['A2']} sw_{x}",
+            f"S{x}_nf {n['COM']} {n['NF']} {n['A2']} {n['A1']} sw_{x}_nf",
+            f".model sw_{x} sw vt={{({v('pull')})*({v('vnom')})}} vh=0.1 ron={v('ron')} roff=1e9",
+            f".model sw_{x}_nf sw vt={{-({v('pull')})*({v('vnom')})}} vh=0.1 "
+            f"ron={v('ron')} roff=1e9",
+        ]
+    if k == "dc_motor":
+        w = f"{x}_w"
+        return [
+            f"R{x}_a {n['+']} {x}_1 {v('r')}",
+            f"L{x}_a {x}_1 {x}_2 {v('l')}",
+            f"V{x}_ia {x}_2 {x}_3 DC 0",
+            f"B{x}_emf {x}_3 {n['-']} V = ({v('ke')})*V({w})",
+            # mechanics as an electrical analogue: torque = current into node w, J = capacitance
+            f"B{x}_t 0 {w} I = ({v('kt')})*I(V{x}_ia) - ({stimulus(v('tl'))})",
+            f"C{x}_j {w} 0 {v('j')}",
+            f"R{x}_b {w} 0 {{1/({v('b')})}}",
+        ]
+    if k == "heater":
+        tnode = f"{x}_temp"
+        return [
+            f"R{x} {n['1']} {n['2']} {v('r')}",
+            f"B{x}_p 0 {tnode} I = V({n['1']},{n['2']})*V({n['1']},{n['2']})/({v('r')})",
+            f"C{x}_th {tnode} 0 {v('cth')}",
+            f"R{x}_th {tnode} {x}_amb {v('rth')}",
+            f"B{x}_amb {x}_amb 0 V = {stimulus(v('tamb'))}",
+        ]
+    if k == "switch_manual":
+        st = stimulus(v("state"))
+        return [
+            f"B{x}_ctl {x}_c 0 V = {st}",
+            f"S{x} {n['1']} {n['2']} {x}_c 0 sw_{x}",
+            f".model sw_{x} sw vt=0.5 vh=0.1 ron={v('ron')} roff=1e9",
+        ]
+    if k == "pump_plant":
+        f, p = f"{x}_f", f"{x}_p"
+        tau = f"(({v('accel')})/3)"
+        run = f"(V({n['RUN']},{n['COM']}) > 11 ? 1 : 0)"
+        fref = f"({v('fnom')})*min(max(V({n['AI']},{n['GND']})/10, 0), 1)*{run}"
+        frac = f"min(max(V({p})/({v('prange')}), 0), 1)"
+        return [
+            f"R{x}_ai {n['AI']} {n['GND']} 10k",
+            f"R{x}_run {n['RUN']} {n['COM']} 4.7k",
+            f"B{x}_f 0 {f} I = ({fref} - V({f}))/{tau}",
+            f"C{x}_f {f} 0 1",
+            f"R{x}_f {f} 0 1g",
+            f"B{x}_p {p} 0 V = ({v('pmax')})*(V({f})/({v('fnom')}))*(V({f})/({v('fnom')}))"
+            f"*(1 - 0.5*min(max({stimulus(v('demand'))}, 0), 1))",
+            f"B{x}_pt {n['PT+']} {n['PT-']} I = (4m + 16m*{frac})*"
+            f"min(1, max(0, V({n['PT+']},{n['PT-']})/({v('vmin')})))",
+        ]
+    raise ValueError(f"tipo {k} sem modelo")

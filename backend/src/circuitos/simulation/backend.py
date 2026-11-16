@@ -19,7 +19,7 @@ import time
 from abc import ABC, abstractmethod
 from collections.abc import Callable
 from pathlib import Path
-from typing import Any, ClassVar
+from typing import Any, ClassVar, Protocol
 
 import numpy as np
 
@@ -142,6 +142,24 @@ _ControlledExit = ctypes.CFUNCTYPE(
 _BGThreadRunning = ctypes.CFUNCTYPE(ctypes.c_int, ctypes.c_bool, ctypes.c_int, ctypes.c_void_p)
 
 
+_GetVSRCData = ctypes.CFUNCTYPE(
+    ctypes.c_int,
+    ctypes.POINTER(ctypes.c_double),
+    ctypes.c_double,
+    ctypes.c_char_p,
+    ctypes.c_int,
+    ctypes.c_void_p,
+)
+
+
+class CoSimulation(Protocol):
+    """What the shared backend needs from a co-simulation session (``circuitos.cosim``)."""
+
+    read: Callable[[str], float | None]  # last accepted value of a vector (set by the backend)
+
+    def source(self, name: str, t: float) -> float: ...
+
+
 def find_ngspice_library() -> str | None:
     explicit = os.environ.get("CIRCUITOS_NGSPICE_LIB")
     if explicit:
@@ -192,14 +210,23 @@ class SharedNgspiceBackend(SimulatorBackend):
         self._cb_stat = _SendStat(self._on_stat)
         self._cb_exit = _ControlledExit(self._on_exit)
         self._cb_bg = _BGThreadRunning(lambda _running, _id, _user: 0)
+        self._cosim: CoSimulation | None = None
+        self._cb_vsrc = _GetVSRCData(self._on_vsrc)
         lib = self._lib
         lib.ngSpice_Init.argtypes = [
             _SendChar,
             _SendStat,
             _ControlledExit,
-            ctypes.c_void_p,
+            ctypes.c_void_p,  # SendData: none (needs SendInitData, which crashes on bad input)
             ctypes.c_void_p,
             _BGThreadRunning,
+            ctypes.c_void_p,
+        ]
+        lib.ngSpice_Init_Sync.argtypes = [
+            _GetVSRCData,
+            ctypes.c_void_p,
+            ctypes.c_void_p,  # GetSyncData: none (it would alter the time step of every run)
+            ctypes.POINTER(ctypes.c_int),
             ctypes.c_void_p,
         ]
         lib.ngSpice_Command.argtypes = [ctypes.c_char_p]
@@ -209,7 +236,17 @@ class SharedNgspiceBackend(SimulatorBackend):
         lib.ngSpice_AllVecs.restype = ctypes.POINTER(ctypes.c_char_p)
         lib.ngGet_Vec_Info.argtypes = [ctypes.c_char_p]
         lib.ngGet_Vec_Info.restype = ctypes.POINTER(_VectorInfo)
-        lib.ngSpice_Init(self._cb_char, self._cb_stat, self._cb_exit, None, None, self._cb_bg, None)
+        lib.ngSpice_Init(
+            self._cb_char,
+            self._cb_stat,
+            self._cb_exit,
+            None,
+            None,
+            self._cb_bg,
+            None,
+        )
+        self._ident = ctypes.c_int(0)
+        self._synced = False
 
     @classmethod
     def available(cls) -> bool:
@@ -234,6 +271,21 @@ class SharedNgspiceBackend(SimulatorBackend):
     def _on_exit(self, status: int, _unload: bool, _quit: bool, _id: int, _user: object) -> int:
         self._exited = True
         self._log.append(f"ngspice encerrou com status {status}")
+        return 0
+
+    def _read_last(self, name: str) -> float | None:
+        """Last accepted point of a vector of the running analysis (co-simulation inputs)."""
+        info_ptr = self._lib.ngGet_Vec_Info(name.encode())
+        if not info_ptr:
+            return None
+        info = info_ptr.contents
+        if info.v_length <= 0 or not info.v_realdata:
+            return None
+        return float(info.v_realdata[info.v_length - 1])
+
+    def _on_vsrc(self, ret: Any, t: float, name: bytes, _id: int, _user: object) -> int:
+        cosim = self._cosim
+        ret[0] = cosim.source(name.decode(errors="replace"), t) if cosim is not None else 0.0
         return 0
 
     # helpers ------------------------------------------------------------------------------
@@ -278,7 +330,12 @@ class SharedNgspiceBackend(SimulatorBackend):
         return plot
 
     # public -------------------------------------------------------------------------------
-    def run(self, netlist: str, progress: ProgressCallback = _noop) -> SimulationResult:
+    def run(
+        self,
+        netlist: str,
+        progress: ProgressCallback = _noop,
+        cosim: CoSimulation | None = None,
+    ) -> SimulationResult:
         start = time.perf_counter()
         self._log.clear()
         self._progress = progress
@@ -288,7 +345,18 @@ class SharedNgspiceBackend(SimulatorBackend):
         array = (ctypes.c_char_p * (len(lines) + 1))(*[ln.encode() for ln in lines], None)
         self._lib.ngSpice_Circ(array)
         progress(0.0, "iniciando ngspice")
-        self._command("run")
+        if cosim is not None and not self._synced:
+            # EXTERNAL sources (co-simulation, Fase 11) ask _on_vsrc for their value. Registered
+            # only when needed: it is per process, and plain runs stay exactly as before.
+            self._lib.ngSpice_Init_Sync(self._cb_vsrc, None, None, ctypes.byref(self._ident), None)
+            self._synced = True
+        self._cosim = cosim
+        if cosim is not None:
+            cosim.read = self._read_last
+        try:
+            self._command("run")
+        finally:
+            self._cosim = None
         log = "\n".join(self._log)
         plots = [
             self._read_plot(name)

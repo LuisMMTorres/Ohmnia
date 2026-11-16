@@ -426,7 +426,48 @@ export function ResultsView({ job, probeNames, onJobUpdate }: Props) {
         <StatsPanel job={job} kind={kind} vectorNames={vectorNames} initial={selected[0]} />
       )}
       {mode === "worst" && <WorstCase summary={job.summary ?? {}} />}
+      {job.summary?.cosim != null && <SerialMonitor cosim={job.summary.cosim as CosimSummary} />}
     </div>
+  );
+}
+
+interface CosimSummary {
+  step?: number;
+  controllers?: string[];
+  serial?: Record<string, [number, string][]>;
+}
+
+function SerialMonitor({ cosim }: { cosim: CosimSummary }) {
+  const serial = cosim.serial ?? {};
+  const refs = cosim.controllers ?? [];
+  return (
+    <details className="serial-monitor" open>
+      <summary>
+        Co-simulação ({refs.join(", ") || "sem controlador"}; passo{" "}
+        {cosim.step != null ? `${(cosim.step * 1e3).toLocaleString("pt-BR")} ms` : "?"})
+      </summary>
+      {Object.keys(serial).length === 0 && <p className="small muted">Sem saída serial.</p>}
+      {Object.keys(serial).map((ref) => {
+        const lines = serial[ref] ?? [];
+        return (
+          <div key={ref}>
+            <h4>Monitor serial de {ref}</h4>
+            {lines.length === 0 ? (
+              <p className="small muted">Sem saída serial.</p>
+            ) : (
+              <pre className="serial-lines">
+                {lines
+                  .map(
+                    ([t, text]) =>
+                      `[${t.toLocaleString("pt-BR", { minimumFractionDigits: 3, maximumFractionDigits: 3 })} s] ${text}`,
+                  )
+                  .join("\n")}
+              </pre>
+            )}
+          </div>
+        );
+      })}
+    </details>
   );
 }
 

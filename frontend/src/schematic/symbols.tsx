@@ -499,8 +499,80 @@ export function SymbolBody({ c, sym }: { c: Component; sym: SymbolDef | undefine
       )),
       text(0, rows - 1, c.params.model || "X", 0.6, "name"),
     ];
-  } else body = [<rect key="box" x={u(-2)} y={u(-1)} width={u(4)} height={u(2)} />];
+  } else if (sym && MODULE_GROUPS.has(sym.group)) body = moduleBox(c, sym);
+  else body = [<rect key="box" x={u(-2)} y={u(-1)} width={u(4)} height={u(2)} />];
   return <>{body}</>;
+}
+
+// Controllers, sensors and actuators (Fase 11): a box with its pins named and a short title.
+const MODULE_GROUPS = new Set(["Controladores", "Sensores", "Atuadores"]);
+const SHORT: Record<string, string> = {
+  arduino_uno: "Arduino Uno",
+  esp32_devkitc: "ESP32",
+  plc: "CLP",
+  lm35: "LM35",
+  pt100: "Pt100",
+  tx420: "4-20 mA",
+  acs712: "ACS712",
+  potentiometer: "POT",
+  relay: "RELÉ",
+  dc_motor: "M",
+  heater: "AQUEC.",
+  switch_manual: "BOTÃO",
+  pump_plant: "INV+BOMBA",
+};
+
+function moduleBox(c: Component, sym: SymbolDef): ReactNode[] {
+  const pins = pinDefs(c, sym);
+  const xs = pins.map((p) => p.dx);
+  const ys = pins.map((p) => p.dy);
+  const side = pins.some((p) => p.dx !== 0);
+  const left = side && Math.min(...xs) < 0 ? Math.min(...xs) + 1 : -1.6;
+  const right = side && Math.max(...xs) > 0 ? Math.max(...xs) - 1 : 1.6;
+  const vert = pins.filter((p) => p.dx === 0);
+  const top = vert.some((p) => p.dy < 0) ? Math.min(...ys) + 1 : Math.min(...ys) - 1;
+  const bottom = vert.some((p) => p.dy > 0) ? Math.max(...ys) - 1 : Math.max(...ys) + 1;
+  const many = pins.length > 2 || pins.some((p) => !/^\d$/.test(p.name));
+  return [
+    <rect
+      key="box"
+      x={u(left)}
+      y={u(top)}
+      width={u(right - left)}
+      height={u(bottom - top)}
+      rx={u(0.2)}
+      className={
+        c.kind === "plc" || c.kind.includes("arduino") || c.kind.includes("esp32") ? "board" : ""
+      }
+    />,
+    ...pins.map((p) =>
+      p.dx === 0
+        ? line(p.dx, p.dy, 0, p.dy < 0 ? top : bottom, `l${p.name}`)
+        : line(p.dx, p.dy, p.dx < 0 ? left : right, p.dy, `l${p.name}`),
+    ),
+    ...(many
+      ? pins.map((p) => (
+          <text
+            key={`t${p.name}`}
+            x={u(p.dx < 0 ? left + 0.2 : p.dx > 0 ? right - 0.2 : 0)}
+            y={u(p.dx === 0 ? (p.dy < 0 ? top + 0.5 : bottom - 0.5) : p.dy)}
+            fontSize={u(0.55)}
+            textAnchor={p.dx < 0 ? "start" : p.dx > 0 ? "end" : "middle"}
+            dominantBaseline="central"
+            className="sym-text"
+          >
+            {p.name}
+          </text>
+        ))
+      : []),
+    text(
+      (left + right) / 2,
+      pins.length > 6 ? top + 0.8 : (top + bottom) / 2,
+      SHORT[c.kind] ?? sym.label,
+      pins.length > 6 ? 0.7 : 0.55,
+      "name",
+    ),
+  ];
 }
 
 const UNIT: Record<string, string> = {

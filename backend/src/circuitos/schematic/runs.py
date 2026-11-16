@@ -298,6 +298,12 @@ class SchematicPlan:
     def execute(self, backend: Any, progress: Progress = _noop) -> SimulationResult:
         start = time.perf_counter()
         nominal = self.nominal()
+        if nominal.controllers:  # Arduino, ESP32 or PLC: co-simulation (Fase 11)
+            from circuitos.cosim.run import run_cosim
+
+            return run_cosim(
+                self.schematic, self.records, nominal, backend, progress, add_probe_vectors
+            )
         if self.schematic.sweep.kind == "worstcase":
             return self._worst_case(backend, nominal, progress, start)
         specs = self.runs(nominal)

@@ -405,6 +405,10 @@ export function SchematicEditor({
         xs.push(p[0]);
         ys.push(p[1]);
       }
+    for (const l of sch.labels) {
+      xs.push(l.x - 2, l.x + 2);
+      ys.push(l.y - 1, l.y + 1);
+    }
     const svg = svgRef.current;
     if (!xs.length || !svg) return;
     const r = svg.getBoundingClientRect();

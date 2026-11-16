@@ -1049,6 +1049,8 @@ const plotPath = (id: string, plot: string) =>
 
 export const schematicApi = {
   library: () => request<Library>("/schematic/library"),
+  examples: () =>
+    request<{ name: string; description: string; schematic: Schematic }[]>("/schematic/examples"),
   parts: (kind: string) => request<PartOut[]>(`/schematic/parts?kind=${encodeURIComponent(kind)}`),
   netlist: (schematic: Schematic) =>
     request<NetlistOut>("/schematic/netlist", {

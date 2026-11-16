@@ -156,14 +156,15 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 - ✅ Montagem gerada a partir do assistente de projeto (19 de 22 módulos)
 - ✅ Conferência protoboard × esquemático (faltando, sobrando, trocada, não montado, furo em conflito)
 
-## Fase 11 ⏳ Microcontroladores, CLP e instrumentação (decisão D12, decidida em 2026-11-16)
+## Fase 11 ✅ Microcontroladores, CLP e instrumentação (aprovada em 2026-11-16; decisão D12)
 
-- ✅ Datasheets de instrumentação, CLP e sensores de corrente, tensão e energia na fila (grupos 26 a 38)
-- ⏳ Esquema de categoria para sensor, transmissor, atuador, microcontrolador e CLP
-- ⏳ ESP32 e Arduino: programa estilo Arduino interpretado e co-simulado com o ngspice (ADC, GPIO, PWM, Serial)
-- ⏳ CLP: ladder e texto estruturado em ciclo de varredura, E/S 24 V, 4 a 20 mA e 0 a 10 V ligadas ao circuito
-- ⏳ Modelos de sensor (Pt100, termopar, ACS712, ZMPT101B, SCT-013) com valores do datasheet
-- ⏳ Exemplos: medidor de energia com ESP32; controle PWM com Arduino; laço de 4 a 20 mA no CLP; ESP32 e CLP integrados
-- ⏳ Modelos de acionamento: motor de indução, bomba centrífuga, inversor de frequência (V/f, rampa), soft-starter e motor de passo com driver
-- ⏳ Exemplos integrados: bombeamento com pressão constante (CLP + inversor + motor + bomba + ESP32); partida de motor (direta, soft-starter, inversor); posicionamento com motor de passo (Arduino + CLP)
-
+- ✅ Datasheets de instrumentação, CLP e sensores de corrente, tensão e energia na fila (grupos 26 a 39)
+- ⏳ Esquema de categoria para sensor, transmissor, atuador, microcontrolador e CLP (sensores da co-simulação ainda fora do catálogo)
+- ✅ ESP32 e Arduino: programa estilo Arduino interpretado e co-simulado com o ngspice (ADC, GPIO, PWM, DAC, Serial)
+- ✅ CLP: ladder e texto estruturado em ciclo de varredura, E/S 24 V, 4 a 20 mA e 0 a 10 V ligadas ao circuito
+- ✅ Modelos de sensor com valores do datasheet: LM35, Pt100 (IEC 60751), ACS712, transmissor 4 a 20 mA; ⏳ termopar, ZMPT101B, SCT-013 (sem PDF)
+- ✅ Exemplos: medidor de energia com ESP32; controle PWM com Arduino; laço de 4 a 20 mA no CLP; ESP32 e CLP integrados
+- ⏳ Modelos de acionamento: motor de indução, inversor de frequência (V/f, rampa), soft-starter e motor de passo com driver (feitos: motor CC, relé, aquecedor e planta de bombeamento didáticos)
+- ✅ Exemplo integrado de bombeamento com pressão constante (CLP + inversor + bomba + ESP32); ⏳ partida de motor e posicionamento com motor de passo
+- ✅ Editor de programa com diagrama ladder, monitor serial, protoboard dos exemplos
+- Validação: `docs/validacao/microcontroladores-clp.md`; manual: `docs/manual/08-microcontroladores-clp.md`

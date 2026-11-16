@@ -216,3 +216,14 @@ def simulate(request: Request, body: SimulateIn) -> SimulateOut:
     timeout = min(body.timeout_s * max(n_runs, 1), 3600.0)
     job = jobs.submit(SimulationRequest(nominal.text, timeout, body.backend, plan=plan))
     return SimulateOut(job_id=job.id, netlist=nominal.text, runs=n_runs, warnings=nominal.warnings)
+
+
+@router.get("/examples")
+def examples() -> list[dict[str, Any]]:
+    """Integrated examples (microcontrollers, PLC, sensors and actuators, Fase 11)."""
+    from circuitos.cosim.examples import EXAMPLES
+
+    return [
+        {"name": name, "description": desc, "schematic": make().model_dump()}
+        for name, (desc, make) in EXAMPLES.items()
+    ]
