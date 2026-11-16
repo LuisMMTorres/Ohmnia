@@ -221,6 +221,56 @@ def release_component(
     return _detail(record)
 
 
+class CategoryReviewIn(BaseModel):
+    category: str
+    reviewer: str = ""
+    dry_run: bool = False
+
+
+class CategoryReviewItemOut(BaseModel):
+    id: uuid.UUID
+    manufacturer: str
+    part_number: str
+    before: str
+    after: str
+    marked: int
+    unsourced: list[str]
+    blockers: list[str]
+
+
+class CategoryReviewOut(BaseModel):
+    category: str
+    dry_run: bool
+    items: list[CategoryReviewItemOut]
+    released: int
+    pending: int
+    already_released: int
+
+
+@router.post("/components/review-category")
+def review_category(request: Request, body: CategoryReviewIn) -> CategoryReviewOut:
+    """Review every pending record of a category at once (preview with dry_run)."""
+    if body.category not in _repo(request).categories():
+        raise HTTPException(404, f"Categoria sem componentes: {body.category}")
+    if not body.dry_run and not body.reviewer.strip():
+        raise HTTPException(422, "Informe o nome de quem revisou")
+    repo = _repo(request)
+    already = sum(
+        r.review.status == "liberado"
+        for r in repo.search(category=body.category)
+        if r.category == body.category
+    )
+    items = repo.review_category(body.category, body.reviewer.strip(), dry_run=body.dry_run)
+    return CategoryReviewOut(
+        category=body.category,
+        dry_run=body.dry_run,
+        items=[CategoryReviewItemOut(**vars(i)) for i in items],
+        released=sum(i.after == "liberado" for i in items),
+        pending=sum(i.after != "liberado" for i in items),
+        already_released=already,
+    )
+
+
 @router.get("/components/{component_id}/yaml")
 def export_component(request: Request, component_id: uuid.UUID) -> Response:
     record = _get(request, component_id)

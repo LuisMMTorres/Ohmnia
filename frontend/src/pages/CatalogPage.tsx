@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { catalog, ComponentSummary } from "../api";
 import { ComponentReview } from "./ComponentReview";
+import { CategoryReviewButton } from "./review/CategoryReviewButton";
 
 export const CATEGORY_LABEL: Record<string, string> = {
   "diode.rectifier": "Diodo retificador",
@@ -73,6 +74,14 @@ export const CATEGORY_LABEL: Record<string, string> = {
   "motor.stepper": "Motor de passo",
   "drive.stepper": "Driver de passo / servo",
   "motor.ac": "Motor CA",
+  "amplifier.audio": "Amplificador de áudio",
+  "ic.mcu": "Microcontrolador (CI)",
+  "ic.oscillator": "Oscilador (CI)",
+  "ic.pwm_controller": "Controlador PWM",
+  "jfet.p": "JFET canal P",
+  "mosfet.p": "MOSFET canal P",
+  "regulator.switching": "Regulador chaveado",
+  ujt: "Transistor de unijunção (UJT)",
 };
 
 export const REVIEW_LABEL: Record<string, string> = {
@@ -166,6 +175,19 @@ export function CatalogPage() {
               onChange={(e) => setFilterText(e.target.value)}
             />
           </label>
+          <div className="filter-action">
+            {category ? (
+              <CategoryReviewButton
+                category={category}
+                label={CATEGORY_LABEL[category] ?? category}
+                onDone={load}
+              />
+            ) : (
+              <button className="secondary" disabled title="Escolha uma categoria primeiro">
+                Revisar categoria
+              </button>
+            )}
+          </div>
         </div>
         <p className="muted small">
           Os filtros comparam o valor garantido do datasheet: o mínimo, ou o próprio limite no caso

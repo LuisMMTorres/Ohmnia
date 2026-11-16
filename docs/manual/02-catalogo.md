@@ -24,6 +24,24 @@ de origem aparece destacada.
 Só componentes liberados entram na escolha automática do assistente de projeto. Você ainda pode
 travar à mão um componente não liberado; ele aparece no projeto marcado "NÃO REVISADO".
 
+### Revisar uma categoria inteira
+
+O botão **Revisar categoria** fica na busca (escolha antes a categoria no filtro) e no topo da tela
+de cada componente. Ele revisa de uma vez todos os componentes pendentes daquela categoria:
+
+1. Uma prévia lista cada componente, quantos valores serão marcados como conferidos e se ele
+   ficará liberado ou com pendência. Nada é gravado nessa etapa.
+2. Marque "Conferi os valores destes componentes com os datasheets", informe seu nome e confirme.
+
+Regras:
+
+- Só são marcados os parâmetros e atributos que citam a página do documento. Os que não citam
+  ficam como estavam e aparecem como "sem página".
+- Um componente só é liberado se não sobrar pendência, como um obrigatório ausente ou sem página.
+  Os outros ficam "em revisão", com as pendências listadas.
+- Componentes já liberados ou rejeitados não mudam.
+- A liberação registra "seu nome (revisão da categoria)", para distinguir da revisão item a item.
+
 ## Importar um datasheet em PDF
 
 Aba **Importar datasheet** → **Escolher PDF…**

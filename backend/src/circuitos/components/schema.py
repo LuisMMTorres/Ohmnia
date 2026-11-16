@@ -125,6 +125,36 @@ def release_blockers(record: ComponentRecord) -> list[str]:
     return blockers
 
 
+def mark_sourced_reviewed(record: ComponentRecord) -> tuple[ComponentRecord, int, list[str]]:
+    """Mark as reviewed every parameter and attribute whose source cites a page.
+
+    Used by the category review, where the user confirms a whole category at once. Entries
+    without a page stay as they are (a reviewed value must point to its page, rule 1).
+    Returns the new record, how many entries changed and the keys left without a page.
+    """
+    marked = 0
+    unsourced: list[str] = []
+    params = dict(record.parameters)
+    for key, param in record.parameters.items():
+        if param.status == "revisado":
+            continue
+        if param.source is None or param.source.page is None:
+            unsourced.append(key)
+            continue
+        params[key] = param.model_copy(update={"status": "revisado"})
+        marked += 1
+    attrs = dict(record.attributes)
+    for key, attr in record.attributes.items():
+        if attr.status == "revisado":
+            continue
+        if attr.source is None or attr.source.page is None:
+            unsourced.append(key)
+            continue
+        attrs[key] = attr.model_copy(update={"status": "revisado"})
+        marked += 1
+    return record.model_copy(update={"parameters": params, "attributes": attrs}), marked, unsourced
+
+
 def release(record: ComponentRecord, reviewer: str) -> ComponentRecord:
     """Mark a record as released. Raises if any blocker remains."""
     blockers = release_blockers(record)
