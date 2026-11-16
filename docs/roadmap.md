@@ -147,13 +147,14 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 - ✅ [Manual do usuário](manual/README.md) e [guia de extensão](guia-extensao.md)
 - ✅ [validacao/relatorios-empacotamento.md](validacao/relatorios-empacotamento.md)
 
-## Fase 10 — Vista de protoboard ⏳ (pedido em 2026-11-15, decisão D11)
+## Fase 10 — Vista de protoboard 👀 (aguardando aprovação; pedido em 2026-11-15, decisão D11)
 
-- ⏳ Simbologia real (encapsulamento em SVG) para cada componente, ao lado do símbolo 2D
-- ⏳ Pinagem por peça no catálogo, com fonte no datasheet e revisão
-- ⏳ Protoboard (830 pontos, barramentos) com montagem manual no simulador
-- ⏳ Montagem gerada a partir do circuito do assistente de projeto (e no roteiro de prática)
-- ⏳ Conferência protoboard × esquemático (ligação faltando, sobrando, trocada)
+- ✅ Simbologia real (encapsulamento desenhado em SVG) ao lado do símbolo 2D, no simulador e no catálogo
+- ✅ Pinagem por peça no catálogo, com fonte no datasheet e status de revisão (13 registros, 74 peças)
+- ✅ Protoboard de 830 pontos com barramentos e montagem manual no simulador
+- ✅ Montagem automática e roteiro de montagem passo a passo
+- ✅ Montagem gerada a partir do assistente de projeto (19 de 22 módulos)
+- ✅ Conferência protoboard × esquemático (faltando, sobrando, trocada, não montado, furo em conflito)
 
 ## Fase 11 ⏳ Microcontroladores, CLP e instrumentação (decisão D12, decidida em 2026-11-16)
 

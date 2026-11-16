@@ -72,7 +72,7 @@ markers = [
     "ngspice: requires the ngspice shared library or executable",
     "datasheet: downloads manufacturer datasheets (network)",
 ]
-addopts = "-q"
+addopts = "-q -m 'not datasheet'"  # datasheet tests download PDFs: pytest -m datasheet
 
 [tool.coverage.run]
 source = ["circuitos"]

@@ -65,7 +65,7 @@ Pergunta: segue alguma referência formal de derating (norma ou manual de empres
 
 - **Recomendado:** licença aberta (MIT ou GPL-3.0), compatível com ngspice e adequada para uso por outras instituições. Confirmar preferência ou se o projeto será fechado.
 
-## D11. Vista de protoboard (pedido do usuário em 2026-11-15, após a Fase 9)
+## D11. Vista de protoboard (pedido do usuário em 2026-11-15, após a Fase 9) **IMPLEMENTADA na Fase 10**
 
 Cada circuito deve poder ser projetado em duas vistas: o esquemático 2D (simbologia) e a montagem
 como numa protoboard (componente real, pelo encapsulamento). Decidido pelo usuário:

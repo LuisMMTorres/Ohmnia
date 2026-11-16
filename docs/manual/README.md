@@ -9,6 +9,7 @@ simulação (ngspice) de circuitos de Eletrônica Analógica e de Potência.
 4. [Simulador livre](04-simulador.md)
 5. [Bancada de dispositivos](05-bancada.md)
 6. [Perguntas frequentes e solução de problemas](06-problemas.md)
+7. [Protoboard: o mesmo circuito montado como na bancada](07-protoboard.md)
 
 Para quem vai acrescentar topologias, categorias de componentes ou bancadas:
 [guia de extensão](../guia-extensao.md).
