@@ -155,3 +155,9 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 - ⏳ Montagem gerada a partir do circuito do assistente de projeto (e no roteiro de prática)
 - ⏳ Conferência protoboard × esquemático (ligação faltando, sobrando, trocada)
 
+## Fase 11 ⏳ Instrumentação industrial e CLP (pedido em 2026-11-15, decisão D12, escopo a definir)
+
+- ✅ 150 datasheets de instrumentação e CLP na fila de importação (grupos 26 a 36)
+- ⏳ Definir com o usuário o que "simular CLP" cobre (lógica em ciclo de varredura acoplada ao circuito ou só o comportamento elétrico das E/S)
+- ⏳ Esquema de categoria para sensor, transmissor, atuador e CLP
+- ⏳ Modelos de sensor (Pt100, termopar) e laço de 4 a 20 mA no ngspice

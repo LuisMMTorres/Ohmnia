@@ -20,6 +20,7 @@ Windows, com manual.
 | Projetos (4.9): salvar, abrir, duplicar, versionar, formato aberto | `projects/store.py`, `api/projects.py`; barra de projeto | ✅ `.circuito.json` |
 | Exportação para KiCad | `reports/kicad.py`; projeto e simulador | ✅ netlist `.net` (ver limitações) |
 | Instalador local | `packaging/` (PyInstaller, pacote `.zip` com ngspice) | ✅ Windows x64 |
+| Fila de datasheets (pedido de 2026-11-15) | `datasheets/queue.py`, `data/datasheet-queue.yaml`; painel "Fila de datasheets" na importação | ✅ 400 itens, 179 prontos |
 | Manual do usuário | `docs/manual/` (6 capítulos) | ✅ |
 | Guia de extensão (topologias, categorias, componentes, bancadas) | `docs/guia-extensao.md` | ✅ |
 
@@ -60,6 +61,36 @@ Windows, com manual.
 | Verificação na tela | salvar projeto, custo, revisão com nota, restaurar, aba de materiais, menu de exportação, PDF de 7 páginas conferido visualmente | ✅ |
 | Pacote Windows | executável testado sem o ngspice da máquina (ver "Empacotamento") | ✅ |
 
+| `test_imports_api.py` (fila) | link e PDF local, arquivo HTML salvo como PDF marcado inválido, importação a partir do PDF local, casamento com o catálogo só por part number exato ou família | ✅ 9 |
+
+**Suíte completa** (backend, 2026-11-15): cobertura total de **94,96 %** (mínimo exigido 80 %).
+Três falhas, todas anteriores à Fase 9 e em código que esta fase não alterou:
+
+- `test_as_fase5[opnl_limitador]` e `[opnl_limitador_g2]`: divergência analítico × simulação do
+  limitador com amp-op que só aparece no Windows (pendência herdada 3).
+- `test_pt_inv_ma_linear`: o Hypothesis achou o caso ma = 0,5664, mf = 51, bipolar, com erro de
+  0,32 % contra tolerância de 0,2 % na fundamental do inversor. Precisa decidir se a tolerância
+  está apertada para mf baixo ou se há erro no modelo (pendência nova 5).
+
+Interface: 34 testes (vitest) e ESLint sem avisos.
+
+## Fila de datasheets
+
+A pedido, os 89 links de eletrônica, os 150 de instrumentação e CLP e os 161 PDFs da pasta
+`D:\Downloads_net\baixar_250_datasheets\Datasheets_Eletronica` formam uma fila única
+(`data/datasheet-queue.yaml`). Nenhum valor entra no catálogo por ela: "Importar" abre o mesmo
+trabalho de importação da Fase 8, e os candidatos passam pela revisão.
+
+| Origem | Total | Situação |
+|---|---|---|
+| Links de eletrônica | 89 | 20 abrem o PDF; os demais dão 404 (vários ids da Littelfuse parecem inexistentes), 403 ou página HTML |
+| Links de instrumentação e CLP | 150 | 20 abrem o PDF; ficam sem categoria até a decisão D12 |
+| PDFs no computador | 161 | 139 válidos; 22 são páginas HTML salvas com extensão `.pdf` (baixar de novo pelo navegador) |
+
+O aviso "já no catálogo" compara o part number exato ou a família declarada (LM358 ↔ LM358P),
+nunca o prefixo, porque IRF540 e IRF540N são peças diferentes. Teste na tela: o LM358 importado do
+PDF local gerou 46 candidatos para revisão.
+
 ## Empacotamento
 
 `packaging/build_windows.ps1` compila a interface, monta a pasta do ngspice (executável, DLL,
@@ -94,4 +125,5 @@ máquina (para usar só o que vai no pacote):
 ## Pendências herdadas (suas)
 
 1. D9 (chave da API da Anthropic). 2. DS-EXT (baixar os PDFs dos fabricantes). 3. AS
-`opnl_limitador` no Windows. 4. PDFs da onsemi com bytes novos.
+`opnl_limitador` no Windows. 4. PDFs da onsemi com bytes novos. 5. Tolerância do
+`test_pt_inv_ma_linear`. 6. D12 (escopo de instrumentação e CLP).
