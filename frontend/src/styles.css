@@ -1508,3 +1508,35 @@ svg.ladder .ld-comment {
     Consolas,
     monospace;
 }
+
+/* category review (review every pending component of a category at once) */
+.review-top {
+  justify-content: space-between;
+}
+.modal.category-review {
+  width: min(860px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.modal.category-review h3 {
+  margin: 0;
+}
+.category-review-list {
+  max-height: 45vh;
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+.category-review-list table {
+  margin: 0;
+}
+.checkline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-direction: row;
+}
+.row.end {
+  justify-content: flex-end;
+}

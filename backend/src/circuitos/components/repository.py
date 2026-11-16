@@ -25,7 +25,13 @@ from circuitos.core.errors import DataIntegrityError
 from circuitos.core.units import Q_, QuantityModel, parse_quantity, parse_unit
 
 from .models import ComponentRecord, Parameter, ParameterStatus
-from .schema import load_schema, release, release_blockers, validate_against_schema
+from .schema import (
+    load_schema,
+    mark_sourced_reviewed,
+    release,
+    release_blockers,
+    validate_against_schema,
+)
 
 _NAMESPACE = uuid.UUID("6f1c3c2e-6d5b-4b8e-9a0e-3c1f2b7d9a10")
 
@@ -84,6 +90,20 @@ class ImportReport:
     updated: list[str] = field(default_factory=list)
     unchanged: list[str] = field(default_factory=list)
     errors: dict[str, str] = field(default_factory=dict)
+
+
+@dataclass(frozen=True)
+class CategoryReviewItem:
+    """Outcome of the category review for one record."""
+
+    id: uuid.UUID
+    manufacturer: str
+    part_number: str
+    before: str
+    after: str
+    marked: int  # entries that became "revisado"
+    unsourced: list[str]  # entries left as they were: the source cites no page
+    blockers: list[str]  # why the record could not be released
 
 
 class ComponentRepository:
@@ -157,6 +177,44 @@ class ComponentRepository:
 
     def release(self, record_id: uuid.UUID, reviewer: str) -> ComponentRecord:
         return self.save(release(self.get(record_id), reviewer))
+
+    def review_category(
+        self, category: str, reviewer: str, *, dry_run: bool = False
+    ) -> list[CategoryReviewItem]:
+        """Review every pending record of one category at once.
+
+        Each entry whose source cites a page becomes "revisado"; a record whose release
+        blockers are then gone is released in the name of ``reviewer`` (marked as a category
+        review), the others stay "em_revisao" with the reasons. Released and rejected records
+        are left alone. With ``dry_run`` nothing is saved.
+        """
+        items: list[CategoryReviewItem] = []
+        for record in self.search(category=category):
+            if record.category != category or record.review.status in ("liberado", "rejeitado"):
+                continue
+            new, marked, unsourced = mark_sourced_reviewed(record)
+            blockers = release_blockers(new)
+            if not blockers:
+                new = release(new, f"{reviewer} (revisão da categoria)")
+            elif marked:
+                new = new.model_copy(
+                    update={"review": new.review.model_copy(update={"status": "em_revisao"})}
+                )
+            if not dry_run:
+                self.save(new)
+            items.append(
+                CategoryReviewItem(
+                    id=record.id,
+                    manufacturer=record.manufacturer,
+                    part_number=record.part_number,
+                    before=record.review.status,
+                    after=new.review.status,
+                    marked=marked,
+                    unsourced=unsourced,
+                    blockers=blockers,
+                )
+            )
+        return items
 
     # ------------------------------------------------------------------------------- reads --
     def get_or_none(self, record_id: uuid.UUID) -> ComponentRecord | None:

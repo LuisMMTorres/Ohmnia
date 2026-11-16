@@ -3,7 +3,8 @@ import { useEffect, useMemo, useState } from "react";
 import { catalog, ComponentDetail, Parameter, ParamStatus } from "../api";
 import { formatRaw, formatEng, unitSymbol } from "../format";
 import { PdfPage } from "../components/PdfPage";
-import { REVIEW_LABEL } from "./CatalogPage";
+import { CATEGORY_LABEL, REVIEW_LABEL } from "./CatalogPage";
+import { CategoryReviewButton } from "./review/CategoryReviewButton";
 import { CurvesTab } from "./review/CurvesTab";
 import { ModelsTab } from "./review/ModelsTab";
 
@@ -116,6 +117,26 @@ export function ComponentReview({ id, onBack }: { id: string; onBack: () => void
 
   const active = activeKey ? record.parameters[activeKey] : null;
 
+  const reload = () => {
+    catalog
+      .get(id)
+      .then(setDetail)
+      .catch((e: Error) => setError(e.message));
+  };
+
+  const top = (
+    <div className="row review-top">
+      <button className="secondary" onClick={onBack}>
+        ← Catálogo
+      </button>
+      <CategoryReviewButton
+        category={record.category}
+        label={CATEGORY_LABEL[record.category] ?? record.category}
+        onDone={reload}
+      />
+    </div>
+  );
+
   const tabs = (
     <nav className="tabs" aria-label="Partes do componente">
       {(Object.keys(TAB_LABEL) as Tab[]).map((k) => (
@@ -137,9 +158,7 @@ export function ComponentReview({ id, onBack }: { id: string; onBack: () => void
     return (
       <main className="single">
         <section className="panel">
-          <button className="secondary" onClick={onBack}>
-            ← Catálogo
-          </button>
+          {top}
           <h2>
             {record.part_number}{" "}
             <span className={`badge ${record.review.status}`}>
@@ -167,9 +186,7 @@ export function ComponentReview({ id, onBack }: { id: string; onBack: () => void
   return (
     <main className="review">
       <section className="panel">
-        <button className="secondary" onClick={onBack}>
-          ← Catálogo
-        </button>
+        {top}
         <h2>
           {record.part_number}{" "}
           <span className={`badge ${record.review.status}`}>

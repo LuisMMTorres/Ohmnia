@@ -289,6 +289,25 @@ export interface ComponentSummary {
   highlights: Record<string, string>;
 }
 
+export interface CategoryReviewItem {
+  id: string;
+  manufacturer: string;
+  part_number: string;
+  before: string;
+  after: string;
+  marked: number;
+  unsourced: string[];
+  blockers: string[];
+}
+export interface CategoryReview {
+  category: string;
+  dry_run: boolean;
+  items: CategoryReviewItem[];
+  released: number;
+  pending: number;
+  already_released: number;
+}
+
 export const catalog = {
   list: (params: { category?: string; q?: string; status?: string; filters?: string[] }) => {
     const search = new URLSearchParams();
@@ -309,6 +328,11 @@ export const catalog = {
     request<ComponentDetail>(`/components/${id}/release`, {
       method: "POST",
       body: JSON.stringify({ reviewer }),
+    }),
+  reviewCategory: (category: string, reviewer: string, dryRun: boolean) =>
+    request<CategoryReview>("/components/review-category", {
+      method: "POST",
+      body: JSON.stringify({ category, reviewer, dry_run: dryRun }),
     }),
   yamlUrl: (id: string) => `${BASE}/components/${id}/yaml`,
   pageUrl: (sha: string, page: number) => `${BASE}/datasheets/${sha}/pages/${page}.png`,
