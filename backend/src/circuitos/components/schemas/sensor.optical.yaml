@@ -1,0 +1,49 @@
+category: sensor.optical
+schema_version: '1.0'
+description: Sensor óptico de luz (LDR, fotodiodo, fototransistor, sensor de luminosidade)
+required: []
+parameters:
+  R_light:
+    unit: ohm
+    kind: characteristic
+    description: Resistência iluminado (indicar lux na nota)
+  R_dark:
+    unit: ohm
+    kind: characteristic
+    description: Resistência no escuro
+  gamma:
+    unit: '1'
+    kind: characteristic
+    description: Gama do LDR
+  lambda:
+    unit: nm
+    kind: characteristic
+    description: Comprimento de onda de pico
+  I_light:
+    unit: uA
+    kind: characteristic
+    description: Fotocorrente
+  I_dark:
+    unit: nA
+    kind: characteristic
+    description: Corrente de escuro
+  V_max:
+    unit: V
+    kind: max_rating
+    description: Tensão máxima
+  P_max:
+    unit: mW
+    kind: max_rating
+    description: Dissipação máxima
+  t_resp:
+    unit: ms
+    kind: characteristic
+    description: Tempo de resposta
+  Top:
+    unit: °C
+    kind: thermal
+    description: 'Temperatura de operação (faixa: mín. e máx.)'
+  Tstg:
+    unit: °C
+    kind: thermal
+    description: Temperatura de armazenamento (faixa)

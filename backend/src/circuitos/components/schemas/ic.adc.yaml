@@ -1,0 +1,66 @@
+category: ic.adc
+schema_version: '1.0'
+description: Conversor analógico-digital
+required:
+- bits
+parameters:
+  bits:
+    unit: bit
+    kind: characteristic
+    description: Resolução
+  fs:
+    unit: kHz
+    kind: characteristic
+    description: Taxa de amostragem máxima (kSPS)
+  channels:
+    unit: '1'
+    kind: geometry
+    description: Canais
+  VS:
+    unit: V
+    kind: characteristic
+    description: Alimentação (faixa)
+  VREF:
+    unit: V
+    kind: characteristic
+    description: Referência (faixa ou interna)
+  V_in:
+    unit: V
+    kind: max_rating
+    description: Faixa de entrada
+  INL:
+    unit: '1'
+    kind: characteristic
+    description: Não linearidade integral (LSB)
+  DNL:
+    unit: '1'
+    kind: characteristic
+    description: Não linearidade diferencial (LSB)
+  offset:
+    unit: '1'
+    kind: characteristic
+    description: Erro de offset (LSB)
+  gain_err:
+    unit: '%'
+    kind: characteristic
+    description: Erro de ganho
+  SNR:
+    unit: dB
+    kind: characteristic
+    description: Relação sinal-ruído
+  IS:
+    unit: mA
+    kind: characteristic
+    description: Consumo
+  Top:
+    unit: °C
+    kind: thermal
+    description: 'Temperatura de operação (faixa: mín. e máx.)'
+  Tstg:
+    unit: °C
+    kind: thermal
+    description: Temperatura de armazenamento (faixa)
+attributes:
+  interface: Interface (SPI, I2C, paralela)
+  arquitetura: Arquitetura (SAR, sigma-delta...)
+  encapsulamento: Encapsulamento

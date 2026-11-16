@@ -1,0 +1,44 @@
+category: ic.energy_meter
+schema_version: '1.0'
+description: CI ou módulo de medição de energia
+required: []
+parameters:
+  VS:
+    unit: V
+    kind: characteristic
+    description: Alimentação (faixa)
+  V_in:
+    unit: V
+    kind: max_rating
+    description: Faixa de entrada diferencial
+  accuracy:
+    unit: '%'
+    kind: characteristic
+    description: Erro de medição de energia
+  dynamic_range:
+    unit: '1'
+    kind: characteristic
+    description: Faixa dinâmica (relação)
+  fs:
+    unit: kHz
+    kind: characteristic
+    description: Taxa de amostragem
+  bits:
+    unit: bit
+    kind: characteristic
+    description: Resolução do A/D
+  IS:
+    unit: mA
+    kind: characteristic
+    description: Consumo
+  Top:
+    unit: °C
+    kind: thermal
+    description: 'Temperatura de operação (faixa: mín. e máx.)'
+  Tstg:
+    unit: °C
+    kind: thermal
+    description: Temperatura de armazenamento (faixa)
+attributes:
+  grandezas: Grandezas medidas
+  interface: Interface

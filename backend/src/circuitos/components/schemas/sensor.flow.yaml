@@ -1,0 +1,73 @@
+category: sensor.flow
+schema_version: '1.0'
+description: Medidor, sensor ou chave de vazão
+required: []
+parameters:
+  range:
+    unit: '1'
+    kind: characteristic
+    description: Faixa de medição (unidade na nota se não for SI)
+  accuracy:
+    unit: '%'
+    kind: characteristic
+    description: Exatidão ou erro de medição (% do fundo de escala ou do valor)
+  VS:
+    unit: V
+    kind: characteristic
+    description: Tensão de alimentação (faixa)
+  IS:
+    unit: mA
+    kind: characteristic
+    description: Consumo de corrente sem carga
+  I_out:
+    unit: mA
+    kind: characteristic
+    description: 'Sinal de saída em corrente (faixa, ex.: 4 a 20 mA)'
+  V_out:
+    unit: V
+    kind: characteristic
+    description: 'Sinal de saída em tensão (faixa, ex.: 0 a 10 V)'
+  RL:
+    unit: ohm
+    kind: max_rating
+    description: Carga máxima no laço ou na saída
+  t_resp:
+    unit: ms
+    kind: characteristic
+    description: Tempo de resposta
+  T_process:
+    unit: °C
+    kind: max_rating
+    description: Temperatura do processo (faixa)
+  Top:
+    unit: °C
+    kind: thermal
+    description: 'Temperatura de operação (faixa: mín. e máx.)'
+  Tstg:
+    unit: °C
+    kind: thermal
+    description: Temperatura de armazenamento (faixa)
+  flow:
+    unit: m^3/h
+    kind: characteristic
+    description: Faixa de vazão
+  DN:
+    unit: mm
+    kind: geometry
+    description: Diâmetro nominal
+  P_max:
+    unit: bar
+    kind: max_rating
+    description: Pressão máxima
+  pulses:
+    unit: '1'
+    kind: characteristic
+    description: Pulsos por litro (saída de pulsos)
+attributes:
+  saida: Tipo de saída (PNP, NPN, NA, NF, push-pull, 4-20 mA, 0-10 V, IO-Link...)
+  conexao: Conexão elétrica (cabo, conector M8/M12...)
+  invólucro: Invólucro, rosca e material
+  grau_protecao: Grau de proteção (IP) declarado
+  certificacoes: Certificações e aprovações (UL, CE, ATEX...)
+  comunicacao: Comunicação digital (HART, IO-Link, Modbus, PROFIBUS...)
+  principio: Princípio de medição

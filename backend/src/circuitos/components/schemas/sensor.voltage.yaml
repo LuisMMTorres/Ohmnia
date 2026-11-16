@@ -1,0 +1,57 @@
+category: sensor.voltage
+schema_version: '1.0'
+description: Sensor ou transdutor de tensão
+required:
+- V_PN
+parameters:
+  V_PN:
+    unit: V
+    kind: characteristic
+    description: Tensão primária nominal
+  V_PM:
+    unit: V
+    kind: max_rating
+    description: Faixa de medição
+  ratio:
+    unit: '1'
+    kind: characteristic
+    description: Relação de conversão
+  I_SN:
+    unit: mA
+    kind: characteristic
+    description: Corrente secundária nominal
+  V_out:
+    unit: V
+    kind: characteristic
+    description: Saída em tensão
+  accuracy:
+    unit: '%'
+    kind: characteristic
+    description: Exatidão
+  bandwidth:
+    unit: kHz
+    kind: characteristic
+    description: Banda
+  V_iso:
+    unit: V
+    kind: max_rating
+    description: Isolação
+  VS:
+    unit: V
+    kind: characteristic
+    description: Tensão de alimentação (faixa)
+  IS:
+    unit: mA
+    kind: characteristic
+    description: Consumo de corrente sem carga
+  Top:
+    unit: °C
+    kind: thermal
+    description: 'Temperatura de operação (faixa: mín. e máx.)'
+  Tstg:
+    unit: °C
+    kind: thermal
+    description: Temperatura de armazenamento (faixa)
+attributes:
+  principio: Princípio
+  saida: Saída

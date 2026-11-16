@@ -13,9 +13,12 @@ so in the description.
 
 from __future__ import annotations
 
+import dataclasses
 import re
 from collections.abc import Callable
 
+from circuitos.components.models import ComponentRecord
+from circuitos.core.units import Q_, parse_unit
 from circuitos.schematic.model import Component
 from circuitos.schematic.symbols_base import ParamDef, PinDef, Symbol
 
@@ -388,6 +391,51 @@ COSIM_SYMBOLS: list[Symbol] = [
         ref_prefix="PL",
     ),
 ]
+
+# Catalogue parts for the co-simulation symbols: symbol parameter <- (record symbol, unit).
+# A real part placed with the symbol takes these values from its record (rule 1: the values
+# come from the datasheet, with page); parameters without a value keep the symbol default.
+CATALOGUE_PARAMS: dict[str, tuple[tuple[str, ...], dict[str, tuple[str, str]]]] = {
+    "lm35": (("sensor.temperature",), {"sens": ("sensitivity", "V/K")}),
+    "pt100": (("sensor.temperature",), {"r0": ("R0", "ohm")}),
+    "acs712": (
+        ("sensor.current",),
+        {"sens": ("sensitivity", "V/A"), "rip": ("R_primary", "ohm"), "bw": ("bandwidth", "Hz")},
+    ),
+    "potentiometer": (("resistor.variable",), {"r": ("R", "ohm")}),
+    "relay": (
+        ("relay.electromechanical",),
+        {"vnom": ("V_coil", "V"), "rcoil": ("R_coil", "ohm")},
+    ),
+    "arduino_uno": (("board.mcu",), {}),
+    "esp32_devkitc": (("board.mcu",), {}),
+    "plc": (("plc",), {}),
+}
+COSIM_SYMBOLS[:] = [
+    dataclasses.replace(sym, catalogue=CATALOGUE_PARAMS[sym.kind][0])
+    if sym.kind in CATALOGUE_PARAMS
+    else sym
+    for sym in COSIM_SYMBOLS
+]
+
+
+def catalogue_value(kind: str, record: ComponentRecord, fallback: Value) -> Value:
+    """Parameter lookup that prefers the values of the catalogue part placed with the symbol."""
+    mapping = CATALOGUE_PARAMS.get(kind, ((), {}))[1]
+
+    def value(name: str) -> str:
+        target = mapping.get(name)
+        param = record.parameters.get(target[0]) if target else None
+        if target is None or param is None:
+            return fallback(name)
+        number = next((x for x in (param.typ, param.max, param.min) if x is not None), None)
+        if number is None:
+            return fallback(name)
+        si = Q_(number, parse_unit(param.unit)).to(parse_unit(target[1])).magnitude
+        return f"{si:.6g}"
+
+    return value
+
 
 COSIM_KINDS = {s.kind for s in COSIM_SYMBOLS}
 CONTROLLER_KINDS = {"arduino_uno", "esp32_devkitc", "plc"}

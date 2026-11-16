@@ -1,0 +1,39 @@
+category: magnetic.transformer
+schema_version: '1.0'
+description: Transformador de força, de pulso ou de corrente
+required: []
+parameters:
+  V_pri:
+    unit: V
+    kind: characteristic
+    description: Tensão do primário
+  V_sec:
+    unit: V
+    kind: characteristic
+    description: Tensão do secundário
+  S_rated:
+    unit: VA
+    kind: max_rating
+    description: Potência nominal
+  f:
+    unit: Hz
+    kind: characteristic
+    description: Frequência de operação
+  ratio:
+    unit: '1'
+    kind: characteristic
+    description: Relação de espiras
+  V_iso:
+    unit: V
+    kind: max_rating
+    description: Isolação entre enrolamentos
+  Top:
+    unit: °C
+    kind: thermal
+    description: 'Temperatura de operação (faixa: mín. e máx.)'
+  Tstg:
+    unit: °C
+    kind: thermal
+    description: Temperatura de armazenamento (faixa)
+attributes:
+  aplicacao: Aplicação (força, pulso, corrente, isolamento)

@@ -13,6 +13,7 @@ from circuitos.components.repository import (
     load_records_file,
 )
 from circuitos.core.errors import DataIntegrityError
+from circuitos.datasheets.queue import load_queue
 
 CATALOG = Path(__file__).parents[4] / "data" / "components"
 
@@ -156,8 +157,17 @@ def test_catalogue_files_are_valid_and_traceable():
     assert not report.errors, report.errors
     records = repo.search()
     assert len(records) >= 28 + 107
+    # a datasheet without URL must be a PDF the user keeps locally (listed in the queue by hash)
+    local = {
+        i.local.sha256 for i in load_queue() if i.local is not None and i.local.situacao == "ok"
+    }
     for record in records:
-        assert record.datasheets and all(d.sha256 and d.url for d in record.datasheets)
+        assert record.datasheets and all(d.sha256 for d in record.datasheets)
+        for d in record.datasheets:
+            assert d.url or d.sha256 in local, (
+                record.part_number,
+                "datasheet sem link nem cópia local",
+            )
         for key, param in record.parameters.items():
             if param.has_value:
                 assert param.source is not None and param.source.page, (record.part_number, key)

@@ -1,0 +1,40 @@
+category: inductor.fixed
+schema_version: '1.0'
+description: Indutor ou choque
+required:
+- L
+parameters:
+  L:
+    unit: uH
+    kind: characteristic
+    description: Indutância nominal (ou faixa da série)
+  tol:
+    unit: '%'
+    kind: characteristic
+    description: Tolerância
+  I_sat:
+    unit: A
+    kind: max_rating
+    description: Corrente de saturação
+  I_rms:
+    unit: A
+    kind: max_rating
+    description: Corrente nominal (aquecimento)
+  DCR:
+    unit: ohm
+    kind: characteristic
+    description: Resistência CC
+  SRF:
+    unit: MHz
+    kind: characteristic
+    description: Frequência de autorressonância
+  Top:
+    unit: °C
+    kind: thermal
+    description: 'Temperatura de operação (faixa: mín. e máx.)'
+  Tstg:
+    unit: °C
+    kind: thermal
+    description: Temperatura de armazenamento (faixa)
+attributes:
+  nucleo: Núcleo e construção

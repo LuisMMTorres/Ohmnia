@@ -1,0 +1,44 @@
+category: thermistor.ntc
+schema_version: '1.0'
+description: Termistor NTC (medição ou limitador de corrente de partida)
+required:
+- R25
+parameters:
+  R25:
+    unit: ohm
+    kind: characteristic
+    description: Resistência a 25 °C
+  tol:
+    unit: '%'
+    kind: characteristic
+    description: Tolerância de R25
+  B:
+    unit: K
+    kind: characteristic
+    description: Constante B (indicar as temperaturas na nota)
+  I_max:
+    unit: A
+    kind: max_rating
+    description: Corrente máxima (limitador)
+  P_max:
+    unit: W
+    kind: max_rating
+    description: Potência máxima
+  tau:
+    unit: s
+    kind: thermal
+    description: Constante de tempo térmica
+  dissipation:
+    unit: mW/K
+    kind: thermal
+    description: Fator de dissipação
+  Top:
+    unit: °C
+    kind: thermal
+    description: 'Temperatura de operação (faixa: mín. e máx.)'
+  Tstg:
+    unit: °C
+    kind: thermal
+    description: Temperatura de armazenamento (faixa)
+attributes:
+  aplicacao: Aplicação (medição, compensação, limitação de partida)

@@ -1,0 +1,67 @@
+category: plc
+schema_version: '1.0'
+description: Controlador lógico programável (CPU ou módulo)
+required: []
+parameters:
+  VS:
+    unit: V
+    kind: characteristic
+    description: Alimentação (faixa)
+  P_cons:
+    unit: W
+    kind: characteristic
+    description: Consumo
+  di:
+    unit: '1'
+    kind: geometry
+    description: Entradas digitais integradas
+  do:
+    unit: '1'
+    kind: geometry
+    description: Saídas digitais integradas
+  ai:
+    unit: '1'
+    kind: geometry
+    description: Entradas analógicas integradas
+  ao:
+    unit: '1'
+    kind: geometry
+    description: Saídas analógicas integradas
+  di_on:
+    unit: V
+    kind: characteristic
+    description: Tensão de entrada digital ligada (mín.)
+  di_off:
+    unit: V
+    kind: characteristic
+    description: Tensão de entrada digital desligada (máx.)
+  do_I:
+    unit: A
+    kind: max_rating
+    description: Corrente por saída digital
+  ai_bits:
+    unit: bit
+    kind: characteristic
+    description: Resolução da entrada analógica
+  memory:
+    unit: kB
+    kind: geometry
+    description: Memória de programa ou de trabalho
+  t_instr:
+    unit: us
+    kind: characteristic
+    description: Tempo de execução de instrução binária
+  Top:
+    unit: °C
+    kind: thermal
+    description: 'Temperatura de operação (faixa: mín. e máx.)'
+  Tstg:
+    unit: °C
+    kind: thermal
+    description: Temperatura de armazenamento (faixa)
+attributes:
+  linguagens: Linguagens (ladder, ST, FBD...)
+  comunicacao: Comunicação
+  tipo_saida: Tipo de saída digital (relé, transistor PNP/NPN)
+  grau_protecao: Grau de proteção (IP) declarado
+  certificacoes: Certificações e aprovações (UL, CE, ATEX...)

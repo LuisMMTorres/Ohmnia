@@ -1,0 +1,46 @@
+category: varistor
+schema_version: '1.0'
+description: Varistor (MOV) ou supressor de surto
+required:
+- V_varistor
+parameters:
+  V_varistor:
+    unit: V
+    kind: characteristic
+    description: Tensão do varistor a 1 mA
+  V_ac:
+    unit: V
+    kind: max_rating
+    description: Tensão CA máxima contínua (eficaz)
+  V_dc:
+    unit: V
+    kind: max_rating
+    description: Tensão CC máxima contínua
+  V_clamp:
+    unit: V
+    kind: characteristic
+    description: Tensão de grampeamento (indicar corrente na nota)
+  I_peak:
+    unit: A
+    kind: max_rating
+    description: Corrente de surto máxima (8/20 µs)
+  W_max:
+    unit: J
+    kind: max_rating
+    description: Energia máxima
+  P_avg:
+    unit: W
+    kind: max_rating
+    description: Potência média
+  C:
+    unit: pF
+    kind: characteristic
+    description: Capacitância
+  Top:
+    unit: °C
+    kind: thermal
+    description: 'Temperatura de operação (faixa: mín. e máx.)'
+  Tstg:
+    unit: °C
+    kind: thermal
+    description: Temperatura de armazenamento (faixa)

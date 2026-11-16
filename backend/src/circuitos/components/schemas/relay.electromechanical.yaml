@@ -1,0 +1,72 @@
+category: relay.electromechanical
+schema_version: '1.0'
+description: Relé eletromecânico
+required:
+- V_coil
+- I_contact
+parameters:
+  V_coil:
+    unit: V
+    kind: characteristic
+    description: Tensão nominal da bobina (ou faixa da série)
+  R_coil:
+    unit: ohm
+    kind: characteristic
+    description: Resistência da bobina
+  P_coil:
+    unit: W
+    kind: characteristic
+    description: Potência da bobina
+  V_pickup:
+    unit: V
+    kind: characteristic
+    description: Tensão de operação (máx.)
+  V_dropout:
+    unit: V
+    kind: characteristic
+    description: Tensão de desoperação (mín.)
+  I_contact:
+    unit: A
+    kind: max_rating
+    description: Corrente nominal do contato
+  V_contact:
+    unit: V
+    kind: max_rating
+    description: Tensão máxima de comutação
+  P_switch:
+    unit: W
+    kind: max_rating
+    description: Potência máxima de comutação
+  t_on:
+    unit: ms
+    kind: characteristic
+    description: Tempo de operação
+  t_off:
+    unit: ms
+    kind: characteristic
+    description: Tempo de liberação
+  life_mech:
+    unit: '1'
+    kind: characteristic
+    description: Vida mecânica (operações)
+  life_el:
+    unit: '1'
+    kind: characteristic
+    description: Vida elétrica (operações)
+  V_iso:
+    unit: V
+    kind: max_rating
+    description: Rigidez dielétrica bobina-contato
+  Top:
+    unit: °C
+    kind: thermal
+    description: 'Temperatura de operação (faixa: mín. e máx.)'
+  Tstg:
+    unit: °C
+    kind: thermal
+    description: Temperatura de armazenamento (faixa)
+attributes:
+  contatos: Arranjo de contatos (SPDT, DPDT, NA, NF...)
+  montagem: Montagem
+  grau_protecao: Grau de proteção (IP) declarado
+  certificacoes: Certificações e aprovações (UL, CE, ATEX...)

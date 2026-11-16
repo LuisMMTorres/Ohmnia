@@ -1,0 +1,23 @@
+category: regulator.switching
+schema_version: "1.0"
+description: Regulador ou controlador chaveado (buck, boost, buck-boost, flyback)
+required: [VI_max]
+parameters:
+  VI:       {unit: V, kind: characteristic, description: Faixa de tensão de entrada}
+  VI_max:   {unit: V, kind: max_rating, description: Tensão de entrada máxima absoluta}
+  VO:       {unit: V, kind: characteristic, description: Tensão de saída (fixa) ou faixa ajustável}
+  Vref:     {unit: V, kind: characteristic, description: Tensão de realimentação ou referência}
+  IO_max:   {unit: A, kind: max_rating, description: Corrente de saída máxima}
+  ILIM:     {unit: A, kind: characteristic, description: Limite de corrente da chave}
+  fsw:      {unit: kHz, kind: characteristic, description: Frequência de chaveamento}
+  D_max:    {unit: "%", kind: characteristic, description: Razão cíclica máxima}
+  eta:      {unit: "%", kind: characteristic, description: Rendimento (indicar condição na nota)}
+  VCE_sat:  {unit: V, kind: characteristic, description: Queda na chave interna}
+  IQ:       {unit: mA, kind: characteristic, description: Corrente quiescente}
+  Rth_ja:   {unit: K/W, kind: thermal, description: Resistência térmica junção-ambiente}
+  Rth_jc:   {unit: K/W, kind: thermal, description: Resistência térmica junção-cápsula}
+  Tj_max:   {unit: °C, kind: thermal, description: Temperatura máxima de junção}
+  Top:      {unit: °C, kind: thermal, description: Temperatura de operação (faixa)}
+attributes:
+  topologia: Topologia (buck, boost, inversor...)
+  encapsulamento: Encapsulamento

@@ -1,0 +1,55 @@
+category: sensor.force
+schema_version: '1.0'
+description: Célula de carga, sensor de força ou torque
+required:
+- capacity
+parameters:
+  capacity:
+    unit: kg
+    kind: max_rating
+    description: Capacidade nominal (ou faixa da série; força em N na nota)
+  sensitivity:
+    unit: mV/V
+    kind: characteristic
+    description: Sensibilidade nominal
+  excitation:
+    unit: V
+    kind: characteristic
+    description: Tensão de excitação (faixa)
+  nonlinearity:
+    unit: '%'
+    kind: characteristic
+    description: Não linearidade
+  hysteresis:
+    unit: '%'
+    kind: characteristic
+    description: Histerese
+  creep:
+    unit: '%'
+    kind: characteristic
+    description: Deriva (creep)
+  R_in:
+    unit: ohm
+    kind: characteristic
+    description: Resistência de entrada
+  R_out:
+    unit: ohm
+    kind: characteristic
+    description: Resistência de saída
+  overload:
+    unit: '%'
+    kind: max_rating
+    description: Sobrecarga segura (% da capacidade)
+  Top:
+    unit: °C
+    kind: thermal
+    description: 'Temperatura de operação (faixa: mín. e máx.)'
+  Tstg:
+    unit: °C
+    kind: thermal
+    description: Temperatura de armazenamento (faixa)
+attributes:
+  grau_protecao: Grau de proteção (IP) declarado
+  certificacoes: Certificações e aprovações (UL, CE, ATEX...)
+  tipo: Tipo (viga, S, compressão...)
+  material: Material

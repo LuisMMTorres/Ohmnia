@@ -185,6 +185,12 @@ export interface Parameter {
   status: ParamStatus;
   note: string | null;
 }
+export interface Attribute {
+  value: string;
+  source: SourceRef | null;
+  status: ParamStatus;
+  note: string | null;
+}
 export interface DatasheetRef {
   id: string;
   manufacturer: string;
@@ -202,6 +208,7 @@ export interface ComponentRecord {
   package: string | null;
   lifecycle: string;
   parameters: Record<string, Parameter>;
+  attributes?: Record<string, Attribute>;
   datasheets: DatasheetRef[];
   review: { status: string; reviewed_by: string | null; reviewed_at: string | null };
   notes: string[];
@@ -265,6 +272,7 @@ export interface ComponentDetail {
     description: string;
     required: string[];
     parameters: Record<string, ParameterSpec>;
+    attributes?: Record<string, string>;
   };
   release_blockers: string[];
 }

@@ -1,0 +1,55 @@
+category: instrument.transmitter
+schema_version: '1.0'
+description: Transmissor, conversor ou condicionador de sinal (4-20 mA, 0-10 V, isolador)
+required: []
+parameters:
+  in_range:
+    unit: '1'
+    kind: characteristic
+    description: Faixa de entrada (unidade na nota)
+  I_out:
+    unit: mA
+    kind: characteristic
+    description: Saída em corrente
+  V_out:
+    unit: V
+    kind: characteristic
+    description: Saída em tensão
+  accuracy:
+    unit: '%'
+    kind: characteristic
+    description: Exatidão
+  RL:
+    unit: ohm
+    kind: max_rating
+    description: Carga máxima
+  V_iso:
+    unit: V
+    kind: max_rating
+    description: Isolação
+  t_resp:
+    unit: ms
+    kind: characteristic
+    description: Tempo de resposta
+  VS:
+    unit: V
+    kind: characteristic
+    description: Tensão de alimentação (faixa)
+  IS:
+    unit: mA
+    kind: characteristic
+    description: Consumo de corrente sem carga
+  Top:
+    unit: °C
+    kind: thermal
+    description: 'Temperatura de operação (faixa: mín. e máx.)'
+  Tstg:
+    unit: °C
+    kind: thermal
+    description: Temperatura de armazenamento (faixa)
+attributes:
+  entrada: Tipos de entrada (Pt100, termopar, mA, V...)
+  saida: Saída
+  grau_protecao: Grau de proteção (IP) declarado
+  certificacoes: Certificações e aprovações (UL, CE, ATEX...)
+  comunicacao: Comunicação

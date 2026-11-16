@@ -1,0 +1,43 @@
+category: thermistor.ptc
+schema_version: '1.0'
+description: Termistor PTC ou fusível rearmável (polímero)
+required: []
+parameters:
+  R25:
+    unit: ohm
+    kind: characteristic
+    description: Resistência a 25 °C
+  I_hold:
+    unit: A
+    kind: max_rating
+    description: Corrente de manutenção
+  I_trip:
+    unit: A
+    kind: characteristic
+    description: Corrente de disparo
+  V_max:
+    unit: V
+    kind: max_rating
+    description: Tensão máxima
+  I_max:
+    unit: A
+    kind: max_rating
+    description: Corrente de falta máxima
+  T_ref:
+    unit: °C
+    kind: characteristic
+    description: Temperatura de referência (Curie)
+  t_trip:
+    unit: s
+    kind: characteristic
+    description: Tempo de disparo
+  Top:
+    unit: °C
+    kind: thermal
+    description: 'Temperatura de operação (faixa: mín. e máx.)'
+  Tstg:
+    unit: °C
+    kind: thermal
+    description: Temperatura de armazenamento (faixa)
+attributes:
+  aplicacao: Aplicação

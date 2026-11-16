@@ -1,0 +1,35 @@
+category: sensor.inertial
+schema_version: '1.0'
+description: Sensor inercial (acelerômetro, giroscópio, IMU)
+required: []
+parameters:
+  accel_range:
+    unit: '1'
+    kind: characteristic
+    description: Faixa do acelerômetro em g
+  gyro_range:
+    unit: deg/s
+    kind: characteristic
+    description: Faixa do giroscópio
+  bits:
+    unit: bit
+    kind: characteristic
+    description: Resolução
+  VS:
+    unit: V
+    kind: characteristic
+    description: Tensão de alimentação (faixa)
+  IS:
+    unit: mA
+    kind: characteristic
+    description: Consumo de corrente sem carga
+  Top:
+    unit: °C
+    kind: thermal
+    description: 'Temperatura de operação (faixa: mín. e máx.)'
+  Tstg:
+    unit: °C
+    kind: thermal
+    description: Temperatura de armazenamento (faixa)
+attributes:
+  interface: Interface

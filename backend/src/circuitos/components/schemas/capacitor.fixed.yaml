@@ -1,0 +1,54 @@
+category: capacitor.fixed
+schema_version: '1.0'
+description: Capacitor fixo (eletrolítico, filme, cerâmico...) ou série
+required:
+- C
+- V_rated
+parameters:
+  C:
+    unit: uF
+    kind: characteristic
+    description: Capacitância nominal (ou faixa da série)
+  tol:
+    unit: '%'
+    kind: characteristic
+    description: Tolerância
+  V_rated:
+    unit: V
+    kind: max_rating
+    description: Tensão nominal
+  V_surge:
+    unit: V
+    kind: max_rating
+    description: Tensão de surto
+  I_ripple:
+    unit: A
+    kind: max_rating
+    description: Corrente de ondulação nominal
+  ESR:
+    unit: ohm
+    kind: characteristic
+    description: Resistência série equivalente
+  tan_delta:
+    unit: '1'
+    kind: characteristic
+    description: Fator de dissipação (tg δ)
+  I_leak:
+    unit: uA
+    kind: characteristic
+    description: Corrente de fuga
+  life:
+    unit: h
+    kind: characteristic
+    description: Vida útil na temperatura máxima
+  Top:
+    unit: °C
+    kind: thermal
+    description: 'Temperatura de operação (faixa: mín. e máx.)'
+  Tstg:
+    unit: °C
+    kind: thermal
+    description: Temperatura de armazenamento (faixa)
+attributes:
+  dieletrico: Dielétrico ou tecnologia (alumínio, polipropileno, X7R...)
+  montagem: Montagem e dimensões

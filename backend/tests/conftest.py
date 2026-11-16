@@ -21,7 +21,10 @@ def pytest_collection_modifyitems(config, items):
 
 @pytest.fixture(scope="session")
 def reviewed_catalogue():
-    """Repository with the real catalogue, every extracted value marked as reviewed and released.
+    """Repository with the reviewed part of the catalogue, every value marked reviewed and released.
+
+    The files are listed in ``fixtures/catalogo-revisado.txt``: records transcribed later stay out
+    until the user reviews them, so the design tests keep a stable, reviewed catalogue.
 
     Only for tests of the design flow: it simulates the user's review (rule 5 still applies,
     the records go through the normal release path). The values are the datasheet ones.
@@ -32,7 +35,12 @@ def reviewed_catalogue():
 
     # a file, not :memory:, so the API test client (another thread) sees the same database
     repo = ComponentRepository(f"sqlite:///{tempfile.mkdtemp(prefix='circuitos-rev-')}/c.db")
-    repo.import_directory(Path(__file__).resolve().parents[2] / "data" / "components")
+    from circuitos.components.repository import load_records_file
+
+    root = Path(__file__).resolve().parents[2] / "data" / "components"
+    listed = Path(__file__).with_name("fixtures") / "catalogo-revisado.txt"
+    files = [ln for ln in listed.read_text(encoding="utf-8").splitlines() if ln and ln[0] != "#"]
+    repo.import_records([r for f in files for r in load_records_file(root / f)])
     for record in repo.search():
         for key, param in record.parameters.items():
             if param.status == "extraido":

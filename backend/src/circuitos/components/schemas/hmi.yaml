@@ -1,0 +1,42 @@
+category: hmi
+schema_version: '1.0'
+description: Interface homem-máquina (painel de operação)
+required: []
+parameters:
+  VS:
+    unit: V
+    kind: characteristic
+    description: Alimentação
+  P_cons:
+    unit: W
+    kind: characteristic
+    description: Consumo
+  diagonal:
+    unit: in
+    kind: geometry
+    description: Diagonal da tela
+  res_x:
+    unit: '1'
+    kind: geometry
+    description: Resolução horizontal (pixels)
+  res_y:
+    unit: '1'
+    kind: geometry
+    description: Resolução vertical (pixels)
+  memory:
+    unit: kB
+    kind: geometry
+    description: Memória de usuário
+  Top:
+    unit: °C
+    kind: thermal
+    description: 'Temperatura de operação (faixa: mín. e máx.)'
+  Tstg:
+    unit: °C
+    kind: thermal
+    description: Temperatura de armazenamento (faixa)
+attributes:
+  tela: Tecnologia da tela e toque
+  comunicacao: Comunicação
+  grau_protecao: Grau de proteção (IP) declarado
+  certificacoes: Certificações e aprovações (UL, CE, ATEX...)

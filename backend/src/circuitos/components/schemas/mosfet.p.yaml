@@ -1,0 +1,5 @@
+category: mosfet.p
+extends: mosfet.n
+schema_version: "1.0"
+description: MOSFET de potência canal P (intensificação); tensões e correntes em módulo
+required: [VDS, ID, RDS(on), VGS(th), Ptot, Tj_max]
