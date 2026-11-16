@@ -269,3 +269,13 @@ def test_report_pdf_for_every_module(client):
     # equations mathtext cannot read are printed as LaTeX source; keep that rare
     assert total_eq > 100
     assert failed_eq / total_eq < 0.05, f"{failed_eq} de {total_eq} equações sem renderização"
+
+
+def test_kicad_netlist_of_a_design(client):
+    r = client.post("/api/v1/design/DM-RET1/kicad.net", json={"spec": {"topology": "ponte"}})
+    assert r.status_code == 200
+    text = r.text
+    assert text.startswith('(export (version "E")')
+    assert text.count("(") == text.count(")")
+    assert '(comp (ref "D' in text or '(comp (ref "d' in text
+    assert "Fora da netlist" in text  # sources and model elements are listed, not placed

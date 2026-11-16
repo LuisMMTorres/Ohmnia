@@ -6,13 +6,14 @@ import dataclasses
 import uuid
 from typing import Any, Literal
 
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, HTTPException, Request, Response
 from pydantic import BaseModel, Field
 
 from circuitos.components.models import ComponentRecord
 from circuitos.components.repository import ComponentRepository
 from circuitos.core.calc import CalcStep
 from circuitos.core.errors import CircuitosError
+from circuitos.reports import kicad
 from circuitos.schematic.importer import import_netlist
 from circuitos.schematic.library import ANALYSES, SYMBOLS
 from circuitos.schematic.model import Schematic
@@ -170,6 +171,22 @@ def netlist(request: Request, body: SchematicIn) -> NetlistOut:
         return _netlist_out(plan.nominal())
     except (SchematicError, ValueError, CircuitosError) as exc:
         raise HTTPException(422, str(exc)) from exc
+
+
+@router.post("/kicad.net")
+def kicad_netlist(request: Request, body: SchematicIn) -> Response:
+    """KiCad netlist of the drawn circuit (sources and probes stay out)."""
+    plan = SchematicPlan(body.schematic, _records(request, body.schematic))
+    try:
+        text = plan.nominal().text
+    except (SchematicError, ValueError, CircuitosError) as exc:
+        raise HTTPException(422, str(exc)) from exc
+    title = text.splitlines()[0] if text else "circuito"
+    return Response(
+        kicad.to_kicad(text, title),
+        media_type="text/plain; charset=utf-8",
+        headers={"Content-Disposition": 'attachment; filename="circuito.net"'},
+    )
 
 
 @router.post("/import")

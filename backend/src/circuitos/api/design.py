@@ -17,7 +17,7 @@ from circuitos.design import registry
 from circuitos.design.base import Circuit, DesignResult, SimComparison
 from circuitos.design.engine import Device, TopologyModule, run
 from circuitos.design.verify import compare_full, netlist_with_analysis
-from circuitos.reports import bom, outputs, pdf, report
+from circuitos.reports import bom, kicad, outputs, pdf, report
 from circuitos.reports.sections import SimWaves
 from circuitos.selection.derating import DeratingPolicy
 
@@ -319,4 +319,25 @@ def report_pdf(request: Request, module_id: str, body: DesignIn, simulate: bool 
         pdf.render_pdf(ctx),
         media_type="application/pdf",
         headers={"Content-Disposition": f'attachment; filename="{module_id}-relatorio.pdf"'},
+    )
+
+
+@router.post("/{module_id}/kicad.net")
+def kicad_netlist(request: Request, module_id: str, body: DesignIn) -> Response:
+    """KiCad netlist with the parts of the bill of materials (model elements left out)."""
+    module, spec, result, _, circuit = _design(request, module_id, body)
+    keep = {r.designator for r in outputs.bom(module, spec, result)}
+    repo = _repo(request)
+    packages: dict[str, str] = {}
+    for c in result.selection:
+        record = repo.get_or_none(c.component_id)
+        if record is not None and record.package:
+            packages[c.designator] = record.package
+    text = kicad.to_kicad(
+        netlist_with_analysis(circuit), f"{module.title} — {circuit.title}", keep, packages
+    )
+    return Response(
+        text,
+        media_type="text/plain; charset=utf-8",
+        headers={"Content-Disposition": f'attachment; filename="{module_id}.net"'},
     )
