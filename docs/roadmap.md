@@ -146,3 +146,12 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 - ✅ Pacote para Windows (PyInstaller, com ngspice e catálogo) e `LEIA-ME.txt`
 - ✅ [Manual do usuário](manual/README.md) e [guia de extensão](guia-extensao.md)
 - ✅ [validacao/relatorios-empacotamento.md](validacao/relatorios-empacotamento.md)
+
+## Fase 10 — Vista de protoboard ⏳ (pedido em 2026-11-15, decisão D11)
+
+- ⏳ Simbologia real (encapsulamento em SVG) para cada componente, ao lado do símbolo 2D
+- ⏳ Pinagem por peça no catálogo, com fonte no datasheet e revisão
+- ⏳ Protoboard (830 pontos, barramentos) com montagem manual no simulador
+- ⏳ Montagem gerada a partir do circuito do assistente de projeto (e no roteiro de prática)
+- ⏳ Conferência protoboard × esquemático (ligação faltando, sobrando, trocada)
+

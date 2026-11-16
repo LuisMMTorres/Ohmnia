@@ -64,3 +64,18 @@ Pergunta: segue alguma referência formal de derating (norma ou manual de empres
 ## D10. Licença do software
 
 - **Recomendado:** licença aberta (MIT ou GPL-3.0), compatível com ngspice e adequada para uso por outras instituições. Confirmar preferência ou se o projeto será fechado.
+
+## D11. Vista de protoboard (pedido do usuário em 2026-11-15, após a Fase 9)
+
+Cada circuito deve poder ser projetado em duas vistas: o esquemático 2D (simbologia) e a montagem
+como numa protoboard (componente real, pelo encapsulamento). Decidido pelo usuário:
+
+- **Onde:** no simulador livre (montagem manual) e no assistente de projeto (montagem gerada do
+  circuito projetado, também usada no roteiro de prática).
+- **Vínculo:** as duas vistas são o mesmo circuito. O que for ligado na protoboard é comparado com
+  o esquemático; o sistema aponta ligação faltando, sobrando ou trocada.
+- **Encapsulamentos:** desenhados pelo sistema em SVG a partir das dimensões (DO-41, TO-92, TO-220,
+  DIP-8, resistor com faixas de cor, eletrolítico…). A **pinagem de cada peça vem do datasheet, com
+  fonte**, como os demais parâmetros (regra 1): sem pinagem conferida, a peça aparece na
+  protoboard com aviso e não entra na conferência automática.
+- Planejado como Fase 10 (ver roadmap).
