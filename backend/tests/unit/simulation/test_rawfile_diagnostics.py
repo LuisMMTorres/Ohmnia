@@ -116,3 +116,17 @@ def test_out_of_memory_is_classified():
     )
     with pytest.raises(SimulationError, match="Memória insuficiente"):
         raise_for_log(log, no_output=True)
+
+
+@pytest.mark.parametrize(
+    "log",
+    [
+        "Warning: Dynamic gmin stepping failed\nWarning: True gmin stepping failed\n"
+        "Note: Starting source stepping\nNote: Source stepping completed",
+        "Warning: source stepping failed\nNote: Transient op started\n"
+        "Note: Transient op finished successfully",
+    ],
+)
+def test_recovered_operating_point_is_not_an_error(log):
+    """ngspice 47 recovers the OP by source stepping or the transient op: not a failure."""
+    raise_for_log(log, no_output=False)
