@@ -39,6 +39,44 @@ def test_create_stores_the_full_validated_spec(client):
     assert doc["current"]["spec"]["filter"] == "C" and "Vo" in doc["current"]["spec"]
 
 
+def test_edited_circuit_is_saved_duplicated_and_restored_without_changing_original(client):
+    from circuitos.schematic.model import Component, Schematic
+
+    original = _create(client, "Circuit original")
+    circuit = Schematic(
+        components=[Component(id="r1", ref="R1", kind="resistor", x=0, y=0)],
+        bench_scope_channels=4,
+        bench_scope_connections={"1": {"positive": "2:a12", "negative": "vn1"}},
+    )
+    saved = client.post(
+        API,
+        json={
+            "name": "Edited copy",
+            "module_id": original["module_id"],
+            "spec": original["current"]["spec"],
+            "schematic": circuit.model_dump(mode="json"),
+        },
+    ).json()
+    assert saved["id"] != original["id"]
+    assert saved["current"]["schematic"]["bench_scope_channels"] == 4
+    assert saved["current"]["schematic"]["bench_scope_connections"]["1"] == {
+        "positive": "2:a12",
+        "negative": "vn1",
+    }
+    assert client.get(f"{API}/{original['id']}").json()["current"]["schematic"] is None
+    content = {
+        "spec": saved["current"]["spec"],
+        "schematic": {**saved["current"]["schematic"], "components": []},
+    }
+    revised = client.put(f"{API}/{saved['id']}", json=content).json()
+    assert revised["current"]["number"] == 2
+    assert revised["current"]["schematic"]["components"] == []
+    restored = client.post(f"{API}/{saved['id']}/restore/1").json()
+    assert restored["current"]["schematic"]["components"][0]["ref"] == "R1"
+    duplicate = client.post(f"{API}/{saved['id']}/duplicate", json={}).json()
+    assert duplicate["current"]["schematic"] == restored["current"]["schematic"]
+
+
 def test_invalid_spec_or_module_is_rejected(client):
     r = client.post(API, json={"name": "x", "module_id": "DM-RET1", "spec": {"filter": "nada"}})
     assert r.status_code == 422

@@ -5,10 +5,12 @@ import {
   schematicApi,
   watchJob,
   api,
+  breadboardApi,
   type Job,
   type NetlistOut,
   type PartOut,
 } from "../api";
+import { emptyBreadboard } from "../breadboard/types";
 import type { PackageSpec, PartView } from "../breadboard/types";
 import { SCHEMATIC_EXAMPLES } from "../schematic/examples";
 import { ResultsView } from "../schematic/ResultsView";
@@ -28,6 +30,12 @@ import {
 } from "../schematic/types";
 import { BreadboardView, PinoutSource } from "../breadboard/BreadboardView";
 import { useBreadboardSpec, useResolved } from "../breadboard/hooks";
+import { SourceControls } from "../schematic/SourceControls";
+import { removeSources, pruneOrphanSupplyLabels } from "../breadboard/instruments";
+import { disconnectScope, syncScopeProbes } from "../breadboard/scopeConnections";
+import { BenchScope } from "../breadboard/BenchScope";
+import { BenchSupply } from "../breadboard/BenchSupply";
+import { nextRef } from "../schematic/geometry";
 import { PackagePreview } from "../breadboard/PackageArt";
 import { ProgramEditor } from "../cosim/ProgramEditor";
 import { SimulatorPage } from "./SimulatorPage";
@@ -38,7 +46,8 @@ const STORAGE = "circuitos.schematic";
 function loadSaved(): Schematic {
   try {
     const raw = localStorage.getItem(STORAGE);
-    if (raw) return { ...emptySchematic(), ...(JSON.parse(raw) as Schematic) };
+    if (raw)
+      return pruneOrphanSupplyLabels({ ...emptySchematic(), ...(JSON.parse(raw) as Schematic) });
   } catch {
     /* storage unavailable */
   }
@@ -86,20 +95,30 @@ export function SchematicPage() {
   );
 }
 
-function SchematicWorkspace() {
+export function SchematicWorkspace({
+  initialDocument,
+  onDocumentChange,
+}: { initialDocument?: Schematic; onDocumentChange?: (s: Schematic) => void } = {}) {
   const [library, setLibrary] = useState<Library | null>(null);
-  const [sch, setSch] = useState<Schematic>(loadSaved);
+  const [sch, setSch] = useState<Schematic>(() =>
+    pruneOrphanSupplyLabels(initialDocument ?? loadSaved()),
+  );
   const [past, setPast] = useState<Schematic[]>([]);
   const [future, setFuture] = useState<Schematic[]>([]);
   const [tool, setTool] = useState<Tool>({ kind: "select" });
   const [selection, setSelection] = useState<Selection>(null);
+  const [simulatedCircuit, setSimulatedCircuit] = useState("");
   const [job, setJob] = useState<Job | null>(null);
   const [netlist, setNetlist] = useState<NetlistOut | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [warnings, setWarnings] = useState<string[]>([]);
   const [panel, setPanel] = useState<"analyses" | "sweep" | "params" | "netlist">("analyses");
   const [importText, setImportText] = useState<string | null>(null);
-  const [view, setView] = useState<"esquematico" | "protoboard">("esquematico");
+  const [view, setView] = useState<"esquematico" | "protoboard">(() =>
+    !initialDocument && sessionStorage.getItem("circuitos.simulator.view") === "protoboard"
+      ? "protoboard"
+      : "esquematico",
+  );
   const [libraryOpen, setLibraryOpen] = useState(false);
   const [showNodeNames, setShowNodeNames] = useState(false);
   const [nodeMap, setNodeMap] = useState<Record<string, string[]>>({});
@@ -153,12 +172,16 @@ function SchematicWorkspace() {
       .catch(() => setCosimExamples([]));
   }, []);
   useEffect(() => {
+    if (onDocumentChange) {
+      onDocumentChange(sch);
+      return;
+    }
     try {
       localStorage.setItem(STORAGE, JSON.stringify(sch));
     } catch {
       /* storage unavailable */
     }
-  }, [sch]);
+  }, [sch, onDocumentChange]);
 
   const symbols = useMemo(
     () =>
@@ -177,7 +200,7 @@ function SchematicWorkspace() {
     });
   }, []);
   const replace = (next: Schematic) => {
-    change(next);
+    change(pruneOrphanSupplyLabels(next));
     setSelection(null);
     setJob(null);
     setNetlist(null);
@@ -231,15 +254,79 @@ function SchematicWorkspace() {
     [sch.probes],
   );
 
+  const addBenchSupply = () => {
+    const existing = new Set(sch.components.map((c) => c.params.bench_id));
+    let number = 1;
+    while (existing.has(`PS${number}`)) number++;
+    const id = `PS${number}`;
+    const baseY = Math.max(0, ...sch.components.map((c) => c.y)) + 10;
+    const components = [...sch.components];
+    const labels = [...sch.labels];
+    const probes = [...sch.probes];
+    for (let ch = 1; ch <= 3; ch++) {
+      const ref = nextRef({ ...sch, components }, "V");
+      const x = (ch - 1) * 12,
+        y = baseY;
+      components.push({
+        id: `${id}-${ch}`,
+        kind: "vdc",
+        ref,
+        x,
+        y,
+        rot: 0,
+        mirror: false,
+        part_id: null,
+        params: { dc: ch === 3 ? "5" : "0", ac: "0", bench_id: id, bench_channel: String(ch) },
+      });
+      labels.push(
+        { id: `${id}-p${ch}`, name: `${id}_ch${ch}`, x, y: y - 2 },
+        { id: `${id}-n${ch}`, name: "0", x, y: y + 2 },
+      );
+      probes.push(
+        { id: `${id}-i${ch}`, kind: "i", component: ref, pin: "p" },
+        { id: `${id}-v${ch}`, kind: "v", target: { net: `${id}_ch${ch}` } },
+      );
+    }
+    const assembly = sch.breadboard ?? emptyBreadboard();
+    change({
+      ...sch,
+      components,
+      labels,
+      probes,
+      breadboard: {
+        ...assembly,
+        parts: [
+          ...assembly.parts,
+          ...components
+            .filter((c) => c.params.bench_id === id)
+            .map((c) => ({ ref: c.ref, package: "fonte-cc", legs: {} })),
+        ],
+      },
+    });
+  };
   const running = job?.state === "queued" || job?.state === "running";
   const simulate = async () => {
     setError(null);
     setJob(null);
     try {
-      const nl = await schematicApi.netlist(sch);
+      const hasScopeWiring = Object.keys(sch.bench_scope_connections ?? {}).length > 0;
+      const scopeResolved = hasScopeWiring ? await breadboardApi.resolve(sch) : resolved;
+      const scopeSpec = hasScopeWiring ? (bbSpec ?? (await breadboardApi.spec())) : bbSpec;
+      const circuit =
+        scopeSpec && scopeResolved ? syncScopeProbes(sch, scopeSpec.board, scopeResolved) : sch;
+      if (circuit !== sch) change(circuit);
+      if (view === "protoboard") {
+        const assembly = await breadboardApi.check(circuit);
+        if (!assembly.ok)
+          throw new Error(
+            "A montagem difere do esquemático. Corrija as ligações indicadas na conferência antes de simular pela protoboard.",
+          );
+      }
+      const nl = await schematicApi.netlist(circuit);
+      setSimulatedCircuit(JSON.stringify({ ...circuit, bench_scope_channels: 0 }));
       setNetlist(nl);
       setResultProbes(nl.probes.filter((p) => p.probe_id !== null).map((p) => p.name));
-      const r = await schematicApi.simulate(sch);
+      const r = await schematicApi.simulate(circuit);
       setWarnings(r.warnings);
       setJob({ id: r.job_id, state: "queued", progress: 0, message: "na fila" });
       activateStep("results");
@@ -313,7 +400,7 @@ function SchematicWorkspace() {
     selection?.kind === "label" ? sch.labels.find((l) => l.id === selection.id) : undefined;
 
   return (
-    <main className={`schematic-page workspace-mode-${activeStep}`}>
+    <main className={`schematic-page workspace-mode-${activeStep} workspace-view-${view}`}>
       <label className="node-visibility">
         <input
           type="checkbox"
@@ -328,6 +415,86 @@ function SchematicWorkspace() {
         </p>
       )}
       <WorkspaceSteps active={activeStep} resultsAvailable={job !== null} onSelect={activateStep} />
+      <div className="row wrap bench-actions">
+        <label>
+          Adicionar instrumento
+          <select
+            aria-label="Adicionar instrumento"
+            value=""
+            onChange={(e) => {
+              const instrument = e.target.value;
+              if (instrument === "supply") addBenchSupply();
+              else if (instrument === "generator") {
+                const ref = nextRef(sch, "G");
+                const assembly = sch.breadboard ?? emptyBreadboard();
+                change({
+                  ...sch,
+                  components: [
+                    ...sch.components,
+                    {
+                      id: `generator${Date.now()}`,
+                      ref,
+                      kind: "vsin",
+                      x: 0,
+                      y: Math.max(0, ...sch.components.map((c) => c.y)) + 10,
+                      rot: 0,
+                      mirror: false,
+                      part_id: null,
+                      params: {
+                        offset: "0",
+                        amplitude: "1",
+                        freq: "1k",
+                        ac: "1",
+                        bench_instrument: "generator",
+                      },
+                    },
+                  ],
+                  breadboard: {
+                    ...assembly,
+                    parts: [...assembly.parts, { ref, package: "gerador", legs: {} }],
+                  },
+                });
+              } else if (instrument === "scope2" || instrument === "scope4")
+                change({
+                  ...sch,
+                  bench_scope_channels: instrument === "scope2" ? 2 : 4,
+                  bench_scope_connections: Object.keys(sch.bench_scope_connections ?? {}).length
+                    ? sch.bench_scope_connections
+                    : {
+                        "1": { positive: null, negative: null },
+                        "2": { positive: null, negative: null },
+                      },
+                });
+            }}
+          >
+            <option value="">Escolher instrumento…</option>
+            <option value="supply">Fonte de bancada (3 canais)</option>
+            <option value="generator">Gerador de sinais</option>
+            <option value="scope2">Osciloscópio de 2 canais</option>
+            <option value="scope4">Osciloscópio de 4 canais</option>
+          </select>
+        </label>
+      </div>
+      {view === "protoboard" && (
+        <BenchSupply
+          spec={bbSpec}
+          schematic={sch}
+          onChange={change}
+          job={
+            simulatedCircuit === JSON.stringify({ ...sch, bench_scope_channels: 0 }) ? job : null
+          }
+        />
+      )}
+      {view === "protoboard" && (
+        <BenchScope
+          schematic={sch}
+          onChange={change}
+          job={
+            simulatedCircuit === JSON.stringify({ ...sch, bench_scope_channels: 0 }) ? job : null
+          }
+          probeNames={resultProbes}
+        />
+      )}
       <div className="simulator-workbench">
         <div
           ref={circuitRef}
@@ -503,7 +670,11 @@ function SchematicWorkspace() {
                   <details key={g} open>
                     <summary>{g}</summary>
                     {library.symbols
-                      .filter((s) => s.group === g)
+                      .filter(
+                        (s) =>
+                          s.group === g &&
+                          (!/^[vi](dc|sin|pulse|pwl)$/.test(s.kind) || /[vi]dc/.test(s.kind)),
+                      )
                       .map((s) => (
                         <button
                           key={s.kind}
@@ -515,7 +686,11 @@ function SchematicWorkspace() {
                           title={s.description || s.label}
                           onClick={() => setTool({ kind: "place", symbol: s.kind })}
                         >
-                          {s.label}
+                          {s.kind === "vdc"
+                            ? "Fonte de tensão (CC/CA)"
+                            : s.kind === "idc"
+                              ? "Fonte de corrente (CC/CA)"
+                              : s.label}
                         </button>
                       ))}
                   </details>
@@ -567,11 +742,7 @@ function SchematicWorkspace() {
                       })
                     }
                     onDelete={() => {
-                      change({
-                        ...sch,
-                        components: sch.components.filter((x) => x.id !== selectedComp.id),
-                        probes: sch.probes.filter((p) => p.component !== selectedComp.ref),
-                      });
+                      change(removeSources(sch, [selectedComp.id]));
                       setSelection(null);
                     }}
                     refsInUse={sch.components
@@ -640,6 +811,7 @@ function SchematicWorkspace() {
                       <span className="swatch" style={{ background: probeColors[p.id] }} />
                       <input
                         aria-label="Nome da ponta"
+                        readOnly={/^bench-scope-ch[1-4]$/.test(p.id)}
                         placeholder={probeDefault(p)}
                         value={p.name ?? ""}
                         onChange={(e) =>
@@ -654,9 +826,14 @@ function SchematicWorkspace() {
                       <button
                         className="secondary small-btn"
                         aria-label="Remover ponta"
-                        onClick={() =>
-                          change({ ...sch, probes: sch.probes.filter((x) => x.id !== p.id) })
-                        }
+                        onClick={() => {
+                          const channel = /^bench-scope-ch([1-4])$/.exec(p.id);
+                          change(
+                            channel
+                              ? disconnectScope(sch, Number(channel[1]))
+                              : { ...sch, probes: sch.probes.filter((x) => x.id !== p.id) },
+                          );
+                        }}
                       >
                         ×
                       </button>
@@ -993,8 +1170,16 @@ function ComponentProps({
           conferência.
         </p>
       )}
+      {/^[vi](dc|sin|pulse)$/.test(comp.kind) && (
+        <SourceControls component={comp} onChange={onChange} />
+      )}
       {sym.params
-        .filter((d) => generic || keepForPart.has(d.name))
+        .filter(
+          (d) =>
+            (generic || keepForPart.has(d.name)) &&
+            (!/^[vi](dc|sin|pulse)$/.test(comp.kind) ||
+              ["ac", "tol", "phase", "delay"].includes(d.name)),
+        )
         .map((d) => (
           <ParamInput
             key={d.name}

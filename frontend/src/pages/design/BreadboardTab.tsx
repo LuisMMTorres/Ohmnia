@@ -54,8 +54,8 @@ export function BreadboardTab({
       setError("Não foi possível guardar o circuito para o simulador.");
       return;
     }
+    sessionStorage.setItem("circuitos.simulator.view", "protoboard");
     window.location.hash = "simulator";
-    window.location.reload();
   };
 
   if (error) return <div className="error">{error}</div>;

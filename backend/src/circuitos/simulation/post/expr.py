@@ -303,6 +303,6 @@ def evaluate(
     ev = _Evaluator(env, units, x, sunit)
     unit = _unit_text(ev.eval(tree, units=True))
     data = np.asarray(ev.eval(tree, units=False))
-    if x is not None and data.ndim == 0:
-        data = np.full(x.shape, data)
+    if data.ndim == 0:
+        data = np.full(x.shape, data) if x is not None else np.atleast_1d(data)
     return Evaluated(data, unit)

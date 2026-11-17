@@ -41,6 +41,46 @@ na própria análise (`onoise` e `inoise`).
 
 ## Desenhar
 
+As fontes aparecem agrupadas em **Fonte de tensão (CC/CA)** e **Fonte de corrente (CC/CA)**.
+Nas propriedades, escolha o modo e a forma de onda (senoidal, quadrada ou triangular), com
+amplitude pico a pico, offset, frequência e duty cycle. A onda triangular usa o duty como
+fração do período dedicada à subida.
+
+Em **Protoboard**, há duas placas e uma barra vertical de alimentação. O zoom inicial é 100%.
+**Colocar** insere o dispositivo inteiro; ajuste depois os terminais pelo painel. Furos da
+segunda placa usam `2:`; os da barra vertical usam `vp` e `vn`. Os condutores só se unem por fios.
+Use a conferência antes de simular: a vista Protoboard exige que a montagem corresponda ao esquema.
+
+Em **Adicionar instrumento**, escolha **Fonte de bancada (3 canais)** para criar dois canais CC ajustáveis de −30 a +30 V
+e um de 5 V fixos, com referência comum. As leituras de corrente vêm da simulação e ficam
+indisponíveis após alterações elétricas até uma nova execução.
+
+O mesmo seletor oferece **Gerador de sinais** e **Osciloscópio de 2 ou 4 canais**. Cada painel
+possui um botão **Remover** para retirar o instrumento. A remoção da fonte retira os três
+canais e suas probes geradas também do esquemático e da montagem. O osciloscópio pode ser
+inserido antes da simulação e fica aguardando aquisição até haver resultados de ponto de operação ou transitórios.
+
+Na fonte de bancada, **Canais em uso** permite manter apenas um ou dois canais, se necessário.
+Somente os canais marcados aparecem como dispositivos na protoboard. Reativar um canal o
+reinsere com seu valor inicial e terminais desconectados; Desfazer recupera uma retirada.
+
+Cada canal possui seletores de **Terminal +** e **Terminal −** para escolher os furos da placa
+ou da barra vertical. Também é possível clicar no borne do dispositivo desenhado e depois no
+furo da protoboard. O cabo aparece no desenho; furos ocupados são rejeitados. Escolha outro furo
+do mesmo barramento quando precisar compartilhar uma conexão elétrica.
+
+Ao apagar um canal da fonte pelo botão **Apagar** ou pela tecla **Delete**, seus rótulos
+automáticos e probes também são retirados. Rótulos automáticos que ficaram órfãos em versões
+anteriores são limpos ao reabrir o circuito; rótulos manuais são preservados.
+
+Ao abrir **Configurar análise** ou **Resultados** na vista Protoboard, os painéis de peças e
+ponteiras ficam recolhidos para dar espaço à placa. Volte a **Circuito** para editá-los.
+Em janelas estreitas, configuração e resultados aparecem abaixo da placa, sem cobri-la.
+
+Nos resultados CC ou transitórios, **Osciloscópio de bancada** abre o instrumento didático de 2/4
+canais. Selecione as probes de tensão, V/div, tempo/div, acoplamento e trigger. **Autoset**
+enquadra a aquisição; **Stop** congela seus dados. Não há conexão com equipamento real.
+
 - Escolha o símbolo na biblioteca (35 símbolos: passivos, fontes, chaves, dispositivos,
   transformador, fontes controladas, subcircuito) e clique na folha. A grade é de 20 px.
 - Fios ligam terminais; um T sobre um fio conecta, um cruzamento não. Rótulos com o mesmo nome são
@@ -65,3 +105,8 @@ estatística.
 - **KiCad**: netlist `.net` dos componentes físicos (fontes e pontas ficam de fora).
 - **CSV** dos vetores e **figuras** SVG/PNG/PDF com vírgula decimal.
 - **Salvar**: `.circ.json` do esquemático.
+
+O ponto de operação é exibido como uma linha horizontal de nível CC, com identificação de
+valor estático, sem aquisição temporal. Tempo e trigger ficam desabilitados nesse modo.
+O instrumento aceita probes de tensão e de corrente, com escala automática em V/div ou A/div.
+Sem probes disponíveis, a interface orienta a conectar uma probe e simular novamente.

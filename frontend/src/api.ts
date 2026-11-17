@@ -965,6 +965,7 @@ export interface Revision {
   locks: Record<string, string>;
   costs: Record<string, number>;
   note: string | null;
+  schematic?: import("./schematic/types").Schematic | null;
 }
 export interface ProjectDocument {
   format: "circuitos-projeto";
@@ -991,6 +992,7 @@ interface ProjectContent {
   locks: Record<string, string>;
   costs: Record<string, number>;
   note?: string | null;
+  schematic?: import("./schematic/types").Schematic | null;
 }
 
 export const projects = {

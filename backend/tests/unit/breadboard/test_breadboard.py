@@ -8,7 +8,7 @@ import pytest
 
 from circuitos.breadboard import board
 from circuitos.breadboard.autoplace import autoplace
-from circuitos.breadboard.check import ERRORS, check
+from circuitos.breadboard.check import ERRORS, board_nets, check
 from circuitos.breadboard.guide import guide
 from circuitos.breadboard.layout import Breadboard, Jumper, PlacedPart
 from circuitos.breadboard.pinout import colour_code, resolve
@@ -42,6 +42,20 @@ def test_strips_rails_and_split():
     for bad in ("k3", "a0", "a64", "tn7", "xx"):
         with pytest.raises(board.HoleError):
             board.parse(bad)
+
+
+def test_two_boards_and_vertical_bus_require_explicit_jumpers():
+    conductor = board.strip
+    assert conductor("2:a12") == conductor("2:e12") != conductor("a12")
+    assert conductor("2:tp2") != conductor("tp2")
+    assert conductor("vp1") == conductor("vp40") != conductor("vn1")
+    assert board.strip_holes("2:12L") == [f"2:{c}12" for c in "abcde"]
+    bb = Breadboard(wires=[Jumper(id="w1", a="a12", b="vp1"), Jumper(id="w2", a="vp2", b="2:e12")])
+    nets = board_nets(bb)
+    assert nets.find(conductor("a12")) == nets.find(conductor("2:a12"))
+    assert nets.find(conductor("vn1")) != nets.find(conductor("a12"))
+    for invalid in ("vp41", "2:vp1", "3:a12"):
+        assert not board.valid(invalid)
 
 
 @pytest.mark.parametrize(

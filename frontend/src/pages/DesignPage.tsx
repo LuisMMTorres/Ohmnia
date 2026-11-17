@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   design,
+  request,
   type DesignIn,
   type DesignModuleInfo,
   type DesignOut,
@@ -15,6 +16,8 @@ import { SignalPlot, type Trace } from "../components/SignalPlot";
 import { formatEng, unitSymbol } from "../format";
 import { BomTab } from "./design/BomTab";
 import { BreadboardTab } from "./design/BreadboardTab";
+import { SchematicWorkspace } from "./SchematicPage";
+import type { Schematic } from "../schematic/types";
 import { ProjectBar } from "./design/ProjectBar";
 import {
   type Field,
@@ -35,7 +38,8 @@ type Tab =
   | "ondas"
   | "esquematico"
   | "protoboard"
-  | "memoria";
+  | "memoria"
+  | "circuito";
 const TABS: [Tab, string][] = [
   ["resultados", "Resultados"],
   ["componentes", "Componentes e margens"],
@@ -44,6 +48,7 @@ const TABS: [Tab, string][] = [
   ["esquematico", "Esquemático"],
   ["protoboard", "Protoboard"],
   ["memoria", "Memória de cálculo"],
+  ["circuito", "Circuito editável"],
 ];
 const STATUS: Record<MarginStatus, string> = { ok: "ok", atencao: "atenção", violado: "violado" };
 
@@ -79,6 +84,7 @@ export function DesignPage() {
   const [costs, setCosts] = useState<Record<string, number>>({});
   const [project, setProject] = useState<ProjectDocument | null>(null);
   const latest = useRef(0);
+  const [editableCircuit, setEditableCircuit] = useState<Schematic | null>(null);
 
   useEffect(() => {
     design
@@ -129,6 +135,7 @@ export function DesignPage() {
   const chooseModule = (id: string) => {
     const m = modules.find((x) => x.id === id);
     if (!m) return;
+    setEditableCircuit(null);
     setModuleId(id);
     setSpec(m.defaults);
     setLocks({});
@@ -148,6 +155,7 @@ export function DesignPage() {
   };
 
   const openProject = (doc: ProjectDocument) => {
+    setEditableCircuit(doc.current.schematic ?? null);
     setModuleId(doc.module_id);
     setSpec(doc.current.spec);
     setPolicy(doc.current.policy);
@@ -156,6 +164,39 @@ export function DesignPage() {
     setSim(null);
   };
 
+  const prepareCircuit = async (): Promise<Schematic> => {
+    if (editableCircuit) return editableCircuit;
+    const data = await request<{
+      available: boolean;
+      reason: string | null;
+      schematic: Schematic | null;
+    }>(`/design/${moduleId}/breadboard`, { method: "POST", body: JSON.stringify(body) });
+    if (!data.available || !data.schematic)
+      throw new Error(
+        data.reason ?? "Este projeto ainda não permite conversão para circuito editável.",
+      );
+    const circuit = { ...data.schematic, title: project?.name ?? data.schematic.title };
+    setEditableCircuit(circuit);
+    return circuit;
+  };
+  const editCircuit = async () => {
+    try {
+      await prepareCircuit();
+      setTab("circuito");
+    } catch (e) {
+      setError((e as Error).message);
+    }
+  };
+  const sendCircuit = async (view: "esquematico" | "protoboard") => {
+    try {
+      const circuit = await prepareCircuit();
+      localStorage.setItem("circuitos.schematic", JSON.stringify(circuit));
+      sessionStorage.setItem("circuitos.simulator.view", view);
+      window.location.hash = "simulator";
+    } catch (e) {
+      setError((e as Error).message);
+    }
+  };
   type Export =
     | "report-html"
     | "report-pdf"
@@ -237,12 +278,31 @@ export function DesignPage() {
 
       <section className="panel" aria-label="Projeto">
         <ProjectBar
-          state={{ moduleId, spec, policy, locks, costs }}
+          state={{ moduleId, spec, policy, locks, costs, schematic: editableCircuit }}
           project={project}
           onProject={setProject}
           onOpen={openProject}
           onError={setError}
         />
+        <div className="row wrap project-circuit-actions">
+          <button className="secondary" disabled={!out || busy} onClick={() => void editCircuit()}>
+            Editar circuito do projeto
+          </button>
+          <button
+            className="secondary"
+            disabled={!out || busy}
+            onClick={() => void sendCircuit("esquematico")}
+          >
+            Enviar ao esquemático
+          </button>
+          <button
+            className="secondary"
+            disabled={!out || busy}
+            onClick={() => void sendCircuit("protoboard")}
+          >
+            Enviar à protoboard
+          </button>
+        </div>
         <div className="row design-head">
           <strong>{info?.title}</strong>
           <span className="muted small">{busy ? "calculando…" : out ? "atualizado" : ""}</span>
@@ -324,6 +384,23 @@ export function DesignPage() {
         {out && tab === "protoboard" && (
           <BreadboardTab moduleId={moduleId} body={body} version={out} />
         )}
+        {tab === "circuito" &&
+          (editableCircuit ? (
+            <>
+              <p className="note small">
+                Edição livre do circuito: adicione, retire ou troque componentes. Use Salvar como
+                para criar uma cópia independente. Os cálculos da topologia permanecem associados
+                aos requisitos; simule o circuito editado para conferir seu comportamento.
+              </p>
+              <SchematicWorkspace
+                key={project?.id ?? moduleId}
+                initialDocument={editableCircuit}
+                onDocumentChange={setEditableCircuit}
+              />
+            </>
+          ) : (
+            <button onClick={() => void editCircuit()}>Preparar circuito editável</button>
+          ))}
         {out && tab === "memoria" && <CalcSteps steps={out.result.steps} />}
       </section>
     </main>

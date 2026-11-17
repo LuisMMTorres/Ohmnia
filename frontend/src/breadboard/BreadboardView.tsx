@@ -5,6 +5,7 @@ import { breadboardApi } from "../api";
 import type { Schematic } from "../schematic/types";
 import {
   allHoles,
+  BOARD_GAP,
   boardSize,
   COLS,
   holeXY,
@@ -19,6 +20,10 @@ import {
   WIRE_COLORS,
 } from "./geometry";
 import type { Orientation } from "./geometry";
+import { ScopeMiniature } from "./ScopeMiniature";
+import { connectScope } from "./scopeConnections";
+import { netAtHole } from "./connections";
+import { InstrumentFace } from "./InstrumentFace";
 import { PackageArt, PackagePreview } from "./PackageArt";
 import type {
   Breadboard,
@@ -37,6 +42,8 @@ type Pt = [number, number];
 
 type Tool =
   | { kind: "select" }
+  | { kind: "scope"; channel: number; terminal: "positive" | "negative" }
+  | { kind: "connect"; ref: string; terminal: string }
   | { kind: "place"; ref: string; orient: Orientation }
   | { kind: "lead"; ref: string; legs: Record<string, string> }
   | { kind: "wire"; from: string | null; color: WireColor };
@@ -116,9 +123,17 @@ export function BreadboardView({
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [wireColor, setWireColor] = useState<WireColor>("verde");
-  const [zoom, setZoom] = useState(1.6);
+  const [probePositive, setProbePositive] = useState("a1");
+  const [probeNegative, setProbeNegative] = useState("0");
+  const [probeName, setProbeName] = useState("CH1");
+  const [zoom, setZoom] = useState(1);
   const svgRef = useRef<SVGSVGElement>(null);
   const size = boardSize(board);
+  const instrumentCount = bb.parts.filter((p) => pkgs[p.package]?.style === "offboard").length;
+  size.h =
+    size.boardH +
+    Math.max(1, Math.ceil((instrumentCount + (schematic.bench_scope_channels ? 1 : 0)) / 3)) * 180 +
+    40;
 
   const update = useCallback(
     (next: Breadboard) => onChange({ ...schematic, breadboard: next }),
@@ -198,7 +213,8 @@ export function BreadboardView({
       const dCol = pkg?.style === "dip" ? 0 : COLS.indexOf(b.col) - COLS.indexOf(a.col);
       const legs: Record<string, string> = {};
       for (const [pin, h] of Object.entries(part.legs)) {
-        const s = shift(board, h, dRow, dCol);
+        const shifted = shift(board, h.replace(/^2:/, ""), dRow, dCol);
+        const s = shifted && b.board === 2 ? `2:${shifted}` : shifted;
         if (!s) return null;
         legs[pin] = s;
       }
@@ -213,8 +229,42 @@ export function BreadboardView({
     setHover(nearestHole(board, x, y));
   };
 
-  const onClick = () => {
-    if (readOnly || !hover) return;
+  const onClick = (e: ReactMouseEvent<SVGSVGElement>) => {
+    const hole =
+      (e.target as Element).closest("[data-hole]")?.getAttribute("data-hole") ??
+      nearestHole(board, ...toSvg(e));
+    if (readOnly || !hole) return;
+    if (tool.kind === "scope") {
+      try {
+        if (!resolved) throw new Error("Aguarde o mapeamento das ligações do circuito.");
+        onChange(connectScope(schematic, board, resolved, tool.channel, tool.terminal, hole));
+        setTool({ kind: "select" });
+        setError(null);
+      } catch (e) {
+        setError((e as Error).message);
+      }
+      return;
+    }
+    if (tool.kind === "connect") {
+      const part = bb.parts.find((p) => p.ref === tool.ref);
+      if (!part) return;
+      if (
+        !free([hole], part.ref) ||
+        Object.entries(part.legs).some(([pin, h]) => pin !== tool.terminal && h === hole)
+      ) {
+        setError(`O furo ${hole} já está ocupado. Escolha outro furo do mesmo barramento.`);
+        return;
+      }
+      update({
+        ...bb,
+        parts: bb.parts.map((p) =>
+          p.ref === part.ref ? { ...p, legs: { ...p.legs, [tool.terminal]: hole! } } : p,
+        ),
+      });
+      setTool({ kind: "select" });
+      setError(null);
+      return;
+    }
     if (tool.kind === "place") {
       if (ghost && ghostOk) {
         update({ ...bb, parts: [...bb.parts.filter((p) => p.ref !== ghost.ref), ghost] });
@@ -225,9 +275,9 @@ export function BreadboardView({
     }
     if (tool.kind === "lead") {
       const pkg = pkgs[views[tool.ref]?.package ?? ""];
-      if (!pkg || !free([hover])) return;
+      if (!pkg || !free([hole])) return;
       const terms = pkg.pins.filter((t) => t in (views[tool.ref]?.pinmap ?? {}));
-      const legs = { ...tool.legs, [terms[Object.keys(tool.legs).length]!]: hover };
+      const legs = { ...tool.legs, [terms[Object.keys(tool.legs).length]!]: hole };
       if (Object.keys(legs).length >= terms.length) {
         update({
           ...bb,
@@ -241,11 +291,11 @@ export function BreadboardView({
       return;
     }
     if (tool.kind === "wire") {
-      if (!free([hover])) return;
-      if (!tool.from) setTool({ ...tool, from: hover });
-      else if (tool.from !== hover) {
+      if (!free([hole])) return;
+      if (!tool.from) setTool({ ...tool, from: hole });
+      else if (tool.from !== hole) {
         const id = `w${Date.now().toString(36)}`;
-        update({ ...bb, wires: [...bb.wires, { id, a: tool.from, b: hover, color: tool.color }] });
+        update({ ...bb, wires: [...bb.wires, { id, a: tool.from, b: hole, color: tool.color }] });
         setTool({ ...tool, from: null });
       }
       return;
@@ -329,34 +379,33 @@ export function BreadboardView({
   const holes = useMemo(() => allHoles(board), [board]);
   const xy = (h: string): Pt => holeXY(board, h);
   const instruments = bb.parts.filter((p) => pkgs[p.package]?.style === "offboard");
-  // instrument boxes below the board, each under its own holes, pushed apart when they overlap
-  const instrumentX = useMemo(() => {
-    const wanted = instruments
-      .map((p) => {
-        const xs = Object.values(p.legs).map((h) => holeXY(board, h)[0]);
-        const mean = xs.length ? xs.reduce((a, b) => a + b, 0) / xs.length : MX;
-        return { ref: p.ref, x: mean - 75 };
-      })
-      .sort((a, b) => a.x - b.x);
-    const out: Record<string, number> = {};
-    let next = 10;
-    for (const w of wanted) {
-      const x = Math.min(Math.max(w.x, next), size.w - 160);
-      out[w.ref] = x;
-      next = x + 160;
-    }
-    return out;
-  }, [instruments, board, size.w]);
-  const instrumentAt = (ref: string): Pt => [instrumentX[ref] ?? MX, size.boardH + 22];
+  const instrumentAt = (ref: string): Pt => {
+    const i = instruments.findIndex((p) => p.ref === ref);
+    return [20 + (i % 3) * 320, size.boardH + 24 + Math.floor(i / 3) * 180];
+  };
   const startPlacing = (v: PartView) => {
     const pkg = pkgs[v.package ?? ""];
     if (!pkg) return;
-    setSel(null);
-    setTool(
-      pkg.style === "offboard"
-        ? { kind: "lead", ref: v.ref, legs: {} }
-        : { kind: "place", ref: v.ref, orient: "h" },
-    );
+    let legs: Record<string, string> | null = pkg.style === "offboard" ? {} : null;
+    if (!legs) {
+      for (const h of holes.filter((h) => /^(2:)?[a-j]/.test(h))) {
+        const candidate = placeLegs(board, pkg, h, "h");
+        if (candidate && free(Object.values(candidate))) {
+          legs = candidate;
+          break;
+        }
+      }
+    }
+    if (!legs) {
+      setError("Sem espaço livre para este dispositivo.");
+      return;
+    }
+    update({
+      ...bb,
+      parts: [...bb.parts.filter((p) => p.ref !== v.ref), { ref: v.ref, package: pkg.id, legs }],
+    });
+    setSel({ kind: "part", ref: v.ref });
+    setTool({ kind: "select" });
   };
   const selPart = sel?.kind === "part" ? bb.parts.find((p) => p.ref === sel.ref) : undefined;
   const selView = sel?.kind === "part" ? views[sel.ref] : undefined;
@@ -367,15 +416,19 @@ export function BreadboardView({
         )
       : [];
   const hint =
-    tool.kind === "place"
-      ? `Clique no furo da perna 1 de ${tool.ref}${pkgs[views[tool.ref]?.package ?? ""]?.style === "dip" ? " (coluna f, abaixo da canaleta)" : ""}. R gira, Esc cancela.`
-      : tool.kind === "lead"
-        ? `${tool.ref}: clique no furo do terminal ${views[tool.ref]?.labels[leadTerms[Object.keys(tool.legs).length] ?? ""] ?? leadTerms[Object.keys(tool.legs).length]}.`
-        : tool.kind === "wire"
-          ? tool.from
-            ? `Fio a partir de ${tool.from}: clique no outro furo. Esc termina.`
-            : "Clique no primeiro furo do fio."
-          : "Arraste as peças para mover; arraste a perna de um resistor ou diodo para dobrá-la. Del apaga, R gira.";
+    tool.kind === "scope"
+      ? `CH${tool.channel}: clique no furo da ponteira ${tool.terminal === "positive" ? "+" : "−"}. Esc cancela.`
+      : tool.kind === "connect"
+        ? `${tool.ref}: clique no furo para conectar o terminal ${tool.terminal === "p" ? "+" : tool.terminal === "n" ? "−" : (views[tool.ref]?.labels[tool.terminal] ?? tool.terminal)}. Esc cancela.`
+        : tool.kind === "place"
+          ? `Clique no furo da perna 1 de ${tool.ref}${pkgs[views[tool.ref]?.package ?? ""]?.style === "dip" ? " (coluna f, abaixo da canaleta)" : ""}. R gira, Esc cancela.`
+          : tool.kind === "lead"
+            ? `${tool.ref}: clique no furo do terminal ${views[tool.ref]?.labels[leadTerms[Object.keys(tool.legs).length] ?? ""] ?? leadTerms[Object.keys(tool.legs).length]}.`
+            : tool.kind === "wire"
+              ? tool.from
+                ? `Fio a partir de ${tool.from}: clique no outro furo. Esc termina.`
+                : "Clique no primeiro furo do fio."
+              : "Arraste as peças para mover; arraste a perna de um resistor ou diodo para dobrá-la. Del apaga, R gira.";
 
   return (
     <div className="bb-layout">
@@ -507,68 +560,91 @@ export function BreadboardView({
           role="img"
           aria-label="Protoboard"
         >
-          <rect
-            x={6}
-            y={6}
-            width={size.w - 12}
-            height={size.boardH - 12}
-            rx={10}
-            className="bb-board"
-          />
-          <rect x={10} y={MY + 8.5 * P - 4} width={size.w - 20} height={8} className="bb-channel" />
-          {(["tp", "tn", "bn", "bp"] as const).map((r) => {
-            const y = MY + (board.y[r] ?? 0) * P;
-            const off = r === "tp" || r === "bn" ? -P * 0.55 : P * 0.55;
-            return (
-              <line
-                key={r}
-                x1={MX - 8}
-                x2={size.w - MX + 8}
-                y1={y + (r === "tp" ? -P * 0.55 : r === "bp" ? P * 0.55 : off * 0)}
-                y2={y + (r === "tp" ? -P * 0.55 : r === "bp" ? P * 0.55 : off * 0)}
-                className={board.rail_polarity[r] === "+" ? "bb-rail-plus" : "bb-rail-minus"}
+          {[0, BOARD_GAP].map((dy, i) => (
+            <g key={dy} transform={`translate(0,${dy})`} className="bb-board-panel">
+              <text x={MX} y={18} className="bb-ruler">
+                Protoboard {i + 1}
+              </text>
+              <rect
+                x={MX - 28}
+                y={6}
+                width={size.w - MX + 16}
+                height={BOARD_GAP - 26}
+                rx={10}
+                className="bb-board"
               />
-            );
-          })}
-          {[1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 63].map((r) => (
-            <text
-              key={r}
-              x={MX + (r - 1) * P}
-              y={MY + 2.15 * P}
-              textAnchor="middle"
-              className="bb-ruler"
-            >
-              {r}
-            </text>
+              <rect
+                x={MX - 24}
+                y={MY + 8.5 * P - 4}
+                width={size.w - MX + 8}
+                height={8}
+                className="bb-channel"
+              />
+              {(["tp", "tn", "bn", "bp"] as const).map((r) => {
+                const y = MY + (board.y[r] ?? 0) * P;
+                const off = r === "tp" || r === "bn" ? -P * 0.55 : P * 0.55;
+                return (
+                  <line
+                    key={r}
+                    x1={MX - 8}
+                    x2={size.w - MX + 8}
+                    y1={y + (r === "tp" ? -P * 0.55 : r === "bp" ? P * 0.55 : off * 0)}
+                    y2={y + (r === "tp" ? -P * 0.55 : r === "bp" ? P * 0.55 : off * 0)}
+                    className={board.rail_polarity[r] === "+" ? "bb-rail-plus" : "bb-rail-minus"}
+                  />
+                );
+              })}
+              {[1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 63].map((r) => (
+                <text
+                  key={r}
+                  x={MX + (r - 1) * P}
+                  y={MY + 2.15 * P}
+                  textAnchor="middle"
+                  className="bb-ruler"
+                >
+                  {r}
+                </text>
+              ))}
+              {"abcdefghij".split("").map((c) => (
+                <text
+                  key={c}
+                  x={MX - 18}
+                  y={MY + (board.y[c] ?? 0) * P + 3}
+                  textAnchor="middle"
+                  className="bb-ruler"
+                >
+                  {c}
+                </text>
+              ))}
+              {(["tp", "tn", "bn", "bp"] as const).map((r) => (
+                <text
+                  key={r}
+                  x={MX - 18}
+                  y={MY + (board.y[r] ?? 0) * P + 3}
+                  textAnchor="middle"
+                  className="bb-ruler"
+                >
+                  {board.rail_polarity[r]}
+                </text>
+              ))}
+            </g>
           ))}
-          {"abcdefghij".split("").map((c) => (
-            <text
-              key={c}
-              x={MX - 18}
-              y={MY + (board.y[c] ?? 0) * P + 3}
-              textAnchor="middle"
-              className="bb-ruler"
-            >
-              {c}
-            </text>
-          ))}
-          {(["tp", "tn", "bn", "bp"] as const).map((r) => (
-            <text
-              key={r}
-              x={MX - 18}
-              y={MY + (board.y[r] ?? 0) * P + 3}
-              textAnchor="middle"
-              className="bb-ruler"
-            >
-              {board.rail_polarity[r]}
-            </text>
-          ))}
+          <rect x={8} y={8} width={62} height={MY + 40 * P} rx={8} className="bb-board" />
+          <line x1={16} x2={16} y1={MY - 8} y2={MY + 39 * P + 8} className="bb-rail-plus" />
+          <line x1={62} x2={62} y1={MY - 8} y2={MY + 39 * P + 8} className="bb-rail-minus" />
+          <text x={18} y={19} className="bb-ruler">
+            +
+          </text>
+          <text x={48} y={19} className="bb-ruler">
+            −
+          </text>
           {holes.map((h) => {
             const [x, y] = xy(h);
             const lit = hoverStrip && strip(board, h, bb.rails_split) === hoverStrip;
             return (
               <rect
                 key={h}
+                data-hole={h}
                 x={x - 3}
                 y={y - 3}
                 width={6}
@@ -589,7 +665,7 @@ export function BreadboardView({
             const isGhosted = drag?.ref === p.ref && ghost;
             if (pkg.style === "offboard") {
               const [bx, by] = instrumentAt(p.ref);
-              const terms = Object.keys(p.legs);
+              const terms = pkg.pins.filter((t) => t in (views[p.ref]?.pinmap ?? {}));
               return (
                 <g
                   key={p.ref}
@@ -599,22 +675,52 @@ export function BreadboardView({
                     setSel({ kind: "part", ref: p.ref });
                   }}
                 >
-                  <rect x={bx} y={by} width={150} height={52} rx={6} />
-                  <text x={bx + 75} y={by + 20} textAnchor="middle" className="bb-inst-title">
-                    {p.ref} · {views[p.ref]?.title ?? pkg.label}
-                  </text>
+                  <InstrumentFace
+                    x={bx}
+                    y={by}
+                    title={`${p.ref} · ${views[p.ref]?.title ?? pkg.label}`}
+                    kind={views[p.ref]?.kind ?? ""}
+                  />
                   {terms.map((t, i) => {
-                    const tx = bx + 20 + (i * 110) / Math.max(1, terms.length - 1 || 1);
-                    const [hx, hy] = xy(p.legs[t]!);
+                    const tx = bx + 18 + (i * 244) / Math.max(1, terms.length - 1 || 1);
+                    const [hx, hy] = p.legs[t] ? xy(p.legs[t]!) : [tx, by + 142];
                     return (
                       <g key={t}>
-                        <path
-                          d={`M ${tx} ${by} C ${tx} ${by - 30}, ${hx} ${hy + 40}, ${hx} ${hy}`}
-                          className="bb-lead-wire"
-                          stroke={t === "n" || t === "-" || t === "0" ? "#222" : "#d32f2f"}
-                        />
+                        <circle
+                          cx={tx}
+                          cy={by + 132}
+                          r={7}
+                          style={{
+                            fill: t === "n" ? "#17232f" : "#d32f2f",
+                            stroke: "#8496a4",
+                            cursor: "pointer",
+                          }}
+                          role="button"
+                          tabIndex={readOnly ? -1 : 0}
+                          aria-label={`Conectar terminal ${p.ref}.${t}`}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (!readOnly) setTool({ kind: "connect", ref: p.ref, terminal: t });
+                          }}
+                          onKeyDown={(e) => {
+                            if (!readOnly && (e.key === "Enter" || e.key === " ")) {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              setTool({ kind: "connect", ref: p.ref, terminal: t });
+                            }
+                          }}
+                        >
+                          <title>Clique e depois escolha o furo da protoboard</title>
+                        </circle>
+                        {p.legs[t] && (
+                          <path
+                            d={`M ${tx} ${by + 132} C ${tx} ${by - 30}, ${hx} ${hy + 40}, ${hx} ${hy}`}
+                            className="bb-lead-wire"
+                            stroke={t === "n" || t === "-" || t === "0" ? "#222" : "#d32f2f"}
+                          />
+                        )}
                         <circle cx={hx} cy={hy} r={3} className="bb-clip" />
-                        <text x={tx} y={by + 42} textAnchor="middle" className="bb-leg-label">
+                        <text x={tx} y={by + 156} textAnchor="middle" className="bb-leg-label">
                           {views[p.ref]?.labels[t] ?? t}
                         </text>
                       </g>
@@ -653,6 +759,19 @@ export function BreadboardView({
             );
           })}
 
+          {!!schematic.bench_scope_channels && (
+            <ScopeMiniature
+              x={20 + (instruments.length % 3) * 320}
+              y={size.boardH + 24 + Math.floor(instruments.length / 3) * 180}
+              schematic={schematic}
+              board={board}
+              readOnly={readOnly}
+              onConnect={(channel, terminal) => {
+                setSel(null);
+                setTool({ kind: "scope", channel, terminal });
+              }}
+            />
+          )}
           {bb.wires.map((w) => {
             const [ax, ay] = xy(w.a);
             const [bx, by] = xy(w.b);
@@ -718,6 +837,45 @@ export function BreadboardView({
             )}
             <PinoutSource view={selView} />
             {!readOnly && (
+              <fieldset className="terminal-connections">
+                <legend>Terminais do dispositivo</legend>
+                {(pkgs[selPart.package]?.pins ?? [])
+                  .filter((pin) => pin in selView.pinmap)
+                  .map((pin) => (
+                    <label key={pin}>
+                      {selView.labels[pin] ?? pin}
+                      <select
+                        aria-label={`Terminal ${selPart.ref}.${pin}`}
+                        value={selPart.legs[pin] ?? ""}
+                        onChange={(e) => {
+                          const legs = { ...selPart.legs };
+                          if (e.target.value) legs[pin] = e.target.value;
+                          else delete legs[pin];
+                          update({
+                            ...bb,
+                            parts: bb.parts.map((p) =>
+                              p.ref === selPart.ref ? { ...p, legs } : p,
+                            ),
+                          });
+                        }}
+                      >
+                        <option value="">Desconectado</option>
+                        {holes.map((h) => (
+                          <option
+                            key={h}
+                            value={h}
+                            disabled={used.has(h) && used.get(h) !== selPart.ref}
+                          >
+                            {h}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                  ))}
+              </fieldset>
+            )}
+
+            {!readOnly && (
               <div className="row">
                 <button className="secondary small" onClick={rotateSelected}>
                   Girar (R)
@@ -736,6 +894,68 @@ export function BreadboardView({
               Apagar fio
             </button>
           </div>
+        )}
+        {!readOnly && !schematic.bench_scope_channels && (
+          <fieldset className="scope-probe-connections">
+            <legend>Ponteiras do osciloscópio</legend>
+            <label>
+              Nome do canal
+              <input value={probeName} onChange={(e) => setProbeName(e.target.value)} />
+            </label>
+            <label>
+              Ponteira +
+              <select value={probePositive} onChange={(e) => setProbePositive(e.target.value)}>
+                {holes.map((h) => (
+                  <option key={h}>{h}</option>
+                ))}
+              </select>
+            </label>
+            <label>
+              Referência −
+              <select value={probeNegative} onChange={(e) => setProbeNegative(e.target.value)}>
+                <option value="0">Terra do circuito (0)</option>
+                {holes.map((h) => (
+                  <option key={h}>{h}</option>
+                ))}
+              </select>
+            </label>
+            <button
+              disabled={!resolved || !probeName.trim()}
+              onClick={() => {
+                try {
+                  if (!resolved) return;
+                  const positive = netAtHole(board, bb, resolved, probePositive);
+                  const negative =
+                    probeNegative === "0" ? "0" : netAtHole(board, bb, resolved, probeNegative);
+                  const name = probeName.trim();
+                  if (schematic.probes.some((p) => p.name?.toLowerCase() === name.toLowerCase()))
+                    throw new Error("Já existe uma ponta com esse nome.");
+                  onChange({
+                    ...schematic,
+                    probes: [
+                      ...schematic.probes,
+                      {
+                        id: `scope${Date.now()}`,
+                        name,
+                        kind: "vdiff",
+                        target: { net: positive },
+                        reference: { net: negative },
+                      },
+                    ],
+                  });
+                  setError(null);
+                } catch (e) {
+                  setError((e as Error).message);
+                }
+              }}
+            >
+              Conectar ponteira
+            </button>
+            <p className="small muted">
+              O sinal segue os fios e barramentos da montagem atual. Simule novamente após mudar a
+              ligação.
+            </p>
+          </fieldset>
         )}
         <h3>Conferência com o esquemático</h3>
         {!report ? (

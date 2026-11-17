@@ -21,6 +21,7 @@ from sqlalchemy.engine import Engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
 
 from circuitos.core.errors import DataIntegrityError
+from circuitos.schematic.model import Schematic
 
 FORMAT: Literal["circuitos-projeto"] = "circuitos-projeto"
 FORMAT_VERSION = 1
@@ -40,9 +41,10 @@ class Revision(BaseModel):
     locks: dict[str, uuid.UUID] = Field(default_factory=dict)
     costs: dict[str, float] = Field(default_factory=dict)
     note: str | None = None
+    schematic: Schematic | None = None
 
     def same_content(self, other: Revision) -> bool:
-        keys = ("spec", "policy", "locks", "costs")
+        keys = ("spec", "policy", "locks", "costs", "schematic")
         return all(getattr(self, k) == getattr(other, k) for k in keys)
 
 

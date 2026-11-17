@@ -12,6 +12,7 @@ from typing import Literal
 
 from pydantic import BaseModel, Field, field_validator, model_validator
 
+from circuitos.breadboard import board
 from circuitos.breadboard.layout import Breadboard
 
 Point = tuple[int, int]
@@ -137,6 +138,19 @@ class Sweep(BaseModel):
     measure: ScalarMeasure | None = None  # required for worstcase
 
 
+class ScopeConnection(BaseModel):
+    positive: str | None = None
+    negative: str | None = None
+
+    @field_validator("positive", "negative")
+    @classmethod
+    def _valid_hole(cls, value: str | None) -> str | None:
+        if value is not None:
+            board.parse(value)
+            return value.strip().lower()
+        return None
+
+
 class Schematic(BaseModel):
     schema_version: str = SCHEMA_VERSION
     title: str = "Circuito sem título"
@@ -150,6 +164,10 @@ class Schematic(BaseModel):
     temperature: str = "27"  # °C, .temp
     directives: str = ""  # raw SPICE: .model, .subckt, .options, .ic, unsupported elements
     breadboard: Breadboard | None = None  # the same circuit assembled on a breadboard (Fase 10)
+    bench_scope_channels: Literal[0, 2, 4] = 0
+    bench_scope_connections: dict[Literal["1", "2", "3", "4"], ScopeConnection] = Field(
+        default_factory=dict
+    )
 
     @model_validator(mode="after")
     def _unique_refs(self) -> Schematic:

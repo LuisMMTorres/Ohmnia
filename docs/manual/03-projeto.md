@@ -1,5 +1,16 @@
 # 3. Projeto guiado: do requisito ao relatório
 
+O menu de acesso é **Análise de Projetos**. Use **Abrir…** para carregar um projeto existente
+e **Salvar como…** para criar uma cópia independente antes de modificá-lo.
+
+**Editar circuito do projeto** abre uma versão livre do circuito, permitindo adicionar,
+retirar e trocar componentes. **Salvar** ou **Salvar como…** guarda essa versão junto com a
+revisão do projeto. Ao reabrir, o circuito editado é recuperado. Os cálculos analíticos do
+módulo continuam associados aos requisitos originais; simule o circuito livre para avaliá-lo.
+
+**Enviar ao esquemático** e **Enviar à protoboard** transferem o circuito editado, quando houver,
+ou preparam o circuito do projeto atual e abrem a vista escolhida no Simulador.
+
 ## Fluxo
 
 1. Escolha o **módulo de projeto** (retificadores, fontes, amplificadores, ampops, filtros,

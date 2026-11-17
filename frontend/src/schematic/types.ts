@@ -93,6 +93,8 @@ export interface Schematic {
   temperature: string;
   directives: string;
   breadboard?: Breadboard | null; // the same circuit on a breadboard (Fase 10)
+  bench_scope_channels?: 0 | 2 | 4;
+  bench_scope_connections?: Record<string, { positive?: string | null; negative?: string | null }>;
 }
 
 export interface ParamDef {
@@ -133,6 +135,8 @@ export function emptySweep(): Sweep {
 export function emptySchematic(): Schematic {
   return {
     schema_version: "1",
+    bench_scope_channels: 0,
+    bench_scope_connections: {},
     title: "Circuito sem título",
     components: [],
     wires: [],

@@ -257,7 +257,7 @@ E1 out 0 0 n1 1e5
       );
       await p.mouse.click(pt[0], pt[1], opts);
     };
-    await p.click('.palette-item:text-is("Fonte de tensão CC")');
+    await p.click('.palette-item:text-is("Fonte de tensão (CC/CA)")');
     await at(0, 0);
     await p.click('.palette-item:text-is("Resistor")');
     await at(4, -4);
@@ -303,9 +303,9 @@ E1 out 0 0 n1 1e5
     if (OUT) await p.screenshot({ path: OUT + "00-bancada-assistida.png", fullPage: false });
     await p
       .getByRole("navigation", { name: "Seções" })
-      .getByRole("button", { name: "Componentes", exact: true })
+      .getByRole("button", { name: "Biblioteca", exact: true })
       .click();
-    assert.equal(await p.locator(".workspace-intro h2").innerText(), "Componentes");
+    assert.equal(await p.locator(".workspace-intro h2").innerText(), "Biblioteca");
     await p.goBack();
     await p.waitForSelector(".schematic-canvas");
     assert.equal(await p.locator(".workspace-intro h2").innerText(), "Simulador");
