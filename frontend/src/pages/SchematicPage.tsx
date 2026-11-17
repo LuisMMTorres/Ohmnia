@@ -31,6 +31,7 @@ import { useBreadboardSpec, useResolved } from "../breadboard/hooks";
 import { PackagePreview } from "../breadboard/PackageArt";
 import { ProgramEditor } from "../cosim/ProgramEditor";
 import { SimulatorPage } from "./SimulatorPage";
+import { WorkspaceSteps, type WorkspaceStep } from "../components/WorkspaceSteps";
 
 const STORAGE = "circuitos.schematic";
 
@@ -51,6 +52,16 @@ const STATE_LABEL: Record<Job["state"], string> = {
   failed: "Falhou",
   cancelled: "Cancelada",
 };
+
+const EDIT_TOOLS: [Tool, string][] = [
+  [{ kind: "select" }, "Selecionar"],
+  [{ kind: "wire" }, "Fio (W)"],
+  [{ kind: "label" }, "Rótulo de nó"],
+  [{ kind: "probe", probe: "v" }, "Ponta V"],
+  [{ kind: "probe", probe: "vdiff" }, "Ponta V diferencial"],
+  [{ kind: "probe", probe: "i" }, "Ponta I"],
+  [{ kind: "probe", probe: "p" }, "Potência"],
+];
 
 export function SchematicPage() {
   const [mode, setMode] = useState<"schematic" | "netlist">("schematic");
@@ -89,6 +100,41 @@ function SchematicWorkspace() {
   const [panel, setPanel] = useState<"analyses" | "sweep" | "params" | "netlist">("analyses");
   const [importText, setImportText] = useState<string | null>(null);
   const [view, setView] = useState<"esquematico" | "protoboard">("esquematico");
+  const [libraryOpen, setLibraryOpen] = useState(false);
+  const [showNodeNames, setShowNodeNames] = useState(false);
+  const [nodeMap, setNodeMap] = useState<Record<string, string[]>>({});
+  const [nodeError, setNodeError] = useState<string | null>(null);
+  const [resultProbes, setResultProbes] = useState<string[]>([]);
+  useEffect(() => {
+    setNodeMap({});
+    setNodeError(null);
+    if (!showNodeNames) return;
+    let cancelled = false;
+    const timer = window.setTimeout(() => {
+      schematicApi
+        .netlist(sch)
+        .then((nl) => {
+          if (!cancelled) setNodeMap(nl.nets);
+        })
+        .catch((e: Error) => {
+          if (!cancelled) setNodeError(`Nomes dos nós indisponíveis: ${e.message}`);
+        });
+    }, 300);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+    };
+  }, [sch, showNodeNames]);
+  const [activeStep, setActiveStep] = useState<WorkspaceStep>("circuit");
+  const circuitRef = useRef<HTMLDivElement>(null);
+  const analysisRef = useRef<HTMLElement>(null);
+  const resultsRef = useRef<HTMLElement>(null);
+  const activateStep = (step: WorkspaceStep) => setActiveStep(step);
+  useEffect(() => {
+    const section = { circuit: circuitRef, analysis: analysisRef, results: resultsRef }[activeStep]
+      .current;
+    section?.focus({ preventScroll: true });
+  }, [activeStep]);
   const bbSpec = useBreadboardSpec();
   const { resolved } = useResolved(sch);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -135,6 +181,7 @@ function SchematicWorkspace() {
     setSelection(null);
     setJob(null);
     setNetlist(null);
+    setActiveStep("circuit");
   };
   const undo = useCallback(() => {
     setPast((p) => {
@@ -191,9 +238,11 @@ function SchematicWorkspace() {
     try {
       const nl = await schematicApi.netlist(sch);
       setNetlist(nl);
+      setResultProbes(nl.probes.filter((p) => p.probe_id !== null).map((p) => p.name));
       const r = await schematicApi.simulate(sch);
       setWarnings(r.warnings);
       setJob({ id: r.job_id, state: "queued", progress: 0, message: "na fila" });
+      activateStep("results");
       watchJob(r.job_id, (j) => setJob(j));
     } catch (e) {
       setError((e as Error).message);
@@ -264,350 +313,490 @@ function SchematicWorkspace() {
     selection?.kind === "label" ? sch.labels.find((l) => l.id === selection.id) : undefined;
 
   return (
-    <main className="schematic-page">
-      <div className="toolbar row wrap">
-        <div className="segmented" role="group" aria-label="Vista">
-          <button
-            className={view === "esquematico" ? "tab active" : "tab"}
-            onClick={() => setView("esquematico")}
-          >
-            Esquemático 2D
-          </button>
-          <button
-            className={view === "protoboard" ? "tab active" : "tab"}
-            onClick={() => setView("protoboard")}
-          >
-            Protoboard
-          </button>
-        </div>
+    <main className={`schematic-page workspace-mode-${activeStep}`}>
+      <label className="node-visibility">
         <input
-          className="title-input"
-          aria-label="Título do circuito"
-          value={sch.title}
-          onChange={(e) => change({ ...sch, title: e.target.value })}
+          type="checkbox"
+          checked={showNodeNames}
+          onChange={(e) => setShowNodeNames(e.target.checked)}
         />
-        <select
-          aria-label="Exemplos"
-          value=""
-          onChange={(e) => {
-            const ex = SCHEMATIC_EXAMPLES[e.target.value];
-            if (ex) replace(ex());
-            const co = cosimExamples.find((c) => `mcu:${c.name}` === e.target.value);
-            if (co) replace(structuredClone(co.schematic));
-          }}
-        >
-          <option value="">Exemplos…</option>
-          <optgroup label="Circuitos">
-            {Object.keys(SCHEMATIC_EXAMPLES).map((k) => (
-              <option key={k}>{k}</option>
-            ))}
-          </optgroup>
-          {cosimExamples.length > 0 && (
-            <optgroup label="Microcontroladores e CLP">
-              {cosimExamples.map((c) => (
-                <option key={c.name} value={`mcu:${c.name}`} title={c.description}>
-                  {c.name}
-                </option>
-              ))}
-            </optgroup>
-          )}
-        </select>
-        <button className="secondary" onClick={() => replace(emptySchematic())}>
-          Novo
-        </button>
-        <button className="secondary" onClick={() => fileRef.current?.click()}>
-          Abrir
-        </button>
-        <input
-          ref={fileRef}
-          type="file"
-          accept=".json,.circ.json"
-          hidden
-          onChange={(e) => e.target.files?.[0] && void open(e.target.files[0])}
-        />
-        <button className="secondary" onClick={save}>
-          Salvar
-        </button>
-        <button className="secondary" onClick={() => setImportText("")}>
-          Importar netlist
-        </button>
-        <button className="secondary" onClick={() => void exportNetlist()}>
-          Exportar netlist
-        </button>
-        <button
-          className="secondary"
-          onClick={() => void exportKicad()}
-          title="Netlist para o KiCad (Pcbnew: Arquivo → Importar → Netlist)"
-        >
-          KiCad
-        </button>
-        <button className="secondary" onClick={undo} disabled={!past.length} title="Ctrl+Z">
-          Desfazer
-        </button>
-        <button className="secondary" onClick={redo} disabled={!future.length} title="Ctrl+Y">
-          Refazer
-        </button>
-        <span className="grow" />
-        <button onClick={() => void simulate()} disabled={running}>
-          {running ? "Simulando…" : "Simular"}
-        </button>
-        {running && job && (
-          <button className="secondary" onClick={() => void api.cancel(job.id)}>
-            Cancelar
-          </button>
-        )}
-      </div>
-
-      {importText !== null && (
-        <div className="panel import-box">
-          <h3>Importar netlist SPICE</h3>
-          <p className="small muted">
-            A primeira linha é o título (regra do SPICE). Modelos .model/.subckt e linhas sem
-            símbolo ficam nas diretivas.
-          </p>
-          <textarea rows={12} value={importText} onChange={(e) => setImportText(e.target.value)} />
-          <div className="row">
-            <button onClick={() => void doImport(importText)}>Importar</button>
-            <label className="button secondary">
-              Arquivo…
-              <input
-                type="file"
-                accept=".cir,.net,.sp,.spice,.txt"
-                hidden
-                onChange={async (e) =>
-                  e.target.files?.[0] && setImportText(await e.target.files[0].text())
-                }
-              />
-            </label>
-            <button className="secondary" onClick={() => setImportText(null)}>
-              Fechar
-            </button>
-          </div>
-        </div>
+        Exibir nomes dos nós
+      </label>
+      {nodeError && (
+        <p className="small muted" role="status">
+          {nodeError}
+        </p>
       )}
-
-      {view === "protoboard" && bbSpec ? (
-        <BreadboardView schematic={sch} onChange={change} spec={bbSpec} resolved={resolved} />
-      ) : (
-        <div className="schematic-layout">
-          <aside className="panel palette" aria-label="Biblioteca de símbolos">
-            <div className="tools">
-              {(
-                [
-                  [{ kind: "select" }, "Selecionar"],
-                  [{ kind: "wire" }, "Fio (W)"],
-                  [{ kind: "label" }, "Rótulo de nó"],
-                  [{ kind: "probe", probe: "v" }, "Ponta V"],
-                  [{ kind: "probe", probe: "vdiff" }, "Ponta V diferencial"],
-                  [{ kind: "probe", probe: "i" }, "Ponta I"],
-                  [{ kind: "probe", probe: "p" }, "Potência"],
-                ] as [Tool, string][]
-              ).map(([t, label]) => (
-                <button
-                  key={label}
-                  className={JSON.stringify(t) === JSON.stringify(tool) ? "tool active" : "tool"}
-                  onClick={() => setTool(t)}
-                >
-                  {label}
-                </button>
-              ))}
+      <WorkspaceSteps active={activeStep} resultsAvailable={job !== null} onSelect={activateStep} />
+      <div className="simulator-workbench">
+        <div
+          ref={circuitRef}
+          className="circuit-workspace"
+          tabIndex={-1}
+          role="region"
+          aria-label="Circuito"
+        >
+          <div className="toolbar row wrap">
+            <div className="segmented" role="group" aria-label="Vista">
+              <button
+                className={view === "esquematico" ? "tab active" : "tab"}
+                onClick={() => setView("esquematico")}
+              >
+                Esquemático 2D
+              </button>
+              <button
+                className={view === "protoboard" ? "tab active" : "tab"}
+                onClick={() => setView("protoboard")}
+              >
+                Protoboard
+              </button>
             </div>
-            {groups.map((g) => (
-              <details key={g} open>
-                <summary>{g}</summary>
-                {library.symbols
-                  .filter((s) => s.group === g)
-                  .map((s) => (
-                    <button
-                      key={s.kind}
-                      className={
-                        tool.kind === "place" && tool.symbol === s.kind
-                          ? "palette-item active"
-                          : "palette-item"
-                      }
-                      title={s.description || s.label}
-                      onClick={() => setTool({ kind: "place", symbol: s.kind })}
-                    >
-                      {s.label}
-                    </button>
+            <input
+              className="title-input"
+              aria-label="Título do circuito"
+              value={sch.title}
+              onChange={(e) => change({ ...sch, title: e.target.value })}
+            />
+            <select
+              aria-label="Exemplos"
+              value=""
+              onChange={(e) => {
+                const ex = SCHEMATIC_EXAMPLES[e.target.value];
+                if (ex) replace(ex());
+                const co = cosimExamples.find((c) => `mcu:${c.name}` === e.target.value);
+                if (co) replace(structuredClone(co.schematic));
+              }}
+            >
+              <option value="">Exemplos…</option>
+              <optgroup label="Circuitos">
+                {Object.keys(SCHEMATIC_EXAMPLES).map((k) => (
+                  <option key={k}>{k}</option>
+                ))}
+              </optgroup>
+              {cosimExamples.length > 0 && (
+                <optgroup label="Microcontroladores e CLP">
+                  {cosimExamples.map((c) => (
+                    <option key={c.name} value={`mcu:${c.name}`} title={c.description}>
+                      {c.name}
+                    </option>
                   ))}
-              </details>
-            ))}
-          </aside>
-
-          <SchematicEditor
-            schematic={sch}
-            library={symbols}
-            tool={tool}
-            setTool={setTool}
-            selection={selection}
-            setSelection={setSelection}
-            onChange={change}
-            probeColors={probeColors}
-          />
-
-          <aside className="panel properties" aria-label="Propriedades">
-            {selectedComp ? (
-              <ComponentProps
-                comp={selectedComp}
-                sym={symbols[selectedComp.kind]}
-                onChange={(c) =>
-                  change({ ...sch, components: sch.components.map((x) => (x.id === c.id ? c : x)) })
-                }
-                onDelete={() => {
-                  change({
-                    ...sch,
-                    components: sch.components.filter((x) => x.id !== selectedComp.id),
-                    probes: sch.probes.filter((p) => p.component !== selectedComp.ref),
-                  });
-                  setSelection(null);
-                }}
-                refsInUse={sch.components
-                  .filter((x) => x.id !== selectedComp.id)
-                  .map((x) => x.ref.toLowerCase())}
-              />
-            ) : null}
-            {selectedComp && bbSpec && resolved && (
-              <SelectedPackage
-                view={resolved.parts.find((p) => p.ref === selectedComp.ref)}
-                packages={bbSpec.packages}
-              />
+                </optgroup>
+              )}
+            </select>
+            <button className="secondary" onClick={() => replace(emptySchematic())}>
+              Novo
+            </button>
+            <button className="secondary" onClick={() => fileRef.current?.click()}>
+              Abrir
+            </button>
+            <input
+              ref={fileRef}
+              type="file"
+              accept=".json,.circ.json"
+              hidden
+              onChange={(e) => e.target.files?.[0] && void open(e.target.files[0])}
+            />
+            <button className="secondary" onClick={save}>
+              Salvar
+            </button>
+            <button className="secondary" onClick={() => setImportText("")}>
+              Importar netlist
+            </button>
+            <button className="secondary" onClick={() => void exportNetlist()}>
+              Exportar netlist
+            </button>
+            <button
+              className="secondary"
+              onClick={() => void exportKicad()}
+              title="Netlist para o KiCad (Pcbnew: Arquivo → Importar → Netlist)"
+            >
+              KiCad
+            </button>
+            <button className="secondary" onClick={undo} disabled={!past.length} title="Ctrl+Z">
+              Desfazer
+            </button>
+            <button className="secondary" onClick={redo} disabled={!future.length} title="Ctrl+Y">
+              Refazer
+            </button>
+            <span className="grow" />
+            <button onClick={() => void simulate()} disabled={running}>
+              {running ? "Simulando…" : "Simular"}
+            </button>
+            {running && job && (
+              <button className="secondary" onClick={() => void api.cancel(job.id)}>
+                Cancelar
+              </button>
             )}
-            {selectedComp ? null : selectedLabel ? (
-              <div>
-                <h3>Rótulo de nó</h3>
-                <label>
-                  Nome do nó
+          </div>
+
+          {importText !== null && (
+            <div className="panel import-box">
+              <h3>Importar netlist SPICE</h3>
+              <p className="small muted">
+                A primeira linha é o título (regra do SPICE). Modelos .model/.subckt e linhas sem
+                símbolo ficam nas diretivas.
+              </p>
+              <textarea
+                rows={12}
+                value={importText}
+                onChange={(e) => setImportText(e.target.value)}
+              />
+              <div className="row">
+                <button onClick={() => void doImport(importText)}>Importar</button>
+                <label className="button secondary">
+                  Arquivo…
                   <input
-                    value={selectedLabel.name}
-                    onChange={(e) =>
-                      change({
-                        ...sch,
-                        labels: sch.labels.map((l) =>
-                          l.id === selectedLabel.id
-                            ? { ...l, name: e.target.value.replace(/[^A-Za-z0-9_+-]/g, "") || "n" }
-                            : l,
-                        ),
-                      })
+                    type="file"
+                    accept=".cir,.net,.sp,.spice,.txt"
+                    hidden
+                    onChange={async (e) =>
+                      e.target.files?.[0] && setImportText(await e.target.files[0].text())
                     }
                   />
                 </label>
-                <p className="small muted">
-                  Rótulos de mesmo nome são o mesmo nó; “0” ou “gnd” é a terra.
-                </p>
-              </div>
-            ) : selection?.kind === "wire" ? (
-              <div>
-                <h3>Fio</h3>
-                <button
-                  className="secondary"
-                  onClick={() => {
-                    change({ ...sch, wires: sch.wires.filter((w) => w.id !== selection.id) });
-                    setSelection(null);
-                  }}
-                >
-                  Apagar fio
+                <button className="secondary" onClick={() => setImportText(null)}>
+                  Fechar
                 </button>
               </div>
-            ) : (
-              <p className="small muted">
-                Escolha um símbolo à esquerda e clique na área de desenho. Selecione um componente
-                para editar valores ou escolher uma peça do catálogo.
-              </p>
-            )}
-            <h3>Pontas de prova</h3>
-            {sch.probes.length === 0 && (
-              <p className="small muted">Nenhuma. Use as ferramentas “Ponta”.</p>
-            )}
-            <ul className="probe-list">
-              {sch.probes.map((p) => (
-                <li key={p.id}>
-                  <span className="swatch" style={{ background: probeColors[p.id] }} />
-                  <input
-                    aria-label="Nome da ponta"
-                    placeholder={probeDefault(p)}
-                    value={p.name ?? ""}
-                    onChange={(e) =>
+            </div>
+          )}
+
+          {view === "esquematico" && (
+            <div className="schematic-toolstrip" role="group" aria-label="Ferramentas de desenho">
+              <button
+                type="button"
+                className="secondary library-toggle"
+                aria-expanded={libraryOpen}
+                aria-controls="symbol-library"
+                onClick={() => setLibraryOpen(!libraryOpen)}
+              >
+                {libraryOpen ? "Recolher biblioteca" : "Adicionar componente"}
+              </button>
+              <div className="drawing-tools">
+                {EDIT_TOOLS.map(([t, label]) => (
+                  <button
+                    key={label}
+                    className={JSON.stringify(t) === JSON.stringify(tool) ? "tool active" : "tool"}
+                    aria-pressed={JSON.stringify(t) === JSON.stringify(tool)}
+                    onClick={() => setTool(t)}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {view === "protoboard" && bbSpec ? (
+            <BreadboardView schematic={sch} onChange={change} spec={bbSpec} resolved={resolved} />
+          ) : (
+            <div className={`schematic-layout${libraryOpen ? " library-open" : ""}`}>
+              <aside
+                id="symbol-library"
+                className="panel palette"
+                aria-label="Biblioteca de símbolos"
+                hidden={!libraryOpen}
+              >
+                <h3>Biblioteca de componentes</h3>
+                <p className="small muted">Escolha um símbolo e posicione-o no circuito.</p>
+                {groups.map((g) => (
+                  <details key={g} open>
+                    <summary>{g}</summary>
+                    {library.symbols
+                      .filter((s) => s.group === g)
+                      .map((s) => (
+                        <button
+                          key={s.kind}
+                          className={
+                            tool.kind === "place" && tool.symbol === s.kind
+                              ? "palette-item active"
+                              : "palette-item"
+                          }
+                          title={s.description || s.label}
+                          onClick={() => setTool({ kind: "place", symbol: s.kind })}
+                        >
+                          {s.label}
+                        </button>
+                      ))}
+                  </details>
+                ))}
+              </aside>
+
+              <SchematicEditor
+                nodeNames={showNodeNames ? nodeMap : {}}
+                schematic={sch}
+                library={symbols}
+                tool={tool}
+                setTool={setTool}
+                selection={selection}
+                setSelection={setSelection}
+                onChange={change}
+                probeColors={probeColors}
+              />
+
+              <aside className="panel properties" aria-label="Propriedades">
+                <h3>Propriedades</h3>
+                <label className="component-picker">
+                  Componente selecionado
+                  <select
+                    aria-label="Selecionar componente"
+                    value={selectedComp?.id ?? ""}
+                    onChange={(event) => {
+                      setSelection(
+                        event.target.value ? { kind: "component", id: event.target.value } : null,
+                      );
+                      setTool({ kind: "select" });
+                    }}
+                  >
+                    <option value="">Selecione no circuito…</option>
+                    {sch.components.map((component) => (
+                      <option key={component.id} value={component.id}>
+                        {component.ref} · {symbols[component.kind]?.label ?? component.kind}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                {selectedComp ? (
+                  <ComponentProps
+                    comp={selectedComp}
+                    sym={symbols[selectedComp.kind]}
+                    onChange={(c) =>
                       change({
                         ...sch,
-                        probes: sch.probes.map((x) =>
-                          x.id === p.id ? { ...x, name: e.target.value || null } : x,
-                        ),
+                        components: sch.components.map((x) => (x.id === c.id ? c : x)),
                       })
                     }
+                    onDelete={() => {
+                      change({
+                        ...sch,
+                        components: sch.components.filter((x) => x.id !== selectedComp.id),
+                        probes: sch.probes.filter((p) => p.component !== selectedComp.ref),
+                      });
+                      setSelection(null);
+                    }}
+                    refsInUse={sch.components
+                      .filter((x) => x.id !== selectedComp.id)
+                      .map((x) => x.ref.toLowerCase())}
                   />
-                  <button
-                    className="secondary small-btn"
-                    aria-label="Remover ponta"
-                    onClick={() =>
-                      change({ ...sch, probes: sch.probes.filter((x) => x.id !== p.id) })
-                    }
-                  >
-                    ×
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </aside>
-        </div>
-      )}
-
-      <section className="panel analysis-panel">
-        <div className="tabs" role="tablist">
-          {(
-            [
-              ["analyses", "Análises"],
-              ["sweep", "Varredura, Monte Carlo e pior caso"],
-              ["params", "Temperatura, parâmetros e diretivas"],
-              ["netlist", "Netlist"],
-            ] as const
-          ).map(([k, label]) => (
-            <button
-              key={k}
-              className={panel === k ? "tab active" : "tab"}
-              onClick={() => (k === "netlist" ? void showNetlist() : setPanel(k))}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
-        {panel === "analyses" && <AnalysesPanel sch={sch} library={library} onChange={change} />}
-        {panel === "sweep" && <SweepPanel sch={sch} onChange={change} />}
-        {panel === "params" && <ParamsPanel sch={sch} onChange={change} />}
-        {panel === "netlist" && netlist && (
-          <div>
-            <pre className="netlist-view">{netlist.netlist}</pre>
-            {netlist.spreads.length > 0 && (
-              <table className="params">
-                <thead>
-                  <tr>
-                    <th>Tolerância</th>
-                    <th>Mín.</th>
-                    <th>Nominal</th>
-                    <th>Máx.</th>
-                    <th>Fonte</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {netlist.spreads.map((s) => (
-                    <tr key={s.component}>
-                      <td>
-                        {s.component}.{s.param}
-                      </td>
-                      <td className="num">{s.low.toPrecision(4)}</td>
-                      <td className="num">{s.nominal.toPrecision(4)}</td>
-                      <td className="num">{s.high.toPrecision(4)}</td>
-                      <td className="small">{s.source}</td>
-                    </tr>
+                ) : null}
+                {selectedComp && bbSpec && resolved && (
+                  <SelectedPackage
+                    view={resolved.parts.find((p) => p.ref === selectedComp.ref)}
+                    packages={bbSpec.packages}
+                  />
+                )}
+                {selectedComp ? null : selectedLabel ? (
+                  <div>
+                    <h3>Rótulo de nó</h3>
+                    <label>
+                      Nome do nó
+                      <input
+                        value={selectedLabel.name}
+                        onChange={(e) =>
+                          change({
+                            ...sch,
+                            labels: sch.labels.map((l) =>
+                              l.id === selectedLabel.id
+                                ? {
+                                    ...l,
+                                    name: e.target.value.replace(/[^A-Za-z0-9_+-]/g, "") || "n",
+                                  }
+                                : l,
+                            ),
+                          })
+                        }
+                      />
+                    </label>
+                    <p className="small muted">
+                      Rótulos de mesmo nome são o mesmo nó; “0” ou “gnd” é a terra.
+                    </p>
+                  </div>
+                ) : selection?.kind === "wire" ? (
+                  <div>
+                    <h3>Fio</h3>
+                    <button
+                      className="secondary"
+                      onClick={() => {
+                        change({ ...sch, wires: sch.wires.filter((w) => w.id !== selection.id) });
+                        setSelection(null);
+                      }}
+                    >
+                      Apagar fio
+                    </button>
+                  </div>
+                ) : (
+                  <p className="small muted">
+                    Selecione um componente no desenho ou na lista acima para editar seus valores.
+                    Para inserir uma peça, use “Adicionar componente”.
+                  </p>
+                )}
+                <h3>Pontas de prova</h3>
+                {sch.probes.length === 0 && (
+                  <p className="small muted">Nenhuma. Use as ferramentas “Ponta”.</p>
+                )}
+                <ul className="probe-list">
+                  {sch.probes.map((p) => (
+                    <li key={p.id}>
+                      <span className="swatch" style={{ background: probeColors[p.id] }} />
+                      <input
+                        aria-label="Nome da ponta"
+                        placeholder={probeDefault(p)}
+                        value={p.name ?? ""}
+                        onChange={(e) =>
+                          change({
+                            ...sch,
+                            probes: sch.probes.map((x) =>
+                              x.id === p.id ? { ...x, name: e.target.value || null } : x,
+                            ),
+                          })
+                        }
+                      />
+                      <button
+                        className="secondary small-btn"
+                        aria-label="Remover ponta"
+                        onClick={() =>
+                          change({ ...sch, probes: sch.probes.filter((x) => x.id !== p.id) })
+                        }
+                      >
+                        ×
+                      </button>
+                    </li>
                   ))}
-                </tbody>
-              </table>
-            )}
-          </div>
-        )}
-      </section>
+                </ul>
+              </aside>
+            </div>
+          )}
+        </div>
 
-      {error && <p className="error">{error}</p>}
+        <section
+          ref={analysisRef}
+          className="panel analysis-panel workspace-section"
+          hidden={activeStep !== "analysis"}
+          tabIndex={-1}
+          aria-label="Configurar análise"
+        >
+          <div className="section-heading">
+            <div>
+              <h3>Configurar análise</h3>
+              <p className="small muted">
+                Escolha as análises e ajuste as condições antes de simular.
+              </p>
+            </div>
+          </div>
+          <div className="tabs" role="tablist">
+            {(
+              [
+                ["analyses", "Análises"],
+                ["sweep", "Varredura, Monte Carlo e pior caso"],
+                ["params", "Temperatura, parâmetros e diretivas"],
+                ["netlist", "Netlist"],
+              ] as const
+            ).map(([k, label]) => (
+              <button
+                key={k}
+                className={panel === k ? "tab active" : "tab"}
+                onClick={() => (k === "netlist" ? void showNetlist() : setPanel(k))}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+          {panel === "analyses" && <AnalysesPanel sch={sch} library={library} onChange={change} />}
+          {panel === "sweep" && <SweepPanel sch={sch} onChange={change} />}
+          {panel === "params" && <ParamsPanel sch={sch} onChange={change} />}
+          {panel === "netlist" && netlist && (
+            <div>
+              <pre className="netlist-view">{netlist.netlist}</pre>
+              {netlist.spreads.length > 0 && (
+                <table className="params">
+                  <thead>
+                    <tr>
+                      <th>Tolerância</th>
+                      <th>Mín.</th>
+                      <th>Nominal</th>
+                      <th>Máx.</th>
+                      <th>Fonte</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {netlist.spreads.map((s) => (
+                      <tr key={s.component}>
+                        <td>
+                          {s.component}.{s.param}
+                        </td>
+                        <td className="num">{s.low.toPrecision(4)}</td>
+                        <td className="num">{s.nominal.toPrecision(4)}</td>
+                        <td className="num">{s.high.toPrecision(4)}</td>
+                        <td className="small">{s.source}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          )}
+        </section>
+
+        <section
+          ref={resultsRef}
+          className="simulation-output workspace-section"
+          hidden={activeStep !== "results"}
+          tabIndex={-1}
+          aria-label="Resultados da simulação"
+        >
+          <div className="section-heading">
+            <div>
+              <h3>Resultados</h3>
+              <p className="small muted">Sinais, medições e avisos da execução.</p>
+            </div>
+          </div>
+          {job ? (
+            <section className="panel">
+              <div className="row">
+                <b>{STATE_LABEL[job.state]}</b>
+                {running && <progress value={job.progress} max={1} />}
+                <span className="small muted">
+                  {job.message}
+                  {job.elapsed_s ? ` · ${job.elapsed_s.toFixed(2).replace(".", ",")} s` : ""}
+                  {job.backend ? ` · ${job.backend}` : ""}
+                </span>
+              </div>
+              {job.error && (
+                <div className="error">
+                  <p>{job.error.message}</p>
+                  {job.error.suggestions.length > 0 && (
+                    <ul>
+                      {job.error.suggestions.map((s) => (
+                        <li key={s}>{s}</li>
+                      ))}
+                    </ul>
+                  )}
+                  {job.error.log && <pre>{job.error.log.slice(-3000)}</pre>}
+                </div>
+              )}
+              {job.state === "done" && (
+                <ResultsView job={job} probeNames={resultProbes} onJobUpdate={setJob} />
+              )}
+            </section>
+          ) : (
+            <div className="panel results-empty">
+              <h3>Pronto para a primeira simulação</h3>
+              <p className="muted">
+                Confira o circuito e as análises. Ao clicar em Simular, os resultados aparecerão
+                aqui.
+              </p>
+              <button className="secondary" onClick={() => activateStep("analysis")}>
+                Revisar análises
+              </button>
+            </div>
+          )}
+        </section>
+      </div>
+      {error && (
+        <p className="error" role="alert">
+          {error}
+        </p>
+      )}
       {(warnings.length > 0 ||
         (netlist?.warnings.length ?? 0) > 0 ||
         (job?.warnings?.length ?? 0) > 0) && (
@@ -618,40 +807,6 @@ function SchematicWorkspace() {
             ),
           )}
         </ul>
-      )}
-
-      {job && (
-        <section className="panel">
-          <div className="row">
-            <b>{STATE_LABEL[job.state]}</b>
-            {running && <progress value={job.progress} max={1} />}
-            <span className="small muted">
-              {job.message}
-              {job.elapsed_s ? ` · ${job.elapsed_s.toFixed(2).replace(".", ",")} s` : ""}
-              {job.backend ? ` · ${job.backend}` : ""}
-            </span>
-          </div>
-          {job.error && (
-            <div className="error">
-              <p>{job.error.message}</p>
-              {job.error.suggestions.length > 0 && (
-                <ul>
-                  {job.error.suggestions.map((s) => (
-                    <li key={s}>{s}</li>
-                  ))}
-                </ul>
-              )}
-              {job.error.log && <pre>{job.error.log.slice(-3000)}</pre>}
-            </div>
-          )}
-          {job.state === "done" && (
-            <ResultsView
-              job={job}
-              probeNames={netlist?.probes.map((p) => p.name) ?? []}
-              onJobUpdate={setJob}
-            />
-          )}
-        </section>
       )}
     </main>
   );

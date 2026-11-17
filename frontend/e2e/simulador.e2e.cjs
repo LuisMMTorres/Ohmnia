@@ -9,10 +9,12 @@ const assert = require("node:assert/strict");
 const BASE = process.env.BASE || "http://127.0.0.1:8766";
 const OUT = process.env.SHOTS || "";
 (async () => {
-  let b;
+  let b, p;
   try {
-    b = await chromium.launch();
-    const p = await b.newPage({ viewport: { width: 1440, height: 1000 }, deviceScaleFactor: 1 });
+    b = await chromium.launch({
+      executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH || undefined,
+    });
+    p = await b.newPage({ viewport: { width: 1440, height: 1000 }, deviceScaleFactor: 1 });
     const errs = [];
     p.on("pageerror", (e) => errs.push(String(e)));
     p.on("response", (r) => {
@@ -25,6 +27,54 @@ const OUT = process.env.SHOTS || "";
     await p.evaluate(() => localStorage.clear());
     await p.reload();
     await p.waitForSelector(".schematic-canvas", { timeout: 20000 });
+    const nodeToggle = p.getByRole("checkbox", { name: "Exibir nomes dos nós" });
+    assert.equal(await p.locator(".node-annotations text").count(), 0);
+    await nodeToggle.check();
+    await p.waitForSelector(".node-annotations text");
+    assert.ok((await p.locator(".node-annotations text").allTextContents()).includes("0"));
+    await nodeToggle.uncheck();
+    await p.waitForFunction(() => document.querySelectorAll(".node-annotations text").length === 0);
+    const steps = p.getByRole("navigation", { name: "Etapas do simulador" });
+    assert.equal(await steps.getByRole("button").count(), 3);
+    assert.equal(await steps.getByRole("button", { name: /Resultados/ }).isDisabled(), true);
+    await steps.getByRole("button", { name: /Configurar análise/ }).click();
+    assert.equal(
+      await p.locator(".analysis-panel").evaluate((el) => el === document.activeElement),
+      true,
+    );
+    assert.equal(await p.locator(".simulation-output").isVisible(), false);
+    const circuitBounds = await p.locator(".circuit-workspace").boundingBox();
+    const analysisBounds = await p.locator(".analysis-panel").boundingBox();
+    assert.ok(
+      analysisBounds.x >= circuitBounds.x + circuitBounds.width,
+      "analysis opens beside circuit",
+    );
+    assert.ok(Math.abs(analysisBounds.y - circuitBounds.y) < 2, "analysis stays at workspace top");
+    await steps.getByRole("button", { name: /^Circuito/ }).click();
+    const picker = p.getByRole("combobox", { name: "Selecionar componente", exact: true });
+    const resistor = await picker
+      .locator("option")
+      .filter({ hasText: /^R1 ·/ })
+      .getAttribute("value");
+    await picker.selectOption(resistor);
+    assert.equal(await picker.inputValue(), resistor);
+    await p.locator(".skip-link").focus();
+    await p.keyboard.press("Enter");
+    assert.equal(await p.evaluate(() => document.activeElement.id), "workspace-content");
+    await p.setViewportSize({ width: 390, height: 844 });
+    await p.waitForFunction(() => {
+      const canvas = document.querySelector(".schematic-canvas");
+      const bounds = canvas.getBoundingClientRect();
+      return [...canvas.querySelectorAll(".comp")].every((component) => {
+        const rect = component.getBoundingClientRect();
+        return rect.left >= bounds.left && rect.right <= bounds.right;
+      });
+    });
+    assert.equal(
+      await p.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1),
+      true,
+    );
+    await p.setViewportSize({ width: 1440, height: 1000 });
     const shot = async (n) => {
       await p.waitForTimeout(700);
       if (OUT) await p.screenshot({ path: OUT + n, fullPage: true });
@@ -36,7 +86,17 @@ const OUT = process.env.SHOTS || "";
     };
     const simulate = async () => {
       await p.click('button:text-is("Simular")');
-      await p.waitForSelector("text=/^(Concluída|Falhou)$/", { timeout: 300000 });
+      await p.waitForFunction(
+        () =>
+          document.querySelector('.schematic-page > [role="alert"]') ||
+          [...document.querySelectorAll(".simulation-output b")].some((el) =>
+            /^(Concluída|Falhou)$/.test(el.textContent),
+          ),
+        undefined,
+        { timeout: 300000 },
+      );
+      if (await p.locator('.schematic-page > [role="alert"]').count())
+        throw new Error(await p.locator('.schematic-page > [role="alert"]').innerText());
       if (await p.locator('b:text-is("Falhou")').count())
         throw new Error("simulation failed: " + (await p.locator(".error").first().innerText()));
       await p.waitForTimeout(1200);
@@ -62,6 +122,22 @@ const OUT = process.env.SHOTS || "";
 
     await example("Filtro RC passa-baixas");
     await simulate();
+    assert.equal(await steps.getByRole("button", { name: /Resultados/ }).isEnabled(), true);
+    assert.equal(
+      await steps.getByRole("button", { name: /Resultados/ }).getAttribute("aria-current"),
+      "step",
+    );
+    assert.equal(await p.locator(".analysis-panel").isVisible(), false);
+    const resultsBounds = await p.locator(".simulation-output").boundingBox();
+    const schematicBounds = await p.locator(".circuit-workspace").boundingBox();
+    assert.ok(
+      resultsBounds.x >= schematicBounds.x + schematicBounds.width,
+      "results open beside circuit",
+    );
+    assert.deepEqual(
+      (await p.locator(".vectors label").allTextContents()).map((v) => v.trim()).sort(),
+      ["i(c1)", "v(in)", "v(out)"],
+    );
     await shot("01-rc-esquematico-osciloscopio.png");
     await analysis(/frequência/i);
     await mode("Bode");
@@ -90,6 +166,7 @@ const OUT = process.env.SHOTS || "";
     await shot("06-rc-monte-carlo-histograma.png");
 
     // worst case on the same circuit, configured through the sweep panel
+    await steps.getByRole("button", { name: /Configurar análise/ }).click();
     await p.click('button.tab:text-is("Varredura, Monte Carlo e pior caso")');
     await field(".analysis-panel", /^Tipo/).selectOption("worstcase");
     await field(".analysis-panel", /^Análise da medida/).selectOption("ac");
@@ -145,8 +222,18 @@ E1 out 0 0 n1 1e5
 
     // draw a circuit from scratch: V source, resistor, wires, ground, probe
     await p.click('button:text-is("Novo")');
+    await p.getByRole("button", { name: "Adicionar componente", exact: true }).click();
+    assert.equal(
+      await p
+        .getByRole("button", { name: "Recolher biblioteca", exact: true })
+        .getAttribute("aria-expanded"),
+      "true",
+    );
     await p.click('button:text-is("Enquadrar")').catch(() => {});
     const at = async (gx, gy, opts) => {
+      await p
+        .locator(".schematic-canvas")
+        .evaluate((canvas) => canvas.scrollIntoView({ block: "center", behavior: "instant" }));
       // map grid coords through the current view transform
       const pt = await p.evaluate(
         ([gx, gy]) => {
@@ -160,6 +247,13 @@ E1 out 0 0 n1 1e5
           return [r.x, r.y];
         },
         [gx, gy],
+      );
+      assert.ok(
+        await p.evaluate(
+          ([x, y]) => !!document.elementFromPoint(x, y)?.closest(".schematic-canvas"),
+          pt,
+        ),
+        `drawing point ${gx},${gy} is obscured`,
       );
       await p.mouse.click(pt[0], pt[1], opts);
     };
@@ -188,6 +282,7 @@ E1 out 0 0 n1 1e5
     await p.click('.tool:text-is("Ponta V")');
     await at(8, -4);
     await p.click('.tool:text-is("Selecionar")');
+    await steps.getByRole("button", { name: /Configurar análise/ }).click();
     await p.click('button.tab:text-is("Análises")');
     await p.click('button:text-is("+ Ponto de operação (.op)")');
     await simulate();
@@ -197,7 +292,36 @@ E1 out 0 0 n1 1e5
     // default source 5 V across two equal default resistors
     assert.match(txt, /v\(n00\d\)\s+2,5 V/);
     assert.deepEqual(errs, [], "console errors or failed requests");
+    await example("Filtro RC passa-baixas");
+    await steps.getByRole("button", { name: /^Circuito/ }).click();
+    await picker.selectOption(
+      await picker.locator("option").filter({ hasText: /^R1 ·/ }).getAttribute("value"),
+    );
+    if (await p.getByRole("button", { name: "Recolher biblioteca", exact: true }).count())
+      await p.getByRole("button", { name: "Recolher biblioteca", exact: true }).click();
+    await p.evaluate(() => window.scrollTo(0, 0));
+    if (OUT) await p.screenshot({ path: OUT + "00-bancada-assistida.png", fullPage: false });
+    await p
+      .getByRole("navigation", { name: "Seções" })
+      .getByRole("button", { name: "Componentes", exact: true })
+      .click();
+    assert.equal(await p.locator(".workspace-intro h2").innerText(), "Componentes");
+    await p.goBack();
+    await p.waitForSelector(".schematic-canvas");
+    assert.equal(await p.locator(".workspace-intro h2").innerText(), "Simulador");
+    await p.setViewportSize({ width: 390, height: 844 });
+    assert.equal(
+      await p.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1),
+      true,
+    );
+    if (OUT) await p.screenshot({ path: OUT + "00-bancada-mobile.png", fullPage: true });
+    await p.setViewportSize({ width: 1440, height: 1000 });
+    await p.emulateMedia({ colorScheme: "dark" });
+    if (OUT) await p.screenshot({ path: OUT + "00-bancada-escura.png", fullPage: false });
     console.log("E2E simulador: ok");
+  } catch (error) {
+    if (p && OUT) await p.screenshot({ path: OUT + "e2e-failure.png", fullPage: true });
+    throw error;
   } finally {
     await b?.close();
   }

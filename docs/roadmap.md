@@ -189,3 +189,19 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
   ele e o exemplo integrado correspondente ficaram fora da validação concluída.
 - Evidências e resultados: [validacao/correcoes-numericas.md](validacao/correcoes-numericas.md).
 
+## Interface assistida — primeira entrega aprovada (2026-11-17)
+
+- Referência escolhida pelo usuário: segunda proposta, **Bancada assistida**, inspirada na
+  organização visual do STM32CubeProgrammer.
+- Navegação superior com ícones e nomes, estado do simulador e descrição de cada área.
+- Simulador como tela inicial; fluxo **Circuito → Configurar análise → Resultados**.
+- Biblioteca recolhível, ferramentas de desenho sempre acessíveis e seleção de componentes
+  pelo desenho ou pela lista no painel de propriedades.
+- Tema claro/escuro, adaptação a telas menores e navegação por teclado.
+- Manual: [manual/04-simulador.md](manual/04-simulador.md).
+- Validação e limites: [validacao/interface-assistida.md](validacao/interface-assistida.md).
+- Testada pelo usuário e aprovada para envio ao GitHub. Próximo passo: estender o fluxo assistido ao projeto guiado.
+
+
+- Ajuste da interface assistida: opção de nomes reais dos nós e resultados limitados às probes
+  da execução e expressões explícitas; detalhes em `validacao/interface-assistida.md`.
