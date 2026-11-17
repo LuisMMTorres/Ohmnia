@@ -11,6 +11,7 @@ from circuitos.design import registry
 from circuitos.design.engine import run
 from circuitos.design.verify import compare_full
 from circuitos.selection.derating import DeratingPolicy
+from circuitos.simulation.backend import BatchNgspiceBackend
 
 pytestmark = pytest.mark.ngspice
 
@@ -131,3 +132,29 @@ def test_as_fase5(reviewed_catalogue, name):
         f"({c.error_pct:.2f} % > {c.tolerance_pct} %)"
         for c in bad
     )
+
+
+@pytest.mark.parametrize("gain", [1, 2])
+def test_limiter_batch(reviewed_catalogue, gain):
+    """The balanced Zener/diode branch also converges in the executable backend.
+
+    G=1 stays below the Zener threshold; G=2 clips. The same closed-form checks and
+    original 1 % tolerance apply to both backends (the main cases use the DLL).
+    """
+    if not BatchNgspiceBackend.available():
+        pytest.skip("executável do ngspice não instalado")
+    repo = reviewed_catalogue
+    mod = registry.get("DM-OPNL")
+    spec = mod.spec_schema(config="limitador", G=gain)
+    res, devices = run(
+        mod,
+        spec,
+        lambda c: repo.search(category=c),
+        repo.get,
+        DeratingPolicy.from_preset("didatico"),
+    )
+    comparisons, _, _ = compare_full(
+        mod.build_circuit(spec, devices, res.summary), res.summary, BatchNgspiceBackend()
+    )
+    assert len(comparisons) == 2
+    assert all(c.ok for c in comparisons), comparisons
