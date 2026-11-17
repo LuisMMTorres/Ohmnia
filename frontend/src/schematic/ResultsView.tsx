@@ -64,6 +64,7 @@ export function ResultsView({ job, probeNames, onJobUpdate }: Props) {
   const multi = (job.runs?.length ?? 0) > 1;
   const [base, setBase] = useState<string>("");
   const [run, setRun] = useState<number | "all">("all");
+  const [expressionNames, setExpressionNames] = useState<string[]>([]);
   const [selected, setSelected] = useState<string[]>([]);
   const [modeChoice, setMode] = useState<Mode>("scope");
   const [form, setForm] = useState<ComplexForm>("mag_db");
@@ -95,27 +96,31 @@ export function ResultsView({ job, probeNames, onJobUpdate }: Props) {
     [group, run],
   );
   const first = shown[0] ?? group[0];
+  useEffect(() => {
+    setExpressionNames([]);
+    setSelected([]);
+  }, [job.id]);
   const vectorNames = useMemo(
     () =>
       first
         ? first.vectors
-            .filter((v) => v.name !== first.scale && !/(^|\()v?am_/.test(v.name))
+            .filter(
+              (v) =>
+                v.name !== first.scale &&
+                ([...probeNames, ...expressionNames].some(
+                  (name) => name.toLowerCase() === v.name.toLowerCase(),
+                ) ||
+                  (kind === "noise" && /^(o|i)noise_(spectrum|total)$/.test(v.name))),
+            )
             .map((v) => v.name)
         : [],
-    [first],
+    [first, probeNames, expressionNames, kind],
   );
 
-  // default vectors: the probes, else node voltages
+  // Offer only explicit probes and expressions added by the user.
   useEffect(() => {
-    if (!first) return;
-    setSelected((sel) => {
-      const keep = sel.filter((s) => vectorNames.includes(s));
-      if (keep.length) return keep;
-      const probes = probeNames.map((n) => n.toLowerCase()).filter((n) => vectorNames.includes(n));
-      const volts = vectorNames.filter((n) => n.startsWith("v(") && !n.includes("am_"));
-      return (probes.length ? probes : volts.length ? volts : vectorNames).slice(0, 4);
-    });
-  }, [first, vectorNames, probeNames]);
+    setSelected(vectorNames);
+  }, [vectorNames]);
 
   // the stored mode may not fit the analysis shown (e.g. Bode on a transient): normalise it
   // synchronously so no request or plot is ever made with a stale combination
@@ -187,7 +192,7 @@ export function ResultsView({ job, probeNames, onJobUpdate }: Props) {
     };
   }, [job.id, first, shown, selected, mode, form, viewKey]);
 
-  const traces = loaded.key === viewKey ? loaded.traces : [];
+  const traces = selected.length && loaded.key === viewKey ? loaded.traces : [];
   const phase = loaded.key === viewKey ? loaded.phase : [];
 
   // measurements (transient, one run)
@@ -222,6 +227,7 @@ export function ResultsView({ job, probeNames, onJobUpdate }: Props) {
     if (!first || !expr.trim()) return;
     try {
       const info = await schematicApi.expression(job.id, first.name, expr, exprName);
+      setExpressionNames((names) => [...names, info.name]);
       onJobUpdate(await api.status(job.id));
       setSelected((s) => [...s.filter((n) => n !== info.name), info.name]);
       setExpr("");
@@ -307,6 +313,12 @@ export function ResultsView({ job, probeNames, onJobUpdate }: Props) {
       {mode !== "stats" && mode !== "worst" && mode !== "fft" && (
         <details className="vectors-box" open>
           <summary>Sinais ({selected.length})</summary>
+          {vectorNames.length === 0 && (
+            <p className="small muted">
+              Nenhuma ponta de prova disponível nesta análise. Adicione pontas no circuito e simule
+              novamente.
+            </p>
+          )}
           <div className="vectors">
             {vectorNames.map((n) => (
               <label key={n}>

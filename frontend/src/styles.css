@@ -1,15 +1,16 @@
 :root {
-  --bg: #f6f7f9;
+  --bg: #edf2f6;
   --panel: #ffffff;
-  --text: #1b1f24;
-  --muted: #5b6573;
-  --border: #d9dde3;
-  --accent: #2a6fd1;
+  --text: #20394d;
+  --muted: #5d7283;
+  --border: #d4e0e9;
+  --accent: #087d9f;
   --accent-text: #ffffff;
   --error-bg: #fdecea;
   --error-text: #8a1c12;
   color-scheme: light;
   font-family:
+    "Segoe UI",
     system-ui,
     -apple-system,
     "Segoe UI",
@@ -18,12 +19,12 @@
 }
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #14171b;
-    --panel: #1c2026;
-    --text: #e6e9ee;
-    --muted: #9aa4b1;
-    --border: #333a44;
-    --accent: #5b9bf0;
+    --bg: #14212d;
+    --panel: #1c2c3a;
+    --text: #e1edf6;
+    --muted: #a7becf;
+    --border: #354a5a;
+    --accent: #69cce7;
     --accent-text: #0d1117;
     --error-bg: #3a1d1a;
     --error-text: #ffb4a9;
@@ -44,7 +45,7 @@ header h1 .tagline {
   font-weight: normal;
   color: var(--muted);
 }
-header {
+.app-header {
   display: flex;
   align-items: baseline;
   justify-content: space-between;

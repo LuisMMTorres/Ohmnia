@@ -28,6 +28,7 @@ export type Selection =
   | null;
 
 interface Props {
+  nodeNames?: Record<string, string[]>;
   schematic: Schematic;
   library: Record<string, SymbolDef>;
   tool: Tool;
@@ -41,6 +42,7 @@ interface Props {
 const uid = (p: string) => `${p}${Math.random().toString(36).slice(2, 9)}`;
 
 export function SchematicEditor({
+  nodeNames = {},
   schematic: sch,
   library,
   tool,
@@ -56,6 +58,7 @@ export function SchematicEditor({
   const [wire, setWire] = useState<Point[] | null>(null);
   const [verticalFirst, setVerticalFirst] = useState(false);
   const [diffStart, setDiffStart] = useState<Point | null>(null);
+  const fitRef = useRef<() => void>(() => {});
   const drag = useRef<{
     kind: "component" | "pan";
     id?: string;
@@ -425,6 +428,27 @@ export function SchematicEditor({
     });
   };
 
+  // Keep the drawing visible when opening the library or changing the viewport width.
+  // Observe size changes only: editing, panning and zooming must not trigger an auto-fit.
+  useEffect(() => {
+    fitRef.current = fit;
+  });
+  useEffect(() => {
+    const svg = svgRef.current;
+    if (!svg) return;
+    let { width, height } = svg.getBoundingClientRect();
+    const observer = new ResizeObserver(([entry]) => {
+      if (!entry) return;
+      const next = entry.contentRect;
+      if (Math.abs(next.width - width) < 1 && Math.abs(next.height - height) < 1) return;
+      width = next.width;
+      height = next.height;
+      fitRef.current();
+    });
+    observer.observe(svg);
+    return () => observer.disconnect();
+  }, []);
+
   // auto-fit when a new document is loaded (component ids change completely)
   const docKey = sch.components.map((c) => c.id).join("|");
   const lastDoc = useRef("");
@@ -594,6 +618,18 @@ export function SchematicEditor({
               </text>
             </g>
           ))}
+          <g className="node-annotations" pointerEvents="none">
+            {Object.entries(nodeNames).map(([name, members]) => {
+              const pin = pins.find((p) => members.includes(`${p.comp.ref}.${p.pin}`));
+              if (!pin || sch.labels.some((l) => l.name.toLowerCase() === name.toLowerCase()))
+                return null;
+              return (
+                <text key={name} x={pin.at[0] * GRID + 8} y={pin.at[1] * GRID - 9} fontSize={11}>
+                  {name}
+                </text>
+              );
+            })}
+          </g>
           {probeMarks}
           {diffStart && (
             <circle

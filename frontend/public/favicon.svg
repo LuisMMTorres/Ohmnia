@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="6" fill="#092c50" />
+  <text
+    x="16"
+    y="25"
+    text-anchor="middle"
+    font-family="Segoe UI, Arial, sans-serif"
+    font-size="26"
+    fill="#c5d942"
+  >
+    Ω
+  </text>
+</svg>
