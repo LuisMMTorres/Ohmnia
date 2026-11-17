@@ -72,3 +72,10 @@ def test_without_scale_and_complex():
     assert out.data == pytest.approx([0.0, 0.0])
     with pytest.raises(ExpressionError, match="eixo"):
         evaluate("integ(v(x))", {"v(x)": (np.array([1.0]), "V")})
+
+
+def test_constant_operating_point_keeps_a_one_sample_vector():
+    result = evaluate("0-0", {"v(out)": (np.array([2.5]), "V")})
+    assert result.data.shape == (1,)
+    assert result.data.tolist() == [0.0]
+    assert evaluate("5", {}).data.tolist() == [5]

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Policy, ProjectDocument, projects, ProjectSummary } from "../../api";
+import type { Schematic } from "../../schematic/types";
 
 export interface DesignState {
   moduleId: string;
@@ -7,6 +8,7 @@ export interface DesignState {
   policy: Policy;
   locks: Record<string, string>;
   costs: Record<string, number>;
+  schematic?: Schematic | null;
 }
 
 interface Props {
@@ -25,7 +27,8 @@ function sameContent(doc: ProjectDocument, s: DesignState): boolean {
     JSON.stringify(c.spec) === JSON.stringify(s.spec) &&
     c.policy === s.policy &&
     JSON.stringify(c.locks) === JSON.stringify(s.locks) &&
-    JSON.stringify(c.costs) === JSON.stringify(s.costs)
+    JSON.stringify(c.costs) === JSON.stringify(s.costs) &&
+    JSON.stringify(c.schematic ?? null) === JSON.stringify(s.schematic ?? null)
   );
 }
 
@@ -67,6 +70,7 @@ export function ProjectBar({ state, project, onProject, onOpen, onError }: Props
     locks: state.locks,
     costs: state.costs,
     note: note ?? null,
+    schematic: state.schematic ?? null,
   });
 
   const saveAs = () =>

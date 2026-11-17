@@ -22,6 +22,7 @@ from circuitos.projects.store import (
     ProjectSummary,
     Revision,
 )
+from circuitos.schematic.model import Schematic
 
 router = APIRouter(prefix="/api/v1/projects")
 
@@ -40,6 +41,7 @@ class ProjectContent(BaseModel):
     locks: dict[str, uuid.UUID] = Field(default_factory=dict)
     costs: dict[str, float] = Field(default_factory=dict)
     note: str | None = None
+    schematic: Schematic | None = None
 
 
 def _validated(module_id: str, content: ProjectContent) -> Revision:
@@ -60,6 +62,7 @@ def _validated(module_id: str, content: ProjectContent) -> Revision:
         locks=content.locks,
         costs=content.costs,
         note=content.note,
+        schematic=content.schematic,
     )
 
 

@@ -2,9 +2,10 @@
 import type { BoardSpec, PackageSpec } from "./types";
 
 export const P = 14; // pixels per 0.1" hole pitch
-export const MX = 34; // left margin
+export const MX = 104; // includes the independent vertical power bus
 export const MY = 28; // top margin
-export const INSTRUMENT_H = 120; // area below the board for off-board instruments
+export const INSTRUMENT_H = 260; // area below the boards for complete instruments
+export const BOARD_GAP = 22 * P;
 
 /** Columns from top to bottom (rails and terminal strips). */
 export const COLS = ["tp", "tn", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "bn", "bp"];
@@ -14,27 +15,32 @@ const UPPER = new Set(["a", "b", "c", "d", "e"]);
 export interface Hole {
   col: string;
   row: number;
+  board?: number;
 }
 
 export function parseHole(spec: BoardSpec, hole: string): Hole | null {
-  const m = /^(tp|tn|bn|bp|[a-j])(\d{1,2})$/.exec(hole.trim().toLowerCase());
+  const m = /^(2:)?(tp|tn|bn|bp|vp|vn|[a-j])(\d{1,2})$/.exec(hole.trim().toLowerCase());
   if (!m) return null;
-  const col = m[1]!;
-  const row = Number(m[2]);
-  if (RAILS.has(col)) return spec.rail_rows.includes(row) ? { col, row } : null;
-  return row >= 1 && row <= spec.rows ? { col, row } : null;
+  const col = m[2]!;
+  const row = Number(m[3]);
+  const board = m[1] ? 2 : 1;
+  if (col === "vp" || col === "vn")
+    return board === 1 && row >= 1 && row <= 40 ? { col, row, board } : null;
+  if (RAILS.has(col)) return spec.rail_rows.includes(row) ? { col, row, board } : null;
+  return row >= 1 && row <= spec.rows ? { col, row, board } : null;
 }
 
-export const holeName = (h: Hole) => `${h.col}${h.row}`;
+export const holeName = (h: Hole) => `${h.board === 2 ? "2:" : ""}${h.col}${h.row}`;
 
 export function holeXY(spec: BoardSpec, hole: string): [number, number] {
   const h = parseHole(spec, hole);
   if (!h) return [0, 0];
-  return [MX + (h.row - 1) * P, MY + (spec.y[h.col] ?? 0) * P];
+  if (h.col === "vp" || h.col === "vn") return [h.col === "vp" ? 24 : 52, MY + (h.row - 1) * P];
+  return [MX + (h.row - 1) * P, MY + (spec.y[h.col] ?? 0) * P + (h.board === 2 ? BOARD_GAP : 0)];
 }
 
 export function boardSize(spec: BoardSpec): { w: number; h: number; boardH: number } {
-  const boardH = MY * 2 + 17 * P;
+  const boardH = MY * 2 + 17 * P + BOARD_GAP;
   return { w: MX * 2 + (spec.rows - 1) * P, h: boardH + INSTRUMENT_H, boardH };
 }
 
@@ -42,6 +48,8 @@ export function boardSize(spec: BoardSpec): { w: number; h: number; boardH: numb
 export function strip(spec: BoardSpec, hole: string, split = false): string {
   const h = parseHole(spec, hole);
   if (!h) return "";
+  if (h.board === 2) return `2:${strip(spec, hole.slice(2), split)}`;
+  if (h.col === "vp" || h.col === "vn") return h.col;
   if (RAILS.has(h.col))
     return split ? `${h.col}-${h.row <= spec.split_after ? "esq" : "dir"}` : h.col;
   return `${h.row}${UPPER.has(h.col) ? "L" : "R"}`;
@@ -55,11 +63,23 @@ export function allHoles(spec: BoardSpec): string[] {
       : Array.from({ length: spec.rows }, (_, i) => i + 1);
     for (const r of rows) out.push(`${col}${r}`);
   }
-  return out;
+  return [
+    ...out,
+    ...out.map((h) => `2:${h}`),
+    ...Array.from({ length: 40 }, (_, i) => [`vp${i + 1}`, `vn${i + 1}`]).flat(),
+  ];
 }
 
 /** Nearest valid hole to a point, or null when the point is off the board. */
 export function nearestHole(spec: BoardSpec, x: number, y: number): string | null {
+  if (x < MX - 25) {
+    const row = Math.round((y - MY) / P) + 1;
+    const col = Math.abs(x - 24) < Math.abs(x - 52) ? "vp" : "vn";
+    const h = `${col}${row}`;
+    return Math.abs(x - (col === "vp" ? 24 : 52)) < P * 0.75 && parseHole(spec, h) ? h : null;
+  }
+  const second = y >= BOARD_GAP - 8;
+  if (second) y -= BOARD_GAP;
   const row = Math.round((x - MX) / P) + 1;
   if (row < 1 || row > spec.rows) return null;
   let best: string | null = null;
@@ -67,7 +87,7 @@ export function nearestHole(spec: BoardSpec, x: number, y: number): string | nul
   for (const col of COLS) {
     const d = Math.abs(MY + (spec.y[col] ?? 0) * P - y);
     if (d < dist) {
-      const name = `${col}${row}`;
+      const name = `${second ? "2:" : ""}${col}${row}`;
       if (parseHole(spec, name)) {
         best = name;
         dist = d;
@@ -83,7 +103,7 @@ export function shift(spec: BoardSpec, hole: string, dRow: number, dCol: number)
   if (!h) return null;
   const ci = COLS.indexOf(h.col) + dCol;
   if (ci < 0 || ci >= COLS.length) return null;
-  const name = `${COLS[ci]}${h.row + dRow}`;
+  const name = `${h.board === 2 ? "2:" : ""}${COLS[ci]}${h.row + dRow}`;
   return parseHole(spec, name) ? name : null;
 }
 
@@ -103,7 +123,7 @@ export function placeLegs(
     if (a.col !== "f") return null;
     pkg.pins.forEach((pin, i) => {
       const [dr, dc] = pkg.offsets[i]!;
-      legs[pin] = `${dc < 0 ? "e" : "f"}${a.row + dr}`;
+      legs[pin] = `${a.board === 2 ? "2:" : ""}${dc < 0 ? "e" : "f"}${a.row + dr}`;
     });
   } else {
     for (let i = 0; i < pkg.pins.length; i++) {

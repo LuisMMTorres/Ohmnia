@@ -14,20 +14,20 @@ const PAGES = {
     icon: "M3 6h18v12H3z M7 10h4v4H7z M15 10h2 M15 14h2 M7 3v3 M17 3v3 M7 18v3 M17 18v3",
   },
   design: {
-    label: "Projeto",
+    label: "Análise de Projetos",
     description:
       "Transforme os requisitos em um projeto com componentes, margens e memória de cálculo.",
     element: <DesignPage />,
     icon: "M4 4h6v6H4z M14 14h6v6h-6z M10 7h7v7 M7 10v7h7",
   },
   catalog: {
-    label: "Componentes",
+    label: "Biblioteca",
     description: "Encontre peças reais, confira suas fontes e revise os parâmetros do catálogo.",
     element: <CatalogPage />,
     icon: "M6 6h12v12H6z M9 9h6v6H9z M9 2v4 M15 2v4 M9 18v4 M15 18v4 M2 9h4 M2 15h4 M18 9h4 M18 15h4",
   },
   bench: {
-    label: "Bancada de dispositivos",
+    label: "Análise de dispositivos",
     description: "Explore curvas características e o comportamento de cada dispositivo.",
     element: <BenchPage />,
     icon: "M2 12h4l3-8 5 16 3-8h5",

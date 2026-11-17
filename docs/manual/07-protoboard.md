@@ -1,10 +1,25 @@
 # Protoboard: o mesmo circuito montado como na bancada
 
 Todo circuito tem duas vistas: o **esquemático 2D** (símbolos) e a **protoboard** (as peças reais,
-pelo encapsulamento, espetadas numa placa de 830 pontos). As duas são o mesmo circuito: a montagem
+pelo encapsulamento, montadas na bancada com duas placas de 830 pontos). As duas são o mesmo circuito: a montagem
 fica guardada dentro do arquivo do circuito e é conferida contra o esquemático a cada mudança.
 
 ## A placa
+
+A bancada tem duas placas de 830 pontos e barras verticais de alimentação independentes.
+O zoom inicial é **100%**. A segunda placa usa nomes como `2:a12`; as barras verticais usam
+`vp1`…`vp40` e `vn1`…`vn40`. Para unir as placas ou alimentá-las, acrescente fios explícitos.
+
+O botão **Colocar** insere o dispositivo completo. Instrumentos externos entram com terminais
+desconectados; selecione cada terminal no painel para ligá-lo a um furo. O painel também permite
+ajustar as pernas das peças já colocadas. A conferência aponta ligações faltantes e conflitos.
+
+Adicione o osciloscópio em **Adicionar instrumento**. Uma miniatura aparece junto às fontes.
+Clique no borne **+** do canal e depois no furo de medição; repita no borne **−** para escolher
+a referência. Cabos coloridos mostram as conexões. As duas ponteiras precisam estar ligadas
+para gerar a medição do canal. O painel do instrumento mostra os furos e permite desconectar.
+Simule após mudar as ligações; a leitura acompanha os condutores e jumpers da montagem.
+
 
 - 63 linhas numeradas. Em cada linha, os furos **a a e** estão ligados entre si, e os furos **f a
   j** também; a canaleta do meio separa as duas metades (é ali que o circuito integrado encaixa).
@@ -18,9 +33,9 @@ fica guardada dentro do arquivo do circuito e é conferida contra o esquemático
 1. Desenhe o circuito no **Esquemático 2D** (ou abra um exemplo).
 2. Clique em **Protoboard**.
 3. **Montar automaticamente** coloca as peças e os fios e já confere. Ou monte à mão: na lista de
-   peças, clique em **Colocar** e depois no furo da perna 1 (R gira a peça; o circuito integrado
-   vai com o pino 1 na coluna f, chanfro à esquerda). Fontes e instrumentos ficam fora da placa:
-   clique no furo de cada terminal.
+   peças, clique em **Colocar** para inserir a peça inteira. Depois arraste-a ou ajuste os furos
+   pelo painel de terminais. Fontes, instrumentos e placas de controle ficam fora da protoboard,
+   com seus terminais inicialmente desconectados.
 4. **Fio (W)**: clique no primeiro furo e no segundo. A cor é só para organizar.
 5. Arraste uma peça para movê-la; arraste a perna de um resistor ou diodo para dobrá-la.
    Del retira a peça ou o fio selecionado.

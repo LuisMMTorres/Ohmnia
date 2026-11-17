@@ -33,7 +33,7 @@ Y: dict[str, int] = {
 }  # fmt: skip
 
 _MAIN = re.compile(r"^([a-j])(\d{1,2})$")
-_RAIL = re.compile(r"^(tp|tn|bn|bp)(\d{1,2})$")
+_RAIL = re.compile(r"^(tp|tn|bn|bp|vp|vn)(\d{1,2})$")
 
 
 class HoleError(ValueError):
@@ -43,11 +43,16 @@ class HoleError(ValueError):
 def parse(hole: str) -> tuple[str, int]:
     """``"c12"`` → ``("c", 12)``, ``"tn20"`` → ``("tn", 20)``; raises :class:`HoleError`."""
     h = hole.strip().lower()
+    if h.startswith("2:"):
+        h = h[2:]
     m = _MAIN.match(h) or _RAIL.match(h)
     if m is None:
         raise HoleError(f"Furo inexistente: {hole!r}")
     col, row = m.group(1), int(m.group(2))
-    if col in RAILS:
+    if col in ("vp", "vn"):
+        if hole.strip().lower().startswith("2:") or not 1 <= row <= 40:
+            raise HoleError(f"Furo inexistente: {hole!r}")
+    elif col in RAILS:
         if row not in RAIL_ROWS:
             raise HoleError(f"Furo inexistente: {hole!r} (o barramento não tem furo nessa posição)")
     elif not 1 <= row <= ROWS:
@@ -70,6 +75,10 @@ def name(col: str, row: int) -> str:
 def strip(hole: str, rails_split: bool = False) -> str:
     """Identifier of the conductor a hole belongs to: ``"12L"``, ``"12R"``, ``"tn"``."""
     col, row = parse(hole)
+    if hole.strip().lower().startswith("2:"):
+        return "2:" + strip(hole.strip()[2:], rails_split)
+    if col in ("vp", "vn"):
+        return col
     if col in RAILS:
         if rails_split:
             return f"{col}-{'esq' if row <= SPLIT_AFTER else 'dir'}"
@@ -79,6 +88,8 @@ def strip(hole: str, rails_split: bool = False) -> str:
 
 def strip_holes(strip_id: str) -> list[str]:
     """Holes of a terminal strip (rails are not listed: they are long)."""
+    if strip_id.startswith("2:"):
+        return ["2:" + h for h in strip_holes(strip_id[2:])]
     row, side = int(strip_id[:-1]), strip_id[-1]
     return [name(c, row) for c in (UPPER if side == "L" else LOWER)]
 
@@ -91,7 +102,9 @@ def half(hole: str) -> str:
 
 def xy(hole: str) -> tuple[int, int]:
     col, row = parse(hole)
-    return row, Y[col]
+    if col in ("vp", "vn"):
+        return (-4 if col == "vp" else -2), row - 1
+    return row, Y[col] + (22 if hole.strip().lower().startswith("2:") else 0)
 
 
 def nearest_rail_row(row: int) -> int:

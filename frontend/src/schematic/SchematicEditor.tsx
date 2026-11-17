@@ -12,6 +12,7 @@ import {
   simplify,
 } from "./geometry";
 import { SymbolBody, valueText } from "./symbols";
+import { removeSources } from "../breadboard/instruments";
 import type { Component, Point, Probe, ProbeKind, Schematic, SymbolDef } from "./types";
 
 export type Tool =
@@ -236,12 +237,7 @@ export function SchematicEditor({
   const deleteSelected = useCallback(() => {
     if (!selection) return;
     if (selection.kind === "component") {
-      const comp = sch.components.find((c) => c.id === selection.id);
-      onChange({
-        ...sch,
-        components: sch.components.filter((c) => c.id !== selection.id),
-        probes: sch.probes.filter((p) => !comp || p.component !== comp.ref),
-      });
+      onChange(removeSources(sch, [selection.id]));
     } else if (selection.kind === "wire") {
       onChange({ ...sch, wires: sch.wires.filter((w) => w.id !== selection.id) });
     } else {

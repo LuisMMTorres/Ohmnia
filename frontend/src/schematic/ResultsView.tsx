@@ -12,11 +12,12 @@ import {
   type StatisticsOut,
 } from "../api";
 import { formatEng } from "../format";
+import { InstrumentScope } from "./InstrumentScope";
 import { Histogram, StemPlot, XYPlot } from "./charts";
 import { Scope, TRACE_COLORS, valueAt, type Cursors, type ScopeTrace } from "./Scope";
 import type { MeasureKind } from "./types";
 
-type Mode = "scope" | "bode" | "fft" | "xy" | "stats" | "worst" | "table";
+type Mode = "instrument" | "scope" | "bode" | "fft" | "xy" | "stats" | "worst" | "table";
 
 const KIND_LABEL: Record<string, string> = {
   op: "Ponto de operação",
@@ -126,7 +127,8 @@ export function ResultsView({ job, probeNames, onJobUpdate }: Props) {
   // synchronously so no request or plot is ever made with a stale combination
   const scaled = !!first?.scale;
   const mode = useMemo((): Mode => {
-    const m = modeChoice;
+    const m = modeChoice === "instrument" && !["tran", "op"].includes(kind) ? "scope" : modeChoice;
+    if (m === "instrument" && (kind === "op" || kind === "tran")) return m;
     // .op and scalar plots (e.g. total noise, which has no x vector) are tables
     if (kind === "op" || !scaled)
       return multi ? (m === "stats" || m === "worst" ? m : "table") : "table";
@@ -261,7 +263,10 @@ export function ResultsView({ job, probeNames, onJobUpdate }: Props) {
   if (kind === "op" || !scaled) modes.push(["table", "Valores"]);
   if (kind === "ac") modes.push(["bode", "Bode"]);
   if (kind !== "op" && scaled) modes.push(["scope", kind === "tran" ? "Osciloscópio" : "Curvas"]);
-  if (kind === "tran") modes.push(["fft", "FFT / THD"]);
+  if (kind === "tran") {
+    modes.push(["fft", "FFT / THD"]);
+  }
+  if (kind === "tran" || kind === "op") modes.push(["instrument", "Osciloscópio de bancada"]);
   if (kind !== "op" && scaled) modes.push(["xy", "XY"]);
   if (multi) modes.push(["stats", "Estatística"]);
   if (job.summary?.kind === "worstcase") modes.push(["worst", "Pior caso"]);
@@ -310,7 +315,15 @@ export function ResultsView({ job, probeNames, onJobUpdate }: Props) {
         </div>
       </div>
 
-      {mode !== "stats" && mode !== "worst" && mode !== "fft" && (
+      {mode === "instrument" && (
+        <InstrumentScope
+          key={`${job.id}-${first.name}`}
+          job={job}
+          plot={first}
+          signals={vectorNames}
+        />
+      )}
+      {mode !== "instrument" && mode !== "stats" && mode !== "worst" && mode !== "fft" && (
         <details className="vectors-box" open>
           <summary>Sinais ({selected.length})</summary>
           {vectorNames.length === 0 && (

@@ -205,3 +205,14 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 
 - Ajuste da interface assistida: opção de nomes reais dos nós e resultados limitados às probes
   da execução e expressões explícitas; detalhes em `validacao/interface-assistida.md`.
+
+## Bancada virtual e edição de projetos — aprovada pelo usuário (2026-11-17)
+
+- Navegação renomeada: Biblioteca, Análise de dispositivos e Análise de Projetos.
+- Duas protoboards, barra vertical independente, zoom inicial de 100% e inserção completa de peças.
+- Fontes de tensão/corrente agrupadas com controles CC, senoidal, quadrada e triangular.
+- Fonte de bancada de três canais e leituras de corrente obtidas da simulação.
+- Seletor Adicionar instrumento (fonte, gerador e osciloscópio), inserção completa e remoção pelo painel.
+- Osciloscópio didático de 2/4 canais com ponteiras, escalas, acoplamento, Autoset e trigger.
+- Circuito editável nas revisões dos projetos, Salvar como e envio às duas vistas do Simulador.
+- Detalhes, critérios de validação e limitações: [validacao/bancada-virtual.md](validacao/bancada-virtual.md).
