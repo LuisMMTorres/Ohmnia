@@ -3,7 +3,7 @@
 import math
 
 import numpy as np
-from hypothesis import given, settings
+from hypothesis import example, given, settings
 from hypothesis import strategies as st
 
 from circuitos.design import registry
@@ -73,10 +73,14 @@ def test_pt_cc_d_duty_in_range(top, vin, ratio, io):
 
 
 @settings(max_examples=40, deadline=None)
+@example(ma=0.5664, mf=51, uni=False)
 @given(ma=st.floats(0.1, 1.0), mf=st.sampled_from([9, 15, 21, 33, 51]), uni=st.booleans())
 def test_pt_inv_ma_linear(ma, mf, uni):
     """PT-INV-MA: in the linear region the fundamental is ma·Vdc (Hart ch. 8)."""
-    th = grid(2**15)
+    # Each of the 2*mf PWM edges can move by one grid interval. With a voltage jump of 2,
+    # the resulting Fourier-coefficient error is bounded by 8*mf/N. Keep that below the
+    # 1e-3 absolute tolerance, including mf=51; 2**15 can exceed it (see explicit example).
+    th = grid(2**19)
     mod = "spwm_unipolar" if uni else "spwm_bipolar"
     v = load_voltages(1, leg_voltages(switching(mod, 1, ma, mf, 0.0, th), 1.0))[0]
     assert math.isclose(abs(spectrum(v)[1]), ma, rel_tol=2e-3, abs_tol=1e-3)

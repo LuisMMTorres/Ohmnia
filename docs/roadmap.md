@@ -178,3 +178,14 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 - ✅ Peças reais nos símbolos da co-simulação (LM35, Pt100, ACS712, potenciômetro, relé, placas, CLP)
 - Validação: `docs/validacao/catalogo-dispositivos.md`
 
+## Correções numéricas — 2026-11-16
+
+- Limitador com Zener (`DM-OPNL`): distribuição equilibrada da resistência do ramo na netlist,
+  preservando o limiar e a resistência total, para resolver a falha de convergência no Windows.
+- `PT-INV-MA`: grade do teste refinada com limite explícito para o erro das bordas PWM;
+  caso `ma = 0,5664`, `mf = 51`, bipolar fixado como regressão. Tolerâncias mantidas.
+- Validação: 959 testes aprovados entre as rodadas, 1 pulado; cobertura unitária de 90,83 %.
+  Suíte integral ainda pendente: teste do motor de passo excedeu o tempo de execução;
+  ele e o exemplo integrado correspondente ficaram fora da validação concluída.
+- Evidências e resultados: [validacao/correcoes-numericas.md](validacao/correcoes-numericas.md).
+

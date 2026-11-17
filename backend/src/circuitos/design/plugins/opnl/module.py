@@ -28,6 +28,7 @@ from __future__ import annotations
 
 import math
 from collections.abc import Mapping
+from dataclasses import replace
 from typing import Literal
 
 import numpy as np
@@ -156,12 +157,12 @@ def _spec(spec: BaseModel) -> OpnlSpec:
     return spec
 
 
-def diode_subckt(vf: float) -> str:
-    """Constant-drop diode (same model as DM-FORMA): 10 µΩ above VF, 1 nS below."""
+def diode_subckt(vf: float, ron: float = 1e-5) -> str:
+    """Constant-drop diode: ``ron`` above VF (default 10 µΩ), 1 nS below."""
     return "\n".join(
         [
             ".subckt DIODE a k",
-            f"BD a k I = (v(a,k) > {vf:.9g}) ? (v(a,k) - {vf:.9g}) / 10u : v(a,k) * 1n",
+            f"BD a k I = (v(a,k) > {vf:.9g}) ? (v(a,k) - {vf:.9g}) / {ron:.9g} : v(a,k) * 1n",
             ".ends",
         ]
     )
@@ -461,10 +462,17 @@ class OpnlModule:
                     "limitação fica abaixo da nominal (joelho).",
                 )
             )
+        # The series branch depends on VF + VZ0 and rz + Ron, not on how its on-resistance
+        # is split. Balance the two resistances to avoid a 100 kS diode in series with
+        # a nearly floating node (ngspice 47/Windows: timestep too small in XD2.BD).
+        # Preserve VZ0 and the total slope; these are equivalent model coefficients,
+        # not new datasheet parameters. Other circuits keep the original diode model.
+        branch_r = (z.rz + 1e-5) / 2
+        z_sim = replace(z, rz=branch_r, VZ=z.VZ0 + z.IZT * branch_r)
         lines = [
             sine,
-            diode_subckt(vf),
-            z.spice_subckt(),
+            diode_subckt(vf, ron=branch_r),
+            z_sim.spice_subckt(),
             f"R1 in n {r1:.9g}",
             f"R2 o n {rf:.9g}",
             "XDZ1 o m1 ZPWL",

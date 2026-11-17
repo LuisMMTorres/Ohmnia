@@ -42,6 +42,7 @@ Sistema de projeto, dimensionamento, seleção de componentes reais e simulaçã
 
 ## Git
 
+- Sempre criar e trabalhar em uma branch antes de alterar arquivos; nunca implementar diretamente em `main`. Integrar as mudanças por Pull Request após revisão.
 - Uma funcionalidade por branch: `feat/<area>-<descricao>`, `fix/...`, `docs/...`.
 - Commits pequenos e descritivos, em inglês, no imperativo.
 - Atualizar `docs/roadmap.md` no mesmo PR que muda o status de um item.
