@@ -6,6 +6,11 @@ import re
 
 from circuitos.core.errors import ConvergenceError, SimulationError
 
+_DC_FAILED = re.compile(r"gmin stepping failed|source stepping failed|no convergence in dc", re.I)
+# ngspice falls back from gmin stepping to source stepping and then to the transient
+# operating point; a failed attempt followed by one of these notes is not a failure
+_DC_RECOVERED = re.compile(r"source stepping completed|transient op finished successfully", re.I)
+
 _RULES: list[tuple[re.Pattern[str], str, list[str], bool]] = [
     (
         re.compile(
@@ -43,7 +48,7 @@ _RULES: list[tuple[re.Pattern[str], str, list[str], bool]] = [
         True,
     ),
     (
-        re.compile(r"gmin stepping failed|source stepping failed|no convergence in dc", re.I),
+        _DC_FAILED,
         "O ponto de operação CC não convergiu.",
         [
             "Forneça condições iniciais com .ic ou .nodeset nos nós principais.",
@@ -78,6 +83,8 @@ def error_lines(log: str) -> list[str]:
 def raise_for_log(log: str, *, no_output: bool) -> None:
     """Raise a classified error if the log shows a failure (or nothing was produced)."""
     for pattern, message, suggestions, convergence in _RULES:
+        if pattern is _DC_FAILED and _DC_RECOVERED.search(log):
+            continue
         if pattern.search(log):
             cls = ConvergenceError if convergence else SimulationError
             raise cls(message, log=log, suggestions=suggestions)

@@ -612,21 +612,24 @@ def stepper_driver_lines(x: str, n: dict[str, str], params: dict[str, str]) -> l
             f"V{x}_s{ph} {x}_{ph}o {n[p]} DC 0",
             f"R{x}_g{ph} {n[m]} {gnd} 1meg",  # the bridge output is referred to GND
             # PI current loop (20 V/A, zero at 1000 rad/s), output limited by the motor supply
-            # through tanh (a hard min/max clamp makes the operating point fail its gmin
-            # stepping, and a pure high gain loop stalls the time step)
-            f"B{x}_{ph}i 0 {x}_{ph}i I = (abs(V({x}_{ph}i)) > {vmx} && "
-            f"V({x}_{ph}i)*(V({x}_ref{ph}) - I(V{x}_s{ph})) > 0) ? 0 : "
-            f"2e4*(V({x}_ref{ph}) - I(V{x}_s{ph}))",
+            # through tanh, with back-calculation anti-windup (gain 1000 1/s). Every term is
+            # smooth: a hard min/max clamp makes the operating point fail its gmin stepping,
+            # and a switched (ternary) anti-windup makes the time step collapse in ngspice 47.
+            f"B{x}_{ph}u {x}_{ph}u 0 V = 20*(V({x}_ref{ph}) - I(V{x}_s{ph})) + V({x}_{ph}i)",
+            f"B{x}_{ph}i 0 {x}_{ph}i I = 2e4*(V({x}_ref{ph}) - I(V{x}_s{ph})) + "
+            f"1e3*({vmx}*tanh(V({x}_{ph}u)/{vmx}) - V({x}_{ph}u))",
             f"C{x}_{ph}i {x}_{ph}i 0 1",
             f"R{x}_{ph}i {x}_{ph}i 0 1e12",
-            f"B{x}_{ph} {x}_{ph}o {n[m]} V = {vmx}*tanh((20*(V({x}_ref{ph}) - I(V{x}_s{ph}))"
-            f" + V({x}_{ph}i))/{vmx})",
+            f"B{x}_{ph} {x}_{ph}o {n[m]} V = {vmx}*tanh(V({x}_{ph}u)/{vmx})",
         ]
     # power drawn from VM (ideal bridge): P = sum v·i
     lines.append(
         f"B{x}_vm {vm} {gnd} I = (V({x}_ao,{n['A-']})*I(V{x}_sa) + V({x}_bo,{n['B-']})*I(V{x}_sb))"
         f"/max(V({vm},{gnd}), 1)"
     )
+    # the integrators start at zero: without this the operating point leaves them free (the
+    # capacitor is open in DC) and ngspice 47 fails gmin and source stepping
+    lines.append(f".ic v({x}_ai)=0 v({x}_bi)=0")
     return lines
 
 
