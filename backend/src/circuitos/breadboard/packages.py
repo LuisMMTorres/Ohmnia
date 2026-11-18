@@ -14,7 +14,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Literal
 
-Style = Literal["axial", "radial", "inline", "dip", "offboard"]
+Style = Literal["axial", "radial", "inline", "dip", "board", "offboard"]
 
 
 @dataclass(frozen=True)
@@ -31,6 +31,10 @@ class Package:
     )
     note: str = ""
     extra: dict[str, str] = field(default_factory=dict)
+    # DIP and board: (lower, upper) columns of the two rows of legs; leg 1 is in the lower one
+    cols: tuple[str, str] = ("f", "e")
+    offsets: tuple[tuple[int, int], ...] = ()  # board: explicit (row, column) offsets
+    silk: tuple[str, ...] = ()  # board: label printed next to each leg, in leg order
 
     def leg_offsets(self) -> list[tuple[int, int]]:
         """Default (row, column) offsets of each leg from leg 1, before any rotation.
@@ -40,6 +44,8 @@ class Package:
         (column e), as seen from above with the notch to the left.
         """
         n = len(self.pins)
+        if self.offsets:
+            return list(self.offsets)
         if self.style == "dip":
             half = n // 2
             low = [(i * self.pitch, 0) for i in range(half)]
@@ -59,6 +65,60 @@ def _dip(n: int) -> Package:
         body="dip",
         note="Encaixa sobre a canaleta central (pinos nas colunas e e f).",
     )
+
+
+def _board(
+    pid: str, label: str, lower: list[str | None], upper: list[str | None], start: int, note: str
+) -> Package:
+    """Development board with two rows of header pins, placed over the channel like a DIP.
+
+    ``lower`` and ``upper`` are the pins of each header from left to right as seen from above
+    (``None``: a gap of one hole between groups of pins). Legs are numbered as in a DIP: 1 at the
+    left of the lower row, then back along the upper row; ``start`` is the row offset of the
+    leftmost upper hole from leg 1.
+    """
+    legs: list[tuple[int, int]] = []
+    silk: list[str] = []
+    for i, name in enumerate(lower):
+        if name is not None:
+            legs.append((i, 0))
+            silk.append(name)
+    for i, name in reversed(list(enumerate(upper))):
+        if name is not None:
+            legs.append((start + i, -1))
+            silk.append(name)
+    return Package(
+        pid,
+        label,
+        "board",
+        tuple(str(i) for i in range(1, len(legs) + 1)),
+        body=pid,
+        note=note,
+        cols=("h", "c"),
+        offsets=tuple(legs),
+        silk=tuple(silk),
+    )
+
+
+# Header order from the boards' published pinouts, top view (to be confirmed by the user, as
+# every generic drawing: see docs/validacao/protoboard.md). The real pitch between some groups
+# of the Uno headers is not a multiple of 0.1"; here each group is one hole apart.
+UNO_LOWER: list[str | None] = [
+    "NC", "IOREF", "RESET", "3V3", "5V", "GND", "GND", "VIN", None,
+    "A0", "A1", "A2", "A3", "A4", "A5",
+]  # fmt: skip
+UNO_UPPER: list[str | None] = [
+    "SCL", "SDA", "AREF", "GND", "D13", "D12", "D11", "D10", "D9", "D8", None,
+    "D7", "D6", "D5", "D4", "D3", "D2", "D1", "D0",
+]  # fmt: skip
+ESP32_LOWER: list[str | None] = [
+    "3V3", "EN", "IO36", "IO39", "IO34", "IO35", "IO32", "IO33", "IO25", "IO26",
+    "IO27", "IO14", "IO12", "GND", "IO13", "IO9", "IO10", "IO11", "5V",
+]  # fmt: skip
+ESP32_UPPER: list[str | None] = [
+    "GND", "IO23", "IO22", "IO1", "IO3", "IO21", "GND", "IO19", "IO18", "IO5",
+    "IO17", "IO16", "IO4", "IO0", "IO2", "IO15", "IO8", "IO7", "IO6",
+]  # fmt: skip
 
 
 def _offboard(pid: str, label: str, terminals: tuple[str, ...], body: str, note: str) -> Package:
@@ -232,6 +292,24 @@ PACKAGES: dict[str, Package] = {
             "supply",
             "Alimentação dos integrados (V+ e V-), implícita no esquemático.",
         ),
+        _board(
+            "board-uno",
+            "Arduino Uno R3 (barras de pinos)",
+            UNO_LOWER,
+            UNO_UPPER,
+            -3,
+            "Montagem didática: a placa real não encaixa na protoboard (ligue com jumpers "
+            "macho-fêmea). Pino 1 = primeiro pino da barra de alimentação (NC), na coluna h.",
+        ),
+        _board(
+            "board-esp32",
+            "ESP32-DevKitC (38 pinos)",
+            ESP32_LOWER,
+            ESP32_UPPER,
+            0,
+            "Encaixa sobre a canaleta, como um DIP largo (fileiras nas colunas c e h; confira o "
+            "espaçamento da sua placa). Pino 1 = 3V3, na coluna h.",
+        ),
         Package(
             "pot-3",
             "Potenciômetro (3 terminais)",
@@ -274,6 +352,8 @@ def spec() -> list[dict[str, object]]:
             "body": p.body,
             "note": p.note,
             "offsets": p.leg_offsets(),
+            "cols": list(p.cols),
+            "silk": list(p.silk),
         }
         for p in PACKAGES.values()
     ]

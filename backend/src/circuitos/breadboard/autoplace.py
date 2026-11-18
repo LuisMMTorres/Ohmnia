@@ -98,7 +98,7 @@ def _rails(ref: Reference) -> dict[str, dict[str, str]]:
 
 def _order(r: Resolved) -> tuple[int, str]:
     style = package(r.package).style if r.package else "offboard"
-    rank = {"dip": 0, "inline": 1, "axial": 2, "radial": 2, "offboard": 3}[style]
+    rank = {"board": 0, "dip": 0, "inline": 1, "axial": 2, "radial": 2, "offboard": 3}[style]
     return rank, r.ref
 
 
@@ -137,6 +137,22 @@ def autoplace(ref: Reference) -> tuple[Breadboard, list[str]]:
                 col = "e" if dc < 0 else "f"
                 legs[pin] = f"{col}{row + dr}"
             st.nxt["U"] = st.nxt["L"] = row + half_n + 2
+        elif pkg.style == "board":
+            offs = pkg.leg_offsets()
+            lo = min(dr for dr, _ in offs)
+            hi = max(dr for dr, _ in offs)
+            row = max(st.nxt["U"], st.nxt["L"]) - lo
+            if row + hi > board.ROWS:
+                st.notes.append(f"{r.ref}: não coube na protoboard.")
+                continue
+            low_col, up_col = pkg.cols
+            for pin, (dr, dc) in zip(pkg.pins, offs, strict=True):
+                legs[pin] = f"{up_col if dc < 0 else low_col}{row + dr}"
+            # the board covers the holes between its two rows: no legs or wires there
+            inner = board.COLUMNS[board.COLUMNS.index(up_col) + 1 : board.COLUMNS.index(low_col)]
+            for x in range(row + lo, row + hi + 1):
+                st.used.update(f"{c}{x}" for c in inner)
+            st.nxt["U"] = st.nxt["L"] = row + hi + 3
         elif pkg.style == "inline":
             offs = pkg.leg_offsets()
             width = offs[-1][0]
@@ -173,7 +189,7 @@ def autoplace(ref: Reference) -> tuple[Breadboard, list[str]]:
             else:
                 st.used.add(h)
         placed.append(PlacedPart(ref=r.ref, package=pkg.id, legs=legs))
-        if pkg.style in ("dip", "inline"):
+        if pkg.style in ("dip", "inline", "board"):
             st.busy.update(_strip_of(h) for h in legs.values())
         if r.origin == "sem_pinagem":
             st.notes.append(f"{r.ref}: pinagem desconhecida, colocado sem ligações.")

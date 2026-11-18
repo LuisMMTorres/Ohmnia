@@ -22,7 +22,7 @@ from typing import Literal
 
 from circuitos.breadboard.packages import PACKAGES, package
 from circuitos.components.models import ComponentRecord, DatasheetRef, SourceRef
-from circuitos.schematic.library import param
+from circuitos.schematic.library import param, symbol
 from circuitos.schematic.model import Component
 from circuitos.schematic.values import format_value, try_parse
 
@@ -118,6 +118,7 @@ _INSTRUMENT = {
     "transformer": ("trafo", "Transformador"),
     "rl_load": ("carga", "Carga RL"),
 }
+_BOARDS = {"arduino_uno": "board-uno", "esp32_devkitc": "board-esp32"}
 _IDEAL = {"bsource", "vcvs", "vccs", "cccs", "ccvs", "switch", "subckt"}
 # generic three-leg parts: leg order and labels (didactic, not a real part's pinout)
 _GENERIC_3 = {
@@ -174,6 +175,22 @@ def _generic(comp: Component) -> Resolved:
         r.pinmap = {"1": "a", "2": "w", "3": "b"}
         r.labels = {"1": "A", "2": "W", "3": "B"}
         r.title = "Potenciômetro"
+        return r
+    if kind in _BOARDS:
+        pkg = package(_BOARDS[kind])
+        model = {pin.name for pin in symbol(kind).pins}
+        r.package = pkg.id
+        r.labels = dict(zip(pkg.pins, pkg.silk, strict=True))
+        r.pinmap = {pin: name for pin, name in r.labels.items() if name in model}
+        r.title = symbol(kind).label
+        loose = sorted({n for n in pkg.silk if n not in model}, key=pkg.silk.index)
+        r.notes.append(
+            "Pinos na ordem das barras da placa real (vista de cima). Os pinos GND são ligados "
+            "entre si na placa. Sem modelo na simulação (ficam fora da conferência): "
+            + ", ".join(loose)
+            + "."
+        )
+        r.notes.append(pkg.note)
         return r
     if f"mod-{kind}" in PACKAGES:
         pkg = package(f"mod-{kind}")

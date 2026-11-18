@@ -10,13 +10,14 @@ the comparison.
 
 from __future__ import annotations
 
-from itertools import combinations
+from itertools import combinations, pairwise
 from typing import Literal
 
 from pydantic import BaseModel, Field
 
 from circuitos.breadboard import board
 from circuitos.breadboard.layout import Breadboard
+from circuitos.breadboard.packages import package
 from circuitos.breadboard.reference import ALIM, Reference, key
 
 IssueKind = Literal[
@@ -125,6 +126,15 @@ def check(ref: Reference, bb: Breadboard) -> CheckReport:
         checked.add(p.ref)
         for pin, h in p.legs.items():
             leg_hole[key(p.ref, pin)] = h
+        if package(p.package).style == "board":
+            # pins of one function on a board (its GND pins) are joined on the board itself
+            by_role: dict[str, list[str]] = {}
+            for pin, h in p.legs.items():
+                if pin in r.pinmap:
+                    by_role.setdefault(r.pinmap[pin], []).append(board.strip(h, bb.rails_split))
+            for strips in by_role.values():
+                for a, b in pairwise(strips):
+                    uf.union(a, b)
         net_members = ref.members()
         missing = [
             pin
