@@ -8,6 +8,7 @@ a interface abre no navegador.
 
 Planejamento: [docs/escopo.md](docs/escopo.md), [docs/arquitetura.md](docs/arquitetura.md),
 [docs/modelo-de-dados.md](docs/modelo-de-dados.md). Andamento: [docs/roadmap.md](docs/roadmap.md).
+Trabalho em dupla (clone, branches e PRs): [docs/colaboracao.md](docs/colaboracao.md).
 
 ## Requisitos
 
