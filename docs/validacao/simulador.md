@@ -14,7 +14,7 @@ casos: esquemático → netlist SPICE → ngspice → pós-processamento (medida
 | Peças reais do catálogo no esquemático | painel de propriedades → “Peça”; modelo em `schematic/parts.py` | ✅ diodo, Zener, BJT (inclui Darlington), MOSFET, JFET, amp-op, SCR, TRIAC, IGBT |
 | Fontes CC, senoidal, pulso, PWL e trifásica | `vdc/vsin/vpulse/vpwl`, `idc/…`, `v3ph` | ✅ |
 | Chaves controladas, transformador, cargas | `switch`, `igbt`, `scr`, `triac`, `transformer`, `rl_load` | ✅ |
-| Fontes controladas, fonte comportamental, subcircuito | `vcvs/vccs/cccs/ccvs`, `bsource`, `subckt` | ✅ |
+| Fontes controladas, fonte dependente (expressão B), subcircuito | `vcvs/vccs/cccs/ccvs`, `bsource`, `subckt` | ✅ |
 | Pontas de tensão, tensão diferencial, corrente e potência | ferramentas “Ponta”; `plan_probes` em `netlist.py` | ✅ |
 | .OP, .TRAN, .AC, .DC (dupla), ruído | painel **Análises** | ✅ |
 | .STEP paramétrico (componente ou `.param`) e de temperatura | painel **Varredura** | ✅ lista, linear, década, oitava |

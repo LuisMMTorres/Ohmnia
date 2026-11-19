@@ -255,6 +255,49 @@ COSIM_SYMBOLS: list[Symbol] = [
         ref_prefix="TT",
     ),
     Symbol(
+        "tx420_rtd",
+        "Transmissor 4-20 mA para RTD (3 fios)",
+        "Sensores",
+        "X",
+        (
+            PinDef("+", 3, -2),
+            PinDef("-", 3, 2),
+            PinDef("1", -3, -2),
+            PinDef("2", -3, 0),
+            PinDef("3", -3, 2),
+        ),
+        (
+            ParamDef("r0", "R0 do sensor (a 0 °C)", "Ω", "100", help="Pt100: 100 Ω (IEC 60751)."),
+            ParamDef(
+                "a", "Coeficiente A", "1/°C", "3.9083e-3", help="IEC 60751 (Callendar-Van Dusen)."
+            ),
+            ParamDef("b", "Coeficiente B", "1/°C²", "-5.775e-7", help="IEC 60751, para T ≥ 0 °C."),
+            ParamDef("lo", "Início da faixa (4 mA)", "°C", "0"),
+            ParamDef("hi", "Fim da faixa (20 mA)", "°C", "100"),
+            ParamDef(
+                "iexc",
+                "Corrente de excitação do RTD",
+                "A",
+                "0.5m",
+                help="Valor didático (transmissores reais usam de 0,1 a 1 mA, confira o manual).",
+            ),
+            ParamDef(
+                "vmin",
+                "Tensão mínima no transmissor",
+                "V",
+                "10",
+                help="Abaixo dela a corrente cai (laço sem tensão suficiente). Valor didático.",
+            ),
+        ),
+        description="Transmissor de cabeçote a dois fios para termorresistência a três fios: "
+        "injeta a corrente de excitação pelo terminal 1 e a recolhe pelo 2; o terminal 3 só mede "
+        "(sem corrente), e R = (V13 − V32)/I desconta a resistência dos fios quando eles são "
+        "iguais. A temperatura vem da inversa de R(T) = R0 (1 + A T + B T²) (IEC 60751) e a "
+        "corrente do laço vai de 4 mA (início) a 20 mA (fim) entre + e −. Nó <ref>_t: "
+        "temperatura medida (°C).",
+        ref_prefix="TT",
+    ),
+    Symbol(
         "acs712",
         "Sensor de corrente ACS712",
         "Sensores",
@@ -522,6 +565,22 @@ def emit_device(comp: Component, n: dict[str, str], v: Value) -> list[str]:
         xs = stimulus(v("x"))
         frac = f"min(max((({xs}) - ({v('lo')}))/(({v('hi')}) - ({v('lo')})), 0), 1)"
         return [
+            f"B{x} {n['+']} {n['-']} I = (4m + 16m*{frac}) * "
+            f"min(1, max(0, V({n['+']},{n['-']})/({v('vmin')})))",
+        ]
+    if k == "tx420_rtd":
+        i = v("iexc")
+        r = f"((V({n['1']},{n['3']}) - V({n['3']},{n['2']}))/({i}))"
+        a, b = f"({v('a')})", f"({v('b')})"
+        temp = f"((-{a} + sqrt(max({a}*{a} - 4*{b}*(1 - {r}/({v('r0')})), 0)))/(2*{b}))"
+        frac = f"min(max(({x}_t - ({v('lo')}))/(({v('hi')}) - ({v('lo')})), 0), 1)"
+        frac = frac.replace(f"{x}_t", f"V({x}_t)")
+        return [
+            f"I{x}_exc {n['2']} {n['1']} DC {i}",
+            f"R{x}_s {n['3']} {n['2']} 1g",  # sense input: no current
+            f"R{x}_ref {n['2']} {n['-']} 1g",  # RTD side referred to the loop (not isolated)
+            f"B{x}_t {x}_t 0 V = {temp}",
+            f"R{x}_t {x}_t 0 1g",
             f"B{x} {n['+']} {n['-']} I = (4m + 16m*{frac}) * "
             f"min(1, max(0, V({n['+']},{n['-']})/({v('vmin')})))",
         ]

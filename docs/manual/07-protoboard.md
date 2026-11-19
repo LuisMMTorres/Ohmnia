@@ -7,12 +7,19 @@ fica guardada dentro do arquivo do circuito e é conferida contra o esquemático
 ## A placa
 
 A bancada tem duas placas de 830 pontos e barras verticais de alimentação independentes.
-O zoom inicial é **100%**. A segunda placa usa nomes como `2:a12`; as barras verticais usam
+O zoom inicial é **100%** e vai de 50 % a 250 %. A segunda placa usa nomes como `2:a12`; as barras verticais usam
 `vp1`…`vp40` e `vn1`…`vn40`. Para unir as placas ou alimentá-las, acrescente fios explícitos.
 
 O botão **Colocar** insere o dispositivo completo. Instrumentos externos entram com terminais
 desconectados; selecione cada terminal no painel para ligá-lo a um furo. O painel também permite
 ajustar as pernas das peças já colocadas. A conferência aponta ligações faltantes e conflitos.
+
+O botão **Pelo pino 1** faz a peça seguir o ponteiro do mouse: clique no furo do pino 1. O Arduino
+Uno e o ESP32 encaixam sobre a canaleta, com o pino 1 (triângulo amarelo) na coluna h e a outra
+barra de pinos na coluna c. Os pinos GND de uma placa são o mesmo nó: ligue qualquer um deles.
+Sensores, transmissores, motores e acionamentos aparecem com o desenho do equipamento e os bornes
+nos lugares reais. Depois de uma simulação transitória, o eixo dos motores gira no sentido
+simulado e mostra a velocidade (ω > 0: horário olhando a ponta do eixo).
 
 Adicione o osciloscópio em **Adicionar instrumento**. Uma miniatura aparece junto às fontes.
 Clique no borne **+** do canal e depois no furo de medição; repita no borne **−** para escolher

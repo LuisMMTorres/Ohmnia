@@ -1541,3 +1541,58 @@ svg.ladder .ld-comment {
 .row.end {
   justify-content: flex-end;
 }
+
+/* off-board devices drawn as the real thing (DeviceFaces.tsx) */
+.bb-instrument rect.device-frame {
+  fill: transparent;
+  stroke: transparent;
+}
+.bb-instrument.selected rect.device-frame {
+  stroke: #f07f12;
+  stroke-width: 2;
+}
+.bb-instrument.bad rect.device-frame {
+  stroke: #e53935;
+}
+.bb-spin {
+  animation: bb-spin 1.2s linear infinite;
+}
+.bb-spin.ccw {
+  animation-direction: reverse;
+}
+@keyframes bb-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bb-spin {
+    animation: none;
+  }
+}
+
+/* zoom controls of the schematic */
+.zoom-controls {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  padding: 3px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--panel);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.12);
+}
+.zoom-controls button {
+  min-width: 28px;
+  padding: 2px 6px;
+}
+.zoom-controls select {
+  padding: 2px;
+}
+.sym-motion {
+  font-size: 10px;
+  fill: #1e5fa8;
+}

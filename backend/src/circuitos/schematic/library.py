@@ -214,7 +214,7 @@ SYMBOLS: dict[str, Symbol] = {
         ),
         Symbol(
             "bsource",
-            "Fonte comportamental",
+            "Fonte dependente",
             "Fontes",
             "B",
             _SRC_PINS,
@@ -229,6 +229,8 @@ SYMBOLS: dict[str, Symbol] = {
                     help="Expressão do ngspice, ex.: v(a,b)*i(V1), sin(2*pi*60*time)",
                 ),
             ),
+            description="Fonte dependente de tensão ou corrente definida por uma expressão de "
+            "tensões, correntes e tempo (elemento B do ngspice).",
         ),
         Symbol(
             "vcvs",

@@ -194,3 +194,62 @@ def test_empty_assembly_is_not_ok():
     ref = build(bridge(), {})
     report = check(ref, Breadboard())
     assert not report.ok and report.checked_parts == 0
+
+
+# ---------------------------------------------------------------------------- boards
+
+
+def test_boards_sit_over_the_channel_with_both_headers():
+    from circuitos.breadboard.packages import package
+    from circuitos.cosim import examples as ex
+
+    uno, esp = package("board-uno"), package("board-esp32")
+    assert len(uno.pins) == 32 and len(esp.pins) == 38
+    assert uno.silk[0] == "NC" and uno.silk[-1] == "SCL"  # leg 1 at the left of the lower row
+    assert esp.silk[0] == "3V3" and esp.silk[-1] == "GND"
+    assert {dc for _, dc in uno.leg_offsets()} == {0, -1}
+    for make in (ex.arduino_pwm_temperature, ex.esp32_energy_meter):
+        sch = make()
+        ref = build(sch, {})
+        board_part = next(
+            r for r in ref.parts.values() if r.kind in ("arduino_uno", "esp32_devkitc")
+        )
+        assert board_part.package in ("board-uno", "board-esp32")
+        bb, _ = autoplace(ref)
+        placed = bb.part(board_part.ref)
+        assert placed is not None
+        cols = {board.parse(h)[0] for h in placed.legs.values()}
+        assert cols == {"c", "h"}
+        assert check(ref, bb).ok
+
+
+def test_board_gnd_pins_are_one_node():
+    from circuitos.cosim import examples as ex
+
+    sch = ex.arduino_pwm_temperature()
+    ref = build(sch, {})
+    uno = next(r for r in ref.parts.values() if r.kind == "arduino_uno")
+    gnd = [pin for pin, role in uno.pinmap.items() if role == "GND"]
+    assert len(gnd) == 3
+    bb, _ = autoplace(ref)
+    part = bb.part(uno.ref)
+    assert part is not None
+    used = [
+        w
+        for w in bb.wires
+        if any(board.strip(h) == board.strip(part.legs[g]) for g in gnd for h in (w.a, w.b))
+    ]
+    assert used  # the assembly wires one of them
+    # moving the ground wire to another GND pin of the board keeps the assembly right
+    w = used[0]
+    end = "a" if any(board.strip(w.a) == board.strip(part.legs[g]) for g in gnd) else "b"
+    hole = getattr(w, end)
+    other = next(g for g in gnd if board.strip(part.legs[g]) != board.strip(hole))
+    col, row = board.parse(part.legs[other])
+    taken = {h for x in bb.wires for h in (x.a, x.b)}
+    setattr(
+        w,
+        end,
+        next(f"{c}{row}" for c in ("ab" if col == "c" else "ij") if f"{c}{row}" not in taken),
+    )
+    assert check(ref, bb).ok, [i.message for i in check(ref, bb).issues]

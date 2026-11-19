@@ -40,6 +40,13 @@ def _part_step(ref: Reference, p: PlacedPart) -> Step:
             f"{head}: sobre a canaleta central, chanfro (pino 1) para a esquerda; pino 1 em "
             f"{p.legs.get('1', '?')}."
         )
+    elif pkg.style == "board":
+        first = labels.get("1", "")
+        text = (
+            f"{head}: sobre a canaleta central, uma barra de pinos na coluna {pkg.cols[1]} e a "
+            f"outra na coluna {pkg.cols[0]}; pino 1 ({first}) em {p.legs.get('1', '?')}. "
+            f"{pkg.note}"
+        )
     elif pkg.style == "offboard":
         terms = ", ".join(f"{labels.get(t, t)} em {_where(h)}" for t, h in p.legs.items())
         text = f"{head}, fora da placa: {terms}."
@@ -72,7 +79,7 @@ def _part_step(ref: Reference, p: PlacedPart) -> Step:
 
 
 def guide(ref: Reference, bb: Breadboard) -> list[Step]:
-    order = {"dip": 0, "inline": 1, "axial": 2, "radial": 2, "offboard": 4}
+    order = {"board": 0, "dip": 0, "inline": 1, "axial": 2, "radial": 2, "offboard": 4}
     steps = [
         Step(
             text="Protoboard de 830 pontos: na mesma linha, os furos a–e estão ligados entre si, "

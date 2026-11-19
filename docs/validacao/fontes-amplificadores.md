@@ -32,7 +32,7 @@ no cálculo e no simulador:
   É didático: avisa que um MOSFET de potência perto do limiar foge bastante disso.
 - **Zener:** linear por partes, VZ0 + rz·IZ, com VZ, IZT e rz (ZZT) do datasheet.
 - **Diodo (DM-FORMA):** queda constante VF do datasheet, igual ao DM-RET1.
-- **Reguladores:** fonte comportamental `min(VO, VI − queda)` com VO/Vref, IAdj e IQ do datasheet.
+- **Reguladores:** fonte dependente (B) `min(VO, VI − queda)` com VO/Vref, IAdj e IQ do datasheet.
 - **Ponto Q:** solução exata da malha com a junção exponencial (brentq), não a aproximação de
   0,7 V; a memória mostra a fórmula de livro e o valor exato.
 - **Pequenos sinais:** solução nodal exata do circuito π-híbrido com todos os capacitores (a mesma

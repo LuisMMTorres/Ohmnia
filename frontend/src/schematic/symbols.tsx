@@ -478,6 +478,32 @@ export function SymbolBody({ c, sym }: { c: Component; sym: SymbolDef | undefine
       line(-0.5, 0.9, 0.5, 0.9, "b2"),
       line(-0.2, 1.2, 0.2, 1.2, "b3"),
     ];
+  else if (k === "pt100")
+    // IEC 60617 resistor with the slash of a quantity-dependent resistance (temperature)
+    body = [
+      line(-2, 0, -1.2, 0, "a"),
+      <rect key="r" x={u(-1.2)} y={u(-0.4)} width={u(2.4)} height={u(0.8)} />,
+      line(1.2, 0, 2, 0, "b"),
+      poly(
+        [
+          [-1.2, 0.9],
+          [0.9, -0.9],
+          [1.4, -0.9],
+        ],
+        "slash",
+      ),
+      text(0, 1.3, "θ  Pt100", 0.55, "t"),
+    ];
+  else if (k === "thermocouple")
+    // two different conductors joined at the measuring junction; the negative one is thicker
+    body = [
+      line(-2, -1, 0.6, 0, "p"),
+      <line key="n" x1={u(-2)} y1={u(1)} x2={u(0.6)} y2={u(0)} strokeWidth={4} />,
+      circle(0.6, 0, 0.12, "j"),
+      text(-1.5, -1.6, "+", 0.6, "pl"),
+      text(-1.5, 1.6, "−", 0.6, "mi"),
+      text(1.4, 0, "TC", 0.55, "tc"),
+    ];
   else if (k === "subckt") {
     const pins = pinDefs(c, sym);
     const rows = Math.max(1, ...pins.map((p) => p.dy / 2 + 1));
@@ -513,6 +539,7 @@ const SHORT: Record<string, string> = {
   lm35: "LM35",
   pt100: "Pt100",
   tx420: "4-20 mA",
+  tx420_rtd: "TT RTD",
   acs712: "ACS712",
   potentiometer: "POT",
   relay: "RELÉ",

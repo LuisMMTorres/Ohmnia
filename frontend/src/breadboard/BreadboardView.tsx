@@ -24,6 +24,8 @@ import { ScopeMiniature } from "./ScopeMiniature";
 import { connectScope } from "./scopeConnections";
 import { netAtHole } from "./connections";
 import { InstrumentFace } from "./InstrumentFace";
+import { deviceFace } from "./DeviceFaces";
+import type { Motion } from "./DeviceFaces";
 import { PackageArt, PackagePreview } from "./PackageArt";
 import type {
   Breadboard,
@@ -88,6 +90,8 @@ interface Props {
   resolved: ResolveOut | null;
   readOnly?: boolean;
   initialGuide?: Step[];
+  /** Shaft speed of each motor after the last simulation (direction of rotation). */
+  motion?: Record<string, Motion>;
 }
 
 export function BreadboardView({
@@ -97,6 +101,7 @@ export function BreadboardView({
   resolved,
   readOnly,
   initialGuide,
+  motion,
 }: Props) {
   const bb: Breadboard = schematic.breadboard ?? emptyBreadboard();
   const board = spec.board;
@@ -210,7 +215,10 @@ export function BreadboardView({
       if (drag.leg) return { ...part, legs: { ...part.legs, [drag.leg]: hover } };
       const pkg = pkgs[part.package];
       const dRow = b.row - a.row;
-      const dCol = pkg?.style === "dip" ? 0 : COLS.indexOf(b.col) - COLS.indexOf(a.col);
+      const dCol =
+        pkg?.style === "dip" || pkg?.style === "board"
+          ? 0
+          : COLS.indexOf(b.col) - COLS.indexOf(a.col);
       const legs: Record<string, string> = {};
       for (const [pin, h] of Object.entries(part.legs)) {
         const shifted = shift(board, h.replace(/^2:/, ""), dRow, dCol);
@@ -321,7 +329,7 @@ export function BreadboardView({
     if (sel?.kind !== "part") return;
     const part = bb.parts.find((p) => p.ref === sel.ref);
     const pkg = part && pkgs[part.package];
-    if (!part || !pkg || pkg.style === "dip" || pkg.style === "offboard") return;
+    if (!part || !pkg || ["dip", "board", "offboard"].includes(pkg.style)) return;
     const a = parseHole(board, part.legs[pkg.pins[0]!] ?? "");
     const b = parseHole(board, part.legs[pkg.pins[1]!] ?? "");
     if (!a || !b) return;
@@ -421,7 +429,7 @@ export function BreadboardView({
       : tool.kind === "connect"
         ? `${tool.ref}: clique no furo para conectar o terminal ${tool.terminal === "p" ? "+" : tool.terminal === "n" ? "−" : (views[tool.ref]?.labels[tool.terminal] ?? tool.terminal)}. Esc cancela.`
         : tool.kind === "place"
-          ? `Clique no furo da perna 1 de ${tool.ref}${pkgs[views[tool.ref]?.package ?? ""]?.style === "dip" ? " (coluna f, abaixo da canaleta)" : ""}. R gira, Esc cancela.`
+          ? `Clique no furo da perna 1 de ${tool.ref}${placeHint(pkgs[views[tool.ref]?.package ?? ""])}. R gira, Esc cancela.`
           : tool.kind === "lead"
             ? `${tool.ref}: clique no furo do terminal ${views[tool.ref]?.labels[leadTerms[Object.keys(tool.legs).length] ?? ""] ?? leadTerms[Object.keys(tool.legs).length]}.`
             : tool.kind === "wire"
@@ -508,9 +516,23 @@ export function BreadboardView({
                   {placed.has(v.ref) ? (
                     <span className="small muted"> montado</span>
                   ) : v.package ? (
-                    <button className="small" onClick={() => startPlacing(v)}>
-                      Colocar
-                    </button>
+                    <>
+                      <button className="small" onClick={() => startPlacing(v)}>
+                        Colocar
+                      </button>
+                      {pkgs[v.package]?.style !== "offboard" && (
+                        <button
+                          className="small secondary"
+                          title="Siga o ponteiro do mouse e clique no furo do pino 1"
+                          onClick={() => {
+                            setSel({ kind: "part", ref: v.ref });
+                            setTool({ kind: "place", ref: v.ref, orient: "h" });
+                          }}
+                        >
+                          Pelo pino 1
+                        </button>
+                      )}
+                    </>
                   ) : null}
                 </li>
               ))}
@@ -541,7 +563,7 @@ export function BreadboardView({
         <label className="small bb-zoom">
           Zoom{" "}
           <select value={zoom} onChange={(e) => setZoom(Number(e.target.value))}>
-            {[1, 1.3, 1.6, 2, 2.5].map((z) => (
+            {[0.5, 0.75, 1, 1.3, 1.6, 2, 2.5].map((z) => (
               <option key={z} value={z}>
                 {Math.round(z * 100)} %
               </option>
@@ -666,6 +688,8 @@ export function BreadboardView({
             if (pkg.style === "offboard") {
               const [bx, by] = instrumentAt(p.ref);
               const terms = pkg.pins.filter((t) => t in (views[p.ref]?.pinmap ?? {}));
+              const kind = views[p.ref]?.kind ?? "";
+              const face = deviceFace(kind);
               return (
                 <g
                   key={p.ref}
@@ -679,17 +703,25 @@ export function BreadboardView({
                     x={bx}
                     y={by}
                     title={`${p.ref} · ${views[p.ref]?.title ?? pkg.label}`}
-                    kind={views[p.ref]?.kind ?? ""}
+                    kind={kind}
+                    motion={motion?.[p.ref]}
                   />
                   {terms.map((t, i) => {
-                    const tx = bx + 18 + (i * 244) / Math.max(1, terms.length - 1 || 1);
-                    const [hx, hy] = p.legs[t] ? xy(p.legs[t]!) : [tx, by + 142];
+                    const spot = face?.terminals[t];
+                    const tx = spot
+                      ? bx + spot.at[0]
+                      : bx + 18 + (i * 244) / Math.max(1, terms.length - 1 || 1);
+                    const ty = spot ? by + spot.at[1] : by + 132;
+                    const [lx, ly] = spot
+                      ? [bx + spot.label[0], by + spot.label[1]]
+                      : [tx, by + 156];
+                    const [hx, hy] = p.legs[t] ? xy(p.legs[t]!) : [tx, ty + 10];
                     return (
                       <g key={t}>
                         <circle
                           cx={tx}
-                          cy={by + 132}
-                          r={7}
+                          cy={ty}
+                          r={spot ? 5.5 : 7}
                           style={{
                             fill: t === "n" ? "#17232f" : "#d32f2f",
                             stroke: "#8496a4",
@@ -714,13 +746,13 @@ export function BreadboardView({
                         </circle>
                         {p.legs[t] && (
                           <path
-                            d={`M ${tx} ${by + 132} C ${tx} ${by - 30}, ${hx} ${hy + 40}, ${hx} ${hy}`}
+                            d={`M ${tx} ${ty} C ${tx} ${by - 30}, ${hx} ${hy + 40}, ${hx} ${hy}`}
                             className="bb-lead-wire"
                             stroke={t === "n" || t === "-" || t === "0" ? "#222" : "#d32f2f"}
                           />
                         )}
                         <circle cx={hx} cy={hy} r={3} className="bb-clip" />
-                        <text x={tx} y={by + 156} textAnchor="middle" className="bb-leg-label">
+                        <text x={lx} y={ly} textAnchor="middle" className="bb-leg-label">
                           {views[p.ref]?.labels[t] ?? t}
                         </text>
                       </g>
@@ -1011,6 +1043,13 @@ export function BreadboardView({
       </aside>
     </div>
   );
+}
+
+function placeHint(pkg: PackageSpec | undefined): string {
+  if (pkg?.style === "dip") return " (coluna f, abaixo da canaleta)";
+  if (pkg?.style === "board")
+    return ` (coluna ${pkg.cols?.[0] ?? "h"}; a outra barra de pinos fica na coluna ${pkg.cols?.[1] ?? "c"})`;
+  return "";
 }
 
 /** Where the pinout came from: datasheet page, generic labels or missing. */

@@ -11,6 +11,8 @@ import {
   type PartOut,
 } from "../api";
 import { emptyBreadboard } from "../breadboard/types";
+import { MOTOR_KINDS } from "../breadboard/DeviceFaces";
+import type { Motion } from "../breadboard/DeviceFaces";
 import type { PackageSpec, PartView } from "../breadboard/types";
 import { SCHEMATIC_EXAMPLES } from "../schematic/examples";
 import { ResultsView } from "../schematic/ResultsView";
@@ -124,6 +126,39 @@ export function SchematicWorkspace({
   const [nodeMap, setNodeMap] = useState<Record<string, string[]>>({});
   const [nodeError, setNodeError] = useState<string | null>(null);
   const [resultProbes, setResultProbes] = useState<string[]>([]);
+  // direction of rotation: last point of v(<ref>_w) of each motor in the transient result
+  const [motion, setMotion] = useState<Record<string, Motion>>({});
+  const motorRefs = sch.components
+    .filter((c) => MOTOR_KINDS.has(c.kind))
+    .map((c) => c.ref)
+    .join(",");
+  useEffect(() => {
+    setMotion({});
+    if (!job || job.state !== "done" || !motorRefs) return;
+    const plot = job.plots?.find((p) => p.kind === "tran");
+    if (!plot) return;
+    const names = motorRefs
+      .split(",")
+      .map((r) => `v(${r.toLowerCase()}_w)`)
+      .filter((n) => plot.vectors.some((v) => v.name === n));
+    if (!names.length) return;
+    let cancelled = false;
+    api
+      .plot(job.id, plot.name, names, "real", 200)
+      .then((data) => {
+        if (cancelled) return;
+        const out: Record<string, Motion> = {};
+        for (const ref of motorRefs.split(",")) {
+          const v = data.traces[`v(${ref.toLowerCase()}_w)`]?.values;
+          if (v?.length) out[ref] = { rpm: (v[v.length - 1]! * 60) / (2 * Math.PI) };
+        }
+        setMotion(out);
+      })
+      .catch(() => setMotion({}));
+    return () => {
+      cancelled = true;
+    };
+  }, [job, motorRefs]);
   useEffect(() => {
     setNodeMap({});
     setNodeError(null);
@@ -655,7 +690,13 @@ export function SchematicWorkspace({
           )}
 
           {view === "protoboard" && bbSpec ? (
-            <BreadboardView schematic={sch} onChange={change} spec={bbSpec} resolved={resolved} />
+            <BreadboardView
+              schematic={sch}
+              onChange={change}
+              spec={bbSpec}
+              resolved={resolved}
+              motion={motion}
+            />
           ) : (
             <div className={`schematic-layout${libraryOpen ? " library-open" : ""}`}>
               <aside
@@ -707,6 +748,7 @@ export function SchematicWorkspace({
                 setSelection={setSelection}
                 onChange={change}
                 probeColors={probeColors}
+                motion={motion}
               />
 
               <aside className="panel properties" aria-label="Propriedades">

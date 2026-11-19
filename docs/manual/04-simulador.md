@@ -47,6 +47,10 @@ amplitude pico a pico, offset, frequência e duty cycle. A onda triangular usa o
 fração do período dedicada à subida.
 
 Em **Protoboard**, há duas placas e uma barra vertical de alimentação. O zoom inicial é 100%.
+
+No esquemático, o zoom fica no canto superior direito do desenho: botões − e +, lista de níveis
+(25 a 400 %) e **Ajustar** (enquadra o circuito). Atalhos: roda do mouse, `+`, `−`, `0` (100 %) e
+`F` (ajustar).
 **Colocar** insere o dispositivo inteiro; ajuste depois os terminais pelo painel. Furos da
 segunda placa usam `2:`; os da barra vertical usam `vp` e `vn`. Os condutores só se unem por fios.
 Use a conferência antes de simular: a vista Protoboard exige que a montagem corresponda ao esquema.
