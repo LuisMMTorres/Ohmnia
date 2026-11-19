@@ -109,7 +109,7 @@ export function shift(spec: BoardSpec, hole: string, dRow: number, dCol: number)
 
 export type Orientation = "h" | "v";
 
-/** Legs of a package with leg 1 at `anchor`. DIP packages need leg 1 in column f. */
+/** Legs of a package with leg 1 at `anchor`. DIP packages need leg 1 in column f, boards in h. */
 export function placeLegs(
   spec: BoardSpec,
   pkg: PackageSpec,
@@ -119,11 +119,12 @@ export function placeLegs(
   const a = parseHole(spec, anchor);
   if (!a) return null;
   const legs: Record<string, string> = {};
-  if (pkg.style === "dip") {
-    if (a.col !== "f") return null;
+  if (pkg.style === "dip" || pkg.style === "board") {
+    const [low, up] = pkg.cols ?? ["f", "e"];
+    if (a.col !== low) return null;
     pkg.pins.forEach((pin, i) => {
       const [dr, dc] = pkg.offsets[i]!;
-      legs[pin] = `${a.board === 2 ? "2:" : ""}${dc < 0 ? "e" : "f"}${a.row + dr}`;
+      legs[pin] = `${a.board === 2 ? "2:" : ""}${dc < 0 ? up : low}${a.row + dr}`;
     });
   } else {
     for (let i = 0; i < pkg.pins.length; i++) {

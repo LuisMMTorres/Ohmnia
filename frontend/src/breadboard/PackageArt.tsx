@@ -215,6 +215,8 @@ export function PackageArt({ pkg, legs, view, refName, selected, bad, showLabels
     }
   }
 
+  if (pkg.style === "board") body = <BoardBody pkg={pkg} legs={legs} />;
+
   return (
     <g className={cls} data-ref={refName}>
       <title>{title}</title>
@@ -223,6 +225,7 @@ export function PackageArt({ pkg, legs, view, refName, selected, bad, showLabels
         <Leg key={i} at={p} />
       ))}
       {showLabels &&
+        pkg.style !== "board" &&
         pins.map((pin) => {
           const at = legs[pin]!;
           let dir: Pt = front;
@@ -240,26 +243,215 @@ export function PackageArt({ pkg, legs, view, refName, selected, bad, showLabels
 export function PackagePreview({ pkg, view }: { pkg: PackageSpec; view?: PartView }) {
   const legs: Record<string, Pt> = {};
   const ox = 30;
-  const oy = pkg.style === "dip" ? 70 : 40;
+  const twoRows = pkg.style === "dip" || pkg.style === "board";
+  const oy = pkg.style === "board" ? 150 : twoRows ? 70 : 40;
+  const minDr = Math.min(0, ...pkg.offsets.map(([dr]) => dr));
+  const step = pkg.style === "board" ? P : P * 1.6;
+  const gap = pkg.style === "board" ? 7 * P : 3 * P;
   pkg.pins.forEach((pin, i) => {
     const [dr, dc] = pkg.offsets[i] ?? [i, 0];
-    legs[pin] =
-      pkg.style === "dip"
-        ? [ox + dr * P * 1.6, oy + (dc < 0 ? -3 * P : 0)]
-        : [ox + dr * P * 1.6, oy];
+    legs[pin] = [ox + (dr - minDr) * step, oy + (twoRows && dc < 0 ? -gap : 0)];
   });
   const w = Math.max(...Object.values(legs).map((p) => p[0])) + 30;
-  const h = pkg.style === "dip" ? 100 : 66;
+  const h = pkg.style === "board" ? 200 : twoRows ? 100 : 66;
   if (pkg.style === "offboard") return null;
   return (
     <svg
       className="bb-preview"
       viewBox={`0 0 ${w} ${h}`}
-      width={w * 1.7}
-      height={h * 1.7}
+      width={pkg.style === "board" ? w : w * 1.7}
+      height={pkg.style === "board" ? h : h * 1.7}
       role="img"
     >
       <PackageArt pkg={pkg} legs={legs} view={view} refName={view?.ref ?? ""} showLabels />
     </svg>
+  );
+}
+
+/** Groups of consecutive legs along one header (a gap of one hole splits them). */
+function headerGroups(xs: number[]): [number, number][] {
+  const sorted = [...xs].sort((a, b) => a - b);
+  const out: [number, number][] = [];
+  for (const x of sorted) {
+    const last = out[out.length - 1];
+    if (last && x - last[1] <= P * 1.2) last[1] = x;
+    else out.push([x, x]);
+  }
+  return out;
+}
+
+/** Development board seen from above, its two headers over the legs (Arduino Uno, ESP32). */
+function BoardBody({ pkg, legs }: { pkg: PackageSpec; legs: Record<string, Pt> }) {
+  const lower: { pin: string; at: Pt; silk: string }[] = [];
+  const upper: typeof lower = [];
+  pkg.pins.forEach((pin, i) => {
+    const at = legs[pin];
+    if (!at) return;
+    const row = (pkg.offsets[i]?.[1] ?? 0) < 0 ? upper : lower;
+    row.push({ pin, at, silk: pkg.silk?.[i] ?? pin });
+  });
+  if (!lower.length || !upper.length) return null;
+  const xs = [...lower, ...upper].map((l) => l.at[0]);
+  const yl = lower[0]!.at[1];
+  const yu = upper[0]!.at[1];
+  const uno = pkg.body === "board-uno";
+  const x0 = Math.min(...xs) - P * (uno ? 1.6 : 1.2);
+  const x1 = Math.max(...xs) + P * (uno ? 1.2 : 1.4);
+  const y0 = yu - P * (uno ? 2.6 : 1.4);
+  const y1 = yl + P * (uno ? 2.6 : 1.4);
+  const pcb = uno ? "#0f7d8c" : "#202326";
+  const midY = (y0 + y1) / 2;
+  const first = lower[0]!;
+  return (
+    <g className="bb-board-part">
+      <rect
+        x={x0}
+        y={y0}
+        width={x1 - x0}
+        height={y1 - y0}
+        rx={uno ? 6 : 3}
+        style={{ fill: pcb, stroke: "#0b3a40", strokeWidth: 1.2, opacity: 0.96 }}
+      />
+      {uno ? (
+        <>
+          {/* USB-B and power jack on the left edge, ATmega328P in DIP-28, reset button */}
+          <rect
+            x={x0 - 12}
+            y={y0 + 8}
+            width={40}
+            height={30}
+            rx={2}
+            style={{ fill: "#b9c0c6", stroke: "#59636c" }}
+          />
+          <rect x={x0 - 8} y={y1 - 34} width={34} height={24} rx={3} style={{ fill: "#1d1f22" }} />
+          <rect
+            x={(x0 + x1) / 2 - 10}
+            y={midY - 10}
+            width={(x1 - x0) * 0.42}
+            height={22}
+            rx={2}
+            style={{ fill: "#1b1b1b" }}
+          />
+          <text
+            x={(x0 + x1) / 2 + 26}
+            y={midY + 4}
+            fontSize={7}
+            textAnchor="middle"
+            style={{ fill: "#ddd" }}
+          >
+            ATmega328P
+          </text>
+          <rect
+            x={x0 + 46}
+            y={y0 + 10}
+            width={10}
+            height={10}
+            rx={2}
+            style={{ fill: "#d9d9d9", stroke: "#666" }}
+          />
+          <text
+            x={x0 + 50}
+            y={midY + 4}
+            fontSize={11}
+            fontWeight={700}
+            textAnchor="middle"
+            style={{ fill: "#f4f4f4" }}
+          >
+            UNO
+          </text>
+        </>
+      ) : (
+        <>
+          {/* ESP32-WROOM module (metal can and PCB antenna), micro-USB, EN and BOOT */}
+          <rect
+            x={x0 + 4}
+            y={midY - 22}
+            width={30}
+            height={44}
+            rx={1}
+            style={{ fill: "#1b3d6b" }}
+          />
+          <path
+            d={`M ${x0 + 8} ${midY - 16} h 22 v 6 h -22 v 6 h 22 v 6 h -22 v 6 h 22`}
+            style={{ fill: "none", stroke: "#d4b44a", strokeWidth: 1 }}
+          />
+          <rect
+            x={x0 + 34}
+            y={midY - 22}
+            width={60}
+            height={44}
+            rx={2}
+            style={{ fill: "#c3c9cf", stroke: "#7b858e" }}
+          />
+          <text
+            x={x0 + 64}
+            y={midY + 3}
+            fontSize={7}
+            textAnchor="middle"
+            style={{ fill: "#2b3640" }}
+          >
+            ESP32-WROOM
+          </text>
+          <rect
+            x={x1 - 10}
+            y={midY - 9}
+            width={16}
+            height={18}
+            rx={2}
+            style={{ fill: "#b9c0c6", stroke: "#59636c" }}
+          />
+          <rect x={x1 - 34} y={midY - 22} width={9} height={9} rx={2} style={{ fill: "#d9d9d9" }} />
+          <rect x={x1 - 34} y={midY + 13} width={9} height={9} rx={2} style={{ fill: "#d9d9d9" }} />
+          <text x={x1 - 40} y={midY - 14} fontSize={5.5} textAnchor="end" style={{ fill: "#ddd" }}>
+            EN
+          </text>
+          <text x={x1 - 40} y={midY + 20} fontSize={5.5} textAnchor="end" style={{ fill: "#ddd" }}>
+            BOOT
+          </text>
+        </>
+      )}
+      {[
+        { row: lower, y: yl },
+        { row: upper, y: yu },
+      ].map(({ row, y }) =>
+        headerGroups(row.map((l) => l.at[0])).map(([a, b]) => (
+          <rect
+            key={`${y}-${a}`}
+            x={a - P * 0.5}
+            y={y - P * 0.5}
+            width={b - a + P}
+            height={P}
+            style={{ fill: "#151515" }}
+          />
+        )),
+      )}
+      {[...lower.map((l) => ({ ...l, dy: -12 })), ...upper.map((l) => ({ ...l, dy: 12 }))].map(
+        (l) => (
+          <text
+            key={l.pin}
+            x={l.at[0]}
+            y={l.at[1] + l.dy}
+            fontSize={5}
+            textAnchor={l.dy < 0 ? "start" : "end"}
+            transform={`rotate(-90 ${l.at[0]} ${l.at[1] + l.dy})`}
+            dominantBaseline="central"
+            style={{ fill: "#f2f2f2" }}
+          >
+            {l.silk}
+          </text>
+        ),
+      )}
+      {/* pin 1 mark */}
+      <path d={`M ${first.at[0] - 4} ${yl + 11} l 4 -5 l 4 5 z`} style={{ fill: "#ffd54a" }} />
+      <text
+        x={first.at[0] - 7}
+        y={yl + 4}
+        fontSize={6}
+        textAnchor="end"
+        style={{ fill: "#ffd54a" }}
+      >
+        1
+      </text>
+    </g>
   );
 }

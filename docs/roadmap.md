@@ -216,3 +216,12 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 - Osciloscópio didático de 2/4 canais com ponteiras, escalas, acoplamento, Autoset e trigger.
 - Circuito editável nas revisões dos projetos, Salvar como e envio às duas vistas do Simulador.
 - Detalhes, critérios de validação e limitações: [validacao/bancada-virtual.md](validacao/bancada-virtual.md).
+
+## Protoboard realista, placas encaixáveis e zoom — aguardando revisão (2026-11-19)
+
+- Arduino Uno e ESP32-DevKitC com as duas barras de pinos, encaixados sobre a canaleta pelo pino 1.
+- Desenhos próprios para sensores, transmissores (novo transmissor 4-20 mA para RTD a 3 fios),
+  termopar, ACS712, motores, soft-starter, inversor, contator, driver, relé, aquecedor e botão.
+- Sentido de giro dos motores após a simulação; zoom de 50 a 250 % na protoboard e controles de zoom
+  no esquemático; "fonte comportamental" renomeada para "fonte dependente".
+- Detalhes e limitações: [validacao/protoboard-realista.md](validacao/protoboard-realista.md).

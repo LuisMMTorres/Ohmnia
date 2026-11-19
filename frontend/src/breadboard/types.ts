@@ -46,7 +46,7 @@ export interface BoardSpec {
 export interface PackageSpec {
   id: string;
   label: string;
-  style: "axial" | "radial" | "inline" | "dip" | "offboard";
+  style: "axial" | "radial" | "inline" | "dip" | "board" | "offboard";
   pins: string[];
   pitch: number;
   span: number;
@@ -54,6 +54,8 @@ export interface PackageSpec {
   body: string;
   note: string;
   offsets: [number, number][];
+  cols?: [string, string]; // DIP and board: (lower, upper) columns; leg 1 in the lower one
+  silk?: string[]; // board: label printed next to each leg
 }
 
 export interface Spec {

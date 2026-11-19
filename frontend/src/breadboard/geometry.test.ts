@@ -158,6 +158,30 @@ describe("breadboard geometry (same rules as the backend)", () => {
     expect(placeLegs(board, dip, "e10", "h")).toBeNull();
   });
 
+  it("places a board by pin 1 in column h, with the other header in column c", () => {
+    const esp = {
+      ...pkg(
+        "board",
+        ["1", "2", "3", "4"],
+        [
+          [0, 0],
+          [1, 0],
+          [1, -1],
+          [-2, -1],
+        ],
+      ),
+      cols: ["h", "c"] as [string, string],
+    };
+    expect(placeLegs(board, esp, "h10", "h")).toEqual({
+      "1": "h10",
+      "2": "h11",
+      "3": "c11",
+      "4": "c8",
+    });
+    expect(placeLegs(board, esp, "f10", "h")).toBeNull();
+    expect(placeLegs(board, esp, "h2", "h")).toBeNull(); // upper header off the board
+  });
+
   it("turns an inline part vertical and refuses to fall off the board", () => {
     const to92 = pkg(
       "inline",

@@ -1,15 +1,31 @@
+import { deviceFace } from "./DeviceFaces";
+import type { Motion } from "./DeviceFaces";
+
 /** Didactic device bodies; no manufacturer specifications are implied. */
 export function InstrumentFace({
   x,
   y,
   title,
   kind,
+  motion,
 }: {
   x: number;
   y: number;
   title: string;
   kind: string;
+  motion?: Motion;
 }) {
+  const face = deviceFace(kind);
+  if (face)
+    return (
+      <g transform={`translate(${x},${y})`} className="instrument-face device-face">
+        <rect x={-6} y={-16} width={300} height={176} rx={8} className="device-frame" />
+        <text x={0} y={-4} fontSize={10} style={{ fill: "#142e41" }}>
+          {title.slice(0, 48)}
+        </text>
+        {face.draw(motion)}
+      </g>
+    );
   const source = /^[vi](dc|sin|pulse|pwl)$/.test(kind);
   const board = /arduino|esp32|stm32/.test(kind);
   return (

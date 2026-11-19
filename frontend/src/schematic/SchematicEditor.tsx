@@ -13,6 +13,8 @@ import {
 } from "./geometry";
 import { SymbolBody, valueText } from "./symbols";
 import { removeSources } from "../breadboard/instruments";
+import { MOTOR_KINDS, rotationText } from "../breadboard/DeviceFaces";
+import type { Motion } from "../breadboard/DeviceFaces";
 import type { Component, Point, Probe, ProbeKind, Schematic, SymbolDef } from "./types";
 
 export type Tool =
@@ -38,7 +40,13 @@ interface Props {
   setSelection: (s: Selection) => void;
   onChange: (s: Schematic) => void;
   probeColors: Record<string, string>;
+  /** Shaft speed of each motor after the last simulation (direction of rotation). */
+  motion?: Record<string, Motion>;
 }
+
+const ZOOM_MIN = 0.25;
+const ZOOM_MAX = 4;
+const ZOOM_PRESETS = [0.25, 0.5, 0.75, 1, 1.5, 2, 3, 4];
 
 const uid = (p: string) => `${p}${Math.random().toString(36).slice(2, 9)}`;
 
@@ -52,6 +60,7 @@ export function SchematicEditor({
   setSelection,
   onChange,
   probeColors,
+  motion,
 }: Props) {
   const svgRef = useRef<SVGSVGElement>(null);
   const [view, setView] = useState({ x: -12, y: -10, scale: 1 });
@@ -246,6 +255,27 @@ export function SchematicEditor({
     setSelection(null);
   }, [selection, sch, onChange, setSelection]);
 
+  /** Zoom to `target` (or by `factor`) keeping the grid point under (clientX, clientY). */
+  const zoomAt = useCallback(
+    (next: (scale: number) => number, clientX?: number, clientY?: number) => {
+      const svg = svgRef.current;
+      if (!svg) return;
+      const r = svg.getBoundingClientRect();
+      const cx = clientX ?? r.left + r.width / 2;
+      const cy = clientY ?? r.top + r.height / 2;
+      setView((v) => {
+        const gx = v.x + (cx - r.left) / (GRID * v.scale);
+        const gy = v.y + (cy - r.top) / (GRID * v.scale);
+        const scale = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, next(v.scale)));
+        const k = v.scale / scale;
+        return { scale, x: gx - (gx - v.x) * k, y: gy - (gy - v.y) * k };
+      });
+    },
+    [],
+  );
+  const zoomIn = useCallback(() => zoomAt((s) => s * 1.25), [zoomAt]);
+  const zoomOut = useCallback(() => zoomAt((s) => s / 1.25), [zoomAt]);
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement;
@@ -258,6 +288,10 @@ export function SchematicEditor({
       else if (e.key === "m" || e.key === "M") mirrorSelected();
       else if (e.key === "Delete" || e.key === "Backspace") deleteSelected();
       else if (e.key === "w" || e.key === "W") setTool({ kind: "wire" });
+      else if (e.key === "+" || e.key === "=") zoomIn();
+      else if (e.key === "-" || e.key === "_") zoomOut();
+      else if (e.key === "0") zoomAt(() => 1);
+      else if (e.key === "f" || e.key === "F") fitRef.current();
       else if (e.key === " " && wire) {
         e.preventDefault();
         setVerticalFirst((v) => !v);
@@ -265,7 +299,7 @@ export function SchematicEditor({
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [rotateSelected, mirrorSelected, deleteSelected, setTool, wire]);
+  }, [rotateSelected, mirrorSelected, deleteSelected, setTool, wire, zoomIn, zoomOut, zoomAt]);
 
   // ------------------------------------------------------------------ pointer
   const onPointerDown = (e: React.PointerEvent<SVGSVGElement>) => {
@@ -383,13 +417,8 @@ export function SchematicEditor({
   };
 
   const onWheel = (e: React.WheelEvent<SVGSVGElement>) => {
-    const [gx, gy] = toGrid(e.clientX, e.clientY);
     const factor = e.deltaY < 0 ? 1.15 : 1 / 1.15;
-    setView((v) => {
-      const scale = Math.min(4, Math.max(0.25, v.scale * factor));
-      const k = v.scale / scale;
-      return { scale, x: gx - (gx - v.x) * k, y: gy - (gy - v.y) * k };
-    });
+    zoomAt((s) => s * factor, e.clientX, e.clientY);
   };
 
   const fit = () => {
@@ -517,6 +546,39 @@ export function SchematicEditor({
 
   return (
     <div className="schematic-editor">
+      <div className="zoom-controls" role="group" aria-label="Zoom do esquemático">
+        <button type="button" className="secondary" onClick={zoomOut} title="Diminuir zoom (−)">
+          −
+        </button>
+        <select
+          aria-label="Nível de zoom"
+          value={String(view.scale)}
+          onChange={(e) => {
+            const z = Number(e.target.value);
+            zoomAt(() => z);
+          }}
+        >
+          {!ZOOM_PRESETS.includes(view.scale) && (
+            <option value={String(view.scale)}>{Math.round(view.scale * 100)} %</option>
+          )}
+          {ZOOM_PRESETS.map((z) => (
+            <option key={z} value={String(z)}>
+              {z * 100} %
+            </option>
+          ))}
+        </select>
+        <button type="button" className="secondary" onClick={zoomIn} title="Aumentar zoom (+)">
+          +
+        </button>
+        <button
+          type="button"
+          className="secondary"
+          onClick={fit}
+          title="Ajustar o desenho à tela (F)"
+        >
+          Ajustar
+        </button>
+      </div>
       <svg
         ref={svgRef}
         className={`schematic-canvas${cursorClass}`}
@@ -588,6 +650,16 @@ export function SchematicEditor({
                     </tspan>
                   </text>
                 )}
+                {MOTOR_KINDS.has(c.kind) && motion?.[c.ref] && (
+                  <text
+                    className="sym-motion"
+                    x={c.x * GRID}
+                    y={(c.y + 3.6) * GRID}
+                    textAnchor="middle"
+                  >
+                    {rotationText(motion[c.ref])}
+                  </text>
+                )}
               </g>
             );
           })}
@@ -657,7 +729,7 @@ export function SchematicEditor({
                   : tool.probe === "v"
                     ? "Clique num fio ou pino"
                     : "Clique no componente (corrente entra pelo pino mais próximo)"
-                : "Arraste para mover · R gira · M espelha · Del apaga · W fio · roda do mouse: zoom · arraste o fundo: mover a vista"}
+                : "Arraste para mover · R gira · M espelha · Del apaga · W fio · roda do mouse ou + − 0 F: zoom · arraste o fundo: mover a vista"}
         </span>
         <button type="button" className="secondary small-btn" onClick={fit}>
           Enquadrar
