@@ -299,7 +299,51 @@ function thyristor(triac: boolean): ReactNode[] {
   return out;
 }
 
-export function SymbolBody({ c, sym }: { c: Component; sym: SymbolDef | undefined }) {
+/** Simulated brightness of a LED or lamp: 0 (off) … 1 (rated), above 1 overloaded. */
+export interface Glow {
+  level: number;
+  color: string;
+  burnt?: boolean;
+}
+
+/** Display colour of each LED colour name (and of a lamp filament). */
+export const GLOW_COLORS: Record<string, string> = {
+  vermelho: "#ff2a1a",
+  laranja: "#ff8a1a",
+  amarelo: "#ffd21a",
+  verde: "#2ee04a",
+  azul: "#2a7bff",
+  branco: "#f4f8ff",
+  ir: "#8a2a6a",
+  lamp: "#ffc94a",
+};
+
+function glowHalo(cx: number, glow: Glow | undefined, r: number): ReactNode[] {
+  if (!glow || glow.level <= 0.02 || glow.burnt) return [];
+  const level = Math.min(glow.level, 1.4);
+  return [
+    <circle
+      key="halo"
+      className="glow-halo"
+      cx={u(cx)}
+      cy={0}
+      r={u(r * (0.8 + 0.5 * Math.min(level, 1)))}
+      fill={glow.color}
+      fillOpacity={0.15 + 0.6 * Math.min(level, 1)}
+      stroke="none"
+    />,
+  ];
+}
+
+export function SymbolBody({
+  c,
+  sym,
+  glow,
+}: {
+  c: Component;
+  sym: SymbolDef | undefined;
+  glow?: Glow;
+}) {
   const k = c.kind;
   let body: ReactNode[] = [];
   if (k === "resistor")
@@ -321,7 +365,7 @@ export function SymbolBody({ c, sym }: { c: Component; sym: SymbolDef | undefine
       coil(0, 1.6),
       line(1.6, 0, 2, 0, "b"),
     ];
-  else if (k === "transformer")
+  else if (k === "transformer" || k === "transformer_1ph")
     body = [
       poly(
         [
@@ -364,7 +408,26 @@ export function SymbolBody({ c, sym }: { c: Component; sym: SymbolDef | undefine
       <circle key="d1" cx={u(-1.5)} cy={u(-1.3)} r={u(0.12)} className="fill" />,
       <circle key="d2" cx={u(1.5)} cy={u(-1.3)} r={u(0.12)} className="fill" />,
     ];
-  else if (/^[vi](dc|sin|pulse|pwl)$/.test(k)) body = sourceBody(k);
+  else if (k === "transformer_3ph") {
+    // single-line IEC 60617 symbol (two windings) with the vector group, in a box with terminals
+    const cp = c.params.conn_p || "D";
+    const cs = c.params.conn_s || "Y";
+    const names = ["H1", "H2", "H3", "H0", "X1", "X2", "X3", "X0"];
+    body = [
+      <rect key="box" x={u(-2)} y={u(-3.6)} width={u(4)} height={u(7.2)} className="thin" />,
+      ...[-3, -1, 1, 3].flatMap((y, i) => [
+        line(-3, y, -2, y, `lh${i}`),
+        line(2, y, 3, y, `lx${i}`),
+        text(-1.6, y, names[i]!, 0.45, `th${i}`),
+        text(1.6, y, names[i + 4]!, 0.45, `tx${i}`),
+      ]),
+      circle(-0.45, 0, 0.8, "wp"),
+      circle(0.45, 0, 0.8, "ws"),
+      text(-0.6, 1.5, cp === "D" ? "Δ" : "Y", 0.6, "cp"),
+      text(0.6, 1.5, cs === "D" ? "Δ" : "Y", 0.6, "cs"),
+      text(0, -1.5, "3~", 0.5, "ph"),
+    ];
+  } else if (/^[vi](dc|sin|pulse|pwl)$/.test(k)) body = sourceBody(k);
   else if (k === "v3ph")
     body = [
       circle(0, 0, 1.2, "o"),
@@ -438,6 +501,59 @@ export function SymbolBody({ c, sym }: { c: Component; sym: SymbolDef | undefine
           )
         : line(0.6, -0.7, 0.6, 0.7, "bar"),
     ];
+  } else if (k === "led") {
+    const lit = glow && glow.level > 0.02 && !glow.burnt;
+    body = [
+      ...glowHalo(0, glow, 1.3),
+      line(-2, 0, -0.6, 0, "a"),
+      line(0.6, 0, 2, 0, "b"),
+      <polygon
+        key="t"
+        points={`${u(-0.6)},${u(-0.7)} ${u(-0.6)},${u(0.7)} ${u(0.6)},0`}
+        fill={lit ? glow.color : "none"}
+        fillOpacity={lit ? 0.35 + 0.65 * Math.min(glow.level, 1) : 0}
+      />,
+      line(0.6, -0.7, 0.6, 0.7, "bar"),
+      // emitted light: two arrows leaving the junction (below, clear of the designator)
+      line(-0.1, 0.8, 0.5, 1.4, "r1"),
+      poly(
+        [
+          [0.25, 1.4],
+          [0.5, 1.4],
+          [0.5, 1.15],
+        ],
+        "h1",
+      ),
+      line(0.5, 0.8, 1.1, 1.4, "r2"),
+      poly(
+        [
+          [0.85, 1.4],
+          [1.1, 1.4],
+          [1.1, 1.15],
+        ],
+        "h2",
+      ),
+      ...(glow?.burnt ? [text(0, 2.0, "QUEIMOU", 0.55, "burnt")] : []),
+    ];
+  } else if (k === "lamp") {
+    const lit = glow && glow.level > 0.02 && !glow.burnt;
+    body = [
+      ...glowHalo(0, glow, 1.3),
+      line(-2, 0, -0.9, 0, "a"),
+      line(0.9, 0, 2, 0, "b"),
+      <circle
+        key="bulb"
+        cx={0}
+        cy={0}
+        r={u(0.9)}
+        fill={lit ? glow.color : "none"}
+        fillOpacity={lit ? 0.3 + 0.7 * Math.min(glow.level, 1) : 0}
+      />,
+      // IEC 60617 lamp: a cross inside the circle
+      line(-0.64, -0.64, 0.64, 0.64, "x1"),
+      line(-0.64, 0.64, 0.64, -0.64, "x2"),
+      ...(glow?.burnt ? [text(0, 1.4, "ACIMA DE Pn", 0.5, "burnt")] : []),
+    ];
   } else if (k === "npn" || k === "pnp") body = bjt(k === "pnp");
   else if (k === "igbt") body = bjt(false, true);
   else if (["nmos", "pmos", "njf", "pjf"].includes(k)) body = fet(k);
@@ -469,6 +585,32 @@ export function SymbolBody({ c, sym }: { c: Component; sym: SymbolDef | undefine
       line(1, 2, 1, 1.2, "cn"),
       <rect key="box" x={u(-1.2)} y={u(0.6)} width={u(2.4)} height={u(0.6)} className="thin" />,
       text(-0.6, 0.9, "+", 0.5, "pp"),
+    ];
+  else if (k === "tact_switch" || k === "push_nc") {
+    // IEC 60617 push-button: contacts, the moving bar and the actuator (T)
+    const nc = k === "push_nc";
+    body = [
+      line(-2, 0, -1, 0, "a"),
+      line(1, 0, 2, 0, "b"),
+      circle(-1, 0, 0.12, "c1"),
+      circle(1, 0, 0.12, "c2"),
+      line(-1.1, nc ? 0.15 : -0.5, 1.1, nc ? 0.15 : -0.5, "bar"),
+      line(0, nc ? 0.15 : -0.5, 0, -1.3, "stem"),
+      line(-0.5, -1.3, 0.5, -1.3, "push"),
+    ];
+  } else if (k === "tact_switch4")
+    body = [
+      line(-2, -1, -1, -1, "l1"),
+      line(-2, 1, -1, 1, "l2"),
+      line(2, -1, 1, -1, "l3"),
+      line(2, 1, 1, 1, "l4"),
+      line(-1, -1, -1, 1, "j12"),
+      line(1, -1, 1, 1, "j34"),
+      line(-1, 0, -0.6, 0, "ca"),
+      line(1, 0, 0.6, 0, "cb"),
+      line(-0.8, -0.5, 0.8, -0.5, "bar"),
+      line(0, -0.5, 0, -1.3, "stem"),
+      line(-0.5, -1.3, 0.5, -1.3, "push"),
     ];
   else if (k === "scr" || k === "triac") body = thyristor(k === "triac");
   else if (k === "ground")
@@ -627,7 +769,13 @@ export function valueText(c: Component, sym: SymbolDef | undefined): string {
   if (c.kind === "v3ph") return `${p("vrms")}V ${p("freq")}Hz`;
   if (c.kind === "rl_load") return `${p("r")}Ω + ${p("l")}H`;
   if (c.kind === "transformer") return `1:${p("n")}`;
+  if (c.kind === "transformer_1ph") return `${p("vp")}/${p("vs")}V ${p("sn")}VA`;
+  if (c.kind === "transformer_3ph") {
+    return `${p("conn_p")}${p("conn_s").toLowerCase()}`;
+  }
   if (c.kind === "zener") return `${p("vz")}V`;
+  if (c.kind === "lamp") return `${p("vn")}V ${p("pn")}W`;
+  if (c.kind === "led") return `${p("color")} ${p("vf")}V`;
   if (c.kind === "bsource") return p("expr");
   if (c.kind === "subckt") return "";
   if (c.params.model) return c.params.model;

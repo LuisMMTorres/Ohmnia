@@ -11,7 +11,8 @@ import {
   segmentDistance,
   simplify,
 } from "./geometry";
-import { SymbolBody, valueText } from "./symbols";
+import { SymbolBody, valueText, type Glow } from "./symbols";
+import { copyItems, itemsInBox, moveItems, pasteClip, type Clip, type Group } from "./editing";
 import { removeSources } from "../breadboard/instruments";
 import { MOTOR_KINDS, rotationText } from "../breadboard/DeviceFaces";
 import type { Motion } from "../breadboard/DeviceFaces";
@@ -19,7 +20,13 @@ import type { Component, Point, Probe, ProbeKind, Schematic, SymbolDef } from ".
 
 export type Tool =
   | { kind: "select" }
-  | { kind: "place"; symbol: string }
+  | {
+      kind: "place";
+      symbol: string;
+      /** preset parameters and catalogue part (LEDs and lamps of the palette) */
+      params?: Record<string, string>;
+      part_id?: string | null;
+    }
   | { kind: "wire" }
   | { kind: "label" }
   | { kind: "probe"; probe: ProbeKind };
@@ -28,7 +35,11 @@ export type Selection =
   | { kind: "component"; id: string }
   | { kind: "wire"; id: string }
   | { kind: "label"; id: string }
+  | ({ kind: "group" } & Group)
   | null;
+
+/** Clipboard shared by every editor of the page (copy in one circuit, paste in another). */
+let clipboard: Clip | null = null;
 
 interface Props {
   nodeNames?: Record<string, string[]>;
@@ -42,6 +53,10 @@ interface Props {
   probeColors: Record<string, string>;
   /** Shaft speed of each motor after the last simulation (direction of rotation). */
   motion?: Record<string, Motion>;
+  /** Brightness of each LED and lamp after the last simulation. */
+  glows?: Record<string, Glow>;
+  /** Short message for the status line (e.g. result of a paste). */
+  onNotice?: (text: string) => void;
 }
 
 const ZOOM_MIN = 0.25;
@@ -61,16 +76,29 @@ export function SchematicEditor({
   onChange,
   probeColors,
   motion,
+  glows,
+  onNotice,
 }: Props) {
   const svgRef = useRef<SVGSVGElement>(null);
   const [view, setView] = useState({ x: -12, y: -10, scale: 1 });
   const [cursor, setCursor] = useState<Point>([0, 0]);
+  const cursorRef = useRef<Point>([0, 0]);
+  const placing = tool.kind === "place" ? tool.symbol : "";
+  useEffect(() => {
+    setPlaceRot(0);
+    setPlaceMirror(false);
+  }, [placing]);
   const [wire, setWire] = useState<Point[] | null>(null);
   const [verticalFirst, setVerticalFirst] = useState(false);
   const [diffStart, setDiffStart] = useState<Point | null>(null);
+  // orientation of the part about to be placed (R and M work before the click)
+  const [placeRot, setPlaceRot] = useState<Component["rot"]>(0);
+  const [placeMirror, setPlaceMirror] = useState(false);
+  const [box, setBox] = useState<{ a: [number, number]; b: [number, number] } | null>(null);
   const fitRef = useRef<() => void>(() => {});
   const drag = useRef<{
-    kind: "component" | "pan";
+    kind: "component" | "pan" | "box";
+    group?: Group;
     id?: string;
     start: Point;
     origin: Point;
@@ -166,7 +194,8 @@ export function SchematicEditor({
     setWire(null);
   };
 
-  const place = (symbol: string, at: Point) => {
+  const place = (t: Extract<Tool, { kind: "place" }>, at: Point) => {
+    const symbol = t.symbol;
     const sym = library[symbol];
     if (!sym) return;
     const comp: Component = {
@@ -175,10 +204,10 @@ export function SchematicEditor({
       ref: nextRef(sch, symbol === "ground" ? "GND" : sym.prefix),
       x: at[0],
       y: at[1],
-      rot: 0,
-      mirror: false,
-      params: {},
-      part_id: null,
+      rot: placeRot,
+      mirror: placeMirror,
+      params: { ...(t.params ?? {}) },
+      part_id: t.part_id ?? null,
     };
     onChange({ ...sch, components: [...sch.components, comp] });
     setSelection({ kind: "component", id: comp.id });
@@ -187,43 +216,66 @@ export function SchematicEditor({
   const moveComponent = (base: Schematic, id: string, to: Point): Schematic => {
     const comp = base.components.find((c) => c.id === id);
     if (!comp) return base;
-    const dx = to[0] - comp.x;
-    const dy = to[1] - comp.y;
-    if (!dx && !dy) return base;
-    const old = Object.values(pinPositions(comp, library[comp.kind])).map(key);
-    const oldSet = new Set(old);
-    // rubber-band: wire ends on the moved pins follow, keeping the segment orthogonal
-    const wires = base.wires.map((w) => {
-      const pts = w.points.map((p) => [...p] as Point);
-      const ends = [0, pts.length - 1];
-      let changed = false;
-      for (const i of ends) {
-        const pi0 = pts[i]!;
-        if (!oldSet.has(key(pi0))) continue;
-        const j = i === 0 ? 1 : pts.length - 2;
-        const pj = pts[j]!;
-        const horizontal = pj[1] === pi0[1];
-        const pi: Point = [pi0[0] + dx, pi0[1] + dy];
-        pts[i] = pi;
-        if (pts.length > 2) {
-          if (horizontal) pts[j] = [pj[0], pi[1]];
-          else pts[j] = [pi[0], pj[1]];
-        } else if (pi[0] !== pj[0] && pi[1] !== pj[1]) {
-          const corner: Point = horizontal ? [pi[0], pj[1]] : [pj[0], pi[1]];
-          pts.splice(i === 0 ? 1 : pts.length - 1, 0, corner);
-        }
-        changed = true;
-      }
-      return changed ? { ...w, points: simplify(pts) } : w;
-    });
-    return {
-      ...base,
-      wires,
-      components: base.components.map((c) => (c.id === id ? { ...c, x: to[0], y: to[1] } : c)),
-    };
+    return moveItems(
+      base,
+      library,
+      { components: [id], wires: [], labels: [] },
+      to[0] - comp.x,
+      to[1] - comp.y,
+    );
   };
 
+  const groupOf = (s: Selection): Group | null =>
+    s?.kind === "group"
+      ? { components: s.components, wires: s.wires, labels: s.labels }
+      : s?.kind === "component"
+        ? { components: [s.id], wires: [], labels: [] }
+        : s?.kind === "wire"
+          ? { components: [], wires: [s.id], labels: [] }
+          : s?.kind === "label"
+            ? { components: [], wires: [], labels: [s.id] }
+            : null;
+
+  const copySelected = useCallback(() => {
+    const g = groupOf(selection);
+    if (!g) return false;
+    clipboard = copyItems(sch, g);
+    const n = clipboard.components.length;
+    onNotice?.(n ? `${n} componente(s) copiado(s): Ctrl+V cola no cursor` : "Nada para copiar");
+    return true;
+  }, [selection, sch, onNotice]);
+
+  const pasteAt = useCallback(
+    (at: Point) => {
+      if (!clipboard) return;
+      const out = pasteClip(sch, clipboard, at);
+      onChange(out.sch);
+      const g = out.group;
+      setSelection(
+        g.components.length === 1 && !g.wires.length && !g.labels.length
+          ? { kind: "component", id: g.components[0]! }
+          : { kind: "group", ...g },
+      );
+      setTool({ kind: "select" });
+    },
+    [sch, onChange, setSelection, setTool],
+  );
+
+  const duplicateSelected = useCallback(() => {
+    const g = groupOf(selection);
+    if (!g) return;
+    clipboard = copyItems(sch, g);
+    const xs = clipboard.components.map((c) => c.x);
+    const ys = clipboard.components.map((c) => c.y);
+    if (!xs.length) return;
+    pasteAt([Math.min(...xs) + 3, Math.min(...ys) + 3]);
+  }, [selection, sch, pasteAt]);
+
   const rotateSelected = useCallback(() => {
+    if (tool.kind === "place") {
+      setPlaceRot((r) => ((r + 90) % 360) as Component["rot"]);
+      return;
+    }
     if (selection?.kind !== "component") return;
     onChange({
       ...sch,
@@ -231,9 +283,13 @@ export function SchematicEditor({
         c.id === selection.id ? { ...c, rot: ((c.rot + 90) % 360) as Component["rot"] } : c,
       ),
     });
-  }, [selection, sch, onChange]);
+  }, [selection, sch, onChange, tool.kind]);
 
   const mirrorSelected = useCallback(() => {
+    if (tool.kind === "place") {
+      setPlaceMirror((m) => !m);
+      return;
+    }
     if (selection?.kind !== "component") return;
     onChange({
       ...sch,
@@ -241,11 +297,18 @@ export function SchematicEditor({
         c.id === selection.id ? { ...c, mirror: !c.mirror } : c,
       ),
     });
-  }, [selection, sch, onChange]);
+  }, [selection, sch, onChange, tool.kind]);
 
   const deleteSelected = useCallback(() => {
     if (!selection) return;
-    if (selection.kind === "component") {
+    if (selection.kind === "group") {
+      const doc = removeSources(sch, selection.components);
+      onChange({
+        ...doc,
+        wires: doc.wires.filter((w) => !selection.wires.includes(w.id)),
+        labels: doc.labels.filter((l) => !selection.labels.includes(l.id)),
+      });
+    } else if (selection.kind === "component") {
       onChange(removeSources(sch, [selection.id]));
     } else if (selection.kind === "wire") {
       onChange({ ...sch, wires: sch.wires.filter((w) => w.id !== selection.id) });
@@ -280,6 +343,27 @@ export function SchematicEditor({
     const onKey = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement;
       if (["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName)) return;
+      if (e.ctrlKey || e.metaKey) {
+        const k = e.key.toLowerCase();
+        if (k === "c") {
+          if (copySelected()) e.preventDefault();
+        } else if (k === "v" && clipboard) {
+          e.preventDefault();
+          pasteAt(cursorRef.current);
+        } else if (k === "d") {
+          e.preventDefault();
+          duplicateSelected();
+        } else if (k === "a") {
+          e.preventDefault();
+          setSelection({
+            kind: "group",
+            components: sch.components.map((c) => c.id),
+            wires: sch.wires.map((w) => w.id),
+            labels: sch.labels.map((l) => l.id),
+          });
+        }
+        return;
+      }
       if (e.key === "Escape") {
         setWire(null);
         setDiffStart(null);
@@ -299,7 +383,21 @@ export function SchematicEditor({
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [rotateSelected, mirrorSelected, deleteSelected, setTool, wire, zoomIn, zoomOut, zoomAt]);
+  }, [
+    rotateSelected,
+    mirrorSelected,
+    deleteSelected,
+    setTool,
+    wire,
+    zoomIn,
+    zoomOut,
+    zoomAt,
+    copySelected,
+    pasteAt,
+    duplicateSelected,
+    setSelection,
+    sch,
+  ]);
 
   // ------------------------------------------------------------------ pointer
   const onPointerDown = (e: React.PointerEvent<SVGSVGElement>) => {
@@ -319,7 +417,7 @@ export function SchematicEditor({
     }
     if (e.button !== 0) return;
     if (tool.kind === "place") {
-      place(tool.symbol, p);
+      place(tool, p);
       if (!e.shiftKey) setTool({ kind: "select" });
       return;
     }
@@ -364,10 +462,15 @@ export function SchematicEditor({
     }
     const c = hitComponent(raw);
     if (c) {
-      setSelection({ kind: "component", id: c.id });
+      const inGroup = selection?.kind === "group" && selection.components.includes(c.id);
+      if (!inGroup) setSelection({ kind: "component", id: c.id });
       drag.current = {
         kind: "component",
         id: c.id,
+        group:
+          inGroup && selection?.kind === "group"
+            ? { components: selection.components, wires: selection.wires, labels: selection.labels }
+            : undefined,
         start: [c.x, c.y],
         origin: p,
         snapshot: sch,
@@ -382,22 +485,31 @@ export function SchematicEditor({
       setSelection({ kind: "wire", id: w.id });
       return;
     }
+    // empty background: drag a rectangle to select several items (pan: middle button, Alt)
     setSelection(null);
     drag.current = {
-      kind: "pan",
-      start: [view.x, view.y],
+      kind: "box",
+      start: raw,
       origin: p,
       snapshot: sch,
       moved: false,
       client: [e.clientX, e.clientY],
     };
+    setBox({ a: raw, b: raw });
+    (e.target as Element).setPointerCapture?.(e.pointerId);
   };
 
   const onPointerMove = (e: React.PointerEvent<SVGSVGElement>) => {
     const raw = toGrid(e.clientX, e.clientY);
     setCursor(snap(raw));
+    cursorRef.current = snap(raw);
     const d = drag.current;
     if (!d) return;
+    if (d.kind === "box") {
+      d.moved = true;
+      setBox({ a: d.start, b: raw });
+      return;
+    }
     if (d.kind === "pan") {
       const dx = (e.clientX - d.client[0]) / (GRID * view.scale);
       const dy = (e.clientY - d.client[1]) / (GRID * view.scale);
@@ -408,12 +520,27 @@ export function SchematicEditor({
     const to: Point = [d.start[0] + p[0] - d.origin[0], d.start[1] + p[1] - d.origin[1]];
     if (to[0] !== d.start[0] || to[1] !== d.start[1] || d.moved) {
       d.moved = true;
-      onChange(moveComponent(d.snapshot, d.id!, to));
+      onChange(
+        d.group
+          ? moveItems(d.snapshot, library, d.group, to[0] - d.start[0], to[1] - d.start[1])
+          : moveComponent(d.snapshot, d.id!, to),
+      );
     }
   };
 
   const onPointerUp = () => {
+    const d = drag.current;
     drag.current = null;
+    if (d?.kind === "box") {
+      setBox(null);
+      if (!box || Math.hypot(box.b[0] - box.a[0], box.b[1] - box.a[1]) < 0.5) return;
+      const g = itemsInBox(sch, library, box.a, box.b);
+      const n = g.components.length + g.wires.length + g.labels.length;
+      if (!n) return;
+      if (g.components.length === 1 && n === 1)
+        setSelection({ kind: "component", id: g.components[0]! });
+      else setSelection({ kind: "group", ...g });
+    }
   };
 
   const onWheel = (e: React.WheelEvent<SVGSVGElement>) => {
@@ -499,10 +626,10 @@ export function SchematicEditor({
           ref: "",
           x: cursor[0],
           y: cursor[1],
-          rot: 0,
-          mirror: false,
-          params: {},
-          part_id: null,
+          rot: placeRot,
+          mirror: placeMirror,
+          params: { ...(tool.params ?? {}) },
+          part_id: tool.part_id ?? null,
         } as Component)
       : null;
 
@@ -611,7 +738,12 @@ export function SchematicEditor({
           {sch.wires.map((w) => (
             <polyline
               key={w.id}
-              className={selection?.kind === "wire" && selection.id === w.id ? "wire sel" : "wire"}
+              className={
+                (selection?.kind === "wire" && selection.id === w.id) ||
+                (selection?.kind === "group" && selection.wires.includes(w.id))
+                  ? "wire sel"
+                  : "wire"
+              }
               points={w.points.map((p) => `${p[0] * GRID},${p[1] * GRID}`).join(" ")}
             />
           ))}
@@ -623,7 +755,9 @@ export function SchematicEditor({
           )}
           {[...sch.components, ...(ghost ? [ghost] : [])].map((c) => {
             const sym = library[c.kind];
-            const selected = selection?.kind === "component" && selection.id === c.id;
+            const selected =
+              (selection?.kind === "component" && selection.id === c.id) ||
+              (selection?.kind === "group" && selection.components.includes(c.id));
             const pinXs = Object.values(pinPositions(c, sym)).map((q) => q[0]);
             const vertical = pinXs.length > 1 && pinXs.every((x) => x === pinXs[0]);
             const isGround = c.kind === "ground";
@@ -635,7 +769,7 @@ export function SchematicEditor({
                 <g
                   transform={`translate(${c.x * GRID},${c.y * GRID}) rotate(${c.rot}) scale(${c.mirror ? -1 : 1},1)`}
                 >
-                  <SymbolBody c={c} sym={sym} />
+                  <SymbolBody c={c} sym={sym} glow={glows?.[c.ref]} />
                 </g>
                 {!isGround && c.id !== "ghost" && (
                   <text
@@ -673,7 +807,10 @@ export function SchematicEditor({
             <g
               key={l.id}
               className={
-                selection?.kind === "label" && selection.id === l.id ? "netlabel sel" : "netlabel"
+                (selection?.kind === "label" && selection.id === l.id) ||
+                (selection?.kind === "group" && selection.labels.includes(l.id))
+                  ? "netlabel sel"
+                  : "netlabel"
               }
               transform={`translate(${l.x * GRID},${l.y * GRID})`}
             >
@@ -707,6 +844,15 @@ export function SchematicEditor({
               className="diff-start"
             />
           )}
+          {box && (
+            <rect
+              className="select-box"
+              x={Math.min(box.a[0], box.b[0]) * GRID}
+              y={Math.min(box.a[1], box.b[1]) * GRID}
+              width={Math.abs(box.b[0] - box.a[0]) * GRID}
+              height={Math.abs(box.b[1] - box.a[1]) * GRID}
+            />
+          )}
           {tool.kind !== "select" && (
             <circle cx={cursor[0] * GRID} cy={cursor[1] * GRID} r={3} className="cursor-dot" />
           )}
@@ -720,7 +866,7 @@ export function SchematicEditor({
           {tool.kind === "wire"
             ? "Fio: clique nos vértices; termina num pino, fio ou duplo clique · espaço alterna o canto · Esc cancela"
             : tool.kind === "place"
-              ? "Clique para posicionar (Shift mantém a ferramenta) · Esc cancela"
+              ? "Clique para posicionar · R gira e M espelha antes de inserir · Shift mantém a ferramenta · Esc cancela"
               : tool.kind === "probe"
                 ? tool.probe === "vdiff"
                   ? diffStart
@@ -729,7 +875,9 @@ export function SchematicEditor({
                   : tool.probe === "v"
                     ? "Clique num fio ou pino"
                     : "Clique no componente (corrente entra pelo pino mais próximo)"
-                : "Arraste para mover · R gira · M espelha · Del apaga · W fio · roda do mouse ou + − 0 F: zoom · arraste o fundo: mover a vista"}
+                : selection?.kind === "group"
+                  ? `${selection.components.length} componente(s) selecionado(s): arraste para mover · Ctrl+C copia · Ctrl+D duplica · Del apaga`
+                  : "Arraste para mover · arraste o fundo: selecionar vários · R gira · M espelha · Ctrl+C/Ctrl+V copia e cola · Del apaga · W fio · roda: zoom · botão do meio ou Alt+arrastar: mover a vista"}
         </span>
         <button type="button" className="secondary small-btn" onClick={fit}>
           Enquadrar
