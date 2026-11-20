@@ -19,6 +19,7 @@ import { BreadboardTab } from "./design/BreadboardTab";
 import { SchematicWorkspace } from "./SchematicPage";
 import type { Schematic } from "../schematic/types";
 import { ProjectBar } from "./design/ProjectBar";
+import { CategoryReviewButton } from "./review/CategoryReviewButton";
 import {
   type Field,
   fieldsFromSchema,
@@ -85,6 +86,12 @@ export function DesignPage() {
   const [project, setProject] = useState<ProjectDocument | null>(null);
   const latest = useRef(0);
   const [editableCircuit, setEditableCircuit] = useState<Schematic | null>(null);
+  // bumped after releasing parts, so the design runs again with them
+  const [refresh, setRefresh] = useState(0);
+  const pendingParts = useMemo(
+    () => [...new Set((out?.result.warnings ?? []).flatMap((w) => w.parts ?? []))],
+    [out],
+  );
 
   useEffect(() => {
     design
@@ -130,7 +137,7 @@ export function DesignPage() {
         .finally(() => id === latest.current && setBusy(false));
     }, 350);
     return () => window.clearTimeout(timer);
-  }, [moduleId, body]);
+  }, [moduleId, body, refresh]);
 
   const chooseModule = (id: string) => {
     const m = modules.find((x) => x.id === id);
@@ -327,6 +334,20 @@ export function DesignPage() {
         {error && (
           <div className="error" role="alert">
             {error}
+          </div>
+        )}
+        {out && pendingParts.length > 0 && (
+          <div className="release-circuit row wrap" role="note">
+            <span>
+              {pendingParts.length} componente(s) deste circuito aguardam revisão para entrar na
+              seleção automática.
+            </span>
+            <CategoryReviewButton
+              ids={pendingParts}
+              label="componentes deste circuito"
+              buttonText="Homologar componentes deste circuito"
+              onDone={() => setRefresh((n) => n + 1)}
+            />
           </div>
         )}
         {out && out.result.warnings.length > 0 && (

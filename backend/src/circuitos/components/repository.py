@@ -188,14 +188,31 @@ class ComponentRepository:
         review), the others stay "em_revisao" with the reasons. Released and rejected records
         are left alone. With ``dry_run`` nothing is saved.
         """
+        records = [r for r in self.search(category=category) if r.category == category]
+        return self._review_many(records, f"{reviewer} (revisão da categoria)", dry_run=dry_run)
+
+    def review_records(
+        self, ids: Iterable[uuid.UUID], reviewer: str, *, dry_run: bool = False
+    ) -> list[CategoryReviewItem]:
+        """Review a chosen set of records (the parts of one circuit) the same way as a category.
+
+        Unknown ids raise :class:`DataIntegrityError`; released and rejected records are left
+        alone.
+        """
+        records = [self.get(i) for i in dict.fromkeys(ids)]
+        return self._review_many(records, f"{reviewer} (revisão do circuito)", dry_run=dry_run)
+
+    def _review_many(
+        self, records: Iterable[ComponentRecord], signature: str, *, dry_run: bool
+    ) -> list[CategoryReviewItem]:
         items: list[CategoryReviewItem] = []
-        for record in self.search(category=category):
-            if record.category != category or record.review.status in ("liberado", "rejeitado"):
+        for record in records:
+            if record.review.status in ("liberado", "rejeitado"):
                 continue
             new, marked, unsourced = mark_sourced_reviewed(record)
             blockers = release_blockers(new)
             if not blockers:
-                new = release(new, f"{reviewer} (revisão da categoria)")
+                new = release(new, signature)
             elif marked:
                 new = new.model_copy(
                     update={"review": new.review.model_copy(update={"status": "em_revisao"})}

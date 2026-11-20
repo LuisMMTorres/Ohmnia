@@ -10,19 +10,32 @@ function readReviewer(): string {
   }
 }
 
-/** Button + dialog: review every pending component of one category at once. */
+type Review = Omit<CategoryReview, "category" | "already_released"> & {
+  already_released?: number;
+};
+
+/**
+ * Button + dialog: review every pending component of one category at once, or (with `ids`)
+ * only the given parts, e.g. the ones of the circuit under design.
+ */
 export function CategoryReviewButton({
-  category,
+  category = "",
+  ids,
   label,
+  buttonText = "Revisar categoria",
   onDone,
 }: {
-  category: string;
+  category?: string;
+  ids?: string[];
   label: string;
+  buttonText?: string;
   onDone: () => void;
 }) {
+  const run = (who: string, dryRun: boolean): Promise<Review> =>
+    ids ? catalog.reviewParts(ids, who, dryRun) : catalog.reviewCategory(category, who, dryRun);
   const [open, setOpen] = useState(false);
-  const [preview, setPreview] = useState<CategoryReview | null>(null);
-  const [result, setResult] = useState<CategoryReview | null>(null);
+  const [preview, setPreview] = useState<Review | null>(null);
+  const [result, setResult] = useState<Review | null>(null);
   const [reviewer, setReviewer] = useState(readReviewer);
   const [checked, setChecked] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -35,7 +48,7 @@ export function CategoryReviewButton({
     setChecked(false);
     setError(null);
     try {
-      setPreview(await catalog.reviewCategory(category, "", true));
+      setPreview(await run("", true));
     } catch (e) {
       setError((e as Error).message);
     }
@@ -49,7 +62,7 @@ export function CategoryReviewButton({
       /* storage unavailable */
     }
     try {
-      setResult(await catalog.reviewCategory(category, reviewer.trim(), false));
+      setResult(await run(reviewer.trim(), false));
       setError(null);
       onDone();
     } catch (e) {
@@ -66,7 +79,7 @@ export function CategoryReviewButton({
   return (
     <>
       <button className="secondary" onClick={start} title={`Revisar todos: ${label}`}>
-        Revisar categoria
+        {buttonText}
       </button>
       {open && (
         <div className="modal-backdrop" onClick={() => !busy && setOpen(false)}>
@@ -93,15 +106,17 @@ export function CategoryReviewButton({
                   </p>
                 ) : shown.items.length === 0 ? (
                   <p>
-                    Nada a revisar: os {shown.already_released} componente(s) desta categoria já
+                    Nada a revisar:{" "}
+                    {ids ? "os componentes deste circuito" : "os componentes desta categoria"} já
                     estão liberados.
                   </p>
                 ) : (
                   <>
                     <p>
                       {shown.items.length} componente(s) pendente(s)
-                      {shown.already_released > 0 && ` (${shown.already_released} já liberados)`}.
-                      Serão marcados como conferidos <strong>{marked}</strong> parâmetros e
+                      {(shown.already_released ?? 0) > 0 &&
+                        ` (${shown.already_released} já liberados)`}
+                      . Serão marcados como conferidos <strong>{marked}</strong> parâmetros e
                       atributos que citam a página do datasheet; <strong>{shown.released}</strong>{" "}
                       componente(s) ficam liberados e <strong>{shown.pending}</strong> continuam com
                       pendência.

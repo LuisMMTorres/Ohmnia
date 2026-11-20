@@ -174,6 +174,7 @@ def run(
                     message=f"{role.designator}: {rec.part_number} foi travado à mão, mas "
                     "ainda não foi liberado na revisão; os valores do datasheet não foram "
                     "conferidos.",
+                    parts=[str(rec.id)],
                 )
             )
 
@@ -211,12 +212,32 @@ def run(
             else:
                 chosen[role.designator] = None
                 choices.pop(role.designator, None)
+                pending = [
+                    r.record
+                    for r in rank(
+                        pool,
+                        basis[role.designator],
+                        policy,
+                        module.required_ratings(role),
+                        include_unreleased=True,
+                    )
+                    if not r.record.selectable
+                ]
+                hint = (
+                    f" {len(pending)} peça(s) do catálogo atenderia(m) depois de revisada(s): "
+                    + ", ".join(r.part_number for r in pending[:6])
+                    + ("…" if len(pending) > 6 else "")
+                    + "."
+                    if pending
+                    else ""
+                )
                 select_warnings.append(
                     DesignWarning(
                         code="sem_candidato",
                         message=f"{role.designator}: nenhum componente liberado de {role.category} "
                         "atende às margens. Libere componentes na tela Componentes ou trave um "
-                        "componente à mão. O cálculo seguiu com dispositivo ideal.",
+                        f"componente à mão. O cálculo seguiu com dispositivo ideal.{hint}",
+                        parts=[str(r.id) for r in pending],
                     )
                 )
         analysis, devices, iteration = _real_pass(
