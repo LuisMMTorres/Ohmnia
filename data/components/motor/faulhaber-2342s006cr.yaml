@@ -1,0 +1,141 @@
+# Fonte: FAULHABER, loja on-line, página do motor 2342S006CR (artigo 2342.25000), consultada em 2026-11-20.
+part_number: 2342S006CR
+category: motor.dc
+schema_version: '1.0'
+manufacturer: FAULHABER
+family: DC-Micromotors Series 2342 ... CR
+package: carcaça cilíndrica (dimensões no desenho do fabricante)
+lifecycle: desconhecido
+notes:
+- Artigo 2342.25000. Valores a 22 °C da tabela 'Values' da loja on-line do fabricante (sem PDF versionado),
+  consultada em 2026-11-20.
+- A folha de dados em PDF da série (EN_..._DFF.pdf) traz a mesma tabela; confira a revisão antes de liberar.
+- 'Atenção na revisão: kE = 0.604 mV/min⁻¹ não bate com kn = 1500 min⁻¹/V (1/kn = 0.667 mV/min⁻¹) nem
+  com kM = 6.36 mNm/A (0.666 mV/min⁻¹); o valor foi transcrito como publicado e o simulador usa kE.'
+datasheets:
+- id: ds1
+  manufacturer: FAULHABER
+  document_number: FAULHABER eShop, 2342S006CR
+  revision: página consultada em 2026-11-20
+  url: https://eshop.faulhaber.com/en/2342S006CR/2342S006CR
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  V_nom:
+    typ: 6
+    unit: V
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Values - Nominal voltage
+      excerpt: 'Nominal voltage: UN 6 V'
+  R_a:
+    typ: 0.362
+    unit: ohm
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Values - Terminal resistance
+      excerpt: 'Terminal resistance: R 0.362 Ω'
+  L_a:
+    typ: 13.1
+    unit: uH
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Values - Rotor inductance
+      excerpt: 'Rotor inductance: L 13.1 µH'
+  n0:
+    typ: 8310
+    unit: rpm
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Values - No-load speed
+      excerpt: 'No-load speed: n0 8310 min⁻¹'
+  I0:
+    typ: 0.157
+    unit: A
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Values - No-load current
+      excerpt: 'No-load current: I0 0.157 A'
+  M_H:
+    typ: 95.6
+    unit: mN*m
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Values - Stall torque
+      excerpt: 'Stall torque: MH 95.6 mNm'
+  M_R:
+    typ: 0.98
+    unit: mN*m
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Values - Friction torque
+      excerpt: 'Friction torque: MR 0.98 mNm'
+  k_n:
+    typ: 1500
+    unit: rpm/V
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Values - Speed constant
+      excerpt: 'Speed constant: kn 1500 min⁻¹/V'
+  k_E:
+    typ: 0.604
+    unit: mV/rpm
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Values - Back-EMF constant
+      excerpt: 'Back-EMF constant: kE 0.604 mV/min⁻¹'
+  k_M:
+    typ: 6.36
+    unit: mN*m/A
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Values - Torque constant
+      excerpt: 'Torque constant: kM 6.36 mNm/A'
+  J:
+    typ: 5.6
+    unit: g*cm^2
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Values - Rotor inertia
+      excerpt: 'Rotor inertia: J 5.6 gcm²'
+  tau_m:
+    typ: 6
+    unit: ms
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Values - Mechanical time constant
+      excerpt: 'Mechanical time constant: τm 6 ms'
+attributes:
+  comutacao:
+    value: grafite
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Product title
+      excerpt: Graphite Commutation

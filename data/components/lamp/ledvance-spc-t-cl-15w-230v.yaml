@@ -1,0 +1,74 @@
+# Fonte: LEDVANCE, ficha técnica on-line SPC.T CL 15 W 230 V E14 (SPECIAL OVEN T, productId 106393), consultada em 2026-11-20.
+part_number: SPC.T CL 15 W 230 V E14
+category: lamp.incandescent
+schema_version: '1.0'
+manufacturer: LEDVANCE (OSRAM)
+family: SPECIAL OVEN T
+package: Base E14, bulbo tubular T26
+lifecycle: desconhecido
+notes:
+- Lâmpada incandescente de forno (até 300 °C), uma das poucas incandescentes de 230 V ainda fabricadas para a rede
+- Fonte é a ficha técnica on-line do fabricante (página de produto LEDVANCE), sem PDF versionado; consultada em
+  2026-11-20
+- Em rede de 220 V a potência cai para (220/230)² ≈ 91 % da nominal (resistência a quente constante)
+datasheets:
+- id: ds1
+  manufacturer: LEDVANCE GmbH
+  document_number: LEDVANCE product page, productId 106393
+  revision: página consultada em 2026-11-20
+  url: https://www.ledvance.com/en-int/professional-lighting/products/lamps/incandescent-lamps/incandescent-lamps/incandescent-lamps--tubular-shape--for-oven-lighting-c7567?productId=106393
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  V_nom:
+    typ: 230
+    unit: V
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Technical data - Electrical data - Nominal voltage
+      excerpt: Nominal voltage 230 V
+  P_nom:
+    typ: 15
+    unit: W
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Technical data - Electrical data - Nominal wattage
+      excerpt: Nominal wattage 15 W
+  flux:
+    typ: 60
+    unit: lm
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Technical data - Photometrical data - Luminous flux
+      excerpt: Luminous flux 60 lm
+  I_nom:
+    typ: 65
+    unit: mA
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Technical data - Electrical data - Nominal current
+      excerpt: Nominal current 65 mA
+attributes:
+  base:
+    value: E14
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Additional product data - Base (standard designation)
+  tecnologia:
+    value: Incandescente (forno)
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Product details - SPECIAL OVEN T

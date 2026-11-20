@@ -1,0 +1,88 @@
+# Fonte: Vishay, datasheet VLHW5100 Ultrabright White LED, Ø 5 mm Untinted Non-Diffused Package, Document Number 81159, Rev. 1.3, 20-May-2019.
+part_number: VLHW5100
+category: optoelectronic.led
+schema_version: '1.0'
+manufacturer: Vishay
+package: T-1 3/4 (5 mm), lente incolor não difusa
+lifecycle: desconhecido
+notes:
+- LED branco InGaN com conversor (fósforo), 5 mm, com Zener de proteção interno
+- O datasheet dá só VF mín. 2,8 V e máx. 3,6 V a 20 mA (sem típico); classes de VF na pág. 2
+datasheets:
+- id: ds1
+  manufacturer: Vishay Semiconductors
+  document_number: '81159'
+  revision: Rev. 1.3, 20-May-2019
+  url: https://www.vishay.com/docs/81159/vlhw5100.pdf
+  sha256: a65548f4000d758017c8e0c7499e0f085145501c6c6f8a4bbc29d0e1927b200d
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VF:
+    min: 2.8
+    max: 3.6
+    unit: V
+    status: extraido
+    conditions:
+      IF: 20 mA
+      TA: 25 °C
+    source:
+      datasheet_id: ds1
+      page: 2
+      location: Optical and Electrical Characteristics - Forward voltage
+      excerpt: Forward voltage IF = 20 mA VF 2.8 - 3.6 V
+  IF:
+    max: 30
+    unit: mA
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Absolute Maximum Ratings - DC forward current
+      excerpt: DC forward current IF 30 mA
+  VR:
+    max: 5
+    unit: V
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Absolute Maximum Ratings - Reverse voltage
+      excerpt: Reverse voltage VR 5 V
+  P_diss:
+    max: 100
+    unit: mW
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Absolute Maximum Ratings - Power dissipation
+      excerpt: Power dissipation PV 100 mW
+  Iv:
+    min: 5600
+    max: 11200
+    unit: mcd
+    status: extraido
+    conditions:
+      IF: 20 mA
+    source:
+      datasheet_id: ds1
+      page: 2
+      location: Optical and Electrical Characteristics - Luminous intensity
+      excerpt: Luminous intensity IF = 20 mA IV 5600 - 11 200 mcd
+attributes:
+  cor:
+    value: Branco (White), InGaN com conversor
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Parts table - Color / Technology
+  encapsulamento:
+    value: T-1 3/4 (5 mm) untinted non-diffused
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Title / Product group and package data

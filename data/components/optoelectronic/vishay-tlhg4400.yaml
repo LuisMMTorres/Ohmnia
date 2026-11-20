@@ -1,0 +1,105 @@
+# Fonte: Vishay, datasheet TLHR440., TLHO440., TLHY440., TLHG440. High Efficiency LED, Ø 3 mm Tinted Diffused Package, Document Number 83006, Rev. 3.8, 21-Mar-2023.
+part_number: TLHG4400
+category: optoelectronic.led
+schema_version: '1.0'
+manufacturer: Vishay
+package: T-1 (3 mm), lente difusa colorida
+lifecycle: desconhecido
+notes:
+- LED verde GaP on GaP, 3 mm, série padrão de indicação
+- VF típico e máximo a IF = 20 mA; intensidade e comprimento de onda a IF = 10 mA (tabela Optical and Electrical
+  Characteristics)
+- IF e PV máximos valem para Tamb ≤ 60 °C (Absolute Maximum Ratings)
+datasheets:
+- id: ds1
+  manufacturer: Vishay Semiconductors
+  document_number: '83006'
+  revision: Rev. 3.8, 21-Mar-2023
+  url: https://www.vishay.com/docs/83006/tlhg440.pdf
+  sha256: d190590f2fa3d07642f07fb08c20ac8a1f5ee35d3dd9c54f666dec0ed53f853e
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  VF:
+    typ: 2.4
+    max: 3
+    unit: V
+    status: extraido
+    conditions:
+      IF: 20 mA
+      TA: 25 °C
+    source:
+      datasheet_id: ds1
+      page: 3
+      location: Optical and Electrical Characteristics, GREEN - Forward voltage
+      excerpt: Forward voltage IF = 20 mA VF - 2.4 3 V
+  IF:
+    max: 30
+    unit: mA
+    status: extraido
+    conditions:
+      TA: 60 °C
+    source:
+      datasheet_id: ds1
+      page: 2
+      location: Absolute Maximum Ratings - DC forward current
+      excerpt: DC forward current Tamb ≤ 60 °C IF 30 mA
+  VR:
+    max: 6
+    unit: V
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 2
+      location: Absolute Maximum Ratings - Reverse voltage
+      excerpt: Reverse voltage VR 6 V
+  P_diss:
+    max: 100
+    unit: mW
+    status: extraido
+    conditions:
+      TA: 60 °C
+    source:
+      datasheet_id: ds1
+      page: 2
+      location: Absolute Maximum Ratings - Power dissipation
+      excerpt: Power dissipation Tamb ≤ 60 °C PV 100 mW
+  lambda:
+    min: 562
+    max: 575
+    unit: nm
+    status: extraido
+    conditions:
+      IF: 10 mA
+    source:
+      datasheet_id: ds1
+      page: 3
+      location: Optical and Electrical Characteristics, GREEN - Dominant wavelength
+      excerpt: Dominant wavelength IF = 10 mA λd 562 - 575 nm
+  Iv:
+    typ: 13
+    unit: mcd
+    status: extraido
+    conditions:
+      IF: 10 mA
+    source:
+      datasheet_id: ds1
+      page: 3
+      location: Optical and Electrical Characteristics, GREEN - Luminous intensity (TLHG4400)
+      excerpt: Luminous intensity IF = 10 mA TLHG4400 IV ... 13 mcd
+attributes:
+  cor:
+    value: Verde (Green), GaP on GaP
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Parts table - Color / Technology
+  encapsulamento:
+    value: T-1 (3 mm), lente difusa colorida
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Product group and package data - Package

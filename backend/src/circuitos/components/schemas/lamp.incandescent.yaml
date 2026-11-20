@@ -1,0 +1,39 @@
+category: lamp.incandescent
+schema_version: '1.0'
+description: Lâmpada incandescente ou halógena (filamento de tungstênio)
+required:
+- V_nom
+- P_nom
+parameters:
+  V_nom:
+    unit: V
+    kind: characteristic
+    description: Tensão nominal
+  P_nom:
+    unit: W
+    kind: characteristic
+    description: Potência nominal (na tensão nominal)
+  I_nom:
+    unit: mA
+    kind: characteristic
+    description: Corrente nominal
+  V_test:
+    unit: V
+    kind: characteristic
+    description: Tensão de ensaio (lâmpadas automotivas, ECE R37/R112)
+  P_test:
+    unit: W
+    kind: characteristic
+    description: Potência absorvida na tensão de ensaio
+  P_tol:
+    unit: '%'
+    kind: characteristic
+    description: Tolerância da potência absorvida
+  flux:
+    unit: lm
+    kind: characteristic
+    description: Fluxo luminoso nominal
+attributes:
+  base: Base (soquete)
+  categoria: Categoria (ECE, ILCOS)
+  tecnologia: Tecnologia
