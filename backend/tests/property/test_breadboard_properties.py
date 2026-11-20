@@ -54,13 +54,64 @@ def test_pt_bb_automatic_assembly_always_checks(sch):
 
 @settings(max_examples=60, deadline=None, suppress_health_check=[HealthCheck.too_slow])
 @given(sch=circuits())
-def test_pt_bb_fewest_jumpers_never_worse_than_reading_order(sch):
-    from circuitos.breadboard.autoplace import _autoplace
+def test_pt_bb_tidiest_never_worse_than_reading_order(sch):
+    """The chosen assembly is never worse than the plain reading order: first fewer parts left
+    out, then fewer jumpers over bodies, legs or other jumpers, then fewer jumpers."""
+    from circuitos.breadboard.autoplace import _assemble
+
+    def lost(notes):  # type: ignore[no-untyped-def]
+        return sum("não coube" in n or "sem furo" in n for n in notes)
 
     ref = build(sch, {})
-    plain, plain_notes = _autoplace(ref, None)
+    plain, plain_notes, plain_tangled = _assemble(ref, None)
     bb, notes = autoplace(ref)
-    lost = sum("não coube" in n or "sem furo" in n for n in notes)
-    assert lost <= sum("não coube" in n or "sem furo" in n for n in plain_notes)
-    if lost == sum("não coube" in n or "sem furo" in n for n in plain_notes):
-        assert len(bb.wires) <= len(plain.wires)
+    assert lost(notes) <= lost(plain_notes)
+    if lost(notes) == lost(plain_notes):
+        assert (_tangles(bb), len(bb.wires)) <= (plain_tangled, len(plain.wires))
+
+
+def _tangles(bb):  # type: ignore[no-untyped-def]
+    """Jumpers drawn over a body, a leg or another jumper."""
+    from circuitos.breadboard.packages import package
+    from circuitos.breadboard.routing import Clearance, body
+
+    clr = Clearance([], set(), [])
+    for p in bb.parts:
+        clr.add_part(body(package(p.package), p.legs), list(p.legs.values()))
+    n = 0
+    for w in bb.wires:
+        n += not clr.wire_clear(w.a, w.b)
+        clr.add_wire(w.a, w.b)
+    return n
+
+
+def test_bb_parts_never_overlap_and_jumpers_stay_clear():
+    """Pushbuttons, LEDs and a resistor (the circuit of the screenshot that showed parts on top
+    of each other): no body overlaps another, and no jumper crosses a body, a leg or a jumper."""
+    from circuitos.breadboard.packages import package
+    from circuitos.breadboard.routing import Clearance, body
+
+    b = Builder("botões")
+    b.add("vdc", "V1", ["vcc", "0"], dc="12")
+    b.add("tact_switch", "SW1", ["vcc", "a"])
+    b.add("resistor", "R1", ["a", "b"], value="470")
+    b.add("led", "LED1", ["b", "0"])
+    b.add("tact_switch4", "SW3", ["vcc", "n1", "q", "n2"])
+    b.add("led", "LED2", ["q", "r"])
+    b.add("resistor", "R2", ["r", "0"], value="1k")
+    ref = build(b.sch, {})
+    bb, notes = autoplace(ref)
+    assert check(ref, bb).ok and not notes
+    clr = Clearance([], set(), [])
+    for p in bb.parts:
+        rect = body(package(p.package), p.legs)
+        assert clr.part_fits(rect, list(p.legs.values())), p.ref
+        clr.add_part(rect, list(p.legs.values()))
+    for w in bb.wires:
+        assert clr.wire_clear(w.a, w.b), (w.a, w.b)
+        clr.add_wire(w.a, w.b)
+    # the circuit sits on the lower board and the supply plugs into its bottom rails, next to
+    # the instruments: no lead crosses a board
+    v1 = next(p for p in bb.parts if p.ref == "V1")
+    assert sorted(h.split(":")[1][:2] for h in v1.legs.values()) == ["bn", "bp"]
+    assert all(h.startswith("2:") for p in bb.parts for h in p.legs.values())

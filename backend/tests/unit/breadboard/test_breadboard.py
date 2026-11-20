@@ -165,7 +165,9 @@ def test_check_finds_missing_wire_short_and_unplaced_part():
     ref, bb = _assembled()
     q = bb.part("Q1")
     assert q is not None
-    bb.wires.append(Jumper(id="x", a=f"a{q.legs['1'][1:]}", b=f"a{q.legs['3'][1:]}"))
+    (c1, r1), (_, r3) = board.parse(q.legs["1"]), board.parse(q.legs["3"])
+    free = "b" if c1 in board.UPPER else "i"  # same half as the legs: shorts their strips
+    bb.wires.append(Jumper(id="x", a=f"2:{free}{r1}", b=f"2:{free}{r3}"))
     errs = _errors(check(ref, bb))
     assert any(e.kind == "sobrando" and "Ligação a mais" in e.message for e in errs)
     ref, bb = _assembled()
