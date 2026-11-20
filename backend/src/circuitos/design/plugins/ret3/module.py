@@ -11,8 +11,17 @@ from pydantic import BaseModel, Field, model_validator
 
 from circuitos.core.calc import BibRef, CalcLog, record
 from circuitos.core.units import Q_, QuantityModel, format_eng
-from circuitos.design.base import Circuit, DesignWarning, Role, SimCheck, Stress, make_trace
+from circuitos.design.base import (
+    Circuit,
+    DesignWarning,
+    PowerPort,
+    Role,
+    SimCheck,
+    Stress,
+    make_trace,
+)
 from circuitos.design.engine import Analysis, Device
+from circuitos.design.measure import scale
 from circuitos.design.plugins.retc1.module import diode_model, scr_model
 
 from . import model as m
@@ -81,6 +90,7 @@ class Ret3Module:
     family = "retificadores"
     title = "Retificador trifásico"
     spec_schema = Ret3Spec
+    spec_labels = {"Vin": "Tensão de linha do primário (eficaz)"}
 
     def roles(self, spec: BaseModel) -> list[Role]:
         s = _spec(spec)
@@ -562,6 +572,19 @@ class Ret3Module:
             "Corrente de linha (fase a)": "i(via1)",
             "Tensão de fase a (fonte)": "v(a1s)",
         }
+        # ideal transformer, Y-Y equivalent: line quantities of the primary referred by N
+        n_ratio = s.Vin.to_pint().m_as("V") / (Vll_m / math.sqrt(2))
+        dev = "T" if s.controlled else "D"
+        probes |= {
+            "Tensão de linha ab do secundário": "v(a1s)-v(b1s)",
+            "Tensão de linha ab do primário": scale("v(a1s)-v(b1s)", n_ratio),
+            "Corrente de linha do primário (fase a)": scale(i_ref, 1 / n_ratio),
+            f"Tensão em {dev}1 (anodo − catodo)": "v(a1)-v(p)",
+        }
+        powers = {
+            "Secundário, fase a (× 3 para o total)": PowerPort(voltage="v(a1s)", current="i(via1)"),
+            "Carga": PowerPort(voltage=v_out, current="i(ve)"),
+        }
         return Circuit(
             title=f"{self.id}: {LABEL[p]}" + (f", α = {a:g}°" if s.controlled else ", a diodos"),
             netlist="\n".join(lines),
@@ -570,6 +593,7 @@ class Ret3Module:
             period=QuantityModel(value=T, unit="s"),
             probes=probes,
             checks=checks,
+            powers=powers,
         )
 
 

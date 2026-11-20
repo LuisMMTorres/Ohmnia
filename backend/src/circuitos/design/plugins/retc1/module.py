@@ -12,8 +12,17 @@ from scipy.optimize import brentq
 
 from circuitos.core.calc import BibRef, CalcLog, record
 from circuitos.core.units import Q_, QuantityModel, format_eng
-from circuitos.design.base import Circuit, DesignWarning, Role, SimCheck, Stress, make_trace
+from circuitos.design.base import (
+    Circuit,
+    DesignWarning,
+    PowerPort,
+    Role,
+    SimCheck,
+    Stress,
+    make_trace,
+)
 from circuitos.design.engine import Analysis, Device
+from circuitos.design.measure import scale
 
 from . import model as m
 from .model import Topology
@@ -639,6 +648,22 @@ class Retc1Module:
             "Corrente na carga": "i(ve)",
             "Corrente no secundário": "i(vsd)",
         }
+        # ideal transformer (v_pri = N·v_sec, i_pri = i_sec/N; the DC of a half-wave secondary
+        # does not cross to the primary), the gate and the anode-cathode voltage of T1
+        N = s.Vin.to_pint().m_as("V") / (Vm / math.sqrt(2))
+        v_pri, i_pri = scale(v_sec, N), scale("i(vsd)", 1 / N)
+        v_t1 = "v(a1)-v(p)"
+        probes |= {
+            "Tensão no primário": v_pri,
+            "Corrente no primário": i_pri,
+            "Tensão em T1 (anodo − catodo)": v_t1,
+            "Tensão de disparo de T1 (porta)": "v(g1)",
+        }
+        powers = {
+            "Primário": PowerPort(voltage=v_pri, current=i_pri, ac=True),
+            "Secundário": PowerPort(voltage=v_sec, current="i(vsd)"),
+            "Carga": PowerPort(voltage="v(p)", current="i(ve)"),
+        }
         checks = [
             SimCheck(
                 quantity="Tensão média na carga",
@@ -700,6 +725,8 @@ class Retc1Module:
             period=QuantityModel(value=T, unit="s"),
             probes=probes,
             checks=checks,
+            powers=powers,
+            ac_probes=["Corrente no primário"],
         )
 
 

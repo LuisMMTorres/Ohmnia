@@ -22,6 +22,15 @@ from circuitos.core.errors import CircuitosError
 from circuitos.design import registry
 from circuitos.design.base import Circuit, DesignResult, SimComparison
 from circuitos.design.engine import Device, TopologyModule, run
+from circuitos.design.measure import Measurements, measure_all, measured_traces
+from circuitos.design.netlist_edit import (
+    Element,
+    UserProbe,
+    add_probes,
+    apply_overrides,
+    elements,
+    nodes,
+)
 from circuitos.design.verify import compare_full, netlist_with_analysis
 from circuitos.reports import bom, kicad, outputs, pdf, report
 from circuitos.reports.sections import SimWaves
@@ -48,6 +57,10 @@ class DesignIn(BaseModel):
     locks: dict[str, uuid.UUID] = Field(default_factory=dict)
     costs: dict[str, float] = Field(default_factory=dict)  # part number → unit cost (BOM)
     project: str | None = None  # project name for the report title
+    # element → new value, typed on the schematic (the simulation runs the edited circuit)
+    overrides: dict[str, str] = Field(default_factory=dict)
+    # waveforms added by clicking the schematic (simulation only)
+    probes: list[UserProbe] = Field(default_factory=list)
 
 
 class CandidateOut(BaseModel):
@@ -76,6 +89,10 @@ class SimulateOut(BaseModel):
     ok: bool
     bode_f: list[float] = Field(default_factory=list)  # Hz
     bode: dict[str, SimTrace] = Field(default_factory=dict)  # |H|, same labels as result.bode
+    # peak, mean, RMS of every probe and S, P, Q, FP of every power port, all from ngspice
+    measurements: Measurements | None = None
+    # values were changed on the schematic: the analytic results describe the original design
+    edited: bool = False
 
 
 @router.get("/modules")
@@ -132,6 +149,10 @@ def _design(
             body.locks,
         )
         circuit = module.build_circuit(spec, devices, result.summary)
+        if body.overrides:
+            circuit = circuit.model_copy(
+                update={"netlist": apply_overrides(circuit.netlist, body.overrides)}
+            )
     except (ValueError, CircuitosError) as exc:
         raise HTTPException(422, str(exc)) from exc
     return module, spec, result, devices, circuit
@@ -158,7 +179,16 @@ def design(request: Request, module_id: str, body: DesignIn) -> DesignOut:
     )
 
 
-def _simulate(circuit: Circuit, result: DesignResult) -> SimulateOut:
+def _simulate(
+    circuit: Circuit,
+    result: DesignResult,
+    probes: list[UserProbe] | None = None,
+    edited: bool = False,
+) -> SimulateOut:
+    try:
+        circuit, power_probes = add_probes(circuit, probes or [])
+    except ValueError as exc:
+        raise HTTPException(422, str(exc)) from exc
     try:
         comparisons, ss, ac = compare_full(circuit, result.summary)
     except CircuitosError as exc:
@@ -166,18 +196,20 @@ def _simulate(circuit: Circuit, result: DesignResult) -> SimulateOut:
     units = {k: v.unit for k, v in result.traces.items()}
     traces: dict[str, SimTrace] = {}
     t_ms: list[float] = []
+    measurements: Measurements | None = None
     if ss is not None:
         n = 720
         idx = np.linspace(0, ss.t.size, n, endpoint=False).astype(int)
         t0 = ss.t[0]
         traces = {
             label: SimTrace(
-                unit=units.get(label, "V" if expr.startswith("v") else "A"),
-                values=[float(v) for v in ss.traces[expr][idx]],
+                unit=units.get(label, unit),
+                values=[float(v) for v in values[idx]],
             )
-            for label, expr in circuit.probes.items()
+            for label, (unit, values) in measured_traces(circuit, ss, power_probes).items()
         }
         t_ms = [float((ss.t[i] - t0) * 1e3) for i in idx]
+        measurements = measure_all(circuit, ss)
     bode_f: list[float] = []
     bode: dict[str, SimTrace] = {}
     if ac is not None:
@@ -193,13 +225,52 @@ def _simulate(circuit: Circuit, result: DesignResult) -> SimulateOut:
         ok=all(c.ok for c in comparisons),
         bode_f=bode_f,
         bode=bode,
+        measurements=measurements,
+        edited=edited,
     )
 
 
 @router.post("/{module_id}/simulate")
 def simulate(request: Request, module_id: str, body: DesignIn) -> SimulateOut:
     _, _, result, _, circuit = _design(request, module_id, body)
-    return _simulate(circuit, result)
+    return _simulate(circuit, result, body.probes, bool(body.overrides))
+
+
+class ElementOut(Element):
+    role: str | None = None  # designator of the catalogue role (its part can be swapped)
+    original: str | None = None  # value of the design, when edited
+
+
+class ElementsOut(BaseModel):
+    elements: list[ElementOut]
+    nodes: list[str]
+
+
+@router.post("/{module_id}/elements")
+def circuit_elements(request: Request, module_id: str, body: DesignIn) -> ElementsOut:
+    """Elements and nodes of the simulated circuit, for editing values and adding probes."""
+    module, spec, result, devices, circuit = _design(request, module_id, body)
+    designators = {r.designator for r in result.roles}
+    base = {
+        e.name.lower(): e.value
+        for e in elements(module.build_circuit(spec, devices, result.summary).netlist)
+    }
+    out = []
+    for el in elements(circuit.netlist):
+        ref = el.name[1:] if el.letter == "X" and len(el.name) > 1 else el.name
+        role = kicad._match(ref, designators)
+        designator = next(
+            (d for d in designators if role is not None and kicad._match(ref, {d})), None
+        )
+        orig = base.get(el.name.lower())
+        out.append(
+            ElementOut(
+                **el.model_dump(),
+                role=designator,
+                original=orig if orig is not None and orig != el.value else None,
+            )
+        )
+    return ElementsOut(elements=out, nodes=nodes(circuit.netlist))
 
 
 @router.post("/{module_id}/schematic.svg")

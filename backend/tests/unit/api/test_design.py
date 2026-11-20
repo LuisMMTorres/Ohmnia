@@ -18,7 +18,10 @@ def test_modules_lists_the_rectifiers(client):
     ids = {m["id"] for m in body}
     assert {"DM-RET1", "DM-RETC1", "DM-RET3"} <= ids
     ret1 = next(m for m in body if m["id"] == "DM-RET1")
-    assert ret1["defaults"]["Vo"] == {"value": 12.0, "unit": "V"}
+    assert ret1["defaults"]["Vsec"] == {"value": 12.0, "unit": "V"}
+    assert ret1["defaults"]["P"] == {"value": 12.0, "unit": "W"}
+    assert "Vo" not in ret1["defaults"] and "Io" not in ret1["defaults"]
+    assert ret1["spec_labels"]["Vin"] == "Tensão do primário (eficaz)"
     assert "properties" in ret1["json_schema"]
 
 

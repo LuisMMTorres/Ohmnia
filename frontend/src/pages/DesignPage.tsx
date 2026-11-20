@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import {
   design,
   request,
+  type UserProbe,
   type DesignIn,
   type DesignModuleInfo,
   type DesignOut,
@@ -12,7 +13,6 @@ import {
   type SimulateOut,
 } from "../api";
 import { CalcSteps } from "../components/CalcSteps";
-import { SignalPlot, type Trace } from "../components/SignalPlot";
 import { formatEng, unitSymbol } from "../format";
 import { BomTab } from "./design/BomTab";
 import { BreadboardTab } from "./design/BreadboardTab";
@@ -23,13 +23,11 @@ import {
   type Field,
   fieldsFromSchema,
   isQuantity,
-  resample,
-  resampleLog,
   sliderRange,
   sliderStep,
-  tracePeriod,
   visible,
 } from "./design/specForm";
+import { CircuitView, SimResults, Waves } from "./design/DesignAnalysis";
 
 type Tab =
   | "resultados"
@@ -105,7 +103,14 @@ export function DesignPage() {
     () => (info ? fieldsFromSchema(info.json_schema, info.defaults) : []),
     [info],
   );
-  const body: DesignIn = useMemo(() => ({ spec, policy, locks }), [spec, policy, locks]);
+  // values typed on the schematic (simulation) and waveforms asked for by clicking it
+  const [overrides, setOverrides] = useState<Record<string, string>>({});
+  const [probes, setProbes] = useState<UserProbe[]>([]);
+  const [simError, setSimError] = useState<string | null>(null);
+  const body: DesignIn = useMemo(
+    () => ({ spec, policy, locks, overrides }),
+    [spec, policy, locks, overrides],
+  );
   // exports also carry the BOM costs and the project name (they do not change the design)
   const exportBody: DesignIn = { ...body, costs, project: project?.name ?? null };
 
@@ -132,9 +137,31 @@ export function DesignPage() {
     return () => window.clearTimeout(timer);
   }, [moduleId, body]);
 
+  // The results come from the simulation: run it after every design update.
+  useEffect(() => {
+    if (!out || !moduleId) return;
+    const id = latest.current;
+    const timer = window.setTimeout(() => {
+      setSimBusy(true);
+      design
+        .simulate(moduleId, { ...body, probes })
+        .then((s) => {
+          if (id !== latest.current) return;
+          setSim(s);
+          setSimError(null);
+        })
+        .catch((e: Error) => id === latest.current && setSimError(e.message))
+        .finally(() => setSimBusy(false));
+    }, 150);
+    return () => window.clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [out, probes]);
+
   const chooseModule = (id: string) => {
     const m = modules.find((x) => x.id === id);
     if (!m) return;
+    setOverrides({});
+    setProbes([]);
     setEditableCircuit(null);
     setModuleId(id);
     setSpec(m.defaults);
@@ -148,9 +175,9 @@ export function DesignPage() {
     const id = latest.current;
     setSimBusy(true);
     design
-      .simulate(moduleId, body)
+      .simulate(moduleId, { ...body, probes })
       .then((s) => id === latest.current && setSim(s))
-      .catch((e: Error) => setError(e.message))
+      .catch((e: Error) => setSimError(e.message))
       .finally(() => setSimBusy(false));
   };
 
@@ -230,12 +257,19 @@ export function DesignPage() {
   const [exporting, setExporting] = useState(false);
 
   const setField = (key: string, value: unknown) => setSpec((s) => ({ ...s, [key]: value }));
+  const lockPart = (d: string, id: string) =>
+    setLocks((l) => {
+      const next = { ...l };
+      if (id) next[d] = id;
+      else delete next[d];
+      return next;
+    });
 
   return (
     <main>
       <section className="panel editor" aria-label="Especificação">
         <label>
-          Módulo de projeto
+          Circuito
           <select value={moduleId} onChange={(e) => chooseModule(e.target.value)}>
             {modules.map((m) => (
               <option key={m.id} value={m.id}>
@@ -350,21 +384,14 @@ export function DesignPage() {
             </button>
           ))}
         </nav>
-        {out && info && tab === "resultados" && <Summary out={out} labels={info.summary_labels} />}
-        {out && tab === "componentes" && (
-          <Components
-            out={out}
-            locks={locks}
-            onLock={(d, id) =>
-              setLocks((l) => {
-                const next = { ...l };
-                if (id) next[d] = id;
-                else delete next[d];
-                return next;
-              })
-            }
-          />
+        {out && info && tab === "resultados" && (
+          <>
+            <SimResults sim={sim} busy={simBusy} error={simError} />
+            <h3 className="plot-title">Cálculo analítico do projeto</h3>
+            <Summary out={out} labels={info.summary_labels} />
+          </>
         )}
+        {out && tab === "componentes" && <Components out={out} locks={locks} onLock={lockPart} />}
         {out && tab === "materiais" && (
           <BomTab moduleId={moduleId} body={body} costs={costs} onCosts={setCosts} version={out} />
         )}
@@ -377,9 +404,19 @@ export function DesignPage() {
             frequency={spec.f as Quantity | undefined}
           />
         )}
-        {tab === "esquematico" && (
-          // The SVG comes from our own backend (escaped labels), not from user HTML.
-          <div className="schematic" dangerouslySetInnerHTML={{ __html: svg }} />
+        {tab === "esquematico" && out && (
+          <CircuitView
+            moduleId={moduleId}
+            body={body}
+            svg={svg}
+            options={out.options}
+            locks={locks}
+            onLock={lockPart}
+            overrides={overrides}
+            onOverrides={setOverrides}
+            probes={probes}
+            onProbes={setProbes}
+          />
         )}
         {out && tab === "protoboard" && (
           <BreadboardTab moduleId={moduleId} body={body} version={out} />
@@ -626,133 +663,6 @@ function Components({
           </tbody>
         </table>
       )}
-    </>
-  );
-}
-
-function Waves({
-  out,
-  sim,
-  simBusy,
-  onSimulate,
-  frequency,
-}: {
-  out: DesignOut;
-  sim: SimulateOut | null;
-  simBusy: boolean;
-  onSimulate: () => void;
-  frequency: Quantity | undefined;
-}) {
-  const period = tracePeriod(out.result.trace_period, frequency);
-  const groups = useMemo(() => {
-    const entries = Object.entries(out.result.traces);
-    return entries.map(([label, tr]) => {
-      const n = tr.values.length;
-      const x = Array.from({ length: n }, (_, k) => (k / n) * period);
-      const traces: Trace[] = [{ name: `${label} (cálculo)`, unit: tr.unit, values: tr.values }];
-      const s = sim?.traces[label];
-      if (sim && s) {
-        traces.push({
-          name: `${label} (ngspice)`,
-          unit: tr.unit,
-          dash: [6, 4],
-          values: resample(
-            sim.t_ms.map((t) => t / 1e3),
-            s.values,
-            x,
-          ),
-        });
-      }
-      return { label, x, traces };
-    });
-  }, [out, sim, period]);
-  const bode = useMemo(() => {
-    const f = out.result.bode_f?.values;
-    if (!f || f.length === 0) return null;
-    const traces: Trace[] = [];
-    for (const [label, tr] of Object.entries(out.result.bode ?? {})) {
-      traces.push({ name: `${label} (cálculo)`, unit: tr.unit, values: tr.values });
-      const s = sim?.bode?.[label];
-      if (sim?.bode_f && sim.bode_f.length > 1 && s) {
-        traces.push({
-          name: `${label} (ngspice .ac)`,
-          unit: tr.unit,
-          dash: [6, 4],
-          values: resampleLog(sim.bode_f, s.values, f),
-        });
-      }
-    }
-    return { f, traces };
-  }, [out, sim]);
-
-  return (
-    <>
-      <div className="row">
-        <button onClick={onSimulate} disabled={simBusy}>
-          {simBusy ? "Simulando…" : sim ? "Simular de novo" : "Conferir com o ngspice"}
-        </button>
-        {sim && (
-          <span className={sim.ok ? "status-ok" : "status-violado"}>
-            {sim.ok
-              ? "Cálculo e simulação concordam dentro das tolerâncias."
-              : "Divergência acima da tolerância: veja a tabela."}
-          </span>
-        )}
-      </div>
-      {sim && (
-        <table className="results">
-          <thead>
-            <tr>
-              <th>Grandeza</th>
-              <th>Cálculo</th>
-              <th>ngspice</th>
-              <th>Erro</th>
-              <th>Tolerância</th>
-              <th />
-            </tr>
-          </thead>
-          <tbody>
-            {sim.comparisons.map((c) => (
-              <tr key={c.quantity}>
-                <td>{c.quantity}</td>
-                <td className="num">{fmt(c.analytic, 4)}</td>
-                <td className="num">{fmt(c.simulated, 4)}</td>
-                <td className="num">{c.error_pct.toFixed(2).replace(".", ",")} %</td>
-                <td className="num">{c.tolerance_pct.toFixed(1).replace(".", ",")} %</td>
-                <td className={c.ok ? "status-ok" : "status-violado"}>
-                  {c.ok ? "confere" : "diverge"}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-      {groups.length === 0 && !bode && (
-        <p className="muted">
-          Este circuito é de corrente contínua: não há forma de onda a mostrar. A simulação confere
-          os valores do ponto de operação na tabela acima.
-        </p>
-      )}
-      {bode && (
-        <div>
-          <h3 className="plot-title">Resposta em frequência (|H|)</h3>
-          <SignalPlot
-            x={bode.f}
-            xUnit="Hz"
-            xLabel="f"
-            xLog
-            yLog
-            traces={bode.traces}
-            height={260}
-          />
-        </div>
-      )}
-      {groups.map((g) => (
-        <div key={g.label}>
-          <h3 className="plot-title">{g.label}</h3>
-          <SignalPlot x={g.x} xUnit="s" xLabel="t" traces={g.traces} height={220} />
-        </div>
-      ))}
     </>
   );
 }
