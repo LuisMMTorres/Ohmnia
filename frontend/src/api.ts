@@ -334,6 +334,12 @@ export const catalog = {
       method: "POST",
       body: JSON.stringify({ category, reviewer, dry_run: dryRun }),
     }),
+  /** Review and release the given parts (those of one circuit); dryRun only previews. */
+  reviewParts: (ids: string[], reviewer: string, dryRun: boolean) =>
+    request<Omit<CategoryReview, "category" | "already_released">>("/components/review-parts", {
+      method: "POST",
+      body: JSON.stringify({ ids, reviewer, dry_run: dryRun }),
+    }),
   yamlUrl: (id: string) => `${BASE}/components/${id}/yaml`,
   pageUrl: (sha: string, page: number) => `${BASE}/datasheets/${sha}/pages/${page}.png`,
   pdfUrl: (sha: string) => `${BASE}/datasheets/${sha}/pdf`,
@@ -843,6 +849,8 @@ export interface ThermalResult {
 export interface DesignWarning {
   code: string;
   message: string;
+  /** Parts of this circuit waiting for review that would settle the warning. */
+  parts?: string[];
 }
 export interface SimComparison {
   quantity: string;
@@ -1021,6 +1029,7 @@ export const projects = {
 // ------------------------------------------------------------------- schematic simulator
 
 export interface NetlistOut {
+  indicators?: Record<string, IndicatorOut>;
   netlist: string;
   nets: Record<string, string[]>;
   probes: { name: string; expr: string; unit: string; probe_id: string | null }[];
@@ -1042,6 +1051,19 @@ export interface PartOut {
   category: string;
   released: boolean;
   status: string;
+  summary?: string;
+  colour?: string | null;
+}
+/** LED or lamp of the netlist: current vector and the values that give its brightness. */
+export interface IndicatorOut {
+  kind: "led" | "lamp";
+  vector: string;
+  i_ref?: number | null;
+  i_max?: number | null;
+  colour?: string | null;
+  r?: number | null;
+  p_nom?: number | null;
+  v_nom?: number | null;
 }
 export interface SpectrumOut {
   vector: string;

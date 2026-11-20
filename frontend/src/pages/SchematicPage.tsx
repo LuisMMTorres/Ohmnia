@@ -38,6 +38,9 @@ import { disconnectScope, syncScopeProbes } from "../breadboard/scopeConnections
 import { BenchScope } from "../breadboard/BenchScope";
 import { BenchSupply } from "../breadboard/BenchSupply";
 import { nextRef } from "../schematic/geometry";
+import { autoWire } from "../schematic/editing";
+import { glowFrom, glowText } from "../schematic/indicators";
+import type { Glow } from "../schematic/symbols";
 import { PackagePreview } from "../breadboard/PackageArt";
 import { ProgramEditor } from "../cosim/ProgramEditor";
 import { SimulatorPage } from "./SimulatorPage";
@@ -63,6 +66,22 @@ const STATE_LABEL: Record<Job["state"], string> = {
   failed: "Falhou",
   cancelled: "Cancelada",
 };
+
+/**
+ * Generic household lamps by their nameplate (V and W printed on the bulb). No 127 V
+ * manufacturer sheet was reachable; these are typed ratings, not datasheet data: choose a
+ * catalogue lamp for a real part.
+ */
+const NAMEPLATE_LAMPS: [string, string][] = [
+  ["127", "40"],
+  ["127", "60"],
+  ["127", "100"],
+  ["220", "40"],
+  ["220", "60"],
+  ["220", "100"],
+];
+/** Kinds left out of the palette (still accepted from imported netlists). */
+const HIDDEN_KINDS = new Set(["subckt"]);
 
 const EDIT_TOOLS: [Tool, string][] = [
   [{ kind: "select" }, "Selecionar"],
@@ -122,6 +141,13 @@ export function SchematicWorkspace({
       : "esquematico",
   );
   const [libraryOpen, setLibraryOpen] = useState(false);
+  const [notice, setNotice] = useState<string | null>(null);
+  const [indicatorParts, setIndicatorParts] = useState<{ led: PartOut[]; lamp: PartOut[] }>({
+    led: [],
+    lamp: [],
+  });
+  const [glows, setGlows] = useState<Record<string, Glow>>({});
+
   const [showNodeNames, setShowNodeNames] = useState(false);
   const [nodeMap, setNodeMap] = useState<Record<string, string[]>>({});
   const [nodeError, setNodeError] = useState<string | null>(null);
@@ -205,7 +231,45 @@ export function SchematicWorkspace({
       .examples()
       .then(setCosimExamples)
       .catch(() => setCosimExamples([]));
+    Promise.all([schematicApi.parts("led"), schematicApi.parts("lamp")])
+      .then(([led, lamp]) => setIndicatorParts({ led, lamp }))
+      .catch(() => setIndicatorParts({ led: [], lamp: [] }));
   }, []);
+  useEffect(() => {
+    if (!notice) return;
+    const t = window.setTimeout(() => setNotice(null), 4000);
+    return () => window.clearTimeout(t);
+  }, [notice]);
+  // LEDs and lamps glow with the current of the last simulation
+  useEffect(() => {
+    setGlows({});
+    const inds = netlist?.indicators ?? {};
+    if (!job || job.state !== "done" || !Object.keys(inds).length) return;
+    const plot =
+      job.plots?.find((p) => p.kind === "tran") ?? job.plots?.find((p) => p.kind === "op");
+    if (!plot) return;
+    const names = Object.values(inds)
+      .map((i) => i.vector)
+      .filter((n) => plot.vectors.some((v) => v.name === n));
+    if (!names.length) return;
+    let cancelled = false;
+    api
+      .plot(job.id, plot.name, names, "real", 2000)
+      .then((data) => {
+        if (cancelled) return;
+        const out: Record<string, Glow> = {};
+        for (const [ref, ind] of Object.entries(inds)) {
+          const v = data.traces[ind.vector]?.values;
+          const g = v ? glowFrom(ind, v) : null;
+          if (g) out[ref] = g;
+        }
+        setGlows(out);
+      })
+      .catch(() => setGlows({}));
+    return () => {
+      cancelled = true;
+    };
+  }, [job, netlist]);
   useEffect(() => {
     if (onDocumentChange) {
       onDocumentChange(sch);
@@ -436,80 +500,7 @@ export function SchematicWorkspace({
 
   return (
     <main className={`schematic-page workspace-mode-${activeStep} workspace-view-${view}`}>
-      <label className="node-visibility">
-        <input
-          type="checkbox"
-          checked={showNodeNames}
-          onChange={(e) => setShowNodeNames(e.target.checked)}
-        />
-        Exibir nomes dos nós
-      </label>
-      {nodeError && (
-        <p className="small muted" role="status">
-          {nodeError}
-        </p>
-      )}
       <WorkspaceSteps active={activeStep} resultsAvailable={job !== null} onSelect={activateStep} />
-      <div className="row wrap bench-actions">
-        <label>
-          Adicionar instrumento
-          <select
-            aria-label="Adicionar instrumento"
-            value=""
-            onChange={(e) => {
-              const instrument = e.target.value;
-              if (instrument === "supply") addBenchSupply();
-              else if (instrument === "generator") {
-                const ref = nextRef(sch, "G");
-                const assembly = sch.breadboard ?? emptyBreadboard();
-                change({
-                  ...sch,
-                  components: [
-                    ...sch.components,
-                    {
-                      id: `generator${Date.now()}`,
-                      ref,
-                      kind: "vsin",
-                      x: 0,
-                      y: Math.max(0, ...sch.components.map((c) => c.y)) + 10,
-                      rot: 0,
-                      mirror: false,
-                      part_id: null,
-                      params: {
-                        offset: "0",
-                        amplitude: "1",
-                        freq: "1k",
-                        ac: "1",
-                        bench_instrument: "generator",
-                      },
-                    },
-                  ],
-                  breadboard: {
-                    ...assembly,
-                    parts: [...assembly.parts, { ref, package: "gerador", legs: {} }],
-                  },
-                });
-              } else if (instrument === "scope2" || instrument === "scope4")
-                change({
-                  ...sch,
-                  bench_scope_channels: instrument === "scope2" ? 2 : 4,
-                  bench_scope_connections: Object.keys(sch.bench_scope_connections ?? {}).length
-                    ? sch.bench_scope_connections
-                    : {
-                        "1": { positive: null, negative: null },
-                        "2": { positive: null, negative: null },
-                      },
-                });
-            }}
-          >
-            <option value="">Escolher instrumento…</option>
-            <option value="supply">Fonte de bancada (3 canais)</option>
-            <option value="generator">Gerador de sinais</option>
-            <option value="scope2">Osciloscópio de 2 canais</option>
-            <option value="scope4">Osciloscópio de 4 canais</option>
-          </select>
-        </label>
-      </div>
       {view === "protoboard" && (
         <BenchSupply
           spec={bbSpec}
@@ -620,6 +611,72 @@ export function SchematicWorkspace({
             <button className="secondary" onClick={redo} disabled={!future.length} title="Ctrl+Y">
               Refazer
             </button>
+            <label className="node-visibility">
+              <input
+                type="checkbox"
+                checked={showNodeNames}
+                onChange={(e) => setShowNodeNames(e.target.checked)}
+              />
+              Exibir nomes dos nós
+            </label>
+            <label className="bench-actions">
+              Adicionar instrumento
+              <select
+                aria-label="Adicionar instrumento"
+                value=""
+                onChange={(e) => {
+                  const instrument = e.target.value;
+                  if (instrument === "supply") addBenchSupply();
+                  else if (instrument === "generator") {
+                    const ref = nextRef(sch, "G");
+                    const assembly = sch.breadboard ?? emptyBreadboard();
+                    change({
+                      ...sch,
+                      components: [
+                        ...sch.components,
+                        {
+                          id: `generator${Date.now()}`,
+                          ref,
+                          kind: "vsin",
+                          x: 0,
+                          y: Math.max(0, ...sch.components.map((c) => c.y)) + 10,
+                          rot: 0,
+                          mirror: false,
+                          part_id: null,
+                          params: {
+                            offset: "0",
+                            amplitude: "1",
+                            freq: "1k",
+                            ac: "1",
+                            bench_instrument: "generator",
+                          },
+                        },
+                      ],
+                      breadboard: {
+                        ...assembly,
+                        parts: [...assembly.parts, { ref, package: "gerador", legs: {} }],
+                      },
+                    });
+                  } else if (instrument === "scope2" || instrument === "scope4")
+                    change({
+                      ...sch,
+                      bench_scope_channels: instrument === "scope2" ? 2 : 4,
+                      bench_scope_connections: Object.keys(sch.bench_scope_connections ?? {}).length
+                        ? sch.bench_scope_connections
+                        : {
+                            "1": { positive: null, negative: null },
+                            "2": { positive: null, negative: null },
+                          },
+                    });
+                }}
+              >
+                <option value="">Escolher instrumento…</option>
+                <option value="supply">Fonte de bancada (3 canais)</option>
+                <option value="generator">Gerador de sinais</option>
+                <option value="scope2">Osciloscópio de 2 canais</option>
+                <option value="scope4">Osciloscópio de 4 canais</option>
+              </select>
+            </label>
             <span className="grow" />
             <button onClick={() => void simulate()} disabled={running}>
               {running ? "Simulando…" : "Simular"}
@@ -631,6 +688,11 @@ export function SchematicWorkspace({
             )}
           </div>
 
+          {nodeError && (
+            <p className="small muted" role="status">
+              {nodeError}
+            </p>
+          )}
           {importText !== null && (
             <div className="panel import-box">
               <h3>Importar netlist SPICE</h3>
@@ -685,8 +747,40 @@ export function SchematicWorkspace({
                     {label}
                   </button>
                 ))}
+                <button
+                  className="tool"
+                  title="Liga com fio reto os pinos livres que estão alinhados (mesma linha ou coluna) e sem nada no caminho"
+                  onClick={() => {
+                    const wires = autoWire(sch, symbols);
+                    if (wires.length) change({ ...sch, wires: [...sch.wires, ...wires] });
+                    setNotice(
+                      wires.length
+                        ? `${wires.length} fio(s) lançado(s) entre pinos alinhados (Ctrl+Z desfaz)`
+                        : "Nenhum par de pinos livres alinhado com caminho livre",
+                    );
+                  }}
+                >
+                  Ligar pinos alinhados
+                </button>
+                <button
+                  className="tool"
+                  title="Ocupa a tela inteira com o circuito (Esc volta)"
+                  onClick={() => {
+                    const el = circuitRef.current;
+                    if (!el) return;
+                    if (document.fullscreenElement) void document.exitFullscreen();
+                    else void el.requestFullscreen?.();
+                  }}
+                >
+                  Tela cheia
+                </button>
               </div>
             </div>
+          )}
+          {notice && (
+            <p className="small notice" role="status">
+              {notice}
+            </p>
           )}
 
           {view === "protoboard" && bbSpec ? (
@@ -714,6 +808,7 @@ export function SchematicWorkspace({
                       .filter(
                         (s) =>
                           s.group === g &&
+                          !HIDDEN_KINDS.has(s.kind) &&
                           (!/^[vi](dc|sin|pulse|pwl)$/.test(s.kind) || /[vi]dc/.test(s.kind)),
                       )
                       .map((s) => (
@@ -731,9 +826,20 @@ export function SchematicWorkspace({
                             ? "Fonte de tensão (CC/CA)"
                             : s.kind === "idc"
                               ? "Fonte de corrente (CC/CA)"
-                              : s.label}
+                              : s.kind === "led"
+                                ? "LED genérico"
+                                : s.kind === "lamp"
+                                  ? "Lâmpada genérica"
+                                  : s.label}
                         </button>
                       ))}
+                    {g === "LEDs e lâmpadas" && (
+                      <IndicatorPalette
+                        parts={indicatorParts}
+                        tool={tool}
+                        onPick={(t) => setTool(t)}
+                      />
+                    )}
                   </details>
                 ))}
               </aside>
@@ -749,6 +855,8 @@ export function SchematicWorkspace({
                 onChange={change}
                 probeColors={probeColors}
                 motion={motion}
+                glows={glows}
+                onNotice={setNotice}
               />
 
               <aside className="panel properties" aria-label="Propriedades">
@@ -792,6 +900,37 @@ export function SchematicWorkspace({
                       .map((x) => x.ref.toLowerCase())}
                   />
                 ) : null}
+                {selectedComp &&
+                  glows[selectedComp.ref] &&
+                  netlist?.indicators?.[selectedComp.ref] && (
+                    <p className="small" role="status">
+                      {glowText(netlist.indicators[selectedComp.ref]!, glows[selectedComp.ref]!)}
+                    </p>
+                  )}
+                {selection?.kind === "group" && (
+                  <div>
+                    <h3>Seleção múltipla</h3>
+                    <p className="small muted">
+                      {selection.components.length} componente(s), {selection.wires.length} fio(s) e{" "}
+                      {selection.labels.length} rótulo(s). Arraste um deles para mover tudo; Ctrl+C
+                      copia, Ctrl+V cola no cursor, Ctrl+D duplica.
+                    </p>
+                    <button
+                      className="secondary"
+                      onClick={() => {
+                        const doc = removeSources(sch, selection.components);
+                        change({
+                          ...doc,
+                          wires: doc.wires.filter((w) => !selection.wires.includes(w.id)),
+                          labels: doc.labels.filter((l) => !selection.labels.includes(l.id)),
+                        });
+                        setSelection(null);
+                      }}
+                    >
+                      Apagar seleção
+                    </button>
+                  </div>
+                )}
                 {selectedComp && bbSpec && resolved && (
                   <SelectedPackage
                     view={resolved.parts.find((p) => p.ref === selectedComp.ref)}
@@ -837,7 +976,7 @@ export function SchematicWorkspace({
                       Apagar fio
                     </button>
                   </div>
-                ) : (
+                ) : selection?.kind === "group" ? null : (
                   <p className="small muted">
                     Selecione um componente no desenho ou na lista acima para editar seus valores.
                     Para inserir uma peça, use “Adicionar componente”.
@@ -1580,5 +1719,63 @@ function SelectedPackage({
       )}
       <PinoutSource view={view} />
     </div>
+  );
+}
+
+/** LEDs and lamps of the catalogue, plus nameplate presets of household lamps. */
+function IndicatorPalette({
+  parts,
+  tool,
+  onPick,
+}: {
+  parts: { led: PartOut[]; lamp: PartOut[] };
+  tool: Tool;
+  onPick: (t: Tool) => void;
+}) {
+  const active = (kind: string, id: string | null, params?: Record<string, string>) =>
+    tool.kind === "place" &&
+    tool.symbol === kind &&
+    (tool.part_id ?? null) === id &&
+    JSON.stringify(tool.params ?? {}) === JSON.stringify(params ?? {});
+  const item = (kind: string, p: PartOut) => {
+    const params: Record<string, string> = { part_label: p.part_number };
+    if (p.colour && p.colour !== "ir") params.color = p.colour;
+    return (
+      <button
+        key={p.id}
+        className={active(kind, p.id, params) ? "palette-item active" : "palette-item"}
+        title={`${p.manufacturer} ${p.part_number}${p.released ? "" : " (não revisado)"}`}
+        onClick={() => onPick({ kind: "place", symbol: kind, part_id: p.id, params })}
+      >
+        {p.part_number}
+        {p.summary ? <small className="muted"> · {p.summary}</small> : null}
+      </button>
+    );
+  };
+  return (
+    <>
+      {parts.led.length > 0 && <p className="small muted palette-sub">LEDs (catálogo)</p>}
+      {parts.led.filter((p) => p.colour !== "ir").map((p) => item("led", p))}
+      {parts.lamp.length > 0 && <p className="small muted palette-sub">Lâmpadas (catálogo)</p>}
+      {[...parts.lamp]
+        .sort((a, b) =>
+          (a.summary ?? "").localeCompare(b.summary ?? "", "pt-BR", { numeric: true }),
+        )
+        .map((p) => item("lamp", p))}
+      <p className="small muted palette-sub">Lâmpadas de rede (valor de placa)</p>
+      {NAMEPLATE_LAMPS.map(([vn, pn]) => {
+        const params = { vn, pn };
+        return (
+          <button
+            key={`${vn}-${pn}`}
+            className={active("lamp", null, params) ? "palette-item active" : "palette-item"}
+            title="Lâmpada genérica pelos valores impressos no bulbo (sem ficha técnica)"
+            onClick={() => onPick({ kind: "place", symbol: "lamp", params })}
+          >
+            {vn} V {pn} W
+          </button>
+        );
+      })}
+    </>
   );
 }
