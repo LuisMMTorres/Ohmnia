@@ -241,3 +241,12 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
   fios sem cruzar nem passar sobre peças, alimentação pelos barramentos; fonte de vários canais
   num só painel; "Limpar circuito" no esquemático; "Ponta" passa a "Ponteira".
 - Detalhes, fontes e limitações: [validacao/simulador-melhorias.md](validacao/simulador-melhorias.md).
+
+## Queima de componentes na simulação — aguardando revisão (2026-11-20)
+
+- Após a simulação, tensão, corrente, potência e temperatura de junção de cada peça são
+  comparadas com os limites do datasheet (ou informados no resistor e no capacitor genéricos).
+- Peça acima do limite aparece como QUEIMOU no esquemático e QUEIMADO na protoboard, com uma
+  caixa de alerta (motivo, o que fazer e de onde vem o limite).
+- Detalhes e limitações: [validacao/queima-componentes.md](validacao/queima-componentes.md).
+
