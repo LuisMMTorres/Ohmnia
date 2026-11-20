@@ -36,7 +36,13 @@ TYPES = {
     "uint32_t",
     "int32_t",
     "String",
+    # library objects of the digital sensors (cosim/libraries.py)
+    "DHT",
+    "OneWire",
+    "DallasTemperature",
+    "Adafruit_BME280",
 }
+OBJECT_TYPES = {"DHT", "OneWire", "DallasTemperature", "Adafruit_BME280"}
 QUALIFIERS = {"const", "volatile", "static"}
 
 
@@ -239,7 +245,7 @@ class Parser:
             line = self.cur.line
             ct = self.ctype()
             name = self.ident()
-            if self.at("("):
+            if self.at("(") and ct.base not in OBJECT_TYPES:
                 prog.funcs[name] = self.func_rest(ct, name, line)
             else:
                 prog.globals += self.decl_rest(ct, name, line)
@@ -271,6 +277,15 @@ class Parser:
                 self.eat("[")
                 d.size = "auto" if self.at("]") else self.expr()
                 self.eat("]")
+            if ct.base in OBJECT_TYPES:
+                d.init = ("ctor", ct.base, self.ctor_args() if self.at("(") else [], line)
+                out.append(d)
+                if self.at(","):
+                    self.eat(",")
+                    name = self.ident()
+                    continue
+                self.eat(";")
+                return out
             if self.at("("):
                 raise CError("objetos (construtores) não são suportados", self.cur.line)
             if self.at("="):
@@ -293,6 +308,21 @@ class Parser:
                 continue
             self.eat(";")
             return out
+
+    def ctor_args(self) -> list[Any]:
+        """Constructor arguments of a library object; ``&name`` passes another object."""
+        self.eat("(")
+        args: list[Any] = []
+        while not self.at(")"):
+            if self.at("&"):
+                self.eat("&")
+                args.append(("var", self.ident()))
+            else:
+                args.append(self.assign())
+            if not self.at(")"):
+                self.eat(",")
+        self.eat(")")
+        return args
 
     # -- statements
     def block(self) -> list[Any]:

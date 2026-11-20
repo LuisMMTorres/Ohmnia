@@ -18,8 +18,11 @@ the range and says so.
 
 from __future__ import annotations
 
+import itertools
 import math
 from collections.abc import Callable
+
+import numpy as np
 
 from circuitos.components.models import ComponentRecord
 from circuitos.core.units import Q_, parse_unit
@@ -55,6 +58,12 @@ def _box(left: list[str], right: list[str], half: int = 3) -> tuple[PinDef, ...]
 
 
 _NTC = "Vishay NTCLE100E3103JB0"
+_KTY = "NXP KTY81 (KTY81_SER_5, Rev. 05)"
+_DHT = "Aosong DHT22/AM2302"
+_DS = "Analog Devices DS18B20"
+_BME = "Bosch BME280"
+# NXP KTY81 series, Rev. 05, Table 7: KTY81/110 typical resistance (Ω) at Isen = 1 mA
+KTY110_TABLE = "-55:490 -40:567 0:815 25:1000 50:1209 100:1696 150:2211"
 _LDR = "Token GL5528"
 
 SENSOR_SYMBOLS: list[Symbol] = [
@@ -199,9 +208,128 @@ SENSOR_SYMBOLS: list[Symbol] = [
         "antes do eco não é simulado. Passo de simulação limitado a 2 µs.",
         ref_prefix="US",
     ),
+    Symbol(
+        "kty81",
+        "Sensor de silício KTY81",
+        "Sensores",
+        "X",
+        (PinDef("1", -2, 0), PinDef("2", 2, 0)),
+        (
+            ParamDef("r25", "R a 25 °C", "Ω", "1k", help=f"{_KTY}, Tabela 7: KTY81/110, 1000 Ω."),
+            ParamDef(
+                "tabela",
+                "Tabela R × T (°C:Ω)",
+                "",
+                KTY110_TABLE,
+                type="text",
+                help=f"{_KTY}, Tabela 7 (KTY81/110, valores típicos com 1 mA). A curva é "
+                "interpolada entre os pontos e escalada por R25.",
+            ),
+            _stim("temp", "Temperatura", "°C", "25"),
+        ),
+        description="Resistor de silício com coeficiente positivo (PTC): R(T) interpolada "
+        "linearmente na tabela do datasheet e multiplicada por R25 / R(25 °C) da tabela.",
+        ref_prefix="RT",
+    ),
+    Symbol(
+        "dht22",
+        "Sensor de umidade e temperatura DHT22",
+        "Sensores",
+        "X",
+        _box(["VCC", "DATA", "GND"], [], 3),
+        (
+            _stim("temp", "Temperatura", "°C", "25"),
+            _stim("rh", "Umidade relativa", "%", "50"),
+            ParamDef("tres", "Resolução da temperatura", "°C", "0.1", help=f"{_DHT}, p. 2."),
+            ParamDef("hres", "Resolução da umidade", "%", "0.1", help=f"{_DHT}, p. 2."),
+            ParamDef(
+                "tsample", "Período mínimo entre leituras", "s", "2", help=f"{_DHT}, p. 2 e 9."
+            ),
+            ParamDef("tmin", "Temperatura mínima medida", "°C", "-40", help=f"{_DHT}, p. 2."),
+            ParamDef("tmax", "Temperatura máxima medida", "°C", "80", help=f"{_DHT}, p. 2."),
+            ParamDef("vsmin", "Alimentação mínima", "V", "3.3", help=f"{_DHT}, p. 2: 3,3 a 6 V."),
+            ParamDef("vsmax", "Alimentação máxima", "V", "6", help=f"{_DHT}, p. 2."),
+        ),
+        description="Saída digital de um fio, lida no programa com a biblioteca DHT "
+        "(DHT dht(pino, DHT22); dht.begin(); dht.readTemperature(); dht.readHumidity()). A "
+        "leitura leva o tempo do quadro de 40 bits do datasheet (cerca de 5 ms), exige o "
+        "pull-up em DATA e o sensor alimentado na faixa, e respeita 2 s entre leituras. O sinal "
+        "de cada bit no fio não é simulado.",
+        ref_prefix="U",
+    ),
+    Symbol(
+        "ds18b20",
+        "Termômetro digital DS18B20",
+        "Sensores",
+        "X",
+        _box(["VDD", "DQ", "GND"], [], 3),
+        (
+            _stim("temp", "Temperatura", "°C", "25"),
+            ParamDef(
+                "bits",
+                "Resolução",
+                "bit",
+                "12",
+                type="choice",
+                choices=("9", "10", "11", "12"),
+                help=f"{_DS}: 9 a 12 bits (0,5 a 0,0625 °C); padrão 12.",
+            ),
+            ParamDef(
+                "tconv12",
+                "Tempo de conversão em 12 bits",
+                "s",
+                "750m",
+                help=f"{_DS}, Tabela 2: 750 ms (metade a cada bit a menos).",
+            ),
+            ParamDef("tmin", "Temperatura mínima", "°C", "-55", help=f"{_DS}, p. 1."),
+            ParamDef("tmax", "Temperatura máxima", "°C", "125", help=f"{_DS}, p. 1."),
+            ParamDef("vsmin", "Alimentação mínima", "V", "3", help=f"{_DS}: 3,0 a 5,5 V."),
+            ParamDef("vsmax", "Alimentação máxima", "V", "5.5", help=f"{_DS}."),
+        ),
+        description="Barramento 1-Wire, lido no programa com OneWire e DallasTemperature "
+        "(OneWire ow(pino); DallasTemperature s(&ow); s.begin(); s.requestTemperatures(); "
+        "s.getTempCByIndex(0)). A conversão leva o tempo do datasheet para a resolução e a "
+        "leitura é arredondada ao passo da resolução. Exige pull-up em DQ e alimentação local "
+        "(o modo parasita não é simulado).",
+        ref_prefix="U",
+    ),
+    Symbol(
+        "bme280",
+        "Sensor ambiental BME280 (I2C)",
+        "Sensores",
+        "X",
+        _box(["VDD", "GND"], ["SDA", "SCL"], 3),
+        (
+            _stim("temp", "Temperatura", "°C", "25"),
+            _stim("rh", "Umidade relativa", "%", "50"),
+            _stim("p", "Pressão", "hPa", "1013.25"),
+            ParamDef(
+                "addr",
+                "Endereço I2C",
+                "",
+                "0x76 (SDO em GND)",
+                type="choice",
+                choices=("0x76 (SDO em GND)", "0x77 (SDO em VDDIO)"),
+                help=f"{_BME}, p. 33 (a verificar).",
+            ),
+            ParamDef("tmin", "Temperatura mínima", "°C", "-40", help=f"{_BME}, p. 2."),
+            ParamDef("tmax", "Temperatura máxima", "°C", "85", help=f"{_BME}, p. 2."),
+            ParamDef("pmin", "Pressão mínima", "hPa", "300", help=f"{_BME}, p. 2."),
+            ParamDef("pmax", "Pressão máxima", "hPa", "1100", help=f"{_BME}, p. 2."),
+            ParamDef("vsmin", "Alimentação VDD mínima", "V", "1.71", help=f"{_BME}, p. 8."),
+            ParamDef("vsmax", "Alimentação VDD máxima", "V", "3.6", help=f"{_BME}, p. 8."),
+        ),
+        description="I2C, lido no programa com a biblioteca Adafruit_BME280 (bme.begin(0x76); "
+        "bme.readTemperature(); bme.readPressure() em Pa; bme.readHumidity()). Liga em SDA e SCL "
+        "da placa, com pull-up; alimentar com 3,3 V (máximo de 3,6 V). A compensação interna e "
+        "o filtro do sensor não são simulados: devolve o valor do estímulo.",
+        ref_prefix="U",
+    ),
 ]
 
 SENSOR_KINDS = {s.kind for s in SENSOR_SYMBOLS}
+# read by the board libraries in the co-simulation (cosim/libraries.py), not by SPICE
+DIGITAL_SENSOR_KINDS = {"dht22", "ds18b20", "bme280"}
 
 # catalogue parts: symbol parameter <- (record parameter, unit)
 SENSOR_CATALOGUE: dict[str, tuple[tuple[str, ...], dict[str, tuple[str, str]]]] = {
@@ -222,6 +350,17 @@ SENSOR_CATALOGUE: dict[str, tuple[tuple[str, ...], dict[str, tuple[str, str]]]] 
     "hall_switch": (("sensor.magnetic",), {"vdrop": ("Vdrop", "V")}),
     "pressure": (("sensor.pressure",), {"pmax": ("range_bar", "kPa")}),
     "ultrasonic": (("sensor.proximity",), {}),
+    "kty81": (("sensor.temperature",), {"r25": ("R25", "ohm")}),
+    "dht22": (
+        ("sensor.humidity",),
+        {
+            "tres": ("T_resolution", "K"),
+            "hres": ("resolution", "%"),
+            "tsample": ("t_sample", "s"),
+        },
+    ),
+    "ds18b20": (("sensor.temperature",), {}),
+    "bme280": (("sensor.humidity",), {}),
 }
 
 # record parameters a part must have to be offered with the symbol
@@ -232,6 +371,10 @@ SENSOR_REQUIRED: dict[str, set[str]] = {
     "hall_switch": {"B_op", "B_rel"},
     "pressure": {"V_out", "range_bar"},
     "ultrasonic": {"sr"},
+    "kty81": {"R25", "R"},
+    "dht22": {"T_resolution", "t_sample"},
+    "ds18b20": {"t_resp", "bits"},
+    "bme280": {"p_range"},
 }
 
 
@@ -253,7 +396,25 @@ def special_value(kind: str, record: ComponentRecord, name: str) -> str | None:
         ("pressure", "vfs"): ("V_out", "V", "max"),
         ("ultrasonic", "dmin"): ("sr", "m", "min"),
         ("ultrasonic", "dmax"): ("sr", "m", "max"),
+        ("dht22", "vsmin"): ("VS", "V", "min"),
+        ("dht22", "vsmax"): ("VS", "V", "max"),
+        ("dht22", "tmin"): ("T_range", "degC", "min"),
+        ("dht22", "tmax"): ("T_range", "degC", "max"),
+        ("ds18b20", "vsmin"): ("VS", "V", "min"),
+        ("ds18b20", "vsmax"): ("VS", "V", "max"),
+        ("ds18b20", "tmin"): ("range", "degC", "min"),
+        ("ds18b20", "tmax"): ("range", "degC", "max"),
+        ("bme280", "vsmin"): ("VS", "V", "min"),
+        ("bme280", "vsmax"): ("VS", "V", "max"),
+        ("bme280", "tmin"): ("T_range", "degC", "min"),
+        ("bme280", "tmax"): ("T_range", "degC", "max"),
+        ("bme280", "pmin"): ("p_range", "hPa", "min"),
+        ("bme280", "pmax"): ("p_range", "hPa", "max"),
     }
+    if (kind, name) == ("kty81", "tabela"):
+        return kty_table(record)
+    if (kind, name) == ("ds18b20", "tconv12"):
+        return _conv12(record)
     key = pick.get((kind, name))
     if key is None:
         return None
@@ -262,6 +423,50 @@ def special_value(kind: str, record: ComponentRecord, name: str) -> str | None:
         return None
     value = {"mid": (b[0] + b[1]) / 2, "min": b[0], "max": b[1]}[key[2]]
     return f"{value:.6g}"
+
+
+def kty_table(record: ComponentRecord) -> str | None:
+    """'T:R' pairs of the record's R × T table (typical values), sorted by temperature."""
+    points = []
+    for _key, p in record.parameters.items():
+        cond = p.conditions.get("T")
+        if p.symbol != "R" or p.typ is None or cond is None:
+            continue
+        t = Q_(cond.value, parse_unit(cond.unit)).to("degC").magnitude
+        r = Q_(p.typ, parse_unit(p.unit)).to("ohm").magnitude
+        points.append((t, r))
+    if len(points) < 2:
+        return None
+    return " ".join(f"{t:g}:{r:.6g}" for t, r in sorted(points))
+
+
+def _conv12(record: ComponentRecord) -> str | None:
+    """Conversion time at 12 bits: the record's response time (DS18B20: 750 ms max., p. 1)."""
+    p = record.parameters.get("t_resp")
+    value = None if p is None else (p.max if p.max is not None else p.typ)
+    if p is None or value is None:
+        return None
+    return f"{Q_(value, parse_unit(p.unit)).to('s').magnitude:.6g}"
+
+
+def parse_table(text: str) -> list[tuple[float, float]]:
+    """'T:R T:R ...' into sorted (T, R) points."""
+    points = []
+    for item in text.replace(";", " ").split():
+        t, _, r = item.partition(":")
+        if not r:
+            raise ValueError(f"tabela R × T: use pares T:R, encontrado {item!r}")
+        points.append((parse_value(t), parse_value(r)))
+    points.sort()
+    if len(points) < 2:
+        raise ValueError("tabela R × T: informe pelo menos dois pontos")
+    return points
+
+
+def table_r25(points: list[tuple[float, float]]) -> float:
+    ts = [p[0] for p in points]
+    rs = [p[1] for p in points]
+    return float(np.interp(25.0, ts, rs))
 
 
 def part_applies(kind: str, record: ComponentRecord) -> bool:
@@ -357,4 +562,17 @@ def emit_sensor(comp: Component, n: dict[str, str], v: Value, stim: Stimulus) ->
             f"R{x}_q {n['VCC']} {n['GND']} 333",  # about 15 mA at 5 V (HC-SR04, p. 1)
             f".ic v({h})=-1",
         ]
+    if k == "kty81":
+        points = parse_table(v("tabela"))
+        scale = parse_value(v("r25")) / table_r25(points)
+        t = f"({stim(v('temp'))})"
+        # piecewise-linear R(T) through the datasheet points, the end segments extended
+        expr = ""
+        for (t0, r0), (t1, r1) in reversed(list(itertools.pairwise(points))):
+            seg = f"({r0 * scale:.9g} + ({(r1 - r0) * scale / (t1 - t0):.9g})*({t} - ({t0:.9g})))"
+            expr = seg if not expr else f"({t} < {t1:.9g} ? {seg} : {expr})"
+        return [f"B{x} {n['1']} {n['2']} I = V({n['1']},{n['2']}) / max({expr}, 1e-3)"]
+    if k in DIGITAL_SENSOR_KINDS:
+        # the board libraries read the sensor; in SPICE only the pins exist (high impedance)
+        return [f"R{x}_{p.lower()} {node} {n['GND']} 100meg" for p, node in n.items() if p != "GND"]
     raise ValueError(f"tipo {k} sem modelo")

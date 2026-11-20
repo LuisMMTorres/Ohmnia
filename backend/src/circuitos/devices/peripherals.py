@@ -29,6 +29,7 @@ from circuitos.core.calc import BibRef, CalcStep, record
 from circuitos.core.units import Q_
 from circuitos.cosim.arduino import BOARDS
 from circuitos.cosim.controllers import PLC_AI_SHUNT, PLC_AQ_ROUT, PLC_DI_OFF, PLC_DI_ON
+from circuitos.cosim.libraries import OW_RESET, OW_SLOT, dht22_frame, frame_time
 from circuitos.devices.opamp_bench import BenchTest
 from circuitos.machines import thermocouple as tc
 from circuitos.machines.induction import InductionParams, operating_point, steady_state
@@ -37,7 +38,12 @@ from circuitos.schematic.cosim_symbols import CATALOGUE_PARAMS, catalogue_value
 from circuitos.schematic.library import pin_defs, pin_positions, symbol
 from circuitos.schematic.model import Analysis, AnalysisKind, Component, NetLabel, Schematic
 from circuitos.schematic.runs import SchematicPlan
-from circuitos.schematic.sensor_symbols import SENSOR_KINDS, sound_speed
+from circuitos.schematic.sensor_symbols import (
+    SENSOR_KINDS,
+    parse_table,
+    sound_speed,
+    table_r25,
+)
 from circuitos.schematic.sensor_symbols import part_applies as sensor_part_applies
 from circuitos.schematic.symbols_base import ParamDef
 from circuitos.schematic.values import parse_value
@@ -112,6 +118,16 @@ LDR_REF = BibRef(book="Token GL5528 (datasheet do catálogo)", chapter="R a 10 l
 HALL_REF = BibRef(book="Honeywell SS49E (datasheet do catálogo)", page="3")
 HALL_SW_REF = BibRef(book="Allegro A3144 (datasheet do catálogo)", page="3")
 PRESS_REF = BibRef(book="NXP MPX5700 (datasheet do catálogo)", page="1 e 2")
+KTY_REF = BibRef(
+    book="NXP KTY81 series, KTY81_SER_5, Rev. 05 (datasheet do catálogo)",
+    chapter="Tabelas 7 e 10: resistência × temperatura",
+)
+DHT_REF = BibRef(book="Aosong DHT22/AM2302 (datasheet do catálogo)", page="2 e 6 a 9")
+DS_REF = BibRef(
+    book="Analog Devices DS18B20, Rev 6 (datasheet do catálogo)",
+    chapter="tabela AC do 1-Wire e Tabela 2 (resolução e tempo de conversão)",
+)
+BME_REF = BibRef(book="Bosch BME280 (datasheet do catálogo)", page="2, 8 e 33")
 SOUND_REF = BibRef(
     book="Halliday, Resnick e Walker, Fundamentos de Física, vol. 2",
     chapter="ondas sonoras: velocidade do som em gases",
@@ -379,7 +395,7 @@ def _q(value: float, unit: str) -> pint.Quantity:
 
 def _lm35(c: _Ctx) -> None:
     vs, t0, t1 = c.f("vs"), c.f("tmin"), c.f("tmax")
-    sens = c.p("sens")
+    sens, voff = c.p("sens"), c.p("voff")
     s = c.new("LM35")
     c.add(s, "vdc", "VS", {"p": "vs", "n": "0"}, dc=f"{vs:g}")
     c.add(
@@ -396,11 +412,14 @@ def _lm35(c: _Ctx) -> None:
         "Temperatura",
         "°C",
         temp,
-        [("V(OUT)", "V", vout), ("Modelo: sens·T", "V", np.minimum(sens * temp, vmax))],
+        [
+            ("V(OUT)", "V", vout),
+            ("Modelo: Voff + sens·T", "V", np.clip(voff + sens * temp, 0, vmax)),
+        ],
     )
-    lin_hi = min(t1, vmax / sens if sens > 0 else t1)
+    lin_hi = min(t1, (vmax - voff) / sens if sens > 0 else t1)
     a, b = t0 + 0.1 * (lin_hi - t0), t0 + 0.9 * (lin_hi - t0)
-    inputs = {"sens": _q(sens, "V/K"), "V_S": _q(vs, "V")}
+    inputs = {"sens": _q(sens, "V/K"), "V_off": _q(voff, "V"), "V_S": _q(vs, "V")}
     c.check(
         "LM-SENS",
         "Sensibilidade (inclinação da curva)",
@@ -418,15 +437,15 @@ def _lm35(c: _Ctx) -> None:
         "LM-25",
         f"Saída a {tm:g} °C",
         float(np.interp(tm, temp, vout)),
-        min(sens * tm, vmax),
+        min(max(voff + sens * tm, 0.0), vmax),
         "V",
         0.5,
         f"V(OUT) no instante em que a temperatura vale {tm:g} °C.",
-        r"V_{OUT} = S \cdot T",
+        r"V_{OUT} = V_{off} + S \cdot T",
         inputs | {"T": _q(tm, "degC")},
         LM35,
     )
-    if sens * t1 > vmax:
+    if voff + sens * t1 > vmax:
         c.check(
             "LM-SAT",
             "Saturação da saída (VS − 1,5 V)",
@@ -1945,6 +1964,8 @@ def _mcu(c: _Ctx) -> None:
         "dout": "IO2" if esp else "D8",
         "pwm": "IO18" if esp else "D9",
     }
+    if c.kind == "rpi_pico":
+        names = {"adc": "GP26", "din": "GP2", "dout": "GP8", "pwm": "GP9"}
     num = {k: b.pins[v] for k, v in names.items()}
     dac = "\n  dacWrite(25, 200);" if esp else ""
     program = f"""// Bancada: ADC, entrada digital, saída digital e PWM
@@ -2750,6 +2771,376 @@ def _ultrasonic(c: _Ctx) -> None:
         )
 
 
+# ------------------------------------------------- KTY81 and the digital sensors (2026-11-20)
+
+
+def _kty81(c: _Ctx) -> None:
+    i, t0, t1 = c.f("iexc"), c.f("tmin"), c.f("tmax")
+    if t1 <= t0 or i <= 0:
+        raise BenchError("Use temperatura final maior que a inicial e corrente positiva")
+    try:
+        points = parse_table(c.text("tabela"))
+    except ValueError as exc:
+        raise BenchError(str(exc)) from exc
+    r25 = c.p("r25")
+    scale = r25 / table_r25(points)
+    s = c.new("KTY81")
+    c.add(s, "idc", "I1", {"p": "0", "n": "x"}, dc=f"{i:g}")
+    c.add(s, "kty81", "RT1", {"1": "x", "2": "0"}, dut=True, temp=f"0 {t0:g} 1 {t1:g}")
+    tr = c.run(s, "R(T)", tstop="1", tmax="2m")
+    temp = t0 + (t1 - t0) * _time(tr)
+    r = _vec(tr, "v(x)") / i
+    ts = np.array([p[0] for p in points])
+    rs = np.array([p[1] for p in points]) * scale
+    c.curve(
+        "kty",
+        "Resistência × temperatura",
+        "Temperatura",
+        "°C",
+        temp,
+        [("R medida", "Ω", r), ("Tabela do datasheet", "Ω", np.interp(temp, ts, rs))],
+    )
+    inp = {"R_25": _q(r25, "ohm"), "I": _q(i, "A")}
+    for tp, rp in zip(ts, rs, strict=True):
+        if not t0 <= tp <= t1:
+            continue
+        c.check(
+            f"KTY-{tp:g}",
+            f"Resistência a {tp:g} °C",
+            float(np.interp(tp, temp, r)),
+            float(rp),
+            "ohm",
+            0.2,
+            "R = V/I com a corrente de medição, no instante dessa temperatura.",
+            r"R(T) = \frac{R_{25}}{R_{tab}(25)}\,R_{tab}(T)",
+            inp | {"T": _q(float(tp), "degC")},
+            KTY_REF,
+        )
+
+
+def _digital_board(c: _Ctx, s: Any, nodes: dict[str, str], program: str) -> None:
+    board_nodes = {"GND": "0", **nodes}
+    c.add(s, "arduino_uno", "U1", board_nodes, program=program)
+
+
+_DHT_PROGRAM = """// Bancada: DHT22 no pino 2
+DHT dht(2, DHT22);
+float temp; float umid; long dur; int leituras; int valido;
+void setup() {
+  delay(10);
+  dht.begin();
+}
+void loop() {
+  unsigned long t0 = micros();
+  float t = dht.readTemperature();
+  long d = micros() - t0;
+  if (d > 1000) {
+    leituras = leituras + 1;
+    dur = d;
+    temp = t;
+    umid = dht.readHumidity();
+    valido = isnan(t) ? 0 : 1;
+  }
+  delay(500);
+}
+"""
+
+
+def _dht22(c: _Ctx) -> None:
+    vs, rp, tstop = c.f("vsup"), c.f("rpull"), c.f("tstop")
+    temp, rh = c.f("temp"), c.f("rh")
+    if tstop < 1 or tstop > 20:
+        raise BenchError("Duração do ensaio entre 1 e 20 s")
+    s = c.new("DHT22")
+    c.add(s, "vdc", "VS", {"p": "vs", "n": "0"}, dc=f"{vs:g}")
+    c.add(
+        s,
+        "dht22",
+        "U2",
+        {"VCC": "vs", "DATA": "data", "GND": "0"},
+        dut=True,
+        temp=f"{temp:g}",
+        rh=f"{rh:g}",
+    )
+    if rp > 0:
+        c.add(s, "resistor", "RP", {"p": "vs", "n": "data"}, value=f"{rp:g}")
+    _digital_board(c, s, {"D2": "data"}, _DHT_PROGRAM)
+    tr = c.run(s, "leituras", tstop=f"{tstop:g}")
+    t = _time(tr)
+    c.curve(
+        "dht",
+        "Leituras do programa (variáveis do Arduino)",
+        "Tempo",
+        "s",
+        t,
+        [
+            ("temp (°C)", "°C", _vec(tr, "u1.temp")),
+            ("umid (%)", "%", _vec(tr, "u1.umid")),
+        ],
+    )
+    vsmin = c.p("vsmin")
+    responds = vs >= vsmin
+    inp = {"V_S": _q(vs, "V"), "V_S,min": _q(vsmin, "V")}
+    c.check(
+        "DHT-RESP",
+        "Sensor responde (1) ou não (0)",
+        float(_vec(tr, "u1.valido")[-1]),
+        1.0 if responds else 0.0,
+        "",
+        0.1,
+        "Variável 'valido' do programa (isnan da leitura) no fim do ensaio.",
+        r"V_S \ge V_{S,min}",
+        inp,
+        DHT_REF,
+    )
+    n_exp = math.floor(tstop / c.p("tsample") - 1e-9) + 1
+    c.check(
+        "DHT-N",
+        f"Leituras de fato feitas em {tstop:g} s (chamadas a cada 0,5 s)",
+        float(_vec(tr, "u1.leituras")[-1]),
+        float(n_exp),
+        "",
+        0.1,
+        "Contador do programa: só conta as chamadas que levaram mais de 1 ms (as outras "
+        "devolvem a leitura anterior, como a biblioteca faz antes de 2 s).",
+        r"N = \lfloor t_{ensaio}/t_{amostra} \rfloor + 1",
+        {"t_amostra": _q(c.p("tsample"), "s")},
+        DHT_REF,
+    )
+    if not responds:
+        return
+    tres, hres = c.p("tres"), c.p("hres")
+    t_exp = round(min(max(temp, c.p("tmin")), c.p("tmax")) / tres) * tres
+    h_exp = round(min(max(rh, 0.0), 100.0) / hres) * hres
+    c.check(
+        "DHT-T",
+        "Temperatura lida",
+        float(_vec(tr, "u1.temp")[-1]),
+        t_exp,
+        "degC",
+        0.1,
+        "Variável 'temp' do programa; esperado: temperatura arredondada à resolução.",
+        r"T_{lida} = \mathrm{round}(T / \Delta T)\,\Delta T",
+        {"T": _q(temp, "degC"), "ΔT": _q(tres, "K")},
+        DHT_REF,
+    )
+    c.check(
+        "DHT-UR",
+        "Umidade lida",
+        float(_vec(tr, "u1.umid")[-1]),
+        h_exp,
+        "%",
+        0.1,
+        "Variável 'umid' do programa; esperado: umidade arredondada à resolução.",
+        r"UR_{lida} = \mathrm{round}(UR / \Delta UR)\,\Delta UR",
+        {"UR": _q(rh, "%"), "ΔUR": _q(hres, "%")},
+        DHT_REF,
+    )
+    frame = dht22_frame(h_exp, t_exp)
+    c.check(
+        "DHT-TEMPO",
+        "Duração de uma leitura (quadro de 40 bits)",
+        float(_vec(tr, "u1.dur")[-1]) * 1e-6,
+        frame_time(frame),
+        "s",
+        2.0,
+        "micros() antes e depois de readTemperature(); inclui o tempo de 1 ou 2 instruções.",
+        r"t = t_{início} + t_{espera} + 160\ \mu s + 40 \cdot 50\ \mu s + n_1 \cdot 70\ \mu s"
+        r" + n_0 \cdot 27\ \mu s",
+        {
+            "n_1": _q(sum(bin(b).count("1") for b in frame), ""),
+            "n_0": _q(40 - sum(bin(b).count("1") for b in frame), ""),
+        },
+        DHT_REF,
+    )
+
+
+_DS_PROGRAM = """// Bancada: DS18B20 no pino 2
+OneWire ow(2);
+DallasTemperature sensores(&ow);
+float temp; float ausente; long conv; int n;
+void setup() {
+  delay(10);
+  sensores.begin();
+}
+void loop() {
+  n = sensores.getDeviceCount();
+  unsigned long t0 = micros();
+  sensores.requestTemperatures();
+  conv = micros() - t0;
+  temp = sensores.getTempCByIndex(0);
+  ausente = sensores.getTempCByIndex(1);
+  delay(100);
+}
+"""
+
+
+def _ds18b20(c: _Ctx) -> None:
+    vs, rp, temp = c.f("vsup"), c.f("rpull"), c.f("temp")
+    bits = int(c.p("bits"))
+    s = c.new("DS18B20")
+    c.add(s, "vdc", "VS", {"p": "vs", "n": "0"}, dc=f"{vs:g}")
+    c.add(s, "ds18b20", "U2", {"VDD": "vs", "DQ": "dq", "GND": "0"}, dut=True, temp=f"{temp:g}")
+    if rp > 0:
+        c.add(s, "resistor", "RP", {"p": "vs", "n": "dq"}, value=f"{rp:g}")
+    _digital_board(c, s, {"D2": "dq"}, _DS_PROGRAM)
+    tconv = c.p("tconv12") / 2 ** (12 - bits)
+    tr = c.run(s, "conversões", tstop=f"{3 * (tconv + 0.11):.4g}")
+    t = _time(tr)
+    c.curve(
+        "ds",
+        "Leitura do programa",
+        "Tempo",
+        "s",
+        t,
+        [("temp (°C)", "°C", _vec(tr, "u1.temp"))],
+    )
+    present = vs >= c.p("vsmin") and rp > 0
+    inp = {"V_S": _q(vs, "V"), "R_P": _q(rp, "ohm")}
+    c.check(
+        "DS-N",
+        "Sensores encontrados no barramento",
+        float(_vec(tr, "u1.n")[-1]),
+        1.0 if present else 0.0,
+        "",
+        0.1,
+        "getDeviceCount() no programa: o sensor só responde alimentado e com pull-up em DQ.",
+        r"N = 1\ \text{se}\ V_S \ge V_{S,min}\ \text{e}\ R_P\ \text{presente}",
+        inp,
+        DS_REF,
+    )
+    lsb = 0.0625 * 2 ** (12 - bits)
+    clamped = min(max(temp, c.p("tmin")), c.p("tmax"))
+    expected = math.floor(clamped / lsb + 0.5) * lsb if present else -127.0
+    c.check(
+        "DS-T",
+        f"Temperatura lida com {bits} bits",
+        float(_vec(tr, "u1.temp")[-1]),
+        expected,
+        "degC",
+        0.01,
+        "getTempCByIndex(0); esperado: temperatura arredondada ao passo da resolução "
+        "(−127 = DEVICE_DISCONNECTED_C quando o sensor não responde).",
+        r"T_{lida} = \mathrm{round}(T/\Delta T)\,\Delta T,\ \Delta T = 0{,}0625 \cdot "
+        r"2^{12 - n}\ °C",
+        {"T": _q(temp, "degC"), "n": _q(bits, "")},
+        DS_REF,
+    )
+    c.check(
+        "DS-AUS",
+        "Leitura de um índice sem sensor",
+        float(_vec(tr, "u1.ausente")[-1]),
+        -127.0,
+        "degC",
+        0.01,
+        "getTempCByIndex(1) com um único sensor no fio.",
+        r"T = -127\ (\mathrm{DEVICE\_DISCONNECTED\_C})",
+        {},
+        DS_REF,
+    )
+    if present:
+        c.check(
+            "DS-CONV",
+            f"Duração de requestTemperatures() com {bits} bits",
+            float(_vec(tr, "u1.conv")[-1]) * 1e-6,
+            OW_RESET + 16 * OW_SLOT + tconv,
+            "s",
+            0.5,
+            "micros() antes e depois; esperado: reset, comando (16 janelas) e conversão.",
+            r"t = t_{RSTL} + t_{RSTH} + 16\,(t_{SLOT} + t_{REC}) + t_{CONV}/2^{12-n}",
+            {"t_CONV": _q(c.p("tconv12"), "s"), "n": _q(bits, "")},
+            DS_REF,
+        )
+
+
+def _bme280(c: _Ctx) -> None:
+    vs, rp = c.f("vsup"), c.f("rpull")
+    temp, rh, p = c.f("temp"), c.f("rh"), c.f("p")
+    addr = int(c.text("addr").split()[0], 16)
+    other = 0x77 if addr == 0x76 else 0x76
+    program = f"""// Bancada: BME280 no I2C (A4 = SDA, A5 = SCL)
+Adafruit_BME280 bme;
+int ok; int errado; float temp; float pres; float umid;
+void setup() {{
+  delay(10);
+  errado = bme.begin(0x{other:02X});
+  ok = bme.begin(0x{addr:02X});
+}}
+void loop() {{
+  temp = bme.readTemperature();
+  pres = bme.readPressure() / 100.0;
+  umid = bme.readHumidity();
+  delay(100);
+}}
+"""
+    s = c.new("BME280")
+    c.add(s, "vdc", "VS", {"p": "vs", "n": "0"}, dc=f"{vs:g}")
+    c.add(
+        s,
+        "bme280",
+        "U2",
+        {"VDD": "vs", "GND": "0", "SDA": "sda", "SCL": "scl"},
+        dut=True,
+        temp=f"{temp:g}",
+        rh=f"{rh:g}",
+        p=f"{p:g}",
+    )
+    if rp > 0:
+        c.add(s, "resistor", "RSDA", {"p": "vs", "n": "sda"}, value=f"{rp:g}")
+        c.add(s, "resistor", "RSCL", {"p": "vs", "n": "scl"}, value=f"{rp:g}")
+    _digital_board(c, s, {"A4": "sda", "A5": "scl"}, program)
+    tr = c.run(s, "leituras", tstop="0.5")
+    c.warnings = [w for w in c.warnings if f"0x{other:02X}" not in w]
+    b = BOARDS["arduino_uno"]
+    answers = vs >= c.p("vsmin") and rp > 0 and vs >= b.vih * b.vdd
+    inp = {"V_S": _q(vs, "V"), "R_P": _q(rp, "ohm")}
+    c.check(
+        "BME-ADDR",
+        f"begin(0x{addr:02X}) encontra o sensor",
+        float(_vec(tr, "u1.ok")[-1]),
+        1.0 if answers else 0.0,
+        "",
+        0.1,
+        "Variável 'ok' do programa. O sensor responde alimentado, com pull-up em SDA e SCL "
+        "e com a tensão das linhas acima do limiar de entrada da placa.",
+        r"\text{endereço} = 0x76\ (SDO = GND)\ \text{ou}\ 0x77\ (SDO = V_{DDIO})",
+        inp,
+        BME_REF,
+    )
+    c.check(
+        "BME-ERR",
+        f"begin(0x{other:02X}) no endereço errado",
+        float(_vec(tr, "u1.errado")[-1]),
+        0.0,
+        "",
+        0.1,
+        "Variável 'errado' do programa: nenhum sensor nesse endereço.",
+        r"\text{sem resposta}",
+        {},
+        BME_REF,
+    )
+    if not answers:
+        return
+    for id_, name, var, value, unit, lo, hi in (
+        ("BME-T", "Temperatura lida", "temp", temp, "degC", c.p("tmin"), c.p("tmax")),
+        ("BME-P", "Pressão lida", "pres", p, "hPa", c.p("pmin"), c.p("pmax")),
+        ("BME-UR", "Umidade lida", "umid", rh, "%", 0.0, 100.0),
+    ):
+        c.check(
+            id_,
+            name,
+            float(_vec(tr, f"u1.{var}")[-1]),
+            min(max(value, lo), hi),
+            unit,
+            0.01,
+            "Variável do programa; o modelo devolve o valor do estímulo dentro da faixa de "
+            "medição (a compensação interna do sensor não é simulada).",
+            r"x_{lido} = \min(\max(x, x_{min}), x_{max})",
+            {"x": _q(value, unit)},
+            BME_REF,
+        )
+
+
 # ------------------------------------------------------------------------------ registry
 
 
@@ -2925,6 +3316,71 @@ BENCHES: dict[str, PeripheralBench] = {
             ),
             ("Largura do eco para cada distância", "Sem eco fora do alcance"),
             seconds=5,
+        ),
+        PeripheralBench(
+            "kty81",
+            "Sensores",
+            "Corrente de medição constante e rampa de temperatura.",
+            _kty81,
+            ("temp",),
+            (
+                _fx("iexc", "Corrente de medição", "A", "1m"),
+                _fx("tmin", f"{_T} inicial", "°C", "-55"),
+                _fx("tmax", f"{_T} final", "°C", "150"),
+            ),
+            ("Resistência nos pontos da tabela do datasheet",),
+        ),
+        PeripheralBench(
+            "dht22",
+            "Sensores",
+            "Arduino Uno com a biblioteca DHT lendo o sensor a cada 0,5 s; DATA no pino 2 com "
+            "pull-up.",
+            _dht22,
+            ("temp", "rh"),
+            (
+                _fx("temp", "Temperatura do ar", "°C", "23.47"),
+                _fx("rh", "Umidade relativa", "%", "61.23"),
+                _fx("vsup", "Alimentação do sensor", "V", "5"),
+                _fx("rpull", "Pull-up em DATA (0 = sem)", "Ω", "10k"),
+                _fx("tstop", "Duração do ensaio", "s", "5"),
+            ),
+            ("Resposta", "Leituras a cada 2 s", "Temperatura e umidade lidas", "Duração do quadro"),
+            seconds=8,
+        ),
+        PeripheralBench(
+            "ds18b20",
+            "Sensores",
+            "Arduino Uno com OneWire e DallasTemperature; DQ no pino 2 com pull-up.",
+            _ds18b20,
+            ("temp",),
+            (
+                _fx("temp", "Temperatura", "°C", "25.3"),
+                _fx("vsup", "Alimentação do sensor", "V", "5"),
+                _fx("rpull", "Pull-up em DQ (0 = sem)", "Ω", "4.7k"),
+            ),
+            (
+                "Sensores no barramento",
+                "Temperatura lida",
+                "Índice sem sensor",
+                "Tempo de conversão",
+            ),
+            seconds=8,
+        ),
+        PeripheralBench(
+            "bme280",
+            "Sensores",
+            "Arduino Uno com a biblioteca Adafruit_BME280 no I2C (A4/A5) com pull-ups.",
+            _bme280,
+            ("temp", "rh", "p"),
+            (
+                _fx("temp", "Temperatura", "°C", "21.5"),
+                _fx("rh", "Umidade relativa", "%", "45"),
+                _fx("p", "Pressão", "hPa", "1013.25"),
+                _fx("vsup", "Alimentação do sensor (VDD)", "V", "3.3"),
+                _fx("rpull", "Pull-ups em SDA e SCL (0 = sem)", "Ω", "4.7k"),
+            ),
+            ("Endereço certo e errado", "Temperatura, pressão e umidade lidas"),
+            seconds=4,
         ),
         PeripheralBench(
             "relay",
@@ -3116,6 +3572,25 @@ BENCHES: dict[str, PeripheralBench] = {
         ),
         PeripheralBench(
             "arduino_mega",
+            "Placas e controladores",
+            "Programa de ensaio: ADC e entrada digital numa rampa, saída digital e PWM com carga.",
+            _mcu,
+            (),
+            (
+                _fx("rl_dig", "Carga na saída digital", "Ω", "220"),
+                _fx("rl_pwm", "Carga na saída PWM", "Ω", "1k"),
+                _fx("duty", "analogWrite (0 a 255)", "", "128"),
+            ),
+            (
+                "Resolução e leitura do ADC",
+                "Limiares da entrada",
+                "Saída alta com carga",
+                "PWM: média e frequência",
+            ),
+            seconds=10,
+        ),
+        PeripheralBench(
+            "rpi_pico",
             "Placas e controladores",
             "Programa de ensaio: ADC e entrada digital numa rampa, saída digital e PWM com carga.",
             _mcu,

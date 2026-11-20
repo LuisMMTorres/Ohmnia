@@ -36,6 +36,16 @@ class ControllerSpec:
     warnings: list[str] = field(default_factory=list)
 
 
+@dataclass
+class SensorSpec:
+    """A digital sensor (DHT22, DS18B20, BME280) read by a board's library calls."""
+
+    ref: str
+    kind: str
+    params: dict[str, str]  # resolved values (symbol defaults or the catalogue part)
+    pins: dict[str, str]  # symbol pin -> node (lower case)
+
+
 class _DryHw:
     def __init__(self) -> None:
         self.outputs: set[int] = set()

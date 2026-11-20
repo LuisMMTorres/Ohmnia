@@ -12,6 +12,7 @@ notes:
 - 'Corrente em espera IDDS típ. 750 nA e máx. 1000 nA (até +70 °C; típ. 3 uA a +125 °C); corrente ativa IDD (conversão ou escrita na EEPROM, VDD = 5 V) típ. 1 mA e máx. 1,5 mA (p. 19). IS máx. transcrito é o valor ativo.'
 - 'Resolução programável de 9 a 12 bits (incrementos de 0,5 / 0,25 / 0,125 / 0,0625 °C); padrão 12 bits; conversão em até 750 ms a 12 bits (p. 1 e 3). Deriva: ±0,2 °C em 1000 h a +125 °C, VDD = 5,5 V (p. 19).'
 - 'Níveis lógicos do DQ (p. 19): VIL máx. 0,8 V; VIH mín. 2,2 V (alimentação local); corrente de sumidouro mín. 4,0 mA com VI/O = 0,4 V. Faixa absoluta de tensão em qualquer pino: -0,5 V a +6,0 V.'
+- 'Tempos de conversão por resolução (Rev 6, 19-7487, Tabela 2, p. 9, lida pela web em 2026-11-20 no link indicado pelo usuário, sem cópia local): 93,75 / 187,5 / 375 / 750 ms em 9 / 10 / 11 / 12 bits (tCONV/8, /4, /2 e tCONV). O modelo usa t_resp (750 ms, p. 1) e divide por 2 a cada bit a menos.'
 - 'Cada dispositivo tem código serial único de 64 bits; barramento 1-Wire; alarme com limites não voláteis TH e TL (p. 1).'
 datasheets:
 - id: ds1
@@ -29,59 +30,63 @@ parameters:
     max: 125
     unit: °C
     status: extraido
-    source: {page: 1, location: Features - Measures Temperatures, excerpt: "Measures Temperatures from -55°C to +125°C"}
+    source: {datasheet_id: ds1, page: 1, location: Features - Measures Temperatures, excerpt: "Measures Temperatures from -55°C to +125°C"}
   accuracy:
     max: 0.5
     unit: K
     status: extraido
-    source: {page: 19, location: DC electrical characteristics - Thermometer Error tERR, excerpt: "Thermometer Error tERR -10°C to +85°C ±0.5 °C"}
+    source: {datasheet_id: ds1, page: 19, location: DC electrical characteristics - Thermometer Error tERR, excerpt: "Thermometer Error tERR -10°C to +85°C ±0.5 °C"}
   accuracy@2:
     max: 2
     unit: K
     status: extraido
-    source: {page: 19, location: DC electrical characteristics - Thermometer Error tERR, excerpt: "Thermometer Error tERR -55°C to +125°C ±2 °C"}
+    source: {datasheet_id: ds1, page: 19, location: DC electrical characteristics - Thermometer Error tERR, excerpt: "Thermometer Error tERR -55°C to +125°C ±2 °C"}
   bits:
     min: 9
     max: 12
     unit: bit
     status: extraido
-    source: {page: 1, location: Features - Thermometer Resolution, excerpt: "Thermometer Resolution is User Selectable from 9 to 12 Bits"}
+    source: {datasheet_id: ds1, page: 1, location: Features - Thermometer Resolution, excerpt: "Thermometer Resolution is User Selectable from 9 to 12 Bits"}
   t_resp:
     max: 0.75
     unit: s
     status: extraido
-    source: {page: 1, location: Features - conversion time, excerpt: "Converts Temperature to 12-Bit Digital Word in 750ms (Max)"}
+    source: {datasheet_id: ds1, page: 1, location: Features - conversion time, excerpt: "Converts Temperature to 12-Bit Digital Word in 750ms (Max)"}
   VS:
     min: 3.0
     max: 5.5
     unit: V
     status: extraido
-    source: {page: 19, location: DC electrical characteristics - Supply Voltage VDD local power, excerpt: "Supply Voltage VDD Local Power +3.0 +5.5 V"}
+    source: {datasheet_id: ds1, page: 19, location: DC electrical characteristics - Supply Voltage VDD local power, excerpt: "Supply Voltage VDD Local Power +3.0 +5.5 V"}
   IS:
     typ: 1
     max: 1.5
     unit: mA
     conditions: {VDD: 5 V}
     status: extraido
-    source: {page: 19, location: DC electrical characteristics - Active Current IDD, excerpt: "Active Current IDD VDD = 5V 1 1.5 mA"}
+    source: {datasheet_id: ds1, page: 19, location: DC electrical characteristics - Active Current IDD, excerpt: "Active Current IDD VDD = 5V 1 1.5 mA"}
   Top:
     min: -55
     max: 125
     unit: °C
     status: extraido
-    source: {page: 19, location: Absolute maximum ratings - Operating Temperature Range, excerpt: "Operating Temperature Range -55°C to +125°C"}
+    source: {datasheet_id: ds1, page: 19, location: Absolute maximum ratings - Operating Temperature Range, excerpt: "Operating Temperature Range -55°C to +125°C"}
   Tstg:
     min: -55
     max: 125
     unit: °C
     status: extraido
-    source: {page: 19, location: Absolute maximum ratings - Storage Temperature Range, excerpt: "Storage Temperature Range -55°C to +125°C"}
+    source: {datasheet_id: ds1, page: 19, location: Absolute maximum ratings - Storage Temperature Range, excerpt: "Storage Temperature Range -55°C to +125°C"}
 attributes:
+  protocolo:
+    value: '1-Wire: reset tRSTL ≥ 480 us; presença tPDHIGH 15 a 60 us e tPDLOW 60 a 240 us; janela tSLOT 60 a 120 us; escrita 0 tLOW0 60 a 120 us, escrita 1 tLOW1 1 a 15 us; leitura válida em tRDV ≤ 15 us; resolução 0,5/0,25/0,125/0,0625 °C em 9/10/11/12 bits'
+    status: a_verificar
+    note: 'Lido pela web em 2026-11-20 no documento indicado pelo usuário (DS18B20 19-7487 Rev 6 (7/19), https://www.analog.com/media/en/technical-documentation/data-sheets/ds18b20.pdf), p. 3, AC electrical characteristics - 1-Wire interface; o PDF não pôde ser baixado (sem hash), por isso fica a verificar.'
   elemento:
     value: CI termômetro digital
     status: extraido
-    source: {page: 1, location: Description, excerpt: "The DS18B20 digital thermometer provides 9-bit to 12-bit Celsius temperature measurements"}
+    source: {datasheet_id: ds1, page: 1, location: Description, excerpt: "The DS18B20 digital thermometer provides 9-bit to 12-bit Celsius temperature measurements"}
   saida:
     value: 'Digital 1-Wire (pino DQ, dreno aberto)'
     status: extraido
-    source: {page: 2, location: Pin description - DQ, excerpt: "DQ Data Input/Output. Open-drain 1-Wire interface pin."}
+    source: {datasheet_id: ds1, page: 2, location: Pin description - DQ, excerpt: "DQ Data Input/Output. Open-drain 1-Wire interface pin."}

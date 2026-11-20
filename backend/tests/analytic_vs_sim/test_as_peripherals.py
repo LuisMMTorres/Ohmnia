@@ -63,14 +63,24 @@ def test_as_per_01_default_bench(backend, kind):
         ("pressure", {"pmax": "100", "voff": "0.5", "vfs": "4.5"}, {}),
         ("ultrasonic", {}, {"dists": "0.02 3.9 4.5", "tair": "0"}),
         ("arduino_mega", {}, {"duty": "200"}),
+        ("lm35", {"voff": "0.5"}, {"tmin": "-40", "tmax": "125"}),  # TMP36 offset
+        ("kty81", {"r25": "2k"}, {"tmin": "0", "tmax": "100"}),
+        ("dht22", {}, {"temp": "-12.34", "rh": "5"}),  # negative temperature (sign bit)
+        ("dht22", {}, {"vsup": "3"}),  # below 3,3 V: no answer
+        ("ds18b20", {"bits": "9"}, {"temp": "-10.2"}),
+        ("ds18b20", {}, {"rpull": "0"}),  # no pull-up on DQ: −127
+        ("bme280", {}, {"rpull": "0"}),  # no pull-ups on SDA/SCL: begin() fails
+        ("bme280", {"addr": "0x77 (SDO em VDDIO)"}, {"p": "1200"}),  # clamped to 1100 hPa
     ],
 )
 def test_as_per_02_other_conditions(backend, kind, params, fixture):
     """AS-PER-02: benches away from the defaults (other parts, ranges and loads)."""
     res = run_peripheral(kind, params, fixture, None, backend)
     _ok(res)
-    if kind == "lm35":
+    if kind == "lm35" and "voff" not in params:
         assert "LM-SAT" in {t.id for t in res.tests}
+    if kind == "dht22" and fixture.get("vsup") == "3":
+        assert any("não responde" in w for w in res.warnings)
     if kind == "ultrasonic":  # 4,5 m is beyond the range: no echo
         assert res.tests[-1].measured.magnitude == 0
 
@@ -89,6 +99,12 @@ def test_as_per_02_other_conditions(backend, kind, params, fixture):
         ("hall_switch", "sensor/allegro-a3144.yaml", "bop", 21.0),
         ("pressure", "sensor/nxp-mpx5700dp.yaml", "pmax", 700.0),
         ("ultrasonic", "sensor/sparkfun-hc-sr04.yaml", "dmax", 4.0),
+        ("lm35", "sensor/analog-devices-tmp36gt9z.yaml", "voff", 0.5),
+        ("kty81", "sensor/nxp-kty81-110.yaml", "r25", 1000.0),
+        ("kty81", "sensor/nxp-kty81-210.yaml", "r25", 2000.0),
+        ("dht22", "sensor/aosong-dht22-am2302.yaml", "tsample", 2.0),
+        ("ds18b20", "sensor/analog-devices-ds18b20.yaml", "tconv12", 0.75),
+        ("bme280", "sensor/bosch-bme280.yaml", "pmax", 1100.0),
     ],
 )
 def test_as_per_03_catalogue_part(backend, kind, path, name, value):

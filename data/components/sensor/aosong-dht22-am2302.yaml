@@ -29,6 +29,23 @@ parameters:
     unit: '%'
     status: extraido
     source: {page: 2, location: 3 Technical Specification - Accuracy, excerpt: "humidity +-2%RH(Max +-5%RH)"}
+  resolution:
+    typ: 0.1
+    unit: '%'
+    status: extraido
+    source: {page: 2, location: 3 Technical Specification - Resolution or sensitivity, excerpt: "humidity 0.1%RH; temperature 0.1Celsius"}
+  T_resolution:
+    typ: 0.1
+    unit: K
+    status: extraido
+    source: {page: 2, location: 3 Technical Specification - Resolution or sensitivity, excerpt: "humidity 0.1%RH; temperature 0.1Celsius"}
+  t_sample:
+    min: 2
+    typ: 2
+    unit: s
+    status: extraido
+    note: 'p. 2: período médio de 2 s; p. 9: "Collecting period should be : >2 second."'
+    source: {page: 2, location: 3 Technical Specification - Sensing period, excerpt: "Sensing period Average: 2s"}
   T_range:
     min: -40
     max: 80
@@ -53,6 +70,10 @@ parameters:
     status: extraido
     source: {page: 2, location: 3 Technical Specification - Operating range, excerpt: "temperature -40~80Celsius"}
 attributes:
+  protocolo:
+    value: 'Barramento único: início do hospedeiro em nível baixo por pelo menos 1 ms; resposta do sensor 80 us baixo e 80 us alto; 40 bits, cada um com 50 us baixo e 26 a 28 us alto (0) ou 70 us alto (1)'
+    status: extraido
+    source: {page: 6, location: '7 Electrical connection / single-bus communication (p. 6 a 9)', excerpt: "Host ... pull low data-bus ... at least 1ms"}
   saida:
     value: Digital, barramento único (single-bus)
     status: extraido

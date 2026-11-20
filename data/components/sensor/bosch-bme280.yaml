@@ -26,57 +26,74 @@ parameters:
     max: 100
     unit: '%'
     status: extraido
-    source: {page: 9, location: Table 2 - Operating range RH, excerpt: "Operating range RH 0 ... 100 %RH"}
+    source: {datasheet_id: ds1, page: 9, location: Table 2 - Operating range RH, excerpt: "Operating range RH 0 ... 100 %RH"}
   accuracy:
     max: 3
     unit: '%'
     conditions: {T: 25 °C}
     status: extraido
-    source: {page: 9, location: Table 2 - Absolute accuracy tolerance AH (20 a 80 %RH), excerpt: "Absolute accuracy tolerance AH 20...80 %RH, 25 °C, including hysteresis ±3 %RH"}
+    source: {datasheet_id: ds1, page: 9, location: Table 2 - Absolute accuracy tolerance AH (20 a 80 %RH), excerpt: "Absolute accuracy tolerance AH 20...80 %RH, 25 °C, including hysteresis ±3 %RH"}
+  p_range:
+    min: 300
+    max: 1100
+    unit: hPa
+    status: extraido
+    source: {datasheet_id: ds1, page: 2, location: Key features - operating range, excerpt: "-40…+85 °C, 0…100 % rel. humidity, 300…1100 hPa"}
+  p_accuracy:
+    max: 1.0
+    unit: hPa
+    conditions: {T: 25 °C}
+    status: extraido
+    note: 'Exatidão absoluta de ±1,0 hPa de 300 a 1100 hPa e de 0 a 65 °C (ver notas); condição registrada como 25 °C, dentro da faixa.'
+    source: {datasheet_id: ds1, page: 11, location: Table 3 - Absolute accuracy pressure}
   T_range:
     min: -40
     max: 85
     unit: °C
     status: extraido
-    source: {page: 11, location: Table 4 - Temperature operating range, excerpt: "Operating range T Operational -40 25 85 °C"}
+    source: {datasheet_id: ds1, page: 11, location: Table 4 - Temperature operating range, excerpt: "Operating range T Operational -40 25 85 °C"}
   T_accuracy:
     max: 0.5
     unit: K
     conditions: {T: 25 °C}
     status: extraido
-    source: {page: 11, location: Table 4 - Absolute accuracy temperature AT,25, excerpt: "AT,25 25 °C ±0.5 °C"}
+    source: {datasheet_id: ds1, page: 11, location: Table 4 - Absolute accuracy temperature AT,25, excerpt: "AT,25 25 °C ±0.5 °C"}
   t_resp:
     typ: 1
     unit: s
     conditions: {T: 25 °C}
     status: extraido
-    source: {page: 9, location: Table 2 - Response time tau63%, excerpt: "Response time to complete 63% of step ... 25°C 1"}
+    source: {datasheet_id: ds1, page: 9, location: Table 2 - Response time tau63%, excerpt: "Response time to complete 63% of step ... 25°C 1"}
   VS:
     min: 1.71
     typ: 1.8
     max: 3.6
     unit: V
     status: extraido
-    source: {page: 8, location: Table 1 - Supply voltage internal domains VDD, excerpt: "VDD ripple max. 50 mVpp 1.71 1.8 3.6 V"}
+    source: {datasheet_id: ds1, page: 8, location: Table 1 - Supply voltage internal domains VDD, excerpt: "VDD ripple max. 50 mVpp 1.71 1.8 3.6 V"}
   IS:
     typ: 0.0036
     unit: mA
     status: extraido
-    source: {page: 2, location: Key features - current consumption, excerpt: "3.6 µA @ 1 Hz humidity, pressure and temperature"}
+    source: {datasheet_id: ds1, page: 2, location: Key features - current consumption, excerpt: "3.6 µA @ 1 Hz humidity, pressure and temperature"}
   Top:
     min: -40
     max: 85
     unit: °C
     status: extraido
-    source: {page: 2, location: Key features - operating range, excerpt: "-40…+85 °C, 0…100 % rel. humidity, 300…1100 hPa"}
+    source: {datasheet_id: ds1, page: 2, location: Key features - operating range, excerpt: "-40…+85 °C, 0…100 % rel. humidity, 300…1100 hPa"}
   Tstg:
     min: -45
     max: 85
     unit: °C
     status: extraido
-    source: {page: 13, location: Table 5 - Storage temperature, excerpt: "Storage temperature ≤ 65% RH -45 +85 °C"}
+    source: {datasheet_id: ds1, page: 13, location: Table 5 - Storage temperature, excerpt: "Storage temperature ≤ 65% RH -45 +85 °C"}
 attributes:
+  endereco_i2c:
+    value: '0x76 com SDO em GND; 0x77 com SDO em VDDIO; registrador chip_id (0xD0) = 0x60'
+    status: a_verificar
+    note: 'Lido pela web em 2026-11-20 no documento indicado pelo usuário (BME280 BST-BME280-DS001-24 Revision 1.24 (fev. 2024), https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bme280-ds002.pdf), p. 33, 6.2 I2C interface - slave address; o PDF não pôde ser baixado (sem hash), por isso fica a verificar.'
   saida:
     value: Digital I2C ou SPI (3 e 4 fios)
     status: extraido
-    source: {page: 2, location: Key features - digital interface, excerpt: "I²C (up to 3.4 MHz) and SPI (3 and 4 wire, up to 10 MHz)"}
+    source: {datasheet_id: ds1, page: 2, location: Key features - digital interface, excerpt: "I²C (up to 3.4 MHz) and SPI (3 and 4 wire, up to 10 MHz)"}

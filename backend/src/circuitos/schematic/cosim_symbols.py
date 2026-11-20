@@ -51,7 +51,9 @@ _UNO_LEFT = [f"A{i}" for i in range(6)] + ["5V", "GND"]
 _UNO_RIGHT = [f"D{i}" for i in range(2, 14)]
 _NANO_LEFT = [f"A{i}" for i in range(8)] + ["5V", "GND"]
 _MEGA_LEFT = [f"A{i}" for i in range(16)] + ["5V", "GND"]
-_MEGA_RIGHT = [f"D{i}" for i in (*range(2, 14), *range(22, 30), 44, 45, 46)]
+_MEGA_RIGHT = [f"D{i}" for i in (*range(2, 14), 20, 21, *range(22, 30), 44, 45, 46)]
+_PICO_LEFT = ["GP26", "GP27", "GP28", "3V3", "GND"]
+_PICO_RIGHT = [f"GP{i}" for i in range(23)]
 _ESP_LEFT = [
     "3V3",
     "GND",
@@ -99,6 +101,21 @@ void loop() {
   delay(250);
 }
 """
+PICO_DEFAULT = """// Pisca o LED da placa (GP25) e lê GP26 (A0)
+void setup() {
+  pinMode(LED_BUILTIN, OUTPUT);
+  Serial.begin(115200);
+}
+
+void loop() {
+  digitalWrite(LED_BUILTIN, HIGH);
+  delay(100);
+  digitalWrite(LED_BUILTIN, LOW);
+  delay(100);
+  Serial.println(analogRead(A0));
+}
+"""
+
 ESP_DEFAULT = """// Lê a tensão em IO34 e escreve no DAC (IO25)
 void setup() {
   Serial.begin(115200);
@@ -185,7 +202,8 @@ COSIM_SYMBOLS: list[Symbol] = [
             *_CONTROLLER_COMMON,
         ),
         description="ATmega2560: ADC de 10 bits (0 a 5 V) em A0 a A15, PWM nos pinos 2 a 13 e "
-        "44 a 46, saída 5 V. O símbolo mostra os pinos digitais 2 a 13, 22 a 29 e 44 a 46.",
+        "44 a 46, saída 5 V, I2C em 20 (SDA) e 21 (SCL). O símbolo mostra os pinos digitais 2 a "
+        "13, 20 e 21, 22 a 29 e 44 a 46.",
         ref_prefix="U",
     ),
     Symbol(
@@ -200,6 +218,21 @@ COSIM_SYMBOLS: list[Symbol] = [
         ),
         description="Programa estilo Arduino (núcleo ESP32) co-simulado: ADC de 12 bits nos "
         "pinos 32 a 39, DAC de 8 bits em 25 e 26, PWM (analogWrite, ledcWrite), saída 3,3 V.",
+        ref_prefix="U",
+    ),
+    Symbol(
+        "rpi_pico",
+        "Raspberry Pi Pico",
+        "Controladores",
+        "X",
+        _box_pins(_PICO_LEFT, _PICO_RIGHT, 5),
+        (
+            ParamDef("program", "Programa (estilo Arduino)", "", PICO_DEFAULT, type="code"),
+            *_CONTROLLER_COMMON,
+        ),
+        description="RP2040 com programa estilo Arduino co-simulado: ADC de 12 bits (0 a 3,3 V) "
+        "em GP26 a GP28 (A0 a A2), PWM (analogWrite) em qualquer GP, saída 3,3 V, LED no GP25 e "
+        "I2C em GP4 (SDA) e GP5 (SCL). Limiares de entrada e resistência de saída didáticos.",
         ref_prefix="U",
     ),
     Symbol(
@@ -242,8 +275,17 @@ COSIM_SYMBOLS: list[Symbol] = [
                 "10m",
                 help="LM35 (Texas Instruments), p. 1: +10,0 mV/°C.",
             ),
+            ParamDef(
+                "voff",
+                "Tensão de offset (saída a 0 °C)",
+                "V",
+                "0",
+                help="LM35: 0 V. TMP36 (Analog Devices, TMP35/TMP36/TMP37 Rev. H, Tabela 4, p. 8): "
+                "0,5 V, com 750 mV a 25 °C.",
+            ),
         ),
-        description="Saída = sensibilidade × temperatura, limitada à alimentação menos 1,5 V.",
+        description="Saída = offset + sensibilidade × temperatura, limitada à alimentação menos "
+        "1,5 V (LM35 sem offset; TMP36 com 0,5 V).",
         ref_prefix="S",
     ),
     Symbol(
@@ -494,7 +536,10 @@ COSIM_SYMBOLS += SENSOR_SYMBOLS
 # A real part placed with the symbol takes these values from its record (rule 1: the values
 # come from the datasheet, with page); parameters without a value keep the symbol default.
 CATALOGUE_PARAMS: dict[str, tuple[tuple[str, ...], dict[str, tuple[str, str]]]] = {
-    "lm35": (("sensor.temperature",), {"sens": ("sensitivity", "V/K")}),
+    "lm35": (
+        ("sensor.temperature",),
+        {"sens": ("sensitivity", "V/K"), "voff": ("V_offset", "V")},
+    ),
     "pt100": (("sensor.temperature",), {"r0": ("R0", "ohm")}),
     "acs712": (
         ("sensor.current",),
@@ -509,6 +554,7 @@ CATALOGUE_PARAMS: dict[str, tuple[tuple[str, ...], dict[str, tuple[str, str]]]] 
     "esp32_devkitc": (("board.mcu",), {}),
     "arduino_nano": (("board.mcu",), {}),
     "arduino_mega": (("board.mcu",), {}),
+    "rpi_pico": (("board.mcu",), {}),
     "plc": (("plc",), {}),
     **DRIVE_CATALOGUE,
     **SENSOR_CATALOGUE,
@@ -568,6 +614,7 @@ CONTROLLER_KINDS = {
     "arduino_nano",
     "arduino_mega",
     "esp32_devkitc",
+    "rpi_pico",
     "plc",
     *DRIVER_KINDS,
 }
@@ -609,7 +656,7 @@ def emit_device(comp: Component, n: dict[str, str], v: Value) -> list[str]:
     if k == "lm35":
         t = stimulus(v("temp"))
         return [
-            f"B{x}_out {n['OUT']} {n['GND']} V = min(max(({v('sens')})*({t}), 0), "
+            f"B{x}_out {n['OUT']} {n['GND']} V = min(max(({v('voff')}) + ({v('sens')})*({t}), 0), "
             f"max(V({n['VS']},{n['GND']}) - 1.5, 0))",
             f"R{x}_q {n['VS']} {n['GND']} 50k",  # quiescent current about 60 µA at 3 V
         ]

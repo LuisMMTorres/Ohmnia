@@ -72,7 +72,7 @@ def run_cosim(
         if a.kind == "tran":
             a.params["tmax"] = format_value(step, 4)
     nl = build_netlist(sch2, records)
-    session = CoSession(nl.controllers)
+    session = CoSession(nl.controllers, nl.digital_sensors)
     progress(0.0, "co-simulando (programa e circuito)")
     res = backend.run(nl.text, progress, cosim=session)
     if session.errors:

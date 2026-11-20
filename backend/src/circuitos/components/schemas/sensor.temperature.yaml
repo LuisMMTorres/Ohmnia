@@ -24,10 +24,26 @@ parameters:
     unit: 1/K
     kind: characteristic
     description: Coeficiente α do RTD
+  V_offset:
+    unit: V
+    kind: characteristic
+    description: Tensão de saída a 0 °C (offset), sensor com saída em tensão
+  R25:
+    unit: ohm
+    kind: characteristic
+    description: Resistência a 25 °C (sensor resistivo de silício ou NTC encapsulado)
+  R:
+    unit: ohm
+    kind: characteristic
+    description: Resistência na temperatura indicada nas condições (tabela R × T)
   t_resp:
     unit: s
     kind: characteristic
     description: Tempo de resposta (t90 ou t63)
+  t_conv:
+    unit: s
+    kind: characteristic
+    description: Tempo de conversão na resolução indicada nas condições (saída digital)
   bits:
     unit: bit
     kind: characteristic
@@ -54,3 +70,4 @@ attributes:
   ligacao: Ligação (2, 3 ou 4 fios)
   grau_protecao: Grau de proteção (IP) declarado
   certificacoes: Certificações e aprovações (UL, CE, ATEX...)
+  protocolo: Protocolo e temporização da saída digital
