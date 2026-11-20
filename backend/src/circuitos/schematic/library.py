@@ -195,6 +195,82 @@ SYMBOLS: dict[str, Symbol] = {
             description="Dois indutores acoplados; pontos em p1 e s1; 1 GΩ entre p2 e s2",
             ref_prefix="T",
         ),
+        # transformers sized by their nameplate (Vp, Vs, S) -------------------------------
+        Symbol(
+            "transformer_1ph",
+            "Transformador monofásico",
+            "Transformadores",
+            "L",
+            (PinDef("p1", -2, -2), PinDef("p2", -2, 2), PinDef("s1", 2, -2), PinDef("s2", 2, 2)),
+            (
+                ParamDef("vp", "Tensão do primário (eficaz)", "V", "220"),
+                ParamDef("vs", "Tensão do secundário (eficaz)", "V", "12"),
+                ParamDef(
+                    "turns",
+                    "Relação de espiras Np/Ns (vazio: Vp/Vs)",
+                    "",
+                    "",
+                ),
+                ParamDef("sn", "Potência nominal", "VA", "50"),
+                ParamDef("freq", "Frequência", "Hz", "60"),
+                ParamDef("imag", "Corrente de magnetização (% de In)", "%", "5"),
+                ParamDef("rcu", "Perdas no cobre (% de Sn)", "%", "2"),
+            ),
+            description="Transformador definido pelos dados de placa: a relação de espiras sai "
+            "de Vp/Vs (ou é dada); a magnetização e as perdas no cobre são valores didáticos, "
+            "ajuste com os ensaios a vazio e de curto-circuito. Pontos em p1 e s1.",
+            ref_prefix="T",
+        ),
+        Symbol(
+            "transformer_3ph",
+            "Transformador trifásico",
+            "Transformadores",
+            "L",
+            (
+                PinDef("H1", -3, -3),
+                PinDef("H2", -3, -1),
+                PinDef("H3", -3, 1),
+                PinDef("H0", -3, 3),
+                PinDef("X1", 3, -3),
+                PinDef("X2", 3, -1),
+                PinDef("X3", 3, 1),
+                PinDef("X0", 3, 3),
+            ),
+            (
+                ParamDef("vp", "Tensão de linha do primário (eficaz)", "V", "380"),
+                ParamDef("vs", "Tensão de linha do secundário (eficaz)", "V", "220"),
+                ParamDef(
+                    "conn_p",
+                    "Ligação do primário",
+                    "",
+                    "D",
+                    type="choice",
+                    choices=("D", "Y"),
+                ),
+                ParamDef(
+                    "conn_s",
+                    "Ligação do secundário",
+                    "",
+                    "Y",
+                    type="choice",
+                    choices=("Y", "D"),
+                ),
+                ParamDef(
+                    "turns",
+                    "Relação de espiras por fase Np/Ns (vazio: das tensões)",
+                    "",
+                    "",
+                ),
+                ParamDef("sn", "Potência nominal (total)", "VA", "3k"),
+                ParamDef("freq", "Frequência", "Hz", "60"),
+                ParamDef("imag", "Corrente de magnetização (% de In)", "%", "5"),
+                ParamDef("rcu", "Perdas no cobre (% de Sn)", "%", "2"),
+            ),
+            description="Três colunas (uma por fase), primário H1-H3 e secundário X1-X3; H0 e "
+            "X0 são os neutros (só existem na ligação em estrela). D = triângulo, Y = estrela: "
+            "Dy dá Dyn11, Yd dá Yd1, Yy e Dd dão 0.",
+            ref_prefix="T",
+        ),
         # sources -------------------------------------------------------------------------
         *_sources("V", "V", "Fonte de tensão"),
         *_sources("I", "A", "Fonte de corrente"),
@@ -460,6 +536,53 @@ SYMBOLS: dict[str, Symbol] = {
             catalogue=("thyristor.triac",),
             description="TRIAC comportamental (o da bancada BD-TIR): porta referida a MT1",
         ),
+        # indicators: LEDs and incandescent lamps ------------------------------------------
+        Symbol(
+            "led",
+            "LED",
+            "LEDs e lâmpadas",
+            "X",
+            (PinDef("a", -2, 0), PinDef("k", 2, 0)),
+            (
+                ParamDef(
+                    "color",
+                    "Cor",
+                    "",
+                    "vermelho",
+                    type="choice",
+                    choices=("vermelho", "laranja", "amarelo", "verde", "azul", "branco"),
+                    help="Só muda a cor do brilho no desenho; a peça do catálogo define a cor",
+                ),
+                ParamDef("vf", "Tensão direta V_F", "V", "2", help="Genérico (didático)"),
+                ParamDef(
+                    "if_ref",
+                    "Corrente de referência do brilho",
+                    "A",
+                    "20m",
+                    help="Corrente em que o LED brilha 100 % (a de ensaio de V_F)",
+                ),
+                ParamDef("if_max", "Corrente máxima", "A", "30m", help="Acima dela: queima"),
+            ),
+            catalogue=("optoelectronic.led",),
+            description="LED de queda constante (V_F do datasheet); brilha conforme a corrente "
+            "simulada e avisa acima de I_F máxima",
+            ref_prefix="LED",
+        ),
+        Symbol(
+            "lamp",
+            "Lâmpada incandescente",
+            "LEDs e lâmpadas",
+            "R",
+            _two(),
+            (
+                ParamDef("vn", "Tensão nominal", "V", "12", help="Valor de placa"),
+                ParamDef("pn", "Potência nominal", "W", "5", help="Valor de placa"),
+            ),
+            catalogue=("lamp.incandescent",),
+            description="Filamento como resistência a quente R = V_n²/P_n; brilha conforme a "
+            "potência simulada (sem corrente de partida a frio)",
+            ref_prefix="LP",
+        ),
         # other ---------------------------------------------------------------------------
         Symbol(
             "subckt",
@@ -474,7 +597,7 @@ SYMBOLS: dict[str, Symbol] = {
             ),
             description="Instância de um .subckt (ex.: modelo do fabricante nas diretivas)",
         ),
-        Symbol("ground", "Terra", "Outros", "", (PinDef("g", 0, 0),)),
+        Symbol("ground", "Terra", "Fontes", "", (PinDef("g", 0, 0),)),
     ]
 }
 

@@ -306,3 +306,82 @@ def igbt(rec: ComponentRecord, ref: str, v0: float, with_diode: bool) -> PartMod
     )
     name = f"IG_{digest(f'{rec.part_number}|{v0}|{with_diode}')}"
     return PartModel(name, igbt_subckt(name, vth, v0, ron, with_diode, vf or 1.5), warn)
+
+
+# ------------------------------------------------------------------ LEDs and lamps (indicators)
+_LED_COLOURS = (
+    ("infraverm", "ir"),
+    ("infrared", "ir"),
+    ("vermelh", "vermelho"),
+    ("red", "vermelho"),
+    ("laranja", "laranja"),
+    ("orange", "laranja"),
+    ("amarel", "amarelo"),
+    ("yellow", "amarelo"),
+    ("verde", "verde"),
+    ("green", "verde"),
+    ("azul", "azul"),
+    ("blue", "azul"),
+    ("branc", "branco"),
+    ("white", "branco"),
+)
+
+
+def led_colour(rec: ComponentRecord) -> str | None:
+    """Colour of a catalogue LED from its ``cor`` attribute (None: not stated)."""
+    attr = rec.attributes.get("cor")
+    text = (attr.value if attr is not None else "").lower()
+    for key, colour in _LED_COLOURS:
+        if key in text:
+            return colour
+    return None
+
+
+@dataclass(frozen=True)
+class LedData:
+    vf: float  # V, forward drop of the constant-drop model
+    i_ref: float  # A, test current of V_F (100 % brightness)
+    i_max: float | None  # A, maximum DC forward current
+    colour: str | None
+
+
+def led_data(rec: ComponentRecord, ref: str) -> tuple[LedData, list[str]]:
+    """V_F (typical, else maximum) at its test current and I_F max., from the datasheet."""
+    p = rec.parameters.get("VF")
+    vf = _num(p, ("typ", "max"))
+    if p is None or vf is None:
+        raise ValueError(f"{ref}: {rec.part_number} sem VF no datasheet")
+    warn = review_warning(rec, ref)
+    if p.typ is None:
+        warn.append(f"{ref}: o datasheet não dá V_F típico; o modelo usa o máximo ({vf:.3g} V).")
+    cond = p.conditions.get("IF")
+    i_ref = float(cond.to_pint().m_as("A")) if cond is not None else None
+    i_max = _num(rec.parameters.get("IF"), ("max",))
+    if i_ref is None:
+        i_ref = i_max
+    if i_ref is None:
+        raise ValueError(f"{ref}: {rec.part_number} sem corrente de ensaio de VF nem IF máx.")
+    warn.append(
+        f"{ref}: LED de queda constante (V_F = {vf:.3g} V a {i_ref * 1e3:.3g} mA); "
+        "a resistência dinâmica não está no datasheet e não é modelada."
+    )
+    return LedData(vf, i_ref, i_max, led_colour(rec)), warn
+
+
+@dataclass(frozen=True)
+class LampData:
+    vn: float  # V
+    pn: float  # W
+
+    @property
+    def r_hot(self) -> float:
+        """Hot filament resistance at the rated point, R = V_n²/P_n (Ω)."""
+        return self.vn**2 / self.pn
+
+
+def lamp_data(rec: ComponentRecord, ref: str) -> tuple[LampData, list[str]]:
+    vn = _num(rec.parameters.get("V_nom"), ("typ", "max", "min"))
+    pn = _num(rec.parameters.get("P_nom"), ("typ", "max", "min"))
+    if vn is None or pn is None or pn <= 0:
+        raise ValueError(f"{ref}: {rec.part_number} sem tensão e potência nominais")
+    return LampData(vn, pn), review_warning(rec, ref)

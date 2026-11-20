@@ -18,6 +18,7 @@ from circuitos.schematic.importer import import_netlist
 from circuitos.schematic.library import ANALYSES, SYMBOLS
 from circuitos.schematic.model import Schematic
 from circuitos.schematic.netlist import Netlist, SchematicError
+from circuitos.schematic.parts import led_colour
 from circuitos.schematic.runs import SchematicPlan
 from circuitos.simulation.jobs import JobQueue
 from circuitos.simulation.results import SimulationRequest
@@ -50,6 +51,19 @@ class SpreadOut(BaseModel):
     source: str
 
 
+class IndicatorOut(BaseModel):
+    """LED or lamp: the current vector and the values that turn it into brightness."""
+
+    kind: str
+    vector: str
+    i_ref: float | None = None
+    i_max: float | None = None
+    colour: str | None = None
+    r: float | None = None
+    p_nom: float | None = None
+    v_nom: float | None = None
+
+
 class NetlistOut(BaseModel):
     netlist: str
     nets: dict[str, list[str]]
@@ -57,6 +71,7 @@ class NetlistOut(BaseModel):
     warnings: list[str]
     spreads: list[SpreadOut]
     steps: list[CalcStep]
+    indicators: dict[str, IndicatorOut] = {}
 
 
 class ImportIn(BaseModel):
@@ -75,6 +90,32 @@ class PartOut(BaseModel):
     category: str
     released: bool
     status: str
+    summary: str = ""  # short description for the palette (LED colour, lamp rating)
+    colour: str | None = None  # LED colour name (catalogue attribute)
+
+
+def _num(rec: ComponentRecord, key: str) -> float | None:
+    p = rec.parameters.get(key)
+    if p is None:
+        return None
+    return next((v for v in (p.typ, p.max, p.min) if v is not None), None)
+
+
+def _part_summary(rec: ComponentRecord) -> tuple[str, str | None]:
+    """Palette text of a LED (colour, package, V_F) or a lamp (rating and category)."""
+    if rec.category == "optoelectronic.led":
+        colour = led_colour(rec)
+        pkg = rec.package or ""
+        size = "3 mm" if "3 mm" in pkg else "5 mm" if "5 mm" in pkg else ""
+        vf = _num(rec, "VF")
+        bits = [colour or "", size, f"VF {vf:g} V".replace(".", ",") if vf else ""]
+        return " · ".join(b for b in bits if b), colour
+    if rec.category.startswith("lamp"):
+        vn, pn = _num(rec, "V_nom"), _num(rec, "P_nom")
+        cat = rec.attributes.get("categoria")
+        rating = f"{vn:g} V {pn:g} W".replace(".", ",") if vn and pn else ""
+        return " · ".join(b for b in (rating, cat.value if cat else "") if b), None
+    return "", None
 
 
 class SimulateOut(BaseModel):
@@ -115,6 +156,9 @@ def _netlist_out(nl: Netlist) -> NetlistOut:
             for ref, sp in sorted(nl.spreads.items())
         ],
         steps=nl.steps,
+        indicators={
+            ref: IndicatorOut(**dataclasses.asdict(ind)) for ref, ind in nl.indicators.items()
+        },
     )
 
 
@@ -151,6 +195,7 @@ def parts(request: Request, kind: str, text: str | None = None) -> list[PartOut]
     out: list[PartOut] = []
     for cat in sym.catalogue:
         for r in repo.search(category=cat, text=text):
+            summary, colour = _part_summary(r)
             out.append(
                 PartOut(
                     id=r.id,
@@ -159,6 +204,8 @@ def parts(request: Request, kind: str, text: str | None = None) -> list[PartOut]
                     category=r.category,
                     released=r.selectable,
                     status=r.review.status,
+                    summary=summary,
+                    colour=colour,
                 )
             )
     return out
