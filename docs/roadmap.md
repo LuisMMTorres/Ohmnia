@@ -209,7 +209,8 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 ## Análise de Projetos com grandezas da simulação — aguardando revisão (2026-11-20)
 
 - Seletor renomeado para "Circuito"; tensões de entrada indicadas como eficazes.
-- DM-RET1 parte da tensão eficaz do secundário e da potência da carga (sai a tensão média desejada).
+- DM-RET1, DM-RETC1 e DM-RET3 partem da tensão eficaz do secundário e da potência da carga (sai a
+  tensão média desejada).
 - Resultados medidos no ngspice: pico, médio e eficaz de tensões e correntes; S, P, Q, D, FP e cos φ₁.
 - Formas de onda de primário, secundário, carga e dispositivos, com linhas de médio/eficaz e ponto de
   pico; sondas por clique no esquemático (tensão no nó, diferencial, corrente, potência).

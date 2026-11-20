@@ -48,7 +48,7 @@ def test_design_flow(reviewed_catalogue):
     for kw in (
         dict(pulses=6),
         dict(pulses=6, controlled=False),
-        dict(pulses=12, Vo=QuantityModel(value=440, unit="V")),
+        dict(pulses=12, Vsec=QuantityModel(value=180, unit="V")),
     ):
         spec = Ret3Spec(**kw)
         res, _ = run(
@@ -58,7 +58,9 @@ def test_design_flow(reviewed_catalogue):
             repo.get,
             DeratingPolicy.from_preset("didatico"),
         )
-        assert res.summary["Vo"].value == pytest.approx(spec.Vo.value, rel=1e-3)
+        s = res.summary
+        assert s["P_out"].value == pytest.approx(spec.P.value, rel=1e-3)
+        assert s["Vll_m"].value == pytest.approx(spec.Vsec.value * 2**0.5, rel=1e-9)
         assert res.selection and res.selection[0].released
         ids = {s.id for s in res.steps}
         assert {"Vll_m", "mu", "dV_mu", "PF", "THD_i"} <= ids
@@ -68,4 +70,12 @@ def test_spec_validation():
     with pytest.raises(ValueError):
         Ret3Spec(alpha_nom=QuantityModel(value=100, unit="deg"))
     with pytest.raises(ValueError):
-        Ret3Spec(E=QuantityModel(value=300, unit="V"))
+        Ret3Spec(P=QuantityModel(value=0, unit="W"))
+    with pytest.raises(ValueError):  # E above the mean output
+        run(
+            Ret3Module(),
+            Ret3Spec(E=QuantityModel(value=300, unit="V")),
+            lambda c: [],
+            lambda i: None,
+            DeratingPolicy.from_preset("didatico"),
+        )

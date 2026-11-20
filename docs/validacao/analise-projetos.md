@@ -16,6 +16,19 @@ Pedido do usuário em 2026-11-20 (9 itens). Branch `claude/project-thread-kcwdpq
 | 8 | Retificadores (RET1, RETC1, RET3): tensão e corrente no primário (transformador ideal), no secundário, na carga e nos dispositivos (tensão anodo-catodo, corrente, tensão de porta). Em qualquer circuito, clicando no esquemático: tensão no nó, tensão nos terminais, tensão diferencial entre dois nós, corrente (por terminal, em transistores) e potência. |
 | 9 | Clicando em um componente: editar o valor (R, C, L) ou a descrição da fonte; trocar o modelo (peça do catálogo) dos dispositivos. Valores editados valem só para a simulação; o aviso diz que o cálculo analítico descreve o projeto original, e a comparação mostra a divergência (regra 4: não é escondida). |
 
+## Retificadores controlado e trifásico (pedido "continue", 2026-11-20)
+
+- **DM-RETC1**: entradas Vsec (eficaz), P da carga, L, E e α nominal. Vm = √2·Vsec; R é a
+  resistência que absorve P em α nominal no modelo exato por trechos (busca de raiz). Saíram
+  "Tensão média desejada" e "Resistência da carga" (R passa a resultado).
+- **DM-RET3**: entradas Vsec (linha, eficaz; cada ponte no de 12 pulsos), P da carga e E.
+  V_LL,m = √2·Vsec; como Vo = V₀ − kₓ·Io (forma fechada, Io constante), P = Vo·Io dá
+  kₓ·Io² − V₀·Io + P = 0 e vale a raiz menor (abaixo da potência máxima V₀²/4kₓ). Saíram
+  "Tensão média desejada" e "Corrente na carga".
+- A faixa de α para a variação da rede passa a manter a tensão média calculada em α nominal.
+- Potência acima do que o secundário entrega (por exemplo, meia onda controlada com carga RL,
+  que tem máximo) gera mensagem pedindo para aumentar Vsec ou reduzir P.
+
 ## Definições das potências
 
 Q é a potência reativa da fundamental e D a de distorção (decomposição de Budeanu), com
@@ -34,7 +47,6 @@ transformador real.
 
 ## Limitações
 
-- Itens 2, 3 e 5 só no DM-RET1. RETC1 e RET3 ainda partem da tensão média desejada em α nominal (podem receber o mesmo tratamento).
 - Os rótulos do desenho só ficam clicáveis quando o texto é o nome do componente (D1, C1, R…); os demais componentes estão na lista de botões abaixo do desenho. Nós não aparecem no desenho: a tensão diferencial usa a lista de nós.
 - Primário dos retificadores: transformador ideal (sem magnetização nem dispersão).
 - Projetos salvos com a especificação antiga do DM-RET1 abrem com os valores padrão de Vsec e P.

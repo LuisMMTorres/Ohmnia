@@ -25,7 +25,7 @@ def _summary(result: DesignResult, spec: BaseModel) -> dict[str, tuple[float, st
             out.setdefault(key, (v.value, v.unit))
     if isinstance(spec, Retc1Spec):
         out["L_load"] = (spec.L.to_pint().m_as("mH"), "mH")
-    if isinstance(spec, Ret1Spec) and "R_load" in result.summary:
+    if isinstance(spec, Ret1Spec | Retc1Spec) and "R_load" in result.summary:
         q = result.summary["R_load"]
         out["R"] = (q.value, q.unit)
     return out

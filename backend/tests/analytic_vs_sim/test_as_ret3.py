@@ -23,8 +23,8 @@ CASES = {
     "6p_controlado": dict(pulses=6),
     "6p_diodos": dict(pulses=6, controlled=False),
     "6p_sem_Ls": dict(pulses=6, Ls=QuantityModel(value=0, unit="mH")),
-    "3p_controlado": dict(pulses=3, Vo=QuantityModel(value=110, unit="V")),
-    "12p_controlado": dict(pulses=12, Vo=QuantityModel(value=440, unit="V")),
+    "3p_controlado": dict(pulses=3, P=QuantityModel(value=1500, unit="W")),
+    "12p_controlado": dict(pulses=12, Vsec=QuantityModel(value=180, unit="V")),
 }
 
 

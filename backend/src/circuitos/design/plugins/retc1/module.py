@@ -44,11 +44,11 @@ class Retc1Spec(BaseModel):
     topology: Topology = "ponte"
     freewheel: bool = False  # half wave only: freewheeling diode across the load
     Vin: QuantityModel = QuantityModel(value=127, unit="V")  # primary, RMS
+    Vsec: QuantityModel = QuantityModel(value=70, unit="V")  # secondary, RMS
     f: QuantityModel = QuantityModel(value=60, unit="Hz")
-    R: QuantityModel = QuantityModel(value=10, unit="ohm")
+    P: QuantityModel = QuantityModel(value=360, unit="W")  # active power of the load at α nom
     L: QuantityModel = QuantityModel(value=100, unit="mH")
     E: QuantityModel = QuantityModel(value=0, unit="V")
-    Vo: QuantityModel = QuantityModel(value=60, unit="V")  # mean load voltage at α nominal
     alpha_nom: QuantityModel = QuantityModel(value=30, unit="deg")
     vin_tol_pct: float = Field(default=10.0, ge=0, le=30)  # mains variation for the α range
     TA: QuantityModel = QuantityModel(value=40, unit="degC")
@@ -135,44 +135,75 @@ class Retc1Module:
         VD = devices[d_des].drop.m_as("V") if d_des else 0.0
         f = s.f.to_pint().m_as("Hz")
         w = 2 * math.pi * f
-        ld = m.Load(
-            R=s.R.to_pint().m_as("ohm"), L=s.L.to_pint().m_as("H"), E=s.E.to_pint().m_as("V")
-        )
-        Vo = s.Vo.to_pint().m_as("V")
         alpha = math.radians(s.alpha_nom.to_pint().m_as("deg"))
-        if Vo <= ld.E:
-            raise ValueError("Vo deve ser maior que a força contraeletromotriz E")
         drop = m.forward_drop(topo, VT, VD)
-
-        def vo_at(vm: float, a: float) -> float:
-            sol = m.solve(topo, vm, a, ld, f, VT, VD, s.freewheel)
-            return m.mean(m.waves(sol).vo) if sol.fired else ld.E
-
-        lo = (drop + ld.E) / max(math.sin(alpha), 1e-3) * 1.0001 + 1e-6
-        hi = lo + 20 * Vo + 100
-        if vo_at(hi, alpha) < Vo:
-            raise ValueError("Não há tensão de pico que produza Vo com esse α")
-        Vm = float(brentq(lambda v: vo_at(v, alpha) - Vo, lo, hi, xtol=1e-9))
-        sol = m.solve(topo, Vm, alpha, ld, f, VT, VD, s.freewheel)
-        wv = m.waves(sol)
-        load_inputs = {"R": s.R.to_pint(), "L": s.L.to_pint(), "E": s.E.to_pint()}
-        log.add(
+        L_load, E = s.L.to_pint().m_as("H"), s.E.to_pint().m_as("V")
+        P = s.P.to_pint().m_as("W")
+        if P <= 0 or s.Vsec.to_pint().m_as("V") <= 0:
+            raise ValueError("A tensão do secundário e a potência da carga devem ser positivas")
+        Vm = log.add(
             record(
                 "Vm",
-                "Tensão de pico do secundário para Vo em α nominal (modelo exato)",
+                "Tensão de pico do secundário",
+                r"V_m = \sqrt{2}\,V_{sec}",
+                output=Q_(math.sqrt(2) * s.Vsec.to_pint().m_as("V"), "V"),
+                inputs={"V_{sec}": s.Vsec.to_pint()},
+                assumptions=["tensão senoidal", "transformador ideal"],
+                reference=ref,
+            )
+        ).m_as("V")
+
+        def solution(r: float) -> m.Solution:
+            return m.solve(topo, Vm, alpha, m.Load(R=r, L=L_load, E=E), f, VT, VD, s.freewheel)
+
+        def load_power(r: float) -> float:
+            sol_r = solution(r)
+            if not sol_r.fired:
+                return 0.0
+            wr = m.waves(sol_r)
+            return float(np.mean(wr.vo * wr.io))
+
+        # R of the load that absorbs P (the power falls as R grows): bracket, then refine
+        r_hi = r_lo = max(Vm * Vm / (2 * P), 1e-3)
+        g_hi = g_lo = load_power(r_hi) - P
+        for _ in range(40):
+            if g_lo > 0:
+                break
+            r_lo /= 2
+            g_lo = load_power(r_lo) - P
+        for _ in range(40):
+            if g_hi < 0:
+                break
+            r_hi *= 2
+            g_hi = load_power(r_hi) - P
+        if not (g_lo > 0 > g_hi):
+            raise ValueError(
+                "Não há resistência de carga que absorva essa potência com essa tensão do "
+                "secundário, esse α e essa E: aumente V_sec ou reduza a potência"
+            )
+        R = float(brentq(lambda r: load_power(r) - P, r_lo, r_hi, rtol=1e-9))
+        ld = m.Load(R=R, L=L_load, E=E)
+        sol = solution(R)
+        wv = m.waves(sol)
+        log.add(
+            record(
+                "R_load",
+                "Resistência da carga que absorve a potência pedida em α nominal (modelo exato)",
                 r"\omega L\frac{di}{d\theta} + Ri = V_m\sin\theta - V_{quedas} - E;\quad "
-                r"\overline{v_o}(V_m, \alpha_{nom}) = V_o",
-                output=Q_(Vm, "V"),
+                r"\frac{1}{2\pi}\int_0^{2\pi} v_o\,i_o\,d\theta = P",
+                output=Q_(R, "ohm"),
                 inputs={
-                    "V_o": s.Vo.to_pint(),
+                    "V_m": Q_(Vm, "V"),
+                    "P": s.P.to_pint(),
                     r"\alpha_{nom}": s.alpha_nom.to_pint(),
                     "V_{quedas}": Q_(drop, "V"),
-                    **load_inputs,
+                    "L": s.L.to_pint(),
+                    "E": s.E.to_pint(),
                 },
                 assumptions=[
                     "tiristores e diodos como quedas constantes",
                     "fonte e transformador ideais (sem indutância de comutação)",
-                    "solução analítica por trechos; β e o regime periódico por busca de raiz",
+                    "solução analítica por trechos; β, regime periódico e R por busca de raiz",
                 ],
                 reference=ref,
             )
@@ -252,7 +283,7 @@ class Retc1Module:
                 "Corrente média na carga",
                 r"I_o = \frac{V_o - E}{R}",
                 output=Q_(io_avg, "A"),
-                inputs={"V_o": Q_(vo_avg, "V"), "E": s.E.to_pint(), "R": s.R.to_pint()},
+                inputs={"V_o": Q_(vo_avg, "V"), "E": s.E.to_pint(), "R": Q_(R, "ohm")},
                 assumptions=["a tensão média no indutor é nula em regime"],
                 reference=ref,
             )
@@ -280,8 +311,8 @@ class Retc1Module:
 
         # α range for the mains tolerance
         tol = s.vin_tol_pct / 100
-        a_high_v = self._alpha_for(topo, Vm * (1 + tol), Vo, ld, f, VT, VD, s.freewheel)
-        a_low_v = self._alpha_for(topo, Vm * (1 - tol), Vo, ld, f, VT, VD, s.freewheel)
+        a_high_v = self._alpha_for(topo, Vm * (1 + tol), vo_avg, ld, f, VT, VD, s.freewheel)
+        a_low_v = self._alpha_for(topo, Vm * (1 - tol), vo_avg, ld, f, VT, VD, s.freewheel)
         if a_low_v is None:
             warnings.append(
                 DesignWarning(
@@ -510,6 +541,7 @@ class Retc1Module:
         summary.update(
             {
                 "Vm": Q_(Vm, "V"),
+                "R_load": Q_(R, "ohm"),
                 "Vo": Q_(vo_avg, "V"),
                 "Vo_rms": Q_(vo_rms, "V"),
                 "Vo_ideal": Q_(v_ideal, "V"),
@@ -552,7 +584,7 @@ class Retc1Module:
             summary=summary,
             losses=losses,
             warnings=warnings,
-            convergence_keys=("Vm", "Vo"),
+            convergence_keys=("R_load", "Vo"),
             traces=traces,
         )
 
@@ -599,7 +631,7 @@ class Retc1Module:
         a = s.alpha_nom.to_pint().m_as("deg")
         ta = a / 360 * T
         tw = T / 72
-        R = s.R.to_pint().m_as("ohm")
+        R = summary["R_load"].to_pint().m_as("ohm")
         L = s.L.to_pint().m_as("H")
         E = s.E.to_pint().m_as("V")
 
