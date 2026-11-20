@@ -87,9 +87,9 @@ const EDIT_TOOLS: [Tool, string][] = [
   [{ kind: "select" }, "Selecionar"],
   [{ kind: "wire" }, "Fio (W)"],
   [{ kind: "label" }, "Rótulo de nó"],
-  [{ kind: "probe", probe: "v" }, "Ponta V"],
-  [{ kind: "probe", probe: "vdiff" }, "Ponta V diferencial"],
-  [{ kind: "probe", probe: "i" }, "Ponta I"],
+  [{ kind: "probe", probe: "v" }, "Ponteira V"],
+  [{ kind: "probe", probe: "vdiff" }, "Ponteira V diferencial"],
+  [{ kind: "probe", probe: "i" }, "Ponteira I"],
   [{ kind: "probe", probe: "p" }, "Potência"],
 ];
 
@@ -764,6 +764,31 @@ export function SchematicWorkspace({
                 </button>
                 <button
                   className="tool"
+                  title="Apaga todos os componentes, fios, rótulos e ponteiras do esquemático (Ctrl+Z desfaz)"
+                  disabled={!sch.components.length && !sch.wires.length && !sch.labels.length}
+                  onClick={() => {
+                    if (
+                      !window.confirm(
+                        "Limpar o circuito? Todos os componentes e fios serão apagados.",
+                      )
+                    )
+                      return;
+                    change({
+                      ...sch,
+                      components: [],
+                      wires: [],
+                      labels: [],
+                      probes: [],
+                      breadboard: null,
+                      bench_scope_connections: {},
+                    });
+                    setNotice("Circuito limpo (Ctrl+Z desfaz)");
+                  }}
+                >
+                  Limpar circuito
+                </button>
+                <button
+                  className="tool"
                   title="Ocupa a tela inteira com o circuito (Esc volta)"
                   onClick={() => {
                     const el = circuitRef.current;
@@ -982,9 +1007,9 @@ export function SchematicWorkspace({
                     Para inserir uma peça, use “Adicionar componente”.
                   </p>
                 )}
-                <h3>Pontas de prova</h3>
+                <h3>Ponteiras</h3>
                 {sch.probes.length === 0 && (
-                  <p className="small muted">Nenhuma. Use as ferramentas “Ponta”.</p>
+                  <p className="small muted">Nenhuma. Use as ferramentas “Ponteira”.</p>
                 )}
                 <ul className="probe-list">
                   {sch.probes.map((p) => (
