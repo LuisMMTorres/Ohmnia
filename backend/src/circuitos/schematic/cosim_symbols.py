@@ -49,6 +49,9 @@ def _box_pins(left: list[str], right: list[str], half: int = 4) -> tuple[PinDef,
 
 _UNO_LEFT = [f"A{i}" for i in range(6)] + ["5V", "GND"]
 _UNO_RIGHT = [f"D{i}" for i in range(2, 14)]
+_NANO_LEFT = [f"A{i}" for i in range(8)] + ["5V", "GND"]
+_MEGA_LEFT = [f"A{i}" for i in range(16)] + ["5V", "GND"]
+_MEGA_RIGHT = [f"D{i}" for i in (*range(2, 14), *range(22, 30), 44, 45, 46)]
 _ESP_LEFT = [
     "3V3",
     "GND",
@@ -154,6 +157,35 @@ COSIM_SYMBOLS: list[Symbol] = [
         ),
         description="Programa estilo Arduino co-simulado com o circuito: ADC de 10 bits (0 a "
         "5 V), PWM nos pinos 3, 5, 6, 9, 10 e 11, saída 5 V. O pino GND precisa estar ligado.",
+        ref_prefix="U",
+    ),
+    Symbol(
+        "arduino_nano",
+        "Arduino Nano",
+        "Controladores",
+        "X",
+        _box_pins(_NANO_LEFT, _UNO_RIGHT, 5),
+        (
+            ParamDef("program", "Programa (estilo Arduino)", "", UNO_DEFAULT, type="code"),
+            *_CONTROLLER_COMMON,
+        ),
+        description="O mesmo ATmega328P do Uno em formato DIP: ADC de 10 bits (0 a 5 V) em A0 a "
+        "A7 (A6 e A7 só analógicas), PWM nos pinos 3, 5, 6, 9, 10 e 11, saída 5 V. O pino GND "
+        "precisa estar ligado.",
+        ref_prefix="U",
+    ),
+    Symbol(
+        "arduino_mega",
+        "Arduino Mega 2560",
+        "Controladores",
+        "X",
+        _box_pins(_MEGA_LEFT, _MEGA_RIGHT, 5),
+        (
+            ParamDef("program", "Programa (estilo Arduino)", "", UNO_DEFAULT, type="code"),
+            *_CONTROLLER_COMMON,
+        ),
+        description="ATmega2560: ADC de 10 bits (0 a 5 V) em A0 a A15, PWM nos pinos 2 a 13 e "
+        "44 a 46, saída 5 V. O símbolo mostra os pinos digitais 2 a 13, 22 a 29 e 44 a 46.",
         ref_prefix="U",
     ),
     Symbol(
@@ -447,6 +479,17 @@ from circuitos.schematic.drive_symbols import (  # noqa: E402
 
 COSIM_SYMBOLS += DRIVE_SYMBOLS
 
+# Sensors of the catalogue modelled later (2026-11-20)
+from circuitos.schematic.sensor_symbols import (  # noqa: E402
+    SENSOR_CATALOGUE,
+    SENSOR_KINDS,
+    SENSOR_SYMBOLS,
+    emit_sensor,
+    special_value,
+)
+
+COSIM_SYMBOLS += SENSOR_SYMBOLS
+
 # Catalogue parts for the co-simulation symbols: symbol parameter <- (record symbol, unit).
 # A real part placed with the symbol takes these values from its record (rule 1: the values
 # come from the datasheet, with page); parameters without a value keep the symbol default.
@@ -464,8 +507,11 @@ CATALOGUE_PARAMS: dict[str, tuple[tuple[str, ...], dict[str, tuple[str, str]]]] 
     ),
     "arduino_uno": (("board.mcu",), {}),
     "esp32_devkitc": (("board.mcu",), {}),
+    "arduino_nano": (("board.mcu",), {}),
+    "arduino_mega": (("board.mcu",), {}),
     "plc": (("plc",), {}),
     **DRIVE_CATALOGUE,
+    **SENSOR_CATALOGUE,
 }
 COSIM_SYMBOLS[:] = [
     dataclasses.replace(sym, catalogue=CATALOGUE_PARAMS[sym.kind][0])
@@ -494,6 +540,9 @@ def catalogue_value(kind: str, record: ComponentRecord, fallback: Value) -> Valu
     mapping = CATALOGUE_PARAMS.get(kind, ((), {}))[1]
 
     def value(name: str) -> str:
+        special = special_value(kind, record, name) if kind in SENSOR_KINDS else None
+        if special is not None:
+            return special
         if kind == "stepper_motor" and name == "km":
             # torque constant from the holding torque, both phases at rated current
             t_hold, i_ph = _si(record, "T_hold", "N*m"), _si(record, "I_phase", "A")
@@ -514,7 +563,14 @@ def catalogue_value(kind: str, record: ComponentRecord, fallback: Value) -> Valu
 
 
 COSIM_KINDS = {s.kind for s in COSIM_SYMBOLS}
-CONTROLLER_KINDS = {"arduino_uno", "esp32_devkitc", "plc", *DRIVER_KINDS}
+CONTROLLER_KINDS = {
+    "arduino_uno",
+    "arduino_nano",
+    "arduino_mega",
+    "esp32_devkitc",
+    "plc",
+    *DRIVER_KINDS,
+}
 
 
 # ------------------------------------------------------------------------------ stimulus
@@ -659,4 +715,6 @@ def emit_device(comp: Component, n: dict[str, str], v: Value) -> list[str]:
         ]
     if k in DRIVE_KINDS:
         return emit_drive(comp, n, v, stimulus)
+    if k in SENSOR_KINDS:
+        return emit_sensor(comp, n, v, stimulus)
     raise ValueError(f"tipo {k} sem modelo")

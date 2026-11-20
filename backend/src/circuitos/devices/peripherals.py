@@ -22,6 +22,7 @@ import numpy as np
 import pint
 from numpy.typing import NDArray
 from scipy.linalg import expm
+from scipy.optimize import brentq
 
 from circuitos.components.models import ComponentRecord
 from circuitos.core.calc import BibRef, CalcStep, record
@@ -36,6 +37,8 @@ from circuitos.schematic.cosim_symbols import CATALOGUE_PARAMS, catalogue_value
 from circuitos.schematic.library import pin_defs, pin_positions, symbol
 from circuitos.schematic.model import Analysis, AnalysisKind, Component, NetLabel, Schematic
 from circuitos.schematic.runs import SchematicPlan
+from circuitos.schematic.sensor_symbols import SENSOR_KINDS, sound_speed
+from circuitos.schematic.sensor_symbols import part_applies as sensor_part_applies
 from circuitos.schematic.symbols_base import ParamDef
 from circuitos.schematic.values import parse_value
 from circuitos.simulation.results import Plot
@@ -100,6 +103,18 @@ ESP32 = BibRef(
 IEC61131 = BibRef(
     book="IEC 61131-2, Programmable controllers: equipment requirements and tests",
     chapter="entradas digitais tipo 1 (24 V CC)",
+)
+NTC_REF = BibRef(
+    book="Vishay NTCLE100E3 e TDK B57164 (datasheets do catálogo)",
+    chapter="equação β da resistência do termistor",
+)
+LDR_REF = BibRef(book="Token GL5528 (datasheet do catálogo)", chapter="R a 10 lux e coeficiente γ")
+HALL_REF = BibRef(book="Honeywell SS49E (datasheet do catálogo)", page="3")
+HALL_SW_REF = BibRef(book="Allegro A3144 (datasheet do catálogo)", page="3")
+PRESS_REF = BibRef(book="NXP MPX5700 (datasheet do catálogo)", page="1 e 2")
+SOUND_REF = BibRef(
+    book="Halliday, Resnick e Walker, Fundamentos de Física, vol. 2",
+    chapter="ondas sonoras: velocidade do som em gases",
 )
 MODEL = "Modelo comportamental do simulador (o mesmo do esquemático)."
 
@@ -2238,6 +2253,503 @@ def _plc(c: _Ctx) -> None:
     )
 
 
+# ---------------------------------------------------------- catalogue sensors (2026-11-20)
+
+
+def _ntc_r(r25: float, beta: float, t_c: float) -> float:
+    return r25 * math.exp(beta * (1 / (t_c + 273.15) - 1 / 298.15))
+
+
+def _ntc(c: _Ctx) -> None:
+    t0, t1, vs, rs = c.f("tmin"), c.f("tmax"), c.f("vs"), c.f("rs")
+    r25, beta, delta, tau = c.p("r25"), c.p("beta"), c.p("delta"), c.p("tau")
+    if t1 <= t0:
+        raise BenchError("A temperatura final deve ser maior que a inicial")
+    s = c.new("NTC R(T)")
+    c.add(s, "idc", "I1", {"p": "0", "n": "x"}, dc="1u")
+    # same β model with self-heating off (δ = 0), so R follows the ramp without thermal lag
+    c.add(
+        s,
+        "ntc",
+        "RT1",
+        {"1": "x", "2": "0"},
+        temp=f"0 {t0:g} 1 {t1:g}",
+        r25=f"{r25:.9g}",
+        beta=f"{beta:.9g}",
+        delta="0",
+        tau=f"{tau:.9g}",
+    )
+    tr = c.run(s, "R(T)", tstop="1", tmax="2m")
+    temp = t0 + (t1 - t0) * _time(tr)
+    r = _vec(tr, "v(x)") / 1e-6
+    c.curve(
+        "ntc",
+        "Resistência × temperatura (sem autoaquecimento)",
+        "Temperatura",
+        "°C",
+        temp,
+        [
+            ("R medida", "Ω", r),
+            ("Modelo β", "Ω", r25 * np.exp(beta * (1 / (temp + 273.15) - 1 / 298.15))),
+        ],
+    )
+    inp = {"R_25": _q(r25, "ohm"), "β": _q(beta, "K")}
+    tex = r"R(T) = R_{25}\,e^{\beta\,(1/T - 1/T_{25})}"
+    method = "R = V/I com 1 µA (autoaquecimento desligado nesta rampa)."
+    for tm in sorted({min(max(25.0, t0), t1), t0, t1}):
+        c.check(
+            f"NTC-R{tm:g}",
+            f"Resistência a {tm:g} °C",
+            float(np.interp(tm, temp, r)),
+            _ntc_r(r25, beta, tm),
+            "ohm",
+            0.2,
+            method,
+            tex,
+            inp | {"T": _q(tm, "degC")},
+            NTC_REF,
+        )
+    if t0 <= 25 and t1 >= 85:
+        rr = float(np.interp(25.0, temp, r)) / float(np.interp(85.0, temp, r))
+        c.check(
+            "NTC-BETA",
+            "Constante β medida entre 25 e 85 °C",
+            math.log(rr) / (1 / 298.15 - 1 / 358.15),
+            beta,
+            "K",
+            0.2,
+            "β = ln(R25/R85)/(1/T25 − 1/T85) com as resistências medidas.",
+            r"\beta = \frac{\ln(R_{25}/R_{85})}{1/T_{25} - 1/T_{85}}",
+            inp,
+            NTC_REF,
+        )
+    if delta <= 0:
+        return
+    # self-heating: divider fed by vs, ambient at 25 °C
+    s2 = c.new("NTC autoaquecimento")
+    c.add(s2, "vpwl", "VS", {"p": "a", "n": "0"}, points=f"0 0 {tau / 1000:.6g} {vs:g}")
+    c.add(s2, "resistor", "RS", {"p": "a", "n": "x"}, value=f"{rs:g}")
+    c.add(s2, "ntc", "RT1", {"1": "x", "2": "0"}, dut=True, temp="25")
+    tstop = 8 * tau
+    tr2 = c.run(s2, "autoaquecimento", tstop=f"{tstop:.6g}", tmax=f"{tau / 200:.6g}")
+    t = _time(tr2)
+    body = _vec(tr2, "v(rt1_t)")
+
+    def balance(tb: float) -> float:
+        rt = _ntc_r(r25, beta, tb)
+        p = (vs / (rs + rt)) ** 2 * rt
+        return tb - 25 - p / delta
+
+    t_ss = float(brentq(balance, 25.0, 25.0 + vs * vs / (4 * min(rs, 1e9)) / delta + 1))
+    c.curve(
+        "ntc-auto",
+        f"Autoaquecimento com {vs:g} V e {rs:g} Ω em série",
+        "Tempo",
+        "s",
+        t,
+        [("Temperatura do corpo", "°C", body)],
+    )
+    inp2 = inp | {"δ": _q(delta, "W/K"), "V_S": _q(vs, "V"), "R_S": _q(rs, "ohm")}
+    c.check(
+        "NTC-AUTO",
+        "Elevação de temperatura por autoaquecimento (regime)",
+        float(body[-1]) - 25,
+        t_ss - 25,
+        "K",
+        1.0,
+        "Temperatura do corpo após 8 τ menos o ambiente (25 °C); esperado pela solução de "
+        "T = T_amb + P(T)/δ.",
+        r"T = T_{amb} + \frac{P(T)}{\delta},\ P = \frac{V_S^2\,R(T)}{(R_S + R(T))^2}",
+        inp2,
+        NTC_REF,
+    )
+    # thermal time constant: ambient step without power
+    s3 = c.new("NTC tau")
+    c.add(s3, "idc", "I1", {"p": "0", "n": "x"}, dc="1u")
+    c.add(
+        s3,
+        "ntc",
+        "RT1",
+        {"1": "x", "2": "0"},
+        dut=True,
+        temp=f"0 25 {tau / 10:.6g} 25 {tau / 10 + tau / 1e4:.6g} 50",
+    )
+    tr3 = c.run(s3, "constante de tempo", tstop=f"{6 * tau:.6g}", tmax=f"{tau / 500:.6g}")
+    t3 = _time(tr3)
+    b3 = _vec(tr3, "v(rt1_t)")
+    c.check(
+        "NTC-TAU",
+        "Constante de tempo térmica (degrau de 25 a 50 °C)",
+        crossing(t3, b3, 25 + 0.632 * 25) - tau / 10,
+        tau,
+        "s",
+        1.0,
+        "Do degrau do ambiente até o corpo subir 63,2 %.",
+        r"\tau = C_{th}/\delta",
+        {"τ": _q(tau, "s")},
+        NTC_REF,
+    )
+
+
+def _lux_profile(e0: float, e1: float, t0: float, t1: float, n: int = 60) -> str:
+    pts = ["0 0", f"{t0 * 0.999:.6g} 0"]
+    for k in range(n + 1):
+        f = k / n
+        pts.append(f"{t0 + (t1 - t0) * f:.6g} {e0 * (e1 / e0) ** f:.6g}")
+    return " ".join(pts)
+
+
+def _ldr(c: _Ctx) -> None:
+    vs, rf = c.f("vs"), c.f("rf")
+    e0, e1 = c.f("emin"), c.f("emax")
+    if not 0 < e0 < 10 < 100 < e1:
+        raise BenchError("Use iluminância inicial abaixo de 10 lx e final acima de 100 lx")
+    r10, gamma, rdark = c.p("r10"), c.p("gamma"), c.p("rdark")
+    s = c.new("LDR")
+    c.add(s, "vdc", "VS", {"p": "a", "n": "0"}, dc=f"{vs:g}")
+    c.add(s, "ldr", "LDR1", {"1": "a", "2": "x"}, dut=True, lux=_lux_profile(e0, e1, 0.1, 1.1))
+    c.add(s, "resistor", "RF", {"p": "x", "n": "0"}, value=f"{rf:g}")
+    tr = c.run(s, "R(E)", tstop="1.1", tmax="1m")
+    t = _time(tr)
+    vx = _vec(tr, "v(x)")
+    r = rf * (vs - vx) / np.maximum(vx, 1e-12)
+    lit = t >= 0.1
+    lux = e0 * (e1 / e0) ** ((t[lit] - 0.1) / 1.0)
+    model = np.minimum(r10 * (lux / 10) ** (-gamma), rdark)
+    c.curve(
+        "ldr",
+        "Resistência × iluminância",
+        "Iluminância",
+        "lx",
+        lux,
+        [("R medida", "Ω", r[lit]), ("Modelo", "Ω", model)],
+        x_log=True,
+    )
+    c.curve(
+        "ldr-v",
+        f"Tensão no resistor de {rf:g} Ω (divisor)",
+        "Iluminância",
+        "lx",
+        lux,
+        [("V(RF)", "V", vx[lit])],
+        x_log=True,
+    )
+    inp = {"R_10": _q(r10, "ohm"), "γ": _q(gamma, ""), "R_escuro": _q(rdark, "ohm")}
+    tex = r"R(E) = R_{10}\,(E/10\ \mathrm{lx})^{-\gamma}"
+    method = "R = R_F (V_S − V)/V no divisor, no instante da iluminância."
+    c.check(
+        "LDR-R10",
+        "Resistência com 10 lux",
+        float(np.interp(10.0, lux, r[lit])),
+        min(r10, rdark),
+        "ohm",
+        0.5,
+        method,
+        tex,
+        inp,
+        LDR_REF,
+    )
+    r_a, r_b = float(np.interp(10.0, lux, r[lit])), float(np.interp(100.0, lux, r[lit]))
+    c.check(
+        "LDR-GAMA",
+        "Coeficiente γ entre 10 e 100 lux",
+        math.log10(r_a / r_b),
+        gamma,
+        "",
+        0.5,
+        "γ = log(R10/R100) com as resistências medidas.",
+        r"\gamma = \log_{10}\frac{R_{10}}{R_{100}}",
+        inp,
+        LDR_REF,
+    )
+    c.check(
+        "LDR-ESCURO",
+        "Resistência no escuro",
+        float(r[t < 0.09][-1]),
+        rdark,
+        "ohm",
+        0.5,
+        "Divisor com iluminância nula (início do ensaio).",
+        r"R = R_{escuro}",
+        inp,
+        LDR_REF,
+    )
+    r100 = min(r10 * 10 ** (-gamma), rdark)
+    c.check(
+        "LDR-DIV",
+        "Tensão do divisor com 100 lux",
+        float(np.interp(100.0, lux, vx[lit])),
+        vs * rf / (rf + r100),
+        "V",
+        0.5,
+        "V(RF) no instante de 100 lx.",
+        r"V = V_S\,\frac{R_F}{R_F + R(E)}",
+        inp | {"R_F": _q(rf, "ohm")},
+        DIVIDER,
+    )
+
+
+def _hall_linear(c: _Ctx) -> None:
+    vs = c.f("vs")
+    sens, vq, brange = c.p("sens"), c.p("vq"), c.p("brange")
+    bmax = 1.5 * brange
+    s = c.new("Hall linear")
+    c.add(s, "vdc", "VS", {"p": "vs", "n": "0"}, dc=f"{vs:g}")
+    c.add(
+        s,
+        "hall_linear",
+        "S1",
+        {"VS": "vs", "GND": "0", "OUT": "out"},
+        dut=True,
+        b=f"0 {-bmax:g} 1 {bmax:g}",
+    )
+    tr = c.run(s, "transferência", tstop="1", tmax="2m")
+    b = -bmax + 2 * bmax * _time(tr)
+    vout = _vec(tr, "v(out)")
+    bc = np.clip(b, -brange, brange)
+    c.curve(
+        "hall",
+        "Tensão de saída × densidade de fluxo",
+        "B",
+        "mT",
+        b,
+        [("V(OUT)", "V", vout), ("Modelo", "V", np.clip(vq + sens * bc, 0, vs))],
+    )
+    inp = {"S": _q(sens, "V/mT"), "V_q": _q(vq, "V"), "B_faixa": _q(brange, "mT")}
+    c.check(
+        "HALL-VQ",
+        "Saída sem campo",
+        float(np.interp(0.0, b, vout)),
+        vq,
+        "V",
+        0.2,
+        "V(OUT) com B = 0.",
+        r"V_{OUT}(0) = V_q",
+        inp,
+        HALL_REF,
+    )
+    c.check(
+        "HALL-S",
+        "Sensibilidade",
+        _slope(b, vout, -0.5 * brange, 0.5 * brange),
+        sens,
+        "V/mT",
+        0.5,
+        "Regressão de V(OUT) × B em ±50 % da faixa linear.",
+        r"S = \frac{\Delta V_{OUT}}{\Delta B}",
+        inp,
+        HALL_REF,
+    )
+    c.check(
+        "HALL-SAT",
+        "Saída acima da faixa linear",
+        float(vout[-1]),
+        min(max(vq + sens * brange, 0), vs),
+        "V",
+        0.2,
+        f"V(OUT) com B = {bmax:g} mT.",
+        r"V_{OUT,max} = V_q + S\,B_{faixa}",
+        inp,
+        HALL_REF,
+    )
+
+
+def _hall_switch(c: _Ctx) -> None:
+    vs, rp = c.f("vs"), c.f("rpull")
+    bop, brel, vdrop = c.p("bop"), c.p("brel"), c.p("vdrop")
+    bmax = 1.5 * max(bop, brel, 1e-3)
+    s = c.new("Chave Hall")
+    c.add(s, "vdc", "VS", {"p": "vs", "n": "0"}, dc=f"{vs:g}")
+    c.add(
+        s,
+        "hall_switch",
+        "S1",
+        {"VS": "vs", "GND": "0", "OUT": "out"},
+        dut=True,
+        b=f"0 0 1 {bmax:g} 2 0",
+    )
+    c.add(s, "resistor", "RP", {"p": "vs", "n": "out"}, value=f"{rp:g}")
+    tr = c.run(s, "histerese", tstop="2", tmax="1m")
+    t = _time(tr)
+    b = bmax * np.where(t < 1, t, 2 - t)
+    vout = _vec(tr, "v(out)")
+    c.curve(
+        "hsw",
+        "Saída (pull-up) com B subindo e descendo",
+        "Tempo",
+        "s",
+        t,
+        [("V(OUT)", "V", vout), ("B / 10", "mT", b / 10)],
+    )
+    up = t <= 1
+    inp = {"B_op": _q(bop, "mT"), "B_rel": _q(brel, "mT")}
+    c.check(
+        "HSW-OP",
+        "Ponto de operação (saída liga)",
+        float(np.interp(crossing(t[up], -vout[up], -vs / 2), t, b)),
+        bop,
+        "mT",
+        0.5,
+        "B quando a saída cai a VS/2, na subida.",
+        r"B = B_{op}",
+        inp,
+        HALL_SW_REF,
+    )
+    c.check(
+        "HSW-REL",
+        "Ponto de liberação (saída abre)",
+        float(np.interp(crossing(t[~up], vout[~up], vs / 2), t, b)),
+        brel,
+        "mT",
+        0.5,
+        "B quando a saída volta a VS/2, na descida.",
+        r"B = B_{rel}",
+        inp,
+        HALL_SW_REF,
+    )
+    ron = vdrop / 20e-3
+    c.check(
+        "HSW-VOL",
+        f"Saída ligada com pull-up de {rp:g} Ω",
+        _at(tr, "v(out)", 1.0),
+        vs * ron / (ron + rp),
+        "V",
+        0.5,
+        "V(OUT) com o campo máximo.",
+        r"V_{OL} = V_S\,\frac{R_{on}}{R_{on} + R_P},\ R_{on} = V_{sat}/20\ \mathrm{mA}",
+        {"V_sat": _q(vdrop, "V"), "R_P": _q(rp, "ohm")},
+        HALL_SW_REF,
+    )
+
+
+def _pressure(c: _Ctx) -> None:
+    vs = c.f("vs")
+    pmax, voff, vfs = c.p("pmax"), c.p("voff"), c.p("vfs")
+    s = c.new("Pressão")
+    c.add(s, "vdc", "VS", {"p": "vs", "n": "0"}, dc=f"{vs:g}")
+    c.add(
+        s, "pressure", "PT1", {"VS": "vs", "GND": "0", "OUT": "out"}, dut=True, p=f"0 0 1 {pmax:g}"
+    )
+    tr = c.run(s, "transferência", tstop="1", tmax="2m")
+    p = pmax * _time(tr)
+    vout = _vec(tr, "v(out)")
+    c.curve("press", "Tensão de saída × pressão", "Pressão", "kPa", p, [("V(OUT)", "V", vout)])
+    inp = {"p_FE": _q(pmax, "kPa"), "V_off": _q(voff, "V"), "V_FE": _q(vfs, "V")}
+    tex = r"V = V_{off} + (V_{FE} - V_{off})\,\frac{p}{p_{FE}}"
+    c.check(
+        "P-OFF",
+        "Saída em 0 kPa",
+        float(vout[0]),
+        voff,
+        "V",
+        0.2,
+        "V(OUT) no início.",
+        tex,
+        inp,
+        PRESS_REF,
+    )
+    c.check(
+        "P-FE",
+        "Saída no fundo de escala",
+        float(vout[-1]),
+        vfs,
+        "V",
+        0.2,
+        "V(OUT) no fim.",
+        tex,
+        inp,
+        PRESS_REF,
+    )
+    c.check(
+        "P-S",
+        "Sensibilidade",
+        _slope(p, vout, 0.1 * pmax, 0.9 * pmax),
+        (vfs - voff) / pmax,
+        "V/kPa",
+        0.5,
+        "Regressão de V(OUT) × p.",
+        r"S = \frac{V_{FE} - V_{off}}{p_{FE}}",
+        inp,
+        PRESS_REF,
+    )
+
+
+def _ultrasonic(c: _Ctx) -> None:
+    temp = c.f("tair")
+    try:
+        dists = [parse_value(x) for x in c.fixture_text["dists"].replace(";", " ").split()]
+    except ValueError as exc:
+        raise BenchError(f"Distâncias: {exc}") from exc
+    if not dists or len(dists) > 8:
+        raise BenchError("Informe de 1 a 8 distâncias")
+    dmin, dmax = c.p("dmin"), c.p("dmax")
+    cs = sound_speed(temp)
+    period = max(2 * max(dists) / cs + 2e-3, 5e-3)
+    t0 = 1e-3
+    trig = ["0 0"]
+    dist = []
+    for k, d in enumerate(dists):
+        a = t0 + k * period
+        trig += [
+            f"{a:.6g} 0",
+            f"{a + 1e-7:.6g} 5",
+            f"{a + 10e-6:.6g} 5",
+            f"{a + 10e-6 + 1e-7:.6g} 0",
+        ]
+        # each distance holds from just before its trigger to just before the next one
+        lo = 0.0 if k == 0 else a - 1e-4
+        dist += [f"{lo:.9g} {d:.6g}", f"{a + period - 1e-4 - 1e-6:.9g} {d:.6g}"]
+    tstop = t0 + len(dists) * period
+    s = c.new("Ultrassônico")
+    c.add(s, "vdc", "VCC", {"p": "vcc", "n": "0"}, dc="5")
+    c.add(s, "vpwl", "VT", {"p": "trig", "n": "0"}, points=" ".join(trig))
+    c.add(
+        s,
+        "ultrasonic",
+        "US1",
+        {"VCC": "vcc", "GND": "0", "TRIG": "trig", "ECHO": "echo"},
+        dut=True,
+        dist=" ".join(dist) if len(dists) > 1 else f"{dists[0]:g}",
+        temp=f"{temp:g}",
+    )
+    c.add(s, "resistor", "RE", {"p": "echo", "n": "0"}, value="10k")
+    tr = c.run(s, "eco", tstop=f"{tstop:.6g}", tmax="2u")
+    t = _time(tr)
+    echo = _vec(tr, "v(echo)")
+    c.curve(
+        "us",
+        "TRIG e ECHO",
+        "Tempo",
+        "s",
+        t,
+        [("ECHO", "V", echo), ("TRIG", "V", _vec(tr, "v(trig)"))],
+    )
+    hi = echo > 2.5
+    rise = t[1:][hi[1:] & ~hi[:-1]]
+    fall = t[1:][~hi[1:] & hi[:-1]]
+    inp = {"T_ar": _q(temp, "degC"), "c": _q(cs, "m/s")}
+    for k, d in enumerate(dists):
+        a, b = t0 + k * period, t0 + (k + 1) * period
+        r = [x for x in rise if a < x < b]
+        f = [x for x in fall if a < x < b]
+        width = (f[0] - r[0]) if r and f else 0.0
+        inside = dmin <= d <= dmax
+        exp = 2 * d / cs if inside else 0.0
+        tol = 100 * 6e-6 / exp if exp else 1.0
+        c.check(
+            f"US-{k + 1}",
+            f"Largura do eco com {d:g} m" + ("" if inside else " (fora do alcance)"),
+            width,
+            exp,
+            "s",
+            tol,
+            "Largura do pulso em ECHO (nível > 2,5 V); passo de 2 µs.",
+            r"t_{eco} = \frac{2\,d}{c},\ c = 331{,}3\sqrt{1 + T/273{,}15}\ \mathrm{m/s}",
+            inp | {"d": _q(d, "m")},
+            SOUND_REF,
+        )
+
+
 # ------------------------------------------------------------------------------ registry
 
 
@@ -2343,6 +2855,76 @@ BENCHES: dict[str, PeripheralBench] = {
             ("pos",),
             (_fx("vin", "Tensão entre a e b", "V", "10"), _fx("rl", "Carga no cursor", "Ω", "10k")),
             ("Resistência total", "Divisor sem carga", "Efeito de carga"),
+        ),
+        PeripheralBench(
+            "ntc",
+            "Sensores",
+            "Rampa de temperatura com 1 µA; divisor com fonte (autoaquecimento); degrau do "
+            "ambiente.",
+            _ntc,
+            ("temp",),
+            (
+                _fx("tmin", f"{_T} inicial", "°C", "-20"),
+                _fx("tmax", f"{_T} final", "°C", "100"),
+                _fx("vs", "Fonte do divisor", "V", "5"),
+                _fx("rs", "Resistor em série", "Ω", "1k"),
+            ),
+            ("R(T) e β", "Autoaquecimento", "Constante de tempo"),
+            seconds=4,
+        ),
+        PeripheralBench(
+            "ldr",
+            "Sensores",
+            "Escuro e depois varredura logarítmica de iluminância; divisor com resistor fixo.",
+            _ldr,
+            ("lux",),
+            (
+                _fx("vs", "Fonte do divisor", "V", "5"),
+                _fx("rf", "Resistor fixo", "Ω", "10k"),
+                _fx("emin", "Iluminância inicial", "lx", "1"),
+                _fx("emax", "Iluminância final", "lx", "1000"),
+            ),
+            ("R com 10 lux", "Coeficiente γ", "Resistência no escuro", "Divisor"),
+        ),
+        PeripheralBench(
+            "hall_linear",
+            "Sensores",
+            "Rampa de campo de −1,5 a +1,5 vezes a faixa linear.",
+            _hall_linear,
+            ("b",),
+            (_fx("vs", "Alimentação VS", "V", "5"),),
+            ("Saída sem campo", "Sensibilidade", "Saturação"),
+        ),
+        PeripheralBench(
+            "hall_switch",
+            "Sensores",
+            "Campo subindo e descendo; saída com resistor de pull-up.",
+            _hall_switch,
+            ("b",),
+            (_fx("vs", "Alimentação VS", "V", "5"), _fx("rpull", "Pull-up", "Ω", "10k")),
+            ("Pontos de operação e liberação", "Saída ligada"),
+        ),
+        PeripheralBench(
+            "pressure",
+            "Sensores",
+            "Rampa de pressão de 0 ao fundo de escala.",
+            _pressure,
+            ("p",),
+            (_fx("vs", "Alimentação VS", "V", "5"),),
+            ("Saída em 0 e no fundo de escala", "Sensibilidade"),
+        ),
+        PeripheralBench(
+            "ultrasonic",
+            "Sensores",
+            "Um pulso de 10 µs em TRIG para cada distância; mede a largura do eco.",
+            _ultrasonic,
+            ("dist", "temp"),
+            (
+                _fx("dists", "Distâncias (m, separadas por espaço)", "", "0.1 0.5 1 2 5"),
+                _fx("tair", "Temperatura do ar", "°C", "20"),
+            ),
+            ("Largura do eco para cada distância", "Sem eco fora do alcance"),
+            seconds=5,
         ),
         PeripheralBench(
             "relay",
@@ -2514,6 +3096,44 @@ BENCHES: dict[str, PeripheralBench] = {
             seconds=10,
         ),
         PeripheralBench(
+            "arduino_nano",
+            "Placas e controladores",
+            "Programa de ensaio: ADC e entrada digital numa rampa, saída digital e PWM com carga.",
+            _mcu,
+            (),
+            (
+                _fx("rl_dig", "Carga na saída digital", "Ω", "220"),
+                _fx("rl_pwm", "Carga na saída PWM", "Ω", "1k"),
+                _fx("duty", "analogWrite (0 a 255)", "", "128"),
+            ),
+            (
+                "Resolução e leitura do ADC",
+                "Limiares da entrada",
+                "Saída alta com carga",
+                "PWM: média e frequência",
+            ),
+            seconds=10,
+        ),
+        PeripheralBench(
+            "arduino_mega",
+            "Placas e controladores",
+            "Programa de ensaio: ADC e entrada digital numa rampa, saída digital e PWM com carga.",
+            _mcu,
+            (),
+            (
+                _fx("rl_dig", "Carga na saída digital", "Ω", "220"),
+                _fx("rl_pwm", "Carga na saída PWM", "Ω", "1k"),
+                _fx("duty", "analogWrite (0 a 255)", "", "128"),
+            ),
+            (
+                "Resolução e leitura do ADC",
+                "Limiares da entrada",
+                "Saída alta com carga",
+                "PWM: média e frequência",
+            ),
+            seconds=10,
+        ),
+        PeripheralBench(
             "esp32_devkitc",
             "Placas e controladores",
             "Programa de ensaio: ADC e entrada digital numa rampa, saída digital, PWM e DAC.",
@@ -2562,6 +3182,8 @@ def part_applies(kind: str, record_: ComponentRecord) -> bool:
     cats, mapping = CATALOGUE_PARAMS.get(kind, ((), {}))
     if not any(record_.category.startswith(c) for c in cats):
         return False
+    if kind in SENSOR_KINDS:
+        return sensor_part_applies(kind, record_)
     names = {target for target, _unit in mapping.values()}
     if kind == "stepper_motor":
         names |= {"T_hold"}

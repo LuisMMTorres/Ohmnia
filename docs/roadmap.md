@@ -233,4 +233,7 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
   CLP e driver de passo).
 - Ensaios no ngspice com o mesmo modelo do esquemático, comparados à equação de cada modelo
   (`AS-PER-01..03`); peças do catálogo dão os valores do datasheet quando o símbolo aceita.
+- Modelos novos (Simulador e bancada) para peças do catálogo que não tinham modelo: termistor NTC
+  (β, autoaquecimento e τ), LDR, sensor Hall linear, chave Hall, sensor de pressão, sensor
+  ultrassônico HC-SR04 (TRIG/ECHO) e as placas Arduino Nano e Mega. Total: 29 peças na bancada.
 - Detalhes e limitações: [validacao/bancada-perifericos.md](validacao/bancada-perifericos.md).

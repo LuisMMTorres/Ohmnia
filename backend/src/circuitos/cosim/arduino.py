@@ -47,6 +47,9 @@ class Board:
 
 
 _UNO_PINS = {f"D{n}": n for n in range(2, 14)} | {f"A{n}": 14 + n for n in range(6)}
+_NANO_PINS = {f"D{n}": n for n in range(2, 14)} | {f"A{n}": 14 + n for n in range(8)}
+MEGA_DIGITAL = (*range(2, 14), *range(22, 30), 44, 45, 46)
+_MEGA_PINS = {f"D{n}": n for n in MEGA_DIGITAL} | {f"A{n}": 54 + n for n in range(16)}
 _ESP_GPIO = (
     2,
     4,
@@ -92,6 +95,46 @@ BOARDS: dict[str, Board] = {
             "adc": "analogRead de 10 bits com referência de 5 V (referência da linguagem Arduino)",
             "didatico": "limiares de entrada (0,6/0,3 VDD), resistência de saída 25 Ω e pull-up "
             "de 35 kΩ: valores didáticos (o datasheet do ATmega328P não está na sua pasta)",
+        },
+    ),
+    "arduino_nano": Board(
+        kind="arduino_nano",
+        label="Arduino Nano",
+        vdd=5.0,
+        adc_bits=10,
+        adc_fs=5.0,
+        int_bits=16,
+        pins=_NANO_PINS,
+        analog=frozenset(range(14, 22)),
+        pwm={3: 490.0, 5: 980.0, 6: 980.0, 9: 490.0, 10: 490.0, 11: 490.0},
+        constants={f"A{n}": 14 + n for n in range(8)} | {"LED_BUILTIN": 13},
+        sources={
+            "vdd": "Arduino Nano (catálogo, p. 2): ATmega328P a 16 MHz, o mesmo do Uno, 5 V",
+            "pwm": "idem, p. 2: 8 entradas analógicas e 6 canais PWM (pinos 3, 5, 6, 9, 10, 11); "
+            "frequências de 490/980 Hz da referência da linguagem Arduino",
+            "adc": "analogRead de 10 bits com referência de 5 V (referência da linguagem Arduino)",
+            "didatico": "limiares de entrada (0,6/0,3 VDD), resistência de saída 25 Ω e pull-up "
+            "de 35 kΩ: os mesmos valores didáticos do Uno",
+        },
+    ),
+    "arduino_mega": Board(
+        kind="arduino_mega",
+        label="Arduino Mega 2560 Rev3",
+        vdd=5.0,
+        adc_bits=10,
+        adc_fs=5.0,
+        int_bits=16,
+        pins=_MEGA_PINS,
+        analog=frozenset(range(54, 70)),
+        pwm={n: (980.0 if n in (4, 13) else 490.0) for n in (*range(2, 14), 44, 45, 46)},
+        constants={f"A{n}": 54 + n for n in range(16)} | {"LED_BUILTIN": 13},
+        sources={
+            "vdd": "Arduino Mega 2560 Rev3 (catálogo, p. 2): ATmega2560 a 16 MHz, 5 V",
+            "pwm": "idem, p. 2: 16 entradas analógicas e 15 canais PWM (pinos 2 a 13 e 44 a 46); "
+            "490 Hz, 980 Hz nos pinos 4 e 13, pela referência da linguagem Arduino",
+            "adc": "analogRead de 10 bits com referência de 5 V (referência da linguagem Arduino)",
+            "didatico": "limiares de entrada (0,6/0,3 VDD), resistência de saída 25 Ω e pull-up "
+            "de 35 kΩ: os mesmos valores didáticos do Uno",
         },
     ),
     "esp32_devkitc": Board(

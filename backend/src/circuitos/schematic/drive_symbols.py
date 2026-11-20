@@ -322,8 +322,9 @@ def max_step(components: list[Component]) -> float | None:
     (about 200 µs) with AC machines and drives, whose sinusoids the default step would skip.
     """
     from circuitos.schematic.library import param
+    from circuitos.schematic.sensor_symbols import max_step as sensor_max_step
 
-    cap: float | None = None
+    cap: float | None = sensor_max_step(components)
     for c in components:
         if c.kind not in DRIVE_KINDS or c.kind in ("thermocouple", "stepper_motor", "contactor"):
             continue
