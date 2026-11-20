@@ -741,6 +741,62 @@ export interface OpampBenchOut {
   warnings: string[];
 }
 
+export interface PeripheralParam {
+  name: string;
+  label: string;
+  unit: string;
+  default: string;
+  type: string;
+  choices: string[];
+  help: string;
+}
+
+export interface PeripheralBenchInfo {
+  kind: string;
+  label: string;
+  group: string;
+  summary: string;
+  description: string;
+  tests: string[];
+  params: PeripheralParam[];
+  fixture: PeripheralParam[];
+  catalogue: string[];
+  seconds: number;
+}
+
+export interface PeripheralPart {
+  id: string;
+  part_number: string;
+  manufacturer: string;
+  status: string;
+}
+
+export interface PeripheralBenchIn {
+  params: Record<string, string>;
+  fixture: Record<string, string>;
+  component_id: string | null;
+}
+
+export interface PeripheralCurve {
+  id: string;
+  title: string;
+  x_label: string;
+  x_unit: string;
+  x: number[];
+  traces: { name: string; unit: string; values: (number | null)[] }[];
+  x_log: boolean;
+}
+
+export interface PeripheralBenchOut {
+  kind: string;
+  tests: BenchTestOut[];
+  curves: PeripheralCurve[];
+  steps: CalcStep[];
+  netlists: Record<string, string>;
+  warnings: string[];
+  used: Record<string, string>;
+}
+
 export const bench = {
   diode: (body: DiodeBenchIn) =>
     request<DiodeBenchOut>("/devices/diode/iv", { method: "POST", body: JSON.stringify(body) }),
@@ -761,6 +817,14 @@ export const bench = {
     }),
   opamp: (body: OpampBenchIn) =>
     request<OpampBenchOut>("/devices/opamp/bench", {
+      method: "POST",
+      body: JSON.stringify(body),
+    }),
+  peripherals: () => request<PeripheralBenchInfo[]>("/devices/peripherals"),
+  peripheralParts: (kind: string) =>
+    request<PeripheralPart[]>(`/devices/peripherals/${encodeURIComponent(kind)}/parts`),
+  peripheral: (kind: string, body: PeripheralBenchIn) =>
+    request<PeripheralBenchOut>(`/devices/peripherals/${encodeURIComponent(kind)}`, {
       method: "POST",
       body: JSON.stringify(body),
     }),

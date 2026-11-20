@@ -5,6 +5,7 @@ import { fitScale } from "../components/benchScale";
 import { OutsidePoints } from "../components/OutsidePoints";
 import { SignalPlot, Trace } from "../components/SignalPlot";
 import { OpampBench } from "./OpampBench";
+import { PeripheralBench } from "./PeripheralBench";
 import { PnBench } from "./PnBench";
 import { ThyristorBench } from "./ThyristorBench";
 import { BjtBench, IgbtBench, MosfetBench } from "./TransistorBench";
@@ -14,7 +15,16 @@ export function num(text: string): number {
   return Number(text.replace(",", "."));
 }
 
-type Device = "pn" | "diodo" | "zener" | "tbj" | "mosfet" | "igbt" | "tiristor" | "ampop";
+type Device =
+  | "pn"
+  | "diodo"
+  | "zener"
+  | "tbj"
+  | "mosfet"
+  | "igbt"
+  | "tiristor"
+  | "ampop"
+  | "periferico";
 
 export function BenchPage() {
   const [device, setDevice] = useState<Device>("diodo");
@@ -30,6 +40,7 @@ export function BenchPage() {
           ["igbt", "IGBT"],
           ["tiristor", "SCR e TRIAC"],
           ["ampop", "Ampop"],
+          ["periferico", "Sensores, atuadores e placas"],
         ] as const
       ).map(([id, label]) => (
         <button
@@ -49,6 +60,7 @@ export function BenchPage() {
   if (device === "igbt") return <IgbtBench selector={selector} />;
   if (device === "tiristor") return <ThyristorBench selector={selector} />;
   if (device === "ampop") return <OpampBench selector={selector} />;
+  if (device === "periferico") return <PeripheralBench selector={selector} />;
   return <DiodeBench selector={selector} />;
 }
 

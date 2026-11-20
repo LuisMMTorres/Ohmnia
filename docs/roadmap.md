@@ -225,3 +225,12 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 - Sentido de giro dos motores após a simulação; zoom de 50 a 250 % na protoboard e controles de zoom
   no esquemático; "fonte comportamental" renomeada para "fonte dependente".
 - Detalhes e limitações: [validacao/protoboard-realista.md](validacao/protoboard-realista.md).
+
+## Bancada de sensores, atuadores e placas — aguardando revisão (2026-11-20)
+
+- Nova aba "Sensores, atuadores e placas" na Análise de dispositivos (`BD-PER`), com as 21 peças da
+  biblioteca do simulador: 7 sensores, 10 atuadores e 4 placas/controladores (Arduino Uno, ESP32,
+  CLP e driver de passo).
+- Ensaios no ngspice com o mesmo modelo do esquemático, comparados à equação de cada modelo
+  (`AS-PER-01..03`); peças do catálogo dão os valores do datasheet quando o símbolo aceita.
+- Detalhes e limitações: [validacao/bancada-perifericos.md](validacao/bancada-perifericos.md).
