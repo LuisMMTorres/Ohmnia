@@ -162,7 +162,9 @@ def test_catalogue_files_are_valid_and_traceable():
         i.local.sha256 for i in load_queue() if i.local is not None and i.local.situacao == "ok"
     }
     for record in records:
-        assert record.datasheets and all(d.sha256 for d in record.datasheets)
+        # a PDF is identified by its hash; a manufacturer web page (no PDF) by its URL, and its
+        # values are checked against the quoted excerpt (test_web_values_in_excerpt)
+        assert record.datasheets and all(d.sha256 or d.url for d in record.datasheets)
         for d in record.datasheets:
             assert d.url or d.sha256 in local, (
                 record.part_number,
