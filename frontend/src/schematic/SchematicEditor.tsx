@@ -55,6 +55,8 @@ interface Props {
   motion?: Record<string, Motion>;
   /** Brightness of each LED and lamp after the last simulation. */
   glows?: Record<string, Glow>;
+  /** Parts that would burn in the last simulation, with the reason (tooltip). */
+  burnt?: Record<string, string>;
   /** Short message for the status line (e.g. result of a paste). */
   onNotice?: (text: string) => void;
 }
@@ -77,6 +79,7 @@ export function SchematicEditor({
   probeColors,
   motion,
   glows,
+  burnt,
   onNotice,
 }: Props) {
   const svgRef = useRef<SVGSVGElement>(null);
@@ -771,6 +774,27 @@ export function SchematicEditor({
                 >
                   <SymbolBody c={c} sym={sym} glow={glows?.[c.ref]} />
                 </g>
+                {burnt?.[c.ref] && c.id !== "ghost" && (
+                  <g className="burnt-mark" pointerEvents="none">
+                    <title>{burnt[c.ref]}</title>
+                    <circle
+                      cx={c.x * GRID}
+                      cy={c.y * GRID}
+                      r={1.7 * GRID}
+                      className="burnt-scorch"
+                    />
+                    {!glows?.[c.ref]?.burnt && (
+                      <text
+                        x={c.x * GRID}
+                        y={(c.y + 2.6) * GRID}
+                        textAnchor="middle"
+                        className="burnt-label"
+                      >
+                        QUEIMOU
+                      </text>
+                    )}
+                  </g>
+                )}
                 {!isGround && c.id !== "ghost" && (
                   <text
                     className="ref-text"

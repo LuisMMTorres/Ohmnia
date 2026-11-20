@@ -6,6 +6,7 @@ import {
   watchJob,
   api,
   breadboardApi,
+  type DamageOut,
   type Job,
   type NetlistOut,
   type PartOut,
@@ -40,6 +41,8 @@ import { BenchSupply } from "../breadboard/BenchSupply";
 import { nextRef } from "../schematic/geometry";
 import { autoWire } from "../schematic/editing";
 import { glowFrom, glowText } from "../schematic/indicators";
+import { damageByRef } from "../schematic/damage";
+import { DamageAlert } from "../schematic/DamageAlert";
 import type { Glow } from "../schematic/symbols";
 import { PackagePreview } from "../breadboard/PackageArt";
 import { ProgramEditor } from "../cosim/ProgramEditor";
@@ -147,6 +150,8 @@ export function SchematicWorkspace({
     lamp: [],
   });
   const [glows, setGlows] = useState<Record<string, Glow>>({});
+  const [damage, setDamage] = useState<DamageOut[]>([]);
+  const [damageClosed, setDamageClosed] = useState(false);
 
   const [showNodeNames, setShowNodeNames] = useState(false);
   const [nodeMap, setNodeMap] = useState<Record<string, string[]>>({});
@@ -270,6 +275,41 @@ export function SchematicWorkspace({
       cancelled = true;
     };
   }, [job, netlist]);
+  // parts that would burn: ratings exceeded in the last simulation
+  useEffect(() => {
+    setDamage([]);
+    setDamageClosed(false);
+    const limits = netlist?.limits ?? [];
+    if (!job || job.state !== "done" || !limits.length) return;
+    let cancelled = false;
+    schematicApi
+      .damage(job.id, limits)
+      .then((d) => {
+        if (!cancelled) setDamage(d);
+      })
+      .catch(() => setDamage([]));
+    return () => {
+      cancelled = true;
+    };
+  }, [job, netlist]);
+  const damaged = useMemo(
+    () =>
+      damageByRef(
+        damage,
+        glows,
+        (ref) => {
+          const ind = netlist?.indicators?.[ref];
+          const g = glows[ref];
+          return ind && g ? `${ref}: ${glowText(ind, g)}.` : null;
+        },
+        sch.components.map((c) => c.ref),
+      ),
+    [damage, glows, netlist, sch.components],
+  );
+  const burnt = useMemo(
+    () => Object.fromEntries(damaged.map((d) => [d.ref, d.causes.join(" ")])),
+    [damaged],
+  );
   useEffect(() => {
     if (onDocumentChange) {
       onDocumentChange(sch);
@@ -807,6 +847,16 @@ export function SchematicWorkspace({
               {notice}
             </p>
           )}
+          {!damageClosed && (
+            <DamageAlert
+              parts={damaged}
+              onClose={() => setDamageClosed(true)}
+              onSelect={(ref) => {
+                const c = sch.components.find((x) => x.ref === ref);
+                if (c) setSelection({ kind: "component", id: c.id });
+              }}
+            />
+          )}
 
           {view === "protoboard" && bbSpec ? (
             <BreadboardView
@@ -815,6 +865,7 @@ export function SchematicWorkspace({
               spec={bbSpec}
               resolved={resolved}
               motion={motion}
+              burnt={burnt}
             />
           ) : (
             <div className={`schematic-layout${libraryOpen ? " library-open" : ""}`}>
@@ -881,6 +932,7 @@ export function SchematicWorkspace({
                 probeColors={probeColors}
                 motion={motion}
                 glows={glows}
+                burnt={burnt}
                 onNotice={setNotice}
               />
 
@@ -932,6 +984,11 @@ export function SchematicWorkspace({
                       {glowText(netlist.indicators[selectedComp.ref]!, glows[selectedComp.ref]!)}
                     </p>
                   )}
+                {selectedComp && burnt[selectedComp.ref] && (
+                  <p className="small error" role="status">
+                    {burnt[selectedComp.ref]}
+                  </p>
+                )}
                 {selection?.kind === "group" && (
                   <div>
                     <h3>Seleção múltipla</h3>

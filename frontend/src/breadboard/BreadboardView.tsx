@@ -92,6 +92,8 @@ interface Props {
   initialGuide?: Step[];
   /** Shaft speed of each motor after the last simulation (direction of rotation). */
   motion?: Record<string, Motion>;
+  /** Parts that would burn in the last simulation, with the reason (tooltip). */
+  burnt?: Record<string, string>;
 }
 
 export function BreadboardView({
@@ -102,6 +104,7 @@ export function BreadboardView({
   readOnly,
   initialGuide,
   motion,
+  burnt,
 }: Props) {
   const bb: Breadboard = schematic.breadboard ?? emptyBreadboard();
   const board = spec.board;
@@ -905,6 +908,7 @@ export function BreadboardView({
                   bad={badRefs.has(p.ref)}
                   showLabels={(sel?.kind === "part" && sel.ref === p.ref) || pkg.style === "inline"}
                 />
+                {burnt?.[p.ref] && <BurntMark points={Object.values(legs)} title={burnt[p.ref]!} />}
               </g>
             );
           })}
@@ -1201,5 +1205,25 @@ export function PinoutSource({ view }: { view: PartView }) {
         </p>
       ))}
     </div>
+  );
+}
+
+/** Scorch mark over a part that would burn: dark smudge over its legs and a red label. */
+function BurntMark({ points, title }: { points: Pt[]; title: string }) {
+  if (!points.length) return null;
+  const xs = points.map((q) => q[0]);
+  const ys = points.map((q) => q[1]);
+  const cx = (Math.min(...xs) + Math.max(...xs)) / 2;
+  const cy = (Math.min(...ys) + Math.max(...ys)) / 2;
+  const rx = (Math.max(...xs) - Math.min(...xs)) / 2 + 12;
+  const ry = (Math.max(...ys) - Math.min(...ys)) / 2 + 12;
+  return (
+    <g className="bb-burnt" pointerEvents="none">
+      <title>{title}</title>
+      <ellipse cx={cx} cy={cy - 6} rx={rx} ry={ry} className="bb-burnt-scorch" />
+      <text x={cx} y={cy - ry - 10} textAnchor="middle" className="bb-burnt-label">
+        QUEIMADO
+      </text>
+    </g>
   );
 }

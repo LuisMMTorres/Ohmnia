@@ -1028,8 +1028,43 @@ export const projects = {
 
 // ------------------------------------------------------------------- schematic simulator
 
+/** A rating of a part (catalogue or typed by the user), checked after the simulation. */
+export interface LimitOut {
+  ref: string;
+  quantity: "V" | "I" | "P" | "T";
+  name: string;
+  limit: number;
+  unit: string;
+  measure: "peak" | "mean" | "rms" | "peak_abs";
+  v_pos?: string | null;
+  v_neg?: string | null;
+  current?: string | null;
+  current_sign?: number;
+  resistance?: number | null;
+  rth?: number | null;
+  t_amb?: number | null;
+  source?: string;
+  advice?: string;
+  reviewed?: boolean;
+}
+
+/** A rating exceeded in the simulation: the part would burn or be damaged. */
+export interface DamageOut {
+  ref: string;
+  quantity: "V" | "I" | "P" | "T";
+  name: string;
+  value: number;
+  limit: number;
+  unit: string;
+  cause: string;
+  advice: string;
+  source: string;
+  reviewed: boolean;
+}
+
 export interface NetlistOut {
   indicators?: Record<string, IndicatorOut>;
+  limits?: LimitOut[];
   netlist: string;
   nets: Record<string, string[]>;
   probes: { name: string; expr: string; unit: string; probe_id: string | null }[];
@@ -1112,6 +1147,11 @@ export const schematicApi = {
     request<NetlistOut>("/schematic/netlist", {
       method: "POST",
       body: JSON.stringify({ schematic }),
+    }),
+  damage: (job_id: string, limits: LimitOut[]) =>
+    request<DamageOut[]>("/schematic/damage", {
+      method: "POST",
+      body: JSON.stringify({ job_id, limits }),
     }),
   kicad: (schematic: Schematic) => postBlob("/schematic/kicad.net", { schematic }),
   importNetlist: (netlist: string) =>

@@ -32,9 +32,12 @@ export function glowFrom(ind: IndicatorOut, values: number[]): Glow | null {
 export function glowText(ind: IndicatorOut, g: Glow): string {
   const pct = `${Math.round(g.level * 100)} %`;
   if (ind.kind === "led") {
-    const ma = (g.level * (ind.i_ref ?? 0) * 1e3).toFixed(1).replace(".", ",");
+    const amps = g.level * (ind.i_ref ?? 0);
+    const ma = (amps * 1e3).toFixed(1).replace(".", ",");
+    const big =
+      amps >= 1e3 ? "mais de 1 kA (só a fonte limita)" : `${amps.toFixed(1).replace(".", ",")} A`;
     return g.burnt
-      ? `I média ${ma} mA, acima da máxima (${((ind.i_max ?? 0) * 1e3).toFixed(0)} mA): o LED queimaria`
+      ? `I média ${amps >= 1 ? big : `${ma} mA`}, acima da máxima (${((ind.i_max ?? 0) * 1e3).toFixed(0)} mA): o LED queimaria`
       : `I média ${ma} mA · brilho ${pct} do de referência`;
   }
   const w = (g.level * (ind.p_nom ?? 0)).toFixed(2).replace(".", ",");
