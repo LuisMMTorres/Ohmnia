@@ -50,3 +50,17 @@ def test_pt_bb_automatic_assembly_always_checks(sch):
         return  # too big for one board: reported to the user, nothing to check
     report = check(ref, bb)
     assert report.ok, [i.message for i in report.issues if i.kind != "aviso"]
+
+
+@settings(max_examples=60, deadline=None, suppress_health_check=[HealthCheck.too_slow])
+@given(sch=circuits())
+def test_pt_bb_fewest_jumpers_never_worse_than_reading_order(sch):
+    from circuitos.breadboard.autoplace import _autoplace
+
+    ref = build(sch, {})
+    plain, plain_notes = _autoplace(ref, None)
+    bb, notes = autoplace(ref)
+    lost = sum("não coube" in n or "sem furo" in n for n in notes)
+    assert lost <= sum("não coube" in n or "sem furo" in n for n in plain_notes)
+    if lost == sum("não coube" in n or "sem furo" in n for n in plain_notes):
+        assert len(bb.wires) <= len(plain.wires)

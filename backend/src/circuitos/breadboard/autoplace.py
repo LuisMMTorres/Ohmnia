@@ -1,6 +1,8 @@
 """Automatic assembly: place every part on the breadboard and wire the nets.
 
-Deterministic and readable rather than minimal:
+Deterministic and readable. Several part orders are tried (plain reading order, parts that
+share nodes kept together, and a fixed set of shuffles) and the assembly with the fewest
+jumpers wins; each one follows the same rules:
 
 * rails: ground on the two negative rails (``tn``, ``bn``), the positive IC supply on ``tp`` and
   the negative one on ``bp``; without IC supplies, the node of a DC source tied to ground takes
@@ -19,17 +21,20 @@ tests: an automatic assembly must always pass.
 
 from __future__ import annotations
 
+import random
 from collections.abc import Callable
 from dataclasses import dataclass, field
 from itertools import count, pairwise
 
 from circuitos.breadboard import board
+from circuitos.breadboard.check import check
 from circuitos.breadboard.layout import Breadboard, Jumper, PlacedPart, WireColor
 from circuitos.breadboard.packages import package
 from circuitos.breadboard.pinout import Resolved
 from circuitos.breadboard.reference import ALIM, Reference, key
 
 MAX_SPAN = 12
+RANDOM_TRIES = 40  # extra part orders tried by autoplace, keeping the one with fewest jumpers
 _LEG_PREF = {"U": "edcba", "L": "fghij"}
 _WIRE_PREF = {"U": "abcde", "L": "jihgf"}
 _PALETTE: tuple[WireColor, ...] = ("verde", "amarelo", "laranja", "branco", "azul", "cinza")
@@ -102,7 +107,63 @@ def _order(r: Resolved) -> tuple[int, str]:
     return rank, r.ref
 
 
+def _greedy(ref: Reference, rails: dict[str, dict[str, str]], start: str | None) -> list[str]:
+    """Part order that keeps connected parts together: after the ICs and transistors, the next
+    two-leg part is the one sharing most nodes (not rails) with the parts already placed, so
+    it can go straight into their strips instead of needing a jumper."""
+    parts = sorted((p for p in ref.parts.values() if p.package), key=_order)
+    nets = {
+        p.ref: {n for pin in p.pinmap if (n := ref.nets.get(key(p.ref, pin))) and n not in rails}
+        for p in parts
+    }
+    order = [p.ref for p in parts if _order(p)[0] < 2]
+    rest = [p.ref for p in parts if _order(p)[0] == 2]
+    tail = [p.ref for p in parts if _order(p)[0] > 2]
+    seen: set[str] = set().union(*(nets[x] for x in order)) if order else set()
+    if start in rest:
+        rest.remove(start)
+        order.append(start)
+        seen |= nets[start]
+    while rest:
+        best = max(rest, key=lambda x: (len(nets[x] & seen), -rest.index(x)))
+        rest.remove(best)
+        order.append(best)
+        seen |= nets[best]
+    return order + tail
+
+
 def autoplace(ref: Reference) -> tuple[Breadboard, list[str]]:
+    """Try a few part orders and keep the assembly with the fewest jumpers (all parts placed
+    first); the reading order of the plain layout breaks ties."""
+    rails = _rails(ref)
+    two_leg = [p.ref for p in sorted(ref.parts.values(), key=lambda p: p.ref)
+               if p.package and _order(p)[0] == 2]  # fmt: skip
+    orders: list[list[str] | None] = [None, _greedy(ref, rails, None)]
+    orders += [_greedy(ref, rails, s) for s in two_leg[:12]]
+    # plus a fixed set of shuffles (seeded: the same circuit always gives the same assembly)
+    rng = random.Random(len(two_leg))
+    base = _greedy(ref, rails, None)
+    head = [x for x in base if x not in two_leg]
+    for _ in range(RANDOM_TRIES if len(two_leg) > 2 else 0):
+        mid = [x for x in base if x in two_leg]
+        rng.shuffle(mid)
+        orders.append([x for x in head if _order(ref.parts[x])[0] < 2] + mid
+                      + [x for x in head if _order(ref.parts[x])[0] > 2])  # fmt: skip
+    best: tuple[tuple[int, int], Breadboard, list[str]] | None = None
+    for order in orders:
+        bb, notes = _autoplace(ref, order)
+        unplaced = sum("não coube" in n or "sem furo" in n for n in notes)
+        score = (unplaced, len(bb.wires))
+        if best is not None and score >= best[0]:
+            continue
+        if order is not None and not check(ref, bb).ok:
+            continue  # an alternative must never be worse than the plain layout
+        best = (score, bb, notes)
+    assert best is not None
+    return best[1], best[2]
+
+
+def _autoplace(ref: Reference, order: list[str] | None) -> tuple[Breadboard, list[str]]:
     st = _State()
     rails = _rails(ref)
     placed: list[PlacedPart] = []
@@ -122,7 +183,10 @@ def autoplace(ref: Reference) -> tuple[Breadboard, list[str]]:
                 r += 1
         return None
 
-    for r in sorted((p for p in ref.parts.values() if p.package), key=_order):
+    seq = sorted((p for p in ref.parts.values() if p.package), key=_order)
+    if order is not None:
+        seq = [ref.parts[x] for x in order]
+    for r in seq:
         if not (r.checkable or r.origin == "sem_pinagem"):
             continue
         pkg = package(r.package or "")

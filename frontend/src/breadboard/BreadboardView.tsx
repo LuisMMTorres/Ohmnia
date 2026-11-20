@@ -318,6 +318,15 @@ export function BreadboardView({
     setDrag(null);
   };
 
+  const removeParts = useCallback(
+    (refs: string[]) => {
+      const gone = new Set(refs);
+      update({ ...bb, parts: bb.parts.filter((p) => !gone.has(p.ref)) });
+      if (sel?.kind === "part" && gone.has(sel.ref)) setSel(null);
+    },
+    [bb, sel, update],
+  );
+
   const removeSelected = useCallback(() => {
     if (!sel) return;
     if (sel.kind === "part") update({ ...bb, parts: bb.parts.filter((p) => p.ref !== sel.ref) });
@@ -471,7 +480,11 @@ export function BreadboardView({
               </select>
             </label>
           </div>
-          <button onClick={() => void auto()} disabled={busy || !resolved}>
+          <button
+            onClick={() => void auto()}
+            disabled={busy || !resolved}
+            title="Coloca todas as peças já ligadas entre si conforme o esquemático 2D, usando o menor número de fios que encontrar"
+          >
             {busy ? "Montando…" : "Montar automaticamente"}
           </button>
           <button
@@ -483,12 +496,27 @@ export function BreadboardView({
           </button>
           <button
             className="secondary"
+            title="Tira todas as peças da placa e deixa os fios"
             onClick={() =>
-              bb.parts.length && window.confirm("Apagar a montagem?") && update(emptyBreadboard())
+              bb.parts.length &&
+              window.confirm("Retirar todas as peças da protoboard? Os fios ficam.") &&
+              removeParts(bb.parts.map((p) => p.ref))
             }
             disabled={!bb.parts.length}
           >
-            Limpar
+            Retirar todas as peças
+          </button>
+          <button
+            className="secondary"
+            title="Tira peças e fios"
+            onClick={() =>
+              (bb.parts.length || bb.wires.length) &&
+              window.confirm("Apagar a montagem inteira (peças e fios)?") &&
+              update(emptyBreadboard())
+            }
+            disabled={!bb.parts.length && !bb.wires.length}
+          >
+            Limpar tudo
           </button>
           <label className="small">
             <input
@@ -514,7 +542,16 @@ export function BreadboardView({
                       : ORIGIN_LABEL[v.origin]}
                   </span>
                   {placed.has(v.ref) ? (
-                    <span className="small muted"> montado</span>
+                    <>
+                      <span className="small muted"> montado</span>
+                      <button
+                        className="small secondary"
+                        title={`Tirar ${v.ref} da protoboard`}
+                        onClick={() => removeParts([v.ref])}
+                      >
+                        Retirar
+                      </button>
+                    </>
                   ) : v.package ? (
                     <>
                       <button className="small" onClick={() => startPlacing(v)}>

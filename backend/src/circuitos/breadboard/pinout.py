@@ -116,6 +116,8 @@ _INSTRUMENT = {
     "ipwl": ("fonte-i", "Fonte de corrente arbitrária"),
     "v3ph": ("trifasica", "Fonte trifásica"),
     "transformer": ("trafo", "Transformador"),
+    "transformer_1ph": ("trafo", "Transformador monofásico"),
+    "transformer_3ph": ("trafo-3f", "Transformador trifásico"),
     "rl_load": ("carga", "Carga RL"),
 }
 _BOARDS = {"arduino_uno": "board-uno", "esp32_devkitc": "board-esp32"}
@@ -192,6 +194,20 @@ def _generic(comp: Component) -> Resolved:
         )
         r.notes.append(pkg.note)
         return r
+    if kind in ("tact_switch", "push_nc"):
+        r.package = "tact-2"
+        r.pinmap = {"1": "1", "2": "2"}
+        r.labels = {"1": "1", "2": "2"}
+        r.title = "Botão NA" if kind == "tact_switch" else "Botão NF"
+        return r
+    if kind == "tact_switch4":
+        # legs facing each other across the channel (same row) are the joined pairs
+        r.package = "tact-6x6"
+        r.pinmap = {"1": "1", "4": "2", "2": "3", "3": "4"}
+        r.labels = {"1": "1", "4": "2", "2": "3", "3": "4"}
+        r.title = "Chave táctil"
+        r.notes.append(GENERIC_NOTE)
+        return r
     if f"mod-{kind}" in PACKAGES:
         pkg = package(f"mod-{kind}")
         r.package = pkg.id
@@ -247,6 +263,19 @@ def _generic(comp: Component) -> Resolved:
         r.labels = {"1": "K", "2": "A"}
         r.title = "Diodo" if kind == "diode" else "Zener"
         r.notes.append("Faixa pintada = catodo (K).")
+        return r
+    if kind == "led":
+        r.package = "led-5mm"
+        r.pinmap = {"1": "a", "2": "k"}
+        r.labels = {"1": "A", "2": "K"}
+        r.title = "LED"
+        r.notes.append("Perna longa = anodo (A).")
+        return r
+    if kind == "lamp":
+        r.package = "lampada"
+        r.pinmap = {"1": "1", "2": "2"}
+        r.labels = {"1": "1", "2": "2"}
+        r.title = f"Lâmpada {_value_label(comp, 'vn', 'V')} {_value_label(comp, 'pn', 'W')}"
         return r
     if kind in _GENERIC_3:
         pid, roles, title = _GENERIC_3[kind]
