@@ -26,7 +26,7 @@ from circuitos.core.units import Q_
 from circuitos.cosim.controllers import ControllerSpec, controller_lines
 from circuitos.design.opamp import OpAmp
 from circuitos.devices.thyristor import Kind as ThyristorKind
-from circuitos.schematic import parts, transformers
+from circuitos.schematic import parts, stress, transformers
 from circuitos.schematic.cosim_symbols import (
     CONTROLLER_KINDS,
     COSIM_KINDS,
@@ -749,6 +749,7 @@ class Netlist:
     elements: dict[str, str]  # designator -> SPICE element name
     controllers: list[ControllerSpec] = field(default_factory=list)  # co-simulation (Fase 11)
     indicators: dict[str, Indicator] = field(default_factory=dict)  # LEDs and lamps
+    limits: list[stress.Limit] = field(default_factory=list)  # ratings checked after a run
 
 
 def build_netlist(
@@ -775,19 +776,32 @@ def build_netlist(
     for pname, pval in all_params.items():
         lines.append(f".param {pname}={pval}")
     elements: dict[str, str] = {}
+    limits: list[stress.Limit] = []
+    t_amb = temperature if temperature is not None else try_parse(sch.temperature)
     for comp in sch.components:
         if comp.kind == "ground":
             continue
         nodes_by_pin = conn.pin_nodes.get(comp.ref, {})
         pins = [p.name for p in pin_defs(comp)]
+        rec = ctx.records.get(comp.part_id) if comp.part_id else None
+        sensed = stress.sense_pin(comp, rec)
+        sense: dict[str, str] = {}
         nodes = []
         for pin in pins:
             node = nodes_by_pin[pin]
             if (comp.ref, pin) in ammeters:
                 inner = f"am_{comp.ref}_{pin}".lower()
                 lines.append(f"{_ammeter(comp.ref, pin)} {node} {inner} DC 0")
+                sense[pin] = f"i({_ammeter(comp.ref, pin)})"
+                node = inner
+            elif pin == sensed:
+                # 0 V source that measures the current into the pin (damage check)
+                inner = f"sn_{comp.ref}_{pin}".lower()
+                lines.append(f"v{inner} {node} {inner} DC 0")
+                sense[pin] = f"i(v{inner})"
                 node = inner
             nodes.append(node)
+        limits += stress.limits_for(comp, nodes_by_pin, rec, sense, t_amb)
         _generic_spread(comp, ctx)
         lines += _emit(comp, nodes, ctx)
         elements[comp.ref] = element_name(comp)
@@ -814,4 +828,5 @@ def build_netlist(
         elements=elements,
         controllers=ctx.controllers,
         indicators=ctx.indicators,
+        limits=limits,
     )
