@@ -44,3 +44,34 @@ def test_every_mapped_symbol_lists_its_categories():
         assert SYMBOLS[kind].catalogue == cats
         names = {p.name for p in SYMBOLS[kind].params}
         assert set(mapping) <= names, kind
+
+
+@pytest.mark.ngspice
+def test_dc_motor_no_load_speed_matches_its_equation():
+    """FAULHABER 2224U012SR (eShop table): at 12 V without load the simulated speed equals the
+    steady state of the model, ω = V / (kE + R·b/kM) with b = kM·I0/ω0 (AS-, tol. 0,5 %), and
+    stays within 2 % of the published no-load speed n0 = 7810 min⁻¹."""
+    import math
+
+    import numpy as np
+
+    from circuitos.schematic.runs import SchematicPlan
+    from circuitos.simulation.backend import SharedNgspiceBackend
+
+    if not SharedNgspiceBackend.available():
+        pytest.skip("biblioteca do ngspice ausente")
+
+    rec = load_record_file(CATALOG / "motor" / "faulhaber-2224u012sr.yaml")
+    b = Builder("motor")
+    b.add("vdc", "V1", ["a", "0"], dc="12")
+    b.add("dc_motor", "M1", ["a", "0"], part_id=str(rec.id))
+    b.sch.analyses = [Analysis(kind="tran", params={"tstop": "0.2", "tmax": "100u"})]
+    res = SchematicPlan(b.sch, {str(rec.id): rec}).execute(SharedNgspiceBackend())
+    tran = next(p for p in res.plots if p.kind == "tran")
+    w = float(np.asarray(tran.vectors["v(m1_w)"].data)[-1])
+    p = rec.parameters
+    r, ke = p["R_a"].typ, p["k_E"].typ * 1e-3 * 60 / (2 * math.pi)
+    km, i0, w0 = p["k_M"].typ * 1e-3, p["I0"].typ, p["n0"].typ * 2 * math.pi / 60
+    bv = km * i0 / w0
+    assert w == pytest.approx(12 / (ke + r * bv / km), rel=5e-3)
+    assert w * 60 / (2 * math.pi) == pytest.approx(7810, rel=0.02)
