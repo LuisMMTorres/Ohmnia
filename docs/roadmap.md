@@ -237,4 +237,7 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 - 10 motores CC FAULHABER no catálogo (`motor.dc`).
 - Homologação das peças do circuito na Análise de Projetos.
 - Protoboard: montagem automática com menos fios e botões para retirar peças.
+- Revisão: montagem automática na placa de baixo (perto dos instrumentos), sem peças sobrepostas,
+  fios sem cruzar nem passar sobre peças, alimentação pelos barramentos; fonte de vários canais
+  num só painel; "Limpar circuito" no esquemático; "Ponta" passa a "Ponteira".
 - Detalhes, fontes e limitações: [validacao/simulador-melhorias.md](validacao/simulador-melhorias.md).

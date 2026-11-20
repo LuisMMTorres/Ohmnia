@@ -91,7 +91,7 @@ enquadra a aquisição; **Stop** congela seus dados. Não há conexão com equip
   o mesmo nó; `0` ou `gnd` é a referência.
 - No painel de propriedades, escolha uma **peça real do catálogo** (diodos, Zener, TBJ, MOSFET,
   JFET, ampop, SCR, TRIAC, IGBT) ou deixe os parâmetros genéricos.
-- Pontas: tensão, tensão diferencial, corrente e potência.
+- Ponteiras: tensão, tensão diferencial, corrente e potência.
 
 ## Analisar
 

@@ -22,6 +22,22 @@ Lote de 15 pedidos do usuário. Tudo em uma branch; revisão pelo PR.
 | 14 | Retirar peças da protoboard | Lista de peças | **Retirar** em cada peça montada, **Retirar todas as peças** (os fios ficam) e **Limpar tudo**. |
 | 15 | Mais motores CC | Motor CC + catálogo `motor.dc` | 10 motores FAULHABER (6, 12 e 24 V; de 0,56 a 120 g·cm²). Com o motor escolhido, R, L, kE, kM e J vêm da tabela do fabricante. |
 
+## Ajustes da revisão
+
+| Pedido | O que mudou | Como conferir |
+|--------|-------------|---------------|
+| Peças sem sobreposição | A montagem automática guarda o retângulo que cada peça ocupa no desenho (corpo do LED, do botão, do CI) e só coloca uma peça onde não encosta em outra nem cobre a perna de outra. | **Montar automaticamente**: nenhuma peça fica por cima de outra. |
+| Fios sem cruzar | Cada fio só é colocado se não cruzar outro fio, não passar sobre um corpo nem sobre uma perna. Quando não há caminho limpo, a montagem com menos fios "embolados" é a escolhida. Os fios dos instrumentos sobem em pistas ordenadas para não se cruzarem, e os terminais dos painéis genéricos ficam na borda de cima (o fio não passa sobre o painel). | Capturas `protoboard-revisada.png` e `protoboard-fonte-3-canais-motor.png`. |
+| Alimentação pelos barramentos | O circuito é montado na placa de baixo, a mais perto das fontes. Cada faixa ligada à alimentação recebe um fio curto até o barramento (+ / −) da mesma placa. Os barramentos de cima e de baixo do mesmo nó só são unidos pelo barramento vertical quando os dois são usados. | Os fios das fontes chegam nos barramentos, não no meio das faixas. |
+| Motor com desenho próprio | O motor CC já é desenhado como motor (vem do PR #6). | Inserir um motor CC e abrir a protoboard. |
+| Fonte de vários canais | Fontes com o mesmo número de bancada aparecem num só painel, "Fonte de bancada · N canais", com os bornes CH1, CH2, CH3. | Captura `protoboard-fonte-3-canais-motor.png`. |
+| Limpar circuito | Botão **Limpar circuito** no esquemático 2D. Pede confirmação e apaga peças, fios, rótulos, ponteiras e a montagem. | Clicar e confirmar. |
+| "Ponteira" | As ferramentas de medição do esquemático se chamam **Ponteira V**, **Ponteira V diferencial** e **Ponteira I**. | Barra de ferramentas do esquemático. |
+
+Teste novo: `test_bb_parts_never_overlap_and_jumpers_stay_clear` (nenhum par de peças se sobrepõe,
+nenhum fio passa sobre corpo, perna ou outro fio, a fonte fica nos barramentos e tudo na placa de
+baixo). Os 120 circuitos aleatórios de `test_breadboard_properties.py` continuam passando na conferência.
+
 ## Modelos e equações
 
 - **LED**: queda constante (VF típico, ou máximo quando o datasheet não dá o típico) na corrente
