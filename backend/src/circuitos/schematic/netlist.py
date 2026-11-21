@@ -813,7 +813,7 @@ def _emit(comp: Component, n: list[str], ctx: _Ctx) -> list[str]:
         try:
             if k in CONTROLLER_KINDS:
                 values = {pd.name: param(comp, pd.name) for pd in symbol(k).params}
-                lines, spec = controller_lines(ref, k, values, pins)
+                lines, spec = controller_lines(ref, k, values, pins, comp.firmware)
                 ctx.controllers.append(spec)
                 ctx.warnings += spec.warnings
                 return lines

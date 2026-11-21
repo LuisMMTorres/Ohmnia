@@ -32,6 +32,8 @@ def time_step(sch: Schematic, nominal: Netlist) -> float:
     tstop = try_parse(tran.params.get("tstop", "10m")) or 10e-3
     step = min(max(tstop / 20000, 1e-5), 2e-3)
     for spec in nominal.controllers:
+        if spec.firmware is not None:
+            step = min(step, 10e-6)
         if spec.kind == "plc":
             scan = (try_parse(spec.params.get("scan_ms", "10")) or 10) / 1000
             step = min(step, scan / 2)
@@ -74,7 +76,10 @@ def run_cosim(
     nl = build_netlist(sch2, records)
     session = CoSession(nl.controllers, nl.digital_sensors)
     progress(0.0, "co-simulando (programa e circuito)")
-    res = backend.run(nl.text, progress, cosim=session)
+    try:
+        res = backend.run(nl.text, progress, cosim=session)
+    finally:
+        session.close()
     if session.errors:
         raise SchematicError(session.errors[0])
     for p in res.plots:

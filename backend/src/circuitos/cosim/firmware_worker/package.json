@@ -1,0 +1,9 @@
+{
+  "name": "ohmnia-firmware-worker",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "avr8js": "0.21.1"
+  }
+}

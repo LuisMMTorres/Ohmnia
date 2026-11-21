@@ -13,6 +13,8 @@ from circuitos.components.models import ComponentRecord
 from circuitos.components.repository import ComponentRepository
 from circuitos.core.calc import CalcStep
 from circuitos.core.errors import CircuitosError
+from circuitos.cosim.firmware import engine_status
+from circuitos.cosim.firmware_image import AVR_FLASH, FirmwareImage, load_image
 from circuitos.reports import kicad
 from circuitos.schematic import stress
 from circuitos.schematic.importer import import_netlist
@@ -25,6 +27,41 @@ from circuitos.simulation.jobs import JobQueue
 from circuitos.simulation.results import SimulationRequest
 
 router = APIRouter(prefix="/api/v1/schematic")
+
+
+@router.get("/firmware/capabilities")
+def firmware_capabilities() -> list[dict[str, Any]]:
+    ready, message = engine_status()
+    return [
+        {
+            "board": kind,
+            "available": ready and kind in AVR_FLASH,
+            "formats": ["hex", "elf"] if kind in AVR_FLASH else [],
+            "message": (
+                "Firmware AVR: GPIO, ADC, temporizadores/PWM e Serial0." if ready else message
+            )
+            if kind in AVR_FLASH
+            else "Motor de firmware ainda não integrado para esta placa.",
+        }
+        for kind in (*AVR_FLASH, "esp32_devkitc", "rpi_pico", "rpi_pico2")
+    ]
+
+
+@router.post("/firmware/validate")
+def validate_firmware(body: FirmwareImage) -> dict[str, Any]:
+    try:
+        loaded = load_image(body)
+        ready, message = engine_status()
+        if not ready:
+            raise ValueError(message)
+    except ValueError as exc:
+        raise HTTPException(422, str(exc)) from exc
+    return {
+        "sha256": loaded.sha256,
+        "size": loaded.size,
+        "entry": loaded.entry,
+        "warning": "HEX não identifica a placa de origem. Confira o modelo selecionado na IDE.",
+    }
 
 
 class SchematicIn(BaseModel):
