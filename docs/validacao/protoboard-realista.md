@@ -88,3 +88,32 @@ com fonte de −12 V, análise transitória, Simular, e voltar à Protoboard.
 - O símbolo do motor no esquemático continua sendo a caixa "M" (o pedido era para a protoboard).
 - Montagens salvas antes desta mudança com o Arduino ou o ESP32 fora da placa recebem o aviso
   "montado como mod-…, mas a peça usa board-…"; basta retirar a placa e colocá-la de novo.
+
+## Desenhos reais dos dispositivos fora da placa (2026-11-21)
+
+Os dispositivos que ainda apareciam como painel genérico ("DISPOSITIVO") ganharam desenho próprio
+na aba Protoboard. São desenhos didáticos feitos a partir do aspecto usual de cada peça; os
+terminais seguem os nomes do modelo de simulação. Confira a serigrafia do seu módulo antes de
+ligar.
+
+| Grupo | Dispositivos |
+|-------|--------------|
+| Sensores | NTC (disco), LDR, KTY81, sensor Hall linear e chave Hall (TO-92), sensor de pressão integrado, HC-SR04, DHT22, DS18B20 (TO-92), BME280 (placa I2C) |
+| Controladores | Arduino Nano, Arduino Mega 2560, Raspberry Pi Pico, CLP 24 V |
+| Atuadores | planta inversor + motor + bomba (com transmissor de pressão) |
+| Transformadores | monofásico (núcleo E-I, régua de bornes P/S) e trifásico (três colunas, bornes H e X) |
+| Lâmpadas e LEDs | lâmpada no soquete com dois bornes; LED com cúpula na cor escolhida e aba chanfrada no catodo |
+
+Pinagens conferidas: DHT22 1 VCC, 2 DATA, 3 NC, 4 GND (guia SparkFun RHT03/DHT22); HC-SR04 VCC,
+Trig, Echo, GND (mischianti.org); DS18B20 TO-92, vista de baixo, 1 GND, 2 DQ, 3 VDD (datasheet,
+tabela 1). Nas placas (Nano, Mega, Pico) os terminais estão na ordem do modelo, não na posição
+física do pino.
+
+Outros ajustes:
+
+- A protoboard abre com zoom de 75 %.
+- Montagem automática: os pinos de mesma função de uma placa (os GND do ESP32 e do Arduino) já são
+  ligados pela própria placa, então não recebem mais fios entre si.
+- IGBT, SCR e TRIAC passaram do grupo Chaves para Semicondutores na paleta do esquemático.
+
+Capturas: `/mnt/project-files/capturas/protoboard-desenhos/`.
