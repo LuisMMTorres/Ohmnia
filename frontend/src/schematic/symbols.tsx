@@ -408,6 +408,30 @@ export function SymbolBody({
       <circle key="d1" cx={u(-1.5)} cy={u(-1.3)} r={u(0.12)} className="fill" />,
       <circle key="d2" cx={u(1.5)} cy={u(-1.3)} r={u(0.12)} className="fill" />,
     ];
+  else if (k === "autotransformer")
+    body = [
+      poly(
+        [
+          [-2, -2],
+          [-1, -2],
+          [-1, -1.6],
+        ],
+        "h",
+      ),
+      poly(
+        [
+          [-2, 2],
+          [-1, 2],
+          [-1, 1.6],
+        ],
+        "n",
+      ),
+      <g key="cw">{coil(-1.6, 1.6, true, -1)}</g>,
+      line(-1, 0, 2, 0, "x"),
+      <circle key="tap" cx={u(-1)} cy={0} r={u(0.12)} className="fill" />,
+      line(-1.75, -1.4, -1.75, 1.4, "k1"),
+      line(-1.5, -1.4, -1.5, 1.4, "k2"),
+    ];
   else if (k === "transformer_3ph") {
     // single-line IEC 60617 symbol (two windings) with the vector group, in a box with terminals
     const cp = c.params.conn_p || "D";
@@ -690,6 +714,7 @@ const SHORT: Record<string, string> = {
   switch_manual: "BOTÃO",
   pump_plant: "INV+BOMBA",
   induction_motor: "M 3~",
+  induction_motor_12: "M 3~ 12",
   vfd: "INVERSOR",
   soft_starter: "SOFT-STARTER",
   contactor: "CONTATOR",
@@ -770,6 +795,7 @@ export function valueText(c: Component, sym: SymbolDef | undefined): string {
   if (c.kind === "rl_load") return `${p("r")}Ω + ${p("l")}H`;
   if (c.kind === "transformer") return `1:${p("n")}`;
   if (c.kind === "transformer_1ph") return `${p("vp")}/${p("vs")}V ${p("sn")}VA`;
+  if (c.kind === "autotransformer") return `${p("vh")}/${p("vx")}V ${p("sn")}VA`;
   if (c.kind === "transformer_3ph") {
     return `${p("conn_p")}${p("conn_s").toLowerCase()}`;
   }
