@@ -328,8 +328,8 @@ export function ResultsView({ job, probeNames, onJobUpdate }: Props) {
           <summary>Sinais ({selected.length})</summary>
           {vectorNames.length === 0 && (
             <p className="small muted">
-              Nenhuma ponta de prova disponível nesta análise. Adicione pontas no circuito e simule
-              novamente.
+              Nenhuma ponteira de prova disponível nesta análise. Adicione ponteiras no circuito e
+              simule novamente.
             </p>
           )}
           <div className="vectors">
