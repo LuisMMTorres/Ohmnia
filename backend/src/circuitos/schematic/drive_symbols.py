@@ -357,6 +357,11 @@ DRIVE_CATALOGUE: dict[str, tuple[tuple[str, ...], dict[str, tuple[str, str]]]] =
         {"poles": ("poles", "1"), "fnom": ("f", "Hz"), "j": ("J", "kg*m**2")},
     ),
     "contactor": (("contactor",), {"pcoil": ("P_coil", "W")}),
+    # family records (WEG CFW, SSW, ABB PSTX, Oriental AR): ratings span the family, so only
+    # the switching frequency (one value) goes to the model; the part names the real drive
+    "vfd": (("drive.vfd",), {"fsw": ("f_sw", "Hz")}),
+    "soft_starter": (("drive.soft_starter",), {}),
+    "stepper_driver": (("drive.stepper",), {}),
     "stepper_motor": (
         ("motor.stepper",),
         {

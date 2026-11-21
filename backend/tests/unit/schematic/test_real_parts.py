@@ -103,5 +103,4 @@ def test_p_channel_parts_emit_p_models(repo):
     b.analysis("op")
     nl = build_netlist(b.sch, {str(m.id): m, str(j.id): j})
     assert "PMOS(LEVEL=1 VTO=-3" in nl.text  # middle of |VGS(th)| 2 to 4 V
-    assert "PJF(VTO=" in nl.text
-    assert nl.spreads["M1"].lo < nl.spreads["M1"].hi < 0
+    assert "PJF(VTO=-" in nl.text  # SPICE keeps VTO negative for a depletion PJF

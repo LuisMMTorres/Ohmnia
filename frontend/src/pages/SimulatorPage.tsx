@@ -192,7 +192,7 @@ export function SimulatorPage() {
             {plot && (
               <>
                 <fieldset className="vectors">
-                  <legend>Pontas de prova</legend>
+                  <legend>Ponteiras de prova</legend>
                   {plot.vectors
                     .filter((v) => v.name !== plot.scale)
                     .map((v) => (

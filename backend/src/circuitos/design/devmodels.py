@@ -390,10 +390,12 @@ class Jfet:
     def gm(self, vgs: float) -> float:
         return 0.0 if vgs <= -self.VP else 2 * self.IDSS / self.VP * (1 + vgs / self.VP)
 
-    def spice(self, name: str) -> str:
+    def spice(self, name: str, p_channel: bool = False) -> str:
+        """P channel: same magnitudes; SPICE keeps VTO negative (depletion) for a PJF too."""
         # PB very large: constant junction capacitances, as in the analysis
         caps = f" CGS={self.CGS:.6g} CGD={self.CGD:.6g} PB=1e6" if self.CGS or self.CGD else ""
-        return f".model {name} NJF(VTO={-self.VP:.6g} BETA={self.BETA:.6g} LAMBDA=0{caps})"
+        kind = "PJF" if p_channel else "NJF"
+        return f".model {name} {kind}(VTO={-self.VP:.6g} BETA={self.BETA:.6g} LAMBDA=0{caps})"
 
 
 def jfet_model(
@@ -548,8 +550,10 @@ class Mos:
     def id_sat(self, vgs: float) -> float:
         return 0.0 if vgs <= self.VT else self.KP / 2 * (vgs - self.VT) ** 2
 
-    def spice(self, name: str) -> str:
-        return f".model {name} NMOS(LEVEL=1 VTO={self.VT:.6g} KP={self.KP:.6g} LAMBDA=0)"
+    def spice(self, name: str, p_channel: bool = False) -> str:
+        """P channel: same magnitudes, the SPICE threshold of a PMOS is negative."""
+        kind, vto = ("PMOS", -self.VT) if p_channel else ("NMOS", self.VT)
+        return f".model {name} {kind}(LEVEL=1 VTO={vto:.6g} KP={self.KP:.6g} LAMBDA=0)"
 
 
 def mos_model(

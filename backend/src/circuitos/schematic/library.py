@@ -148,6 +148,7 @@ SYMBOLS: dict[str, Symbol] = {
                 ),
             ),
             tolerance="value",
+            catalogue=("resistor.fixed",),
         ),
         Symbol(
             "capacitor",
@@ -169,6 +170,7 @@ SYMBOLS: dict[str, Symbol] = {
                 ),
             ),
             tolerance="value",
+            catalogue=("capacitor.fixed",),
         ),
         Symbol(
             "inductor",
@@ -182,6 +184,7 @@ SYMBOLS: dict[str, Symbol] = {
                 _tol("10"),
             ),
             tolerance="value",
+            catalogue=("inductor.fixed",),
         ),
         Symbol(
             "rl_load",
@@ -293,6 +296,71 @@ SYMBOLS: dict[str, Symbol] = {
             "Dy dá Dyn11, Yd dá Yd1, Yy e Dd dão 0. Com uma peça real (BLOCK TT3), Vp, Vs, Sn e a "
             "perda no cobre (P_sc/Sn) vêm do datasheet; a magnetização continua didática.",
             catalogue=("magnetic.transformer_3ph",),
+            ref_prefix="T",
+        ),
+        Symbol(
+            "transformer_1ph_4",
+            "Transformador monofásico de 4 bobinas",
+            "Transformadores",
+            "L",
+            (
+                PinDef("P1", -2, -3),
+                PinDef("P2", -2, -1),
+                PinDef("P3", -2, 1),
+                PinDef("P4", -2, 3),
+                PinDef("S1", 2, -3),
+                PinDef("S2", 2, -1),
+                PinDef("S3", 2, 1),
+                PinDef("S4", 2, 3),
+            ),
+            (
+                ParamDef("vp", "Tensão de cada bobina do primário (eficaz)", "V", "115"),
+                ParamDef("vs", "Tensão de cada bobina do secundário (eficaz)", "V", "12"),
+                ParamDef("sn", "Potência nominal", "VA", "50"),
+                ParamDef("freq", "Frequência", "Hz", "60"),
+                ParamDef("imag", "Corrente de magnetização (% de In)", "%", "5"),
+                ParamDef("rcu", "Perdas no cobre (% de Sn)", "%", "2"),
+            ),
+            description="Dupla tensão: primário em duas bobinas (P1-P2 e P3-P4) e secundário em "
+            "duas (S1-S2 e S3-S4), todas no mesmo núcleo, com os pontos em P1, P3, S1 e S3. "
+            "Feche por fora: bobinas em série (P2 com P3) para 2·Vp ou em paralelo (P1 com P3, "
+            "P2 com P4) para Vp; no secundário, série dá 2·Vs ou derivação central (S2-S3). "
+            "Magnetização e perdas no cobre são valores didáticos.",
+            catalogue=("magnetic.transformer",),
+            ref_prefix="T",
+        ),
+        Symbol(
+            "transformer_3ph_open",
+            "Transformador trifásico de bobinas acessíveis",
+            "Transformadores",
+            "L",
+            (
+                PinDef("1U1", -3, -5),
+                PinDef("1U2", -3, -3),
+                PinDef("1V1", -3, -1),
+                PinDef("1V2", -3, 1),
+                PinDef("1W1", -3, 3),
+                PinDef("1W2", -3, 5),
+                PinDef("2U1", 3, -5),
+                PinDef("2U2", 3, -3),
+                PinDef("2V1", 3, -1),
+                PinDef("2V2", 3, 1),
+                PinDef("2W1", 3, 3),
+                PinDef("2W2", 3, 5),
+            ),
+            (
+                ParamDef("vp", "Tensão de cada bobina do primário (eficaz)", "V", "380"),
+                ParamDef("vs", "Tensão de cada bobina do secundário (eficaz)", "V", "127"),
+                ParamDef("sn", "Potência nominal (total)", "VA", "3k"),
+                ParamDef("freq", "Frequência", "Hz", "60"),
+                ParamDef("imag", "Corrente de magnetização (% de In)", "%", "5"),
+                ParamDef("rcu", "Perdas no cobre (% de Sn)", "%", "2"),
+            ),
+            description="As seis bobinas com as duas pontas na placa de ligação (marcação IEC "
+            "60076: 1 = alta, 2 = baixa; U, V, W = colunas; 1 = início com ponto, 2 = fim). "
+            "Feche por fora: estrela unindo 1U2-1V2-1W2 (linha em 1U1, 1V1, 1W1) ou triângulo "
+            "com 1U2-1V1, 1V2-1W1, 1W2-1U1. Com 380 V por bobina: Δ em 380 V ou Y em 660 V; com "
+            "127 V no secundário: Y dá 220 V de linha. Magnetização e perdas são didáticas.",
             ref_prefix="T",
         ),
         Symbol(
@@ -496,7 +564,7 @@ SYMBOLS: dict[str, Symbol] = {
             )
             for kind, label, vto, cat in (
                 ("njf", "JFET canal N", "-2", ("jfet.n",)),
-                ("pjf", "JFET canal P", "2", ("jfet.p",)),
+                ("pjf", "JFET canal P", "-2", ("jfet.p",)),
             )
         ],
         Symbol(

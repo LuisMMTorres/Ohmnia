@@ -136,6 +136,8 @@ _ADVICE: dict[str, str] = {
     "Cap": "Use um capacitor com tensão nominal maior (folga de 20 a 50 %).",
     "Vid": "A diferença entre as entradas passa do máximo: limite-a com resistores em série e "
     "diodos de proteção.",
+    "Ind": "Use um indutor com corrente nominal (e de saturação) maior ou reduza a corrente; "
+    "acima de I_sat a indutância cai e o pico de corrente cresce.",
     "Sw": "Use uma chave com corrente nominal maior ou acione a carga por relé ou transistor.",
 }
 
@@ -166,7 +168,10 @@ SENSE_PIN: dict[str, str] = {
     "npn": "c",
     "pnp": "e",
     "nmos": "d",
+    "pmos": "s",  # current into the source is positive when a P channel conducts
     "njf": "d",
+    "pjf": "s",
+    "inductor": "1",
     "igbt": "c",
     "scr": "a",
     "triac": "mt2",
@@ -215,9 +220,25 @@ _SPECS: dict[str, Callable[[], list[_Spec]]] = {
         _Spec("IDM", "I", "peak", current_pin="d", advice="Ipeak"),
         _Spec("Ptot", "P", "mean", "d", "s", current_pin="d", advice="P"),
     ],
+    "pmos": lambda: [  # catalogue values in magnitude: blocking is v(s) − v(d)
+        _Spec("VDS", "V", "peak", "s", "d", advice="Vblock"),
+        _Spec("VGS", "V", "peak_abs", "g", "s", advice="Vgate"),
+        _Spec("ID", "I", "mean", current_pin="s", advice="Icont"),
+        _Spec("IDM", "I", "peak", current_pin="s", advice="Ipeak"),
+        _Spec("Ptot", "P", "mean", "s", "d", current_pin="s", advice="P"),
+    ],
     "njf": lambda: [
         _Spec("VDG", "V", "peak", "d", "g", advice="Vblock"),
         _Spec("Ptot", "P", "mean", "d", "s", current_pin="d", advice="P"),
+    ],
+    "pjf": lambda: [
+        _Spec("VDG", "V", "peak", "g", "d", advice="Vblock"),
+        _Spec("Ptot", "P", "mean", "s", "d", current_pin="s", advice="P"),
+    ],
+    "capacitor": lambda: [_Spec("V_rated", "V", "peak_abs", "1", "2", advice="Cap")],
+    "inductor": lambda: [
+        _Spec("I_rms", "I", "rms", current_pin="1", advice="Ind"),
+        _Spec("I_sat", "I", "peak", current_pin="1", advice="Ind"),
     ],
     "igbt": lambda: [
         _Spec("VCES", "V", "peak", "c", "e", advice="Vblock"),
@@ -257,6 +278,16 @@ def _node(nodes: Mapping[str, str], pin: str | None) -> str | None:
     return None if n in (None, "0") else n
 
 
+# catalogue records of passives describe a series (values from min to max); a rating given as
+# a range belongs to different models of the series and is not checked
+_SERIES_KINDS = {"resistor", "capacitor", "inductor"}
+
+
+def _is_range(rec: ComponentRecord, key: str) -> bool:
+    p = rec.parameters.get(key)
+    return p is not None and p.min is not None and p.max is not None and p.min != p.max
+
+
 def limits_for(
     comp: Component,
     nodes: Mapping[str, str],
@@ -272,6 +303,8 @@ def limits_for(
     if rec is None:
         return _generic_limits(comp, nodes)
     for sp in _SPECS.get(comp.kind, lambda: [])():
+        if comp.kind in _SERIES_KINDS and _is_range(rec, sp.key):
+            continue  # a range over the models of a series: not this part's rating
         r = _rating(rec, sp.key, _UNIT[sp.quantity])
         if r is None:
             continue  # the datasheet does not give this rating
@@ -320,6 +353,43 @@ def limits_for(
                         reviewed=tj[2] and rth[2],
                     )
                 )
+    if comp.kind == "resistor":  # a series: the value is the one in the schematic
+        pr = None if _is_range(rec, "P_rated") else _rating(rec, "P_rated", "W")
+        r_ohm = try_parse(comp.params.get("value", "") or "")
+        if pr and r_ohm and r_ohm > 0:
+            out.append(
+                Limit(
+                    ref,
+                    "P",
+                    "P_rated",
+                    pr[0],
+                    "W",
+                    "mean",
+                    _node(nodes, "1"),
+                    _node(nodes, "2"),
+                    resistance=r_ohm,
+                    source=pr[1],
+                    advice=_ADVICE["Res"],
+                    reviewed=pr[2],
+                )
+            )
+        vm = None if _is_range(rec, "V_max") else _rating(rec, "V_max", "V")
+        if vm:
+            out.append(
+                Limit(
+                    ref,
+                    "V",
+                    "V_max",
+                    vm[0],
+                    "V",
+                    "peak_abs",
+                    _node(nodes, "1"),
+                    _node(nodes, "2"),
+                    source=vm[1],
+                    advice=_ADVICE["Res"],
+                    reviewed=vm[2],
+                )
+            )
     if comp.kind == "potentiometer":
         pr = _rating(rec, "P_rated", "W")
         rv = _rating(rec, "R", "ohm")

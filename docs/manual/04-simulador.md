@@ -9,7 +9,7 @@ em três etapas:
 
 1. **Circuito:** desenhe o esquemático ou abra um exemplo. Use **Adicionar componente** para
    expandir a biblioteca; **Recolher biblioteca** libera mais espaço para o desenho. As ferramentas
-   de fio, seleção e pontas de prova continuam visíveis com a biblioteca recolhida.
+   de fio, seleção e ponteiras de prova continuam visíveis com a biblioteca recolhida.
 2. **Configurar análise:** escolha as análises, varreduras e condições. O botão abre
    o painel ao lado do esquemático, sem apagar as entradas do circuito.
 3. **Resultados:** fica disponível após enviar uma simulação. O botão **Simular** abre esse
@@ -31,7 +31,7 @@ no desenho. Os nomes vêm da netlist do circuito atual; alterações atualizam o
 Rótulos inseridos manualmente continuam visíveis, pois também definem conexões elétricas.
 Se o circuito estiver incompleto e não gerar uma netlist, a interface informa o motivo.
 
-Os resultados oferecem somente as **pontas de prova adicionadas ao circuito** e expressões
+Os resultados oferecem somente as **ponteiras de prova adicionadas ao circuito** e expressões
 adicionadas explicitamente pelo usuário. Cada análise mostra as probes disponíveis nela.
 Sem probes, adicione-as e simule novamente. A lista usa as probes da simulação executada,
 mesmo que o desenho seja editado depois. O ngspice continua calculando os nós necessários
@@ -107,7 +107,7 @@ estatística.
 ## Trocar arquivos
 
 - **Importar netlist** / **Exportar netlist**: SPICE (`.model` e `.subckt` vão nas diretivas).
-- **KiCad**: netlist `.net` dos componentes físicos (fontes e pontas ficam de fora).
+- **KiCad**: netlist `.net` dos componentes físicos (fontes e ponteiras ficam de fora).
 - **CSV** dos vetores e **figuras** SVG/PNG/PDF com vírgula decimal.
 - **Salvar**: `.circ.json` do esquemático.
 

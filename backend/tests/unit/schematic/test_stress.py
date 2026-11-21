@@ -122,3 +122,31 @@ def test_as_resistor_power_matches_v_squared_over_r():
     (d,) = stress.evaluate(nl.limits, vecs, vecs["time"])
     assert d.value == pytest.approx(1.44, rel=5e-3)
     assert "potência" in d.cause
+
+
+def test_catalogue_passives_keep_the_schematic_value_and_check_single_ratings():
+    """Passive series from the catalogue: the value stays the schematic one; a rating with one
+    value is checked (Yageo MFR-25: 0,25 W and 250 V; Nichicon UHE 1000 µF: 35 V), a rating
+    given as a range over the series is not (Bourns RLB0914 I_rms 0,42 to 3,6 A); a value outside
+    the series range gets a warning (MFR-25: 1 Ω to 4,7 MΩ)."""
+    mfr = load_record_file(CATALOG / "resistor" / "yageo-mfr-25.yaml")
+    uhe = load_record_file(CATALOG / "capacitor" / "nichicon-uhe-1000uf-35v.yaml")
+    rlb = load_record_file(CATALOG / "inductor" / "bourns-rlb0914.yaml")
+    b = Builder("passivos")
+    b.add("vdc", "V1", ["a", "0"], dc="12")
+    b.add("resistor", "R1", ["a", "b"], value="100", part_id=str(mfr.id))
+    b.add("resistor", "R2", ["a", "0"], value="10meg", part_id=str(mfr.id))
+    b.add("capacitor", "C1", ["b", "0"], value="1000u", part_id=str(uhe.id))
+    b.add("inductor", "L1", ["b", "0"], value="100u", part_id=str(rlb.id))
+    b.analysis("op")
+    recs = {str(r.id): r for r in (mfr, uhe, rlb)}
+    nl = build_netlist(b.sch, recs)
+    names = {(lim.ref, lim.name): lim for lim in nl.limits}
+    assert names[("R1", "P_rated")].limit == pytest.approx(0.25)
+    assert names[("R1", "P_rated")].resistance == pytest.approx(100)
+    assert names[("R1", "V_max")].limit == 250
+    assert names[("C1", "V_rated")].limit == 35
+    assert not any(ref == "L1" for ref, _ in names)
+    assert "R1 a b 100" in nl.text.replace("vsn", "")
+    assert any("R2" in w and "fora da faixa" in w for w in nl.warnings)
+    assert not any("R1" in w and "fora da faixa" in w for w in nl.warnings)

@@ -157,3 +157,76 @@ def test_autotransformer_steps_up(backend):
     tran, t = _auto_run(backend, "x", "h", "10k")
     rms, _ = _rms_phase(t, tran.vectors["v(h)"].data)
     assert rms == pytest.approx(220, rel=0.01)
+
+
+def _tran_rms(backend, b, node_pairs):  # type: ignore[no-untyped-def]
+    b.sch.analyses = [Analysis(kind="tran", params={"tstop": "0.2", "tmax": "50u"})]
+    res = SchematicPlan(b.sch).execute(backend)
+    tran = next(p for p in res.plots if p.kind == "tran")
+    t = tran.vectors[tran.scale].data
+
+    def v(n):  # type: ignore[no-untyped-def]
+        return tran.vectors[f"v({n})"].data if n != "0" else 0 * t
+
+    return [_rms_phase(t, v(a) - v(c))[0] for a, c in node_pairs]
+
+
+@pytest.mark.ngspice
+@pytest.mark.parametrize(
+    ("series", "vin", "vout", "load"),
+    [(True, 230, 24, "57.6"), (False, 115, 12, "2.88")],
+)
+def test_four_coil_series_and_parallel(backend, series, vin, vout, load):
+    """115 V + 115 V / 12 V + 12 V, 50 VA: primary and secondary both in series (230 V → 24 V)
+    or both in parallel (115 V → 12 V), rated load (V²/S): output within 3 % (2 % of copper
+    losses split between the coils)."""
+    b = Builder("t4")
+    b.add("vsin", "V1", ["p", "0"], amplitude=str(vin * math.sqrt(2)), freq="60")
+    if series:
+        pins = ["p", "m", "m", "0", "s", "k", "k", "0"]
+    else:
+        pins = ["p", "0", "p", "0", "s", "0", "s", "0"]
+    b.add("transformer_1ph_4", "T1", pins)
+    b.add("resistor", "RL", ["s", "0"], value=load)
+    (rms,) = _tran_rms(backend, b, [("s", "0")])
+    assert rms == pytest.approx(vout, rel=0.03)
+
+
+@pytest.mark.ngspice
+def test_open_three_phase_closed_delta_wye(backend):
+    """Coils of 380 V / 127 V closed outside in delta (primary, 380 V line) and wye
+    (secondary): 220 V line on the secondary, as the Dyn transformer, within 3 %."""
+    b = Builder("t3o")
+    b.add("v3ph", "V1", ["a", "b", "c", "0"], vrms=str(380 / math.sqrt(3)))
+    # delta: 1U2-1V1, 1V2-1W1, 1W2-1U1; wye: 2U2-2V2-2W2 = n
+    b.add("transformer_3ph_open", "T1",
+          ["a", "b", "b", "c", "c", "a", "x1", "n", "x2", "n", "x3", "n"])  # fmt: skip
+    for i, x in enumerate(("x1", "x2", "x3")):
+        b.add("resistor", f"R{i}", [x, "n"], value="100")
+    b.add("resistor", "RG", ["n", "0"], value="1m")
+    (rms,) = _tran_rms(backend, b, [("x1", "x2")])
+    assert rms == pytest.approx(127 * math.sqrt(3), rel=0.03)
+
+
+@pytest.mark.ngspice
+def test_catalogue_toroid_as_four_coil_transformer(backend):
+    """Triad VPT24-1040 (25 VA; 115 V + 115 V / 12 V + 12 V, page 1) placed on the 4-coil
+    symbol: the nameplate comes from the record; series primary at 230 V and series secondary
+    on 1 kΩ give 24 V (within 3 %)."""
+    from pathlib import Path
+
+    from circuitos.components.repository import load_record_file
+
+    rec = load_record_file(
+        Path(__file__).parents[4] / "data" / "components" / "magnetic" / "triad-vpt24-1040.yaml"
+    )
+    b = Builder("vpt")
+    b.add("vsin", "V1", ["p", "0"], amplitude=str(230 * math.sqrt(2)), freq="60")
+    b.add("transformer_1ph_4", "T1", ["p", "m", "m", "0", "s", "k", "k", "0"],
+          part_id=str(rec.id), vp="1", vs="1", sn="1")  # fmt: skip
+    b.add("resistor", "RL", ["s", "0"], value="1k")
+    b.sch.analyses = [Analysis(kind="tran", params={"tstop": "0.2", "tmax": "50u"})]
+    res = SchematicPlan(b.sch, {str(rec.id): rec}).execute(backend)
+    tran = next(p for p in res.plots if p.kind == "tran")
+    rms, _ = _rms_phase(tran.vectors[tran.scale].data, tran.vectors["v(s)"].data)
+    assert rms == pytest.approx(24, rel=0.03)

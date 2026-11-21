@@ -7,14 +7,15 @@ dos transformadores na protoboard é feita em outra conversa.
 ## 1. Auditoria dos símbolos do Simulador
 
 O catálogo (`data/components/`) só tem peças reais, cada valor com a fonte. O que era didático
-eram os **valores padrão dos símbolos** sem peça do catálogo ligada. A tabela mostra, para cada
+eram os **valores padrão dos símbolos** sem peça do catálogo ligada. Resistor, capacitor,
+indutor, MOSFET e JFET canal P, inversor, soft-starter e driver de passo já foram ligados ao
+catálogo no PR #15 ([dados-reais-biblioteca.md](dados-reais-biblioteca.md)); este documento cobre
+o restante. A tabela mostra, para cada
 símbolo que tinha só valores didáticos, o que mudou.
 
 | Símbolo | Antes | Agora |
 |---|---|---|
-| MOSFET canal P (`pmos`) | só genérico | aceita `mosfet.p` (IRF9540N, BS250): modelo PMOS do datasheet |
-| JFET canal P (`pjf`) | só genérico | aceita `jfet.p` (2N5460): modelo PJF do datasheet |
-| Transformador monofásico | Vp, Vs, Sn digitados; magnetização e cobre didáticos | aceita `magnetic.transformer`: Hammond 1182L18, 1182M240 (novos) e Triad VPT24-1040; Vp, Vs, Sn e perda no cobre vêm do datasheet |
+| Transformador monofásico (2 e 4 bobinas) | PR #15: Vp, Vs, Sn do datasheet (Triad VPT24-1040); cobre didático | + Hammond 1182L18, 1182M240 (novos); a perda no cobre também vem do datasheet (regulação) |
 | Transformador trifásico | idem | aceita `magnetic.transformer_3ph`: BLOCK TT3 1-4-4 e TT3 5-4-4 (novos); perda no cobre = P_sc/Sn |
 | Autotransformador | idem | aceita `magnetic.autotransformer`: Hammond 175D-NA e 175F-NA (novos); VH, VX e Sn do datasheet |
 | Motor de indução trifásico | R1, X1, R2, X2, Xm, J didáticos | aceita `motor.ac`: WEG W22 16616834, 11567431, 11546979 (novos); polos, f e J do datasheet; circuito equivalente ajustado aos dados de placa |
@@ -109,7 +110,7 @@ datasheet comercial (Atmel-42735B, cap. 32), que não pôde ser lido até o fim.
   docstring), aviso do conjugado de partida, divisão IEEE 112 e rastro do cálculo.
 - `tests/unit/schematic/test_real_parts.py`: todo símbolo que era só didático tem peças reais;
   transformador com relação 234/36 V do datasheet; trifásico com P_sc/Sn; autotransformador;
-  contator com 0,76/0,25 × Us; MOSFET e JFET canal P geram PMOS/PJF.
+  contator com 0,76/0,25 × Us.
 - `tests/analytic_vs_sim/test_as_drives.py::test_as_drv_09_catalogue_motor_weg_w22`
   (`AS-DRV-09`, ngspice): com o conjugado nominal, o SPICE dá o regime do circuito ajustado
   (rotação 0,2 %, corrente e conjugado 1 %) e o circuito dá 1175 rpm a 0,5 % e 4,41 A a 8 %.

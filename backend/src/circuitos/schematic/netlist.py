@@ -22,7 +22,7 @@ from dataclasses import dataclass, field
 
 from circuitos.components.models import ComponentRecord
 from circuitos.core.calc import CalcLog, CalcStep, record
-from circuitos.core.units import Q_
+from circuitos.core.units import Q_, parse_unit
 from circuitos.cosim.controllers import ControllerSpec, SensorSpec, controller_lines
 from circuitos.design.opamp import OpAmp
 from circuitos.devices.thyristor import Kind as ThyristorKind
@@ -226,7 +226,7 @@ def _resolve(ref: NetRef, conn: Connectivity, sch: Schematic) -> str:
     assert ref.at is not None
     node = conn.node_at(ref.at, [w.points for w in sch.wires])
     if node is None:
-        raise SchematicError(f"Nenhum fio ou pino no ponto {ref.at} da ponta de prova")
+        raise SchematicError(f"Nenhum fio ou pino no ponto {ref.at} da ponteira de prova")
     return node
 
 
@@ -253,7 +253,7 @@ def _probe_vector(
         a = _resolve(pr.target, conn, sch)
         if pr.kind == "v":
             if a == "0":
-                raise SchematicError("Ponta de tensão na terra: escolha outro nó")
+                raise SchematicError("Ponteira de tensão na terra: escolha outro nó")
             return ProbeVector(pr.name or f"v({a})", _v(a), "V", pr.id)
         assert pr.reference is not None
         b = _resolve(pr.reference, conn, sch)
@@ -447,6 +447,31 @@ def _generic_spread(comp: Component, ctx: _Ctx) -> None:
     )
 
 
+# catalogue transformer -> symbol parameters (record key per symbol parameter)
+_TRANSFORMER_KEYS = {
+    "transformer_1ph": {"vp": "V_pri", "vs": "V_sec", "sn": "S_rated"},
+    "transformer_1ph_4": {"vp": "V_pri@2", "vs": "V_sec@2", "sn": "S_rated"},
+}
+
+
+def _transformer_from_record(comp: Component, rec: ComponentRecord, kind: str) -> Component:
+    """Nameplate values of a catalogue transformer; the turns ratio stays the voltage ratio.
+    The 4-coil symbol takes the parallel ratings (each coil's voltage)."""
+    params = dict(comp.params)
+    for name, key in _TRANSFORMER_KEYS[kind].items():
+        p = rec.parameters.get(key)
+        x = None if p is None else next((v for v in (p.typ, p.max, p.min) if v is not None), None)
+        if p is None or x is None:
+            raise SchematicError(
+                f"{comp.ref}: {rec.part_number} não traz {key} no datasheet; não serve para "
+                "este símbolo de transformador"
+            )
+        unit = {"vp": "V", "vs": "V", "sn": "VA"}[name]
+        params[name] = f"{Q_(x, parse_unit(p.unit)).m_as(unit):.6g}"
+    params.pop("turns", None)
+    return comp.model_copy(update={"params": params})
+
+
 def _source_lines(comp: Component, n: list[str], ctx: _Ctx) -> list[str]:
     name = element_name(comp)
     kind = comp.kind[1:]
@@ -483,6 +508,9 @@ def _emit(comp: Component, n: list[str], ctx: _Ctx) -> list[str]:
     if k == "ground":
         return []
     if k in ("resistor", "capacitor", "inductor"):
+        rec = ctx.record(comp)
+        if rec is not None:
+            ctx.warnings.extend(parts.passive_check(rec, comp, k))
         line = f"{name} {n[0]} {n[1]} {v('value')}"
         ic = comp.params.get("ic", "").strip()
         if ic and k != "resistor":
@@ -521,6 +549,20 @@ def _emit(comp: Component, n: list[str], ctx: _Ctx) -> list[str]:
             o = ctx.override(comp, name)
             return o if o is not None else plate.get(name, ctx.number(comp, name))
 
+    if k == "transformer_1ph_4":
+        rec = ctx.record(comp)
+        if rec is not None:  # a catalogue transformer: nameplate from its datasheet
+            comp = _transformer_from_record(comp, rec, k)
+            ctx.warnings.extend(parts.review_warning(rec, ref))
+            try:  # copper losses from the data sheet too (regulation or P_sc)
+                plate4, warn4 = transformers.catalogue_params("transformer_1ph", rec, ref)
+            except transformers.TransformerError:
+                plate4, warn4 = {}, []
+            if "rcu" in plate4:
+                comp = comp.model_copy(
+                    update={"params": {**comp.params, "rcu": f"{plate4['rcu']:.6g}"}}
+                )
+            ctx.warnings.extend(warn4)
     if k in ("transformer_1ph", "transformer_3ph"):
         three = k == "transformer_3ph"
         conn_p = param(comp, "conn_p") if three else "D"
@@ -546,6 +588,24 @@ def _emit(comp: Component, n: list[str], ctx: _Ctx) -> list[str]:
             *transformers.pair_lines(ref, (n[0], n[1]), (n[2], n[3]), w),
             f"R_{ref}_iso {n[1]} {n[3]} 1g",
         ]
+    if k in ("transformer_1ph_4", "transformer_3ph_open"):
+        try:
+            w = transformers.size(
+                ref,
+                ctx.number(comp, "vp"),
+                ctx.number(comp, "vs"),
+                None,
+                ctx.number(comp, "sn") / (3 if k == "transformer_3ph_open" else 1),
+                ctx.number(comp, "freq"),
+                ctx.number(comp, "imag"),
+                ctx.number(comp, "rcu"),
+                ctx.log,
+            )
+        except transformers.TransformerError as exc:
+            raise SchematicError(str(exc)) from exc
+        if k == "transformer_3ph_open":
+            return transformers.open_three_phase_lines(ref, n, w)
+        return transformers.four_coil_lines(ref, n, w)
     if k == "autotransformer":
         try:
             aw = transformers.size_auto(
@@ -671,7 +731,10 @@ def _emit(comp: Component, n: list[str], ctx: _Ctx) -> list[str]:
         d, g, s = n
         rec = ctx.record(comp)
         if rec is not None:
-            model = ctx.use(comp, parts.mosfet(rec, ref, ctx.log, ctx.override(comp, "vto")))
+            model = ctx.use(
+                comp,
+                parts.mosfet(rec, ref, ctx.log, ctx.override(comp, "vto"), k == "pmos"),
+            )
         else:
             model = param(comp, "model")
             if not model:
@@ -682,7 +745,7 @@ def _emit(comp: Component, n: list[str], ctx: _Ctx) -> list[str]:
         d, g, s = n
         rec = ctx.record(comp)
         if rec is not None:
-            model = ctx.use(comp, parts.jfet(rec, ref, ctx.log))
+            model = ctx.use(comp, parts.jfet(rec, ref, ctx.log, k == "pjf"))
         else:
             model = param(comp, "model")
             if not model:
