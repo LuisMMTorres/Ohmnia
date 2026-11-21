@@ -1,0 +1,120 @@
+# Fonte: NXP Semiconductors, KTY81 series Silicon temperature sensors, Product data sheet KTY81_SER_5, Rev. 05, 25 April 2008 (o mesmo arquivo do KTY81-110 no catálogo).
+part_number: KTY81-210
+category: sensor.temperature
+schema_version: '1.0'
+manufacturer: NXP
+family: KTY81 series
+package: SOD70 (plástico quase cilíndrico, 2 terminais em linha)
+lifecycle: desconhecido
+notes:
+- 'Documento da série KTY81; valores do tipo KTY81/210 (Isen(cont) = 1 mA, Tamb = 25 °C em líquido, salvo indicação). Família KTY81/2xx com R25 em torno de 2000 ohm.'
+- 'Valores lidos pela web em 2026-11-20 na cópia da NXP do mesmo documento (https://www.nxp.com/docs/en/data-sheet/KTY81_SER.pdf, KTY81_SER_5, Rev. 05), indicada pelo usuário; páginas pelo rodapé dessa cópia. Todos os parâmetros ficam a verificar até a conferência no PDF do catálogo.'
+- 'Corrente contínua máx. do sensor (p. 3): 10 mA em ar livre a Tamb = 25 °C; 2 mA em ar livre a Tamb = 150 °C; 1 mA recomendado acima de 100 °C (p. 11).'
+- 'Constante de tempo térmica (p. 4): 30 s em ar parado, 5 s em líquido parado, 3 s em líquido em movimento; usado 5 s em t_resp, como no KTY81-110.'
+datasheets:
+- id: ds1
+  manufacturer: NXP
+  document_number: KTY81_SER_5
+  revision: Rev. 05, 25 April 2008
+  url: https://www.farnell.com/datasheets/1503771.pdf
+  sha256: e1157b82d7e5112f5ae72d91e6321c253bb3f25a81fc61c8886266dda5168e26
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  range:
+    min: -55
+    max: 150
+    unit: °C
+    status: a_verificar
+    note: 'Lido na cópia da NXP do mesmo documento (Rev. 05); página pelo rodapé dessa cópia; conferir no PDF do catálogo.'
+    source: {datasheet_id: ds1, page: 3, location: Table 5 Limiting values - ambient temperature, excerpt: "−55 +150 °C"}
+  R25:
+    min: 1980
+    typ: 2000
+    max: 2020
+    unit: ohm
+    conditions: {T: 25 °C, Isen: 1 mA}
+    status: a_verificar
+    note: 'Lido na cópia da NXP do mesmo documento (Rev. 05); página pelo rodapé dessa cópia; conferir no PDF do catálogo.'
+    source: {datasheet_id: ds1, page: 4, location: Table 6 Characteristics - R25 KTY81/210, excerpt: "KTY81/210 1980 - 2020 Ω"}
+  R:
+    min: 1105
+    typ: 1135
+    max: 1165
+    unit: ohm
+    conditions: {T: -40 °C, Isen: 1 mA}
+    status: a_verificar
+    note: 'Lido na cópia da NXP do mesmo documento (Rev. 05); página pelo rodapé dessa cópia; conferir no PDF do catálogo.'
+    source: {datasheet_id: ds1, page: 8, location: Table 10 KTY81/210 resistance - Tamb = -40 °C}
+  R@2:
+    min: 1603
+    typ: 1630
+    max: 1656
+    unit: ohm
+    conditions: {T: 0 °C, Isen: 1 mA}
+    status: a_verificar
+    note: 'Lido na cópia da NXP do mesmo documento (Rev. 05); página pelo rodapé dessa cópia; conferir no PDF do catálogo.'
+    source: {datasheet_id: ds1, page: 8, location: Table 10 KTY81/210 resistance - Tamb = 0 °C}
+  R@3:
+    min: 1980
+    typ: 2000
+    max: 2020
+    unit: ohm
+    conditions: {T: 25 °C, Isen: 1 mA}
+    status: a_verificar
+    note: 'Lido na cópia da NXP do mesmo documento (Rev. 05); página pelo rodapé dessa cópia; conferir no PDF do catálogo.'
+    source: {datasheet_id: ds1, page: 8, location: Table 10 KTY81/210 resistance - Tamb = 25 °C}
+  R@4:
+    min: 2383
+    typ: 2417
+    max: 2451
+    unit: ohm
+    conditions: {T: 50 °C, Isen: 1 mA}
+    status: a_verificar
+    note: 'Lido na cópia da NXP do mesmo documento (Rev. 05); página pelo rodapé dessa cópia; conferir no PDF do catálogo.'
+    source: {datasheet_id: ds1, page: 8, location: Table 10 KTY81/210 resistance - Tamb = 50 °C}
+  R@5:
+    min: 3318
+    typ: 3392
+    max: 3466
+    unit: ohm
+    conditions: {T: 100 °C, Isen: 1 mA}
+    status: a_verificar
+    note: 'Lido na cópia da NXP do mesmo documento (Rev. 05); página pelo rodapé dessa cópia; conferir no PDF do catálogo.'
+    source: {datasheet_id: ds1, page: 8, location: Table 10 KTY81/210 resistance - Tamb = 100 °C}
+  R@6:
+    min: 4153
+    typ: 4280
+    max: 4407
+    unit: ohm
+    conditions: {T: 150 °C, Isen: 1 mA}
+    status: a_verificar
+    note: 'Lido na cópia da NXP do mesmo documento (Rev. 05); página pelo rodapé dessa cópia; conferir no PDF do catálogo.'
+    source: {datasheet_id: ds1, page: 8, location: Table 10 KTY81/210 resistance - Tamb = 150 °C}
+  alpha:
+    typ: 0.0079
+    unit: 1/K
+    conditions: {TA: 25 °C}
+    status: a_verificar
+    note: 'Lido na cópia da NXP do mesmo documento (Rev. 05); página pelo rodapé dessa cópia; conferir no PDF do catálogo.'
+    source: {datasheet_id: ds1, page: 4, location: Table 6 Characteristics - temperature coefficient, excerpt: "0.79 %/K"}
+  t_resp:
+    typ: 5
+    unit: s
+    status: a_verificar
+    note: 'Lido na cópia da NXP do mesmo documento (Rev. 05); página pelo rodapé dessa cópia; conferir no PDF do catálogo.'
+    source: {datasheet_id: ds1, page: 4, location: Table 6 Characteristics - thermal time constant in still liquid}
+  Top:
+    min: -55
+    max: 150
+    unit: °C
+    status: a_verificar
+    note: 'Lido na cópia da NXP do mesmo documento (Rev. 05); página pelo rodapé dessa cópia; conferir no PDF do catálogo.'
+    source: {datasheet_id: ds1, page: 3, location: Table 5 Limiting values - ambient temperature, excerpt: "−55 +150 °C"}
+attributes:
+  elemento:
+    value: Sensor de silício de resistência (PTC), 2000 ohm a 25 °C
+    status: a_verificar
+    note: 'Lido na cópia da NXP do mesmo documento (Rev. 05); página pelo rodapé dessa cópia; conferir no PDF do catálogo.'
+    source: {datasheet_id: ds1, page: 2, location: Table 1 Quick reference data - R25 KTY81/210, excerpt: "KTY81/210 1980 - 2020 Ω"}

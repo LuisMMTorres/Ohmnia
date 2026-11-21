@@ -19,6 +19,7 @@ from collections.abc import Callable, Generator, Iterator
 from dataclasses import dataclass, field
 from typing import Any, Protocol
 
+from circuitos.cosim import libraries as lib
 from circuitos.cosim.clang import CError, CType, Func, Program, VarDecl, parse
 
 Gen = Generator[float, None, Any]
@@ -42,11 +43,17 @@ class Board:
     rpullup: float = 35e3  # Ω, INPUT_PULLUP
     adc_effective: tuple[float, float] | None = None  # V, accurate range
     led: int = 13
+    i2c: tuple[int, int] | None = None  # (SDA, SCL) of the default Wire bus
     constants: dict[str, int] = field(default_factory=dict)
     sources: dict[str, str] = field(default_factory=dict)  # parameter -> where it comes from
 
 
 _UNO_PINS = {f"D{n}": n for n in range(2, 14)} | {f"A{n}": 14 + n for n in range(6)}
+_NANO_PINS = {f"D{n}": n for n in range(2, 14)} | {f"A{n}": 14 + n for n in range(8)}
+MEGA_DIGITAL = (*range(2, 14), 20, 21, *range(22, 30), 44, 45, 46)
+_MEGA_PINS = {f"D{n}": n for n in MEGA_DIGITAL} | {f"A{n}": 54 + n for n in range(16)}
+PICO_GPIO = (*range(0, 23), 26, 27, 28)
+_PICO_PINS = {f"GP{n}": n for n in PICO_GPIO}
 _ESP_GPIO = (
     2,
     4,
@@ -84,6 +91,7 @@ BOARDS: dict[str, Board] = {
         pins=_UNO_PINS,
         analog=frozenset(range(14, 20)),
         pwm={3: 490.0, 5: 980.0, 6: 980.0, 9: 490.0, 10: 490.0, 11: 490.0},
+        i2c=(18, 19),
         constants={f"A{n}": 14 + n for n in range(6)} | {"LED_BUILTIN": 13},
         sources={
             "vdd": "Arduino UNO R3 User Manual (SKU A000066), p. 5: alimentação USB 5 V",
@@ -92,6 +100,51 @@ BOARDS: dict[str, Board] = {
             "adc": "analogRead de 10 bits com referência de 5 V (referência da linguagem Arduino)",
             "didatico": "limiares de entrada (0,6/0,3 VDD), resistência de saída 25 Ω e pull-up "
             "de 35 kΩ: valores didáticos (o datasheet do ATmega328P não está na sua pasta)",
+            "i2c": "I2C (Wire) em A4 = SDA e A5 = SCL (referência da biblioteca Wire do Arduino)",
+        },
+    ),
+    "arduino_nano": Board(
+        kind="arduino_nano",
+        label="Arduino Nano",
+        vdd=5.0,
+        adc_bits=10,
+        adc_fs=5.0,
+        int_bits=16,
+        pins=_NANO_PINS,
+        analog=frozenset(range(14, 22)),
+        pwm={3: 490.0, 5: 980.0, 6: 980.0, 9: 490.0, 10: 490.0, 11: 490.0},
+        i2c=(18, 19),
+        constants={f"A{n}": 14 + n for n in range(8)} | {"LED_BUILTIN": 13},
+        sources={
+            "vdd": "Arduino Nano (catálogo, p. 2): ATmega328P a 16 MHz, o mesmo do Uno, 5 V",
+            "pwm": "idem, p. 2: 8 entradas analógicas e 6 canais PWM (pinos 3, 5, 6, 9, 10, 11); "
+            "frequências de 490/980 Hz da referência da linguagem Arduino",
+            "adc": "analogRead de 10 bits com referência de 5 V (referência da linguagem Arduino)",
+            "didatico": "limiares de entrada (0,6/0,3 VDD), resistência de saída 25 Ω e pull-up "
+            "de 35 kΩ: os mesmos valores didáticos do Uno",
+            "i2c": "I2C (Wire) em A4 = SDA e A5 = SCL, como no Uno",
+        },
+    ),
+    "arduino_mega": Board(
+        kind="arduino_mega",
+        label="Arduino Mega 2560 Rev3",
+        vdd=5.0,
+        adc_bits=10,
+        adc_fs=5.0,
+        int_bits=16,
+        pins=_MEGA_PINS,
+        analog=frozenset(range(54, 70)),
+        pwm={n: (980.0 if n in (4, 13) else 490.0) for n in (*range(2, 14), 44, 45, 46)},
+        i2c=(20, 21),
+        constants={f"A{n}": 54 + n for n in range(16)} | {"LED_BUILTIN": 13},
+        sources={
+            "vdd": "Arduino Mega 2560 Rev3 (catálogo, p. 2): ATmega2560 a 16 MHz, 5 V",
+            "pwm": "idem, p. 2: 16 entradas analógicas e 15 canais PWM (pinos 2 a 13 e 44 a 46); "
+            "490 Hz, 980 Hz nos pinos 4 e 13, pela referência da linguagem Arduino",
+            "adc": "analogRead de 10 bits com referência de 5 V (referência da linguagem Arduino)",
+            "didatico": "limiares de entrada (0,6/0,3 VDD), resistência de saída 25 Ω e pull-up "
+            "de 35 kΩ: os mesmos valores didáticos do Uno",
+            "i2c": "I2C (Wire) em D20 = SDA e D21 = SCL (referência da biblioteca Wire do Arduino)",
         },
     ),
     "esp32_devkitc": Board(
@@ -111,6 +164,7 @@ BOARDS: dict[str, Board] = {
         rpullup=45e3,
         adc_effective=(0.15, 2.45),
         led=2,
+        i2c=(21, 22),
         constants={
             "A0": 36,
             "A3": 39,
@@ -130,6 +184,35 @@ BOARDS: dict[str, Board] = {
             "adc": "idem, p. 24: faixa efetiva 150 a 2450 mV com atenuação de 11 dB; leitura de "
             "12 bits (0 a 4095) com fundo de escala didático de 3,3 V",
             "didatico": "frequência PWM de 1 kHz e pull-up de 45 kΩ: valores didáticos",
+            "i2c": "I2C (Wire) em IO21 = SDA e IO22 = SCL: pinos padrão do núcleo Arduino do ESP32",
+        },
+    ),
+    "rpi_pico": Board(
+        kind="rpi_pico",
+        label="Raspberry Pi Pico (RP2040)",
+        vdd=3.3,
+        adc_bits=12,
+        adc_fs=3.3,
+        int_bits=32,
+        pins=_PICO_PINS,
+        analog=frozenset({26, 27, 28}),
+        pwm={n: 1000.0 for n in PICO_GPIO},
+        led=25,
+        i2c=(4, 5),
+        constants={"A0": 26, "A1": 27, "A2": 28, "LED_BUILTIN": 25},
+        sources={
+            "vdd": "Raspberry Pi Pico Datasheet (catálogo), p. 4: IO fixo em 3,3 V; p. 19 da "
+            "release 22: GPIO alimentado pelo trilho de 3,3 V",
+            "adc": "RP2040 Datasheet, p. 10: ADC de 12 bits, 500 ksps; Pico, p. 19 (release 22): "
+            "GPIO26 a GPIO28 podem ser entradas do ADC; referência ADC_VREF = 3,3 V filtrado "
+            "(p. 7)",
+            "pinos": "Pico, p. 19 (release 22): GPIO0 a GPIO22 só digitais, GPIO26 a GPIO28 "
+            "digitais ou ADC; LED da placa no GPIO25 (p. 7)",
+            "didatico": "limiares de entrada (0,6/0,3 VDD), resistência de saída 25 Ω, pull-up de "
+            "35 kΩ e PWM de 1 kHz em qualquer GP: valores didáticos (a tabela elétrica de E/S do "
+            "RP2040, seção 5.5.3, não pôde ser lida; a verificar)",
+            "i2c": "I2C (Wire) em GP4 = SDA e GP5 = SCL: pinos padrão do núcleo Arduino do RP2040 "
+            "(a verificar)",
         },
     ),
 }
@@ -227,6 +310,7 @@ class Runtime:
             "BIN": 2,
             "OCT": 8,
             "NULL": 0,
+            **lib.LIB_CONSTANTS,
             **board.constants,
         }
         self.fconst = {
@@ -317,6 +401,16 @@ class Runtime:
             zero = 0.0 if d.ctype.is_float else 0
             items += [zero] * max(0, n - len(items))
             scope[d.name] = _Var(items[:n], d.ctype, True)
+            return
+        if isinstance(d.init, tuple) and d.init[0] == "ctor":
+            args = []
+            for a in d.init[2]:
+                args.append((yield from self._ev(a)))
+            try:
+                obj = lib.construct(d.init[1], args, self._lookup)
+            except ValueError as exc:
+                raise CError(str(exc), d.init[3]) from exc
+            scope[d.name] = _Var(obj, d.ctype)
             return
         if d.init is None:
             value: Any = "" if d.ctype.base == "String" else (0.0 if d.ctype.is_float else 0)
@@ -519,7 +613,12 @@ class Runtime:
             values = []
             for a in args or []:
                 values.append((yield from self._ev(a)))
-            return self._member(obj, name, values)
+            result = self._member(obj, name, values)
+            if isinstance(result, lib.Timed):
+                yield self.pending + result.seconds
+                self.pending = 0.0
+                return result.value
+            return result
         raise CError(f"expressão não suportada: {k}")
 
     def _assign(self, op: str, target: Any, value_e: Any) -> Gen:
@@ -563,7 +662,36 @@ class Runtime:
                 return None
             if name in ("available", "read"):
                 return 0 if name == "available" else -1
+        var = self._lookup(obj)
+        if var is not None and hasattr(var.value, "call"):
+            try:
+                return var.value.call(self, name, args)
+            except ValueError as exc:
+                raise CError(str(exc)) from exc
         raise CError(f"{obj}.{name}() não é suportado")
+
+    # ------------------------------------------------- bus seen by the sensor libraries
+    def lib_now(self) -> float:
+        return self.now()
+
+    def lib_warn(self, text: str) -> None:
+        if hasattr(self.hw, "digital_sensors"):  # not in the dry run that finds the outputs
+            self.hw.warn(text)
+
+    def lib_pullup(self, pin: int) -> None:
+        p = self._pin(pin)
+        self.modes[p] = 2
+        self.hw.output(p, "pullup", 1.0)
+
+    def lib_line_high(self, pin: int) -> bool:
+        return self.hw.voltage(pin) >= self.board.vih * self.board.vdd
+
+    def lib_sensors(self, pin: int, kind: str) -> list[lib.DigitalSensor]:
+        finder = getattr(self.hw, "digital_sensors", None)
+        return [] if finder is None else list(finder(pin, kind))
+
+    def lib_i2c(self) -> tuple[int, int] | None:
+        return self.board.i2c
 
     def _serial(self, text: str) -> None:
         self.line += text

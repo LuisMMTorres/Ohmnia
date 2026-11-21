@@ -244,3 +244,33 @@ def test_igbt_bench_without_component(client):
     body = client.post("/api/v1/devices/igbt/output", json={}).json()
     assert len(body["curves"]) == 5
     assert any("E_on" in w for w in body["warnings"])
+
+
+def test_peripheral_bench_list(client):
+    benches = client.get("/api/v1/devices/peripherals").json()
+    kinds = {b["kind"] for b in benches}
+    assert {"lm35", "relay", "arduino_uno", "esp32_devkitc", "plc", "stepper_motor"} <= kinds
+    lm35 = next(b for b in benches if b["kind"] == "lm35")
+    assert lm35["group"] == "Sensores"
+    assert "temp" not in {p["name"] for p in lm35["params"]}  # driven by the bench
+    assert {f["name"] for f in lm35["fixture"]} == {"vs", "tmin", "tmax"}
+    uno = next(b for b in benches if b["kind"] == "arduino_uno")
+    assert "program" not in {p["name"] for p in uno["params"]}
+
+
+@pytest.mark.ngspice
+def test_peripheral_bench_with_catalogue_relay(client):
+    comp = find(client, "relay.electromechanical", "SRD-05VDC-SL-C")
+    r = client.post("/api/v1/devices/peripherals/relay", json={"component_id": comp["id"]})
+    assert r.status_code == 200, r.text
+    body = r.json()
+    assert all(t["ok"] for t in body["tests"]), body["tests"]
+    assert body["used"]["rcoil"] in ("70", "70.0")
+    assert body["curves"] and body["netlists"]
+
+
+def test_peripheral_bench_errors(client):
+    assert client.post("/api/v1/devices/peripherals/xyz", json={}).status_code == 404
+    comp = find(client, "diode.rectifier", "1N4007")
+    r = client.post("/api/v1/devices/peripherals/relay", json={"component_id": comp["id"]})
+    assert r.status_code == 422

@@ -8,10 +8,11 @@ package: SOD70 (plástico quase cilíndrico, 2 terminais em linha)
 lifecycle: desconhecido
 notes:
 - 'Documento da série KTY81; valores do tipo KTY81/110 (Isen(cont) = 1 mA, Tamb = 25 °C em líquido, salvo indicação).'
-- 'Sensor de silício de resistência com coeficiente positivo (PTC), sem alimentação: não há VS. Resistência R25 (p. 1 e 3): mín. 990, máx. 1010 ohm (Isen = 1 mA); típ. 1000 ohm na Tabela 7 (p. 4). Sem símbolo R25 no esquema sensor.temperature.'
+- 'Sensor de silício de resistência com coeficiente positivo (PTC), sem alimentação: não há VS. Resistência R25 (p. 1 e 3): mín. 990, máx. 1010 ohm (Isen = 1 mA); típ. 1000 ohm na Tabela 7 (p. 4).'
 - 'Razões de resistência (p. 3): R100/R25 = 1,676 a 1,716 (típ. 1,696); R-55/R25 = 0,480 a 0,500 (típ. 0,490). Resistência típ. nos extremos (Tabela 7, p. 4): 490 ohm a -55 °C e 2211 ohm a 150 °C.'
 - 'Corrente contínua máx. do sensor (p. 3): 10 mA em ar livre a Tamb = 25 °C; 2 mA em ar livre a Tamb = 150 °C. Deriva de R25: típ. 1,6 ohm em 10000 h a 150 °C (série KTY81/1).'
 - 'Constante de tempo térmica (63,2%): típ. 30 s em ar parado, 5 s em líquido parado, 3 s em líquido em movimento (p. 3); usado 5 s (líquido parado) em t_resp.'
+- 'Tabela R × T (parâmetros R): valores mín./típ./máx. da Tabela 7 com Isen = 1 mA; a -55 °C só o típico (490 ohm) consta da transcrição. Conferida em 2026-11-20 com o texto do mesmo documento (KTY81_SER_5, Rev. 05) no site da NXP, onde a Tabela 7 aparece no rodapé da p. 5.'
 - 'alpha: coeficiente de temperatura típ. 0,79 %/K a 25 °C (p. 3), escrito como 0,0079 1/K; o coeficiente varia com a temperatura (Tabela 7, p. 4).'
 datasheets:
 - id: ds1
@@ -29,36 +30,98 @@ parameters:
     max: 150
     unit: °C
     status: extraido
-    source: {page: 3, location: Table 5 Limiting values - ambient temperature, excerpt: "Tamb ambient temperature -55 +150 °C"}
+    source: {datasheet_id: ds1, page: 3, location: Table 5 Limiting values - ambient temperature, excerpt: "Tamb ambient temperature -55 +150 °C"}
   accuracy:
     max: 1.27
     unit: K
     conditions: {TA: 25 °C}
     status: extraido
-    source: {page: 4, location: Table 7 - KTY81/110 maximum expected temperature error at 25 °C, excerpt: "25  77  0.79  990  1000  1010  ±1.27"}
+    source: {datasheet_id: ds1, page: 4, location: Table 7 - KTY81/110 maximum expected temperature error at 25 °C, excerpt: "25  77  0.79  990  1000  1010  ±1.27"}
+  R25:
+    min: 990
+    typ: 1000
+    max: 1010
+    unit: ohm
+    conditions: {T: 25 °C, Isen: 1 mA}
+    status: extraido
+    source: {datasheet_id: ds1, page: 4, location: Table 7 - KTY81/110 resistance at 25 °C, excerpt: "25  77  0.79  990  1000  1010  ±1.27"}
+  R:
+    typ: 490
+    unit: ohm
+    conditions: {T: -55 °C, Isen: 1 mA}
+    status: extraido
+    source: {datasheet_id: ds1, page: 4, location: Table 7 KTY81/110 resistance - Tamb = -55 °C}
+  R@2:
+    min: 552
+    typ: 567
+    max: 582
+    unit: ohm
+    conditions: {T: -40 °C, Isen: 1 mA}
+    status: extraido
+    source: {datasheet_id: ds1, page: 4, location: Table 7 KTY81/110 resistance - Tamb = -40 °C}
+  R@3:
+    min: 802
+    typ: 815
+    max: 828
+    unit: ohm
+    conditions: {T: 0 °C, Isen: 1 mA}
+    status: extraido
+    source: {datasheet_id: ds1, page: 4, location: Table 7 KTY81/110 resistance - Tamb = 0 °C}
+  R@4:
+    min: 990
+    typ: 1000
+    max: 1010
+    unit: ohm
+    conditions: {T: 25 °C, Isen: 1 mA}
+    status: extraido
+    source: {datasheet_id: ds1, page: 4, location: Table 7 KTY81/110 resistance - Tamb = 25 °C}
+  R@5:
+    min: 1192
+    typ: 1209
+    max: 1225
+    unit: ohm
+    conditions: {T: 50 °C, Isen: 1 mA}
+    status: extraido
+    source: {datasheet_id: ds1, page: 4, location: Table 7 KTY81/110 resistance - Tamb = 50 °C}
+  R@6:
+    min: 1659
+    typ: 1696
+    max: 1733
+    unit: ohm
+    conditions: {T: 100 °C, Isen: 1 mA}
+    status: extraido
+    source: {datasheet_id: ds1, page: 4, location: Table 7 KTY81/110 resistance - Tamb = 100 °C}
+  R@7:
+    min: 2145
+    typ: 2211
+    max: 2277
+    unit: ohm
+    conditions: {T: 150 °C, Isen: 1 mA}
+    status: extraido
+    source: {datasheet_id: ds1, page: 4, location: Table 7 KTY81/110 resistance - Tamb = 150 °C}
   alpha:
     typ: 0.0079
     unit: 1/K
     conditions: {TA: 25 °C}
     status: extraido
-    source: {page: 3, location: Table 6 Characteristics - temperature coefficient, excerpt: "TC temperature coefficient - 0.79 - %/K"}
+    source: {datasheet_id: ds1, page: 3, location: Table 6 Characteristics - temperature coefficient, excerpt: "TC temperature coefficient - 0.79 - %/K"}
   t_resp:
     typ: 5
     unit: s
     status: extraido
-    source: {page: 3, location: Table 6 Characteristics - thermal time constant in still liquid, excerpt: "τth thermal time constant in still liquid 5 s"}
+    source: {datasheet_id: ds1, page: 3, location: Table 6 Characteristics - thermal time constant in still liquid, excerpt: "τth thermal time constant in still liquid 5 s"}
   Top:
     min: -55
     max: 150
     unit: °C
     status: extraido
-    source: {page: 3, location: Table 5 Limiting values - ambient temperature, excerpt: "Tamb ambient temperature -55 +150 °C"}
+    source: {datasheet_id: ds1, page: 3, location: Table 5 Limiting values - ambient temperature, excerpt: "Tamb ambient temperature -55 +150 °C"}
 attributes:
   elemento:
     value: Sensor de silício de resistência (PTC), 1000 ohm a 25 °C
     status: extraido
-    source: {page: 1, location: 1.1 General description and Table 1 Quick reference data, excerpt: "positive temperature coefficient of resistance ... R25 KTY81/110 990 1010 Ω"}
+    source: {datasheet_id: ds1, page: 1, location: 1.1 General description and Table 1 Quick reference data, excerpt: "positive temperature coefficient of resistance ... R25 KTY81/110 990 1010 Ω"}
   saida:
     value: Resistência (2 contatos elétricos), corrente de medição 1 mA
     status: extraido
-    source: {page: 2, location: Table 2 Pinning and Table 7 (Isen(cont) = 1 mA), excerpt: "Pin 1 electrical contact; Pin 2 electrical contact; Isen(cont) = 1 mA"}
+    source: {datasheet_id: ds1, page: 2, location: Table 2 Pinning and Table 7 (Isen(cont) = 1 mA), excerpt: "Pin 1 electrical contact; Pin 2 electrical contact; Isen(cont) = 1 mA"}

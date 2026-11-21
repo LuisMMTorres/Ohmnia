@@ -27,54 +27,60 @@ parameters:
     max: 125
     unit: °C
     status: extraido
-    source: {page: 19, location: Ordering Guide - TMP36GT9Z temperature range, excerpt: "TMP36GT9Z ±3.0 -40°C to +125°C TO-92 T-3"}
+    source: {datasheet_id: ds1, page: 19, location: Ordering Guide - TMP36GT9Z temperature range, excerpt: "TMP36GT9Z ±3.0 -40°C to +125°C TO-92 T-3"}
   accuracy:
     typ: 1
     max: 3
     unit: K
     conditions: {TA: 25 °C}
     status: extraido
-    source: {page: 3, location: Table 1 Specifications - Accuracy TMP35/TMP36/TMP37 (G Grade), TA = 25°C, excerpt: "(G Grade) TA = 25°C ±1 ±3 °C"}
+    source: {datasheet_id: ds1, page: 3, location: Table 1 Specifications - Accuracy TMP35/TMP36/TMP37 (G Grade), TA = 25°C, excerpt: "(G Grade) TA = 25°C ±1 ±3 °C"}
   accuracy@2:
     typ: 2
     max: 4
     unit: K
     status: extraido
-    source: {page: 3, location: Table 1 Specifications - Accuracy (G Grade), over rated temperature, excerpt: "(G Grade) Over rated temperature ±2 ±4 °C"}
+    source: {datasheet_id: ds1, page: 3, location: Table 1 Specifications - Accuracy (G Grade), over rated temperature, excerpt: "(G Grade) Over rated temperature ±2 ±4 °C"}
   sensitivity:
     typ: 10
     unit: mV/K
     status: extraido
-    source: {page: 3, location: Table 1 Specifications - Scale Factor, TMP36 (-40°C to +125°C), excerpt: "Scale Factor, TMP36 -40°C ≤ TA ≤ +125°C 10 mV/°C"}
+    source: {datasheet_id: ds1, page: 3, location: Table 1 Specifications - Scale Factor, TMP36 (-40°C to +125°C), excerpt: "Scale Factor, TMP36 -40°C ≤ TA ≤ +125°C 10 mV/°C"}
+  V_offset:
+    typ: 0.5
+    unit: V
+    status: extraido
+    note: 'Derivado do próprio documento: 750 mV a 25 °C (p. 1) menos 25 °C × 10 mV/°C (p. 3) = 0,5 V. A Rev. H (Tabela 4, p. 8, lida pela web em 2026-11-20 no link indicado pelo usuário) dá o offset de 0,5 V.'
+    source: {datasheet_id: ds1, page: 1, location: General Description - TMP36, excerpt: "TMP36 ... provides a 750 mV output at 25°C"}
   VS:
     min: 2.7
     max: 5.5
     unit: V
     status: extraido
-    source: {page: 3, location: Table 1 Specifications - Power supply, Supply Range, excerpt: "Supply Range VS 2.7 5.5 V"}
+    source: {datasheet_id: ds1, page: 3, location: Table 1 Specifications - Power supply, Supply Range, excerpt: "Supply Range VS 2.7 5.5 V"}
   IS:
     max: 0.05
     unit: mA
     status: extraido
-    source: {page: 3, location: Table 1 Specifications - Supply Current ISY (ON), unloaded, excerpt: "Supply Current ISY (ON) Unloaded 50 µA"}
+    source: {datasheet_id: ds1, page: 3, location: Table 1 Specifications - Supply Current ISY (ON), unloaded, excerpt: "Supply Current ISY (ON) Unloaded 50 µA"}
   Top:
     min: -55
     max: 150
     unit: °C
     status: extraido
-    source: {page: 4, location: Table 2 Absolute maximum ratings - Operating Temperature Range, excerpt: "Operating Temperature Range -55°C to +150°C"}
+    source: {datasheet_id: ds1, page: 4, location: Table 2 Absolute maximum ratings - Operating Temperature Range, excerpt: "Operating Temperature Range -55°C to +150°C"}
   Tstg:
     min: -65
     max: 160
     unit: °C
     status: extraido
-    source: {page: 4, location: Table 2 Absolute maximum ratings - Storage Temperature Range, excerpt: "Storage Temperature Range -65°C to +160°C"}
+    source: {datasheet_id: ds1, page: 4, location: Table 2 Absolute maximum ratings - Storage Temperature Range, excerpt: "Storage Temperature Range -65°C to +160°C"}
 attributes:
   elemento:
     value: CI sensor de temperatura centígrado de baixa tensão
     status: extraido
-    source: {page: 1, location: General Description, excerpt: "low voltage, precision centigrade temperature sensors"}
+    source: {datasheet_id: ds1, page: 1, location: General Description, excerpt: "low voltage, precision centigrade temperature sensors"}
   saida:
     value: 'Tensão analógica, 10 mV/°C com 750 mV a 25 °C'
     status: extraido
-    source: {page: 1, location: General Description - TMP36, excerpt: "TMP36 ... provides a 750 mV output at 25°C"}
+    source: {datasheet_id: ds1, page: 1, location: General Description - TMP36, excerpt: "TMP36 ... provides a 750 mV output at 25°C"}

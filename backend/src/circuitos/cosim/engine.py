@@ -25,9 +25,10 @@ from circuitos.cosim.controllers import (
     PLC_DI_ON,
     PLC_MIN_SUPPLY,
     ControllerSpec,
+    SensorSpec,
 )
 from circuitos.cosim.plc import IO_BOOL_IN, IO_REAL_IN, PlcRuntime
-from circuitos.schematic.values import try_parse
+from circuitos.schematic.values import parse_value, try_parse
 from circuitos.simulation.results import Plot, Vector
 
 MAX_TRACE = 200_000
@@ -99,6 +100,18 @@ class McuAdapter(_Adapter):
 
     def warn(self, text: str) -> None:
         self.session.warn(f"{self.spec.ref}: {text}")
+
+    def digital_sensors(self, pin: int, kind: str) -> list[SensorLink]:
+        name = self.by_number.get(pin)
+        node = self.spec.pins.get(name) if name is not None else None
+        if node is None:
+            return []
+        found = [s for s in self.session.sensors if s.kind == kind and s.data == node]
+        if kind == "bme280" and self.board.i2c is not None:
+            scl = self.by_number.get(self.board.i2c[1])
+            scl_node = self.spec.pins.get(scl) if scl is not None else None
+            found = [s for s in found if s.spec.pins.get("SCL") == scl_node]
+        return found
 
     # co-simulation
     def tick(self, t: float) -> None:
@@ -233,16 +246,78 @@ class StepperDriverAdapter(_Adapter):
         return 0.0
 
 
+_DATA_PIN = {"dht22": "DATA", "ds18b20": "DQ", "bme280": "SDA"}
+_SUPPLY_PIN = {"dht22": "VCC", "ds18b20": "VDD", "bme280": "VDD"}
+_RANGES = {"temp": ("tmin", "tmax"), "p": ("pmin", "pmax")}
+
+
+class SensorLink:
+    """A digital sensor of the circuit as the board libraries see it (cosim/libraries.py)."""
+
+    def __init__(self, spec: SensorSpec, session: CoSession):
+        self.spec = spec
+        self.session = session
+        self.kind = spec.kind
+        self.ref = spec.ref
+        self.data = spec.pins.get(_DATA_PIN[spec.kind], "")
+        self._warned: set[str] = set()
+
+    def param(self, name: str) -> float:
+        text = self.spec.params.get(name, "")
+        if name == "addr":
+            return float(int(text.split()[0], 16))
+        return parse_value(text)
+
+    def _warn_once(self, key: str, text: str) -> None:
+        if key not in self._warned:
+            self._warned.add(key)
+            self.session.warn(f"{self.ref}: {text}")
+
+    def problem(self) -> str | None:
+        p = self.spec.pins
+        vs = self.session.v(p[_SUPPLY_PIN[self.kind]]) - self.session.v(p["GND"])
+        lo, hi = self.param("vsmin"), self.param("vsmax")
+        if vs < lo:
+            return f"alimentação de {vs:.3g} V, abaixo do mínimo de {lo:g} V"
+        if vs > hi:
+            self._warn_once(
+                "vs", f"alimentação de {vs:.3g} V acima do máximo de {hi:g} V do datasheet"
+            )
+        return None
+
+    def read(self, quantity: str) -> float:
+        value = stimulus_value(self.spec.params.get(quantity, "0"), self.session)
+        lo, hi = (0.0, 100.0) if quantity == "rh" else tuple(map(self.param, _RANGES[quantity]))
+        if not lo <= value <= hi:
+            self._warn_once(
+                quantity, f"valor {value:.4g} fora da faixa de medição ({lo:g} a {hi:g})"
+            )
+        return min(max(value, lo), hi)
+
+
+def stimulus_value(text: str, session: CoSession) -> float:
+    """Value now of a stimulus parameter: constant, time/value pairs or v(node)."""
+    t = text.strip()
+    if t.lower().startswith("v(") and t.endswith(")"):
+        nodes = [n.strip().lower() for n in t[2:-1].split(",")]
+        return session.v(nodes[0]) - (session.v(nodes[1]) if len(nodes) > 1 else 0.0)
+    values = [float(x) for x in t.replace(",", " ").split()]
+    if len(values) == 1:
+        return values[0]
+    return float(np.interp(session.t, values[::2], values[1::2]))
+
+
 class CoSession:
     """Shared by the ngspice callbacks of one run."""
 
-    def __init__(self, specs: list[ControllerSpec]):
+    def __init__(self, specs: list[ControllerSpec], sensors: list[SensorSpec] | None = None):
         self.latest: dict[str, float] = {}
         self.read = self._no_reader  # replaced by the backend during the run
         self.serial: dict[str, list[tuple[float, str]]] = {}
         self.warnings: list[str] = []
         self.sources: dict[str, tuple[_Adapter, str]] = {}
         self.adapters: list[_Adapter] = []
+        self.sensors = [SensorLink(s, self) for s in sensors or []]
         for spec in specs:
             adapter: _Adapter
             if spec.kind == "plc":

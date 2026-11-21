@@ -261,3 +261,18 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
   caixa de alerta (motivo, o que fazer e de onde vem o limite).
 - Detalhes e limitações: [validacao/queima-componentes.md](validacao/queima-componentes.md).
 
+## Bancada de sensores, atuadores e placas — aguardando revisão (2026-11-20)
+
+- Nova aba "Sensores, atuadores e placas" na Análise de dispositivos (`BD-PER`), com as 21 peças da
+  biblioteca do simulador: 7 sensores, 10 atuadores e 4 placas/controladores (Arduino Uno, ESP32,
+  CLP e driver de passo).
+- Ensaios no ngspice com o mesmo modelo do esquemático, comparados à equação de cada modelo
+  (`AS-PER-01..03`); peças do catálogo dão os valores do datasheet quando o símbolo aceita.
+- Modelos novos (Simulador e bancada) para peças do catálogo que não tinham modelo: termistor NTC
+  (β, autoaquecimento e τ), LDR, sensor Hall linear, chave Hall, sensor de pressão, sensor
+  ultrassônico HC-SR04 (TRIG/ECHO) e as placas Arduino Nano e Mega.
+- Com os datasheets enviados pelo usuário: offset do TMP36 no modelo do LM35, sensor de silício
+  KTY81 (tabela R × T), sensores digitais DHT22, DS18B20 e BME280 lidos pelas bibliotecas do Arduino
+  (DHT, OneWire/DallasTemperature, Adafruit_BME280) na co-simulação, e a placa Raspberry Pi Pico.
+  Total: 34 peças na bancada.
+- Detalhes e limitações: [validacao/bancada-perifericos.md](validacao/bancada-perifericos.md).

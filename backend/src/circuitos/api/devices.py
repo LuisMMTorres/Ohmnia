@@ -20,6 +20,7 @@ from circuitos.core.units import Q_, QuantityModel, VectorModel, parse_unit
 from circuitos.design.opamp import OpAmp, opamp_model
 from circuitos.devices import bjt, diode, igbt, mosfet, pn, thyristor, zener
 from circuitos.devices.opamp_bench import run_bench
+from circuitos.schematic.symbols_base import ParamDef
 
 router = APIRouter(prefix="/api/v1/devices")
 
@@ -1272,4 +1273,194 @@ def opamp_bench_run(request: Request, body: OpampBenchIn) -> OpampBenchOut:
         model=model,
         netlists=result.netlists,
         warnings=warnings,
+    )
+
+
+# ------------------------------------------- BD-PER: sensors, actuators and controllers
+
+
+class PeripheralParamOut(BaseModel):
+    name: str
+    label: str
+    unit: str
+    default: str
+    type: str
+    choices: list[str]
+    help: str
+
+
+class PeripheralBenchInfo(BaseModel):
+    kind: str
+    label: str
+    group: str
+    summary: str
+    description: str
+    tests: list[str]
+    params: list[PeripheralParamOut]
+    fixture: list[PeripheralParamOut]
+    catalogue: list[str]
+    seconds: float
+
+
+class PeripheralBenchIn(BaseModel):
+    params: dict[str, str] = Field(default_factory=dict)
+    fixture: dict[str, str] = Field(default_factory=dict)
+    component_id: uuid.UUID | None = None
+
+
+class PeripheralTraceOut(BaseModel):
+    name: str
+    unit: str
+    values: list[float | None]
+
+
+class PeripheralCurveOut(BaseModel):
+    id: str
+    title: str
+    x_label: str
+    x_unit: str
+    x: list[float]
+    traces: list[PeripheralTraceOut]
+    x_log: bool
+
+
+class PeripheralBenchOut(BaseModel):
+    kind: str
+    tests: list[BenchTestOut]
+    curves: list[PeripheralCurveOut]
+    steps: list[CalcStep]
+    netlists: dict[str, str]
+    warnings: list[str]
+    used: dict[str, str]
+
+
+def _param_out(p: ParamDef) -> PeripheralParamOut:
+    return PeripheralParamOut(
+        name=p.name,
+        label=p.label,
+        unit=p.unit,
+        default=p.default,
+        type=p.type,
+        choices=list(p.choices),
+        help=p.help,
+    )
+
+
+@router.get("/peripherals")
+def peripheral_benches() -> list[PeripheralBenchInfo]:
+    """Benches of the sensors, actuators and controllers of the simulator library."""
+    from circuitos.devices.peripherals import BENCHES, bench_params
+    from circuitos.schematic.library import symbol
+
+    out = []
+    for b in BENCHES.values():
+        sym = symbol(b.kind)
+        out.append(
+            PeripheralBenchInfo(
+                kind=b.kind,
+                label=sym.label,
+                group=b.group,
+                summary=b.summary,
+                description=sym.description,
+                tests=list(b.tests),
+                params=[_param_out(p) for p in bench_params(b)],
+                fixture=[_param_out(p) for p in b.fixture],
+                catalogue=list(sym.catalogue),
+                seconds=b.seconds,
+            )
+        )
+    return out
+
+
+class PeripheralPartOut(BaseModel):
+    id: uuid.UUID
+    part_number: str
+    manufacturer: str
+    status: str
+
+
+@router.get("/peripherals/{kind}/parts")
+def peripheral_parts(request: Request, kind: str) -> list[PeripheralPartOut]:
+    """Catalogue parts that give datasheet values to the model of the bench."""
+    from circuitos.devices.peripherals import BENCHES, part_applies
+    from circuitos.schematic.library import symbol
+
+    if kind not in BENCHES:
+        raise HTTPException(404, f"Sem bancada para {kind!r}")
+    repo: ComponentRepository = request.app.state.components
+    out = []
+    for cat in symbol(kind).catalogue:
+        for r in repo.search(category=cat):
+            if part_applies(kind, r):
+                out.append(
+                    PeripheralPartOut(
+                        id=r.id,
+                        part_number=r.part_number,
+                        manufacturer=r.manufacturer,
+                        status=r.review.status,
+                    )
+                )
+    return out
+
+
+@router.post("/peripherals/{kind}")
+def peripheral_bench(request: Request, kind: str, body: PeripheralBenchIn) -> PeripheralBenchOut:
+    from circuitos.devices.peripherals import BENCHES, BenchError, part_applies, run_peripheral
+    from circuitos.schematic.netlist import SchematicError
+    from circuitos.simulation.backend import SharedNgspiceBackend
+
+    if kind not in BENCHES:
+        raise HTTPException(404, f"Sem bancada para {kind!r}")
+    warnings: list[str] = []
+    rec = None
+    if body.component_id is not None:
+        rec = _record_for(request, body.component_id, "")
+        if not part_applies(kind, rec):
+            raise HTTPException(422, f"{rec.part_number} não serve para este símbolo")
+        warnings += _unreviewed(list(rec.parameters.values()))
+    if not SharedNgspiceBackend.available():
+        raise HTTPException(503, "A bancada precisa da biblioteca compartilhada do ngspice")
+    try:
+        res = run_peripheral(kind, body.params, body.fixture, rec, SharedNgspiceBackend())
+    except (BenchError, SchematicError, CircuitosError, ValueError) as exc:
+        raise HTTPException(422, str(exc)) from exc
+    for t in res.tests:
+        if not t.ok:
+            warnings.append(
+                f"{t.id}: a simulação divergiu do valor analítico ({t.error_pct:.2f} %, "
+                f"tolerância {t.tolerance_pct:g} %)."
+            )
+    return PeripheralBenchOut(
+        kind=kind,
+        tests=[
+            BenchTestOut(
+                id=t.id,
+                name=t.name,
+                measured=QuantityModel.from_pint(t.measured),
+                expected=QuantityModel.from_pint(t.expected),
+                error_pct=t.error_pct,
+                tolerance_pct=t.tolerance_pct,
+                ok=t.ok,
+                method=t.method,
+            )
+            for t in res.tests
+        ],
+        curves=[
+            PeripheralCurveOut(
+                id=c.id,
+                title=c.title,
+                x_label=c.x_label,
+                x_unit=c.x_unit,
+                x=c.x,
+                traces=[
+                    PeripheralTraceOut(name=t.name, unit=t.unit, values=t.values) for t in c.traces
+                ],
+                x_log=c.x_log,
+            )
+            for c in res.curves
+        ],
+        steps=res.steps,
+        netlists=res.netlists,
+        warnings=warnings + res.warnings,
+        used=res.used,
     )

@@ -23,7 +23,7 @@ from dataclasses import dataclass, field
 from circuitos.components.models import ComponentRecord
 from circuitos.core.calc import CalcLog, CalcStep, record
 from circuitos.core.units import Q_
-from circuitos.cosim.controllers import ControllerSpec, controller_lines
+from circuitos.cosim.controllers import ControllerSpec, SensorSpec, controller_lines
 from circuitos.design.opamp import OpAmp
 from circuitos.devices.thyristor import Kind as ThyristorKind
 from circuitos.schematic import parts, stress, transformers
@@ -42,6 +42,7 @@ from circuitos.schematic.library import (
     symbol,
 )
 from circuitos.schematic.model import Analysis, Component, NetRef, Point, Probe, Schematic
+from circuitos.schematic.sensor_symbols import DIGITAL_SENSOR_KINDS
 from circuitos.schematic.values import format_value, is_expression, parse_value, try_parse
 
 GROUND_NAMES = {"0", "gnd"}
@@ -378,6 +379,7 @@ class _Ctx:
     log: CalcLog = field(default_factory=CalcLog)
     spreads: dict[str, parts.Spread] = field(default_factory=dict)
     controllers: list[ControllerSpec] = field(default_factory=list)
+    digital_sensors: list[SensorSpec] = field(default_factory=list)
     indicators: dict[str, Indicator] = field(default_factory=dict)
 
     def value(self, comp: Component, name: str) -> str:
@@ -726,6 +728,10 @@ def _emit(comp: Component, n: list[str], ctx: _Ctx) -> list[str]:
             rec = ctx.record(comp)
             if rec is not None:
                 value = catalogue_value(k, rec, value)
+            if k in DIGITAL_SENSOR_KINDS:
+                values = {pd.name: value(pd.name) for pd in symbol(k).params}
+                nodes = {p: node.lower() for p, node in pins.items()}
+                ctx.digital_sensors.append(SensorSpec(ref, k, values, nodes))
             return emit_device(comp, pins, value)
         except SchematicError:
             raise
@@ -748,6 +754,7 @@ class Netlist:
     steps: list[CalcStep]
     elements: dict[str, str]  # designator -> SPICE element name
     controllers: list[ControllerSpec] = field(default_factory=list)  # co-simulation (Fase 11)
+    digital_sensors: list[SensorSpec] = field(default_factory=list)  # read by the boards
     indicators: dict[str, Indicator] = field(default_factory=dict)  # LEDs and lamps
     limits: list[stress.Limit] = field(default_factory=list)  # ratings checked after a run
 
@@ -827,6 +834,7 @@ def build_netlist(
         steps=list(ctx.log),
         elements=elements,
         controllers=ctx.controllers,
+        digital_sensors=ctx.digital_sensors,
         indicators=ctx.indicators,
         limits=limits,
     )

@@ -20,6 +20,26 @@ parameters:
     unit: K
     kind: characteristic
     description: Exatidão em temperatura
+  resolution:
+    unit: '%'
+    kind: characteristic
+    description: Resolução da umidade (saída digital)
+  T_resolution:
+    unit: K
+    kind: characteristic
+    description: Resolução da temperatura (saída digital)
+  t_sample:
+    unit: s
+    kind: characteristic
+    description: Período mínimo entre leituras (saída digital)
+  p_range:
+    unit: hPa
+    kind: characteristic
+    description: Faixa de pressão medida (sensor combinado)
+  p_accuracy:
+    unit: hPa
+    kind: characteristic
+    description: Exatidão absoluta da pressão (±)
   t_resp:
     unit: s
     kind: characteristic
@@ -42,3 +62,5 @@ parameters:
     description: Temperatura de armazenamento (faixa)
 attributes:
   saida: Saída (digital de um fio, I2C, analógica)
+  endereco_i2c: Endereço I2C (e como escolhê-lo)
+  protocolo: Protocolo e temporização da saída digital
