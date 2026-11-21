@@ -146,3 +146,48 @@ def test_monte_carlo_uses_datasheet_vz_range(parts):
     assert max(vz) - min(vz) > 0.2
     # at I_Z ≈ 7 mA the voltage sits below V_Z by (I_ZT − I_Z)·Z_ZT < 0,049·7 V
     assert all(5.1 * 0.95 - 0.049 * 7 < v < 5.1 * 1.05 for v in vz)
+
+
+@pytest.mark.ngspice
+def test_p_channel_parts_conduct_with_negative_bias():
+    """IRF9540N (mosfet.p) and 2N5460 (jfet.p) keep magnitudes in the catalogue; the models are
+    PMOS/PJF: the MOSFET conducts with VGS = −10 V (RDS(on) max 0,117 Ω at VGS = −10 V, so the
+    drop on 1 A is below 0,2 V) and the JFET with VGS = 0 (ID between IDSS min 1 and max 5 mA)."""
+    from pathlib import Path
+
+    from circuitos.components.repository import load_records_file
+
+    root = Path(__file__).resolve().parents[4] / "data" / "components"
+    p = {}
+    for f in ("mosfet/infineon-irf9540n.yaml", "jfet/onsemi-2n5460.yaml"):
+        for r in load_records_file(root / f):
+            p[r.part_number] = r
+    b = Builder("canal P")
+    b.add("vdc", "VDD", ["vdd", "0"], dc="12")
+    b.add("vdc", "VG", ["g", "0"], dc="2")
+    b.add("pmos", "M1", ["d", "g", "vdd"], part_id=str(p["IRF9540N"].id))
+    b.add("resistor", "RD", ["d", "0"], value="12")
+    b.add("pjf", "J1", ["dj", "0", "0"], part_id=str(p["2N5460"].id))
+    b.add("vdc", "VN", ["n", "0"], dc="-15")
+    b.add("resistor", "RJ", ["dj", "n"], value="100")
+    b.analysis("op")
+    recs = records(p["IRF9540N"], p["2N5460"])
+    text = build_netlist(b.sch, recs).text
+    assert " PMOS(" in text and " PJF(" in text
+    op = SchematicPlan(b.sch, recs).execute(make_backend()).plot("op")
+    assert 12 - op["v(d)"].data[0] < 0.2
+    i_j = (op["v(dj)"].data[0] + 15) / 100
+    assert 1e-3 <= i_j <= 5e-3
+
+
+@pytest.mark.ngspice
+def test_generic_p_jfet_is_depletion():
+    """Generic PJF (VTO = −2 V, SPICE convention for depletion): conducts at VGS = 0 with
+    ID = BETA·VTO² = 4 mA."""
+    b = Builder("pjf")
+    b.add("vdc", "VN", ["n", "0"], dc="-15")
+    b.add("pjf", "J1", ["dj", "0", "0"])
+    b.add("resistor", "RJ", ["dj", "n"], value="100")
+    b.analysis("op")
+    op = SchematicPlan(b.sch).execute(make_backend()).plot("op")
+    assert (op["v(dj)"].data[0] + 15) / 100 == pytest.approx(4e-3, rel=1e-3)

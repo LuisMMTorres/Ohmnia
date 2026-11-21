@@ -22,7 +22,7 @@ from dataclasses import dataclass, field
 
 from circuitos.components.models import ComponentRecord
 from circuitos.core.calc import CalcLog, CalcStep, record
-from circuitos.core.units import Q_
+from circuitos.core.units import Q_, parse_unit
 from circuitos.cosim.controllers import ControllerSpec, SensorSpec, controller_lines
 from circuitos.design.opamp import OpAmp
 from circuitos.devices.thyristor import Kind as ThyristorKind
@@ -446,6 +446,31 @@ def _generic_spread(comp: Component, ctx: _Ctx) -> None:
     )
 
 
+# catalogue transformer -> symbol parameters (record key per symbol parameter)
+_TRANSFORMER_KEYS = {
+    "transformer_1ph": {"vp": "V_pri", "vs": "V_sec", "sn": "S_rated"},
+    "transformer_1ph_4": {"vp": "V_pri@2", "vs": "V_sec@2", "sn": "S_rated"},
+}
+
+
+def _transformer_from_record(comp: Component, rec: ComponentRecord, kind: str) -> Component:
+    """Nameplate values of a catalogue transformer; the turns ratio stays the voltage ratio.
+    The 4-coil symbol takes the parallel ratings (each coil's voltage)."""
+    params = dict(comp.params)
+    for name, key in _TRANSFORMER_KEYS[kind].items():
+        p = rec.parameters.get(key)
+        x = None if p is None else next((v for v in (p.typ, p.max, p.min) if v is not None), None)
+        if p is None or x is None:
+            raise SchematicError(
+                f"{comp.ref}: {rec.part_number} não traz {key} no datasheet; não serve para "
+                "este símbolo de transformador"
+            )
+        unit = {"vp": "V", "vs": "V", "sn": "VA"}[name]
+        params[name] = f"{Q_(x, parse_unit(p.unit)).m_as(unit):.6g}"
+    params.pop("turns", None)
+    return comp.model_copy(update={"params": params})
+
+
 def _source_lines(comp: Component, n: list[str], ctx: _Ctx) -> list[str]:
     name = element_name(comp)
     kind = comp.kind[1:]
@@ -482,6 +507,9 @@ def _emit(comp: Component, n: list[str], ctx: _Ctx) -> list[str]:
     if k == "ground":
         return []
     if k in ("resistor", "capacitor", "inductor"):
+        rec = ctx.record(comp)
+        if rec is not None:
+            ctx.warnings.extend(parts.passive_check(rec, comp, k))
         line = f"{name} {n[0]} {n[1]} {v('value')}"
         ic = comp.params.get("ic", "").strip()
         if ic and k != "resistor":
@@ -506,6 +534,11 @@ def _emit(comp: Component, n: list[str], ctx: _Ctx) -> list[str]:
             f"K_{ref} L_{ref}_p L_{ref}_s {v('k')}",
             f"R_{ref}_iso {n[1]} {n[3]} 1g",
         ]
+    if k in ("transformer_1ph", "transformer_1ph_4"):
+        rec = ctx.record(comp)
+        if rec is not None:  # a catalogue transformer: nameplate from its datasheet
+            comp = _transformer_from_record(comp, rec, k)
+            ctx.warnings.extend(parts.review_warning(rec, ref))
     if k in ("transformer_1ph", "transformer_3ph"):
         three = k == "transformer_3ph"
         conn_p = param(comp, "conn_p") if three else "D"
@@ -674,7 +707,10 @@ def _emit(comp: Component, n: list[str], ctx: _Ctx) -> list[str]:
         d, g, s = n
         rec = ctx.record(comp)
         if rec is not None:
-            model = ctx.use(comp, parts.mosfet(rec, ref, ctx.log, ctx.override(comp, "vto")))
+            model = ctx.use(
+                comp,
+                parts.mosfet(rec, ref, ctx.log, ctx.override(comp, "vto"), k == "pmos"),
+            )
         else:
             model = param(comp, "model")
             if not model:
@@ -685,7 +721,7 @@ def _emit(comp: Component, n: list[str], ctx: _Ctx) -> list[str]:
         d, g, s = n
         rec = ctx.record(comp)
         if rec is not None:
-            model = ctx.use(comp, parts.jfet(rec, ref, ctx.log))
+            model = ctx.use(comp, parts.jfet(rec, ref, ctx.log, k == "pjf"))
         else:
             model = param(comp, "model")
             if not model:

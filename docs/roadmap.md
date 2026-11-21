@@ -289,3 +289,11 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
   instrumentos reais.
 - Detalhes e limitações:
   [validacao/autotransformador-motor-12-terminais.md](validacao/autotransformador-motor-12-terminais.md).
+
+## Dados reais na biblioteca — aguardando revisão (2026-11-21)
+
+- Resistor, capacitor, indutor, MOSFET P, JFET P, transformador monofásico (Triad VPT24-1040),
+  inversor WEG CFW, soft-starter e driver de passo passam a aceitar peças do catálogo.
+- JFET P genérico corrigido (VTO negativo, convenção do SPICE).
+- Faltam dados reais de motores de indução, contatores e transformadores trifásicos.
+- Detalhes: [validacao/dados-reais-biblioteca.md](validacao/dados-reais-biblioteca.md).

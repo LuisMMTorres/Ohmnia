@@ -327,6 +327,11 @@ DRIVER_KINDS = {"stepper_driver"}  # driven by the co-simulation (step counter)
 
 # catalogue parts: symbol parameter <- (record parameter, unit); see cosim_symbols
 DRIVE_CATALOGUE: dict[str, tuple[tuple[str, ...], dict[str, tuple[str, str]]]] = {
+    # family records (WEG CFW, SSW, ABB PSTX, Oriental AR): ratings span the family, so only
+    # the switching frequency (one value) goes to the model; the part names the real drive
+    "vfd": (("drive.vfd",), {"fsw": ("f_sw", "Hz")}),
+    "soft_starter": (("drive.soft_starter",), {}),
+    "stepper_driver": (("drive.stepper",), {}),
     "stepper_motor": (
         ("motor.stepper",),
         {

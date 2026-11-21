@@ -148,6 +148,7 @@ SYMBOLS: dict[str, Symbol] = {
                 ),
             ),
             tolerance="value",
+            catalogue=("resistor.fixed",),
         ),
         Symbol(
             "capacitor",
@@ -169,6 +170,7 @@ SYMBOLS: dict[str, Symbol] = {
                 ),
             ),
             tolerance="value",
+            catalogue=("capacitor.fixed",),
         ),
         Symbol(
             "inductor",
@@ -182,6 +184,7 @@ SYMBOLS: dict[str, Symbol] = {
                 _tol("10"),
             ),
             tolerance="value",
+            catalogue=("inductor.fixed",),
         ),
         Symbol(
             "rl_load",
@@ -238,6 +241,7 @@ SYMBOLS: dict[str, Symbol] = {
             description="Transformador definido pelos dados de placa: a relação de espiras sai "
             "de Vp/Vs (ou é dada); a magnetização e as perdas no cobre são valores didáticos, "
             "ajuste com os ensaios a vazio e de curto-circuito. Pontos em p1 e s1.",
+            catalogue=("magnetic.transformer",),
             ref_prefix="T",
         ),
         Symbol(
@@ -318,6 +322,7 @@ SYMBOLS: dict[str, Symbol] = {
             "Feche por fora: bobinas em série (P2 com P3) para 2·Vp ou em paralelo (P1 com P3, "
             "P2 com P4) para Vp; no secundário, série dá 2·Vs ou derivação central (S2-S3). "
             "Magnetização e perdas no cobre são valores didáticos.",
+            catalogue=("magnetic.transformer",),
             ref_prefix="T",
         ),
         Symbol(
@@ -533,7 +538,7 @@ SYMBOLS: dict[str, Symbol] = {
             )
             for kind, label, vto, cat in (
                 ("nmos", "MOSFET canal N", "2", ("mosfet.n",)),
-                ("pmos", "MOSFET canal P", "-2", ()),
+                ("pmos", "MOSFET canal P", "-2", ("mosfet.p",)),
             )
         ],
         *[
@@ -553,7 +558,7 @@ SYMBOLS: dict[str, Symbol] = {
             )
             for kind, label, vto, cat in (
                 ("njf", "JFET canal N", "-2", ("jfet.n",)),
-                ("pjf", "JFET canal P", "2", ()),
+                ("pjf", "JFET canal P", "-2", ("jfet.p",)),
             )
         ],
         Symbol(

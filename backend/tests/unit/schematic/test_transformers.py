@@ -206,3 +206,27 @@ def test_open_three_phase_closed_delta_wye(backend):
     b.add("resistor", "RG", ["n", "0"], value="1m")
     (rms,) = _tran_rms(backend, b, [("x1", "x2")])
     assert rms == pytest.approx(127 * math.sqrt(3), rel=0.03)
+
+
+@pytest.mark.ngspice
+def test_catalogue_toroid_as_four_coil_transformer(backend):
+    """Triad VPT24-1040 (25 VA; 115 V + 115 V / 12 V + 12 V, page 1) placed on the 4-coil
+    symbol: the nameplate comes from the record; series primary at 230 V and series secondary
+    on 1 kΩ give 24 V (within 3 %)."""
+    from pathlib import Path
+
+    from circuitos.components.repository import load_record_file
+
+    rec = load_record_file(
+        Path(__file__).parents[4] / "data" / "components" / "magnetic" / "triad-vpt24-1040.yaml"
+    )
+    b = Builder("vpt")
+    b.add("vsin", "V1", ["p", "0"], amplitude=str(230 * math.sqrt(2)), freq="60")
+    b.add("transformer_1ph_4", "T1", ["p", "m", "m", "0", "s", "k", "k", "0"],
+          part_id=str(rec.id), vp="1", vs="1", sn="1")  # fmt: skip
+    b.add("resistor", "RL", ["s", "0"], value="1k")
+    b.sch.analyses = [Analysis(kind="tran", params={"tstop": "0.2", "tmax": "50u"})]
+    res = SchematicPlan(b.sch, {str(rec.id): rec}).execute(backend)
+    tran = next(p for p in res.plots if p.kind == "tran")
+    rms, _ = _rms_phase(tran.vectors[tran.scale].data, tran.vectors["v(s)"].data)
+    assert rms == pytest.approx(24, rel=0.03)
