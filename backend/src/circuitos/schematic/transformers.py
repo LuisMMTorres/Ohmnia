@@ -12,7 +12,7 @@ from __future__ import annotations
 import math
 from dataclasses import dataclass
 
-from circuitos.core.calc import CalcLog, record
+from circuitos.core.calc import BibRef, CalcLog, record
 from circuitos.core.units import Q_
 
 COUPLING = 0.9999  # k < 1: ngspice needs it; leakage ≈ 2(1 − k)·Xm, negligible
@@ -34,6 +34,13 @@ class Winding:
     ls: float  # H
     rp: float  # ohm
     rs: float  # ohm
+
+
+_CHAPMAN = BibRef(
+    book="Chapman, Electric Machinery Fundamentals",
+    edition="5th",
+    chapter="2 (autotransformador)",
+)
 
 
 class TransformerError(ValueError):
@@ -144,3 +151,107 @@ def three_phase_lines(
     if conn_s == "D":
         lines.append(f"R_{ref}_x0 {x0} {x[0]} 1g")
     return lines
+
+
+@dataclass(frozen=True)
+class AutoWinding:
+    """Autotransformer: series winding (H to X) and common winding (X to N) on one core."""
+
+    vh: float  # high side voltage, V rms
+    vx: float  # tap voltage, V rms
+    l_series: float  # H
+    l_common: float  # H
+    r_series: float  # ohm
+    r_common: float  # ohm
+
+
+def size_auto(
+    ref: str,
+    vh: float,
+    vx: float,
+    s_rated: float,
+    freq: float,
+    imag_pct: float,
+    rcu_pct: float,
+    log: CalcLog,
+) -> AutoWinding:
+    """Inductances and resistances of a single-phase autotransformer from its nameplate.
+
+    The full winding (H to N) takes the magnetising current; the series part has
+    (Vh − Vx)/Vh of the turns and the common part Vx/Vh, so with tight coupling the
+    inductances split as the squares of those fractions. The series winding carries the
+    high side current Ih = S/Vh, the common winding the difference Ix − Ih (Chapman,
+    *Electric Machinery Fundamentals*, 5th ed., ch. 2, autotransformer section).
+    """
+    if min(vh, vx, s_rated, freq) <= 0:
+        raise TransformerError(f"{ref}: tensões, potência e frequência devem ser positivas")
+    if vx >= vh:
+        raise TransformerError(f"{ref}: a tensão da derivação deve ser menor que a de entrada")
+    if not 0 < imag_pct < 100 or not 0 <= rcu_pct < 50:
+        raise TransformerError(f"{ref}: magnetização entre 0 e 100 %, perdas entre 0 e 50 %")
+    ih, ix = s_rated / vh, s_rated / vx
+    imag = imag_pct / 100 * ih
+    l_full = vh / (2 * math.pi * freq * imag)
+    fs, fc = (vh - vx) / vh, vx / vh
+    pcu = rcu_pct / 100 * s_rated
+    r_series = 0.5 * pcu / ih**2
+    r_common = 0.5 * pcu / (ix - ih) ** 2
+    if f"{ref}_lm" not in {st.id for st in log}:
+        log.add(
+            record(
+                f"{ref}_a",
+                f"Relação de transformação de {ref}",
+                r"a = \frac{N_{serie} + N_{comum}}{N_{comum}} = \frac{V_H}{V_X}",
+                Q_(vh / vx, "dimensionless"),
+                {"V_H": Q_(vh, "V"), "V_X": Q_(vx, "V")},
+                ["Das tensões de placa."],
+                reference=_CHAPMAN,
+            )
+        )
+        log.add(
+            record(
+                f"{ref}_lm",
+                f"Indutâncias dos enrolamentos de {ref}",
+                r"L_{HN} = \frac{V_H}{2 \pi f \, I_m}, \quad "
+                r"L_{serie} = L_{HN} \left(\frac{V_H - V_X}{V_H}\right)^2, \quad "
+                r"L_{comum} = L_{HN} \left(\frac{V_X}{V_H}\right)^2",
+                Q_(l_full, "H"),
+                {
+                    "V_H": Q_(vh, "V"),
+                    "f": Q_(freq, "Hz"),
+                    "I_m": Q_(imag, "A"),
+                    "L_serie": Q_(l_full * fs**2, "H"),
+                    "L_comum": Q_(l_full * fc**2, "H"),
+                },
+                _ASSUMPTIONS,
+            )
+        )
+        log.add(
+            record(
+                f"{ref}_rcu",
+                f"Resistência dos enrolamentos de {ref}",
+                r"R_{serie} = \frac{P_{cu}/2}{I_H^2}, \quad "
+                r"R_{comum} = \frac{P_{cu}/2}{(I_X - I_H)^2}, \quad P_{cu} = p_{cu} S",
+                Q_(r_series, "ohm"),
+                {
+                    "P_cu": Q_(pcu, "W"),
+                    "I_H": Q_(ih, "A"),
+                    "I_X": Q_(ix, "A"),
+                    "R_comum": Q_(r_common, "ohm"),
+                },
+                ["Perdas no cobre divididas igualmente entre os enrolamentos série e comum."],
+            )
+        )
+    return AutoWinding(vh, vx, l_full * fs**2, l_full * fc**2, r_series, r_common)
+
+
+def auto_lines(name: str, h: str, x: str, n: str, w: AutoWinding) -> list[str]:
+    """Series winding H to X and common winding X to N, both dotted at the top (aiding)."""
+    a, b = f"{name}_s".lower(), f"{name}_c".lower()
+    return [
+        f"R_{name}_s {h} {a} {w.r_series:.9g}",
+        f"L_{name}_s {a} {x} {w.l_series:.9g}",
+        f"R_{name}_c {x} {b} {w.r_common:.9g}",
+        f"L_{name}_c {b} {n} {w.l_common:.9g}",
+        f"K_{name} L_{name}_s L_{name}_c {COUPLING}",
+    ]

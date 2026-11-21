@@ -290,6 +290,26 @@ SYMBOLS: dict[str, Symbol] = {
             "Dy dá Dyn11, Yd dá Yd1, Yy e Dd dão 0.",
             ref_prefix="T",
         ),
+        Symbol(
+            "autotransformer",
+            "Autotransformador",
+            "Transformadores",
+            "L",
+            (PinDef("H", -2, -2), PinDef("X", 2, 0), PinDef("N", -2, 2)),
+            (
+                ParamDef("vh", "Tensão do enrolamento completo H–N (eficaz)", "V", "220"),
+                ParamDef("vx", "Tensão da derivação X–N (eficaz)", "V", "127"),
+                ParamDef("sn", "Potência nominal (passante)", "VA", "1k"),
+                ParamDef("freq", "Frequência", "Hz", "60"),
+                ParamDef("imag", "Corrente de magnetização (% de In)", "%", "3"),
+                ParamDef("rcu", "Perdas no cobre (% de Sn)", "%", "1"),
+            ),
+            description="Um só enrolamento com derivação: série de H a X e comum de X a N. "
+            "Abaixa de H para X ou eleva de X para H (relação VH/VX). Sem isolação entre os "
+            "lados: N é comum à entrada e à saída. Magnetização e perdas no cobre são valores "
+            "didáticos; ajuste com os ensaios.",
+            ref_prefix="T",
+        ),
         # sources -------------------------------------------------------------------------
         *_sources("V", "V", "Fonte de tensão"),
         *_sources("I", "A", "Fonte de corrente"),

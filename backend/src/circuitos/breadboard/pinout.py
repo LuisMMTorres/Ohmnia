@@ -118,6 +118,7 @@ _INSTRUMENT = {
     "transformer": ("trafo", "Transformador"),
     "transformer_1ph": ("trafo", "Transformador monofásico"),
     "transformer_3ph": ("trafo-3f", "Transformador trifásico"),
+    "autotransformer": ("autotrafo", "Autotransformador"),
     "rl_load": ("carga", "Carga RL"),
 }
 _BOARDS = {"arduino_uno": "board-uno", "esp32_devkitc": "board-esp32"}

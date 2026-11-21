@@ -531,6 +531,21 @@ def _emit(comp: Component, n: list[str], ctx: _Ctx) -> list[str]:
             *transformers.pair_lines(ref, (n[0], n[1]), (n[2], n[3]), w),
             f"R_{ref}_iso {n[1]} {n[3]} 1g",
         ]
+    if k == "autotransformer":
+        try:
+            aw = transformers.size_auto(
+                ref,
+                ctx.number(comp, "vh"),
+                ctx.number(comp, "vx"),
+                ctx.number(comp, "sn"),
+                ctx.number(comp, "freq"),
+                ctx.number(comp, "imag"),
+                ctx.number(comp, "rcu"),
+                ctx.log,
+            )
+        except transformers.TransformerError as exc:
+            raise SchematicError(str(exc)) from exc
+        return transformers.auto_lines(ref, n[0], n[1], n[2], aw)
     if k[0] in "vi" and k[1:] in ("dc", "sin", "pulse", "pwl"):
         return _source_lines(comp, n, ctx)
     if k == "v3ph":

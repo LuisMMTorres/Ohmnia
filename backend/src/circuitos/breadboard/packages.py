@@ -313,6 +313,14 @@ PACKAGES: dict[str, Package] = {
             "Fora da placa: só o secundário vem para a protoboard.",
         ),
         _offboard(
+            "autotrafo",
+            "Autotransformador",
+            ("H", "X", "N"),
+            "transformer",
+            "Fora da placa: sem isolação, N é comum à entrada e à saída. Em 127 V ou 220 V use "
+            "bancada protegida.",
+        ),
+        _offboard(
             "trafo-3f",
             "Transformador trifásico",
             ("H1", "H2", "H3", "H0", "X1", "X2", "X3", "X0"),

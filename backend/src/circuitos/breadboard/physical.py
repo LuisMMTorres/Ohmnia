@@ -52,7 +52,7 @@ _CATEGORY_OF = {
 _PHYSICAL = {
     "resistor", "capacitor", "inductor", "diode", "zener", "npn", "pnp", "nmos", "pmos", "njf",
     "pjf", "vdc", "vsin", "vpulse", "vpwl", "idc", "isin", "ipulse", "ipwl", "transformer",
-    "transformer_1ph", "transformer_3ph",
+    "transformer_1ph", "transformer_3ph", "autotransformer",
 }  # fmt: skip
 
 
