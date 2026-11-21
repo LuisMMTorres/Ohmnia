@@ -267,8 +267,18 @@ def _assemble(ref: Reference, order: list[str] | None) -> tuple[Breadboard, list
                 continue
         else:  # off the board: leads placed after the board parts
             continue
+        joined_roles: set[str] = set()
         for pin, h in legs.items():
             net = net_of(r, pin)
+            role = r.pinmap.get(pin)
+            if pkg.style == "board" and role is not None and role in joined_roles:
+                # another pin of the same function (a second GND): the board itself joins
+                # them, so its strip needs no jumper
+                st.owner.setdefault(_strip_of(h), net)
+                st.used.add(h)
+                continue
+            if pkg.style == "board" and role is not None:
+                joined_roles.add(role)
             if not h.startswith(board.RAILS):
                 st.claim(_strip_of(h), net, h)
             else:
