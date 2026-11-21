@@ -507,7 +507,7 @@ SYMBOLS: dict[str, Symbol] = {
         Symbol(
             "igbt",
             "IGBT",
-            "Chaves",
+            "Semicondutores",
             "X",
             (PinDef("c", 0, -2), PinDef("g", -2, 0), PinDef("e", 0, 2)),
             (
@@ -526,7 +526,7 @@ SYMBOLS: dict[str, Symbol] = {
         Symbol(
             "scr",
             "SCR",
-            "Chaves",
+            "Semicondutores",
             "X",
             (PinDef("a", 0, -2), PinDef("k", 0, 2), PinDef("g", -2, 1)),
             (
@@ -542,7 +542,7 @@ SYMBOLS: dict[str, Symbol] = {
         Symbol(
             "triac",
             "TRIAC",
-            "Chaves",
+            "Semicondutores",
             "X",
             (PinDef("mt2", 0, -2), PinDef("mt1", 0, 2), PinDef("g", -2, 1)),
             (

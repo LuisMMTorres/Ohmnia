@@ -1,4 +1,5 @@
 // Breadboard view: the circuit of the schematic assembled on an 830-point breadboard.
+import { GLOW_COLORS } from "../schematic/symbols";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { MouseEvent as ReactMouseEvent } from "react";
 import { breadboardApi } from "../api";
@@ -134,7 +135,7 @@ export function BreadboardView({
   const [probePositive, setProbePositive] = useState("a1");
   const [probeNegative, setProbeNegative] = useState("0");
   const [probeName, setProbeName] = useState("CH1");
-  const [zoom, setZoom] = useState(1);
+  const [zoom, setZoom] = useState(0.75);
   const svgRef = useRef<SVGSVGElement>(null);
   const size = boardSize(board);
   // channels of one bench supply (same bench_id) share a single front panel
@@ -434,7 +435,7 @@ export function BreadboardView({
     // generic panels: terminals on the top edge, so that the leads never run over the panel
     const ty = spot ? by + spot.at[1] : by;
     const label: Pt = spot ? [bx + spot.label[0], by + spot.label[1]] : [tx + 10, by - 6];
-    return { tx, ty, label, spot: !!spot };
+    return { tx, ty, label, spot: !!spot, vertical: !!spot?.vertical };
   };
   // leads run straight up to a lane in the strip between the boards and the instruments, along
   // it and straight up into their hole; lanes are ordered so that the leads do not cross
@@ -829,6 +830,7 @@ export function BreadboardView({
                     const { tx, ty } = at;
                     const spot = at.spot;
                     const [lx, ly] = at.label;
+                    const vertical = at.vertical;
                     const [hx, hy] = p.legs[t] ? xy(p.legs[t]!) : [tx, ty + 10];
                     const lane = leadLanes.get(`${p.ref}:${t}`) ?? by - 20;
                     return (
@@ -870,7 +872,8 @@ export function BreadboardView({
                         <text
                           x={lx}
                           y={ly}
-                          textAnchor={spot ? "middle" : "start"}
+                          textAnchor={vertical ? "end" : spot ? "middle" : "start"}
+                          transform={vertical ? `rotate(-90 ${lx} ${ly})` : undefined}
                           className="bb-leg-label"
                         >
                           {shared ? `CH${channel} ` : ""}
@@ -907,6 +910,11 @@ export function BreadboardView({
                   selected={sel?.kind === "part" && sel.ref === p.ref}
                   bad={badRefs.has(p.ref)}
                   showLabels={(sel?.kind === "part" && sel.ref === p.ref) || pkg.style === "inline"}
+                  color={
+                    GLOW_COLORS[
+                      schematic.components.find((c) => c.ref === p.ref)?.params.color ?? ""
+                    ]
+                  }
                 />
                 {burnt?.[p.ref] && <BurntMark points={Object.values(legs)} title={burnt[p.ref]!} />}
               </g>

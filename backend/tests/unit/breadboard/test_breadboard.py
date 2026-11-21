@@ -248,10 +248,38 @@ def test_board_gnd_pins_are_one_node():
     hole = getattr(w, end)
     other = next(g for g in gnd if board.strip(part.legs[g]) != board.strip(hole))
     col, row = board.parse(part.legs[other])
+    lower = "2:" if part.legs[other].startswith("2:") else ""
     taken = {h for x in bb.wires for h in (x.a, x.b)}
     setattr(
         w,
         end,
-        next(f"{c}{row}" for c in ("ab" if col == "c" else "ij") if f"{c}{row}" not in taken),
+        next(
+            f"{lower}{c}{row}"
+            for c in ("ab" if col == "c" else "ij")
+            if f"{lower}{c}{row}" not in taken
+        ),
     )
     assert check(ref, bb).ok, [i.message for i in check(ref, bb).issues]
+
+
+def test_board_gnd_pins_get_no_jumpers_between_them():
+    """The GND pins of a development board are joined on the board itself: placing it alone
+    must not lay jumpers between them."""
+    from tests.unit.schematic.helpers import Builder
+
+    b = Builder("esp32")
+    pins = [
+        "3V3", "GND", "IO36", "IO39", "IO34", "IO35", "IO32", "IO33", "IO25", "IO26", "IO27",
+        "IO14", "IO12", "IO23", "IO22", "IO21", "IO19", "IO18", "IO5", "IO17", "IO16", "IO4",
+        "IO2", "IO15", "IO13",
+    ]  # fmt: skip
+    b.add("esp32_devkitc", "U1", ["0" if p == "GND" else f"n_{p}" for p in pins])
+    b.add("ground", "G1", ["0"])
+    ref = build(b.sch, {})
+    bb, _ = autoplace(ref)
+    legs = bb.part("U1").legs  # type: ignore[union-attr]
+    board_strips = {board.strip(h) for h in legs.values()}
+    # at most the ground strip goes to its rail; no jumper joins two strips of the board
+    assert not [w for w in bb.wires if {board.strip(w.a), board.strip(w.b)} <= board_strips]
+    assert len(bb.wires) <= 1
+    assert check(ref, bb).ok

@@ -13,6 +13,8 @@ interface Props {
   selected?: boolean;
   bad?: boolean;
   showLabels?: boolean;
+  /** Body colour of a LED (its emitted colour). */
+  color?: string;
 }
 
 const deg = (a: Pt, b: Pt) => (Math.atan2(b[1] - a[1], b[0] - a[0]) * 180) / Math.PI;
@@ -43,7 +45,7 @@ function labelOf(view: PartView | undefined, pin: string): string {
   return /^\d+$/.test(pin) ? `${pin} ${l}` : l;
 }
 
-export function PackageArt({ pkg, legs, view, refName, selected, bad, showLabels }: Props) {
+export function PackageArt({ pkg, legs, view, refName, selected, bad, showLabels, color }: Props) {
   const pins = pkg.pins.filter((p) => legs[p]);
   const pts = pins.map((p) => legs[p]!);
   if (!pts.length) return null;
@@ -149,6 +151,27 @@ export function PackageArt({ pkg, legs, view, refName, selected, bad, showLabels
         <g transform={`translate(${center[0]} ${center[1]}) rotate(${angle})`}>
           <rect x={-w / 2} y={-w / 2 - 2} width={w} height={w * 0.8} rx={2} className="bb-tact" />
           <circle cx={0} cy={-w * 0.1 - 2} r={w * 0.22} className="bb-tact-cap" />
+        </g>
+      );
+    } else if (pkg.body === "led") {
+      // 5 mm LED seen from the side: coloured epoxy dome on a rim, the rim cut flat on the
+      // cathode side (second leg)
+      const w = len + P * 0.9;
+      const fill = color ?? "#ff2a1a";
+      body = (
+        <g transform={`translate(${center[0]} ${center[1]}) rotate(${angle})`}>
+          <path
+            d={`M ${-w / 2 - 2} -2 H ${w / 2 - 1} V -5 H ${-w / 2 - 2} Z`}
+            style={{ fill, stroke: "#00000055", strokeWidth: 0.8 }}
+          />
+          <path
+            d={`M ${-w / 2 + 1} -5 V -10 A ${w / 2 - 1} ${w / 2 - 1} 0 0 1 ${w / 2 - 1} -10 V -5 Z`}
+            style={{ fill, fillOpacity: 0.75, stroke: "#00000066", strokeWidth: 0.8 }}
+          />
+          <path
+            d={`M ${-w / 4} -9 A ${w / 4} ${w / 4} 0 0 1 0 ${-9 - w / 4}`}
+            style={{ fill: "none", stroke: "#ffffffaa", strokeWidth: 1.4 }}
+          />
         </g>
       );
     } else {

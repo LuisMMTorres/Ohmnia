@@ -532,7 +532,10 @@ export function SchematicWorkspace({
       </main>
     );
 
-  const groups = [...new Set(library.symbols.map((s) => s.group))];
+  // a group whose symbols are all hidden (Outros: only the subcircuit) is not listed
+  const groups = [
+    ...new Set(library.symbols.filter((s) => !HIDDEN_KINDS.has(s.kind)).map((s) => s.group)),
+  ];
   const selectedComp =
     selection?.kind === "component" ? sch.components.find((c) => c.id === selection.id) : undefined;
   const selectedLabel =
