@@ -98,3 +98,12 @@ Todos os registros novos entram como **rascunho**. Não entram na seleção auto
   magnetização (5 %) e de perdas no cobre (2 %) são valores didáticos: ajuste com os ensaios a vazio
   e de curto-circuito.
 - **Ligação automática de fios**: só faz fios retos. Pinos desalinhados continuam sendo ligados à mão.
+
+## Revisão no Windows (2026-11-20)
+
+- Corrigida a rolagem horizontal em 390 px: o seletor de instrumentos pode quebrar de linha e
+  a regra de largura do esquemático respeita o empilhamento dos painéis em telas menores.
+- 112 testes do backend selecionados para esquemático, protoboard e dispositivos passaram.
+- 63 testes da interface, ESLint e compilação TypeScript/Vite passaram.
+- O teste `frontend/e2e/simulador.e2e.cjs` passou no Chrome: tela estreita, RC, Bode, ponte,
+  FFT, Monte Carlo, pior caso, varredura, emissor comum, importação e desenho de circuito.

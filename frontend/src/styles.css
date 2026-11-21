@@ -454,7 +454,7 @@ a.button {
 }
 .schematic-layout {
   display: grid;
-  grid-template-columns: 190px minmax(0, 1fr) 270px;
+  grid-template-columns: 180px minmax(0, 1fr) 250px;
   gap: 12px;
   align-items: stretch;
 }
@@ -1609,9 +1609,6 @@ svg.ladder .ld-comment {
 .schematic-canvas {
   height: max(600px, calc(100vh - 250px));
 }
-.schematic-layout {
-  grid-template-columns: 180px minmax(0, 1fr) 250px;
-}
 .palette {
   max-height: max(640px, calc(100vh - 250px));
 }
@@ -1667,8 +1664,13 @@ svg.ladder .ld-comment {
   margin: 0;
   white-space: nowrap;
 }
+.schematic-page .toolbar .bench-actions {
+  flex-wrap: wrap;
+  max-width: 100%;
+}
 .schematic-page .toolbar .bench-actions select {
   width: auto;
+  max-width: 100%;
 }
 .release-circuit {
   align-items: center;
