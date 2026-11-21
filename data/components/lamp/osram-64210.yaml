@@ -1,0 +1,92 @@
+# Fonte: OSRAM, ficha técnica on-line ORIGINAL LINE H7 (Global order reference 64210), eCat OSRAM Automotive, consultada em 2026-11-20.
+part_number: '64210'
+category: lamp.incandescent
+schema_version: '1.0'
+manufacturer: OSRAM
+family: ORIGINAL LINE H7
+package: Base PX26d
+lifecycle: desconhecido
+notes:
+- Lâmpada halógena automotiva H7 12 V 55 W (farol (halógena))
+- Fonte é a ficha técnica on-line do fabricante (página de produto do eCat OSRAM), sem PDF versionado; consultada
+  em 2026-11-20
+- '''Power input'' é a potência absorvida na tensão de ensaio (13.2 V)'
+datasheets:
+- id: ds1
+  manufacturer: OSRAM GmbH
+  document_number: eCat OSRAM Automotive, Global order reference 64210
+  revision: página consultada em 2026-11-20
+  url: https://www.osram.com/ecat/ORIGINAL%20LINE-Halogen%20headlight%20lamps-Car%20lighting-Automotive/com/en/GPS01_1057023/ZMP_61232/
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  V_nom:
+    typ: 12
+    unit: V
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Technical Data - Electrical Data - Nominal voltage
+      excerpt: Nominal voltage 12 V
+  P_nom:
+    typ: 55
+    unit: W
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Technical Data - Electrical Data - Nominal wattage
+      excerpt: Nominal wattage 55 W
+  V_test:
+    typ: 13.2
+    unit: V
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Technical Data - Electrical Data - Test voltage
+      excerpt: Test voltage 13.2 V
+  P_test:
+    max: 58
+    unit: W
+    status: extraido
+    conditions:
+      V: 13.2 V
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Technical Data - Electrical Data - Power input
+      excerpt: Power input 58 W Maximum
+  flux:
+    typ: 1500
+    unit: lm
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Technical Data - Photometric Data - Nominal luminous flux
+      excerpt: Nominal luminous flux 1500 lm
+attributes:
+  base:
+    value: PX26d
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Physical Attributes & Dimensions - Lamp base
+  categoria:
+    value: ECE H7
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Certificates & standards - ECE category
+  tecnologia:
+    value: HAL (halógena)
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Capabilities - Technology

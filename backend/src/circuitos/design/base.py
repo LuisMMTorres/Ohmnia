@@ -101,6 +101,10 @@ class SimComparison(BaseModel):
 class DesignWarning(BaseModel):
     code: str
     message: str
+    # catalogue parts of this circuit still waiting for review that would settle the warning
+    # (a manual lock not yet released, or candidates that would meet the margins): the design
+    # page offers to review and release exactly these
+    parts: list[str] = []
 
 
 class Trace(BaseModel):

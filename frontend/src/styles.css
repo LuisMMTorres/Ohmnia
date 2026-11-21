@@ -454,7 +454,7 @@ a.button {
 }
 .schematic-layout {
   display: grid;
-  grid-template-columns: 190px minmax(0, 1fr) 270px;
+  grid-template-columns: 180px minmax(0, 1fr) 250px;
   gap: 12px;
   align-items: stretch;
 }
@@ -1595,4 +1595,161 @@ svg.ladder .ld-comment {
 .sym-motion {
   font-size: 10px;
   fill: #1e5fa8;
+}
+
+/* ---------------------------------------------------------------- larger simulator (2026-11) */
+.page-simulator .workspace-content,
+.page-simulator .brand-row,
+.page-simulator .app-navigation {
+  max-width: none;
+}
+.page-simulator .workspace-intro {
+  display: none;
+}
+.schematic-canvas {
+  height: max(600px, calc(100vh - 250px));
+}
+.palette {
+  max-height: max(640px, calc(100vh - 250px));
+}
+.bb-canvas {
+  max-height: max(600px, calc(100vh - 200px));
+}
+.bb-side,
+.bb-info {
+  max-height: max(600px, calc(100vh - 200px));
+}
+.circuit-workspace:fullscreen {
+  background: var(--bg);
+  padding: 12px;
+  overflow: auto;
+}
+.circuit-workspace:fullscreen .schematic-canvas {
+  height: calc(100vh - 190px);
+}
+.circuit-workspace:fullscreen .palette {
+  max-height: calc(100vh - 190px);
+}
+.circuit-workspace:fullscreen .bb-canvas {
+  max-height: calc(100vh - 150px);
+}
+.select-box {
+  fill: var(--accent-soft, rgba(40, 110, 220, 0.12));
+  stroke: var(--accent, #2867c5);
+  stroke-dasharray: 4 3;
+  stroke-width: 1;
+  pointer-events: none;
+}
+.notice {
+  margin: 0;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: var(--accent-soft, #e8f0fb);
+}
+.palette-sub {
+  margin: 8px 0 2px;
+}
+.palette-item small {
+  font-size: 0.75rem;
+}
+.comp .glow-halo {
+  filter: blur(3px);
+}
+.schematic-page .toolbar .bench-actions,
+.schematic-page .toolbar .node-visibility {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  white-space: nowrap;
+}
+.schematic-page .toolbar .bench-actions {
+  flex-wrap: wrap;
+  max-width: 100%;
+}
+.schematic-page .toolbar .bench-actions select {
+  width: auto;
+  max-width: 100%;
+}
+.release-circuit {
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  margin: 8px 0;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--accent-soft, #e8f0fb);
+}
+
+/* tactile switches on the breadboard */
+.bb-tact {
+  fill: #3a3f45;
+  stroke: #1d2024;
+  stroke-width: 1;
+}
+.bb-tact-cap {
+  fill: #20242a;
+  stroke: #6b737c;
+  stroke-width: 1;
+}
+
+/* parts that would burn in the last simulation */
+.burnt-mark .burnt-scorch {
+  fill: rgba(60, 30, 10, 0.18);
+  stroke: #c62828;
+  stroke-width: 2;
+  stroke-dasharray: 5 3;
+}
+.burnt-mark .burnt-label,
+.bb-burnt .bb-burnt-label {
+  fill: #c62828;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.bb-burnt .bb-burnt-scorch {
+  fill: rgba(40, 20, 5, 0.45);
+  stroke: #c62828;
+  stroke-width: 1.5;
+}
+.damage-alert {
+  margin: 8px 0;
+  padding: 10px 12px;
+  border: 1px solid var(--error-text);
+  border-left-width: 5px;
+  border-radius: 6px;
+  background: var(--error-bg);
+  color: var(--error-text);
+}
+.damage-alert header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.damage-alert ul {
+  margin: 6px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.damage-alert li {
+  display: grid;
+  grid-template-columns: 4em 1fr;
+  gap: 8px;
+  padding: 6px 0;
+  border-top: 1px solid color-mix(in srgb, var(--error-text) 25%, transparent);
+}
+.damage-alert li p {
+  margin: 0 0 3px;
+}
+.damage-alert button.link {
+  align-self: start;
+  border: 0;
+  background: none;
+  padding: 0;
+  color: inherit;
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
 }

@@ -1,0 +1,130 @@
+# Fonte: FAULHABER, loja on-line, página do motor 2642W024CR (artigo 2642.01000), consultada em 2026-11-20.
+part_number: 2642W024CR
+category: motor.dc
+schema_version: '1.0'
+manufacturer: FAULHABER
+family: DC-Micromotors Series 2642 ... CR
+package: carcaça cilíndrica (dimensões no desenho do fabricante)
+lifecycle: desconhecido
+notes:
+- Artigo 2642.01000. Valores a 22 °C da tabela 'Values' da loja on-line do fabricante (sem PDF versionado),
+  consultada em 2026-11-20.
+- A folha de dados em PDF da série (EN_..._DFF.pdf) traz a mesma tabela; confira a revisão antes de liberar.
+datasheets:
+- id: ds1
+  manufacturer: FAULHABER
+  document_number: FAULHABER eShop, 2642W024CR
+  revision: página consultada em 2026-11-20
+  url: https://eshop.faulhaber.com/en/2642W024CR/2642W024CR
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  V_nom:
+    typ: 24
+    unit: V
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Values - Nominal voltage
+      excerpt: 'Nominal voltage: UN 24 V'
+  R_a:
+    typ: 5.79
+    unit: ohm
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Values - Terminal resistance
+      excerpt: 'Terminal resistance: R 5.79 Ω'
+  L_a:
+    typ: 539
+    unit: uH
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Values - Rotor inductance
+      excerpt: 'Rotor inductance: L 539 µH'
+  n0:
+    typ: 6360
+    unit: rpm
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Values - No-load speed
+      excerpt: 'No-load speed: n0 6360 min⁻¹'
+  I0:
+    typ: 0.0575
+    unit: A
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Values - No-load current
+      excerpt: 'No-load current: I0 0.0575 A'
+  M_H:
+    typ: 142
+    unit: mN*m
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Values - Stall torque
+      excerpt: 'Stall torque: MH 142 mNm'
+  M_R:
+    typ: 2
+    unit: mN*m
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Values - Friction torque
+      excerpt: 'Friction torque: MR 2 mNm'
+  k_n:
+    typ: 269
+    unit: rpm/V
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Values - Speed constant
+      excerpt: 'Speed constant: kn 269 min⁻¹/V'
+  k_E:
+    typ: 3.62
+    unit: mV/rpm
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Values - Back-EMF constant
+      excerpt: 'Back-EMF constant: kE 3.62 mV/min⁻¹'
+  k_M:
+    typ: 35.5
+    unit: mN*m/A
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Values - Torque constant
+      excerpt: 'Torque constant: kM 35.5 mNm/A'
+  J:
+    typ: 11
+    unit: g*cm^2
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Values - Rotor inertia
+      excerpt: 'Rotor inertia: J 11 gcm²'
+  tau_m:
+    typ: 5.4
+    unit: ms
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Values - Mechanical time constant
+      excerpt: 'Mechanical time constant: τm 5.4 ms'

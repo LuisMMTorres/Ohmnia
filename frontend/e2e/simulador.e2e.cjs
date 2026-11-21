@@ -279,7 +279,7 @@ E1 out 0 0 n1 1e5
     await at(0, 4);
     await at(8, 2);
     await at(8, 4);
-    await p.click('.tool:text-is("Ponta V")');
+    await p.click('.tool:text-is("Ponteira V")');
     await at(8, -4);
     await p.click('.tool:text-is("Selecionar")');
     await steps.getByRole("button", { name: /Configurar análise/ }).click();

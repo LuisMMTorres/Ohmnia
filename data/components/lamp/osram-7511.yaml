@@ -1,0 +1,101 @@
+# Fonte: OSRAM, ficha técnica on-line ORIGINAL - METAL BASE P21W 24 V (Global order reference 7511), eCat OSRAM Automotive, consultada em 2026-11-20.
+part_number: '7511'
+category: lamp.incandescent
+schema_version: '1.0'
+manufacturer: OSRAM
+family: ORIGINAL - METAL BASE P21W 24 V
+package: Base BA15s
+lifecycle: desconhecido
+notes:
+- Lâmpada incandescente automotiva P21W 24 V 21 W (freio e seta em caminhões e ônibus 24 V)
+- Fonte é a ficha técnica on-line do fabricante (página de produto do eCat OSRAM), sem PDF versionado; consultada
+  em 2026-11-20
+- '''Power input'' é a potência absorvida na tensão de ensaio (28 V)'
+datasheets:
+- id: ds1
+  manufacturer: OSRAM GmbH
+  document_number: eCat OSRAM Automotive, Global order reference 7511
+  revision: página consultada em 2026-11-20
+  url: https://www.osram.com/ecat/ORIGINAL%20-%20METAL%20BASE-Signal%20lamps-Truck%20lighting-Automotive/com/en/GPS01_1057115/ZMP_61098/
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  V_nom:
+    typ: 24
+    unit: V
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Technical Data - Electrical Data - Nominal voltage
+      excerpt: Nominal voltage 24 V
+  P_nom:
+    typ: 21
+    unit: W
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Technical Data - Electrical Data - Nominal wattage
+      excerpt: Nominal wattage 21 W
+  V_test:
+    typ: 28.0
+    unit: V
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Technical Data - Electrical Data - Test voltage
+      excerpt: Test voltage 28.0 V
+  P_test:
+    max: 28
+    unit: W
+    status: extraido
+    conditions:
+      V: 28 V
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Technical Data - Electrical Data - Power input
+      excerpt: Power input 28 W
+  flux:
+    typ: 460
+    unit: lm
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Technical Data - Photometric Data - Nominal luminous flux
+      excerpt: Nominal luminous flux 460 lm
+  P_tol:
+    max: 6.0
+    unit: '%'
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Technical Data - Electrical Data - Power input tolerance
+      excerpt: Power input tolerance ±6 %
+attributes:
+  base:
+    value: BA15s
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Physical Attributes & Dimensions - Lamp base
+  categoria:
+    value: ECE P21W
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Certificates & standards - ECE category
+  tecnologia:
+    value: AUX (incandescente de sinalização)
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Capabilities - Technology

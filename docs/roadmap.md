@@ -225,3 +225,28 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 - Sentido de giro dos motores após a simulação; zoom de 50 a 250 % na protoboard e controles de zoom
   no esquemático; "fonte comportamental" renomeada para "fonte dependente".
 - Detalhes e limitações: [validacao/protoboard-realista.md](validacao/protoboard-realista.md).
+
+## Melhorias do simulador, esquemático 2D e protoboard — aguardando revisão (2026-11-20)
+
+- Telas maiores e tela cheia. Terra no grupo Fontes. Girar (R) e espelhar (M) antes de inserir.
+- Copiar e colar, seleção por retângulo e botão de ligar pinos alinhados.
+- LEDs Vishay de seis cores e lâmpadas de 12/24/230 V (OSRAM e LEDVANCE) mais lâmpadas de placa
+  de 127/220 V, todos acendendo conforme a corrente simulada.
+- Chaves tácteis NA, NF e de 4 terminais. Transformadores monofásico e trifásico (Y/Δ) definidos
+  pelos dados de placa.
+- 10 motores CC FAULHABER no catálogo (`motor.dc`).
+- Homologação das peças do circuito na Análise de Projetos.
+- Protoboard: montagem automática com menos fios e botões para retirar peças.
+- Revisão: montagem automática na placa de baixo (perto dos instrumentos), sem peças sobrepostas,
+  fios sem cruzar nem passar sobre peças, alimentação pelos barramentos; fonte de vários canais
+  num só painel; "Limpar circuito" no esquemático; "Ponta" passa a "Ponteira".
+- Detalhes, fontes e limitações: [validacao/simulador-melhorias.md](validacao/simulador-melhorias.md).
+
+## Queima de componentes na simulação — aguardando revisão (2026-11-20)
+
+- Após a simulação, tensão, corrente, potência e temperatura de junção de cada peça são
+  comparadas com os limites do datasheet (ou informados no resistor e no capacitor genéricos).
+- Peça acima do limite aparece como QUEIMOU no esquemático e QUEIMADO na protoboard, com uma
+  caixa de alerta (motivo, o que fazer e de onde vem o limite).
+- Detalhes e limitações: [validacao/queima-componentes.md](validacao/queima-componentes.md).
+

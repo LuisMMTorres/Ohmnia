@@ -271,6 +271,38 @@ def review_category(request: Request, body: CategoryReviewIn) -> CategoryReviewO
     )
 
 
+class PartsReviewIn(BaseModel):
+    ids: list[uuid.UUID]
+    reviewer: str = ""
+    dry_run: bool = False
+
+
+class PartsReviewOut(BaseModel):
+    dry_run: bool
+    items: list[CategoryReviewItemOut]
+    released: int
+    pending: int
+
+
+@router.post("/components/review-parts")
+def review_parts(request: Request, body: PartsReviewIn) -> PartsReviewOut:
+    """Review and release the given parts (those of one circuit); preview with dry_run."""
+    if not body.ids:
+        raise HTTPException(422, "Nenhum componente indicado")
+    if not body.dry_run and not body.reviewer.strip():
+        raise HTTPException(422, "Informe o nome de quem revisou")
+    try:
+        items = _repo(request).review_records(body.ids, body.reviewer.strip(), dry_run=body.dry_run)
+    except DataIntegrityError as exc:
+        raise HTTPException(404, str(exc)) from exc
+    return PartsReviewOut(
+        dry_run=body.dry_run,
+        items=[CategoryReviewItemOut(**vars(i)) for i in items],
+        released=sum(i.after == "liberado" for i in items),
+        pending=sum(i.after != "liberado" for i in items),
+    )
+
+
 @router.get("/components/{component_id}/yaml")
 def export_component(request: Request, component_id: uuid.UUID) -> Response:
     record = _get(request, component_id)

@@ -45,6 +45,8 @@ def _cases():
             for value in (p.min, p.typ, p.max):
                 if value is not None and p.source is not None:
                     ds = sha[p.source.datasheet_id]
+                    if ds.sha256 is None:
+                        continue  # web page source (no PDF): see test_web_values_in_excerpt
                     yield pytest.param(
                         str(ds.url),
                         ds.sha256,
@@ -69,3 +71,20 @@ def test_value_on_cited_page(store, url, sha, page, value):
     assert round(value, 6) in numbers or round(abs(value), 6) in numbers, (
         f"{value:g} não aparece na página {page}"
     )
+
+
+def test_web_values_in_excerpt():
+    """Records taken from a manufacturer web page (no PDF to hash) quote the value they cite."""
+    repo = ComponentRepository()
+    repo.import_directory(CATALOG)
+    missing = []
+    for record in repo.search():
+        docs = {d.id: d for d in record.datasheets}
+        for key, p in record.parameters.items():
+            if p.source is None or docs[p.source.datasheet_id].sha256 is not None:
+                continue
+            numbers = _numbers(p.source.excerpt or "")
+            for value in (p.min, p.typ, p.max):
+                if value is not None and round(abs(value), 6) not in numbers:
+                    missing.append(f"{record.part_number}.{key}={value:g}")
+    assert not missing, missing

@@ -86,7 +86,7 @@ export default function App() {
   }, []);
 
   return (
-    <div className="app">
+    <div className={`app page-${page}`}>
       <a
         className="skip-link"
         href="#workspace-content"

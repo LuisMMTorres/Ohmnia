@@ -376,8 +376,9 @@ COSIM_SYMBOLS: list[Symbol] = [
             ParamDef("b", "Atrito viscoso", "N·m·s/rad", "1e-5"),
             _stim("tl", "Torque de carga", "N·m", "0"),
         ),
-        description="Motor CC de ímã permanente (valores didáticos). Velocidade em rad/s no nó "
-        "<ref>_w (ex.: v(m1_w)).",
+        description="Motor CC de ímã permanente. Sem peça do catálogo, valores didáticos; com um "
+        "motor do catálogo, R, L, kE, kM e J vêm da folha de dados e o atrito viscoso sai das "
+        "perdas a vazio (b = kM·I0/ω0). Velocidade em rad/s no nó <ref>_w (ex.: v(m1_w)).",
         ref_prefix="M",
     ),
     Symbol(
@@ -414,6 +415,65 @@ COSIM_SYMBOLS: list[Symbol] = [
         ),
         description="Contato operado pelo tempo (simula o operador apertando o botão).",
         ref_prefix="B",
+    ),
+    Symbol(
+        "tact_switch",
+        "Chave táctil 2 terminais (NA)",
+        "Chaves",
+        "X",
+        (PinDef("1", -2, 0), PinDef("2", 2, 0)),
+        (
+            _stim(
+                "state",
+                "Apertado (0 solto, 1 apertado)",
+                "",
+                "0 0 0.001 0 0.00101 1",
+                "Exemplo: aperta em 1 ms.",
+            ),
+            ParamDef("ron", "Resistência de contato", "Ω", "0.1"),
+        ),
+        description="Botão de contato momentâneo normalmente aberto (push-button); com a peça do "
+        "catálogo, a resistência de contato vem do datasheet.",
+        ref_prefix="SW",
+    ),
+    Symbol(
+        "tact_switch4",
+        "Chave táctil 4 terminais (6×6 / 12×12)",
+        "Chaves",
+        "X",
+        (PinDef("1", -2, -1), PinDef("2", -2, 1), PinDef("3", 2, -1), PinDef("4", 2, 1)),
+        (
+            _stim(
+                "state",
+                "Apertado (0 solto, 1 apertado)",
+                "",
+                "0 0 0.001 0 0.00101 1",
+                "Exemplo: aperta em 1 ms.",
+            ),
+            ParamDef("ron", "Resistência de contato", "Ω", "0.1"),
+        ),
+        description="Chave táctil de 4 terminais: 1-2 sempre ligados entre si, 3-4 também; "
+        "apertar liga 1-2 a 3-4. Confira no datasheet quais pernas são pares.",
+        ref_prefix="SW",
+    ),
+    Symbol(
+        "push_nc",
+        "Botão normalmente fechado (NF)",
+        "Chaves",
+        "X",
+        (PinDef("1", -2, 0), PinDef("2", 2, 0)),
+        (
+            _stim(
+                "state",
+                "Apertado (0 solto, 1 apertado)",
+                "",
+                "0 0 0.001 0 0.00101 1",
+                "Exemplo: abre em 1 ms.",
+            ),
+            ParamDef("ron", "Resistência de contato", "Ω", "0.1"),
+        ),
+        description="Botão de contato momentâneo normalmente fechado: abre enquanto apertado.",
+        ref_prefix="SW",
     ),
     Symbol(
         "pump_plant",
@@ -462,6 +522,20 @@ CATALOGUE_PARAMS: dict[str, tuple[tuple[str, ...], dict[str, tuple[str, str]]]] 
         ("relay.electromechanical",),
         {"vnom": ("V_coil", "V"), "rcoil": ("R_coil", "ohm")},
     ),
+    "switch_manual": (("switch.mechanical",), {"ron": ("R_contact", "ohm")}),
+    "dc_motor": (
+        ("motor.dc",),
+        {
+            "r": ("R_a", "ohm"),
+            "l": ("L_a", "H"),
+            "ke": ("k_E", "V*s/rad"),
+            "kt": ("k_M", "N*m/A"),
+            "j": ("J", "kg*m**2"),
+        },
+    ),
+    "tact_switch": (("switch.mechanical",), {"ron": ("R_contact", "ohm")}),
+    "tact_switch4": (("switch.mechanical",), {"ron": ("R_contact", "ohm")}),
+    "push_nc": (("switch.mechanical",), {"ron": ("R_contact", "ohm")}),
     "arduino_uno": (("board.mcu",), {}),
     "esp32_devkitc": (("board.mcu",), {}),
     "plc": (("plc",), {}),
@@ -499,6 +573,13 @@ def catalogue_value(kind: str, record: ComponentRecord, fallback: Value) -> Valu
             t_hold, i_ph = _si(record, "T_hold", "N*m"), _si(record, "I_phase", "A")
             if t_hold and i_ph:
                 return f"{torque_constant(t_hold, i_ph):.6g}"
+            return fallback(name)
+        if kind == "dc_motor" and name == "b":
+            # no-load losses as viscous friction: kM·I0 = b·ω0
+            km, i0 = _si(record, "k_M", "N*m/A"), _si(record, "I0", "A")
+            w0 = _si(record, "n0", "rad/s")
+            if km and i0 and w0:
+                return f"{km * i0 / w0:.6g}"
             return fallback(name)
         target = mapping.get(name)
         param = record.parameters.get(target[0]) if target else None
@@ -638,6 +719,23 @@ def emit_device(comp: Component, n: dict[str, str], v: Value) -> list[str]:
         return [
             f"B{x}_ctl {x}_c 0 V = {st}",
             f"S{x} {n['1']} {n['2']} {x}_c 0 sw_{x}",
+            f".model sw_{x} sw vt=0.5 vh=0.1 ron={v('ron')} roff=1e9",
+        ]
+    if k in ("tact_switch", "push_nc"):
+        st = stimulus(v("state"))
+        ctl = st if k == "tact_switch" else f"1 - ({st})"
+        return [
+            f"B{x}_ctl {x}_c 0 V = {ctl}",
+            f"S{x} {n['1']} {n['2']} {x}_c 0 sw_{x}",
+            f".model sw_{x} sw vt=0.5 vh=0.1 ron={v('ron')} roff=1e9",
+        ]
+    if k == "tact_switch4":
+        st = stimulus(v("state"))
+        return [
+            f"R{x}_12 {n['1']} {n['2']} 1m",
+            f"R{x}_34 {n['3']} {n['4']} 1m",
+            f"B{x}_ctl {x}_c 0 V = {st}",
+            f"S{x} {n['1']} {n['3']} {x}_c 0 sw_{x}",
             f".model sw_{x} sw vt=0.5 vh=0.1 ron={v('ron')} roff=1e9",
         ]
     if k == "pump_plant":

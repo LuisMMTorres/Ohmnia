@@ -21,11 +21,12 @@ from collections.abc import Callable, Mapping
 from dataclasses import dataclass, field
 
 from circuitos.components.models import ComponentRecord
-from circuitos.core.calc import CalcLog, CalcStep
+from circuitos.core.calc import CalcLog, CalcStep, record
+from circuitos.core.units import Q_
 from circuitos.cosim.controllers import ControllerSpec, controller_lines
 from circuitos.design.opamp import OpAmp
 from circuitos.devices.thyristor import Kind as ThyristorKind
-from circuitos.schematic import parts
+from circuitos.schematic import parts, stress, transformers
 from circuitos.schematic.cosim_symbols import (
     CONTROLLER_KINDS,
     COSIM_KINDS,
@@ -353,6 +354,20 @@ def _sweep_source(name: str, sch: Schematic) -> str:
 # ----------------------------------------------------------------------------- elements
 
 
+@dataclass(frozen=True)
+class Indicator:
+    """LED or lamp whose brightness the editor draws from a simulated current."""
+
+    kind: str  # "led" | "lamp"
+    vector: str  # current vector through it, e.g. i(vlum_led1)
+    i_ref: float | None = None  # A, LED: current of 100 % brightness
+    i_max: float | None = None  # A, LED: maximum DC forward current
+    colour: str | None = None
+    r: float | None = None  # Ω, lamp: hot resistance
+    p_nom: float | None = None  # W, lamp
+    v_nom: float | None = None  # V, lamp
+
+
 @dataclass
 class _Ctx:
     records: Mapping[str, ComponentRecord]
@@ -363,6 +378,7 @@ class _Ctx:
     log: CalcLog = field(default_factory=CalcLog)
     spreads: dict[str, parts.Spread] = field(default_factory=dict)
     controllers: list[ControllerSpec] = field(default_factory=list)
+    indicators: dict[str, Indicator] = field(default_factory=dict)
 
     def value(self, comp: Component, name: str) -> str:
         o = self.overrides.get((comp.ref, name))
@@ -488,6 +504,31 @@ def _emit(comp: Component, n: list[str], ctx: _Ctx) -> list[str]:
             f"K_{ref} L_{ref}_p L_{ref}_s {v('k')}",
             f"R_{ref}_iso {n[1]} {n[3]} 1g",
         ]
+    if k in ("transformer_1ph", "transformer_3ph"):
+        three = k == "transformer_3ph"
+        conn_p = param(comp, "conn_p") if three else "D"
+        conn_s = param(comp, "conn_s") if three else "D"
+        turns = param(comp, "turns").strip()
+        try:
+            w = transformers.size(
+                ref,
+                transformers.winding_voltage(ctx.number(comp, "vp"), conn_p),
+                transformers.winding_voltage(ctx.number(comp, "vs"), conn_s),
+                ctx.number(comp, "turns") if turns else None,
+                ctx.number(comp, "sn") / (3 if three else 1),
+                ctx.number(comp, "freq"),
+                ctx.number(comp, "imag"),
+                ctx.number(comp, "rcu"),
+                ctx.log,
+            )
+        except transformers.TransformerError as exc:
+            raise SchematicError(str(exc)) from exc
+        if three:
+            return transformers.three_phase_lines(ref, n, conn_p, conn_s, w)
+        return [
+            *transformers.pair_lines(ref, (n[0], n[1]), (n[2], n[3]), w),
+            f"R_{ref}_iso {n[1]} {n[3]} 1g",
+        ]
     if k[0] in "vi" and k[1:] in ("dc", "sin", "pulse", "pwl"):
         return _source_lines(comp, n, ctx)
     if k == "v3ph":
@@ -517,6 +558,62 @@ def _emit(comp: Component, n: list[str], ctx: _Ctx) -> list[str]:
             vals = {key: v(key) for key in ("is", "n", "rs", "cjo", "tt", "bv")}
             model = ctx.model(*_model_card("DG", "D", vals))
         return [f"{name} {n[0]} {n[1]} {model}"]
+    if k == "led":
+        rec = ctx.record(comp)
+        if rec is not None:
+            data, warn = parts.led_data(rec, ref)
+            ctx.warnings += warn
+        else:
+            data = parts.LedData(
+                ctx.number(comp, "vf"),
+                ctx.number(comp, "if_ref"),
+                ctx.number(comp, "if_max"),
+                None,
+            )
+        mname = f"LED_{parts.digest(f'{data.vf:.9g}')}"
+        model = ctx.model(mname, parts.constant_drop_diode(mname, data.vf))
+        inner = f"{ref}_la".lower()
+        ctx.indicators[ref] = Indicator(
+            kind="led",
+            vector=f"i(vlum_{ref.lower()})",
+            i_ref=data.i_ref,
+            i_max=data.i_max,
+            colour=data.colour or param(comp, "color"),
+        )
+        return [f"Vlum_{ref} {n[0]} {inner} DC 0", f"X{ref} {inner} {n[1]} {model}"]
+    if k == "lamp":
+        rec = ctx.record(comp)
+        if rec is not None:
+            lamp, warn = parts.lamp_data(rec, ref)
+            ctx.warnings += warn
+        else:
+            lamp = parts.LampData(ctx.number(comp, "vn"), ctx.number(comp, "pn"))
+        if lamp.pn <= 0 or lamp.vn <= 0:
+            raise SchematicError(f"{ref}: tensão e potência nominais devem ser positivas")
+        inner = f"{ref}_la".lower()
+        ctx.indicators[ref] = Indicator(
+            kind="lamp",
+            vector=f"i(vlum_{ref.lower()})",
+            r=lamp.r_hot,
+            p_nom=lamp.pn,
+            v_nom=lamp.vn,
+        )
+        if f"{ref}_r_hot" not in {st.id for st in ctx.log}:
+            ctx.log.add(
+                record(
+                    f"{ref}_r_hot",
+                    f"Resistência a quente da lâmpada {ref}",
+                    r"R_{quente} = \frac{V_n^2}{P_n}",
+                    Q_(lamp.r_hot, "ohm"),
+                    {"V_n": Q_(lamp.vn, "V"), "P_n": Q_(lamp.pn, "W")},
+                    [
+                        "Filamento como resistência constante, a de regime na tensão nominal "
+                        "(P = V²/R); a resistência a frio e a corrente de partida não constam "
+                        "das fichas técnicas e não são modeladas.",
+                    ],
+                )
+            )
+        return [f"Vlum_{ref} {n[0]} {inner} DC 0", f"R{ref} {inner} {n[1]} {lamp.r_hot:.9g}"]
     if k == "zener":
         rec = ctx.record(comp)
         if rec is not None:
@@ -651,6 +748,8 @@ class Netlist:
     steps: list[CalcStep]
     elements: dict[str, str]  # designator -> SPICE element name
     controllers: list[ControllerSpec] = field(default_factory=list)  # co-simulation (Fase 11)
+    indicators: dict[str, Indicator] = field(default_factory=dict)  # LEDs and lamps
+    limits: list[stress.Limit] = field(default_factory=list)  # ratings checked after a run
 
 
 def build_netlist(
@@ -677,19 +776,32 @@ def build_netlist(
     for pname, pval in all_params.items():
         lines.append(f".param {pname}={pval}")
     elements: dict[str, str] = {}
+    limits: list[stress.Limit] = []
+    t_amb = temperature if temperature is not None else try_parse(sch.temperature)
     for comp in sch.components:
         if comp.kind == "ground":
             continue
         nodes_by_pin = conn.pin_nodes.get(comp.ref, {})
         pins = [p.name for p in pin_defs(comp)]
+        rec = ctx.records.get(comp.part_id) if comp.part_id else None
+        sensed = stress.sense_pin(comp, rec)
+        sense: dict[str, str] = {}
         nodes = []
         for pin in pins:
             node = nodes_by_pin[pin]
             if (comp.ref, pin) in ammeters:
                 inner = f"am_{comp.ref}_{pin}".lower()
                 lines.append(f"{_ammeter(comp.ref, pin)} {node} {inner} DC 0")
+                sense[pin] = f"i({_ammeter(comp.ref, pin)})"
+                node = inner
+            elif pin == sensed:
+                # 0 V source that measures the current into the pin (damage check)
+                inner = f"sn_{comp.ref}_{pin}".lower()
+                lines.append(f"v{inner} {node} {inner} DC 0")
+                sense[pin] = f"i(v{inner})"
                 node = inner
             nodes.append(node)
+        limits += stress.limits_for(comp, nodes_by_pin, rec, sense, t_amb)
         _generic_spread(comp, ctx)
         lines += _emit(comp, nodes, ctx)
         elements[comp.ref] = element_name(comp)
@@ -715,4 +827,6 @@ def build_netlist(
         steps=list(ctx.log),
         elements=elements,
         controllers=ctx.controllers,
+        indicators=ctx.indicators,
+        limits=limits,
     )
