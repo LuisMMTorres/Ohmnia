@@ -191,6 +191,16 @@ class ComponentRepository:
         records = [r for r in self.search(category=category) if r.category == category]
         return self._review_many(records, f"{reviewer} (revisão da categoria)", dry_run=dry_run)
 
+    def review_all(self, reviewer: str, *, dry_run: bool = False) -> list[CategoryReviewItem]:
+        """Review every pending record of the whole catalogue at once ("Liberar todos").
+
+        Same rules as :meth:`review_category`: only entries whose source cites a page become
+        "revisado", and only records with no release blocker left are released (rule 5).
+        """
+        return self._review_many(
+            self.search(), f"{reviewer} (liberação de todo o catálogo)", dry_run=dry_run
+        )
+
     def review_records(
         self, ids: Iterable[uuid.UUID], reviewer: str, *, dry_run: bool = False
     ) -> list[CategoryReviewItem]:

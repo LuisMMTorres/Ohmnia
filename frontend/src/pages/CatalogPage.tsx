@@ -189,6 +189,12 @@ export function CatalogPage() {
                 Revisar categoria
               </button>
             )}
+            <CategoryReviewButton
+              all
+              label="todo o catálogo"
+              buttonText="Liberar todos"
+              onDone={load}
+            />
           </div>
         </div>
         <p className="muted small">
