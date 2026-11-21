@@ -276,3 +276,14 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
   (DHT, OneWire/DallasTemperature, Adafruit_BME280) na co-simulação, e a placa Raspberry Pi Pico.
   Total: 34 peças na bancada.
 - Detalhes e limitações: [validacao/bancada-perifericos.md](validacao/bancada-perifericos.md).
+
+## Autotransformador e motor de indução de 12 terminais — aguardando revisão (2026-11-21)
+
+- Autotransformador monofásico (H, X, N) definido pelos dados de placa, abaixador ou elevador.
+- Motor de indução trifásico de 12 terminais (dupla tensão), ligado por fora em triângulo
+  paralelo (220 V), estrela paralelo (380 V), triângulo série (440 V) ou estrela série (760 V).
+  Uma meia-bobina invertida faz circular corrente.
+- Desenhos reais dos dois na aba Protoboard; fonte de bancada e gerador de funções desenhados como
+  instrumentos reais.
+- Detalhes e limitações:
+  [validacao/autotransformador-motor-12-terminais.md](validacao/autotransformador-motor-12-terminais.md).

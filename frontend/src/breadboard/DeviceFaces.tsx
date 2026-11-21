@@ -348,6 +348,39 @@ const inductionMotor: Face = {
   ),
 };
 
+/** 12-lead dual-voltage motor: the same frame with a wide terminal box, leads 1 to 12. */
+const TWELVE_X = (i: number) => 46 + i * 18;
+const inductionMotor12: Face = {
+  terminals: Object.fromEntries(
+    Array.from({ length: 12 }, (_, i) => at(String(i + 1), TWELVE_X(i), 27, TWELVE_X(i), 11)),
+  ),
+  draw: (m) => (
+    <>
+      <path d="M 18 40 Q 10 69 18 98 L 40 98 L 40 40 Z" style={st("#7d8b97", "#46525c", 1.5)} />
+      {[48, 58, 68, 78, 88].map((y) => (
+        <line key={y} x1={16} y1={y} x2={38} y2={y} style={st("none", "#46525c", 1)} />
+      ))}
+      <rect x={40} y={34} width={140} height={70} rx={6} style={st("#5f87a8", "#2f4a61", 1.5)} />
+      {[42, 52, 62, 72, 82, 92].map((y) => (
+        <line key={y} x1={44} y1={y} x2={176} y2={y} style={st("none", "#3f6482", 1.4)} />
+      ))}
+      <rect x={34} y={16} width={222} height={20} rx={3} style={st("#5f87a8", "#2f4a61", 1.5)} />
+      {Array.from({ length: 12 }, (_, i) => (
+        <circle key={i} cx={TWELVE_X(i)} cy={27} r={4.5} style={st("#c9ced3", "#59636c", 1)} />
+      ))}
+      <rect x={52} y={104} width={26} height={8} style={st("#46525c")} />
+      <rect x={142} y={104} width={26} height={8} style={st("#46525c")} />
+      <rect x={180} y={50} width={12} height={38} rx={2} style={st("#4f7593", "#2f4a61")} />
+      <rect x={192} y={64} width={36} height={10} rx={2} style={st("#d2d7dc", "#56616b")} />
+      <rect x={100} y={54} width={74} height={36} rx={2} style={st("#e9edf0", "#8996a1")} />
+      {silk(137, 67, "M 3~ 12 cabos", 8, "#24323d")}
+      {silk(137, 81, "220/380/440/760 V", 7, "#24323d")}
+      <ShaftEnd x={256} y={69} r={20} motion={m} />
+      <RotationLabel x={206} y={124} motion={m} />
+    </>
+  ),
+};
+
 const stepperMotor: Face = {
   terminals: bottomRow({ "A+": 34, "A-": 64, "B+": 94, "B-": 124 }),
   draw: (m) => (
@@ -1066,6 +1099,26 @@ const transformer1ph: Face = {
   ),
 };
 
+const autotransformer: Face = {
+  terminals: topRow({ H: 88, X: 140, N: 192 }),
+  draw: () => (
+    <>
+      {/* one tapped winding on an E-I core; terminal strip: full winding (H), tap (X), common
+          (N) */}
+      <rect x={64} y={TOP - 8} width={152} height={18} rx={2} style={st("#efe9dc", "#a39a86")} />
+      {[88, 140, 192].map((x) => screw(x, TOP, `t${x}`))}
+      {silk(140, TOP + 140, "AUTOTRANSFORMADOR", 7, "#40525f")}
+      {eiCore(80, TOP + 36, 120, 92, "core")}
+      {coil(112, TOP + 46, 56, 72, "#c9822f", "cw")}
+      <rect x={80} y={TOP + 36} width={120} height={10} style={st("#6b7279", "#3a4046")} />
+      <rect x={80} y={TOP + 118} width={120} height={10} style={st("#6b7279", "#3a4046")} />
+      {lead([122, TOP + 46], [88, TOP + 8], "#c62828", "lh")}
+      {lead([140, TOP + 46], [140, TOP + 8], "#e0a020", "lx")}
+      {lead([158, TOP + 46], [192, TOP + 8], "#1f1f1f", "ln")}
+    </>
+  ),
+};
+
 const transformer3ph: Face = {
   terminals: topRow({
     H1: 18,
@@ -1157,6 +1210,7 @@ const FACES: Record<string, Face> = {
   relay,
   dc_motor: dcMotor,
   induction_motor: inductionMotor,
+  induction_motor_12: inductionMotor12,
   stepper_motor: stepperMotor,
   stepper_driver: stepperDriver,
   vfd,
@@ -1180,10 +1234,16 @@ const FACES: Record<string, Face> = {
   transformer: transformer1ph,
   transformer_1ph: transformer1ph,
   transformer_3ph: transformer3ph,
+  autotransformer,
   lamp,
 };
 
-export const MOTOR_KINDS = new Set(["dc_motor", "induction_motor", "stepper_motor"]);
+export const MOTOR_KINDS = new Set([
+  "dc_motor",
+  "induction_motor",
+  "induction_motor_12",
+  "stepper_motor",
+]);
 
 export function deviceFace(kind: string): Face | undefined {
   return FACES[kind];

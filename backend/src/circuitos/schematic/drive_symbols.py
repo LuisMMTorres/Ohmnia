@@ -4,6 +4,8 @@ Behavioural SPICE models, in the same style as :mod:`circuitos.schematic.cosim_s
 
 * ``induction_motor``: squirrel-cage motor, dynamic model in the stationary αβ frame; steady
   state equals the equivalent circuit of :mod:`circuitos.machines.induction`.
+* ``induction_motor_12``: the same machine with 12 terminals (two half-windings per phase),
+  for the four dual-voltage connections (220/380/440/760 V).
 * ``vfd``: frequency inverter with V/f control, acceleration and deceleration ramps, voltage
   boost; output as the fundamental (average model) or SPWM with third-harmonic injection.
 * ``soft_starter``: voltage ramp or current limit, kick start and soft stop, as the
@@ -55,6 +57,29 @@ def _stim(name: str, label: str, unit: str, default: str, help_: str = "") -> Pa
 
 _DIDACTIC = "Valor didático; troque pelo do seu motor."
 
+_MOTOR_PARAMS: tuple[ParamDef, ...] = (
+    ParamDef("poles", "Número de polos", "", "4"),
+    ParamDef("fnom", "Frequência das reatâncias", "Hz", "60"),
+    ParamDef("rs", "R1 (estator, por fase em Y)", "Ω", "1.5", help=_DIDACTIC),
+    ParamDef("rr", "R2 (rotor referido ao estator)", "Ω", "1.2", help=_DIDACTIC),
+    ParamDef("xls", "X1 (dispersão do estator)", "Ω", "2.5", help=_DIDACTIC),
+    ParamDef("xlr", "X2 (dispersão do rotor)", "Ω", "2.5", help=_DIDACTIC),
+    ParamDef("xm", "Xm (magnetização)", "Ω", "60", help=_DIDACTIC),
+    ParamDef("j", "Inércia (rotor + carga)", "kg·m²", "0.02", help=_DIDACTIC),
+    ParamDef("b", "Atrito viscoso", "N·m·s/rad", "0.005", help=_DIDACTIC),
+    _stim("tl", "Torque de carga", "N·m", "0"),
+    ParamDef(
+        "load",
+        "Tipo de carga",
+        "",
+        "constante",
+        type="choice",
+        choices=("constante", "quadrática"),
+        help="quadrática (ventilador, bomba centrífuga): o torque de carga vale o "
+        "informado na velocidade síncrona de fnom e cai com o quadrado da velocidade.",
+    ),
+)
+
 DRIVE_SYMBOLS: list[Symbol] = [
     Symbol(
         "induction_motor",
@@ -62,32 +87,29 @@ DRIVE_SYMBOLS: list[Symbol] = [
         "Atuadores",
         "X",
         (PinDef("A", -3, -2), PinDef("B", -3, 0), PinDef("C", -3, 2)),
-        (
-            ParamDef("poles", "Número de polos", "", "4"),
-            ParamDef("fnom", "Frequência das reatâncias", "Hz", "60"),
-            ParamDef("rs", "R1 (estator, por fase em Y)", "Ω", "1.5", help=_DIDACTIC),
-            ParamDef("rr", "R2 (rotor referido ao estator)", "Ω", "1.2", help=_DIDACTIC),
-            ParamDef("xls", "X1 (dispersão do estator)", "Ω", "2.5", help=_DIDACTIC),
-            ParamDef("xlr", "X2 (dispersão do rotor)", "Ω", "2.5", help=_DIDACTIC),
-            ParamDef("xm", "Xm (magnetização)", "Ω", "60", help=_DIDACTIC),
-            ParamDef("j", "Inércia (rotor + carga)", "kg·m²", "0.02", help=_DIDACTIC),
-            ParamDef("b", "Atrito viscoso", "N·m·s/rad", "0.005", help=_DIDACTIC),
-            _stim("tl", "Torque de carga", "N·m", "0"),
-            ParamDef(
-                "load",
-                "Tipo de carga",
-                "",
-                "constante",
-                type="choice",
-                choices=("constante", "quadrática"),
-                help="quadrática (ventilador, bomba centrífuga): o torque de carga vale o "
-                "informado na velocidade síncrona de fnom e cai com o quadrado da velocidade.",
-            ),
-        ),
+        _MOTOR_PARAMS,
         description="Gaiola de esquilo, modelo dinâmico em αβ (Krause, cap. 4); em regime, "
         "igual ao circuito equivalente por fase. Os parâmetros padrão são de um motor didático "
         "de 4 polos, 380 V em Y, cerca de 3,7 kW (20 N·m a 1732 rpm). Nós: <ref>_rpm, "
         "<ref>_te (torque, N·m), <ref>_i (corrente de linha eficaz, A), <ref>_w (rad/s).",
+        ref_prefix="M",
+    ),
+    Symbol(
+        "induction_motor_12",
+        "Motor de indução trifásico de 12 terminais",
+        "Atuadores",
+        "X",
+        _box(["1", "2", "3", "7", "8", "9"], ["4", "5", "6", "10", "11", "12"], 4),
+        _MOTOR_PARAMS,
+        description="Dupla tensão: duas meias-bobinas por fase (1-4 e 7-10, 2-5 e 8-11, 3-6 e "
+        "9-12), ligadas por fora. Triângulo paralelo 220 V: L1 = 1-6-7-12, L2 = 2-4-8-10, "
+        "L3 = 3-5-9-11. Estrela paralelo 380 V: L1 = 1-7, L2 = 2-8, L3 = 3-9 e 4-5-6-10-11-12 "
+        "unidos. Triângulo série 440 V: L1 = 1-12, L2 = 2-10, L3 = 3-11, 4-7, 5-8, 6-9. "
+        "Estrela série 760 V: L1 = 1, L2 = 2, L3 = 3, 4-7, 5-8, 6-9 e 10-11-12 unidos. Cada "
+        "meia-bobina trabalha com 220 V; R1, X1, R2, X2 e Xm são por fase da ligação em "
+        "estrela paralelo (380 V), os mesmos do motor de 3 terminais. Meia-bobina invertida "
+        "faz circular corrente pela dispersão. Nós: <ref>_rpm, <ref>_te, <ref>_w e <ref>_i "
+        "(corrente eficaz em cada meia-bobina, A).",
         ref_prefix="M",
     ),
     Symbol(
@@ -338,6 +360,7 @@ def max_step(components: list[Component]) -> float | None:
 
 _STATES = {  # integrator nodes (C = 1 analogues), held at zero for the operating point
     "induction_motor": ("psa", "psb", "pra", "prb", "w"),
+    "induction_motor_12": ("psa", "psb", "pra", "prb", "w", "da", "db", "dc"),
     "vfd": ("f", "th"),
     "soft_starter": ("k", "t0"),
     "contactor": ("ctl",),
@@ -350,6 +373,8 @@ def emit_drive(comp: Component, n: dict[str, str], v: Value, stim: Stimulus) -> 
     k = comp.kind
     if k == "induction_motor":
         lines = _induction(x, n, v, stim)
+    elif k == "induction_motor_12":
+        lines = _induction(x, n, v, stim, twelve=True)
     elif k == "vfd":
         lines = _vfd(x, n, v)
     elif k == "soft_starter":
@@ -380,7 +405,17 @@ def _f(text: str) -> float:
 # ------------------------------------------------------------------------ induction motor
 
 
-def _induction(x: str, n: dict[str, str], v: Value, stim: Stimulus) -> list[str]:
+def _induction(
+    x: str, n: dict[str, str], v: Value, stim: Stimulus, *, twelve: bool = False
+) -> list[str]:
+    """Three-terminal motor (floating wye) or 12-terminal dual-voltage motor.
+
+    The 12-terminal motor sees each phase through its two half-windings, referred to the wye
+    parallel connection: the phase voltage is their mean, the phase current is split between
+    them. A difference between the two halves of a phase (one reversed, or unequal voltages)
+    drives a circulating current through the loop of both halves: 4·R1 and 4·L1 (each half
+    has twice the resistance and leakage of the parallel pair); it does not link the rotor.
+    """
     poles = round(_f(v("poles")))
     if poles < 2 or poles % 2:
         raise ValueError("número de polos deve ser par (2, 4, 6...)")
@@ -390,7 +425,6 @@ def _induction(x: str, n: dict[str, str], v: Value, stim: Stimulus) -> list[str]
     lm = _f(v("xm")) / w0
     ls, lr = _f(v("xls")) / w0 + lm, _f(v("xlr")) / w0 + lm
     d = ls * lr - lm * lm
-    a, b, c = n["A"], n["B"], n["C"]
     psa, psb, pra, prb, w = (f"{x}_{s}" for s in ("psa", "psb", "pra", "prb", "w"))
     isa = f"(({lr:.9g}*V({psa}) - {lm:.9g}*V({pra}))/{d:.9g})"
     isb = f"(({lr:.9g}*V({psb}) - {lm:.9g}*V({prb}))/{d:.9g})"
@@ -401,27 +435,63 @@ def _induction(x: str, n: dict[str, str], v: Value, stim: Stimulus) -> list[str]
     tl = stim(v("tl"))
     if v("load") == "quadrática":
         tl = f"({tl})*V({w})*abs(V({w}))/{ws_nom * ws_nom:.9g}"
+    ib = f"(-0.5*{isa} + {_SQ3 / 2:.12g}*{isb})"
+    ic = f"(-0.5*{isa} - {_SQ3 / 2:.12g}*{isb})"
+    i_scale = 1.0
+    if twelve:
+        halves = {"a": (("1", "4"), ("7", "10")), "b": (("2", "5"), ("8", "11")),
+                  "c": (("3", "6"), ("9", "12"))}  # fmt: skip
+        wv = {
+            ph: f"(V({n[h1[0]]},{n[h1[1]]}) + V({n[h2[0]]},{n[h2[1]]}))/2"
+            for ph, (h1, h2) in halves.items()
+        }
+        v_alpha = f"(2*{wv['a']} - {wv['b']} - {wv['c']})/3"
+        v_beta = f"({wv['b']} - {wv['c']})/{_SQ3:.12g}"
+        l_loop, r_loop = 4 * _f(v("xls")) / w0, 4 * rs
+        terminal: list[str] = []
+        for ph, i_ph in zip("abc", (isa, ib, ic), strict=True):
+            (s1, e1), (s2, e2) = halves[ph]
+            dn = f"{x}_d{ph}"
+            i_circ = f"(V({dn})/{l_loop:.9g})"
+            terminal += [
+                f"B{x}_d{ph} 0 {dn} I = V({n[s1]},{n[e1]}) - V({n[s2]},{n[e2]})"
+                f" - {r_loop:.9g}*{i_circ}",
+                f"C{x}_d{ph} {dn} 0 1",
+                f"R{x}_d{ph} {dn} 0 1e12",
+                f"B{x}_i{ph}1 {n[s1]} {n[e1]} I = {i_ph}/2 + {i_circ}",
+                f"B{x}_i{ph}2 {n[s2]} {n[e2]} I = {i_ph}/2 - {i_circ}",
+            ]
+        nodes = list(dict.fromkeys(n[str(k)] for k in range(1, 13)))
+        i_scale = 0.5
+    else:
+        a, b, c = n["A"], n["B"], n["C"]
+        v_alpha = f"(2*V({a},{b}) + V({b},{c}))/3"
+        v_beta = f"V({b},{c})/{_SQ3:.12g}"
+        # terminal currents (inverse Clarke); they add up to zero
+        terminal = [
+            f"B{x}_ia {a} 0 I = {isa}",
+            f"B{x}_ib {b} 0 I = {ib}",
+            f"B{x}_ic {c} 0 I = {ic}",
+        ]
+        nodes = [a, b, c]
     # Krause, 2nd ed., ch. 4: stator and rotor flux linkages in the stationary frame
     return [
         f"* {x}: motor de indução (αβ)",
-        f"B{x}_psa 0 {psa} I = (2*V({a},{b}) + V({b},{c}))/3 - {rs:.9g}*{isa}",
-        f"B{x}_psb 0 {psb} I = V({b},{c})/{_SQ3:.12g} - {rs:.9g}*{isb}",
+        f"B{x}_psa 0 {psa} I = {v_alpha} - {rs:.9g}*{isa}",
+        f"B{x}_psb 0 {psb} I = {v_beta} - {rs:.9g}*{isb}",
         f"B{x}_pra 0 {pra} I = -{rr:.9g}*{ira} - {wr}*V({prb})",
         f"B{x}_prb 0 {prb} I = -{rr:.9g}*{irb} + {wr}*V({pra})",
         *(f"C{x}_{s} {x}_{s} 0 1" for s in ("psa", "psb", "pra", "prb")),
         *(f"R{x}_{s} {x}_{s} 0 1e12" for s in ("psa", "psb", "pra", "prb")),
-        # terminal currents (inverse Clarke); they add up to zero
-        f"B{x}_ia {a} 0 I = {isa}",
-        f"B{x}_ib {b} 0 I = -0.5*{isa} + {_SQ3 / 2:.12g}*{isb}",
-        f"B{x}_ic {c} 0 I = -0.5*{isa} - {_SQ3 / 2:.12g}*{isb}",
-        *(f"R{x}_g{i} {node} 0 10meg" for i, node in enumerate((a, b, c))),
+        *terminal,
+        *(f"R{x}_g{i} {node} 0 10meg" for i, node in enumerate(nodes)),
         # torque: Te = 3/2 p (ψsα isβ − ψsβ isα); mechanics as an RC analogue (J = C)
         f"B{x}_te {x}_te 0 V = {1.5 * p:.9g}*(V({psa})*{isb} - V({psb})*{isa})",
         f"B{x}_mech 0 {w} I = V({x}_te) - ({tl}) - {_f(v('b')):.9g}*V({w})",
         f"C{x}_j {w} 0 {_f(v('j')):.9g}",
         f"R{x}_w {w} 0 1e12",
         f"B{x}_rpm {x}_rpm 0 V = V({w})*{60 / (2 * math.pi):.12g}",
-        f"B{x}_i {x}_i 0 V = sqrt(({isa})^2 + ({isb})^2)/{math.sqrt(2):.12g}",
+        f"B{x}_i {x}_i 0 V = sqrt(({isa})^2 + ({isb})^2)/{math.sqrt(2) / i_scale:.12g}",
     ]
 
 

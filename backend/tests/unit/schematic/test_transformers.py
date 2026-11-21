@@ -104,3 +104,56 @@ def test_single_phase_ratio(backend):
     t = tran.vectors[tran.scale].data
     rms, _ = _rms_phase(t, tran.vectors["v(s)"].data)
     assert rms == pytest.approx(12, rel=0.01)
+
+
+def test_size_autotransformer():
+    """220 V / 127 V, 1 kVA: the series part has (220 − 127)/220 of the turns, the common
+    part 127/220; copper losses split between them by their own currents."""
+    log = CalcLog()
+    w = tr.size_auto("T1", 220, 127, 1000, 60, 3, 1, log)
+    l_full = 220 / (2 * math.pi * 60 * 0.03 * 1000 / 220)
+    assert w.l_series == pytest.approx(l_full * (93 / 220) ** 2)
+    assert w.l_common == pytest.approx(l_full * (127 / 220) ** 2)
+    ih, ix = 1000 / 220, 1000 / 127
+    assert w.r_series * ih**2 == pytest.approx(5)
+    assert w.r_common * (ix - ih) ** 2 == pytest.approx(5)
+    assert {s.id for s in log} == {"T1_a", "T1_lm", "T1_rcu"}
+
+
+@pytest.mark.parametrize("bad", [dict(vx=220), dict(vx=300), dict(vh=0), dict(imag_pct=0)])
+def test_size_autotransformer_rejects(bad):
+    args = dict(vh=220, vx=127, s_rated=1000, freq=60, imag_pct=3, rcu_pct=1)
+    args.update(bad)
+    with pytest.raises(tr.TransformerError):
+        tr.size_auto("T1", log=CalcLog(), **args)  # type: ignore[arg-type]
+
+
+def _auto_run(backend, feed: str, load_node: str, load: str):  # type: ignore[no-untyped-def]
+    b = Builder("auto")
+    vin = 220 if feed == "h" else 127
+    b.add("vsin", "V1", [feed, "0"], amplitude=str(vin * math.sqrt(2)), freq="60")
+    b.add("autotransformer", "T1", ["h", "x", "0"])
+    b.add("resistor", "RL", [load_node, "0"], value=load)
+    b.sch.analyses = [Analysis(kind="tran", params={"tstop": "0.2", "tmax": "50u"})]
+    res = SchematicPlan(b.sch).execute(backend)
+    tran = next(p for p in res.plots if p.kind == "tran")
+    return tran, tran.vectors[tran.scale].data
+
+
+@pytest.mark.ngspice
+def test_autotransformer_steps_down_at_rated_load(backend):
+    """220 V → 127 V with the rated 1 kVA load (127²/1000 Ω): output within 2 % (1 % of
+    copper losses), and the input current S/VH = 4,55 A (Chapman, 5th ed., ch. 2)."""
+    tran, t = _auto_run(backend, "h", "x", f"{127**2 / 1000:.6g}")
+    rms, _ = _rms_phase(t, tran.vectors["v(x)"].data)
+    assert rms == pytest.approx(127, rel=0.02)
+    i_in, _ = _rms_phase(t, tran.vectors["i(v1)"].data)
+    assert i_in == pytest.approx(1000 / 220 * rms / 127, rel=0.03)
+
+
+@pytest.mark.ngspice
+def test_autotransformer_steps_up(backend):
+    """127 V fed at X, light load (10 kΩ) on H: 220 V within 1 %."""
+    tran, t = _auto_run(backend, "x", "h", "10k")
+    rms, _ = _rms_phase(t, tran.vectors["v(h)"].data)
+    assert rms == pytest.approx(220, rel=0.01)
