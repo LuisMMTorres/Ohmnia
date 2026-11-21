@@ -1,0 +1,148 @@
+# Fonte: WEG, catálogo CWM - Contatores (50051271), consultado em 2026-11-21.
+part_number: CWM12
+category: contactor
+schema_version: '1.0'
+manufacturer: WEG
+family: CWM (contatores tripolares)
+package: Trilho DIN 35 mm / parafuso
+lifecycle: ativo
+notes:
+- Contator tripolar CWM12, AC-3 12 A até 440 V, bobina CA (60 Hz).
+- Catálogo WEG CWM (arquivo 50051271) lido como texto em 2026-11-21, sem PDF versionado (sem SHA-256);
+  páginas impressas 24 (comando) e 25 (contatos principais). Dados da bobina valem para o grupo CWM9...CWM25.
+- CWM9...CWM32 não têm bobina CC no catálogo (traço na tabela de comando CC).
+- No simulador, o contator fecha no limite superior da tensão de fechamento e abre no limite inferior
+  da tensão de abertura (pior caso das faixas).
+datasheets:
+- id: ds1
+  manufacturer: WEG
+  document_number: CWM - Contatores (catálogo, arquivo 50051271)
+  revision: não impressa no texto lido; consultado em 2026-11-21
+  url: https://static.weg.net/medias/downloadcenter/hac/hb5/WEG-CWM-50051271-catalogo-pt.pdf
+parameters:
+  I_e:
+    max: 12
+    unit: A
+    status: extraido
+    conditions:
+      Ue: 440 V
+    note: Faixa Ue ≤ 440 V (cobre 220 V e 380 V).
+    source:
+      datasheet_id: ds1
+      page: 25
+      location: Dados técnicos - Contatos principais - AC-3
+      excerpt: 'Categoria de utilização AC-3, Ue ≤440 V: 12 A'
+  S_pickup:
+    typ: 70
+    unit: VA
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 24
+      location: Circuito de comando CA - 60 Hz - fechamento
+      excerpt: Fechamento do circuito magnético 70 VA (CWM9...CWM25, 60 Hz)
+  pf_pickup:
+    typ: 0.85
+    unit: '1'
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 24
+      location: Circuito de comando CA - 60 Hz - fechamento
+      excerpt: fator de potência no fechamento 0,85
+  S_hold:
+    min: 5.5
+    max: 9.3
+    unit: VA
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 24
+      location: Circuito de comando CA - 60 Hz - manutenção
+      excerpt: Circuito magnético fechado 5,5...9,3 VA
+  pf_hold:
+    typ: 0.28
+    unit: '1'
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 24
+      location: Circuito de comando CA - 60 Hz - manutenção
+      excerpt: fator de potência fechado 0,28
+  P_coil:
+    typ: 2.6
+    unit: W
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 24
+      location: Circuito de comando CA - 60 Hz
+      excerpt: Potência térmica dissipada 2,6 W
+  V_pickup:
+    min: 0.4
+    max: 0.76
+    unit: '1'
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 24
+      location: Circuito de comando CA - 60 Hz
+      excerpt: Tensão de fechamento 0,4...0,76 x Us
+  V_dropout:
+    min: 0.25
+    max: 0.65
+    unit: '1'
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 24
+      location: Circuito de comando CA - 60 Hz
+      excerpt: Tensão de abertura 0,25...0,65 x Us
+  V_op:
+    min: 0.85
+    max: 1.1
+    unit: '1'
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 24
+      location: Circuito de comando
+      excerpt: Limites de operação da bobina 0,85...1,1 x Us
+  t_close:
+    min: 8
+    max: 20
+    unit: ms
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 24
+      location: Tempos de manobra - bobina CA
+      excerpt: Fechamento do contato NA 8...20 ms
+  t_open:
+    min: 6
+    max: 13
+    unit: ms
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 24
+      location: Tempos de manobra - bobina CA
+      excerpt: Abertura do contato NA 6...13 ms
+attributes:
+  bobina:
+    value: CA (24 a 480 V, códigos V04...V47 e D02...D39)
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 4
+      location: Tensões de comando - códigos de bobinas
+  polos:
+    value: 3 NA
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Título
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)

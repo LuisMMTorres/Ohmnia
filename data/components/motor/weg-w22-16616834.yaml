@@ -1,0 +1,270 @@
+# Fonte: WEG, folha de dados do motor W22 16616834 (00312ET3E213T-W22G), data 08/09/2023; consultada em 2026-11-21.
+part_number: '16616834'
+category: motor.ac
+schema_version: '1.0'
+manufacturer: WEG
+family: W22 NEMA Premium Efficiency
+package: Carcaça 213/5T
+lifecycle: desconhecido
+notes:
+- Motor de indução trifásico W22, 3 HP, 6 polos, 230/460 V, 60 Hz (catálogo 00312ET3E213T-W22G).
+- 'Folha de dados WEG gerada para o produto (PDF de uma página por tensão), cópia publicada pelo distribuidor
+  Wolf Automation; lida como texto em 2026-11-21, sem PDF versionado (sem SHA-256). As colunas de rendimento
+  e fator de potência foram associadas pela ordem das linhas do texto extraído: conferir no PDF.'
+- 'R1, X1, R2, X2 e Xm não constam do datasheet: o simulador ajusta o circuito equivalente aos pontos
+  nominal, a vazio, de partida e de conjugado máximo (machines/induction_fit.py).'
+datasheets:
+- id: ds1
+  manufacturer: WEG
+  document_number: Data Sheet - Three Phase Induction Motor, Product code 16616834
+  revision: Date 08/09/2023
+  url: https://www.wolfautomation.com/content/weg-16616834-three-phase-motor-datasheet.pdf
+tags:
+- motor_inducao
+- weg
+parameters:
+  P_rated:
+    typ: 3
+    unit: hp
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Output
+      excerpt: Output 3 HP
+  poles:
+    typ: 6
+    unit: '1'
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Poles
+      excerpt: Poles 6
+  f:
+    typ: 60
+    unit: Hz
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Frequency
+      excerpt: Frequency 60 Hz
+  V_rated:
+    typ: 460
+    unit: V
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Rated voltage
+      excerpt: Rated voltage 230/460 V
+  I_rated:
+    typ: 4.41
+    unit: A
+    status: extraido
+    conditions:
+      V: 460 V
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Rated current
+      excerpt: Rated current 8.83/4.41 A
+  I_lr:
+    typ: 30.9
+    unit: A
+    status: extraido
+    conditions:
+      V: 460 V
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: L. R. Amperes
+      excerpt: L. R. Amperes 61.8/30.9 A
+  Ip_In:
+    typ: 7.0
+    unit: '1'
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: LRC
+      excerpt: LRC 7.0x
+  I_0:
+    typ: 2.75
+    unit: A
+    status: extraido
+    conditions:
+      V: 460 V
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: No load current
+      excerpt: No load current 5.5/2.75 A
+  n_rated:
+    typ: 1175
+    unit: rpm
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Rated speed
+      excerpt: Rated speed 1175 RPM
+  slip:
+    typ: 2.08
+    unit: '%'
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Slip
+      excerpt: Slip 2.08 %
+  T_rated:
+    typ: 13.4
+    unit: ft*lbf
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Rated torque
+      excerpt: Rated torque 13.4 ft.lb
+  Tp_Tn:
+    typ: 200
+    unit: '%'
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Locked rotor torque
+      excerpt: Locked rotor torque 200 %
+  Tmax_Tn:
+    typ: 280
+    unit: '%'
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Breakdown torque
+      excerpt: Breakdown torque 280 %
+  SF:
+    typ: 1.25
+    unit: '1'
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Service factor
+      excerpt: Service factor 1.25
+  efficiency:
+    typ: 89.5
+    unit: '%'
+    status: extraido
+    conditions:
+      carga: 100 %
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Efficiency (%) - 100 %
+      excerpt: 'Efficiency (%) 100%: 89.5'
+  pf:
+    typ: 0.7
+    unit: '1'
+    status: extraido
+    conditions:
+      carga: 100 %
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Power Factor - 100 %
+      excerpt: 'Power Factor 100%: 0.7'
+  J:
+    typ: 1.2
+    unit: lb*ft**2
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Moment of inertia (J)
+      excerpt: Moment of inertia (J) 1.2 sq.ft.lb
+  V_rated@2:
+    typ: 230
+    unit: V
+    status: extraido
+    note: Tensão menor da dupla tensão.
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Rated voltage
+      excerpt: Rated voltage 230/460 V
+  I_rated@2:
+    typ: 8.83
+    unit: A
+    status: extraido
+    conditions:
+      V: 230 V
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Rated current
+      excerpt: Rated current 8.83/4.41 A
+  I_lr@2:
+    typ: 61.8
+    unit: A
+    status: extraido
+    conditions:
+      V: 230 V
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: L. R. Amperes
+      excerpt: L. R. Amperes 61.8/30.9 A
+  I_0@2:
+    typ: 5.5
+    unit: A
+    status: extraido
+    conditions:
+      V: 230 V
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: No load current
+      excerpt: No load current 5.5/2.75 A
+attributes:
+  carcaca:
+    value: 213/5T
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Frame
+  categoria:
+    value: B
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Design
+  classe:
+    value: isolação F
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Insulation class
+  grau_protecao:
+    value: IP55
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Protection degree
+  ligacao:
+    value: 230/460 V
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Rated voltage
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)

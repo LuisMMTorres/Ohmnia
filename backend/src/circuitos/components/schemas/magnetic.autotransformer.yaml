@@ -1,0 +1,6 @@
+category: magnetic.autotransformer
+extends: magnetic.transformer
+schema_version: '1.0'
+description: Autotransformador (um enrolamento com derivação; V_pri = enrolamento completo, V_sec = derivação)
+required: []
+parameters: {}

@@ -98,8 +98,11 @@ BOARDS: dict[str, Board] = {
             "pwm": "idem, p. 2: seis canais PWM (pinos 3, 5, 6, 9, 10, 11); frequências de "
             "490/980 Hz da referência da linguagem Arduino",
             "adc": "analogRead de 10 bits com referência de 5 V (referência da linguagem Arduino)",
-            "didatico": "limiares de entrada (0,6/0,3 VDD), resistência de saída 25 Ω e pull-up "
-            "de 35 kΩ: valores didáticos (o datasheet do ATmega328P não está na sua pasta)",
+            "didatico": "limiares de entrada 0,3/0,6 VCC e pull-up de 35 kΩ (centro da faixa de "
+            "20 a 50 kΩ): tabela DC Characteristics do ATmega328P (Microchip, documentação "
+            "on-line, seção 3.6.1.2 da versão automotiva; a verificar no datasheet "
+            "comercial); resistência de saída de 25 Ω didática (o datasheet só garante "
+            "VOH ≥ 4,1 V e VOL ≤ 0,8 V a 20 mA, isto é, até 45 Ω e 40 Ω)",
             "i2c": "I2C (Wire) em A4 = SDA e A5 = SCL (referência da biblioteca Wire do Arduino)",
         },
     ),
@@ -120,8 +123,11 @@ BOARDS: dict[str, Board] = {
             "pwm": "idem, p. 2: 8 entradas analógicas e 6 canais PWM (pinos 3, 5, 6, 9, 10, 11); "
             "frequências de 490/980 Hz da referência da linguagem Arduino",
             "adc": "analogRead de 10 bits com referência de 5 V (referência da linguagem Arduino)",
-            "didatico": "limiares de entrada (0,6/0,3 VDD), resistência de saída 25 Ω e pull-up "
-            "de 35 kΩ: os mesmos valores didáticos do Uno",
+            "didatico": "limiares de entrada 0,3/0,6 VCC e pull-up de 35 kΩ (centro da faixa de "
+            "20 a 50 kΩ): tabela DC Characteristics do ATmega328P (Microchip, documentação "
+            "on-line, seção 3.6.1.2 da versão automotiva; a verificar no datasheet "
+            "comercial); resistência de saída de 25 Ω didática (o datasheet só garante "
+            "VOH ≥ 4,1 V e VOL ≤ 0,8 V a 20 mA, isto é, até 45 Ω e 40 Ω)",
             "i2c": "I2C (Wire) em A4 = SDA e A5 = SCL, como no Uno",
         },
     ),
@@ -142,8 +148,11 @@ BOARDS: dict[str, Board] = {
             "pwm": "idem, p. 2: 16 entradas analógicas e 15 canais PWM (pinos 2 a 13 e 44 a 46); "
             "490 Hz, 980 Hz nos pinos 4 e 13, pela referência da linguagem Arduino",
             "adc": "analogRead de 10 bits com referência de 5 V (referência da linguagem Arduino)",
-            "didatico": "limiares de entrada (0,6/0,3 VDD), resistência de saída 25 Ω e pull-up "
-            "de 35 kΩ: os mesmos valores didáticos do Uno",
+            "didatico": "limiares de entrada 0,3/0,6 VCC e pull-up de 35 kΩ (centro da faixa de "
+            "20 a 50 kΩ): tabela DC Characteristics do ATmega328P (Microchip, documentação "
+            "on-line, seção 3.6.1.2 da versão automotiva; a verificar no datasheet "
+            "comercial); resistência de saída de 25 Ω didática (o datasheet só garante "
+            "VOH ≥ 4,1 V e VOL ≤ 0,8 V a 20 mA, isto é, até 45 Ω e 40 Ω)",
             "i2c": "I2C (Wire) em D20 = SDA e D21 = SCL (referência da biblioteca Wire do Arduino)",
         },
     ),

@@ -1,0 +1,65 @@
+# Fonte: Satco, spec sheet S2419 (60 W A19, 120 V), consultada em 2026-11-21.
+part_number: S2419
+category: lamp.incandescent
+schema_version: '1.0'
+manufacturer: Satco
+family: A19 Incandescent
+package: Base E26 (Medium)
+lifecycle: ativo
+notes:
+- Lâmpada incandescente A19 60 W 120 V transparente (filamento Quad Loop), 3000 h de vida média.
+- Fonte é a ficha técnica on-line do fabricante (spec sheet), sem PDF versionado; consultada em 2026-11-21.
+- '120 V é a tensão de rede dos EUA: em 127 V a lâmpada trabalha 6 % acima da nominal (mais fluxo, menos
+  vida).'
+datasheets:
+- id: ds1
+  manufacturer: Satco Products, Inc.
+  document_number: Spec sheet S2419
+  revision: página consultada em 2026-11-21
+  url: https://www.satco.com/catalog/product/specsheets/S2419
+parameters:
+  V_nom:
+    typ: 120
+    unit: V
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Volts
+      excerpt: Volts 120v
+  P_nom:
+    typ: 60
+    unit: W
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Watts
+      excerpt: Watts 60W
+  flux:
+    typ: 240
+    unit: lm
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Lumens
+      excerpt: Lumens 240L
+attributes:
+  base:
+    value: E26
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: ANSI Base
+  tecnologia:
+    value: incandescente
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Product Technology
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)

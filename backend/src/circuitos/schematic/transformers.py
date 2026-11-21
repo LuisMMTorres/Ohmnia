@@ -12,8 +12,9 @@ from __future__ import annotations
 import math
 from dataclasses import dataclass
 
+from circuitos.components.models import ComponentRecord
 from circuitos.core.calc import BibRef, CalcLog, record
-from circuitos.core.units import Q_
+from circuitos.core.units import Q_, parse_unit
 
 COUPLING = 0.9999  # k < 1: ngspice needs it; leakage ≈ 2(1 − k)·Xm, negligible
 _ASSUMPTIONS = [
@@ -255,6 +256,61 @@ def auto_lines(name: str, h: str, x: str, n: str, w: AutoWinding) -> list[str]:
         f"L_{name}_c {b} {n} {w.l_common:.9g}",
         f"K_{name} L_{name}_s L_{name}_c {COUPLING}",
     ]
+
+
+# ------------------------------------------------------------------ catalogue parts (D-REAL)
+
+CATALOGUE = {
+    "transformer_1ph": ("magnetic.transformer",),
+    "transformer_3ph": ("magnetic.transformer_3ph",),
+    "autotransformer": ("magnetic.autotransformer",),
+}
+
+
+def _si(rec: ComponentRecord, key: str, unit: str) -> float | None:
+    p = rec.parameters.get(key)
+    if p is None or not p.has_value:
+        return None
+    number = next(x for x in (p.typ, p.max, p.min) if x is not None)
+    return float(Q_(number, parse_unit(p.unit)).m_as(unit))
+
+
+def catalogue_params(
+    kind: str, rec: ComponentRecord, ref: str
+) -> tuple[dict[str, float], list[str]]:
+    """Nameplate values of a catalogue part, by symbol parameter, and what stays generic.
+
+    Copper losses: P_sc/S_n when the data sheet gives the short-circuit losses; otherwise the
+    voltage regulation, which equals the per-unit resistance for a resistive load when the
+    leakage reactance is small (toroids; Chapman, 5th ed., ch. 2, voltage regulation).
+    """
+    vp, vs, sn = _si(rec, "V_pri", "V"), _si(rec, "V_sec", "V"), _si(rec, "S_rated", "VA")
+    if vp is None or vs is None or sn is None:
+        raise TransformerError(
+            f"{ref}: {rec.part_number} sem tensões de primário e secundário e potência nominal"
+        )
+    names = ("vh", "vx") if kind == "autotransformer" else ("vp", "vs")
+    out = {names[0]: vp, names[1]: vs, "sn": sn}
+    warnings: list[str] = []
+    psc, reg = _si(rec, "P_sc", "W"), _si(rec, "regulation", "%")
+    if psc is not None:
+        out["rcu"] = 100 * psc / sn
+    elif reg is not None:
+        out["rcu"] = reg
+        pct = f"{reg:g}".replace(".", ",")
+        warnings.append(
+            f"{ref}: perda no cobre de {rec.part_number} tirada da regulação ({pct} %), "
+            "aproximação de carga resistiva."
+        )
+    else:
+        warnings.append(
+            f"{ref}: {rec.part_number} não informa perdas no cobre; usado o valor do símbolo."
+        )
+    warnings.append(
+        f"{ref}: {rec.part_number} não informa a corrente a vazio; a magnetização é a do símbolo "
+        "(didática)."
+    )
+    return out, warnings
 
 
 def _float_paths(ref: str, nodes: list[str]) -> list[str]:

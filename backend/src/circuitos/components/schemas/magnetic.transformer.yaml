@@ -35,5 +35,31 @@ parameters:
     unit: °C
     kind: thermal
     description: Temperatura de armazenamento (faixa)
+  I_sec:
+    unit: A
+    kind: max_rating
+    description: Corrente nominal do secundário
+  regulation:
+    unit: '%'
+    kind: characteristic
+    description: Regulação de tensão (vazio a plena carga)
+  P_sc:
+    unit: W
+    kind: characteristic
+    description: Perdas em curto-circuito (no cobre, corrente nominal)
+  P_0:
+    unit: W
+    kind: characteristic
+    description: Perdas a vazio (no ferro)
+  u_k:
+    unit: '%'
+    kind: characteristic
+    description: Tensão de curto-circuito
+  efficiency:
+    unit: '%'
+    kind: characteristic
+    description: Rendimento a plena carga
 attributes:
   aplicacao: Aplicação (força, pulso, corrente, isolamento)
+  fases: Número de fases
+  ligacao: Grupo de ligação (ex. Dyn5)

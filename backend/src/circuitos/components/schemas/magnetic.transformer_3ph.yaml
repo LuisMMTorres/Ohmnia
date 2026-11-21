@@ -1,0 +1,6 @@
+category: magnetic.transformer_3ph
+extends: magnetic.transformer
+schema_version: '1.0'
+description: Transformador trifásico de força ou de isolação (tensões de linha)
+required: []
+parameters: {}

@@ -1,0 +1,270 @@
+# Fonte: WEG, folha de dados do motor W22 11546979 (06018ET3E364TS-W22), data 08/06/2022; consultada em 2026-11-21.
+part_number: '11546979'
+category: motor.ac
+schema_version: '1.0'
+manufacturer: WEG
+family: W22 NEMA Premium Efficiency
+package: Carcaça 364/5TS
+lifecycle: desconhecido
+notes:
+- Motor de indução trifásico W22, 60 HP, 4 polos, 230/460 V, 60 Hz (catálogo 06018ET3E364TS-W22).
+- 'Folha de dados WEG gerada para o produto (PDF de uma página por tensão), cópia publicada pelo distribuidor
+  Wolf Automation; lida como texto em 2026-11-21, sem PDF versionado (sem SHA-256). As colunas de rendimento
+  e fator de potência foram associadas pela ordem das linhas do texto extraído: conferir no PDF.'
+- 'R1, X1, R2, X2 e Xm não constam do datasheet: o simulador ajusta o circuito equivalente aos pontos
+  nominal, a vazio, de partida e de conjugado máximo (machines/induction_fit.py).'
+datasheets:
+- id: ds1
+  manufacturer: WEG
+  document_number: Data Sheet - Three Phase Induction Motor, Product code 11546979
+  revision: Date 08/06/2022
+  url: https://wolfautomation.com/content/weg-w22-11546979-datasheet.pdf
+tags:
+- motor_inducao
+- weg
+parameters:
+  P_rated:
+    typ: 60
+    unit: hp
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Output
+      excerpt: Output 60 HP
+  poles:
+    typ: 4
+    unit: '1'
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Poles
+      excerpt: Poles 4
+  f:
+    typ: 60
+    unit: Hz
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Frequency
+      excerpt: Frequency 60 Hz
+  V_rated:
+    typ: 460
+    unit: V
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Rated voltage
+      excerpt: Rated voltage 230/460 V
+  I_rated:
+    typ: 71.6
+    unit: A
+    status: extraido
+    conditions:
+      V: 460 V
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Rated current
+      excerpt: Rated current 143/71.6 A
+  I_lr:
+    typ: 444
+    unit: A
+    status: extraido
+    conditions:
+      V: 460 V
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: L. R. Amperes
+      excerpt: L. R. Amperes 888/444 A
+  Ip_In:
+    typ: 6.2
+    unit: '1'
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: LRC
+      excerpt: LRC 6.2x
+  I_0:
+    typ: 26.0
+    unit: A
+    status: extraido
+    conditions:
+      V: 460 V
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: No load current
+      excerpt: No load current 52.0/26.0 A
+  n_rated:
+    typ: 1780
+    unit: rpm
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Rated speed
+      excerpt: Rated speed 1780 RPM
+  slip:
+    typ: 1.11
+    unit: '%'
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Slip
+      excerpt: Slip 1.11 %
+  T_rated:
+    typ: 177
+    unit: ft*lbf
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Rated torque
+      excerpt: Rated torque 177 ft.lb
+  Tp_Tn:
+    typ: 220
+    unit: '%'
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Locked rotor torque
+      excerpt: Locked rotor torque 220 %
+  Tmax_Tn:
+    typ: 240
+    unit: '%'
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Breakdown torque
+      excerpt: Breakdown torque 240 %
+  SF:
+    typ: 1.25
+    unit: '1'
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Service factor
+      excerpt: Service factor 1.25
+  efficiency:
+    typ: 95.0
+    unit: '%'
+    status: extraido
+    conditions:
+      carga: 100 %
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Efficiency (%) - 100 %
+      excerpt: 'Efficiency (%) 100%: 95.0'
+  pf:
+    typ: 0.83
+    unit: '1'
+    status: extraido
+    conditions:
+      carga: 100 %
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Power Factor - 100 %
+      excerpt: 'Power Factor 100%: 0.83'
+  J:
+    typ: 22.4
+    unit: lb*ft**2
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Moment of inertia (J)
+      excerpt: Moment of inertia (J) 22.4 sq.ft.lb
+  V_rated@2:
+    typ: 230
+    unit: V
+    status: extraido
+    note: Tensão menor da dupla tensão.
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Rated voltage
+      excerpt: Rated voltage 230/460 V
+  I_rated@2:
+    typ: 143
+    unit: A
+    status: extraido
+    conditions:
+      V: 230 V
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Rated current
+      excerpt: Rated current 143/71.6 A
+  I_lr@2:
+    typ: 888
+    unit: A
+    status: extraido
+    conditions:
+      V: 230 V
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: L. R. Amperes
+      excerpt: L. R. Amperes 888/444 A
+  I_0@2:
+    typ: 52.0
+    unit: A
+    status: extraido
+    conditions:
+      V: 230 V
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: No load current
+      excerpt: No load current 52.0/26.0 A
+attributes:
+  carcaca:
+    value: 364/5TS
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Frame
+  categoria:
+    value: B
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Design
+  classe:
+    value: isolação F
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Insulation class
+  grau_protecao:
+    value: IP55
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Protection degree
+  ligacao:
+    value: 230/460 V
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Rated voltage
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)

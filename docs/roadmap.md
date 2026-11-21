@@ -297,3 +297,15 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 - JFET P genérico corrigido (VTO negativo, convenção do SPICE).
 - Faltam dados reais de motores de indução, contatores e transformadores trifásicos.
 - Detalhes: [validacao/dados-reais-biblioteca.md](validacao/dados-reais-biblioteca.md).
+
+## Biblioteca com dados reais — aguardando revisão (2026-11-21)
+
+- Auditoria dos símbolos do Simulador que só tinham valores didáticos; os genéricos continuam.
+- Peças reais novas: motores WEG W22 (3, 30 e 60 HP), contatores WEG CWM9 a CWM25,
+  transformadores Hammond 1182 (1φ) e BLOCK TT3 (3φ), autotransformadores Hammond 175 e
+  lâmpadas Satco de 120 V.
+- Completa a entrada anterior: transformador trifásico, autotransformador, motor de indução e
+  contator aceitam peças do catálogo; o circuito equivalente do motor é ajustado aos dados de
+  placa; o transformador monofásico passa a usar também a perda no cobre do datasheet.
+- Detalhes, pendências e limitações:
+  [validacao/biblioteca-dados-reais.md](validacao/biblioteca-dados-reais.md).
