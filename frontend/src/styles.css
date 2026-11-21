@@ -255,6 +255,10 @@ label.inline {
   gap: 12px;
   align-items: flex-end;
 }
+.filter-action {
+  display: flex;
+  gap: 8px;
+}
 .filters .grow {
   flex: 1 1 320px;
 }
@@ -374,6 +378,13 @@ td.num {
 .status-violado {
   color: var(--error-text);
   font-weight: 600;
+}
+p.catalog-warning {
+  border-left: 3px solid #d99a00;
+  background: color-mix(in srgb, #d99a00 10%, transparent);
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 14px;
 }
 ul.warnings {
   list-style: none;

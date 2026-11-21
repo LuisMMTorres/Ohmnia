@@ -334,6 +334,12 @@ export const catalog = {
       method: "POST",
       body: JSON.stringify({ category, reviewer, dry_run: dryRun }),
     }),
+  /** Review and release every pending component of the catalogue; dryRun only previews. */
+  reviewAll: (reviewer: string, dryRun: boolean) =>
+    request<CategoryReview>("/components/review-all", {
+      method: "POST",
+      body: JSON.stringify({ reviewer, dry_run: dryRun }),
+    }),
   /** Review and release the given parts (those of one circuit); dryRun only previews. */
   reviewParts: (ids: string[], reviewer: string, dryRun: boolean) =>
     request<Omit<CategoryReview, "category" | "already_released">>("/components/review-parts", {

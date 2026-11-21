@@ -16,23 +16,35 @@ type Review = Omit<CategoryReview, "category" | "already_released"> & {
 
 /**
  * Button + dialog: review every pending component of one category at once, or (with `ids`)
- * only the given parts, e.g. the ones of the circuit under design.
+ * only the given parts, e.g. the ones of the circuit under design, or (with `all`) the whole
+ * catalogue ("Liberar todos").
  */
 export function CategoryReviewButton({
   category = "",
   ids,
+  all = false,
   label,
   buttonText = "Revisar categoria",
   onDone,
 }: {
   category?: string;
   ids?: string[];
+  all?: boolean;
   label: string;
   buttonText?: string;
   onDone: () => void;
 }) {
   const run = (who: string, dryRun: boolean): Promise<Review> =>
-    ids ? catalog.reviewParts(ids, who, dryRun) : catalog.reviewCategory(category, who, dryRun);
+    all
+      ? catalog.reviewAll(who, dryRun)
+      : ids
+        ? catalog.reviewParts(ids, who, dryRun)
+        : catalog.reviewCategory(category, who, dryRun);
+  const scope = all
+    ? "os componentes do catálogo"
+    : ids
+      ? "os componentes deste circuito"
+      : "os componentes desta categoria";
   const [open, setOpen] = useState(false);
   const [preview, setPreview] = useState<Review | null>(null);
   const [result, setResult] = useState<Review | null>(null);
@@ -78,7 +90,13 @@ export function CategoryReviewButton({
 
   return (
     <>
-      <button className="secondary" onClick={start} title={`Revisar todos: ${label}`}>
+      <button
+        className="secondary"
+        onClick={start}
+        title={
+          all ? "Liberar de uma vez todos os componentes pendentes" : `Revisar todos: ${label}`
+        }
+      >
         {buttonText}
       </button>
       {open && (
@@ -87,10 +105,10 @@ export function CategoryReviewButton({
             className="modal category-review"
             role="dialog"
             aria-modal="true"
-            aria-label={`Revisar a categoria ${label}`}
+            aria-label={all ? "Liberar todos os componentes" : `Revisar a categoria ${label}`}
             onClick={(e) => e.stopPropagation()}
           >
-            <h3>Revisar todos: {label}</h3>
+            <h3>{all ? "Liberar todos os componentes do catálogo" : `Revisar todos: ${label}`}</h3>
             {error && (
               <div className="error" role="alert">
                 {error}
@@ -105,11 +123,7 @@ export function CategoryReviewButton({
                     automática; <strong>{result.pending}</strong> continua(m) com pendência.
                   </p>
                 ) : shown.items.length === 0 ? (
-                  <p>
-                    Nada a revisar:{" "}
-                    {ids ? "os componentes deste circuito" : "os componentes desta categoria"} já
-                    estão liberados.
-                  </p>
+                  <p>Nada a revisar: {scope} já estão liberados.</p>
                 ) : (
                   <>
                     <p>
@@ -121,6 +135,13 @@ export function CategoryReviewButton({
                       componente(s) ficam liberados e <strong>{shown.pending}</strong> continuam com
                       pendência.
                     </p>
+                    {all && (
+                      <p className="catalog-warning" role="note">
+                        Atenção: esta ação vale para <strong>todo o catálogo</strong>, em todas as
+                        categorias. Cada componente liberado fica registrado com o seu nome e a data
+                        e hora desta liberação.
+                      </p>
+                    )}
                     {unsourced > 0 && (
                       <p className="small muted">
                         {unsourced} valor(es) sem página ficam como estão: um valor conferido
@@ -184,7 +205,9 @@ export function CategoryReviewButton({
                         checked={checked}
                         onChange={(e) => setChecked(e.target.checked)}
                       />
-                      Conferi os valores destes componentes com os datasheets.
+                      {all
+                        ? `Conferi com os datasheets os valores dos ${shown.items.length} componentes pendentes do catálogo.`
+                        : "Conferi os valores destes componentes com os datasheets."}
                     </label>
                     <div className="row">
                       <input
@@ -194,7 +217,8 @@ export function CategoryReviewButton({
                         onChange={(e) => setReviewer(e.target.value)}
                       />
                       <button onClick={confirm} disabled={busy || !checked || !reviewer.trim()}>
-                        Confirmar revisão de {shown.items.length} componente(s)
+                        {all ? "Liberar" : "Confirmar revisão de"} {shown.items.length}{" "}
+                        componente(s)
                       </button>
                     </div>
                   </>

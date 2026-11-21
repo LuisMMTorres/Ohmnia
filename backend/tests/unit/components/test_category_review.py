@@ -97,3 +97,43 @@ def test_api_preview_then_confirm(client):
     again = client.post(url, json={"category": "diode.rectifier", "dry_run": True}).json()
     assert again["items"] == [] and again["already_released"] == 2
     assert client.post(url, json={"category": "nada", "dry_run": True}).status_code == 404
+
+
+# A second family whose required Tj_max cites no page: it must stay blocked.
+OTHER_BLOCKED = (
+    NO_PAGE.replace("XF1–XF2", "XG1–XG2").replace("XF1:", "XG1:").replace("XF2:", "XG2:")
+)
+
+
+def test_review_all_releases_whole_catalogue_but_keeps_blockers(tmp_path):
+    (tmp_path / "other.yaml").write_text(OTHER_BLOCKED, encoding="utf-8")
+    repo = _repo(tmp_path, FAMILY)
+    rid = component_id("Fabricante Fictício", "XF1")
+    for key in repo.get(rid).parameters:
+        repo.set_parameter_status(rid, key, "revisado")
+    repo.release(rid, "Ana")
+    preview = repo.review_all("", dry_run=True)
+    assert {i.part_number: i.after for i in preview} == {
+        "XF2": "liberado",
+        "XG1": "em_revisao",
+        "XG2": "em_revisao",
+    }
+    assert repo.get(component_id("Fabricante Fictício", "XF2")).review.status == "rascunho"
+    repo.review_all("Lauro")
+    xf2 = repo.get(component_id("Fabricante Fictício", "XF2"))
+    assert xf2.selectable
+    assert xf2.review.reviewed_by == "Lauro (liberação de todo o catálogo)"
+    assert xf2.review.reviewed_at is not None
+    assert repo.get(rid).review.reviewed_by == "Ana"  # already released: untouched
+    assert not repo.get(component_id("Fabricante Fictício", "XG1")).selectable
+
+
+def test_api_review_all(client):
+    url = "/api/v1/components/review-all"
+    preview = client.post(url, json={"dry_run": True}).json()
+    assert preview["dry_run"] and preview["released"] == 2 and preview["already_released"] == 0
+    assert client.post(url, json={}).status_code == 422  # no name
+    done = client.post(url, json={"reviewer": "Lauro"}).json()
+    assert done["released"] == 2
+    again = client.post(url, json={"dry_run": True}).json()
+    assert again["items"] == [] and again["already_released"] == 2
