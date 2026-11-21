@@ -11,6 +11,10 @@ export interface Trace {
   points?: boolean;
   /** Dash pattern of the line, in pixels (e.g. [6, 4]). */
   dash?: number[];
+  /** Colour of the line (default: next colour of the palette). */
+  color?: string;
+  /** Line width in pixels (default 1,5). */
+  width?: number;
 }
 
 interface Props {
@@ -31,7 +35,7 @@ function isDecade(v: number): boolean {
   return Math.abs(e - Math.round(e)) < 1e-6;
 }
 
-const COLORS = ["#2a7de1", "#e5533d", "#2fa36b", "#9b59d0", "#d99a00", "#1fa3b5", "#c2417e"];
+export const COLORS = ["#2a7de1", "#e5533d", "#2fa36b", "#9b59d0", "#d99a00", "#1fa3b5", "#c2417e"];
 
 export function SignalPlot({
   x,
@@ -93,13 +97,13 @@ export function SignalPlot({
         ...traces.map((t, i) => ({
           label: t.name,
           scale: t.unit || "1",
-          stroke: COLORS[i % COLORS.length],
-          width: t.points ? 0 : 1.5,
+          stroke: t.color ?? COLORS[i % COLORS.length],
+          width: t.points ? 0 : (t.width ?? 1.5),
           ...(t.dash ? { dash: t.dash } : {}),
           ...(t.points
             ? {
                 paths: () => null,
-                points: { show: true, size: 9, fill: COLORS[i % COLORS.length] },
+                points: { show: true, size: 9, fill: t.color ?? COLORS[i % COLORS.length] },
               }
             : {}),
           value: (_u: uPlot, v: number | null) => (v == null ? "—" : formatEng(v, t.unit, 4)),

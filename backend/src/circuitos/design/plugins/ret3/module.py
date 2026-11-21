@@ -11,8 +11,17 @@ from pydantic import BaseModel, Field, model_validator
 
 from circuitos.core.calc import BibRef, CalcLog, record
 from circuitos.core.units import Q_, QuantityModel, format_eng
-from circuitos.design.base import Circuit, DesignWarning, Role, SimCheck, Stress, make_trace
+from circuitos.design.base import (
+    Circuit,
+    DesignWarning,
+    PowerPort,
+    Role,
+    SimCheck,
+    Stress,
+    make_trace,
+)
 from circuitos.design.engine import Analysis, Device
+from circuitos.design.measure import scale
 from circuitos.design.plugins.retc1.module import diode_model, scr_model
 
 from . import model as m
@@ -41,8 +50,9 @@ class Ret3Spec(BaseModel):
     controlled: bool = True
     Vin: QuantityModel = QuantityModel(value=380, unit="V")  # primary line-to-line, RMS
     f: QuantityModel = QuantityModel(value=60, unit="Hz")
-    Vo: QuantityModel = QuantityModel(value=220, unit="V")  # mean output at α nominal
-    Io: QuantityModel = QuantityModel(value=10, unit="A")  # DC load current (L ≫)
+    # secondary line-to-line, RMS (12 pulses: each bridge)
+    Vsec: QuantityModel = QuantityModel(value=220, unit="V")
+    P: QuantityModel = QuantityModel(value=2500, unit="W")  # load power (DC current, L ≫)
     E: QuantityModel = QuantityModel(value=0, unit="V")  # counter-EMF of the load
     Ls: QuantityModel = QuantityModel(value=0.5, unit="mH")  # per phase, secondary side
     alpha_nom: QuantityModel = QuantityModel(value=30, unit="deg")
@@ -55,10 +65,10 @@ class Ret3Spec(BaseModel):
         a = self.alpha_nom.to_pint().m_as("deg")
         if self.controlled and not 0 <= a < 90:
             raise ValueError("α nominal deve estar entre 0° e 90° (modo retificador)")
-        if self.Vo.to_pint().m_as("V") <= self.E.to_pint().m_as("V"):
-            raise ValueError("Vo deve ser maior que E")
-        if self.Io.to_pint().m_as("A") <= 0:
-            raise ValueError("Io deve ser positivo")
+        if self.Vsec.to_pint().m_as("V") <= 0:
+            raise ValueError("A tensão do secundário deve ser positiva")
+        if self.P.to_pint().m_as("W") <= 0:
+            raise ValueError("A potência da carga deve ser positiva")
         return self
 
     def alpha(self) -> float:
@@ -81,6 +91,7 @@ class Ret3Module:
     family = "retificadores"
     title = "Retificador trifásico"
     spec_schema = Ret3Spec
+    spec_labels = {"Vin": "Tensão de linha do primário (eficaz)"}
 
     def roles(self, spec: BaseModel) -> list[Role]:
         s = _spec(spec)
@@ -112,9 +123,9 @@ class Ret3Module:
         VT = devices[des].drop.m_as("V")
         f = s.f.to_pint().m_as("Hz")
         w = 2 * math.pi * f
-        Io = s.Io.to_pint().m_as("A")
         Ls = s.Ls.to_pint().m_as("H")
-        Vo = s.Vo.to_pint().m_as("V")
+        P = s.P.to_pint().m_as("W")
+        E = s.E.to_pint().m_as("V")
         a = s.alpha()
         log = CalcLog()
         warnings: list[DesignWarning] = []
@@ -126,29 +137,62 @@ class Ret3Module:
             6: r"\frac{3\omega L_s}{\pi}",
             12: r"\frac{6\omega L_s}{\pi}",
         }[p]
-        Vll_m = m.peak_line_voltage_for(p, Vo, a, Io, Ls, f, VT)
-        log.add(
+        Vll_m = log.add(
             record(
                 "Vll_m",
                 "Tensão de linha de pico do secundário" + (" (cada ponte)" if p == 12 else ""),
-                rf"V_o = {k_v} V_{{LL,m}}\cos\alpha - {k_x} I_o - n V_T"
-                rf"\Rightarrow V_{{LL,m}} = \frac{{V_o + {k_x} I_o + n V_T}}{{{k_v}\cos\alpha}}",
-                output=Q_(Vll_m, "V"),
+                r"V_{LL,m} = \sqrt{2}\,V_{LL,sec}",
+                output=Q_(math.sqrt(2) * s.Vsec.to_pint().m_as("V"), "V"),
+                inputs={"V_{LL,sec}": s.Vsec.to_pint()},
+                assumptions=["fonte trifásica equilibrada e senoidal", "transformador ideal"],
+                reference=ref,
+            )
+        ).m_as("V")
+        # Vo = V0 − kx·Io (closed form, linear in Io) and P = Vo·Io: the smaller root of
+        # kx·Io² − V0·Io + P = 0 is the operating point (the other one is past maximum power)
+        v0 = m.mean_output(p, Vll_m, a, 0.0, Ls, f, VT)
+        kx = v0 - m.mean_output(p, Vll_m, a, 1.0, Ls, f, VT)
+        if v0 <= E or v0 <= 0:
+            raise ValueError(
+                "Com essa tensão do secundário e esse α, a tensão média não supera E: "
+                "aumente V_sec ou reduza α"
+            )
+        if kx > 1e-12:
+            disc = v0 * v0 - 4 * kx * P
+            if disc < 0:
+                raise ValueError(
+                    "Potência acima do máximo que esse secundário entrega com L_s "
+                    f"({format_eng(Q_(v0 * v0 / (4 * kx), 'W'))}): aumente V_sec ou reduza L_s"
+                )
+            io_val = (v0 - math.sqrt(disc)) / (2 * kx)
+        else:
+            io_val = P / v0
+        Io = log.add(
+            record(
+                "Io",
+                "Corrente na carga que entrega a potência pedida",
+                rf"P = V_o I_o,\quad V_o = {k_v} V_{{LL,m}}\cos\alpha - {k_x} I_o - n V_T"
+                rf"\Rightarrow {k_x} I_o^2 - V_{{o0}} I_o + P = 0",
+                output=Q_(io_val, "A"),
                 inputs={
-                    "V_o": s.Vo.to_pint(),
-                    "I_o": s.Io.to_pint(),
+                    "P": s.P.to_pint(),
+                    "V_{o0}": Q_(v0, "V"),
                     "L_s": s.Ls.to_pint(),
                     r"\alpha": Q_(math.degrees(a), "deg"),
                     "n V_T": Q_(n_drop * VT, "V"),
                 },
                 assumptions=[
                     "corrente de carga constante (indutância da carga grande)",
-                    "fonte trifásica equilibrada; L_s por fase do lado do secundário",
+                    "L_s por fase do lado do secundário",
                     "dispositivos como queda constante",
+                    "raiz menor: ponto de operação abaixo da potência máxima",
                 ],
                 reference=ref,
             )
-        )
+        ).m_as("A")
+        Vo = v0 - kx * Io
+        if Vo <= E:
+            raise ValueError("A tensão média na carga ficou menor que E: reduza a potência")
         mu = m.overlap_angle(a, Io, Ls, Vll_m, f)
         log.add(
             record(
@@ -158,7 +202,7 @@ class Ret3Module:
                 output=Q_(math.degrees(mu), "deg"),
                 inputs={
                     r"\omega L_s": Q_(w * Ls, "ohm"),
-                    "I_o": s.Io.to_pint(),
+                    "I_o": Q_(Io, "A"),
                     "V_{LL,m}": Q_(Vll_m, "V"),
                 },
                 reference=MOHAN_3F,
@@ -171,7 +215,7 @@ class Ret3Module:
                 "Queda de tensão média causada pela comutação",
                 rf"\Delta V_\mu = {k_x} I_o",
                 output=Q_(dv_mu, "V"),
-                inputs={"L_s": s.Ls.to_pint(), "I_o": s.Io.to_pint()},
+                inputs={"L_s": s.Ls.to_pint(), "I_o": Q_(Io, "A")},
                 reference=MOHAN_3F,
             )
         )
@@ -215,7 +259,7 @@ class Ret3Module:
                 "Resistência equivalente da carga",
                 r"R = \frac{V_o - E}{I_o}",
                 output=Q_(R, "ohm"),
-                inputs={"V_o": s.Vo.to_pint(), "E": s.E.to_pint(), "I_o": s.Io.to_pint()},
+                inputs={"V_o": Q_(Vo, "V"), "E": s.E.to_pint(), "I_o": Q_(Io, "A")},
                 reference=ref,
             )
         )
@@ -260,7 +304,7 @@ class Ret3Module:
                 "Corrente média em cada dispositivo",
                 r"I_{med} = \frac{I_o}{3}",
                 output=Q_(id_avg, "A"),
-                inputs={"I_o": s.Io.to_pint()},
+                inputs={"I_o": Q_(Io, "A")},
                 reference=ref,
             )
         )
@@ -270,7 +314,7 @@ class Ret3Module:
                 "Corrente eficaz em cada dispositivo",
                 r"I_{ef} = \sqrt{\overline{i^2}} \approx \frac{I_o}{\sqrt{3}}",
                 output=Q_(id_rms, "A"),
-                inputs={"I_o": s.Io.to_pint()},
+                inputs={"I_o": Q_(Io, "A")},
                 assumptions=["calculada na forma de onda trapezoidal (com μ)"],
                 reference=ref,
             )
@@ -399,7 +443,7 @@ class Ret3Module:
                 "Vo": Q_(vo_avg, "V"),
                 "Vo_rms": Q_(vo_rms, "V"),
                 "dVo": Q_(ripple, "V"),
-                "Io": s.Io.to_pint(),
+                "Io": Q_(Io, "A"),
                 "R_load": Q_(R, "ohm"),
                 "mu": Q_(math.degrees(mu), "deg"),
                 "dV_mu": Q_(dv_mu, "V"),
@@ -562,6 +606,19 @@ class Ret3Module:
             "Corrente de linha (fase a)": "i(via1)",
             "Tensão de fase a (fonte)": "v(a1s)",
         }
+        # ideal transformer, Y-Y equivalent: line quantities of the primary referred by N
+        n_ratio = s.Vin.to_pint().m_as("V") / (Vll_m / math.sqrt(2))
+        dev = "T" if s.controlled else "D"
+        probes |= {
+            "Tensão de linha ab do secundário": "v(a1s)-v(b1s)",
+            "Tensão de linha ab do primário": scale("v(a1s)-v(b1s)", n_ratio),
+            "Corrente de linha do primário (fase a)": scale(i_ref, 1 / n_ratio),
+            f"Tensão em {dev}1 (anodo − catodo)": "v(a1)-v(p)",
+        }
+        powers = {
+            "Secundário, fase a (× 3 para o total)": PowerPort(voltage="v(a1s)", current="i(via1)"),
+            "Carga": PowerPort(voltage=v_out, current="i(ve)"),
+        }
         return Circuit(
             title=f"{self.id}: {LABEL[p]}" + (f", α = {a:g}°" if s.controlled else ", a diodos"),
             netlist="\n".join(lines),
@@ -570,6 +627,7 @@ class Ret3Module:
             period=QuantityModel(value=T, unit="s"),
             probes=probes,
             checks=checks,
+            powers=powers,
         )
 
 

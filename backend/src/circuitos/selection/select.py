@@ -79,15 +79,20 @@ def rank(
     stresses: Sequence[Stress],
     policy: DeratingPolicy,
     required_keys: Sequence[str],
+    *,
+    include_unreleased: bool = False,
 ) -> list[Ranked]:
     """Released candidates that meet every required rating with the policy factor.
+
+    ``include_unreleased`` ranks parts still under review too: never used to choose a part
+    (rule 5), only to tell the user which ones would serve once reviewed.
 
     Ranked by the smallest over-rating (sum of log(rating / (factor·stress))), so the cheapest
     adequate part tends to come first; ties by part number.
     """
     ranked: list[Ranked] = []
     for record in candidates:
-        if not record.selectable:
+        if not record.selectable and not include_unreleased:
             continue
         checks = check(record, stresses, policy)
         keys = {c.parameter for c in checks}

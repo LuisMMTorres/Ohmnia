@@ -32,8 +32,8 @@ CASES = {
     "semi_rle": dict(
         topology="semicontrolada", E=q(30, "V"), L=q(10, "mH"), alpha_nom=q(60, "deg")
     ),
-    "meia_onda_rl": dict(topology="meia_onda", Vo=q(30, "V")),
-    "meia_onda_roda_livre": dict(topology="meia_onda", freewheel=True, Vo=q(30, "V")),
+    "meia_onda_rl": dict(topology="meia_onda", P=q(25, "W")),
+    "meia_onda_roda_livre": dict(topology="meia_onda", freewheel=True, P=q(120, "W")),
 }
 
 

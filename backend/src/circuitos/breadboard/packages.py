@@ -192,6 +192,34 @@ PACKAGES: dict[str, Package] = {
         ),
         Package("radial-l", "Indutor radial", "radial", ("1", "2"), pitch=2, body="inductor"),
         Package(
+            "led-5mm",
+            "LED 5 mm",
+            "radial",
+            ("1", "2"),
+            pitch=1,
+            body="led",
+            note="Perna longa = anodo (A); lado chanfrado do corpo = catodo (K).",
+        ),
+        Package(
+            "tact-2",
+            "Chave táctil 2 terminais",
+            "radial",
+            ("1", "2"),
+            pitch=2,
+            body="tact",
+            note="Botão de 2 pernas: qualquer perna serve para cada lado.",
+        ),
+        Package(
+            "tact-6x6",
+            "Chave táctil 6×6 mm (4 terminais)",
+            "dip",
+            ("1", "2", "3", "4"),
+            pitch=2,
+            body="tact",
+            note="Encaixa sobre a canaleta central; as pernas de frente uma para a outra, na "
+            "mesma linha, ficam ligadas por dentro. Confira no datasheet da chave usada.",
+        ),
+        Package(
             "to-92",
             "TO-92",
             "inline",
@@ -284,7 +312,21 @@ PACKAGES: dict[str, Package] = {
             "transformer",
             "Fora da placa: só o secundário vem para a protoboard.",
         ),
+        _offboard(
+            "trafo-3f",
+            "Transformador trifásico",
+            ("H1", "H2", "H3", "H0", "X1", "X2", "X3", "X0"),
+            "transformer",
+            "Fora da placa: só o secundário (de baixa tensão) vem para a protoboard.",
+        ),
         _offboard("carga", "Carga externa", ("1", "2"), "load", "Fora da placa."),
+        _offboard(
+            "lampada",
+            "Lâmpada incandescente",
+            ("1", "2"),
+            "lamp",
+            "Fora da placa, no soquete: ligue com cabos. Em 127 V ou 220 V use bancada protegida.",
+        ),
         _offboard(
             "alim",
             "Fonte simétrica de bancada",
@@ -325,7 +367,7 @@ PACKAGES: dict[str, Package] = {
 from circuitos.schematic.cosim_symbols import COSIM_SYMBOLS  # noqa: E402
 
 for _s in COSIM_SYMBOLS:
-    if _s.kind not in ("lm35", "potentiometer"):
+    if _s.kind not in ("lm35", "potentiometer", "tact_switch", "tact_switch4", "push_nc"):
         PACKAGES[f"mod-{_s.kind}"] = _offboard(
             f"mod-{_s.kind}", _s.label, tuple(pin.name for pin in _s.pins), "module",
             "Fora da placa: ligue cada terminal por fio ao furo indicado.",

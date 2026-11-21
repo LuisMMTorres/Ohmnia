@@ -3,7 +3,8 @@
 from __future__ import annotations
 
 import math
-from collections.abc import Mapping
+from collections.abc import Callable, Mapping
+from functools import partial
 from typing import Literal
 
 import numpy as np
@@ -14,8 +15,17 @@ from scipy.optimize import brentq
 from circuitos.core.calc import BibRef, CalcLog, record
 from circuitos.core.eseries import snap
 from circuitos.core.units import Q_, QuantityModel, format_eng
-from circuitos.design.base import Circuit, DesignWarning, Role, SimCheck, Stress, make_trace
+from circuitos.design.base import (
+    Circuit,
+    DesignWarning,
+    PowerPort,
+    Role,
+    SimCheck,
+    Stress,
+    make_trace,
+)
 from circuitos.design.engine import Analysis, Device
+from circuitos.design.measure import scale
 
 from . import model as m
 from .model import Filter, Topology
@@ -40,9 +50,9 @@ class Ret1Spec(BaseModel):
     topology: Topology = "ponte"
     filter: Filter = "C"
     Vin: QuantityModel = QuantityModel(value=127, unit="V")  # primary, RMS
+    Vsec: QuantityModel = QuantityModel(value=12, unit="V")  # secondary, RMS (center tap: half)
     f: QuantityModel = QuantityModel(value=60, unit="Hz")
-    Vo: QuantityModel = QuantityModel(value=12, unit="V")  # mean output
-    Io: QuantityModel = QuantityModel(value=1, unit="A")  # mean load current
+    P: QuantityModel = QuantityModel(value=12, unit="W")  # active power absorbed by the load
     ripple_pct: float = Field(default=5.0, gt=0, le=50)  # peak-to-peak, % of Vo
     L_factor: float = Field(default=2.0, ge=1.0, le=20)  # L = factor · Lcrit (LC filter)
     cap_series: Literal["E3", "E6", "E12"] = "E6"
@@ -93,64 +103,113 @@ class Ret1Module:
         n_vf = m.diodes_in_path(topo) * VF
         f = s.f.to_pint().m_as("Hz")
         w = 2 * math.pi * f
-        Vo = s.Vo.to_pint().m_as("V")
-        Io = s.Io.to_pint().m_as("A")
+        Vsec_in = s.Vsec.to_pint().m_as("V")
+        P = s.P.to_pint().m_as("W")
         p = m.pulses(topo)
         ref = _ref(topo)
-        if Vo <= 0 or Io <= 0:
-            raise ValueError("Vo e Io devem ser positivos")
-
-        R = log.add(
+        if Vsec_in <= 0 or P <= 0:
+            raise ValueError("A tensão do secundário e a potência da carga devem ser positivas")
+        Vm = log.add(
             record(
-                "R",
-                "Resistência equivalente da carga",
-                r"R = \frac{V_o}{I_o}",
-                output=Q_(Vo / Io, "ohm"),
-                inputs={"V_o": s.Vo.to_pint(), "I_o": s.Io.to_pint()},
-                assumptions=["carga resistiva"],
+                "Vm",
+                "Tensão de pico do secundário" + (" (cada metade)" if topo == "center_tap" else ""),
+                r"V_m = \sqrt{2}\,V_{sec}",
+                output=Q_(math.sqrt(2) * Vsec_in, "V"),
+                inputs={"V_{sec}": s.Vsec.to_pint()},
+                assumptions=["tensão senoidal", "transformador ideal (sem queda com a carga)"],
                 reference=ref,
             )
-        ).m_as("ohm")
+        ).m_as("V")
+        if Vm <= 1.05 * n_vf:
+            raise ValueError(
+                "A tensão de pico do secundário não vence a queda dos diodos: aumente V_sec"
+            )
         inputs_vf = {"n V_F": Q_(n_vf, "V")}
         summary: dict[str, pint.Quantity] = {}
         C = L = None
-        dV_target = s.ripple_pct / 100 * Vo
+        r_frac = s.ripple_pct / 100
+        power_latex = r"\frac{1}{2\pi}\int_0^{2\pi} v_o\,i_o\,d\theta = P"
+
+        def load_power(wv: m.Waves) -> float:
+            return float(np.mean(wv.vo * wv.i_load))
+
+        def solve_r(make: Callable[[float], m.Waves], guess: float) -> float:
+            """Load resistance that draws the power P (P falls as R grows)."""
+
+            def g(r: float) -> float:
+                return float(load_power(make(r)) - P)
+
+            for k in (1.2, 2.0, 5.0, 50.0):
+                lo, hi = guess / k, guess * k
+                if g(lo) > 0 > g(hi):
+                    return float(brentq(g, lo, hi, xtol=1e-9 * guess, rtol=1e-8))
+            raise ValueError("Não há resistência de carga que absorva essa potência")
 
         if flt == "nenhum":
-            Vm = brentq(
-                lambda v: m.unfiltered_average(topo, v, VF) - Vo,
-                n_vf + 1e-9,
-                100 * Vo + 10 * n_vf + 10,
-            )
-            log.add(
+            vo_rms1 = m.rms(m.unfiltered(topo, Vm, VF, 1.0).vo)
+            R = log.add(
                 record(
-                    "Vm",
-                    "Tensão de pico do secundário",
-                    r"V_o = \frac{p}{2\pi}\left[2V_m\cos\theta_1 - nV_F(\pi - 2\theta_1)\right],"
-                    r"\quad \theta_1 = \arcsin\frac{nV_F}{V_m}",
-                    output=Q_(Vm, "V"),
-                    inputs={"V_o": s.Vo.to_pint(), "p": Q_(p, ""), **inputs_vf},
-                    assumptions=["diodo como queda constante", "resolvido numericamente para V_m"],
+                    "R",
+                    "Resistência da carga que absorve a potência pedida",
+                    r"P = \frac{V_{o,ef}^2}{R} \Rightarrow R = \frac{V_{o,ef}^2}{P}",
+                    output=Q_(vo_rms1**2 / P, "ohm"),
+                    inputs={"V_{o,ef}": Q_(vo_rms1, "V"), "P": s.P.to_pint(), **inputs_vf},
+                    assumptions=[
+                        "carga resistiva",
+                        "diodo como queda constante: a forma de v_o não depende de R",
+                    ],
                     reference=ref,
                 )
-            )
+            ).m_as("ohm")
             waves = m.unfiltered(topo, Vm, VF, R)
         elif flt in ("C", "pi"):
-            dV1 = dV_target if flt == "C" else 4 * dV_target
+            k1 = 1.0 if flt == "C" else 4.0  # the first capacitor of the π takes 4× the ripple
+
+            def c1_waves(r: float, c: float, ind: float) -> m.Waves:
+                if flt == "C":
+                    return m.cap_filter(topo, Vm, VF, r, c, f)
+                return m.pi_filter(topo, Vm, VF, r, ind, c, c, f)
+
+            # C depends on the load current and the load (given by its power) on C: iterate
+            # with the commercial value until both settle
+            vo_est = Vm - n_vf
+            R = vo_est**2 / P
+            cap = inductance = 0.0
+            io_est = dV1 = c_req = 0.0
+            # fixed point: P·R ≈ V_o,ef² changes little with R, so R ← R·P(R)/P converges fast
+            for _ in range(80):
+                io_est = vo_est / R
+                dV1 = k1 * r_frac * vo_est
+                c_req = io_est / (p * f * dV1)
+                cap_new = float(snap(Q_(c_req, "F"), s.cap_series, "up").m_as("F"))
+                ind_new = (1 + k1) / ((p * w) ** 2 * cap_new) if flt == "pi" else 0.0
+                wv = c1_waves(R, cap_new, ind_new)
+                ratio = load_power(wv) / P
+                done = cap_new == cap and abs(ratio - 1) <= 1e-7
+                cap, inductance, vo_est = cap_new, ind_new, m.mean(wv.vo)
+                if done:
+                    break
+                R *= ratio
+            else:
+                R = solve_r(partial(_fixed_filter, c1_waves, cap, inductance), R)
             C_req = log.add(
                 record(
                     "C_req",
                     "Capacitância pela ondulação desejada (aproximação de descarga linear)"
                     + ("" if flt == "C" else ", primeiro capacitor do π"),
                     r"C \ge \frac{I_o}{p\,f\,\Delta V_o}",
-                    output=Q_(Io / (p * f * dV1), "F").to("uF"),
+                    output=Q_(c_req, "F").to("uF"),
                     inputs={
-                        "I_o": s.Io.to_pint(),
+                        "I_o": Q_(io_est, "A"),
                         "p": Q_(p, ""),
                         "f": s.f.to_pint(),
                         r"\Delta V_o": Q_(dV1, "V"),
                     },
-                    assumptions=["descarga linear do capacitor durante todo o período de ondulação"]
+                    assumptions=[
+                        "descarga linear do capacitor durante todo o período de ondulação",
+                        "I_o e V_o da carga que absorve a potência P com o capacitor comercial "
+                        "(iteração entre C e R)",
+                    ]
                     + (
                         []
                         if flt == "C"
@@ -162,18 +221,16 @@ class Ret1Module:
                     reference=ref,
                 )
             )
-            Cq = snap(C_req, s.cap_series, "up")
             C = log.add(
                 record(
                     "C",
                     f"Capacitor comercial (série {s.cap_series}, arredondado para cima)",
                     r"C = \lceil C_{req} \rceil_{" + s.cap_series + "}",
-                    output=Cq,
+                    output=Q_(cap, "F").to("uF"),
                     inputs={"C_{req}": C_req},
                     reference=ref,
                 )
             ).m_as("F")
-            cap = float(C)
             if flt == "pi":
                 C2 = cap
                 L = log.add(
@@ -182,10 +239,9 @@ class Ret1Module:
                         "Indutor do filtro π (C2 = C1)",
                         r"\Delta V_o \approx \frac{\Delta V_{C1}}{(2\omega)^2 L C_2 - 1}"
                         r"\Rightarrow L = \frac{1 + \Delta V_{C1}/\Delta V_o}{(2\omega)^2\,C_2}",
-                        output=Q_((1 + dV1 / dV_target) / ((p * w) ** 2 * C2), "H").to("mH"),
+                        output=Q_(inductance, "H").to("mH"),
                         inputs={
-                            r"\Delta V_{C1}": Q_(dV1, "V"),
-                            r"\Delta V_o": Q_(dV_target, "V"),
+                            r"\Delta V_{C1}/\Delta V_o": Q_(k1, ""),
                             "C_2": Q_(C2, "F").to("uF"),
                         },
                         assumptions=[
@@ -195,35 +251,20 @@ class Ret1Module:
                         reference=ref,
                     )
                 ).m_as("H")
-                inductance = float(L)
-
-            def c1_waves(v: float) -> m.Waves:
-                if flt == "C":
-                    return m.cap_filter(topo, v, VF, R, cap, f)
-                return m.pi_filter(topo, v, VF, R, inductance, cap, cap, f)
-
-            Vm = brentq(
-                lambda v: m.mean(c1_waves(v).vo) - Vo,
-                n_vf + Vo * 0.5,
-                n_vf + Vo * 3 + 1,
-                xtol=1e-9,
-            )
-            waves = c1_waves(Vm)
             if flt == "C":
-                vm_latex = (
+                model_latex = (
                     r"\omega RC\,V_m\cos\theta_{off} + V_m\sin\theta_{off} = nV_F;\quad "
                     r"v_o(\theta_{off})\,e^{-(\theta_{on} + 2\pi/p - \theta_{off})/\omega RC} = "
-                    r"V_m\sin\theta_{on} - nV_F;\quad \overline{v_o} = V_o"
+                    r"V_m\sin\theta_{on} - nV_F;\quad "
                 )
                 off_latex = r"\omega RC\,V_m\cos\theta_{off} + V_m\sin\theta_{off} = nV_F"
                 discharge = "C descarrega pela carga R (exponencial)"
             else:
-                vm_latex = (
+                model_latex = (
                     r"i_D = \omega C_1 V_m\cos\theta + i_L;\ "
                     r"v_{C1} = v_{C1}(\theta_{off}) - \frac{1}{\omega C_1}"
                     r"\int_{\theta_{off}}^{\theta} i_L\,d\theta;\ "
                     r"V_{o,h} = \frac{V_{C1,h}Z_h}{jh\omega L + Z_h};\quad "
-                    r"\overline{v_o} = V_o"
                 )
                 off_latex = r"\omega C_1 V_m\cos\theta_{off} + i_L(\theta_{off}) = 0"
                 discharge = (
@@ -232,26 +273,29 @@ class Ret1Module:
                 )
             log.add(
                 record(
-                    "Vm",
-                    "Tensão de pico do secundário (solução periódica exata do modelo)",
-                    vm_latex,
-                    output=Q_(Vm, "V"),
+                    "R",
+                    "Resistência da carga que absorve a potência pedida (solução periódica exata "
+                    "do modelo)",
+                    model_latex + power_latex,
+                    output=Q_(R, "ohm"),
                     inputs={
-                        "V_o": s.Vo.to_pint(),
-                        "R": Q_(R, "ohm"),
+                        "V_m": Q_(Vm, "V"),
+                        "P": s.P.to_pint(),
                         "C": Q_(cap, "F").to("uF"),
                         r"\omega": Q_(w, "rad/s"),
                         **inputs_vf,
                     },
                     assumptions=[
+                        "carga resistiva",
                         "diodo como queda constante",
                         "fonte e transformador ideais",
                         discharge,
-                        "resolvido numericamente",
+                        "resolvido numericamente para R",
                     ],
                     reference=ref,
                 )
             )
+            waves = c1_waves(R, cap, inductance)
             assert waves.theta_on is not None and waves.theta_off is not None
             log.add(
                 record(
@@ -296,16 +340,43 @@ class Ret1Module:
                     )
                 summary["dV_C1"] = Q_(ripple1, "V")
                 summary["VC1_max"] = Q_(float(np.max(waves.v_c1)), "V")
-                summary["C2"] = Q_(C2, "F").to("uF")
+                summary["C2"] = Q_(cap, "F").to("uF")
                 summary["L"] = Q_(inductance, "H").to("mH")
         else:  # LC
+            vo_est = log.add(
+                record(
+                    "Vo_est",
+                    "Tensão média estimada na carga (condução contínua no indutor)",
+                    r"V_o \approx \frac{2V_m}{\pi} - nV_F",
+                    output=Q_(2 * Vm / math.pi - n_vf, "V"),
+                    inputs={"V_m": Q_(Vm, "V"), **inputs_vf},
+                    assumptions=[
+                        "corrente contínua no indutor",
+                        "resistência do indutor desprezada",
+                    ],
+                    reference=HART_FW,
+                )
+            ).m_as("V")
+            if vo_est <= 0:
+                raise ValueError("A tensão do secundário não vence a queda dos diodos")
+            R_est = log.add(
+                record(
+                    "R_est",
+                    "Resistência estimada da carga",
+                    r"R \approx \frac{V_o^2}{P}",
+                    output=Q_(vo_est**2 / P, "ohm"),
+                    inputs={"V_o": Q_(vo_est, "V"), "P": s.P.to_pint()},
+                    assumptions=["ondulação pequena diante de V_o"],
+                    reference=HART_FW,
+                )
+            ).m_as("ohm")
             Lcrit = log.add(
                 record(
                     "Lcrit",
                     "Indutância crítica (corrente contínua no indutor)",
                     r"L_{crit} = \frac{R}{3\omega}",
-                    output=Q_(m.critical_inductance(R, f), "H").to("mH"),
-                    inputs={"R": Q_(R, "ohm"), r"\omega": Q_(w, "rad/s")},
+                    output=Q_(m.critical_inductance(R_est, f), "H").to("mH"),
+                    inputs={"R": Q_(R_est, "ohm"), r"\omega": Q_(w, "rad/s")},
                     assumptions=["C grande: a impedância do capacitor em 2f é muito menor que R"],
                     reference=HART_FW,
                 )
@@ -321,21 +392,8 @@ class Ret1Module:
                     reference=HART_FW,
                 )
             ).m_as("H")
-            Vm = log.add(
-                record(
-                    "Vm",
-                    "Tensão de pico do secundário",
-                    r"V_o = \frac{2V_m}{\pi} - nV_F \Rightarrow V_m = \frac{\pi}{2}(V_o + nV_F)",
-                    output=Q_(math.pi / 2 * (Vo + n_vf), "V"),
-                    inputs={"V_o": s.Vo.to_pint(), **inputs_vf},
-                    assumptions=[
-                        "corrente contínua no indutor",
-                        "resistência do indutor desprezada",
-                    ],
-                    reference=HART_FW,
-                )
-            ).m_as("V")
             V2 = 4 * Vm / (3 * math.pi)
+            dV_target = r_frac * vo_est
             C_req = log.add(
                 record(
                     "C_req",
@@ -362,6 +420,27 @@ class Ret1Module:
                     reference=HART_FW,
                 )
             ).m_as("F")
+            l_val, c_val = float(L), float(C)
+            R = log.add(
+                record(
+                    "R",
+                    "Resistência da carga que absorve a potência pedida (modelo com todas as "
+                    "harmônicas)",
+                    r"V_{o,h} = \frac{V_{ret,h}\,Z_h}{jh\omega L + Z_h};\quad " + power_latex,
+                    output=Q_(
+                        solve_r(lambda r: m.lc_filter(topo, Vm, VF, r, l_val, c_val, f), R_est),
+                        "ohm",
+                    ),
+                    inputs={
+                        "V_m": Q_(Vm, "V"),
+                        "P": s.P.to_pint(),
+                        "L": Q_(L, "H").to("mH"),
+                        "C": Q_(C, "F").to("uF"),
+                    },
+                    assumptions=["carga resistiva", "resolvido numericamente para R"],
+                    reference=HART_FW,
+                )
+            ).m_as("ohm")
             waves = m.lc_filter(topo, Vm, VF, R, L, C, f)
             if float(np.min(waves.i_ind)) <= 0:  # type: ignore[arg-type]
                 warnings.append(
@@ -637,6 +716,7 @@ class Ret1Module:
                 "dVo": Q_(ripple, "V"),
                 "Vo_rms": Q_(vo_rms, "V"),
                 "Io": Q_(vo_avg / R, "A"),
+                "R_load": Q_(R, "ohm"),
                 "Vm": Q_(Vm, "V"),
                 "Vsec": Q_(Vsec, "V"),
                 "N": Q_(N, ""),
@@ -666,7 +746,7 @@ class Ret1Module:
             summary=summary,
             losses=losses,
             warnings=warnings,
-            convergence_keys=("Vm", "Vo"),
+            convergence_keys=("R_load", "Vo"),
             traces=traces,
         )
 
@@ -686,7 +766,9 @@ class Ret1Module:
         Vo = summary["Vo"].to_pint().m_as("V")
         Io = summary["Io"].to_pint().m_as("A")
         f = s.f.to_pint().m_as("Hz")
-        R = s.Vo.to_pint().m_as("V") / s.Io.to_pint().m_as("A")
+        R = summary["R_load"].to_pint().m_as("ohm")
+        Vin = s.Vin.to_pint().m_as("V")
+        N = Vin / (Vm / math.sqrt(2))
         src = f"SIN(0 {Vm:.9g} {f:.9g})"
         lines: list[str] = [behavioural_diode_model(VF)]
         if s.topology == "ponte":
@@ -700,6 +782,7 @@ class Ret1Module:
             ]
             # the output is grounded; the secondary floats (it is a winding)
             neg, v_sec, i_in = "0", "v(a)-v(b)", "-i(vs)"
+            i_sec, v_d1 = "-i(vs)", "v(d1)-v(p)"
         elif s.topology == "center_tap":
             lines += [
                 f"VS1 a 0 {src}",
@@ -710,9 +793,11 @@ class Ret1Module:
                 "XD2 d2 p DIODE",
             ]
             neg, v_sec, i_in = "0", "v(a)", "i(vsd1)-i(vsd2)"
+            i_sec, v_d1 = "i(vsd1)", "v(d1)-v(p)"
         else:
             lines += [f"VS a 0 {src}", "VSD1 a d1 0", "XD1 d1 p DIODE"]
             neg, v_sec, i_in = "0", "v(a)", "i(vsd1)"
+            i_sec, v_d1 = "i(vsd1)", "v(d1)-v(p)"
         out = "p"
         if s.filter in ("C", "pi"):
             C = summary["C"].to_pint().m_as("F")
@@ -724,11 +809,27 @@ class Ret1Module:
             out = "o"
         lines.append(f"RL {out} {neg} {R:.9g}")
         v_out = f"v({out})"
+        # ideal transformer: v_pri = N·v_sec, i_pri = i_in/N (the mean of the secondary current
+        # of a half-wave rectifier does not cross to the primary: that probe is AC coupled)
+        half = " (cada metade)" if s.topology == "center_tap" else ""
+        v_pri, i_pri = scale(v_sec, N), scale(i_in, 1 / N)
+        i_load = scale(v_out, 1 / R)
         probes = {
             "Tensão no secundário": v_sec,
             "Tensão na carga": v_out,
             "Corrente em D1": "i(vsd1)",
             "Corrente de entrada (referida ao secundário)": i_in,
+            "Tensão no primário": v_pri,
+            "Corrente no primário": i_pri,
+            f"Corrente no secundário{half}": i_sec,
+            "Corrente na carga": i_load,
+            "Tensão em D1 (anodo − catodo)": v_d1,
+        }
+        powers = {
+            "Primário": PowerPort(voltage=v_pri, current=i_pri, ac=True),
+            f"Secundário{half}": PowerPort(voltage=v_sec, current=i_sec),
+            "Carga": PowerPort(voltage=v_out, current=i_load),
+            "Diodo D1": PowerPort(voltage=v_d1, current="i(vsd1)"),
         }
         checks = _checks(s.filter, v_out, v_sec, i_in)
         settle = {"nenhum": 3, "C": 20, "LC": 40, "pi": 40}[s.filter]
@@ -744,6 +845,8 @@ class Ret1Module:
             period=QuantityModel(value=1 / f, unit="s"),
             probes=probes,
             checks=checks,
+            powers=powers,
+            ac_probes=["Corrente no primário"],
         )
 
 
@@ -821,6 +924,12 @@ def behavioural_diode_model(VF: float) -> str:
             ".ends",
         ]
     )
+
+
+def _fixed_filter(
+    waves: Callable[[float, float, float], m.Waves], cap: float, ind: float, r: float
+) -> m.Waves:
+    return waves(r, cap, ind)
 
 
 def _spec(spec: BaseModel) -> Ret1Spec:

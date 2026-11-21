@@ -56,7 +56,9 @@ HIDDEN = {"continuous", "Isec_ac"}
 SPEC_LABELS: dict[str, str] = {
     "topology": "Topologia",
     "filter": "Filtro",
-    "Vin": "Tensão do primário",
+    "Vin": "Tensão do primário (eficaz)",
+    "Vsec": "Tensão do secundário (eficaz)",
+    "P": "Potência da carga",
     "f": "Frequência",
     "Vo": "Tensão média desejada",
     "Io": "Corrente na carga",

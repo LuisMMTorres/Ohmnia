@@ -72,6 +72,8 @@ export const CATEGORY_LABEL: Record<string, string> = {
   "drive.vfd": "Inversor de frequência",
   "drive.soft_starter": "Soft-starter",
   "motor.stepper": "Motor de passo",
+  "motor.dc": "Motor CC",
+  "lamp.incandescent": "Lâmpada incandescente",
   "drive.stepper": "Driver de passo / servo",
   "motor.ac": "Motor CA",
   "amplifier.audio": "Amplificador de áudio",

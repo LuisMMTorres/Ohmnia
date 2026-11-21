@@ -71,3 +71,29 @@ def test_relay_switches_with_the_coil(backend):
     assert np.interp(0.25, t, na) == pytest.approx(0, abs=0.01)
     assert np.interp(0.9, t, na) == pytest.approx(12, rel=0.01)
     assert np.interp(0.9, t, nf) == pytest.approx(0, abs=0.01)
+
+
+@pytest.mark.parametrize(
+    ("kind", "before", "after"), [("tact_switch", 0.0, 5.0), ("push_nc", 5.0, 0.0)]
+)
+def test_push_buttons_follow_state(backend, kind, before, after):
+    b = Builder(kind)
+    b.add("vdc", "V1", ["a", "0"], dc="5")
+    b.add(kind, "SW1", ["a", "x"], state="0 0 0.001 0 0.00101 1", ron="0.1")
+    b.add("resistor", "R1", ["x", "0"], value="1k")
+    tran, t = _tran(b, backend, "2m")
+    v = tran.vectors["v(x)"].data
+    assert np.interp(0.5e-3, t, v) == pytest.approx(before, abs=1e-2)
+    assert np.interp(1.8e-3, t, v) == pytest.approx(after, abs=1e-2)
+
+
+def test_tact_switch4_pairs_and_press(backend):
+    b = Builder("tact4")
+    b.add("vdc", "V1", ["a", "0"], dc="5")
+    b.add("tact_switch4", "SW1", ["a", "a2", "x", "x2"], state="0 0 0.001 0 0.00101 1")
+    b.add("resistor", "R1", ["x2", "0"], value="1k")
+    b.add("resistor", "R2", ["a2", "0"], value="1k")
+    tran, t = _tran(b, backend, "2m")
+    assert np.interp(0.5e-3, t, tran.vectors["v(a2)"].data) == pytest.approx(5.0, abs=1e-2)
+    assert np.interp(0.5e-3, t, tran.vectors["v(x2)"].data) == pytest.approx(0.0, abs=1e-2)
+    assert np.interp(1.8e-3, t, tran.vectors["v(x2)"].data) == pytest.approx(5.0, abs=1e-2)

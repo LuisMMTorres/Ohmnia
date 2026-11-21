@@ -334,6 +334,12 @@ export const catalog = {
       method: "POST",
       body: JSON.stringify({ category, reviewer, dry_run: dryRun }),
     }),
+  /** Review and release the given parts (those of one circuit); dryRun only previews. */
+  reviewParts: (ids: string[], reviewer: string, dryRun: boolean) =>
+    request<Omit<CategoryReview, "category" | "already_released">>("/components/review-parts", {
+      method: "POST",
+      body: JSON.stringify({ ids, reviewer, dry_run: dryRun }),
+    }),
   yamlUrl: (id: string) => `${BASE}/components/${id}/yaml`,
   pageUrl: (sha: string, page: number) => `${BASE}/datasheets/${sha}/pages/${page}.png`,
   pdfUrl: (sha: string) => `${BASE}/datasheets/${sha}/pdf`,
@@ -865,6 +871,10 @@ export interface DesignIn {
   locks: Record<string, string>;
   costs?: Record<string, number>;
   project?: string | null;
+  /** Element → new value typed on the schematic (the simulation runs the edited circuit). */
+  overrides?: Record<string, string>;
+  /** Waveforms added by clicking the schematic (simulation only). */
+  probes?: UserProbe[];
 }
 export interface Role {
   designator: string;
@@ -907,6 +917,8 @@ export interface ThermalResult {
 export interface DesignWarning {
   code: string;
   message: string;
+  /** Parts of this circuit waiting for review that would settle the warning. */
+  parts?: string[];
 }
 export interface SimComparison {
   quantity: string;
@@ -952,6 +964,52 @@ export interface SimulateOut {
   ok: boolean;
   bode_f?: number[];
   bode?: Record<string, Vector>;
+  /** Peak, mean and RMS of every probe; S, P, Q, D and power factor of every port (ngspice). */
+  measurements?: Measurements | null;
+  /** Values were changed on the schematic: the analytic results describe the original design. */
+  edited?: boolean;
+}
+export interface UserProbe {
+  kind: "v" | "vdiff" | "i" | "p";
+  a: string;
+  b?: string | null;
+  pin?: number;
+}
+export interface WaveMeasure {
+  label: string;
+  unit: string;
+  peak: Quantity;
+  max: Quantity;
+  min: Quantity;
+  avg: Quantity;
+  rms: Quantity;
+}
+export interface PowerMeasure {
+  label: string;
+  V_rms: Quantity;
+  I_rms: Quantity;
+  S: Quantity;
+  P: Quantity;
+  Q: Quantity;
+  D: Quantity;
+  PF: Quantity;
+  DPF: Quantity;
+}
+export interface Measurements {
+  waves: WaveMeasure[];
+  powers: PowerMeasure[];
+}
+/** Element of the simulated circuit of a design (values editable, probes on its terminals). */
+export interface CircuitElement {
+  name: string;
+  letter: string;
+  nodes: string[];
+  pins: string[];
+  value: string;
+  edit: "value" | "source" | "none";
+  sense: boolean;
+  role: string | null;
+  original: string | null;
 }
 
 async function postBlob(path: string, body: unknown): Promise<Blob> {
@@ -989,6 +1047,11 @@ export const design = {
   reportPdf: (id: string, body: DesignIn, simulate: boolean) =>
     postBlob(`/design/${id}/report.pdf?simulate=${simulate}`, body),
   kicad: (id: string, body: DesignIn) => postBlob(`/design/${id}/kicad.net`, body),
+  elements: (id: string, body: DesignIn) =>
+    request<{ elements: CircuitElement[]; nodes: string[] }>(`/design/${id}/elements`, {
+      method: "POST",
+      body: JSON.stringify(body),
+    }),
 };
 
 export interface BomLine {
@@ -1084,7 +1147,43 @@ export const projects = {
 
 // ------------------------------------------------------------------- schematic simulator
 
+/** A rating of a part (catalogue or typed by the user), checked after the simulation. */
+export interface LimitOut {
+  ref: string;
+  quantity: "V" | "I" | "P" | "T";
+  name: string;
+  limit: number;
+  unit: string;
+  measure: "peak" | "mean" | "rms" | "peak_abs";
+  v_pos?: string | null;
+  v_neg?: string | null;
+  current?: string | null;
+  current_sign?: number;
+  resistance?: number | null;
+  rth?: number | null;
+  t_amb?: number | null;
+  source?: string;
+  advice?: string;
+  reviewed?: boolean;
+}
+
+/** A rating exceeded in the simulation: the part would burn or be damaged. */
+export interface DamageOut {
+  ref: string;
+  quantity: "V" | "I" | "P" | "T";
+  name: string;
+  value: number;
+  limit: number;
+  unit: string;
+  cause: string;
+  advice: string;
+  source: string;
+  reviewed: boolean;
+}
+
 export interface NetlistOut {
+  indicators?: Record<string, IndicatorOut>;
+  limits?: LimitOut[];
   netlist: string;
   nets: Record<string, string[]>;
   probes: { name: string; expr: string; unit: string; probe_id: string | null }[];
@@ -1106,6 +1205,19 @@ export interface PartOut {
   category: string;
   released: boolean;
   status: string;
+  summary?: string;
+  colour?: string | null;
+}
+/** LED or lamp of the netlist: current vector and the values that give its brightness. */
+export interface IndicatorOut {
+  kind: "led" | "lamp";
+  vector: string;
+  i_ref?: number | null;
+  i_max?: number | null;
+  colour?: string | null;
+  r?: number | null;
+  p_nom?: number | null;
+  v_nom?: number | null;
 }
 export interface SpectrumOut {
   vector: string;
@@ -1154,6 +1266,11 @@ export const schematicApi = {
     request<NetlistOut>("/schematic/netlist", {
       method: "POST",
       body: JSON.stringify({ schematic }),
+    }),
+  damage: (job_id: string, limits: LimitOut[]) =>
+    request<DamageOut[]>("/schematic/damage", {
+      method: "POST",
+      body: JSON.stringify({ job_id, limits }),
     }),
   kicad: (schematic: Schematic) => postBlob("/schematic/kicad.net", { schematic }),
   importNetlist: (netlist: string) =>

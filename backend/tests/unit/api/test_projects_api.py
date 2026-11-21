@@ -36,7 +36,7 @@ def test_create_stores_the_full_validated_spec(client):
     assert doc["format"] == "circuitos-projeto" and doc["format_version"] == 1
     assert doc["current"]["number"] == 1
     # defaults are filled in, so the project reopens exactly as designed
-    assert doc["current"]["spec"]["filter"] == "C" and "Vo" in doc["current"]["spec"]
+    assert doc["current"]["spec"]["filter"] == "C" and "Vsec" in doc["current"]["spec"]
 
 
 def test_edited_circuit_is_saved_duplicated_and_restored_without_changing_original(client):

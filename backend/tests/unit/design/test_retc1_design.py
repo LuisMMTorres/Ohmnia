@@ -21,19 +21,23 @@ def design(repo, **kw):
 
 
 @pytest.mark.parametrize("topo", ["ponte", "semicontrolada", "meia_onda"])
-def test_meets_vo_and_selects_scr(reviewed_catalogue, topo):
+def test_meets_power_and_selects_scr(reviewed_catalogue, topo):
+    power = 20 if topo == "meia_onda" else 200
     res, _ = design(
         reviewed_catalogue,
         topology=topo,
-        Vo=QuantityModel(value=40, unit="V"),
+        P=QuantityModel(value=power, unit="W"),
         alpha_nom=QuantityModel(value=45, unit="deg"),
     )
-    assert res.summary["Vo"].value == pytest.approx(40, rel=1e-3)
+    s = res.summary
+    assert s["P_out"].value == pytest.approx(power, rel=1e-3)
+    assert s["Vm"].value == pytest.approx(70 * 2**0.5, rel=1e-9)
+    assert s["Io"].value == pytest.approx(s["Vo"].value / s["R_load"].value, rel=1e-3)
     roles = {r.designator: r for r in res.roles}
     scr = next(c for c in res.selection if roles[c.designator].category == "thyristor.scr")
     assert scr.released
     ids = {s.id for s in res.steps}
-    assert {"Vm", "Vo", "Vo_ideal", "IT_avg", "VDRM", "PF"} <= ids
+    assert {"Vm", "R_load", "Vo", "Vo_ideal", "IT_avg", "VDRM", "PF"} <= ids
     assert all(st.calc_step_id in ids for st in res.stresses)
 
 
@@ -54,9 +58,14 @@ def test_heatsink_chosen_from_catalogue(reviewed_catalogue):
     assert any(s.id.startswith("Tj_hs_") for s in res.steps)
 
 
-def test_counter_emf_must_be_below_vo(reviewed_catalogue):
+def test_counter_emf_above_the_secondary_peak_is_refused(reviewed_catalogue):
     with pytest.raises(ValueError):
-        design(reviewed_catalogue, topology="ponte", E=QuantityModel(value=80, unit="V"))
+        design(reviewed_catalogue, topology="ponte", E=QuantityModel(value=120, unit="V"))
+
+
+def test_power_above_the_maximum_is_refused(reviewed_catalogue):
+    with pytest.raises(ValueError):
+        design(reviewed_catalogue, topology="meia_onda", P=QuantityModel(value=500, unit="W"))
 
 
 def test_freewheel_only_half_wave():

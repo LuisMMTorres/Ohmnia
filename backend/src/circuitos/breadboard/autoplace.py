@@ -1,6 +1,8 @@
 """Automatic assembly: place every part on the breadboard and wire the nets.
 
-Deterministic and readable rather than minimal:
+Deterministic and readable. Several part orders are tried (plain reading order, parts that
+share nodes kept together, and a fixed set of shuffles) and the assembly with the fewest
+jumpers wins; each one follows the same rules:
 
 * rails: ground on the two negative rails (``tn``, ``bn``), the positive IC supply on ``tp`` and
   the negative one on ``bp``; without IC supplies, the node of a DC source tied to ground takes
@@ -19,17 +21,22 @@ tests: an automatic assembly must always pass.
 
 from __future__ import annotations
 
-from collections.abc import Callable
+import random
+from collections.abc import Callable, Iterator
 from dataclasses import dataclass, field
-from itertools import count, pairwise
+from itertools import count
 
 from circuitos.breadboard import board
+from circuitos.breadboard.check import check
 from circuitos.breadboard.layout import Breadboard, Jumper, PlacedPart, WireColor
 from circuitos.breadboard.packages import package
 from circuitos.breadboard.pinout import Resolved
 from circuitos.breadboard.reference import ALIM, Reference, key
+from circuitos.breadboard.routing import Clearance, body
 
 MAX_SPAN = 12
+_NEAR, _FAR = "L", "U"  # half facing the instruments, filled first
+RANDOM_TRIES = 40  # extra part orders tried by autoplace, keeping the one with fewest jumpers
 _LEG_PREF = {"U": "edcba", "L": "fghij"}
 _WIRE_PREF = {"U": "abcde", "L": "jihgf"}
 _PALETTE: tuple[WireColor, ...] = ("verde", "amarelo", "laranja", "branco", "azul", "cinza")
@@ -48,6 +55,8 @@ class _State:
     notes: list[str] = field(default_factory=list)
     standing: set[Strip] = field(default_factory=set)  # rows with a part standing to a rail
     busy: set[Strip] = field(default_factory=set)  # rows under a transistor or IC body
+    clr: Clearance = field(default_factory=lambda: Clearance([], set(), [], place=final))
+    tangled: int = 0  # jumpers that could not avoid a body, a leg or another jumper
 
     def free(self, s: Strip) -> list[str]:
         h, row = s
@@ -90,9 +99,11 @@ def _rails(ref: Reference) -> dict[str, dict[str, str]]:
             continue
         p, n = ref.nets.get(key(r.ref, "p")), ref.nets.get(key(r.ref, "n"))
         if p and n == "0" and p not in out:
-            rail = "bp" if r.supplies.get("dc", 0.0) < 0 else "tp"
+            neg = r.supplies.get("dc", 0.0) < 0
+            rail = "bp" if neg else "tp"
             if all(rail not in v.values() for v in out.values()):
-                out[p] = {"U": rail, "L": rail}
+                # positive supply on both + rails (top and bottom), joined at the left end
+                out[p] = {"U": rail, "L": rail} if neg else {"U": "tp", "L": "bp"}
     return out
 
 
@@ -102,7 +113,68 @@ def _order(r: Resolved) -> tuple[int, str]:
     return rank, r.ref
 
 
+def _greedy(ref: Reference, rails: dict[str, dict[str, str]], start: str | None) -> list[str]:
+    """Part order that keeps connected parts together: after the ICs and transistors, the next
+    two-leg part is the one sharing most nodes (not rails) with the parts already placed, so
+    it can go straight into their strips instead of needing a jumper."""
+    parts = sorted((p for p in ref.parts.values() if p.package), key=_order)
+    nets = {
+        p.ref: {n for pin in p.pinmap if (n := ref.nets.get(key(p.ref, pin))) and n not in rails}
+        for p in parts
+    }
+    order = [p.ref for p in parts if _order(p)[0] < 2]
+    rest = [p.ref for p in parts if _order(p)[0] == 2]
+    tail = [p.ref for p in parts if _order(p)[0] > 2]
+    seen: set[str] = set().union(*(nets[x] for x in order)) if order else set()
+    if start in rest:
+        rest.remove(start)
+        order.append(start)
+        seen |= nets[start]
+    while rest:
+        best = max(rest, key=lambda x: (len(nets[x] & seen), -rest.index(x)))
+        rest.remove(best)
+        order.append(best)
+        seen |= nets[best]
+    return order + tail
+
+
 def autoplace(ref: Reference) -> tuple[Breadboard, list[str]]:
+    """Try a few part orders and keep the assembly with the fewest jumpers (all parts placed
+    first); the reading order of the plain layout breaks ties."""
+    rails = _rails(ref)
+    two_leg = [p.ref for p in sorted(ref.parts.values(), key=lambda p: p.ref)
+               if p.package and _order(p)[0] == 2]  # fmt: skip
+    orders: list[list[str] | None] = [None, _greedy(ref, rails, None)]
+    orders += [_greedy(ref, rails, s) for s in two_leg[:12]]
+    # plus a fixed set of shuffles (seeded: the same circuit always gives the same assembly)
+    rng = random.Random(len(two_leg))
+    base = _greedy(ref, rails, None)
+    head = [x for x in base if x not in two_leg]
+    for _ in range(RANDOM_TRIES if len(two_leg) > 2 else 0):
+        mid = [x for x in base if x in two_leg]
+        rng.shuffle(mid)
+        orders.append([x for x in head if _order(ref.parts[x])[0] < 2] + mid
+                      + [x for x in head if _order(ref.parts[x])[0] > 2])  # fmt: skip
+    best: tuple[tuple[int, int, int], Breadboard, list[str]] | None = None
+    for order in orders:
+        bb, notes, tangled = _assemble(ref, order)
+        unplaced = sum("não coube" in n or "sem furo" in n for n in notes)
+        score = (unplaced, tangled, len(bb.wires))
+        if best is not None and score >= best[0]:
+            continue
+        if order is not None and not check(ref, bb).ok:
+            continue  # an alternative must never be worse than the plain layout
+        best = (score, bb, notes)
+    assert best is not None
+    return best[1], best[2]
+
+
+def _autoplace(ref: Reference, order: list[str] | None) -> tuple[Breadboard, list[str]]:
+    bb, notes, _ = _assemble(ref, order)
+    return bb, notes
+
+
+def _assemble(ref: Reference, order: list[str] | None) -> tuple[Breadboard, list[str], int]:
     st = _State()
     rails = _rails(ref)
     placed: list[PlacedPart] = []
@@ -117,12 +189,19 @@ def autoplace(ref: Reference) -> tuple[Breadboard, list[str]]:
                 if all((half, x) not in st.owner for x in range(r, r + width + 1)):
                     st.nxt[half] = r + width + 3  # two empty rows between parts
                     if half != h:
-                        st.notes.append("Metade de cima cheia: peças seguem na metade de baixo.")
+                        st.notes.append(
+                            "Metade de baixo cheia: peças seguem na metade de cima."
+                            if h == "L"
+                            else "Metade de cima cheia: peças seguem na metade de baixo."
+                        )
                     return r if half == h else -r
                 r += 1
         return None
 
-    for r in sorted((p for p in ref.parts.values() if p.package), key=_order):
+    seq = sorted((p for p in ref.parts.values() if p.package), key=_order)
+    if order is not None:
+        seq = [ref.parts[x] for x in order]
+    for r in seq:
         if not (r.checkable or r.origin == "sem_pinagem"):
             continue
         pkg = package(r.package or "")
@@ -156,16 +235,17 @@ def autoplace(ref: Reference) -> tuple[Breadboard, list[str]]:
         elif pkg.style == "inline":
             offs = pkg.leg_offsets()
             width = offs[-1][0]
-            got = new_rows("U", width)
+            got = new_rows(_NEAR, width)
             if got is None:
                 st.notes.append(f"{r.ref}: não coube na protoboard.")
                 continue
-            h, row = ("U", got) if got > 0 else ("L", -got)
+            h, row = (_NEAR, got) if got > 0 else (_FAR, -got)
             col = "c" if h == "U" else "h"
             for pin, (dr, _) in zip(pkg.pins, offs, strict=True):
                 legs[pin] = f"{col}{row + dr}"
         elif pkg.style in ("axial", "radial"):
-            legs = _two_legs(
+            legs = {}
+            for cand, stand in _two_legs(
                 st,
                 r,
                 pkg.style,
@@ -176,7 +256,12 @@ def autoplace(ref: Reference) -> tuple[Breadboard, list[str]]:
                 net_of,
                 rails,
                 new_rows,
-            )
+            ):
+                if st.clr.part_fits(body(pkg, cand, final), list(cand.values())):
+                    legs = cand
+                    if stand is not None:
+                        st.standing.add(stand)
+                    break
             if not legs:
                 st.notes.append(f"{r.ref}: não coube na protoboard.")
                 continue
@@ -189,6 +274,7 @@ def autoplace(ref: Reference) -> tuple[Breadboard, list[str]]:
             else:
                 st.used.add(h)
         placed.append(PlacedPart(ref=r.ref, package=pkg.id, legs=legs))
+        st.clr.add_part(body(pkg, legs, final), list(legs.values()))
         if pkg.style in ("dip", "inline", "board"):
             st.busy.update(_strip_of(h) for h in legs.values())
         if r.origin == "sem_pinagem":
@@ -205,7 +291,7 @@ def autoplace(ref: Reference) -> tuple[Breadboard, list[str]]:
             if net is None or len(members.get(net, [])) < 2:
                 continue  # terminal not wired in the schematic: no lead
             if net in rails:
-                hole = _rail_hole(st, rails[net]["U"], 2)
+                hole = _rail_hole(st, rails[net][_NEAR], 2)
             else:
                 hole = _hole_for_net(st, net, new_rows)
             if hole is None:
@@ -213,21 +299,49 @@ def autoplace(ref: Reference) -> tuple[Breadboard, list[str]]:
                 continue
             legs[term] = hole
         placed.append(PlacedPart(ref=r.ref, package=r.package or "", legs=legs))
+        st.clr.add_part(None, list(legs.values()))
 
     wires = _wire(st, rails)
-    return Breadboard(parts=placed, wires=wires), st.notes
+    placed = [p.model_copy(update={"legs": {k: final(h) for k, h in p.legs.items()}})
+              for p in placed]  # fmt: skip
+    wires = [w.model_copy(update={"a": final(w.a), "b": final(w.b)}) for w in wires]
+    return Breadboard(parts=placed, wires=wires), st.notes, st.tangled
+
+
+# The circuit goes on the lower board, starting with its lower half: that is the side the
+# instruments sit on, so their leads stay short and never cross the boards. The code works on
+# board 1 names; ``final`` moves them to board 2 at the end.
+# vertical-bus row level with each rail of the lower board (y + 22 + 1)
+_BUS_ROW = {"tp": 23, "tn": 24, "bn": 39, "bp": 40}
+
+
+def final(hole: str) -> str:
+    """Where an assembled hole goes on the board drawn to the user."""
+    if hole.startswith(("vp", "vn", "2:")):
+        return hole
+    return f"2:{hole}"
+
+
+def _vbus_col(rails: dict[str, dict[str, str]], net: str) -> str | None:
+    """Vertical bus beside the board: ``vn`` carries ground, ``vp`` the net of the top + rail."""
+    if net == "0" and "0" in rails:
+        return "vn"
+    if rails.get(net, {}).get("U") == "tp":
+        return "vp"
+    return None
 
 
 def _hole_for_net(st: _State, net: str, new_rows: NewRows) -> str | None:
-    for s in st.strips.get(net, []):
+    # upper-half strips first: they face the instruments once the board is turned
+    for s in sorted(st.strips.get(net, []), key=lambda x: x[0] != _NEAR):
         if st.available(s, net, need=3):
             hole = _pick(st, s, wire=True)
             st.claim(s, net, hole)
             return hole
-    row = new_rows("U", 0)
+    row = new_rows(_NEAR, 0)
     if row is None:
         return None
-    fresh: Strip = ("U", row) if row > 0 else ("L", -row)
+    fresh: Strip = (_NEAR, row) if row > 0 else (_FAR, -row)
     hole = _pick(st, fresh, wire=True)
     st.claim(fresh, net, hole)
     return hole
@@ -262,7 +376,7 @@ def _two_legs(
     net_of: NetOf,
     rails: dict[str, dict[str, str]],
     new_rows: NewRows,
-) -> dict[str, str]:
+) -> Iterator[tuple[dict[str, str], Strip | None]]:
     p1, p2 = pins
     n1, n2 = net_of(r, p1), net_of(r, p2)
     lo, hi = (min_span, MAX_SPAN) if style == "axial" else (pitch, pitch)
@@ -281,8 +395,8 @@ def _two_legs(
                     for c in _LEG_PREF[s1[0]]
                     if f"{c}{s1[1]}" not in st.used and f"{c}{s2[1]}" not in st.used
                 ]
-                if common:
-                    return {p1: f"{common[0]}{s1[1]}", p2: f"{common[0]}{s2[1]}"}
+                for c in common:
+                    yield {p1: f"{c}{s1[1]}", p2: f"{c}{s2[1]}"}, None
     # (b) axial part standing between a strip and a rail
     if style == "axial":
         for pa, na, pb, nb in ((p1, n1, p2, n2), (p2, n2, p1, n1)):
@@ -299,8 +413,7 @@ def _two_legs(
                 for c in _LEG_PREF[s[0]]:
                     hole = f"{c}{s[1]}"
                     if hole not in st.used and abs(board.Y[c] - board.Y[rail]) >= min_span:
-                        st.standing.add(s)
-                        return {pa: hole, pb: hole_r}
+                        yield {pa: hole, pb: hole_r}, s
     # (c) one node has a strip: the other leg goes to a new strip at reach
     for pa, na, pb, nb in ((p1, n1, p2, n2), (p2, n2, p1, n1)):
         for s in homes(na):
@@ -310,26 +423,42 @@ def _two_legs(
                 t: Strip = (s[0], s[1] + d)
                 if 1 <= t[1] <= board.ROWS and t not in st.owner:
                     free = [x for x in _LEG_PREF[s[0]] if f"{x}{s[1]}" not in st.used]
-                    if free:
-                        return {pa: f"{free[0]}{s[1]}", pb: f"{free[0]}{t[1]}"}
-    # (d) fresh strips
+                    for x in free:
+                        yield {pa: f"{x}{s[1]}", pb: f"{x}{t[1]}"}, None
+    # (d) fresh strips (asked again while the body does not fit there)
     d = span or pitch
-    got = new_rows("U", d)
-    if got is None:
-        return {}
-    h, row = ("U", got) if got > 0 else ("L", -got)
-    c = _LEG_PREF[h][0]
-    return {p1: f"{c}{row}", p2: f"{c}{row + d}"}
+    for _ in range(board.ROWS):
+        got = new_rows(_NEAR, d)
+        if got is None:
+            return
+        h, row = (_NEAR, got) if got > 0 else (_FAR, -got)
+        for c in _LEG_PREF[h][:3]:
+            yield {p1: f"{c}{row}", p2: f"{c}{row + d}"}, None
 
 
 def _wire(st: _State, rails: dict[str, dict[str, str]]) -> list[Jumper]:
+    """Jumpers that keep clear of bodies, legs and each other where the board allows: a strip
+    goes to its rail in the same row (a short vertical wire), the strips of a node are joined
+    nearest first, and the rails reach the vertical bus at the left end of the board."""
     wires: list[Jumper] = []
     ids = count(1)
     palette = iter(_PALETTE * 20)
 
     def add(a: str, b: str, color: WireColor) -> None:
+        if not st.clr.wire_clear(a, b):
+            st.tangled += 1
         st.used.update((a, b))
+        st.clr.add_wire(a, b)
         wires.append(Jumper(id=f"w{next(ids)}", a=a, b=b, color=color))
+
+    def free_in(s: Strip) -> list[str]:
+        return [f"{c}{s[1]}" for c in _WIRE_PREF[s[0]] if f"{c}{s[1]}" not in st.used]
+
+    def best(pairs: list[tuple[str, str]]) -> tuple[str, str] | None:
+        for a, b in pairs:
+            if st.clr.wire_clear(a, b):
+                return a, b
+        return pairs[0] if pairs else None
 
     for net in sorted(st.strips, key=lambda n: (n not in rails, n)):
         strips = st.strips[net]
@@ -339,24 +468,55 @@ def _wire(st: _State, rails: dict[str, dict[str, str]]) -> list[Jumper]:
             )
             for s in strips:
                 rail = rails[net][s[0]]
-                hole_r = _rail_hole(st, rail, s[1])
-                if hole_r is None:
+                rows = sorted(board.RAIL_ROWS, key=lambda x: (abs(x - s[1]), x))
+                pairs = [
+                    (h, f"{rail}{r}")
+                    for r in rows
+                    if f"{rail}{r}" not in st.used
+                    for h in free_in(s)
+                ][:30]
+                got = best(pairs)
+                if got is None:
                     st.notes.append(f"Barramento {rail} sem furo livre.")
                     continue
-                st.used.discard(hole_r)
-                add(_pick(st, s, wire=True), hole_r, color)
+                add(*got, color)
             continue
         colour = next(palette)
-        for s1, s2 in pairwise(strips):
-            add(_pick(st, s1, wire=True), _pick(st, s2, wire=True), colour)
-    # ground on both negative rails (legs and leads may go straight into them): join them
-    if (
-        "0" in rails
-        and any(h.startswith("tn") for h in st.used)
-        and any(h.startswith("bn") for h in st.used)
-    ):
-        a, b = _rail_hole(st, "tn", 2), _rail_hole(st, "bn", 2)
-        if a and b:
-            st.used.difference_update((a, b))
-            add(a, b, "preto")
+        # minimum spanning tree over the strips of the node (nearest strips first)
+        joined = [strips[0]]
+        rest = list(strips[1:])
+        while rest:
+            # nearest pair of strips that still have a free hole each (a full strip is
+            # skipped as an end, the node is reached through another of its strips)
+            cands = sorted(
+                ((a, b) for a in joined for b in rest),
+                key=lambda ab: abs(ab[0][1] - ab[1][1]) + (ab[0][0] != ab[1][0]) * 6,
+            )
+            s1, s2 = next(((a, b) for a, b in cands if free_in(a) and free_in(b)), cands[0])
+            pairs = [(a, b) for a in free_in(s1) for b in free_in(s2)]
+            got = best(pairs)
+            if got is None:
+                st.notes.append(f"Faixa da linha {s2[1]} sem furo livre.")
+            else:
+                add(*got, colour)
+            rest.remove(s2)
+            joined.append(s2)
+    # rails of one node (top and bottom of the board) are joined through the vertical bus,
+    # with short wires at the left end
+    rail_net = {rail: net for net, rr in rails.items() for rail in rr.values()}
+    for rail in ("tp", "tn", "bn", "bp"):
+        rnet = rail_net.get(rail)
+        col = _vbus_col(rails, rnet) if rnet else None
+        if rnet is None or col is None:
+            continue
+        net = rnet
+        same = {r for r, n in rail_net.items() if n == net}
+        used_rails = {r for r in same if any(h.startswith(r) for h in st.used)}
+        if rail not in used_rails or len(used_rails) < 2:
+            continue
+        bus = f"{col}{_BUS_ROW[rail]}"
+        hole = next((f"{rail}{r}" for r in board.RAIL_ROWS if f"{rail}{r}" not in st.used), None)
+        if hole is None or bus in st.used:
+            continue
+        add(bus, hole, "preto" if net == "0" else "vermelho")
     return wires

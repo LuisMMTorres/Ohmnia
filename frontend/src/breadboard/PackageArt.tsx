@@ -143,6 +143,14 @@ export function PackageArt({ pkg, legs, view, refName, selected, bad, showLabels
           )}
         </>
       );
+    } else if (pkg.body === "tact") {
+      const w = len + P * 0.9;
+      body = (
+        <g transform={`translate(${center[0]} ${center[1]}) rotate(${angle})`}>
+          <rect x={-w / 2} y={-w / 2 - 2} width={w} height={w * 0.8} rx={2} className="bb-tact" />
+          <circle cx={0} cy={-w * 0.1 - 2} r={w * 0.22} className="bb-tact-cap" />
+        </g>
+      );
     } else {
       const w = len + P * 0.9;
       body = (
@@ -194,24 +202,35 @@ export function PackageArt({ pkg, legs, view, refName, selected, bad, showLabels
       const x1 = Math.max(p1[0], pn[0]) + P * 0.45;
       const y0 = top[1] + 5;
       const y1 = p1[1] - 5;
-      body = (
-        <>
-          <rect x={x0} y={y0} width={x1 - x0} height={y1 - y0} rx={2} className="bb-epoxy" />
-          <path
-            d={`M ${x0} ${(y0 + y1) / 2 - 5} A 5 5 0 0 1 ${x0} ${(y0 + y1) / 2 + 5}`}
-            className="bb-notch"
-          />
-          <circle cx={x0 + 6} cy={y1 - 6} r={2} className="bb-dot" />
-          <text
-            x={(x0 + x1) / 2}
-            y={(y0 + y1) / 2 + 3}
-            textAnchor="middle"
-            className="bb-part-text light"
-          >
-            {(view?.part_number ?? view?.title ?? refName).slice(0, 12)}
-          </text>
-        </>
-      );
+      body =
+        pkg.body === "tact" ? (
+          <>
+            <rect x={x0} y={y0} width={x1 - x0} height={y1 - y0} rx={2} className="bb-tact" />
+            <circle
+              cx={(x0 + x1) / 2}
+              cy={(y0 + y1) / 2}
+              r={Math.min(x1 - x0, y1 - y0) * 0.3}
+              className="bb-tact-cap"
+            />
+          </>
+        ) : (
+          <>
+            <rect x={x0} y={y0} width={x1 - x0} height={y1 - y0} rx={2} className="bb-epoxy" />
+            <path
+              d={`M ${x0} ${(y0 + y1) / 2 - 5} A 5 5 0 0 1 ${x0} ${(y0 + y1) / 2 + 5}`}
+              className="bb-notch"
+            />
+            <circle cx={x0 + 6} cy={y1 - 6} r={2} className="bb-dot" />
+            <text
+              x={(x0 + x1) / 2}
+              y={(y0 + y1) / 2 + 3}
+              textAnchor="middle"
+              className="bb-part-text light"
+            >
+              {(view?.part_number ?? view?.title ?? refName).slice(0, 12)}
+            </text>
+          </>
+        );
     }
   }
 

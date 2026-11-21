@@ -1,0 +1,58 @@
+category: motor.dc
+schema_version: '1.0'
+description: Motor CC de ímã permanente
+required:
+- V_nom
+- R_a
+- k_M
+parameters:
+  V_nom:
+    unit: V
+    kind: characteristic
+    description: Tensão nominal
+  R_a:
+    unit: ohm
+    kind: characteristic
+    description: Resistência de terminal (armadura)
+  L_a:
+    unit: uH
+    kind: characteristic
+    description: Indutância do rotor (armadura)
+  n0:
+    unit: rpm
+    kind: characteristic
+    description: Velocidade a vazio
+  I0:
+    unit: A
+    kind: characteristic
+    description: Corrente a vazio
+  M_H:
+    unit: mN*m
+    kind: characteristic
+    description: Torque de partida (rotor travado)
+  M_R:
+    unit: mN*m
+    kind: characteristic
+    description: Torque de atrito
+  k_n:
+    unit: rpm/V
+    kind: characteristic
+    description: Constante de velocidade
+  k_E:
+    unit: mV/rpm
+    kind: characteristic
+    description: Constante de FCEM
+  k_M:
+    unit: mN*m/A
+    kind: characteristic
+    description: Constante de torque
+  J:
+    unit: g*cm^2
+    kind: characteristic
+    description: Inércia do rotor
+  tau_m:
+    unit: ms
+    kind: characteristic
+    description: Constante de tempo mecânica
+attributes:
+  comutacao: Comutação (escovas)

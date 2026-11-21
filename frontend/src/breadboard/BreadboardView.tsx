@@ -92,6 +92,8 @@ interface Props {
   initialGuide?: Step[];
   /** Shaft speed of each motor after the last simulation (direction of rotation). */
   motion?: Record<string, Motion>;
+  /** Parts that would burn in the last simulation, with the reason (tooltip). */
+  burnt?: Record<string, string>;
 }
 
 export function BreadboardView({
@@ -102,6 +104,7 @@ export function BreadboardView({
   readOnly,
   initialGuide,
   motion,
+  burnt,
 }: Props) {
   const bb: Breadboard = schematic.breadboard ?? emptyBreadboard();
   const board = spec.board;
@@ -134,7 +137,15 @@ export function BreadboardView({
   const [zoom, setZoom] = useState(1);
   const svgRef = useRef<SVGSVGElement>(null);
   const size = boardSize(board);
-  const instrumentCount = bb.parts.filter((p) => pkgs[p.package]?.style === "offboard").length;
+  // channels of one bench supply (same bench_id) share a single front panel
+  const slotOf = (ref: string): string =>
+    schematic.components.find((c) => c.ref === ref)?.params.bench_id ?? ref;
+  const slots = [
+    ...new Set(
+      bb.parts.filter((p) => pkgs[p.package]?.style === "offboard").map((p) => slotOf(p.ref)),
+    ),
+  ];
+  const instrumentCount = slots.length;
   size.h =
     size.boardH +
     Math.max(1, Math.ceil((instrumentCount + (schematic.bench_scope_channels ? 1 : 0)) / 3)) * 180 +
@@ -318,6 +329,15 @@ export function BreadboardView({
     setDrag(null);
   };
 
+  const removeParts = useCallback(
+    (refs: string[]) => {
+      const gone = new Set(refs);
+      update({ ...bb, parts: bb.parts.filter((p) => !gone.has(p.ref)) });
+      if (sel?.kind === "part" && gone.has(sel.ref)) setSel(null);
+    },
+    [bb, sel, update],
+  );
+
   const removeSelected = useCallback(() => {
     if (!sel) return;
     if (sel.kind === "part") update({ ...bb, parts: bb.parts.filter((p) => p.ref !== sel.ref) });
@@ -388,9 +408,68 @@ export function BreadboardView({
   const xy = (h: string): Pt => holeXY(board, h);
   const instruments = bb.parts.filter((p) => pkgs[p.package]?.style === "offboard");
   const instrumentAt = (ref: string): Pt => {
-    const i = instruments.findIndex((p) => p.ref === ref);
+    const i = slots.indexOf(slotOf(ref));
     return [20 + (i % 3) * 320, size.boardH + 24 + Math.floor(i / 3) * 180];
   };
+  // terminals of the instruments: where each one sits on its front panel
+  const termsOf = (ref: string) =>
+    (pkgs[bb.parts.find((q) => q.ref === ref)?.package ?? ""]?.pins ?? []).filter(
+      (t) => t in (views[ref]?.pinmap ?? {}),
+    );
+  const terminalSpot = (ref: string, t: string) => {
+    const [bx, by] = instrumentAt(ref);
+    const group = instruments.filter((q) => slotOf(q.ref) === slotOf(ref));
+    const shared = group.length > 1;
+    const face = deviceFace(views[ref]?.kind ?? "");
+    const before = group
+      .slice(
+        0,
+        group.findIndex((q) => q.ref === ref),
+      )
+      .reduce((n, q) => n + termsOf(q.ref).length, 0);
+    const n = shared ? group.reduce((m, q) => m + termsOf(q.ref).length, 0) : termsOf(ref).length;
+    const i = (shared ? before : 0) + termsOf(ref).indexOf(t);
+    const spot = shared ? undefined : face?.terminals[t];
+    const tx = spot ? bx + spot.at[0] : bx + 18 + (i * 244) / Math.max(1, n - 1 || 1);
+    // generic panels: terminals on the top edge, so that the leads never run over the panel
+    const ty = spot ? by + spot.at[1] : by;
+    const label: Pt = spot ? [bx + spot.label[0], by + spot.label[1]] : [tx + 10, by - 6];
+    return { tx, ty, label, spot: !!spot };
+  };
+  // leads run straight up to a lane in the strip between the boards and the instruments, along
+  // it and straight up into their hole; lanes are ordered so that the leads do not cross
+  const leadLanes = (() => {
+    type L = { key: string; tx: number; hx: number };
+    const leads: L[] = [];
+    for (const p of instruments)
+      for (const t of termsOf(p.ref))
+        if (p.legs[t])
+          leads.push({
+            key: `${p.ref}:${t}`,
+            tx: terminalSpot(p.ref, t).tx,
+            hx: xy(p.legs[t]!)[0],
+          });
+    // a must sit above b (smaller y) when b's terminal is under a's run, below when b's hole is
+    const above = (a: L, b: L) => {
+      const lo = Math.min(a.tx, a.hx);
+      const hi = Math.max(a.tx, a.hx);
+      return b.tx > lo && b.tx < hi ? 1 : b.hx > lo && b.hx < hi ? -1 : 0;
+    };
+    const order: L[] = [];
+    const rest = [...leads];
+    while (rest.length) {
+      // next: a lead that no remaining lead must be above of
+      const k = rest.findIndex((a) =>
+        rest.every((b) => b === a || (above(b, a) !== 1 && above(a, b) !== -1)),
+      );
+      order.push(...rest.splice(k < 0 ? 0 : k, 1));
+    }
+    const lanes = new Map<string, number>();
+    order.forEach((l, i) =>
+      lanes.set(l.key, size.boardH - 24 + (i * 30) / Math.max(1, order.length)),
+    );
+    return lanes;
+  })();
   const startPlacing = (v: PartView) => {
     const pkg = pkgs[v.package ?? ""];
     if (!pkg) return;
@@ -471,7 +550,11 @@ export function BreadboardView({
               </select>
             </label>
           </div>
-          <button onClick={() => void auto()} disabled={busy || !resolved}>
+          <button
+            onClick={() => void auto()}
+            disabled={busy || !resolved}
+            title="Coloca todas as peças já ligadas entre si conforme o esquemático 2D, usando o menor número de fios que encontrar"
+          >
             {busy ? "Montando…" : "Montar automaticamente"}
           </button>
           <button
@@ -483,12 +566,27 @@ export function BreadboardView({
           </button>
           <button
             className="secondary"
+            title="Tira todas as peças da placa e deixa os fios"
             onClick={() =>
-              bb.parts.length && window.confirm("Apagar a montagem?") && update(emptyBreadboard())
+              bb.parts.length &&
+              window.confirm("Retirar todas as peças da protoboard? Os fios ficam.") &&
+              removeParts(bb.parts.map((p) => p.ref))
             }
             disabled={!bb.parts.length}
           >
-            Limpar
+            Retirar todas as peças
+          </button>
+          <button
+            className="secondary"
+            title="Tira peças e fios"
+            onClick={() =>
+              (bb.parts.length || bb.wires.length) &&
+              window.confirm("Apagar a montagem inteira (peças e fios)?") &&
+              update(emptyBreadboard())
+            }
+            disabled={!bb.parts.length && !bb.wires.length}
+          >
+            Limpar tudo
           </button>
           <label className="small">
             <input
@@ -514,7 +612,16 @@ export function BreadboardView({
                       : ORIGIN_LABEL[v.origin]}
                   </span>
                   {placed.has(v.ref) ? (
-                    <span className="small muted"> montado</span>
+                    <>
+                      <span className="small muted"> montado</span>
+                      <button
+                        className="small secondary"
+                        title={`Tirar ${v.ref} da protoboard`}
+                        onClick={() => removeParts([v.ref])}
+                      >
+                        Retirar
+                      </button>
+                    </>
                   ) : v.package ? (
                     <>
                       <button className="small" onClick={() => startPlacing(v)}>
@@ -689,7 +796,12 @@ export function BreadboardView({
               const [bx, by] = instrumentAt(p.ref);
               const terms = pkg.pins.filter((t) => t in (views[p.ref]?.pinmap ?? {}));
               const kind = views[p.ref]?.kind ?? "";
-              const face = deviceFace(kind);
+              // a multi-channel bench supply: one panel, the terminals of every channel side by side
+              const group = instruments.filter((q) => slotOf(q.ref) === slotOf(p.ref));
+              const shared = group.length > 1;
+              const channel =
+                schematic.components.find((c) => c.ref === p.ref)?.params.bench_channel ??
+                String(group.indexOf(p) + 1);
               return (
                 <g
                   key={p.ref}
@@ -699,23 +811,26 @@ export function BreadboardView({
                     setSel({ kind: "part", ref: p.ref });
                   }}
                 >
-                  <InstrumentFace
-                    x={bx}
-                    y={by}
-                    title={`${p.ref} · ${views[p.ref]?.title ?? pkg.label}`}
-                    kind={kind}
-                    motion={motion?.[p.ref]}
-                  />
-                  {terms.map((t, i) => {
-                    const spot = face?.terminals[t];
-                    const tx = spot
-                      ? bx + spot.at[0]
-                      : bx + 18 + (i * 244) / Math.max(1, terms.length - 1 || 1);
-                    const ty = spot ? by + spot.at[1] : by + 132;
-                    const [lx, ly] = spot
-                      ? [bx + spot.label[0], by + spot.label[1]]
-                      : [tx, by + 156];
+                  {(!shared || group[0] === p) && (
+                    <InstrumentFace
+                      x={bx}
+                      y={by}
+                      title={
+                        shared
+                          ? `Fonte de bancada · ${group.length} canais (${group.map((q) => q.ref).join(", ")})`
+                          : `${p.ref} · ${views[p.ref]?.title ?? pkg.label}`
+                      }
+                      kind={kind}
+                      motion={motion?.[p.ref]}
+                    />
+                  )}
+                  {terms.map((t) => {
+                    const at = terminalSpot(p.ref, t);
+                    const { tx, ty } = at;
+                    const spot = at.spot;
+                    const [lx, ly] = at.label;
                     const [hx, hy] = p.legs[t] ? xy(p.legs[t]!) : [tx, ty + 10];
+                    const lane = leadLanes.get(`${p.ref}:${t}`) ?? by - 20;
                     return (
                       <g key={t}>
                         <circle
@@ -746,13 +861,19 @@ export function BreadboardView({
                         </circle>
                         {p.legs[t] && (
                           <path
-                            d={`M ${tx} ${ty} C ${tx} ${by - 30}, ${hx} ${hy + 40}, ${hx} ${hy}`}
+                            d={`M ${tx} ${ty} V ${lane} H ${hx} V ${hy}`}
                             className="bb-lead-wire"
                             stroke={t === "n" || t === "-" || t === "0" ? "#222" : "#d32f2f"}
                           />
                         )}
                         <circle cx={hx} cy={hy} r={3} className="bb-clip" />
-                        <text x={lx} y={ly} textAnchor="middle" className="bb-leg-label">
+                        <text
+                          x={lx}
+                          y={ly}
+                          textAnchor={spot ? "middle" : "start"}
+                          className="bb-leg-label"
+                        >
+                          {shared ? `CH${channel} ` : ""}
                           {views[p.ref]?.labels[t] ?? t}
                         </text>
                       </g>
@@ -787,6 +908,7 @@ export function BreadboardView({
                   bad={badRefs.has(p.ref)}
                   showLabels={(sel?.kind === "part" && sel.ref === p.ref) || pkg.style === "inline"}
                 />
+                {burnt?.[p.ref] && <BurntMark points={Object.values(legs)} title={burnt[p.ref]!} />}
               </g>
             );
           })}
@@ -807,11 +929,12 @@ export function BreadboardView({
           {bb.wires.map((w) => {
             const [ax, ay] = xy(w.a);
             const [bx, by] = xy(w.b);
-            const lift = Math.min(28, Math.hypot(bx - ax, by - ay) / 3 + 6);
+            // flat jumper wire, as pre-cut wires lie on a real board (the automatic assembly
+            // keeps these straight lines clear of bodies, legs and other wires)
             return (
               <path
                 key={w.id}
-                d={`M ${ax} ${ay} Q ${(ax + bx) / 2} ${(ay + by) / 2 - lift} ${bx} ${by}`}
+                d={`M ${ax} ${ay} L ${bx} ${by}`}
                 className={`bb-wire${sel?.kind === "wire" && sel.id === w.id ? " selected" : ""}`}
                 stroke={WIRE_COLORS[w.color] ?? "#2e8b3c"}
                 onMouseDown={(e) => {
@@ -1082,5 +1205,25 @@ export function PinoutSource({ view }: { view: PartView }) {
         </p>
       ))}
     </div>
+  );
+}
+
+/** Scorch mark over a part that would burn: dark smudge over its legs and a red label. */
+function BurntMark({ points, title }: { points: Pt[]; title: string }) {
+  if (!points.length) return null;
+  const xs = points.map((q) => q[0]);
+  const ys = points.map((q) => q[1]);
+  const cx = (Math.min(...xs) + Math.max(...xs)) / 2;
+  const cy = (Math.min(...ys) + Math.max(...ys)) / 2;
+  const rx = (Math.max(...xs) - Math.min(...xs)) / 2 + 12;
+  const ry = (Math.max(...ys) - Math.min(...ys)) / 2 + 12;
+  return (
+    <g className="bb-burnt" pointerEvents="none">
+      <title>{title}</title>
+      <ellipse cx={cx} cy={cy - 6} rx={rx} ry={ry} className="bb-burnt-scorch" />
+      <text x={cx} y={cy - ry - 10} textAnchor="middle" className="bb-burnt-label">
+        QUEIMADO
+      </text>
+    </g>
   );
 }

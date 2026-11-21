@@ -101,6 +101,10 @@ class SimComparison(BaseModel):
 class DesignWarning(BaseModel):
     code: str
     message: str
+    # catalogue parts of this circuit still waiting for review that would settle the warning
+    # (a manual lock not yet released, or candidates that would meet the margins): the design
+    # page offers to review and release exactly these
+    parts: list[str] = []
 
 
 class Trace(BaseModel):
@@ -187,6 +191,18 @@ class SimCheck(BaseModel):
     justification: str = ""  # why this tolerance (model approximation)
 
 
+class PowerPort(BaseModel):
+    """A pair of terminals where the simulation measures S, P, Q and the power factor.
+
+    ``voltage`` and ``current`` are vector sums as in :attr:`Circuit.probes`; the current is
+    taken as entering the positive terminal of ``voltage`` (passive convention: P > 0 absorbed).
+    """
+
+    voltage: str
+    current: str
+    ac: bool = False  # remove the mean of the current first (primary of a transformer)
+
+
 class Circuit(BaseModel):
     """Netlist for the simulator plus what to measure and how to compare."""
 
@@ -201,6 +217,11 @@ class Circuit(BaseModel):
     ac_stop: QuantityModel | None = None
     ac_points_per_decade: int = 40
     bode_probes: dict[str, str] = Field(default_factory=dict)  # label → node/expression
+    # Ports where the simulation measures the powers (label → port), and labels of probes whose
+    # mean is removed before plotting and measuring (primary current of an ideal transformer,
+    # which never carries the DC of the secondary).
+    powers: dict[str, PowerPort] = Field(default_factory=dict)
+    ac_probes: list[str] = Field(default_factory=list)
 
 
 class DesignModule(Protocol):

@@ -91,7 +91,8 @@ enquadra a aquisição; **Stop** congela seus dados. Não há conexão com equip
   o mesmo nó; `0` ou `gnd` é a referência.
 - No painel de propriedades, escolha uma **peça real do catálogo** (diodos, Zener, TBJ, MOSFET,
   JFET, ampop, SCR, TRIAC, IGBT) ou deixe os parâmetros genéricos.
-- Pontas: tensão, tensão diferencial, corrente e potência.
+- Ponteiras: tensão, tensão diferencial, corrente e potência.
+- Queima de componentes: depois de simular, a peça que passar de um limite do datasheet (tensão, corrente, potência ou temperatura de junção) aparece como **QUEIMOU**, e uma caixa explica o motivo e o que fazer. No resistor e no capacitor genéricos, informe a potência ou a tensão nominal para que sejam verificados. Detalhes em [queima-componentes](../validacao/queima-componentes.md).
 
 ## Analisar
 

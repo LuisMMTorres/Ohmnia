@@ -231,6 +231,8 @@ def compare_full(
             {c.probe for c in tran_checks}
             | {c.voltage for c in tran_checks if c.voltage}
             | set(circuit.probes.values())
+            | {p.voltage for p in circuit.powers.values()}
+            | {p.current for p in circuit.powers.values()}
         )
         ss = last_period(plot, circuit.period.to_pint().m_as("s"), expressions)
     if circuit.ac_start is not None:
