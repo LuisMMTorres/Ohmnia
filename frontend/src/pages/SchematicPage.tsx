@@ -46,6 +46,7 @@ import { DamageAlert } from "../schematic/DamageAlert";
 import type { Glow } from "../schematic/symbols";
 import { PackagePreview } from "../breadboard/PackageArt";
 import { ProgramEditor } from "../cosim/ProgramEditor";
+import { FirmwareControls } from "../cosim/FirmwareControls";
 import { SimulatorPage } from "./SimulatorPage";
 import { WorkspaceSteps, type WorkspaceStep } from "../components/WorkspaceSteps";
 
@@ -1439,9 +1440,18 @@ function ComponentProps({
       {/^[vi](dc|sin|pulse)$/.test(comp.kind) && (
         <SourceControls component={comp} onChange={onChange} />
       )}
+      {sym.params.some((p) => p.name === "program") && (
+        <FirmwareControls component={comp} onChange={onChange} />
+      )}
+      {comp.firmware && (
+        <p className="small muted">
+          O código-fonte anterior fica guardado. Retire o firmware para voltar a editá-lo.
+        </p>
+      )}
       {sym.params
         .filter(
           (d) =>
+            (!comp.firmware || !["program", "instr_us", "pwm"].includes(d.name)) &&
             (generic || keepForPart.has(d.name)) &&
             (!/^[vi](dc|sin|pulse)$/.test(comp.kind) ||
               ["ac", "tol", "phase", "delay"].includes(d.name)),

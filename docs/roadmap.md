@@ -309,3 +309,22 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
   placa; o transformador monofásico passa a usar também a perda no cobre do datasheet.
 - Detalhes, pendências e limitações:
   [validacao/biblioteca-dados-reais.md](validacao/biblioteca-dados-reais.md).
+
+## Firmware compilado nas placas virtuais — primeira entrega AVR (21/11/2026)
+
+- Uno R3, Nano ATmega328P e Mega 2560: HEX/ELF executados pelo AVR8js, com GPIO bidirecional,
+  ADC, temporizadores/PWM e Serial0 acoplados ao ngspice.
+- Arquivo validado e salvo no projeto; instalação opcional do motor e retorno ao código-fonte.
+- ESP32-DevKitC, RP2040 e RP2350/Pico 2 permanecem pendentes, sem falso indicador de suporte.
+- Entrega aguardando revisão: [validacao/firmware-compilado.md](validacao/firmware-compilado.md).
+
+
+## Firmware compilado — ESP32, Pico e Pico 2 (21/11/2026)
+
+- RP2040 e RP2350 ARM/RISC-V: UF2/ELF com GPIO, ADC, PWM e UART via rp2350js 2.0.1.
+- Pico 2 incluído na Biblioteca e na protoboard, com identificação RP2350.
+- ESP32 clássico/WROOM-32: BIN mesclado, boot real, GPIO, ADC, PWM e UART via motor externo
+  etree-esp32 1.1.0 para Windows de 64 bits. Instalador com hash e licenças preservadas.
+- Casos reais compilados nas ferramentas Arduino e testes de realimentação com ngspice.
+- I2C/SPI e sensores por protocolo no fio, recepção serial, rede e depuração continuam pendentes.
+- Entrega para revisão: [validacao/firmware-outras-placas.md](validacao/firmware-outras-placas.md).

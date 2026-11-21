@@ -236,6 +236,21 @@ COSIM_SYMBOLS: list[Symbol] = [
         ref_prefix="U",
     ),
     Symbol(
+        "rpi_pico2",
+        "Raspberry Pi Pico 2",
+        "Controladores",
+        "X",
+        _box_pins(_PICO_LEFT, _PICO_RIGHT, 5),
+        (
+            ParamDef("program", "Programa (estilo Arduino)", "", PICO_DEFAULT, type="code"),
+            *_CONTROLLER_COMMON,
+        ),
+        description="RP2350 com programa estilo Arduino co-simulado: ADC de 12 bits (0 a 3,3 V) "
+        "em GP26 a GP28 (A0 a A2), PWM (analogWrite) em qualquer GP, saída 3,3 V, LED no GP25 e "
+        "I2C em GP4 (SDA) e GP5 (SCL). Limiares de entrada e resistência de saída didáticos.",
+        ref_prefix="U",
+    ),
+    Symbol(
         "plc",
         "CLP (24 V)",
         "Controladores",
@@ -630,6 +645,7 @@ CATALOGUE_PARAMS: dict[str, tuple[tuple[str, ...], dict[str, tuple[str, str]]]] 
     "arduino_nano": (("board.mcu",), {}),
     "arduino_mega": (("board.mcu",), {}),
     "rpi_pico": (("board.mcu",), {}),
+    "rpi_pico2": (("board.mcu",), {}),
     "plc": (("plc",), {}),
     **DRIVE_CATALOGUE,
     **SENSOR_CATALOGUE,
@@ -699,6 +715,7 @@ CONTROLLER_KINDS = {
     "arduino_mega",
     "esp32_devkitc",
     "rpi_pico",
+    "rpi_pico2",
     "plc",
     *DRIVER_KINDS,
 }

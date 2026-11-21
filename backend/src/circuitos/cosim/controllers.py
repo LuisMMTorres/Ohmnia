@@ -15,6 +15,7 @@ from typing import Any
 
 from circuitos.cosim.arduino import BOARDS, Board, Runtime
 from circuitos.cosim.clang import CError
+from circuitos.cosim.firmware_image import FirmwareImage
 from circuitos.cosim.plc import IO_BOOL_IN, IO_REAL_IN, PlcError, PlcRuntime
 
 PLC_DI_ON = 15.0  # V, IEC 61131-2 type 1: ON from 15 V
@@ -34,6 +35,7 @@ class ControllerSpec:
     sources: dict[str, str] = field(default_factory=dict)  # external source (lower) -> pin role
     outputs: dict[str, str] = field(default_factory=dict)  # pin -> external source name
     warnings: list[str] = field(default_factory=list)
+    firmware: FirmwareImage | None = None
 
 
 @dataclass
@@ -102,10 +104,18 @@ def analyse_program(source: str, board: Board) -> tuple[set[int], set[int], list
 
 
 def controller_lines(
-    ref: str, kind: str, params: dict[str, str], pins: dict[str, str]
+    ref: str,
+    kind: str,
+    params: dict[str, str],
+    pins: dict[str, str],
+    firmware: FirmwareImage | None = None,
 ) -> tuple[list[str], ControllerSpec]:
     x = ref.lower()
     pins = {k: v.lower() for k, v in pins.items()}
+    if firmware is not None:
+        from circuitos.cosim.firmware import firmware_lines
+
+        return firmware_lines(ref, kind, params, pins, firmware)
     if kind == "plc":
         return _plc_lines(x, ref, params, pins)
     if kind == "stepper_driver":

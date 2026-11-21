@@ -13,7 +13,7 @@ Trabalho em dupla (clone, branches e PRs): [docs/colaboracao.md](docs/colaboraca
 ## Requisitos
 
 - Python 3.12 ou superior e [uv](https://docs.astral.sh/uv/)
-- Node.js 20 ou superior (apenas para compilar a interface)
+- Node.js 20 ou superior (para compilar a interface e executar firmware AVR, quando usado)
 - ngspice
   - **Linux (Debian/Ubuntu):** `sudo apt install ngspice libngspice0`
   - **Windows:** baixe o pacote do ngspice para Windows em <https://ngspice.sourceforge.io/download.html>.

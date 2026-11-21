@@ -39,6 +39,9 @@ class _Adapter:
     trace_t: list[float]
     trace: dict[str, list[float]]
 
+    def close(self) -> None:
+        pass
+
     def tick(self, t: float) -> None:
         raise NotImplementedError
 
@@ -140,6 +143,60 @@ class McuAdapter(_Adapter):
             f = self.board.pwm.get(self.board.pins[role], 1000.0)
             return self.board.vdd if (t * f) % 1.0 < value else 0.0
         return self._level(role)
+
+
+class FirmwareAdapter(_Adapter):
+    """Actual machine code; voltage feedback and bidirectional GPIO at each circuit step."""
+
+    def __init__(self, spec: ControllerSpec, session: CoSession):
+        from circuitos.cosim.firmware import FirmwareRuntime
+
+        assert spec.firmware is not None
+        self.spec, self.session = spec, session
+        self.board = BOARDS[spec.kind]
+        if spec.kind == "esp32_devkitc":
+            from circuitos.cosim.esp32_firmware import Esp32Runtime
+
+            self.runtime: Esp32Runtime | FirmwareRuntime = Esp32Runtime(spec.firmware)
+        else:
+            self.runtime = FirmwareRuntime(spec.firmware)
+        self.states: dict[str, int] = {}
+        self.trace_t, self.trace = [], {}
+
+    def tick(self, t: float) -> None:
+        inputs = {
+            p: self.session.v(node) - self.session.v(self.spec.reference)
+            for p, node in self.spec.pins.items()
+            if p in self.board.pins
+        }
+        response = self.runtime.advance(t, inputs)
+        self.states = response["states"]
+        for warning in response.get("warnings", []):
+            self.session.warn(f"{self.spec.ref}: {warning}")
+        for when, text in response["serial"]:
+            rows = self.session.serial.setdefault(self.spec.ref, [])
+            if len(rows) < 10000:
+                rows.append((when, text))
+            else:
+                self.session.warn(f"{self.spec.ref}: saída Serial limitada a 10.000 linhas")
+                break
+        self._record(t, {f"{self.spec.ref}.{p}": self.value(p, t) for p in self.spec.outputs})
+
+    def value(self, role: str, t: float) -> float:
+        if role == "tick":
+            return 0.0
+        pin, _, mode = role.partition(":")
+        state = self.states.get(pin, 2)  # AVR8js: low, high, input, input-pullup
+        if mode == "en":
+            return float(state in (0, 1))
+        if mode == "pu":
+            return float(state == 3)
+        if mode == "pd":
+            return float(state == 4)
+        return self.board.vdd if state in (1, 3) else 0.0
+
+    def close(self) -> None:
+        self.runtime.close()
 
 
 class PlcAdapter(_Adapter):
@@ -320,18 +377,28 @@ class CoSession:
         self.sensors = [SensorLink(s, self) for s in sensors or []]
         for spec in specs:
             adapter: _Adapter
-            if spec.kind == "plc":
-                adapter = PlcAdapter(spec, self)
-            elif spec.kind == "stepper_driver":
-                adapter = StepperDriverAdapter(spec, self)
-            else:
-                adapter = McuAdapter(spec, self)
+            try:
+                if spec.kind == "plc":
+                    adapter = PlcAdapter(spec, self)
+                elif spec.kind == "stepper_driver":
+                    adapter = StepperDriverAdapter(spec, self)
+                elif spec.firmware is not None:
+                    adapter = FirmwareAdapter(spec, self)
+                else:
+                    adapter = McuAdapter(spec, self)
+            except Exception:
+                self.close()
+                raise
             self.adapters.append(adapter)
             for src, role in spec.sources.items():
                 self.sources[src.lower()] = (adapter, role)
         self.t = 0.0
         self.errors: list[str] = []
         self.failed: set[_Adapter] = set()
+
+    def close(self) -> None:
+        for adapter in self.adapters:
+            adapter.close()
 
     def warn(self, text: str) -> None:
         if text not in self.warnings and len(self.warnings) < 50:

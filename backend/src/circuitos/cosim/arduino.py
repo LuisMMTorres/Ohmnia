@@ -16,7 +16,7 @@ from __future__ import annotations
 import math
 import random
 from collections.abc import Callable, Generator, Iterator
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from typing import Any, Protocol
 
 from circuitos.cosim import libraries as lib
@@ -225,6 +225,20 @@ BOARDS: dict[str, Board] = {
         },
     ),
 }
+
+
+# Pico 2 retains the exposed header layout of Pico. Electrical impedances below
+# remain explicitly didactic, not RP2350 datasheet characterisation.
+# https://datasheets.raspberrypi.com/pico/pico-2-datasheet.pdf
+BOARDS["rpi_pico2"] = replace(
+    BOARDS["rpi_pico"],
+    kind="rpi_pico2",
+    label="Raspberry Pi Pico 2 (RP2350)",
+    sources={
+        "pinos": "Raspberry Pi Pico 2 datasheet: Pico-compatible 40-pin header",
+        "didatico": "Modelo elétrico didático de 3,3 V herdado do Pico; não caracteriza RP2350",
+    },
+)
 
 
 class Hardware(Protocol):

@@ -4,6 +4,12 @@ import type { Breadboard } from "../breadboard/types";
 export type Point = [number, number];
 export type Rotation = 0 | 90 | 180 | 270;
 
+export interface FirmwareImage {
+  board: string;
+  filename: string;
+  data_base64: string;
+}
+
 export interface Component {
   id: string;
   kind: string;
@@ -14,6 +20,7 @@ export interface Component {
   mirror: boolean;
   params: Record<string, string>;
   part_id: string | null;
+  firmware?: FirmwareImage | null;
 }
 export interface Wire {
   id: string;

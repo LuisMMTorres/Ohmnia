@@ -1,0 +1,467 @@
+{
+  "sources": {
+    "registers": "https://github.com/avrdudes/avr-libc/blob/main/include/avr/iomxx0_1.h",
+    "pins": "https://github.com/arduino/ArduinoCore-avr/blob/master/variants/mega/pins_arduino.h"
+  },
+  "registers": {
+    "TIFR0": 53,
+    "TIFR1": 54,
+    "TIFR2": 55,
+    "TIFR3": 56,
+    "TIFR4": 57,
+    "TIFR5": 58,
+    "EIFR": 60,
+    "EIMSK": 61,
+    "TCCR0A": 68,
+    "TCCR0B": 69,
+    "EICRA": 105,
+    "EICRB": 106,
+    "TIMSK0": 110,
+    "TIMSK1": 111,
+    "TIMSK2": 112,
+    "TIMSK3": 113,
+    "TIMSK4": 114,
+    "TIMSK5": 115,
+    "ADC": 120,
+    "ADCW": 120,
+    "ADCL": 120,
+    "ADCH": 121,
+    "ADCSRA": 122,
+    "ADCSRB": 123,
+    "ADMUX": 124,
+    "DIDR2": 125,
+    "DIDR0": 126,
+    "DIDR1": 127,
+    "TCCR1A": 128,
+    "TCCR1B": 129,
+    "TCCR1C": 130,
+    "TCNT1": 132,
+    "TCNT1L": 132,
+    "TCNT1H": 133,
+    "ICR1": 134,
+    "ICR1L": 134,
+    "ICR1H": 135,
+    "OCR1A": 136,
+    "OCR1AL": 136,
+    "OCR1AH": 137,
+    "OCR1B": 138,
+    "OCR1BL": 138,
+    "OCR1BH": 139,
+    "OCR1C": 140,
+    "OCR1CL": 140,
+    "OCR1CH": 141,
+    "TCCR3A": 144,
+    "TCCR3B": 145,
+    "TCCR3C": 146,
+    "TCNT3": 148,
+    "TCNT3L": 148,
+    "TCNT3H": 149,
+    "ICR3": 150,
+    "ICR3L": 150,
+    "ICR3H": 151,
+    "OCR3A": 152,
+    "OCR3AL": 152,
+    "OCR3AH": 153,
+    "OCR3B": 154,
+    "OCR3BL": 154,
+    "OCR3BH": 155,
+    "OCR3C": 156,
+    "OCR3CL": 156,
+    "OCR3CH": 157,
+    "TCCR4A": 160,
+    "TCCR4B": 161,
+    "TCCR4C": 162,
+    "TCNT4": 164,
+    "TCNT4L": 164,
+    "TCNT4H": 165,
+    "ICR4": 166,
+    "ICR4L": 166,
+    "ICR4H": 167,
+    "OCR4A": 168,
+    "OCR4AL": 168,
+    "OCR4AH": 169,
+    "OCR4B": 170,
+    "OCR4BL": 170,
+    "OCR4BH": 171,
+    "OCR4C": 172,
+    "OCR4CL": 172,
+    "OCR4CH": 173,
+    "TCCR2A": 176,
+    "TCCR2B": 177,
+    "TCNT2": 178,
+    "OCR2A": 179,
+    "OCR2B": 180,
+    "UCSR0A": 192,
+    "UCSR0C": 194,
+    "UBRR0": 196,
+    "UBRR0L": 196,
+    "UBRR0H": 197,
+    "UCSR1A": 200,
+    "UCSR1C": 202,
+    "UBRR1": 204,
+    "UBRR1L": 204,
+    "UBRR1H": 205,
+    "TCCR5A": 288,
+    "TCCR5B": 289,
+    "TCCR5C": 290,
+    "TCNT5": 292,
+    "TCNT5L": 292,
+    "TCNT5H": 293,
+    "ICR5": 294,
+    "ICR5L": 294,
+    "ICR5H": 295,
+    "OCR5A": 296,
+    "OCR5AL": 296,
+    "OCR5AH": 297,
+    "OCR5B": 298,
+    "OCR5BL": 298,
+    "OCR5BH": 299,
+    "OCR5C": 300,
+    "OCR5CL": 300,
+    "OCR5CH": 301
+  },
+  "vectors": {
+    "INT0": 2,
+    "INT1": 4,
+    "INT2": 6,
+    "INT3": 8,
+    "INT4": 10,
+    "INT5": 12,
+    "INT6": 14,
+    "INT7": 16,
+    "PCINT0": 18,
+    "PCINT1": 20,
+    "PCINT2": 22,
+    "WDT": 24,
+    "TIMER2_COMPA": 26,
+    "TIMER2_COMPB": 28,
+    "TIMER2_OVF": 30,
+    "TIMER1_CAPT": 32,
+    "TIMER1_COMPA": 34,
+    "TIMER1_COMPB": 36,
+    "TIMER1_COMPC": 38,
+    "TIMER1_OVF": 40,
+    "TIMER0_COMPA": 42,
+    "TIMER0_COMPB": 44,
+    "TIMER0_OVF": 46,
+    "SPI_STC": 48,
+    "USART0_RX": 50,
+    "USART0_UDRE": 52,
+    "USART0_TX": 54,
+    "ANALOG_COMP": 56,
+    "ADC": 58,
+    "EE_READY": 60,
+    "TIMER3_CAPT": 62,
+    "TIMER3_COMPA": 64,
+    "TIMER3_COMPB": 66,
+    "TIMER3_COMPC": 68,
+    "TIMER3_OVF": 70,
+    "USART1_RX": 72,
+    "USART1_UDRE": 74,
+    "USART1_TX": 76,
+    "TWI": 78,
+    "SPM_READY": 80,
+    "TIMER4_CAPT": 82,
+    "TIMER4_COMPA": 84,
+    "TIMER4_COMPB": 86,
+    "TIMER4_COMPC": 88,
+    "TIMER4_OVF": 90,
+    "TIMER5_CAPT": 92,
+    "TIMER5_COMPA": 94,
+    "TIMER5_COMPB": 96,
+    "TIMER5_COMPC": 98,
+    "TIMER5_OVF": 100,
+    "USART2_RX": 102,
+    "USART2_UDRE": 104,
+    "USART2_TX": 106,
+    "USART3_RX": 108,
+    "USART3_UDRE": 110,
+    "USART3_TX": 112
+  },
+  "pins": {
+    "0": [
+      "E",
+      0
+    ],
+    "1": [
+      "E",
+      1
+    ],
+    "2": [
+      "E",
+      4
+    ],
+    "3": [
+      "E",
+      5
+    ],
+    "4": [
+      "G",
+      5
+    ],
+    "5": [
+      "E",
+      3
+    ],
+    "6": [
+      "H",
+      3
+    ],
+    "7": [
+      "H",
+      4
+    ],
+    "8": [
+      "H",
+      5
+    ],
+    "9": [
+      "H",
+      6
+    ],
+    "10": [
+      "B",
+      4
+    ],
+    "11": [
+      "B",
+      5
+    ],
+    "12": [
+      "B",
+      6
+    ],
+    "13": [
+      "B",
+      7
+    ],
+    "14": [
+      "J",
+      1
+    ],
+    "15": [
+      "J",
+      0
+    ],
+    "16": [
+      "H",
+      1
+    ],
+    "17": [
+      "H",
+      0
+    ],
+    "18": [
+      "D",
+      3
+    ],
+    "19": [
+      "D",
+      2
+    ],
+    "20": [
+      "D",
+      1
+    ],
+    "21": [
+      "D",
+      0
+    ],
+    "22": [
+      "A",
+      0
+    ],
+    "23": [
+      "A",
+      1
+    ],
+    "24": [
+      "A",
+      2
+    ],
+    "25": [
+      "A",
+      3
+    ],
+    "26": [
+      "A",
+      4
+    ],
+    "27": [
+      "A",
+      5
+    ],
+    "28": [
+      "A",
+      6
+    ],
+    "29": [
+      "A",
+      7
+    ],
+    "30": [
+      "C",
+      7
+    ],
+    "31": [
+      "C",
+      6
+    ],
+    "32": [
+      "C",
+      5
+    ],
+    "33": [
+      "C",
+      4
+    ],
+    "34": [
+      "C",
+      3
+    ],
+    "35": [
+      "C",
+      2
+    ],
+    "36": [
+      "C",
+      1
+    ],
+    "37": [
+      "C",
+      0
+    ],
+    "38": [
+      "D",
+      7
+    ],
+    "39": [
+      "G",
+      2
+    ],
+    "40": [
+      "G",
+      1
+    ],
+    "41": [
+      "G",
+      0
+    ],
+    "42": [
+      "L",
+      7
+    ],
+    "43": [
+      "L",
+      6
+    ],
+    "44": [
+      "L",
+      5
+    ],
+    "45": [
+      "L",
+      4
+    ],
+    "46": [
+      "L",
+      3
+    ],
+    "47": [
+      "L",
+      2
+    ],
+    "48": [
+      "L",
+      1
+    ],
+    "49": [
+      "L",
+      0
+    ],
+    "50": [
+      "B",
+      3
+    ],
+    "51": [
+      "B",
+      2
+    ],
+    "52": [
+      "B",
+      1
+    ],
+    "53": [
+      "B",
+      0
+    ],
+    "54": [
+      "F",
+      0
+    ],
+    "55": [
+      "F",
+      1
+    ],
+    "56": [
+      "F",
+      2
+    ],
+    "57": [
+      "F",
+      3
+    ],
+    "58": [
+      "F",
+      4
+    ],
+    "59": [
+      "F",
+      5
+    ],
+    "60": [
+      "F",
+      6
+    ],
+    "61": [
+      "F",
+      7
+    ],
+    "62": [
+      "K",
+      0
+    ],
+    "63": [
+      "K",
+      1
+    ],
+    "64": [
+      "K",
+      2
+    ],
+    "65": [
+      "K",
+      3
+    ],
+    "66": [
+      "K",
+      4
+    ],
+    "67": [
+      "K",
+      5
+    ],
+    "68": [
+      "K",
+      6
+    ],
+    "69": [
+      "K",
+      7
+    ]
+  },
+  "reference_sha256": {
+    "iomxx0_1.h": "039bb4e8991f3273fdc2744d76a078286b63f3a190b7948421a709871977b241",
+    "mega-pins.h": "d563f983b968f8859b667bf586a6bea48de49c1a80621d40f1c60181b28cc8a3"
+  }
+}

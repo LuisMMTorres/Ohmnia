@@ -14,6 +14,7 @@ from pydantic import BaseModel, Field, field_validator, model_validator
 
 from circuitos.breadboard import board
 from circuitos.breadboard.layout import Breadboard
+from circuitos.cosim.firmware_image import FIRMWARE_BOARDS, FirmwareImage
 
 Point = tuple[int, int]
 Rotation = Literal[0, 90, 180, 270]
@@ -31,6 +32,15 @@ class Component(BaseModel):
     mirror: bool = False
     params: dict[str, str] = Field(default_factory=dict)
     part_id: str | None = None  # catalogue record (UUID) whose model replaces the generic one
+    firmware: FirmwareImage | None = None  # compiled MCU instructions, persisted with the project
+
+    @model_validator(mode="after")
+    def _firmware_matches_board(self) -> Component:
+        if self.firmware is not None and self.kind not in FIRMWARE_BOARDS:
+            raise ValueError("Este componente ainda não possui motor de firmware compilado")
+        if self.firmware is not None and self.firmware.board != self.kind:
+            raise ValueError("O firmware está associado a outra placa")
+        return self
 
     @field_validator("ref")
     @classmethod

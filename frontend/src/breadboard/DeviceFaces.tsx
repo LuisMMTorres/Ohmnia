@@ -908,7 +908,7 @@ const PICO = ["GP0", "GP1", "GP2", "GP3", "GP4", "GP5", "GP6", "GP7", "GP8", "GP
   "GP11", "GP12", "GP13", "GP14", "GP15", "GP16", "GP17", "GP18", "GP19", "GP20", "GP21",
   "GP22", "GP26", "GP27", "GP28", "3V3", "GND"]; // prettier-ignore
 
-const pico: Face = {
+const picoFace = (chip: string, label: string): Face => ({
   terminals: {
     ...header(PICO.slice(0, 14), 26, 17, TOP),
     ...header(PICO.slice(14), 26, 17, TOP + 62),
@@ -932,13 +932,15 @@ const pico: Face = {
       ))}
       <rect x={-2} y={TOP + 96} width={22} height={18} rx={2} style={st("#c9ced3", "#6b737a")} />
       <rect x={120} y={TOP + 92} width={26} height={26} style={st("#1b1b1b")} />
-      {silk(133, TOP + 108, "RP2040", 6)}
+      {silk(133, TOP + 108, chip, 6)}
       <rect x={60} y={TOP + 98} width={16} height={12} rx={2} style={st("#f4f4f2", "#9da3a8")} />
       {silk(68, TOP + 122, "BOOTSEL", 5.5)}
-      {silk(220, TOP + 112, "Raspberry Pi Pico", 7.5)}
+      {silk(220, TOP + 112, label, 7.5)}
     </>
   ),
-};
+});
+const pico = picoFace("RP2040", "Raspberry Pi Pico");
+const pico2 = picoFace("RP2350", "Raspberry Pi Pico 2");
 
 const PLC_IN = ["L+", "M", "I0", "I1", "I2", "I3", "I4", "I5", "AI0", "AI1"];
 const PLC_OUT = ["Q0a", "Q0b", "Q1a", "Q1b", "Q2a", "Q2b", "Q3a", "Q3b", "AQ0"];
@@ -1337,6 +1339,7 @@ const FACES: Record<string, Face> = {
   arduino_nano: nano,
   arduino_mega: mega,
   rpi_pico: pico,
+  rpi_pico2: pico2,
   plc,
   pump_plant: pumpPlant,
   transformer: transformer1ph,
