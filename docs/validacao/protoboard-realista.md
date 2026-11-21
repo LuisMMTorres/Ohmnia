@@ -102,6 +102,7 @@ ligar.
 | Controladores | Arduino Nano, Arduino Mega 2560, Raspberry Pi Pico, CLP 24 V |
 | Atuadores | planta inversor + motor + bomba (com transmissor de pressão) |
 | Transformadores | monofásico (núcleo E-I, régua de bornes P/S) e trifásico (três colunas, bornes H e X) |
+| Fontes | fonte de bancada CC regulada (displays de tensão e corrente, knobs de tensão e corrente, bornes vermelho e preto; uma seção por canal quando os canais são da mesma fonte) e gerador de funções (display com a forma de onda, teclado, knob e bornes de saída) |
 | Lâmpadas e LEDs | lâmpada no soquete com dois bornes; LED com cúpula na cor escolhida e aba chanfrada no catodo |
 
 Pinagens conferidas: DHT22 1 VCC, 2 DATA, 3 NC, 4 GND (guia SparkFun RHT03/DHT22); HC-SR04 VCC,

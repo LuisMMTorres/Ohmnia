@@ -1,5 +1,6 @@
 import { deviceFace } from "./DeviceFaces";
 import type { Motion } from "./DeviceFaces";
+import { BenchSupplyArt, GeneratorArt } from "./SupplyFaces";
 
 /** Didactic device bodies; no manufacturer specifications are implied. */
 export function InstrumentFace({
@@ -8,12 +9,19 @@ export function InstrumentFace({
   title,
   kind,
   motion,
+  channels = 1,
+  readings = [],
+  terminals = 2,
 }: {
   x: number;
   y: number;
   title: string;
   kind: string;
   motion?: Motion;
+  /** Bench supply: number of channels drawn on one panel and the voltage of each. */
+  channels?: number;
+  readings?: string[];
+  terminals?: number;
 }) {
   const face = deviceFace(kind);
   if (face)
@@ -24,6 +32,18 @@ export function InstrumentFace({
           {title.slice(0, 48)}
         </text>
         {face.draw(motion)}
+      </g>
+    );
+  if (/^[vi]dc$/.test(kind))
+    return (
+      <g transform={`translate(${x},${y})`} className="instrument-face">
+        <BenchSupplyArt title={title} channels={channels} readings={readings} />
+      </g>
+    );
+  if (/^[vi](sin|pulse|pwl)$/.test(kind))
+    return (
+      <g transform={`translate(${x},${y})`} className="instrument-face">
+        <GeneratorArt title={title} terminals={terminals} />
       </g>
     );
   const source = /^[vi](dc|sin|pulse|pwl)$/.test(kind);

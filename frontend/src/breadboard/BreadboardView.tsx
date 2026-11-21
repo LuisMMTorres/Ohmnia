@@ -823,6 +823,15 @@ export function BreadboardView({
                       }
                       kind={kind}
                       motion={motion?.[p.ref]}
+                      channels={shared ? group.length : 1}
+                      readings={(shared ? group : [p]).map((q) => {
+                        const v = schematic.components.find((c) => c.ref === q.ref)?.params.dc;
+                        const n = v === undefined ? NaN : Number(v);
+                        return Number.isFinite(n)
+                          ? n.toFixed(Math.abs(n) < 10 ? 2 : 1).replace(".", ",")
+                          : "--,--";
+                      })}
+                      terminals={terms.length}
                     />
                   )}
                   {terms.map((t) => {
