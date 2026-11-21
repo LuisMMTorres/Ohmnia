@@ -1,0 +1,67 @@
+# Fonte: Hammond Manufacturing, série 175 (impressão da página, 8/2/25), consultada em 2026-11-21.
+part_number: 175F-NA
+category: magnetic.autotransformer
+schema_version: '1.0'
+manufacturer: Hammond Manufacturing
+family: 175 Series (Step-Down 230VAC to 115VAC)
+package: Caixa com plugue de entrada e cabo de saída
+lifecycle: ativo
+notes:
+- Autotransformador abaixador 1000 VA, 230 V para 115 V, 50 ou 60 Hz; entrada protegida por disjuntor.
+- 'Fonte é a página da série (cópia em PDF publicada pela Mouser, impressa em 8/2/25); não informa perdas
+  nem corrente a vazio: no simulador, magnetização e perdas no cobre continuam didáticas.'
+- Hi-pot de 2 kV RMS.
+datasheets:
+- id: ds1
+  manufacturer: Hammond Manufacturing
+  document_number: 175 Series - Step-Down 230VAC to 115VAC
+  revision: impressão da página de 8/2/25
+  url: https://www.mouser.com/datasheet/2/177/175-1390003.pdf
+parameters:
+  S_rated:
+    typ: 1000
+    unit: VA
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Tabela - Capacity VA
+      excerpt: 175F-NA 1000
+  V_pri:
+    typ: 230
+    unit: V
+    status: extraido
+    note: Enrolamento completo (H–N).
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Título
+      excerpt: step down (230VAC to 115VAC)
+  V_sec:
+    typ: 115
+    unit: V
+    status: extraido
+    note: Derivação (X–N).
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Título
+      excerpt: step down (230VAC to 115VAC)
+attributes:
+  aplicacao:
+    value: autotransformador abaixador 230 V → 115 V
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Título
+  fases:
+    value: '1'
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Título
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)

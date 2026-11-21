@@ -287,3 +287,14 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
   instrumentos reais.
 - Detalhes e limitações:
   [validacao/autotransformador-motor-12-terminais.md](validacao/autotransformador-motor-12-terminais.md).
+
+## Biblioteca com dados reais — aguardando revisão (2026-11-21)
+
+- Auditoria dos símbolos do Simulador que só tinham valores didáticos; os genéricos continuam.
+- Peças reais novas: motores WEG W22 (3, 30 e 60 HP), contatores WEG CWM9 a CWM25,
+  transformadores Hammond 1182 (1φ) e BLOCK TT3 (3φ), autotransformadores Hammond 175 e
+  lâmpadas Satco de 120 V.
+- MOSFET e JFET canal P, transformadores, autotransformador, motor de indução e contator aceitam
+  peças do catálogo; o circuito equivalente do motor é ajustado aos dados de placa.
+- Detalhes, pendências e limitações:
+  [validacao/biblioteca-dados-reais.md](validacao/biblioteca-dados-reais.md).

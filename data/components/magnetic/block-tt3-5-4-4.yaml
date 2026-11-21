@@ -1,0 +1,152 @@
+# Fonte: BLOCK, TT3 5-4-4 (página do produto), consultada em 2026-11-21.
+part_number: TT3 5-4-4
+category: magnetic.transformer_3ph
+schema_version: '1.0'
+manufacturer: BLOCK Transformatoren-Elektronik
+family: TT3 (Isolating transformer, three-phase)
+package: Aberto (IP00), montagem em painel
+lifecycle: ativo
+notes:
+- Transformador trifásico de isolação 5000 VA, 3 × 400 V, saída 380/400/420 V (derivações), Dyn5, 50 a
+  60 Hz.
+- 'Fonte é a página do produto no site do fabricante; consultada em 2026-11-21. Datasheet PDF do fabricante:
+  https://www.block.eu/fileadmin/2c9ee487874001a201874760dfc05fd9.Datenblatt_TT3_5_4_4.pdf (não baixado).'
+- O simulador usa as perdas em curto-circuito como perda no cobre (P_sc/S_n); a magnetização continua
+  didática. O grupo Dyn5 difere do Dyn11 do símbolo em 180° (só a defasagem muda).
+- Não é à prova de curto-circuito (proteger o primário).
+datasheets:
+- id: ds1
+  manufacturer: BLOCK Transformatoren-Elektronik GmbH
+  document_number: TT3 5-4-4 (página do produto)
+  revision: página consultada em 2026-11-21
+  url: https://www.block.eu/en_EN/productversion/tt3-5-4-4
+parameters:
+  S_rated:
+    typ: 5000
+    unit: VA
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Power
+      excerpt: Power 5,000 VA
+  V_pri:
+    typ: 400
+    unit: V
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Input
+      excerpt: Input 3 x 400 V
+  V_sec:
+    typ: 400
+    unit: V
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Output
+      excerpt: Output 3 x 380 V • 7.6 Aac or 400 V • 7.2 Aac or 420 V • 6.9 Aac
+  V_sec@380:
+    typ: 380
+    unit: V
+    status: extraido
+    note: Derivação de 380 V.
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Output
+      excerpt: Output 3 x 380 V • 7.6 Aac
+  V_sec@420:
+    typ: 420
+    unit: V
+    status: extraido
+    note: Derivação de 420 V.
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Output
+      excerpt: 420 V • 6.9 Aac
+  I_sec:
+    max: 7.2
+    unit: A
+    status: extraido
+    conditions:
+      V: 400 V
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Output
+      excerpt: 400 V • 7.2 Aac
+  f:
+    min: 50
+    max: 60
+    unit: Hz
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Frequency range
+      excerpt: Frequency range 50 Hz to 60 Hz
+  P_sc:
+    typ: 186.99
+    unit: W
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Short-Circuit Losses
+      excerpt: Short-Circuit Losses 186.99 W
+  P_0:
+    typ: 87.72
+    unit: W
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: No-Load Losses
+      excerpt: No-Load Losses 87.72 W
+  u_k:
+    typ: 3.6
+    unit: '%'
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Short circuit voltage uk
+      excerpt: Short circuit voltage uk 3.6 %
+  efficiency:
+    typ: 94.8
+    unit: '%'
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Efficiency
+      excerpt: Efficiency 94.8 %
+attributes:
+  aplicacao:
+    value: isolação (trifásico)
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Product
+  fases:
+    value: '3'
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Phases
+  ligacao:
+    value: Dyn5
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Switching group
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)

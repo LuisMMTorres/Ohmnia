@@ -21,10 +21,14 @@ Default values without a datasheet are didactic and the parameter help says so.
 
 from __future__ import annotations
 
+import functools
 import math
 from collections.abc import Callable
 
+from circuitos.components.models import ComponentRecord
+from circuitos.core.units import Q_, parse_unit
 from circuitos.machines import thermocouple as tc
+from circuitos.machines.induction_fit import Fit, MotorData, fit_circuit
 from circuitos.schematic.model import Component
 from circuitos.schematic.symbols_base import ParamDef, PinDef, Symbol
 
@@ -90,8 +94,11 @@ DRIVE_SYMBOLS: list[Symbol] = [
         _MOTOR_PARAMS,
         description="Gaiola de esquilo, modelo dinâmico em αβ (Krause, cap. 4); em regime, "
         "igual ao circuito equivalente por fase. Os parâmetros padrão são de um motor didático "
-        "de 4 polos, 380 V em Y, cerca de 3,7 kW (20 N·m a 1732 rpm). Nós: <ref>_rpm, "
-        "<ref>_te (torque, N·m), <ref>_i (corrente de linha eficaz, A), <ref>_w (rad/s).",
+        "de 4 polos, 380 V em Y, cerca de 3,7 kW (20 N·m a 1732 rpm). Com um motor do catálogo "
+        "(WEG W22), polos, frequência e inércia vêm do datasheet e R1, X1, R2, X2 e Xm são "
+        "ajustados aos dados de placa (nominal, vazio, partida, conjugado máximo); alimente na "
+        "tensão nominal da folha de dados. Nós: <ref>_rpm, <ref>_te (torque, N·m), <ref>_i "
+        "(corrente de linha eficaz, A), <ref>_w (rad/s).",
         ref_prefix="M",
     ),
     Symbol(
@@ -223,9 +230,27 @@ DRIVE_SYMBOLS: list[Symbol] = [
             ParamDef("coil", "Bobina", "", "CC", type="choice", choices=("CC", "CA")),
             ParamDef("pcoil", "Potência da bobina", "W", "5", help="Didático."),
             ParamDef("ron", "Resistência de cada contato", "Ω", "0.005"),
+            ParamDef(
+                "pick",
+                "Tensão de fechamento (fração da nominal)",
+                "",
+                "0.75",
+                help="Didático. Com a peça do catálogo, o máximo da faixa de fechamento "
+                "(WEG CWM: 0,76 × Us).",
+            ),
+            ParamDef(
+                "drop",
+                "Tensão de abertura (fração da nominal)",
+                "",
+                "0.4",
+                help="Didático. Com a peça do catálogo, o mínimo da faixa de abertura "
+                "(WEG CWM: 0,25 × Us).",
+            ),
         ),
-        description="Fecha L1-T1, L2-T2 e L3-T3 com a bobina acima de 75 % da nominal (abre "
-        "abaixo de 40 %). Bobina CA: valor médio retificado com 10 ms de constante.",
+        description="Fecha L1-T1, L2-T2 e L3-T3 com a bobina acima da tensão de fechamento "
+        "(padrão 75 % da nominal) e abre abaixo da de abertura (padrão 40 %). Bobina CA: valor "
+        "médio retificado com 10 ms de constante. Com um contator do catálogo (WEG CWM), a "
+        "potência da bobina e as tensões de fechamento e abertura vêm do datasheet.",
         ref_prefix="K",
     ),
     Symbol(
@@ -327,6 +352,11 @@ DRIVER_KINDS = {"stepper_driver"}  # driven by the co-simulation (step counter)
 
 # catalogue parts: symbol parameter <- (record parameter, unit); see cosim_symbols
 DRIVE_CATALOGUE: dict[str, tuple[tuple[str, ...], dict[str, tuple[str, str]]]] = {
+    "induction_motor": (
+        ("motor.ac",),
+        {"poles": ("poles", "1"), "fnom": ("f", "Hz"), "j": ("J", "kg*m**2")},
+    ),
+    "contactor": (("contactor",), {"pcoil": ("P_coil", "W")}),
     "stepper_motor": (
         ("motor.stepper",),
         {
@@ -605,6 +635,9 @@ def _contactor(x: str, n: dict[str, str], v: Value) -> list[str]:
     vnom = _f(v("vnom"))
     rcoil = vnom * vnom / max(_f(v("pcoil")), 1e-3)
     ac = v("coil") == "CA"
+    pick, drop = _f(v("pick")), _f(v("drop"))
+    if not 0 < drop < pick:
+        raise ValueError("a tensão de abertura deve ser menor que a de fechamento")
     level = f"abs(V({n['A1']},{n['A2']}))" + (f"/{0.9:.9g}" if ac else "")  # mean |v| = 0.9 Vrms
     ctl = f"{x}_ctl"
     lines = [
@@ -612,8 +645,9 @@ def _contactor(x: str, n: dict[str, str], v: Value) -> list[str]:
         f"B{x}_lv 0 {ctl} I = ({level}/{vnom:.9g} - V({ctl}))/{0.01 if ac else 0.001:g}",
         f"C{x}_ctl {ctl} 0 1",
         f"R{x}_ctl {ctl} 0 1e12",
-        # closes at 75 %, opens at 40 % of the rated coil voltage
-        f".model sw_{x} sw vt=0.575 vh=0.175 ron={v('ron')} roff=1e9",
+        # closes above ``pick``, opens below ``drop`` (fractions of the rated coil voltage)
+        f".model sw_{x} sw vt={(pick + drop) / 2:.9g} vh={(pick - drop) / 2:.9g} "
+        f"ron={v('ron')} roff=1e9",
     ]
     for j in (1, 2, 3):
         lines.append(f"S{x}_{j} {n[f'L{j}']} {n[f'T{j}']} {ctl} 0 sw_{x}")
@@ -721,3 +755,80 @@ def _thermocouple(x: str, n: dict[str, str], v: Value, stim: Stimulus) -> list[s
         f"{tc.spice_expr(kind, f'V({tr})')}",
         f"R{x} {x}_e {n['+']} {v('r')}",
     ]
+
+
+# ----------------------------------------------------------------- catalogue parts (D-REAL)
+
+
+def _rec_si(record: ComponentRecord, key: str, unit: str, prefer: str = "typ") -> float | None:
+    p = record.parameters.get(key)
+    if p is None or not p.has_value:
+        return None
+    order = {"typ": ("typ", "max", "min"), "max": ("max", "typ", "min"), "min": ("min", "typ")}
+    number = next((getattr(p, a) for a in order[prefer] if getattr(p, a) is not None), None)
+    if number is None:
+        return None
+    return float(Q_(number, parse_unit(p.unit)).m_as(unit))
+
+
+def motor_data(record: ComponentRecord) -> MotorData:
+    """Data-sheet point of a catalogue induction motor (``motor.ac``), at V_rated."""
+    need = {
+        "P_rated": "W",
+        "V_rated": "V",
+        "f": "Hz",
+        "poles": "",
+        "I_rated": "A",
+        "n_rated": "rpm",
+        "pf": "",
+        "I_lr": "A",
+    }
+    got = {k: _rec_si(record, k, u or "dimensionless") for k, u in need.items()}
+    missing = [k for k, x in got.items() if x is None]
+    if missing:
+        raise ValueError(
+            f"{record.part_number}: faltam {', '.join(missing)} para ajustar o circuito equivalente"
+        )
+    design = record.attributes.get("categoria")
+    return MotorData(
+        p_out=got["P_rated"] or 0.0,
+        v_line=got["V_rated"] or 0.0,
+        f=got["f"] or 0.0,
+        poles=round(got["poles"] or 0),
+        i_n=got["I_rated"] or 0.0,
+        n_n=got["n_rated"] or 0.0,
+        pf=got["pf"] or 0.0,
+        i_lr=got["I_lr"] or 0.0,
+        i_0=_rec_si(record, "I_0", "A"),
+        t_lr=_rec_si(record, "Tp_Tn", "dimensionless"),
+        t_bd=_rec_si(record, "Tmax_Tn", "dimensionless"),
+        design=str(design.value) if design is not None else "B",
+        j=_rec_si(record, "J", "kg*m**2") or 0.0,
+    )
+
+
+@functools.cache
+def _fit(data: MotorData) -> Fit:
+    return fit_circuit(data).value
+
+
+def motor_fit(record: ComponentRecord) -> Fit:
+    return _fit(motor_data(record))
+
+
+def drive_value(kind: str, record: ComponentRecord, name: str) -> str | None:
+    """Symbol values derived from a catalogue part (None: use the plain mapping)."""
+    if kind == "induction_motor" and name in ("rs", "rr", "xls", "xlr", "xm"):
+        return f"{getattr(motor_fit(record).params, name):.6g}"
+    if kind == "contactor":
+        if name == "pick":
+            x = _rec_si(record, "V_pickup", "dimensionless", "max")
+            return None if x is None else f"{x:.6g}"
+        if name == "drop":
+            x = _rec_si(record, "V_dropout", "dimensionless", "min")
+            return None if x is None else f"{x:.6g}"
+        if name == "coil":
+            bobina = record.attributes.get("bobina")
+            text = str(bobina.value) if bobina is not None else ""
+            return "CA" if text.startswith("CA") and "CC" not in text.split("(")[0] else None
+    return None

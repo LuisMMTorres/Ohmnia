@@ -51,8 +51,38 @@ parameters:
     unit: °C
     kind: thermal
     description: Temperatura de armazenamento (faixa)
+  poles:
+    unit: '1'
+    kind: characteristic
+    description: Número de polos
+  I_0:
+    unit: A
+    kind: characteristic
+    description: Corrente a vazio
+  I_lr:
+    unit: A
+    kind: characteristic
+    description: Corrente com rotor bloqueado
+  Tmax_Tn:
+    unit: '1'
+    kind: characteristic
+    description: Relação conjugado máximo/nominal
+  slip:
+    unit: '%'
+    kind: characteristic
+    description: Escorregamento nominal
+  J:
+    unit: kg*m**2
+    kind: characteristic
+    description: Momento de inércia do rotor
+  SF:
+    unit: '1'
+    kind: characteristic
+    description: Fator de serviço
 attributes:
   carcaca: Carcaça
   classe: Classe de rendimento e isolamento
   grau_protecao: Grau de proteção (IP) declarado
   certificacoes: Certificações e aprovações (UL, CE, ATEX...)
+  categoria: Categoria de partida (NEMA A/B/C/D, IEC N/H)
+  ligacao: Tensões e ligações (número de cabos)

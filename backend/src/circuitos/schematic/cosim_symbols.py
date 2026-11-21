@@ -576,6 +576,7 @@ from circuitos.schematic.drive_symbols import (  # noqa: E402
     DRIVE_KINDS,
     DRIVE_SYMBOLS,
     DRIVER_KINDS,
+    drive_value,
     emit_drive,
 )
 
@@ -661,6 +662,8 @@ def catalogue_value(kind: str, record: ComponentRecord, fallback: Value) -> Valu
 
     def value(name: str) -> str:
         special = special_value(kind, record, name) if kind in SENSOR_KINDS else None
+        if special is None and kind in DRIVE_KINDS:
+            special = drive_value(kind, record, name)
         if special is not None:
             return special
         if kind == "stepper_motor" and name == "km":

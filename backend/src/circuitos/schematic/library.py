@@ -236,8 +236,11 @@ SYMBOLS: dict[str, Symbol] = {
                 ParamDef("rcu", "Perdas no cobre (% de Sn)", "%", "2"),
             ),
             description="Transformador definido pelos dados de placa: a relação de espiras sai "
-            "de Vp/Vs (ou é dada); a magnetização e as perdas no cobre são valores didáticos, "
-            "ajuste com os ensaios a vazio e de curto-circuito. Pontos em p1 e s1.",
+            "de Vp/Vs (ou é dada); sem peça do catálogo, a magnetização e as perdas no cobre são "
+            "valores didáticos (ajuste com os ensaios a vazio e de curto-circuito). Com uma peça "
+            "real (Hammond 1182, Triad), Vp, Vs, Sn e a perda no cobre vêm do datasheet. Pontos "
+            "em p1 e s1.",
+            catalogue=("magnetic.transformer",),
             ref_prefix="T",
         ),
         Symbol(
@@ -287,7 +290,9 @@ SYMBOLS: dict[str, Symbol] = {
             ),
             description="Três colunas (uma por fase), primário H1-H3 e secundário X1-X3; H0 e "
             "X0 são os neutros (só existem na ligação em estrela). D = triângulo, Y = estrela: "
-            "Dy dá Dyn11, Yd dá Yd1, Yy e Dd dão 0.",
+            "Dy dá Dyn11, Yd dá Yd1, Yy e Dd dão 0. Com uma peça real (BLOCK TT3), Vp, Vs, Sn e a "
+            "perda no cobre (P_sc/Sn) vêm do datasheet; a magnetização continua didática.",
+            catalogue=("magnetic.transformer_3ph",),
             ref_prefix="T",
         ),
         Symbol(
@@ -307,7 +312,9 @@ SYMBOLS: dict[str, Symbol] = {
             description="Um só enrolamento com derivação: série de H a X e comum de X a N. "
             "Abaixa de H para X ou eleva de X para H (relação VH/VX). Sem isolação entre os "
             "lados: N é comum à entrada e à saída. Magnetização e perdas no cobre são valores "
-            "didáticos; ajuste com os ensaios.",
+            "didáticos; ajuste com os ensaios. Com uma peça real (Hammond 175), VH, VX e Sn vêm "
+            "do datasheet.",
+            catalogue=("magnetic.autotransformer",),
             ref_prefix="T",
         ),
         # sources -------------------------------------------------------------------------
@@ -469,7 +476,7 @@ SYMBOLS: dict[str, Symbol] = {
             )
             for kind, label, vto, cat in (
                 ("nmos", "MOSFET canal N", "2", ("mosfet.n",)),
-                ("pmos", "MOSFET canal P", "-2", ()),
+                ("pmos", "MOSFET canal P", "-2", ("mosfet.p",)),
             )
         ],
         *[
@@ -489,7 +496,7 @@ SYMBOLS: dict[str, Symbol] = {
             )
             for kind, label, vto, cat in (
                 ("njf", "JFET canal N", "-2", ("jfet.n",)),
-                ("pjf", "JFET canal P", "2", ()),
+                ("pjf", "JFET canal P", "2", ("jfet.p",)),
             )
         ],
         Symbol(

@@ -34,6 +34,7 @@ from circuitos.schematic.cosim_symbols import (
     emit_device,
 )
 from circuitos.schematic.drive_symbols import max_step as drive_max_step
+from circuitos.schematic.drive_symbols import motor_fit
 from circuitos.schematic.library import (
     element_name,
     param,
@@ -506,6 +507,20 @@ def _emit(comp: Component, n: list[str], ctx: _Ctx) -> list[str]:
             f"K_{ref} L_{ref}_p L_{ref}_s {v('k')}",
             f"R_{ref}_iso {n[1]} {n[3]} 1g",
         ]
+    if k in ("transformer_1ph", "transformer_3ph", "autotransformer"):
+        rec = ctx.record(comp)
+        plate: dict[str, float] = {}
+        if rec is not None:
+            try:
+                plate, warn = transformers.catalogue_params(k, rec, ref)
+            except transformers.TransformerError as exc:
+                raise SchematicError(str(exc)) from exc
+            ctx.warnings += parts.review_warning(rec, ref) + warn
+
+        def num(name: str) -> float:
+            o = ctx.override(comp, name)
+            return o if o is not None else plate.get(name, ctx.number(comp, name))
+
     if k in ("transformer_1ph", "transformer_3ph"):
         three = k == "transformer_3ph"
         conn_p = param(comp, "conn_p") if three else "D"
@@ -514,13 +529,13 @@ def _emit(comp: Component, n: list[str], ctx: _Ctx) -> list[str]:
         try:
             w = transformers.size(
                 ref,
-                transformers.winding_voltage(ctx.number(comp, "vp"), conn_p),
-                transformers.winding_voltage(ctx.number(comp, "vs"), conn_s),
+                transformers.winding_voltage(num("vp"), conn_p),
+                transformers.winding_voltage(num("vs"), conn_s),
                 ctx.number(comp, "turns") if turns else None,
-                ctx.number(comp, "sn") / (3 if three else 1),
+                num("sn") / (3 if three else 1),
                 ctx.number(comp, "freq"),
                 ctx.number(comp, "imag"),
-                ctx.number(comp, "rcu"),
+                num("rcu"),
                 ctx.log,
             )
         except transformers.TransformerError as exc:
@@ -535,12 +550,12 @@ def _emit(comp: Component, n: list[str], ctx: _Ctx) -> list[str]:
         try:
             aw = transformers.size_auto(
                 ref,
-                ctx.number(comp, "vh"),
-                ctx.number(comp, "vx"),
-                ctx.number(comp, "sn"),
+                num("vh"),
+                num("vx"),
+                num("sn"),
                 ctx.number(comp, "freq"),
                 ctx.number(comp, "imag"),
-                ctx.number(comp, "rcu"),
+                num("rcu"),
                 ctx.log,
             )
         except transformers.TransformerError as exc:
@@ -743,6 +758,13 @@ def _emit(comp: Component, n: list[str], ctx: _Ctx) -> list[str]:
             rec = ctx.record(comp)
             if rec is not None:
                 value = catalogue_value(k, rec, value)
+                if k == "induction_motor":
+                    fit = motor_fit(rec)
+                    ctx.warnings.append(
+                        f"{ref}: R1, X1, R2, X2 e Xm de {rec.part_number} ajustados aos dados do "
+                        "datasheet (nominal, vazio, partida e conjugado máximo); gaiola simples."
+                    )
+                    ctx.warnings += [f"{ref}: {w}" for w in fit.warnings]
             if k in DIGITAL_SENSOR_KINDS:
                 values = {pd.name: value(pd.name) for pd in symbol(k).params}
                 nodes = {p: node.lower() for p, node in pins.items()}

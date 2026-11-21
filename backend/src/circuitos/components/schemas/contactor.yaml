@@ -1,0 +1,61 @@
+category: contactor
+schema_version: '1.0'
+description: Contator de potência (bobina e contatos principais)
+required:
+- I_e
+parameters:
+  I_e:
+    unit: A
+    kind: max_rating
+    description: Corrente nominal de operação (AC-3, por faixa de tensão)
+  V_coil:
+    unit: V
+    kind: characteristic
+    description: Tensão nominal da bobina
+  S_pickup:
+    unit: VA
+    kind: characteristic
+    description: Consumo da bobina no fechamento (atracação)
+  pf_pickup:
+    unit: '1'
+    kind: characteristic
+    description: Fator de potência da bobina no fechamento
+  S_hold:
+    unit: VA
+    kind: characteristic
+    description: Consumo da bobina fechada (manutenção)
+  pf_hold:
+    unit: '1'
+    kind: characteristic
+    description: Fator de potência da bobina fechada
+  P_coil:
+    unit: W
+    kind: characteristic
+    description: Potência térmica dissipada na bobina
+  V_pickup:
+    unit: '1'
+    kind: characteristic
+    description: Tensão de fechamento (fração de Us)
+  V_dropout:
+    unit: '1'
+    kind: characteristic
+    description: Tensão de abertura (fração de Us)
+  V_op:
+    unit: '1'
+    kind: characteristic
+    description: Limites de operação da bobina (fração de Us)
+  t_close:
+    unit: ms
+    kind: characteristic
+    description: Tempo de fechamento do contato NA
+  t_open:
+    unit: ms
+    kind: characteristic
+    description: Tempo de abertura do contato NA
+  life_mech:
+    unit: '1'
+    kind: characteristic
+    description: Vida mecânica (operações)
+attributes:
+  bobina: Tipos de bobina disponíveis (CA, CC)
+  polos: Contatos principais

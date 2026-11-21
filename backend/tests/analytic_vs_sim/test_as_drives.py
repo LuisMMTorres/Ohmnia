@@ -258,3 +258,38 @@ def test_as_drv_08_twelve_terminal_reversed_half(backend):
     rms = math.sqrt(float(np.mean(i_circ**2)))
     expected = 2 * 220 / (4 * math.hypot(1.5, 2.5))
     assert rms == pytest.approx(expected, rel=0.03)
+
+
+def test_as_drv_09_catalogue_motor_weg_w22(backend):
+    """AS-DRV-09: WEG W22 16616834 (3 HP, 6 polos, 460 V) com o circuito ajustado ao datasheet.
+
+    Fonte: WEG, folha de dados do produto 16616834, 08/09/2023, p. 1 (coluna 460 V). Com o
+    conjugado nominal (13,4 lbf·ft) no eixo, o SPICE deve dar o regime do circuito equivalente
+    ajustado (rotação 0,2 %, corrente e conjugado 1 %), e o circuito deve dar a rotação nominal
+    do datasheet (1175 rpm) a 0,5 % e a corrente nominal (4,41 A) a 8 %.
+    """
+    from pathlib import Path
+
+    from circuitos.components.repository import ComponentRepository
+    from circuitos.schematic.drive_symbols import motor_fit
+
+    repo = ComponentRepository()
+    repo.import_directory(Path(__file__).parents[3] / "data" / "components")
+    rec = next(r for r in repo.search(text="16616834") if r.part_number == "16616834")
+    fit = motor_fit(rec)
+    t_n = 13.4 * 1.3558179483314001
+    b = Builder("w22")
+    b.add("v3ph", "V1", ["a", "b", "c", "0"], vrms=f"{460 / math.sqrt(3):.6f}")
+    b.add("induction_motor", "M1", ["a", "b", "c"], part_id=str(rec.id), tl=f"{t_n:.6g}")
+    b.sch.analyses = [Analysis(kind="tran", params={"tstop": "3"})]
+    res = SchematicPlan(b.sch, {str(rec.id): rec}).execute(backend)
+    tran = next(p for p in res.plots if p.kind == "tran")
+    t = np.asarray(tran.vectors[tran.scale].data)
+    m = InductionParams(**{**fit.params.__dict__, "b": 0.005})
+    ref = steady_state(m, 460, 60, t_n)
+    assert _mean(tran, t, "v(m1_rpm)", 2.8, 3) == pytest.approx(ref.speed_rpm, rel=2e-3)
+    assert _mean(tran, t, "v(m1_i)", 2.8, 3) == pytest.approx(ref.i1, rel=0.01)
+    assert _mean(tran, t, "v(m1_te)", 2.8, 3) == pytest.approx(ref.torque, rel=0.01)
+    no_friction = steady_state(fit.params, 460, 60, t_n)
+    assert no_friction.speed_rpm == pytest.approx(1175, rel=5e-3)
+    assert no_friction.i1 == pytest.approx(4.41, rel=0.08)

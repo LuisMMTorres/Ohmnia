@@ -1,0 +1,115 @@
+# Fonte: Hammond Manufacturing, série 1182 (página do produto), consultada em 2026-11-21.
+part_number: 1182M240
+category: magnetic.transformer
+schema_version: '1.0'
+manufacturer: Hammond Manufacturing
+family: 1182 Series (Toroid Power Transformers)
+package: Toroidal, montagem em chassi
+lifecycle: ativo
+notes:
+- Transformador toroidal de força 625 VA, primário duplo 117/234 V, 50/60 Hz.
+- 'Fonte é a página da série no site do fabricante (tabela de peças), sem PDF versionado; consultada em
+  2026-11-21. A página da peça arredonda a regulação (ex.: 11 % para 10,5 %).'
+- 'Sem corrente a vazio nem resistência dos enrolamentos no datasheet: no simulador, a perda no cobre
+  vem da regulação (aproximação de carga resistiva, regulação ≈ R em pu) e a magnetização continua didática.'
+- Materiais classe B (130 °C).
+datasheets:
+- id: ds1
+  manufacturer: Hammond Manufacturing
+  document_number: 1182 Series - Toroid Power Transformers (página do produto)
+  revision: página consultada em 2026-11-21
+  url: https://www.hammfg.com/product/1182
+parameters:
+  S_rated:
+    typ: 625
+    unit: VA
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Tabela da série - VA
+      excerpt: 1182M240 625 VA
+  V_pri:
+    typ: 234
+    unit: V
+    status: extraido
+    note: Primários em série.
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Especificações da série - primário
+      excerpt: Dual 117/234 VAC primary, 50/60 Hz. operation.
+  V_pri@2:
+    typ: 117
+    unit: V
+    status: extraido
+    note: Primários em paralelo.
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Especificações da série - primário
+      excerpt: Dual 117/234 VAC primary, 50/60 Hz. operation.
+  f:
+    min: 50
+    max: 60
+    unit: Hz
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Especificações da série - frequência
+      excerpt: Dual 117/234 VAC primary, 50/60 Hz. operation.
+  regulation:
+    typ: 3.7
+    unit: '%'
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Tabela da série - % Voltage Regulation
+      excerpt: 1182M240 % Voltage Regulation 3.7%
+  V_iso:
+    max: 4000
+    unit: V
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Especificações da série - Hi-Pot
+      excerpt: Hi-Pot test of 4,000VAC RMS between primary & secondary
+  V_sec:
+    typ: 240
+    unit: V
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Tabela da série - VAC Secondary
+      excerpt: 1182M240 240V @ 2.6A
+  I_sec:
+    max: 2.6
+    unit: A
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Tabela da série - VAC Secondary
+      excerpt: 1182M240 240V @ 2.6A
+attributes:
+  aplicacao:
+    value: força (transformador toroidal, chassi)
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Título da série
+  fases:
+    value: '1'
+    status: extraido
+    source:
+      datasheet_id: ds1
+      page: 1
+      location: Título da série
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)

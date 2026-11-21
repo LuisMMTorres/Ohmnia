@@ -186,17 +186,33 @@ def mosfet(rec: ComponentRecord, ref: str, log: CalcLog, vto_override: float | N
         if lo is not None and hi is not None
         else None
     )
+    p_channel = rec.category.startswith("mosfet.p")
+    if p_channel:
+        # catalogue values are magnitudes (schema mosfet.p): SPICE wants VTO < 0 for PMOS
+        if spread is not None:
+            spread = Spread("vto", -spread.hi, -spread.nom, -spread.lo, spread.source)
+        if vto_override is not None:
+            vto_override = -abs(vto_override)
     if vto_override is not None:
-        m = dataclasses.replace(m, VT=vto_override)
-    name = f"MM_{digest(rec.part_number + m.spice('x'))}"
+        m = dataclasses.replace(m, VT=abs(vto_override))
+    text = m.spice("x")
+    if p_channel:
+        text = text.replace("NMOS(LEVEL=1 VTO=", "PMOS(LEVEL=1 VTO=-")
+    name = f"MM_{digest(rec.part_number + text)}"
     warn.append(f"{ref}: MOSFET de nível 1 sem capacitâncias nem diodo de corpo.")
-    return PartModel(name, m.spice(name), warn, spread)
+    return PartModel(name, text.replace(".model x ", f".model {name} "), warn, spread)
 
 
 def jfet(rec: ComponentRecord, ref: str, log: CalcLog) -> PartModel:
     m, w = devmodels.jfet_model(rec, log, ref)
-    name = f"JM_{digest(rec.part_number + m.spice('x'))}"
-    return PartModel(name, m.spice(name), review_warning(rec, ref) + w)
+    text = m.spice("x")
+    if rec.category.startswith("jfet.p"):
+        # magnitudes in the catalogue (schema jfet.p): PJF takes VTO = +|VP|
+        text = text.replace(f"NJF(VTO={-m.VP:.6g}", f"PJF(VTO={m.VP:.6g}")
+    name = f"JM_{digest(rec.part_number + text)}"
+    return PartModel(
+        name, text.replace(".model x ", f".model {name} "), review_warning(rec, ref) + w
+    )
 
 
 def opamp_subckt(name: str, m: OpAmp) -> str:
