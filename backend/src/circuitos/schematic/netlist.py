@@ -225,7 +225,7 @@ def _resolve(ref: NetRef, conn: Connectivity, sch: Schematic) -> str:
     assert ref.at is not None
     node = conn.node_at(ref.at, [w.points for w in sch.wires])
     if node is None:
-        raise SchematicError(f"Nenhum fio ou pino no ponto {ref.at} da ponta de prova")
+        raise SchematicError(f"Nenhum fio ou pino no ponto {ref.at} da ponteira de prova")
     return node
 
 
@@ -252,7 +252,7 @@ def _probe_vector(
         a = _resolve(pr.target, conn, sch)
         if pr.kind == "v":
             if a == "0":
-                raise SchematicError("Ponta de tensão na terra: escolha outro nó")
+                raise SchematicError("Ponteira de tensão na terra: escolha outro nó")
             return ProbeVector(pr.name or f"v({a})", _v(a), "V", pr.id)
         assert pr.reference is not None
         b = _resolve(pr.reference, conn, sch)

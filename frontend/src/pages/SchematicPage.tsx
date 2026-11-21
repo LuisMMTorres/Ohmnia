@@ -1073,7 +1073,7 @@ export function SchematicWorkspace({
                     <li key={p.id}>
                       <span className="swatch" style={{ background: probeColors[p.id] }} />
                       <input
-                        aria-label="Nome da ponta"
+                        aria-label="Nome da ponteira"
                         readOnly={/^bench-scope-ch[1-4]$/.test(p.id)}
                         placeholder={probeDefault(p)}
                         value={p.name ?? ""}
@@ -1088,7 +1088,7 @@ export function SchematicWorkspace({
                       />
                       <button
                         className="secondary small-btn"
-                        aria-label="Remover ponta"
+                        aria-label="Remover ponteira"
                         onClick={() => {
                           const channel = /^bench-scope-ch([1-4])$/.exec(p.id);
                           change(

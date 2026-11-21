@@ -88,11 +88,11 @@ class Probe(BaseModel):
     @model_validator(mode="after")
     def _complete(self) -> Probe:
         if self.kind in ("v", "vdiff") and self.target is None:
-            raise ValueError("Ponta de tensão sem nó")
+            raise ValueError("Ponteira de tensão sem nó")
         if self.kind == "vdiff" and self.reference is None:
-            raise ValueError("Ponta diferencial sem nó de referência")
+            raise ValueError("Ponteira diferencial sem nó de referência")
         if self.kind in ("i", "p") and not self.component:
-            raise ValueError("Ponta de corrente/potência sem componente")
+            raise ValueError("Ponteira de corrente/potência sem componente")
         return self
 
 

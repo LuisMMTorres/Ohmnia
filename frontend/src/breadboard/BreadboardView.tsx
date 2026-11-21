@@ -1084,7 +1084,7 @@ export function BreadboardView({
                     probeNegative === "0" ? "0" : netAtHole(board, bb, resolved, probeNegative);
                   const name = probeName.trim();
                   if (schematic.probes.some((p) => p.name?.toLowerCase() === name.toLowerCase()))
-                    throw new Error("Já existe uma ponta com esse nome.");
+                    throw new Error("Já existe uma ponteira com esse nome.");
                   onChange({
                     ...schematic,
                     probes: [

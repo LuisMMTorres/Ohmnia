@@ -289,7 +289,7 @@ PACKAGES: dict[str, Package] = {
             "Gerador de funções",
             ("p", "n"),
             "generator",
-            "Fora da placa: ponta (sinal) e garra (terra).",
+            "Fora da placa: ponteira (sinal) e garra (terra).",
         ),
         _offboard(
             "fonte-i",

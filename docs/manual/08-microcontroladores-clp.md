@@ -98,7 +98,7 @@ No resultado:
 
 - **Osciloscópio**: além das tensões e correntes do circuito, aparecem as variáveis do programa
   (`u1.temperatura`, `u1.pwm`), os pinos (`u1.d9`) e as variáveis do CLP (`clp1.q0`, `clp1.ai0`,
-  `clp1.pid1.out`). As pontas de prova do exemplo já vêm marcadas.
+  `clp1.pid1.out`). As ponteiras de prova do exemplo já vêm marcadas.
 - **Co-simulação**: o passo usado e o **monitor serial** de cada placa, com o instante de cada
   linha impressa.
 
@@ -134,7 +134,7 @@ Em **Atuadores**, **Controladores** e **Sensores** do simulador:
 | Driver de motor de passo | STEP, DIR e EN vêm do Arduino ou do ESP32 (EN solto habilita); VM é a alimentação do motor. Micropasso de 1 a 1/16 e corrente por fase. | drv1.steps (contagem), drv1.ia_ref, drv1.ib_ref |
 | Termopar | Tipos J, K, T, E e N; temperatura da junta quente e da junta fria (terminais). | tensão entre + e −, v(tc1_t) |
 
-Os nós internos (como `m1_rpm`) podem ser usados como ponta de tensão e no osciloscópio. Com motor
+Os nós internos (como `m1_rpm`) podem ser usados como ponteira de tensão e no osciloscópio. Com motor
 de indução, inversor ou soft-starter no circuito, o passo máximo fica em 1/80 de um ciclo de 60 Hz;
 com SPWM, em 1/40 da portadora.
 
