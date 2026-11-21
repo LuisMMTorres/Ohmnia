@@ -807,6 +807,10 @@ export interface DesignIn {
   locks: Record<string, string>;
   costs?: Record<string, number>;
   project?: string | null;
+  /** Element → new value typed on the schematic (the simulation runs the edited circuit). */
+  overrides?: Record<string, string>;
+  /** Waveforms added by clicking the schematic (simulation only). */
+  probes?: UserProbe[];
 }
 export interface Role {
   designator: string;
@@ -896,6 +900,52 @@ export interface SimulateOut {
   ok: boolean;
   bode_f?: number[];
   bode?: Record<string, Vector>;
+  /** Peak, mean and RMS of every probe; S, P, Q, D and power factor of every port (ngspice). */
+  measurements?: Measurements | null;
+  /** Values were changed on the schematic: the analytic results describe the original design. */
+  edited?: boolean;
+}
+export interface UserProbe {
+  kind: "v" | "vdiff" | "i" | "p";
+  a: string;
+  b?: string | null;
+  pin?: number;
+}
+export interface WaveMeasure {
+  label: string;
+  unit: string;
+  peak: Quantity;
+  max: Quantity;
+  min: Quantity;
+  avg: Quantity;
+  rms: Quantity;
+}
+export interface PowerMeasure {
+  label: string;
+  V_rms: Quantity;
+  I_rms: Quantity;
+  S: Quantity;
+  P: Quantity;
+  Q: Quantity;
+  D: Quantity;
+  PF: Quantity;
+  DPF: Quantity;
+}
+export interface Measurements {
+  waves: WaveMeasure[];
+  powers: PowerMeasure[];
+}
+/** Element of the simulated circuit of a design (values editable, probes on its terminals). */
+export interface CircuitElement {
+  name: string;
+  letter: string;
+  nodes: string[];
+  pins: string[];
+  value: string;
+  edit: "value" | "source" | "none";
+  sense: boolean;
+  role: string | null;
+  original: string | null;
 }
 
 async function postBlob(path: string, body: unknown): Promise<Blob> {
@@ -933,6 +983,11 @@ export const design = {
   reportPdf: (id: string, body: DesignIn, simulate: boolean) =>
     postBlob(`/design/${id}/report.pdf?simulate=${simulate}`, body),
   kicad: (id: string, body: DesignIn) => postBlob(`/design/${id}/kicad.net`, body),
+  elements: (id: string, body: DesignIn) =>
+    request<{ elements: CircuitElement[]; nodes: string[] }>(`/design/${id}/elements`, {
+      method: "POST",
+      body: JSON.stringify(body),
+    }),
 };
 
 export interface BomLine {

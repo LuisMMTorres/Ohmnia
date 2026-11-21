@@ -32,9 +32,14 @@ def test_meets_the_specification(reviewed_catalogue, topo, flt):
     res, _ = design(reviewed_catalogue, topology=topo, filter=flt)
     s = res.summary
     assert res.converged and res.iterations >= 2
-    assert s["Vo"].value == pytest.approx(12, rel=1e-3)
+    # the load absorbs the power asked for (12 W) from the secondary asked for (12 V RMS)
+    assert s["P_out"].value == pytest.approx(12, rel=1e-3)
+    assert s["Vsec"].value == pytest.approx(12, rel=1e-9)
+    assert s["Vm"].value == pytest.approx(12 * 2**0.5, rel=1e-9)
+    assert s["R_load"].value == pytest.approx(s["Vo_rms"].value ** 2 / 12, rel=1e-3)
     if flt != "nenhum":
-        assert s["dVo"].value <= 0.05 * 12 * 1.05  # ripple target 5 % (capacitor rounded up)
+        # ripple target 5 % of the mean output (capacitor rounded up)
+        assert s["dVo"].value <= 0.05 * s["Vo"].value * 1.05
     assert 0 < s["PF"].value <= 1
     assert res.selection and res.selection[0].released
     assert all(c.status == "ok" for c in res.margins)
@@ -70,8 +75,8 @@ def test_no_candidate_falls_back_to_ideal_with_warning(reviewed_catalogue):
         reviewed_catalogue,
         topology="ponte",
         filter="C",
-        Vo=QuantityModel(value=3000, unit="V"),
-        Io=QuantityModel(value=0.01, unit="A"),
+        Vsec=QuantityModel(value=2200, unit="V"),
+        P=QuantityModel(value=30, unit="W"),
     )
     assert "sem_candidato" in {w.code for w in res.warnings}
     assert next(iter(devices.values())).record is None

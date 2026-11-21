@@ -57,14 +57,14 @@ def test_as_ret_01_default_point(reviewed_catalogue, topo, flt):
 
 @pytest.mark.parametrize("topo,flt", [("ponte", "C"), ("center_tap", "LC"), ("ponte", "pi")])
 def test_as_ret_01_other_point(reviewed_catalogue, topo, flt):
-    """24 V, 2 A, 10 % ripple, 220 V / 50 Hz."""
+    """Secondary 20 V RMS, 48 W load, 10 % ripple, 220 V / 50 Hz."""
     spec = Ret1Spec(
         topology=topo,
         filter=flt,
         Vin=QuantityModel(value=220, unit="V"),
         f=QuantityModel(value=50, unit="Hz"),
-        Vo=QuantityModel(value=24, unit="V"),
-        Io=QuantityModel(value=2, unit="A"),
+        Vsec=QuantityModel(value=20, unit="V"),
+        P=QuantityModel(value=48, unit="W"),
         ripple_pct=10,
     )
     _check(reviewed_catalogue, spec)

@@ -206,6 +206,17 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 - Ajuste da interface assistida: opção de nomes reais dos nós e resultados limitados às probes
   da execução e expressões explícitas; detalhes em `validacao/interface-assistida.md`.
 
+## Análise de Projetos com grandezas da simulação — aguardando revisão (2026-11-20)
+
+- Seletor renomeado para "Circuito"; tensões de entrada indicadas como eficazes.
+- DM-RET1, DM-RETC1 e DM-RET3 partem da tensão eficaz do secundário e da potência da carga (sai a
+  tensão média desejada).
+- Resultados medidos no ngspice: pico, médio e eficaz de tensões e correntes; S, P, Q, D, FP e cos φ₁.
+- Formas de onda de primário, secundário, carga e dispositivos, com linhas de médio/eficaz e ponto de
+  pico; sondas por clique no esquemático (tensão no nó, diferencial, corrente, potência).
+- Edição de valores e troca de modelo pelo esquemático.
+- Detalhes e limitações: [validacao/analise-projetos.md](validacao/analise-projetos.md).
+
 ## Bancada virtual e edição de projetos — aprovada pelo usuário (2026-11-17)
 
 - Navegação renomeada: Biblioteca, Análise de dispositivos e Análise de Projetos.

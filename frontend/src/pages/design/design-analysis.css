@@ -1,0 +1,87 @@
+/* Design page: results measured on the simulation, waveform picker, clickable schematic. */
+.sim-results {
+  margin-bottom: 16px;
+}
+.sim-table td:first-child {
+  white-space: normal;
+}
+.wave-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  margin: 8px 0;
+}
+.circuit-view {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 12px;
+  align-items: start;
+}
+@media (max-width: 1000px) {
+  .circuit-view {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.circuit-drawing .schematic text.sch-hit {
+  cursor: pointer;
+  fill: var(--accent);
+  font-weight: 600;
+  text-decoration: underline;
+}
+.circuit-drawing .schematic text.sch-selected {
+  fill: #c2417e;
+}
+.element-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 6px 0;
+}
+.element-chips .chip {
+  padding: 2px 8px;
+  font-size: 12px;
+  border-radius: 999px;
+}
+.element-chips .chip.active {
+  background: var(--accent);
+  color: var(--accent-text);
+  border-color: var(--accent);
+}
+.element-chips .chip.edited {
+  border-style: dashed;
+}
+.element-panel {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+.element-panel h4 {
+  margin: 10px 0 4px;
+  font-size: 13px;
+}
+.element-panel label {
+  display: block;
+  margin: 6px 0;
+}
+.element-panel input {
+  min-width: 0;
+  flex: 1;
+}
+.probe-buttons button {
+  font-size: 12px;
+  padding: 3px 8px;
+}
+.probe-list {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 13px;
+}
+button.link {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--accent);
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: inherit;
+}
