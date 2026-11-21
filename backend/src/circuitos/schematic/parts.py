@@ -20,6 +20,7 @@ from circuitos.design import devmodels
 from circuitos.design.opamp import OpAmp, opamp_model
 from circuitos.devices import igbt as igbt_dev
 from circuitos.devices import thyristor
+from circuitos.schematic.model import Component
 
 
 @dataclass(frozen=True)
@@ -70,6 +71,39 @@ def review_warning(rec: ComponentRecord, ref: str) -> list[str]:
         f"{ref}: {rec.part_number} ainda não foi revisado (status {rec.review.status}); "
         "o modelo usa os valores extraídos do datasheet, sem conferência."
     ]
+
+
+_PASSIVE_KEY = {"resistor": ("R", "ohm", "Ω"), "capacitor": ("C", "F", "F"),
+                "inductor": ("L", "H", "H")}  # fmt: skip
+
+
+def passive_check(rec: ComponentRecord, comp: Component, kind: str) -> list[str]:
+    """A resistor, capacitor or inductor series from the catalogue: the value stays the one in
+    the schematic; warn when it is outside the range the datasheet offers."""
+    from circuitos.schematic.values import try_parse
+
+    ref = comp.ref
+    out = review_warning(rec, ref)
+    key, unit, sym = _PASSIVE_KEY[kind]
+    p = rec.parameters.get(key)
+    value = try_parse(comp.params.get("value", "") or "")
+    if p is None or value is None:
+        return out
+    lo, hi = _si_of(p, "min", unit), _si_of(p, "max", unit)
+    if lo is None and hi is None:
+        lo = hi = _si_of(p, "typ", unit)
+    if (lo is not None and value < lo * (1 - 1e-9)) or (hi is not None and value > hi * (1 + 1e-9)):
+        span = f"{lo:.4g} a {hi:.4g} {sym}" if lo != hi else f"{lo:.4g} {sym}"
+        out.append(
+            f"{ref}: {value:.4g} {sym} fora da faixa da série {rec.part_number} ({span}, "
+            "datasheet); escolha outro valor ou outra série."
+        )
+    return out
+
+
+def _si_of(p: Parameter, field: str, unit: str) -> float | None:
+    x = getattr(p, field)
+    return None if x is None else float(Q_(x, parse_unit(p.unit)).m_as(unit))
 
 
 def constant_drop_diode(name: str, vf: float) -> str:
@@ -176,7 +210,13 @@ def bjt(
     return PartModel(name, m.spice(name), warn, spread)
 
 
-def mosfet(rec: ComponentRecord, ref: str, log: CalcLog, vto_override: float | None) -> PartModel:
+def mosfet(
+    rec: ComponentRecord,
+    ref: str,
+    log: CalcLog,
+    vto_override: float | None,
+    p_channel: bool = False,
+) -> PartModel:
     m, w = devmodels.mos_model(rec, log, ref)
     warn = review_warning(rec, ref) + w
     vth = rec.parameters["VGS(th)"]
@@ -186,17 +226,17 @@ def mosfet(rec: ComponentRecord, ref: str, log: CalcLog, vto_override: float | N
         if lo is not None and hi is not None
         else None
     )
-    if vto_override is not None:
-        m = dataclasses.replace(m, VT=vto_override)
-    name = f"MM_{digest(rec.part_number + m.spice('x'))}"
+    if vto_override is not None:  # the symbol's threshold: negative for a PMOS
+        m = dataclasses.replace(m, VT=abs(vto_override))
+    name = f"MM_{digest(rec.part_number + m.spice('x', p_channel))}"
     warn.append(f"{ref}: MOSFET de nível 1 sem capacitâncias nem diodo de corpo.")
-    return PartModel(name, m.spice(name), warn, spread)
+    return PartModel(name, m.spice(name, p_channel), warn, spread)
 
 
-def jfet(rec: ComponentRecord, ref: str, log: CalcLog) -> PartModel:
+def jfet(rec: ComponentRecord, ref: str, log: CalcLog, p_channel: bool = False) -> PartModel:
     m, w = devmodels.jfet_model(rec, log, ref)
-    name = f"JM_{digest(rec.part_number + m.spice('x'))}"
-    return PartModel(name, m.spice(name), review_warning(rec, ref) + w)
+    name = f"JM_{digest(rec.part_number + m.spice('x', p_channel))}"
+    return PartModel(name, m.spice(name, p_channel), review_warning(rec, ref) + w)
 
 
 def opamp_subckt(name: str, m: OpAmp) -> str:

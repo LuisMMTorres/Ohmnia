@@ -283,7 +283,17 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 - Motor de indução trifásico de 12 terminais (dupla tensão), ligado por fora em triângulo
   paralelo (220 V), estrela paralelo (380 V), triângulo série (440 V) ou estrela série (760 V).
   Uma meia-bobina invertida faz circular corrente.
+- Transformador monofásico de 4 bobinas (série/paralelo) e trifásico de bobinas acessíveis
+  (Y ou Δ fechados por fora), com a placa de ligação visível na protoboard.
 - Desenhos reais dos dois na aba Protoboard; fonte de bancada e gerador de funções desenhados como
   instrumentos reais.
 - Detalhes e limitações:
   [validacao/autotransformador-motor-12-terminais.md](validacao/autotransformador-motor-12-terminais.md).
+
+## Dados reais na biblioteca — aguardando revisão (2026-11-21)
+
+- Resistor, capacitor, indutor, MOSFET P, JFET P, transformador monofásico (Triad VPT24-1040),
+  inversor WEG CFW, soft-starter e driver de passo passam a aceitar peças do catálogo.
+- JFET P genérico corrigido (VTO negativo, convenção do SPICE).
+- Faltam dados reais de motores de indução, contatores e transformadores trifásicos.
+- Detalhes: [validacao/dados-reais-biblioteca.md](validacao/dados-reais-biblioteca.md).

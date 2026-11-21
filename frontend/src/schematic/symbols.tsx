@@ -408,7 +408,39 @@ export function SymbolBody({
       <circle key="d1" cx={u(-1.5)} cy={u(-1.3)} r={u(0.12)} className="fill" />,
       <circle key="d2" cx={u(1.5)} cy={u(-1.3)} r={u(0.12)} className="fill" />,
     ];
-  else if (k === "autotransformer")
+  else if (k === "transformer_1ph_4" || k === "transformer_3ph_open") {
+    // every coil with both ends on a pin: primaries on the left, secondaries on the right
+    const three = k === "transformer_3ph_open";
+    const xp = three ? 3 : 2; // pin column
+    const pairs: [number, number][] = three
+      ? [
+          [-5, -3],
+          [-1, 1],
+          [3, 5],
+        ]
+      : [
+          [-3, -1],
+          [1, 3],
+        ];
+    const top = pairs[0]![0] - 0.2;
+    const bottom = pairs[pairs.length - 1]![1] + 0.2;
+    body = [
+      ...pairs.flatMap(([a, b], i) => [
+        line(-xp, a, -1, a, `pa${i}`),
+        line(-xp, b, -1, b, `pb${i}`),
+        <g key={`cp${i}`}>{coil(a, b, true, -1)}</g>,
+        <circle key={`dp${i}`} cx={u(-1.5)} cy={u(a + 0.3)} r={u(0.12)} className="fill" />,
+        line(1, a, xp, a, `sa${i}`),
+        line(1, b, xp, b, `sb${i}`),
+        <g key={`cs${i}`} transform={`translate(${u(2)},0) scale(-1,1)`}>
+          {coil(a, b, true, 1)}
+        </g>,
+        <circle key={`ds${i}`} cx={u(1.5)} cy={u(a + 0.3)} r={u(0.12)} className="fill" />,
+      ]),
+      line(-0.15, top, -0.15, bottom, "k1"),
+      line(0.15, top, 0.15, bottom, "k2"),
+    ];
+  } else if (k === "autotransformer")
     body = [
       poly(
         [
@@ -715,6 +747,8 @@ const SHORT: Record<string, string> = {
   pump_plant: "INV+BOMBA",
   induction_motor: "M 3~",
   induction_motor_12: "M 3~ 12",
+  transformer_1ph_4: "TRAFO 1~",
+  transformer_3ph_open: "TRAFO 3~",
   vfd: "INVERSOR",
   soft_starter: "SOFT-STARTER",
   contactor: "CONTATOR",
@@ -795,6 +829,8 @@ export function valueText(c: Component, sym: SymbolDef | undefined): string {
   if (c.kind === "rl_load") return `${p("r")}Ω + ${p("l")}H`;
   if (c.kind === "transformer") return `1:${p("n")}`;
   if (c.kind === "transformer_1ph") return `${p("vp")}/${p("vs")}V ${p("sn")}VA`;
+  if (c.kind === "transformer_1ph_4") return `2×${p("vp")}/2×${p("vs")}V ${p("sn")}VA`;
+  if (c.kind === "transformer_3ph_open") return `${p("vp")}/${p("vs")}V por bobina`;
   if (c.kind === "autotransformer") return `${p("vh")}/${p("vx")}V ${p("sn")}VA`;
   if (c.kind === "transformer_3ph") {
     return `${p("conn_p")}${p("conn_s").toLowerCase()}`;

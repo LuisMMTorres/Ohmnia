@@ -73,3 +73,25 @@ def test_contactor_closes_at_75_and_opens_at_40_percent():
     closed = t[v > 5]
     assert closed[0] == pytest.approx(0.75, abs=0.01)  # 75 % of 24 V on the rising ramp
     assert closed[-1] == pytest.approx(1.6, abs=0.01)  # 40 % on the falling ramp
+
+
+def test_vfd_takes_the_switching_frequency_of_a_catalogue_drive():
+    """WEG CFW500 (manual, f_sw 5 kHz typ.): the SPWM carrier comes from the record."""
+    from pathlib import Path
+
+    from circuitos.components.repository import load_record_file
+    from circuitos.schematic.netlist import build_netlist
+    from tests.unit.schematic.helpers import Builder
+
+    rec = load_record_file(
+        Path(__file__).parents[4] / "data" / "components" / "drive" / "weg-cfw500.yaml"
+    )
+    b = Builder("cfw")
+    b.add("vdc", "V1", ["ai", "0"], dc="5")
+    b.add("vdc", "V2", ["run", "0"], dc="24")
+    b.add("vfd", "INV1", ["ai", "0", "run", "0", "u", "v", "w"], part_id=str(rec.id),
+          mode="SPWM", fsw="1k")  # fmt: skip
+    b.add("induction_motor", "M1", ["u", "v", "w"])
+    b.analysis("tran", tstop="10m")
+    text = build_netlist(b.sch, {str(rec.id): rec}).text
+    assert f"{2 * 3.141592653589793 * 5000:.9g}" in text

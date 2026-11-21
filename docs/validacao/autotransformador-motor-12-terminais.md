@@ -84,3 +84,32 @@ e `esquematico-motor-12-e-autotransformador.png`.
   triângulo) e sem diferença de dispersão entre as meias-bobinas. A corrente circulante usa só a
   dispersão do estator. Parâmetros padrão didáticos, não de um motor real.
 - O número da seção do Chapman ainda precisa ser conferido no livro.
+
+## Transformadores com bobinas acessíveis e placa de ligação (2026-11-21)
+
+Pedido: deixar visível na protoboard a placa de ligação das bobinas, para fazer os fechamentos.
+
+- **Transformador monofásico de 4 bobinas** (`transformer_1ph_4`): primário em P1-P2 e P3-P4,
+  secundário em S1-S2 e S3-S4, todos no mesmo núcleo (pontos em P1, P3, S1, S3). Padrão
+  115 V + 115 V / 12 V + 12 V, 50 VA. Série (P2-P3) dá 230 V; paralelo (P1-P3, P2-P4) dá 115 V;
+  no secundário, série dá 24 V ou derivação central.
+  Modelo: cada bobina tem a indutância do enrolamento inteiro em Vp e o dobro da sua
+  resistência. Assim, as perdas no cobre na carga nominal são as mesmas em série e em paralelo.
+- **Transformador trifásico de bobinas acessíveis** (`transformer_3ph_open`): as seis bobinas
+  com as duas pontas na placa, com a marcação da IEC 60076 (1U1-1U2, 1V1-1V2, 1W1-1W2 na alta;
+  2U1 … 2W2 na baixa). Estrela ou triângulo se fecham por fora.
+- Na protoboard, os dois aparecem com a placa de ligação (régua de bornes) em cima e cada bobina
+  ligada ao seu par de bornes. O autotransformador mostra a régua H, X e N. O transformador
+  trifásico de ligação fixa (Dyn, Yd…) continua disponível.
+
+| Teste | Esperado | Tolerância |
+|---|---|---|
+| 4 bobinas, série/série, 230 V, carga nominal | 24 V | 3 % |
+| 4 bobinas, paralelo/paralelo, 115 V, carga nominal | 12 V | 3 % |
+| Trifásico aberto, Δ no primário (380 V), Y no secundário (127 V por bobina) | 220 V de linha | 3 % |
+
+Testes: `test_four_coil_series_and_parallel` e `test_open_three_phase_closed_delta_wye` em
+`tests/unit/schematic/test_transformers.py`.
+
+Limitação: as pontes (fechamentos) são feitas com fios no esquemático e, na protoboard, com cabos
+até a placa. Ainda não há a "barra de ligação" desenhada sobre a própria régua do transformador.
