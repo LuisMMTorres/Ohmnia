@@ -14,6 +14,7 @@ interface Capability {
   available: boolean;
   formats: string[];
   message: string;
+  max_bytes?: number;
 }
 
 export function FirmwareControls({
@@ -54,7 +55,8 @@ export function FirmwareControls({
     setError(null);
     setInfo(null);
     try {
-      if (file.size > 1024 * 1024) throw new Error("O firmware deve ter no máximo 1 MiB");
+      if (file.size > (cap?.max_bytes ?? 1024 * 1024))
+        throw new Error("O firmware excede o limite de tamanho da placa");
       const bytes = new Uint8Array(await file.arrayBuffer());
       let binary = "";
       for (const byte of bytes) binary += String.fromCharCode(byte);
@@ -107,10 +109,10 @@ export function FirmwareControls({
         </>
       )}
       <label className="small">
-        Carregar firmware da IDE (.hex ou .elf)
+        Carregar firmware da IDE ({cap?.formats.map((f) => `.${f}`).join(" ou ") ?? ".hex ou .elf"})
         <input
           type="file"
-          accept=".hex,.elf"
+          accept={cap?.formats.map((f) => `.${f}`).join(",")}
           disabled={busy || !cap?.available}
           onChange={(e) => {
             const file = e.target.files?.[0];
@@ -128,6 +130,19 @@ export function FirmwareControls({
       {error && (
         <p className="error" role="alert">
           {error}
+        </p>
+      )}
+      {component.kind === "esp32_devkitc" && (
+        <p className="small">
+          Exporte BIN mesclado com bootloader e partições, flash DIO de 4 MiB. Use pelo menos 350 ms
+          de simulação para observar a inicialização do exemplo. Wi-Fi/Bluetooth e barramentos ainda
+          não estão conectados.
+        </p>
+      )}
+      {component.kind.startsWith("rpi_pico") && (
+        <p className="small">
+          Na IDE, use clock de {component.kind === "rpi_pico" ? "125" : "150"} MHz. Carregue UF2 ou
+          ELF de flash. Serial por UART0/UART1; sinais em 3,3 V.
         </p>
       )}
       <p className="small muted">

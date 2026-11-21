@@ -164,5 +164,9 @@ anterior, use **Retirar firmware e usar código-fonte**. O modo firmware usa clo
 16 MHz, não o tempo didático por instrução do interpretador.
 
 Esta primeira entrega cobre GPIO, ADC, temporizadores/PWM e transmissão Serial0.
-ESP32, RP2040 e RP2350/Pico 2 ainda não executam firmware. Periféricos e limites estão em
-[firmware-compilado](../validacao/firmware-compilado.md).
+ESP32-DevKitC aceita BIN mesclado; Pico e Pico 2 aceitam UF2/ELF de flash.
+Para instalar também o motor ESP32 no Windows de 64 bits, use
+`scripts/setup-firmware.ps1 -Esp32`. Pico: clock de 125 MHz; Pico 2: 150 MHz.
+ESP32: flash DIO de 4 MiB e tempo de simulação suficiente para o boot (350 ms no exemplo).
+Instruções de compilação, formatos e limites estão em
+[firmware-outras-placas](../validacao/firmware-outras-placas.md).

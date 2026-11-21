@@ -1,5 +1,9 @@
 # Firmware compilado — primeira entrega AVR (21/11/2026)
 
+Registro da primeira fase. A integração posterior de ESP32, Pico e Pico 2 está em
+[firmware-outras-placas](firmware-outras-placas.md). As pendências abaixo descrevem o estado
+na conclusão desta primeira fase.
+
 Uno R3, Nano clássico (ATmega328P) e Mega 2560 executam instruções do firmware `.hex` ou
 `.elf` em um processo Node.js com AVR8js 0.21.1 (MIT). Não há conversão para o subconjunto
 C/C++ do interpretador. O arquivo é salvo junto à placa no projeto.

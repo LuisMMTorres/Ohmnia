@@ -1,0 +1,338 @@
+{
+  "schema_version": "1",
+  "title": "Teste Pico 2 RP2350",
+  "components": [
+    {
+      "id": "c1",
+      "kind": "rpi_pico2",
+      "ref": "U1",
+      "x": 20,
+      "y": 0,
+      "rot": 0,
+      "mirror": false,
+      "params": {},
+      "part_id": null,
+      "firmware": null
+    },
+    {
+      "id": "c2",
+      "kind": "vdc",
+      "ref": "VA",
+      "x": 40,
+      "y": 0,
+      "rot": 0,
+      "mirror": false,
+      "params": {
+        "dc": "1.65"
+      },
+      "part_id": null,
+      "firmware": null
+    },
+    {
+      "id": "c3",
+      "kind": "vpwl",
+      "ref": "VI",
+      "x": 60,
+      "y": 0,
+      "rot": 0,
+      "mirror": false,
+      "params": {
+        "points": "0 3.3 20m 3.3 20.001m 0"
+      },
+      "part_id": null,
+      "firmware": null
+    },
+    {
+      "id": "c4",
+      "kind": "resistor",
+      "ref": "RL",
+      "x": 80,
+      "y": 0,
+      "rot": 0,
+      "mirror": false,
+      "params": {
+        "value": "1k"
+      },
+      "part_id": null,
+      "firmware": null
+    }
+  ],
+  "wires": [],
+  "labels": [
+    {
+      "id": "l0",
+      "name": "analog",
+      "x": 15,
+      "y": -22
+    },
+    {
+      "id": "l1",
+      "name": "nc_GP27",
+      "x": 15,
+      "y": -20
+    },
+    {
+      "id": "l2",
+      "name": "nc_GP28",
+      "x": 15,
+      "y": -18
+    },
+    {
+      "id": "l3",
+      "name": "vcc",
+      "x": 15,
+      "y": -16
+    },
+    {
+      "id": "l4",
+      "name": "0",
+      "x": 15,
+      "y": -14
+    },
+    {
+      "id": "l5",
+      "name": "nc_GP0",
+      "x": 25,
+      "y": -22
+    },
+    {
+      "id": "l6",
+      "name": "nc_GP1",
+      "x": 25,
+      "y": -20
+    },
+    {
+      "id": "l7",
+      "name": "input",
+      "x": 25,
+      "y": -18
+    },
+    {
+      "id": "l8",
+      "name": "out",
+      "x": 25,
+      "y": -16
+    },
+    {
+      "id": "l9",
+      "name": "pwm",
+      "x": 25,
+      "y": -14
+    },
+    {
+      "id": "l10",
+      "name": "nc_GP5",
+      "x": 25,
+      "y": -12
+    },
+    {
+      "id": "l11",
+      "name": "nc_GP6",
+      "x": 25,
+      "y": -10
+    },
+    {
+      "id": "l12",
+      "name": "nc_GP7",
+      "x": 25,
+      "y": -8
+    },
+    {
+      "id": "l13",
+      "name": "nc_GP8",
+      "x": 25,
+      "y": -6
+    },
+    {
+      "id": "l14",
+      "name": "nc_GP9",
+      "x": 25,
+      "y": -4
+    },
+    {
+      "id": "l15",
+      "name": "nc_GP10",
+      "x": 25,
+      "y": -2
+    },
+    {
+      "id": "l16",
+      "name": "nc_GP11",
+      "x": 25,
+      "y": 0
+    },
+    {
+      "id": "l17",
+      "name": "nc_GP12",
+      "x": 25,
+      "y": 2
+    },
+    {
+      "id": "l18",
+      "name": "nc_GP13",
+      "x": 25,
+      "y": 4
+    },
+    {
+      "id": "l19",
+      "name": "nc_GP14",
+      "x": 25,
+      "y": 6
+    },
+    {
+      "id": "l20",
+      "name": "nc_GP15",
+      "x": 25,
+      "y": 8
+    },
+    {
+      "id": "l21",
+      "name": "nc_GP16",
+      "x": 25,
+      "y": 10
+    },
+    {
+      "id": "l22",
+      "name": "nc_GP17",
+      "x": 25,
+      "y": 12
+    },
+    {
+      "id": "l23",
+      "name": "nc_GP18",
+      "x": 25,
+      "y": 14
+    },
+    {
+      "id": "l24",
+      "name": "nc_GP19",
+      "x": 25,
+      "y": 16
+    },
+    {
+      "id": "l25",
+      "name": "nc_GP20",
+      "x": 25,
+      "y": 18
+    },
+    {
+      "id": "l26",
+      "name": "nc_GP21",
+      "x": 25,
+      "y": 20
+    },
+    {
+      "id": "l27",
+      "name": "nc_GP22",
+      "x": 25,
+      "y": 22
+    },
+    {
+      "id": "l28",
+      "name": "analog",
+      "x": 40,
+      "y": -2
+    },
+    {
+      "id": "l29",
+      "name": "0",
+      "x": 40,
+      "y": 2
+    },
+    {
+      "id": "l30",
+      "name": "input",
+      "x": 60,
+      "y": -2
+    },
+    {
+      "id": "l31",
+      "name": "0",
+      "x": 60,
+      "y": 2
+    },
+    {
+      "id": "l32",
+      "name": "out",
+      "x": 78,
+      "y": 0
+    },
+    {
+      "id": "l33",
+      "name": "0",
+      "x": 82,
+      "y": 0
+    }
+  ],
+  "probes": [
+    {
+      "id": "p-out",
+      "kind": "v",
+      "name": "Saída digital",
+      "target": {
+        "at": null,
+        "net": "out",
+        "pin": null
+      },
+      "reference": null,
+      "component": null,
+      "pin": null
+    },
+    {
+      "id": "p-pwm",
+      "kind": "v",
+      "name": "PWM",
+      "target": {
+        "at": null,
+        "net": "pwm",
+        "pin": null
+      },
+      "reference": null,
+      "component": null,
+      "pin": null
+    },
+    {
+      "id": "p-analog",
+      "kind": "v",
+      "name": "Entrada ADC",
+      "target": {
+        "at": null,
+        "net": "analog",
+        "pin": null
+      },
+      "reference": null,
+      "component": null,
+      "pin": null
+    }
+  ],
+  "analyses": [
+    {
+      "kind": "tran",
+      "params": {
+        "tstop": "35m",
+        "tmax": "10u"
+      },
+      "enabled": true
+    }
+  ],
+  "sweep": {
+    "kind": "none",
+    "target": null,
+    "spacing": "lin",
+    "values": [],
+    "start": null,
+    "stop": null,
+    "step": null,
+    "points": null,
+    "runs": 30,
+    "seed": 1,
+    "distribution": "gauss",
+    "measure": null
+  },
+  "params": {},
+  "temperature": "27",
+  "directives": "",
+  "breadboard": null,
+  "bench_scope_channels": 0,
+  "bench_scope_connections": {}
+}

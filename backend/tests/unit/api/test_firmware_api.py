@@ -5,6 +5,7 @@ import base64
 from fastapi.testclient import TestClient
 
 from circuitos.api.app import app
+from circuitos.cosim.firmware import engine_status
 
 
 def test_firmware_capabilities_report_pending_families():
@@ -20,7 +21,10 @@ def test_firmware_capabilities_report_pending_families():
         "rpi_pico",
         "rpi_pico2",
     }
-    assert not any(caps[k]["available"] for k in ("esp32_devkitc", "rpi_pico", "rpi_pico2"))
+    for kind in caps:
+        assert caps[kind]["available"] == engine_status(kind)[0]
+    assert caps["rpi_pico"]["formats"] == ["uf2", "elf"]
+    assert caps["esp32_devkitc"]["formats"] == ["bin"]
 
 
 def test_firmware_upload_rejects_corruption_and_unsupported_targets():

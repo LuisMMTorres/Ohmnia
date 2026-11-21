@@ -52,7 +52,7 @@ def test_hex_overlaps_and_trailing_records_are_rejected():
 
 
 def test_other_architectures_have_an_explicit_status():
-    with pytest.raises(ValueError, match="ainda"):
+    with pytest.raises(ValueError, match="mesclado"):
         load_image(image(b"firmware", "test.bin", "esp32_devkitc"))
 
 

@@ -154,7 +154,12 @@ class FirmwareAdapter(_Adapter):
         assert spec.firmware is not None
         self.spec, self.session = spec, session
         self.board = BOARDS[spec.kind]
-        self.runtime = FirmwareRuntime(spec.firmware)
+        if spec.kind == "esp32_devkitc":
+            from circuitos.cosim.esp32_firmware import Esp32Runtime
+
+            self.runtime: Esp32Runtime | FirmwareRuntime = Esp32Runtime(spec.firmware)
+        else:
+            self.runtime = FirmwareRuntime(spec.firmware)
         self.states: dict[str, int] = {}
         self.trace_t, self.trace = [], {}
 
@@ -166,6 +171,8 @@ class FirmwareAdapter(_Adapter):
         }
         response = self.runtime.advance(t, inputs)
         self.states = response["states"]
+        for warning in response.get("warnings", []):
+            self.session.warn(f"{self.spec.ref}: {warning}")
         for when, text in response["serial"]:
             rows = self.session.serial.setdefault(self.spec.ref, [])
             if len(rows) < 10000:
@@ -184,6 +191,8 @@ class FirmwareAdapter(_Adapter):
             return float(state in (0, 1))
         if mode == "pu":
             return float(state == 3)
+        if mode == "pd":
+            return float(state == 4)
         return self.board.vdd if state in (1, 3) else 0.0
 
     def close(self) -> None:

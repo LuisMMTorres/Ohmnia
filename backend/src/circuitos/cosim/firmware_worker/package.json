@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "avr8js": "0.21.1"
+    "avr8js": "0.21.1",
+    "rp2350js": "2.0.1"
   }
 }

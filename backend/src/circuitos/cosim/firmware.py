@@ -1,4 +1,4 @@
-"""Isolated AVR worker and synchronous, bounded co-simulation protocol."""
+"""Isolated MCU workers and synchronous, bounded co-simulation protocol."""
 
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ import time
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
-from circuitos.cosim.firmware_image import AVR_FLASH, FirmwareImage, load_image
+from circuitos.cosim.firmware_image import AVR_FLASH, FIRMWARE_BOARDS, FirmwareImage, load_image
 
 if TYPE_CHECKING:
     from circuitos.cosim.controllers import ControllerSpec
@@ -21,11 +21,21 @@ if TYPE_CHECKING:
 WORKER = Path(__file__).with_name("firmware_worker")
 
 
-def engine_status() -> tuple[bool, str]:
+def engine_status(board: str = "arduino_uno") -> tuple[bool, str]:
+    if board == "esp32_devkitc":
+        from circuitos.cosim.esp32_firmware import engine_path
+
+        path = engine_path()
+        return (
+            (True, str(path))
+            if os.name == "nt" and path
+            else (False, "Instale o motor ESP32 para Windows e configure CIRCUITOS_ESP32_ENGINE")
+        )
     node = os.environ.get("CIRCUITOS_NODE") or shutil.which("node")
     if not node or not shutil.which(node):
         return False, "Instale o Node.js ou configure CIRCUITOS_NODE para executar firmware."
-    if not (WORKER / "node_modules/avr8js/package.json").is_file():
+    package = "avr8js" if board in AVR_FLASH else "rp2350js"
+    if not (WORKER / f"node_modules/{package}/package.json").is_file():
         return False, "Instale o motor: npm ci --prefix backend/src/circuitos/cosim/firmware_worker"
     return True, node
 
@@ -33,14 +43,14 @@ def engine_status() -> tuple[bool, str]:
 class FirmwareRuntime:
     def __init__(self, image: FirmwareImage):
         loaded = load_image(image)
-        ready, node = engine_status()
+        ready, node = engine_status(image.board)
         if not ready:
             raise ValueError(node)
         self.closed = threading.Event()
         self.deadline = 0.0
         self.expired = False
         self.process = subprocess.Popen(
-            [node, str(WORKER / "worker.mjs")],
+            [node, str(WORKER / ("worker.mjs" if image.board in AVR_FLASH else "pico.mjs"))],
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
             stderr=subprocess.DEVNULL,
@@ -58,6 +68,7 @@ class FirmwareRuntime:
                     "board": image.board,
                     "flash": base64.b64encode(loaded.flash).decode(),
                     "entry": loaded.entry,
+                    "architecture": loaded.architecture,
                 }
             )
         except Exception:
@@ -120,17 +131,17 @@ def firmware_lines(
     from circuitos.cosim.arduino import BOARDS
     from circuitos.cosim.controllers import ControllerSpec
 
-    if kind not in AVR_FLASH:
+    if kind not in FIRMWARE_BOARDS:
         raise ValueError("Esta placa ainda não possui motor de firmware compilado")
     load_image(firmware, kind)
-    ready, message = engine_status()
+    ready, message = engine_status(kind)
     if not ready:
         raise ValueError(message)
     x, board, gnd = ref.lower(), BOARDS[kind], pins["GND"]
     spec = ControllerSpec(ref, kind, params, pins, gnd, firmware=firmware)
     lines = [
-        f"* {ref}: firmware AVR8js 0.21.1, 16 MHz",
-        f"V{x}_vcc {pins['5V']} {gnd} DC {board.vdd}",
+        f"* {ref}: firmware compilado ({kind})",
+        f"V{x}_vcc {pins['5V' if kind in AVR_FLASH else '3V3']} {gnd} DC {board.vdd}",
         f"R{x}_gnd {gnd} 0 1g",
         f"V{x}_tick {x}_tick 0 DC 0 EXTERNAL",
     ]
@@ -140,10 +151,17 @@ def firmware_lines(
             continue
         node, p = pins[pin], pin.lower()
         lines.append(f"R{x}_{p}_in {node} {gnd} 100meg")
-        if kind == "arduino_nano" and pin in ("A6", "A7"):
+        if (kind == "arduino_nano" and pin in ("A6", "A7")) or (
+            kind == "esp32_devkitc" and board.pins[pin] >= 34
+        ):
             continue  # ADC-only pins on the Nano
         source = f"{x}_fw_{p}"
-        for suffix, role in (("v", pin), ("en", f"{pin}:en"), ("pu", f"{pin}:pu")):
+        for suffix, role in (
+            ("v", pin),
+            ("en", f"{pin}:en"),
+            ("pu", f"{pin}:pu"),
+            ("pd", f"{pin}:pd"),
+        ):
             name = f"v{source}_{suffix}"
             lines.append(f"{name} {source}_{suffix} 0 DC 0 EXTERNAL")
             spec.sources[name] = role
@@ -151,10 +169,11 @@ def firmware_lines(
         lines.append(
             f"B{source} {node} {gnd} I = V({source}_en)*"
             f"(V({node},{gnd})-V({source}_v))/{board.rout:g} + "
-            f"V({source}_pu)*(V({node},{gnd})-{board.vdd:g})/{board.rpullup:g}"
+            f"V({source}_pu)*(V({node},{gnd})-{board.vdd:g})/{board.rpullup:g} + "
+            f"V({source}_pd)*V({node},{gnd})/{board.rpullup:g}"
         )
     spec.warnings.append(
-        f"{ref}: firmware AVR: GPIO, ADC, timers/PWM e Serial0; I2C/SPI, EEPROM e watchdog "
+        f"{ref}: firmware {kind}: GPIO, ADC, timers/PWM e Serial; I2C/SPI, EEPROM e watchdog "
         "ainda não conectados. A ligação elétrica mantém os parâmetros didáticos da placa. "
         "Use passo transitório de no máximo 10 µs (menor para sinais rápidos)."
     )

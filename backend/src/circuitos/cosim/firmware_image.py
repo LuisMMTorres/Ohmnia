@@ -1,4 +1,4 @@
-"""Bounded firmware loading. Files contain AVR instructions, never host executables."""
+"""Bounded firmware loading. Files contain MCU instructions, never host executables."""
 
 from __future__ import annotations
 
@@ -11,7 +11,8 @@ from dataclasses import dataclass
 from pydantic import BaseModel, Field
 
 AVR_FLASH = {"arduino_uno": 32768, "arduino_nano": 32768, "arduino_mega": 262144}
-MAX_FILE_BYTES = 1024 * 1024
+FIRMWARE_BOARDS = {*AVR_FLASH, "rpi_pico", "rpi_pico2", "esp32_devkitc"}
+MAX_FILE_BYTES = 8 * 1024 * 1024
 
 
 class FirmwareImage(BaseModel):
@@ -26,19 +27,28 @@ class LoadedImage:
     entry: int
     sha256: str
     size: int
+    architecture: str = "avr"
 
 
 def load_image(image: FirmwareImage, board: str | None = None) -> LoadedImage:
     if board is not None and image.board != board:
         raise ValueError("O firmware foi associado a outra placa. Importe-o na placa correta.")
-    if image.board not in AVR_FLASH:
+    if image.board not in FIRMWARE_BOARDS:
         raise ValueError("A execução de firmware desta placa ainda não está disponível.")
     try:
         raw = base64.b64decode(image.data_base64, validate=True)
     except (ValueError, binascii.Error) as exc:
         raise ValueError("Arquivo de firmware inválido (base64)") from exc
     if not raw or len(raw) > MAX_FILE_BYTES:
-        raise ValueError("O arquivo de firmware deve ter entre 1 byte e 1 MiB")
+        raise ValueError("O arquivo de firmware deve ter entre 1 byte e 8 MiB")
+    if image.board == "esp32_devkitc":
+        from circuitos.cosim.esp32_image import load_esp32
+
+        return load_esp32(raw, image.filename)
+    if image.board not in AVR_FLASH:
+        from circuitos.cosim.pico_image import load_pico
+
+        return load_pico(raw, image.filename, image.board)
     flash = bytearray(b"\xff" * AVR_FLASH[image.board])
     used: set[int] = set()
 
