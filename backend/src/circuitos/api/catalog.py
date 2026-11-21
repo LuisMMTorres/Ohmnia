@@ -271,6 +271,29 @@ def review_category(request: Request, body: CategoryReviewIn) -> CategoryReviewO
     )
 
 
+class AllReviewIn(BaseModel):
+    reviewer: str = ""
+    dry_run: bool = False
+
+
+@router.post("/components/review-all")
+def review_all(request: Request, body: AllReviewIn) -> CategoryReviewOut:
+    """Review and release every pending component of the catalogue (preview with dry_run)."""
+    if not body.dry_run and not body.reviewer.strip():
+        raise HTTPException(422, "Informe o nome de quem revisou")
+    repo = _repo(request)
+    already = len(repo.search(review_status="liberado"))
+    items = repo.review_all(body.reviewer.strip(), dry_run=body.dry_run)
+    return CategoryReviewOut(
+        category="",
+        dry_run=body.dry_run,
+        items=[CategoryReviewItemOut(**vars(i)) for i in items],
+        released=sum(i.after == "liberado" for i in items),
+        pending=sum(i.after != "liberado" for i in items),
+        already_released=already,
+    )
+
+
 class PartsReviewIn(BaseModel):
     ids: list[uuid.UUID]
     reviewer: str = ""

@@ -42,6 +42,21 @@ Regras:
 - Componentes já liberados ou rejeitados não mudam.
 - A liberação registra "seu nome (revisão da categoria)", para distinguir da revisão item a item.
 
+### Liberar todo o catálogo de uma vez
+
+O botão **Liberar todos**, ao lado de **Revisar categoria**, faz a mesma revisão em todos os
+componentes pendentes do catálogo, de todas as categorias. Como a ação afeta o catálogo inteiro,
+ela pede confirmação:
+
+1. A prévia lista todos os componentes pendentes e mostra quantos ficarão liberados e quantos
+   continuarão com pendência. Nada é gravado nessa etapa.
+2. Marque a caixa de conferência, informe seu nome e clique em **Liberar N componente(s)**.
+
+Valem as mesmas regras da revisão por categoria: só os valores que citam a página são marcados,
+um componente com pendência continua "em revisão" (regra 5: componente não revisado nunca entra
+na seleção automática) e os já liberados ou rejeitados não mudam. Cada componente liberado
+registra "seu nome (liberação de todo o catálogo)" e a data e hora da liberação.
+
 ## Importar um datasheet em PDF
 
 Aba **Importar datasheet** → **Escolher PDF…**
