@@ -1,9 +1,10 @@
 # Validação da bancada e do simulador (2026-11-20 a 2026-11-21)
 
 Os PRs #7 (simulador) e #9 (bancada de dispositivos) partiram da mesma versão da `main`.
-A combinação tinha conflitos na netlist e no roadmap. A resolução preserva os sensores
-digitais, os indicadores de LED/lâmpada e os limites de esforço dos componentes, com suas
-respectivas seções de documentação.
+A revisão inicial detectou conflitos na netlist e no roadmap. Enquanto as combinações
+locais eram testadas, os PRs foram integrados pelo responsável pelo repositório. Esta
+correção acrescenta um teste para conferir que essa integração preserva os sensores
+digitais, os indicadores de LED/lâmpada e os limites de esforço dos componentes.
 
 O teste `tests/unit/schematic/test_device_integration.py` monta um DHT22, um LED e um
 resistor com potência nominal no mesmo circuito e verifica que a netlist mantém os três
@@ -20,6 +21,9 @@ do simulador e os ensaios de LM35, DHT22 e driver de passo pela interface.
 
 ## Resultado da suíte completa
 
+Esta execução foi feita na combinação local dos PRs #7 e #9, antes das melhorias adicionais
+da `main` de 21/11. Os testes sobre a base atual são registrados separadamente abaixo.
+
 A execução padrão do backend (`pytest -m "not datasheet" tests`) terminou com 1.085 testes
 aprovados, um ignorado e uma falha de infraestrutura do Hypothesis: geração de dados lenta
 em `test_calibration_round_trip`, sem falha de asserção numérica. O teste passou isoladamente
@@ -31,6 +35,16 @@ Os 13 testes da API de medições e de edição/medição de netlists passaram t
 PRs combinados. O teste de regressão de sensores/indicadores/limites e os quatro ensaios da
 bancada de passo passaram. A verificação de lentidão do Hypothesis é sensível à carga do
 computador; não foi desabilitada para obter a aprovação.
+
+## Validação sobre a main atual (21/11/2026)
+
+Base `69c9839`, com a correção Gear e o novo teste de regressão:
+
+- 109 testes aprovados: bancadas de periféricos (incluindo passo), integração de metadados,
+  API de medições, cálculo de medidas, edição de netlists e transformadores (149,21 s).
+- Ruff e mypy aprovados no módulo da bancada; Ruff aprovado no teste novo.
+- A combinação da mesma base com o PR #10 (padronização de "ponteira") passou nos 67 testes
+  da interface, no ESLint e no build TypeScript/Vite.
 
 ## Execução
 
