@@ -125,6 +125,14 @@ No aplicativo: Análise de dispositivos → **Sensores, atuadores e placas** →
 **Rodar os ensaios**. Os motores de indução, inversor, soft-starter e motor de passo levam de 15 a
 30 s; os demais, poucos segundos.
 
+## Revisão no Windows (2026-11-20)
+
+O ensaio padrão do driver de passo ficou preso no ngspice 47 com integração trapezoidal.
+A bancada de passo passou a usar `.options method=gear`, adequada à combinação dos reguladores
+de corrente e estados mecânicos. Os modelos físicos, as condições e as tolerâncias não mudaram.
+Os quatro ensaios existentes de driver, motor, micropasso e motor do catálogo passaram:
+`pytest tests/analytic_vs_sim/test_as_peripherals.py -k stepper` (46,30 s no ambiente de revisão).
+
 ## Resultado dos testes
 
 - `AS-PER-01`: as 21 bancadas com os valores padrão, todas as medidas dentro da tolerância.
@@ -159,9 +167,8 @@ DS18B20, BME280 e Raspberry Pi Pico (17 a 21).
 - HC-SR04: o atraso entre o fim do pulso em TRIG e a subida do ECHO (rajada de 40 kHz) não é
   simulado, e o sensor exige passo de 2 µs (a simulação fica mais lenta quando ele está no
   circuito). O runtime do Arduino não tem `pulseIn`, então a bancada mede o eco direto no SPICE.
-- O LM35 do simulador não tem offset; o TMP36 (offset de 500 mV) aparece no seletor porque o
-  catálogo dá a sensibilidade dele, mas a saída simulada não inclui o offset (o mesmo acontece no
-  esquemático).
+- O offset parametrizado distingue LM35 e TMP36. O TMP36 é ensaiado com o offset de 500 mV
+  registrado no catálogo.
 - Contator com bobina CA: o modelo filtra o valor médio retificado em 10 ms, e a ondulação de
   120 Hz antecipa o fechamento e atrasa a abertura em cerca de 5 %; a tolerância desse caso é 7 %
   e a bancada avisa.

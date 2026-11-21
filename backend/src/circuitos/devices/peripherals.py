@@ -1865,6 +1865,10 @@ def _stepper(c: _Ctx, motor_is_dut: bool) -> None:
     mot = {"A+": "a1", "A-": "a2", "B+": "b1", "B-": "b2"}
     c.add(s, "stepper_driver", "DRV1", drv, dut=not motor_is_dut)
     c.add(s, "stepper_motor", "M1", mot, dut=motor_is_dut, tl=f"{tl:g}")
+    # The current PI loops and mechanical states form a stiff system. Trapezoidal
+    # integration can collapse the time step in ngspice 47 on Windows; Gear keeps
+    # this bench convergent without changing its model or measurement tolerances.
+    s.directives += "\n.options method=gear\n"
     tr = c.run(s, "passos", tstop=f"{tstop:.6g}")
     t = _time(tr)
     c.curve(
