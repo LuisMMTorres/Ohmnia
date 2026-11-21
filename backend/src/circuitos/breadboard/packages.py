@@ -313,6 +313,21 @@ PACKAGES: dict[str, Package] = {
             "Fora da placa: só o secundário vem para a protoboard.",
         ),
         _offboard(
+            "trafo-4b",
+            "Transformador de 4 bobinas",
+            ("P1", "P2", "P3", "P4", "S1", "S2", "S3", "S4"),
+            "transformer",
+            "Fora da placa: feche as bobinas na placa de ligação (série ou paralelo); só o "
+            "secundário vem para a protoboard.",
+        ),
+        _offboard(
+            "trafo-3f-12",
+            "Transformador trifásico de bobinas acessíveis",
+            ("1U1", "1U2", "1V1", "1V2", "1W1", "1W2", "2U1", "2U2", "2V1", "2V2", "2W1", "2W2"),
+            "transformer",
+            "Fora da placa: feche estrela ou triângulo na placa de ligação.",
+        ),
+        _offboard(
             "autotrafo",
             "Autotransformador",
             ("H", "X", "N"),

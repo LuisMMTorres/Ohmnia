@@ -283,6 +283,8 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 - Motor de indução trifásico de 12 terminais (dupla tensão), ligado por fora em triângulo
   paralelo (220 V), estrela paralelo (380 V), triângulo série (440 V) ou estrela série (760 V).
   Uma meia-bobina invertida faz circular corrente.
+- Transformador monofásico de 4 bobinas (série/paralelo) e trifásico de bobinas acessíveis
+  (Y ou Δ fechados por fora), com a placa de ligação visível na protoboard.
 - Desenhos reais dos dois na aba Protoboard; fonte de bancada e gerador de funções desenhados como
   instrumentos reais.
 - Detalhes e limitações:

@@ -255,3 +255,45 @@ def auto_lines(name: str, h: str, x: str, n: str, w: AutoWinding) -> list[str]:
         f"L_{name}_c {b} {n} {w.l_common:.9g}",
         f"K_{name} L_{name}_s L_{name}_c {COUPLING}",
     ]
+
+
+def _float_paths(ref: str, nodes: list[str]) -> list[str]:
+    """1 GΩ from each coil end to ground: coils the user leaves open still have a DC path."""
+    return [
+        f"R_{ref}_g{i} {node} 0 1g"
+        for i, node in enumerate(dict.fromkeys(nd for nd in nodes if nd != "0"))
+    ]
+
+
+def open_three_phase_lines(ref: str, nodes: list[str], w: Winding) -> list[str]:
+    """Six coils with both ends free (1U1-1U2, 1V1-1V2, 1W1-1W2 / 2U1 … 2W2): the user
+    connects wye or delta outside; one winding pair per core leg."""
+    lines: list[str] = []
+    for i, ph in enumerate("UVW"):
+        p = (nodes[2 * i], nodes[2 * i + 1])
+        s = (nodes[6 + 2 * i], nodes[6 + 2 * i + 1])
+        lines += pair_lines(f"{ref}_{ph}", p, s, w)
+    return lines + _float_paths(ref, nodes)
+
+
+def four_coil_lines(ref: str, nodes: list[str], w: Winding) -> list[str]:
+    """Two primary coils (P1-P2, P3-P4) and two secondary coils (S1-S2, S3-S4) on one core.
+
+    Each coil has the inductance of the whole winding at Vp (in parallel the pair takes the
+    rated current, in series twice the voltage and half the current) and twice its resistance,
+    so the copper losses at rated load are the same in series and in parallel.
+    """
+    coils = [
+        (f"L_{ref}_p1", nodes[0], nodes[1], w.lp, 2 * w.rp),
+        (f"L_{ref}_p2", nodes[2], nodes[3], w.lp, 2 * w.rp),
+        (f"L_{ref}_s1", nodes[4], nodes[5], w.ls, 2 * w.rs),
+        (f"L_{ref}_s2", nodes[6], nodes[7], w.ls, 2 * w.rs),
+    ]
+    lines: list[str] = []
+    for name, a, b, ind, res in coils:
+        mid = f"{name[2:]}_r".lower()
+        lines += [f"R{name[1:]} {a} {mid} {res:.9g}", f"{name} {mid} {b} {ind:.9g}"]
+    for i in range(4):
+        for j in range(i + 1, 4):
+            lines.append(f"K_{ref}_{i}{j} {coils[i][0]} {coils[j][0]} {COUPLING}")
+    return lines + _float_paths(ref, nodes)

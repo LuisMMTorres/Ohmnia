@@ -1119,6 +1119,114 @@ const autotransformer: Face = {
   ),
 };
 
+/** Terminal plate along the top: one screw per coil end (the user makes the closures). */
+function terminalPlate(x0: number, x1: number, xs: number[], key: string) {
+  return (
+    <g key={key}>
+      <rect
+        x={x0}
+        y={TOP - 9}
+        width={x1 - x0}
+        height={20}
+        rx={2}
+        style={st("#e8dcc0", "#8f7f5f")}
+      />
+      {xs.map((x) => screw(x, TOP, `${key}${x}`))}
+    </g>
+  );
+}
+
+const FOUR_X = { P1: 30, P2: 60, P3: 90, P4: 120, S1: 180, S2: 210, S3: 240, S4: 270 };
+const transformer1ph4: Face = {
+  terminals: topRow(FOUR_X),
+  draw: () => (
+    <>
+      {/* dual-voltage transformer: two primary and two secondary coils on one E-I core, every
+          coil end on the terminal plate (dots on P1, P3, S1, S3) */}
+      {terminalPlate(16, 284, Object.values(FOUR_X), "tp")}
+      {silk(75, TOP + 24, "PRIMÁRIO", 7, "#40525f")}
+      {silk(225, TOP + 24, "SECUNDÁRIO", 7, "#40525f")}
+      {eiCore(66, TOP + 32, 168, 96, "core")}
+      {coil(94, TOP + 42, 26, 76, "#c9822f", "c1")}
+      {coil(122, TOP + 42, 26, 76, "#b8742a", "c2")}
+      {coil(152, TOP + 42, 26, 76, "#d99a45", "c3")}
+      {coil(180, TOP + 42, 26, 76, "#c78a3a", "c4")}
+      <rect x={66} y={TOP + 32} width={168} height={10} style={st("#6b7279", "#3a4046")} />
+      <rect x={66} y={TOP + 118} width={168} height={10} style={st("#6b7279", "#3a4046")} />
+      {lead([100, TOP + 42], [30, TOP + 8], "#c62828", "l1")}
+      {lead([114, TOP + 42], [60, TOP + 8], "#7a1c1c", "l2")}
+      {lead([128, TOP + 42], [90, TOP + 8], "#c62828", "l3")}
+      {lead([142, TOP + 42], [120, TOP + 8], "#7a1c1c", "l4")}
+      {lead([158, TOP + 42], [180, TOP + 8], "#1f5fae", "l5")}
+      {lead([172, TOP + 42], [210, TOP + 8], "#173f73", "l6")}
+      {lead([186, TOP + 42], [240, TOP + 8], "#1f5fae", "l7")}
+      {lead([200, TOP + 42], [270, TOP + 8], "#173f73", "l8")}
+    </>
+  ),
+};
+
+const OPEN3_PINS = [
+  "1U1",
+  "1U2",
+  "1V1",
+  "1V2",
+  "1W1",
+  "1W2",
+  "2U1",
+  "2U2",
+  "2V1",
+  "2V2",
+  "2W1",
+  "2W2",
+];
+const OPEN3_X = (i: number) => (i < 6 ? 14 + i * 22 : 166 + (i - 6) * 22);
+const transformer3phOpen: Face = {
+  terminals: topRow(Object.fromEntries(OPEN3_PINS.map((p, i) => [p, OPEN3_X(i)]))),
+  draw: () => (
+    <>
+      {/* three-limb core; the six coils (primary outside, secondary inside) brought out to the
+          terminal plate, so that wye or delta is closed with links outside */}
+      {terminalPlate(
+        2,
+        136,
+        OPEN3_PINS.slice(0, 6).map((_, i) => OPEN3_X(i)),
+        "ta",
+      )}
+      {terminalPlate(
+        154,
+        288,
+        OPEN3_PINS.slice(6).map((_, i) => OPEN3_X(i + 6)),
+        "tb",
+      )}
+      {silk(69, TOP + 22, "AT (1)", 7, "#40525f")}
+      {silk(221, TOP + 22, "BT (2)", 7, "#40525f")}
+      {eiCore(36, TOP + 34, 212, 100, "core")}
+      {[60, 128, 196].map((x, i) => (
+        <g key={x}>
+          {coil(x, TOP + 44, 30, 80, "#c9822f", `p${i}`)}
+          <rect
+            x={x + 6}
+            y={TOP + 44}
+            width={18}
+            height={80}
+            rx={2}
+            style={{ ...st("#e0aa5a", "#8a5a24", 1), opacity: 0.85 }}
+          />
+          {silk(x + 15, TOP + 88, "UVW"[i]!, 9, "#5c3a12")}
+        </g>
+      ))}
+      <rect x={36} y={TOP + 34} width={212} height={10} style={st("#6b7279", "#3a4046")} />
+      <rect x={36} y={TOP + 124} width={212} height={10} style={st("#6b7279", "#3a4046")} />
+      {[60, 128, 196].flatMap((x, i) => [
+        lead([x + 3, TOP + 44], [OPEN3_X(2 * i), TOP + 8], "#c62828", `pa${i}`),
+        lead([x + 27, TOP + 44], [OPEN3_X(2 * i + 1), TOP + 8], "#7a1c1c", `pb${i}`),
+        lead([x + 10, TOP + 44], [OPEN3_X(6 + 2 * i), TOP + 8], "#1f5fae", `sa${i}`),
+        lead([x + 20, TOP + 44], [OPEN3_X(7 + 2 * i), TOP + 8], "#173f73", `sb${i}`),
+      ])}
+    </>
+  ),
+};
+
 const transformer3ph: Face = {
   terminals: topRow({
     H1: 18,
@@ -1235,6 +1343,8 @@ const FACES: Record<string, Face> = {
   transformer_1ph: transformer1ph,
   transformer_3ph: transformer3ph,
   autotransformer,
+  transformer_1ph_4: transformer1ph4,
+  transformer_3ph_open: transformer3phOpen,
   lamp,
 };
 
