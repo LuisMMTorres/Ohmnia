@@ -9,6 +9,8 @@ type Pt = [number, number];
 export interface FaceTerminal {
   at: Pt;
   label: Pt;
+  /** Label written downwards from the point (dense pin headers). */
+  vertical?: boolean;
 }
 
 /** Shaft speed of a motor after the simulation (last point of v(<ref>_w)). */
@@ -559,6 +561,591 @@ const pushButton: Face = {
   ),
 };
 
+// ---------------------------------------------- sensors, modules and controller boards
+// Drawn with their pins or connector facing up, so that the leads leave the device straight
+// to the board without crossing it. Terminal names follow the simulation model; check the
+// silkscreen of your own module before wiring.
+
+const TOP = 16;
+
+/** Terminals along the top edge (x positions given), labels above. */
+function topRow(xs: Record<string, number>): Record<string, FaceTerminal> {
+  return Object.fromEntries(
+    Object.entries(xs).map(([pin, x]) => [pin, { at: [x, TOP], label: [x, TOP - 8] }]),
+  );
+}
+
+/** A dense pin header: terminals every ``pitch`` from ``x0`` at height ``y``, labels written
+ * downwards over the board's silkscreen. */
+function header(pins: string[], x0: number, pitch: number, y: number) {
+  return Object.fromEntries(
+    pins.map((pin, i) => [
+      pin,
+      { at: [x0 + i * pitch, y], label: [x0 + i * pitch + 2, y + 8], vertical: true },
+    ]),
+  ) as Record<string, FaceTerminal>;
+}
+
+/** A leg (tinned wire) going up from a body (at ``from``, default straight below) to its
+ * terminal at ``x``. */
+function leg(x: number, y0: number, key: string, color = "#b9bec4", from = x) {
+  return (
+    <path
+      key={key}
+      d={`M ${from} ${y0} V ${y0 - 8} L ${x} ${TOP + 6} V ${TOP}`}
+      style={st("none", color, 2.2)}
+    />
+  );
+}
+
+/** Row of square header pins drawn on a board (decorative, the terminals are on top). */
+function pinStrip(x0: number, y: number, n: number, pitch: number, key: string) {
+  return (
+    <g key={key}>
+      <rect x={x0 - 4} y={y - 4} width={(n - 1) * pitch + 8} height={8} style={st("#1d1d1d")} />
+      {Array.from({ length: n }, (_, i) => (
+        <rect
+          key={i}
+          x={x0 + i * pitch - 1.5}
+          y={y - 1.5}
+          width={3}
+          height={3}
+          style={st("#d8c27a")}
+        />
+      ))}
+    </g>
+  );
+}
+
+/** TO-92 body (flat face towards the viewer) with its legs going up. */
+function to92(cx: number, top: number, marking: string, legs: number[], color = "#1c1c1c") {
+  return (
+    <>
+      {legs.map((x, i) =>
+        leg(x, top + 4, `l${i}`, "#b9bec4", cx + (i - (legs.length - 1) / 2) * 12),
+      )}
+      <path
+        d={`M ${cx - 18} ${top} L ${cx + 18} ${top} L ${cx + 18} ${top + 30} A 18 18 0 0 1 ${cx - 18} ${top + 30} Z`}
+        style={st(color, "#000", 1)}
+      />
+      {silk(cx, top + 20, marking, 6.5)}
+    </>
+  );
+}
+
+const ntc: Face = {
+  terminals: topRow({ "1": 128, "2": 152 }),
+  draw: () => (
+    <>
+      {/* epoxy-coated disc thermistor on two tinned legs */}
+      {leg(128, 70, "a")}
+      {leg(152, 70, "b")}
+      <ellipse cx={140} cy={84} rx={20} ry={17} style={st("#2f3b8f", "#1d2560", 1.2)} />
+      {silk(140, 87, "NTC", 7)}
+      {silk(140, 126, "termistor NTC (disco)", 8, "#40525f")}
+    </>
+  ),
+};
+
+const ldr: Face = {
+  terminals: topRow({ "1": 128, "2": 152 }),
+  draw: () => (
+    <>
+      {/* light dependent resistor: ceramic disc with the CdS track under clear lacquer */}
+      {leg(128, 66, "a")}
+      {leg(152, 66, "b")}
+      <circle cx={140} cy={86} r={22} style={st("#f1e7cf", "#b9a67a", 1.5)} />
+      <path
+        d="M 124 74 H 156 V 79 H 124 V 84 H 156 V 89 H 124 V 94 H 156 V 99 H 124"
+        style={st("none", "#c2621e", 2)}
+      />
+      <rect x={120} y={70} width={6} height={32} style={st("#d6d6d6")} />
+      <rect x={154} y={70} width={6} height={32} style={st("#d6d6d6")} />
+      {silk(140, 128, "LDR (fotorresistor)", 8, "#40525f")}
+    </>
+  ),
+};
+
+const kty81: Face = {
+  terminals: topRow({ "1": 130, "2": 150 }),
+  draw: () => (
+    <>
+      {/* silicon sensor in a two-leg plastic package */}
+      {to92(140, 66, "KTY81", [130, 150])}
+      {silk(140, 132, "sensor de temperatura de silício", 8, "#40525f")}
+    </>
+  ),
+};
+
+function hallFace(marking: string, text: string): Face {
+  return {
+    terminals: topRow({ VS: 112, GND: 140, OUT: 168 }),
+    draw: () => (
+      <>
+        {/* Hall-effect sensor in a flat TO-92 (SIP-3) package, branded face to the viewer */}
+        {to92(140, 66, marking, [112, 140, 168])}
+        {silk(140, 132, text, 8, "#40525f")}
+      </>
+    ),
+  };
+}
+
+const pressure: Face = {
+  terminals: topRow({ VS: 112, GND: 140, OUT: 168 }),
+  draw: () => (
+    <>
+      {/* integrated pressure sensor: SIP package with a pressure port */}
+      {[112, 140, 168].map((x, i) => leg(x, 54, `p${i}`, "#b9bec4", 126 + i * 14))}
+      <rect x={96} y={54} width={100} height={46} rx={4} style={st("#e6e6e6", "#8a8f96", 1.4)} />
+      <circle cx={146} cy={77} r={13} style={st("#cfd3d6", "#7d848b", 1.2)} />
+      <rect x={196} y={70} width={34} height={14} rx={3} style={st("#d6d9dc", "#7d848b")} />
+      <circle cx={146} cy={77} r={4} style={st("#5d646a")} />
+      {silk(112, 96, "P", 7, "#40525f")}
+      {silk(150, 124, "sensor de pressão integrado", 8, "#40525f")}
+    </>
+  ),
+};
+
+const ultrasonic: Face = {
+  terminals: topRow({ VCC: 98, TRIG: 126, ECHO: 154, GND: 182 }),
+  draw: () => (
+    <>
+      {/* HC-SR04 module seen from the front, header up: two 16 mm transducers */}
+      {[98, 126, 154, 182].map((x, i) => leg(x, 34, `h${x}`, "#b9bec4", 116 + i * 16))}
+      <rect x={40} y={30} width={200} height={84} rx={3} style={st("#1d5fa8", "#123d70", 1.5)} />
+      {pinStrip(116, 36, 4, 16, "hdr")}
+      {[88, 192].map((cx) => (
+        <g key={cx}>
+          <circle cx={cx} cy={76} r={32} style={st("#c9ced3", "#6b737a", 2)} />
+          <circle cx={cx} cy={76} r={24} style={st("#2a2a2a")} />
+          {Array.from({ length: 5 }, (_, i) => (
+            <line
+              key={i}
+              x1={cx - 22}
+              x2={cx + 22}
+              y1={64 + i * 6}
+              y2={64 + i * 6}
+              style={st("none", "#555", 1)}
+            />
+          ))}
+        </g>
+      ))}
+      <rect x={128} y={92} width={24} height={9} rx={4} style={st("#c9ced3", "#6b737a")} />
+      {silk(88, 122, "T", 8, "#40525f")}
+      {silk(192, 122, "R", 8, "#40525f")}
+      {silk(140, 52, "HC-SR04", 8)}
+    </>
+  ),
+};
+
+const dht22: Face = {
+  // pin 1 VCC, 2 DATA, 3 NC, 4 GND (SparkFun RHT03/DHT22 hookup guide)
+  terminals: topRow({ VCC: 98, DATA: 124, GND: 176 }),
+  draw: () => (
+    <>
+      {/* white housing with the ventilation grille; pins up */}
+      {[98, 124, 150, 176].map((x, i) =>
+        leg(x, 40, `p${i}`, i === 2 ? "#8d9399" : "#b9bec4", 113 + i * 18),
+      )}
+      <rect x={100} y={40} width={80} height={96} rx={4} style={st("#f4f4f2", "#9da3a8", 1.5)} />
+      {Array.from({ length: 6 }, (_, r) =>
+        Array.from({ length: 4 }, (_, c) => (
+          <rect
+            key={`${r}-${c}`}
+            x={110 + c * 16}
+            y={50 + r * 12}
+            width={10}
+            height={7}
+            rx={1}
+            style={st("#c3c7ca")}
+          />
+        )),
+      )}
+      {silk(150, TOP - 8, "NC", 6.5, "#40525f")}
+      {silk(140, 130, "DHT22", 8, "#40525f")}
+    </>
+  ),
+};
+
+const ds18b20: Face = {
+  // TO-92, bottom view: 1 GND, 2 DQ, 3 VDD (datasheet table 1); drawn flat face to the viewer
+  // with the legs up, so the order reads VDD, DQ, GND from left to right
+  terminals: topRow({ VDD: 112, DQ: 140, GND: 168 }),
+  draw: () => (
+    <>
+      {to92(140, 66, "18B20", [112, 140, 168])}
+      {silk(140, 132, "termômetro digital 1-Wire (TO-92)", 8, "#40525f")}
+    </>
+  ),
+};
+
+const bme280: Face = {
+  terminals: topRow({ VDD: 98, GND: 126, SCL: 154, SDA: 182 }),
+  draw: () => (
+    <>
+      {/* small purple breakout with a 4-pin header and the metal-lid sensor */}
+      {[98, 126, 154, 182].map((x, i) => leg(x, 40, `h${x}`, "#b9bec4", 116 + i * 16))}
+      <rect x={96} y={36} width={88} height={84} rx={4} style={st("#5b2c8a", "#3a1a5c", 1.5)} />
+      {pinStrip(116, 44, 4, 16, "hdr")}
+      <rect x={130} y={78} width={20} height={20} rx={2} style={st("#c8ccd0", "#7d848b")} />
+      <circle cx={136} cy={84} r={1.6} style={st("#5d646a")} />
+      {[106, 174].map((x) => (
+        <circle key={x} cx={x} cy={110} r={5} style={st("#2a1640", "#d8c27a", 1.5)} />
+      ))}
+      {silk(140, 64, "BME280", 7)}
+      {silk(140, 136, "I2C", 8, "#40525f")}
+    </>
+  ),
+};
+
+// controller boards: the modelled pins on top, in the order of the model
+const NANO = ["D2", "D3", "D4", "D5", "D6", "D7", "D8", "D9", "D10", "D11", "D12", "D13",
+  "A0", "A1", "A2", "A3", "A4", "A5", "A6", "A7", "5V", "GND"]; // prettier-ignore
+
+const nano: Face = {
+  terminals: header(NANO, 20, 12, TOP),
+  draw: () => (
+    <>
+      {/* Nano: narrow blue board, Mini-B USB at one end, ATmega328P in TQFP */}
+      <rect
+        x={6}
+        y={TOP - 6}
+        width={276}
+        height={124}
+        rx={4}
+        style={st("#1f5fae", "#123c70", 1.5)}
+      />
+      {pinStrip(20, TOP, 22, 12, "top")}
+      {pinStrip(20, TOP + 110, 22, 12, "bot")}
+      <rect x={-2} y={TOP + 42} width={26} height={26} rx={2} style={st("#c9ced3", "#6b737a")} />
+      <rect
+        x={128}
+        y={TOP + 66}
+        width={30}
+        height={30}
+        transform={`rotate(45 143 ${TOP + 81})`}
+        style={st("#1b1b1b")}
+      />
+      <rect x={210} y={TOP + 70} width={16} height={10} rx={2} style={st("#e8e8e8", "#9da3a8")} />
+      {silk(218, TOP + 92, "RESET", 6)}
+      {silk(80, TOP + 92, "Arduino Nano", 8)}
+    </>
+  ),
+};
+
+const MEGA = ["D2", "D3", "D4", "D5", "D6", "D7", "D8", "D9", "D10", "D11", "D12", "D13",
+  "D20", "D21", "D22", "D23", "D24", "D25", "D26", "D27", "D28", "D29",
+  "D44", "D45", "D46", "A0", "A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "A9", "A10",
+  "A11", "A12", "A13", "A14", "A15", "5V", "GND"]; // prettier-ignore
+
+const mega: Face = {
+  terminals: {
+    ...header(MEGA.slice(0, 22), 14, 12.4, TOP),
+    ...header(MEGA.slice(22), 14, 12.4, TOP + 56),
+  },
+  draw: () => (
+    <>
+      {/* Mega 2560: long blue-green board, USB-B and barrel jack at the left end */}
+      <rect
+        x={0}
+        y={TOP - 6}
+        width={288}
+        height={138}
+        rx={4}
+        style={st("#0e7c86", "#095057", 1.5)}
+      />
+      {pinStrip(14, TOP, 22, 12.4, "h1")}
+      {pinStrip(14, TOP + 56, 21, 12.4, "h2")}
+      <rect x={-8} y={TOP + 92} width={34} height={28} rx={2} style={st("#c9ced3", "#6b737a")} />
+      <rect x={30} y={TOP + 100} width={30} height={22} rx={2} style={st("#1b1b1b")} />
+      <rect
+        x={150}
+        y={TOP + 92}
+        width={34}
+        height={34}
+        transform={`rotate(45 167 ${TOP + 109})`}
+        style={st("#1b1b1b")}
+      />
+      {silk(236, TOP + 116, "MEGA 2560", 8)}
+    </>
+  ),
+};
+
+const PICO = ["GP0", "GP1", "GP2", "GP3", "GP4", "GP5", "GP6", "GP7", "GP8", "GP9", "GP10",
+  "GP11", "GP12", "GP13", "GP14", "GP15", "GP16", "GP17", "GP18", "GP19", "GP20", "GP21",
+  "GP22", "GP26", "GP27", "GP28", "3V3", "GND"]; // prettier-ignore
+
+const pico: Face = {
+  terminals: {
+    ...header(PICO.slice(0, 14), 26, 17, TOP),
+    ...header(PICO.slice(14), 26, 17, TOP + 62),
+  },
+  draw: () => (
+    <>
+      {/* Pico: green board with castellated edges, micro-USB at one end, RP2040 */}
+      <rect
+        x={8}
+        y={TOP - 8}
+        width={262}
+        height={134}
+        rx={3}
+        style={st("#2f7d32", "#1b4d1e", 1.5)}
+      />
+      {Array.from({ length: 14 }, (_, i) => (
+        <g key={i}>
+          <circle cx={26 + i * 17} cy={TOP} r={4} style={st("#d8c27a")} />
+          <circle cx={26 + i * 17} cy={TOP + 62} r={4} style={st("#d8c27a")} />
+        </g>
+      ))}
+      <rect x={-2} y={TOP + 96} width={22} height={18} rx={2} style={st("#c9ced3", "#6b737a")} />
+      <rect x={120} y={TOP + 92} width={26} height={26} style={st("#1b1b1b")} />
+      {silk(133, TOP + 108, "RP2040", 6)}
+      <rect x={60} y={TOP + 98} width={16} height={12} rx={2} style={st("#f4f4f2", "#9da3a8")} />
+      {silk(68, TOP + 122, "BOOTSEL", 5.5)}
+      {silk(220, TOP + 112, "Raspberry Pi Pico", 7.5)}
+    </>
+  ),
+};
+
+const PLC_IN = ["L+", "M", "I0", "I1", "I2", "I3", "I4", "I5", "AI0", "AI1"];
+const PLC_OUT = ["Q0a", "Q0b", "Q1a", "Q1b", "Q2a", "Q2b", "Q3a", "Q3b", "AQ0"];
+
+const plc: Face = {
+  terminals: {
+    ...Object.fromEntries(
+      PLC_IN.map((p, i) => [p, { at: [22 + i * 26, TOP], label: [22 + i * 26, TOP - 8] }]),
+    ),
+    ...Object.fromEntries(
+      PLC_OUT.map((p, i) => [p, { at: [22 + i * 26, TOP + 26], label: [22 + i * 26, TOP + 44] }]),
+    ),
+  } as Record<string, FaceTerminal>,
+  draw: () => (
+    <>
+      {/* compact PLC on a DIN rail: grey housing, screw terminals for supply, inputs and
+          outputs, status LEDs and a small display */}
+      <rect x={-2} y={TOP + 64} width={292} height={12} style={st("#b0b6bb", "#7d848b")} />
+      <rect
+        x={6}
+        y={TOP - 10}
+        width={276}
+        height={140}
+        rx={5}
+        style={st("#dfe3e6", "#7d848b", 1.5)}
+      />
+      <rect x={10} y={TOP - 7} width={268} height={14} style={st("#9aa3ab")} />
+      <rect x={10} y={TOP + 19} width={242} height={14} style={st("#9aa3ab")} />
+      {PLC_IN.map((p, i) => screw(22 + i * 26, TOP, `i${p}`))}
+      {PLC_OUT.map((p, i) => screw(22 + i * 26, TOP + 26, `o${p}`))}
+      <rect x={30} y={TOP + 56} width={110} height={44} rx={3} style={st("#1d3b2a", "#0d2016")} />
+      {silk(85, TOP + 82, "CLP 24 V CC", 9, "#9be7b0")}
+      {[0, 1, 2, 3, 4, 5].map((i) => (
+        <circle key={i} cx={164 + i * 16} cy={TOP + 66} r={3.5} style={st("#6fcf73")} />
+      ))}
+      {silk(204, TOP + 84, "I0 … I5", 6.5, "#40525f")}
+      {[0, 1, 2, 3].map((i) => (
+        <circle key={i} cx={164 + i * 16} cy={TOP + 98} r={3.5} style={st("#f2a33a")} />
+      ))}
+      {silk(188, TOP + 116, "Q0 … Q3", 6.5, "#40525f")}
+    </>
+  ),
+};
+
+const pumpPlant: Face = {
+  terminals: {
+    ...topRow({ AI: 24, GND: 46, RUN: 68, COM: 90 }),
+    ...topRow({ "PT+": 226, "PT-": 248 }),
+  },
+  draw: () => (
+    <>
+      {/* frequency inverter, induction motor and centrifugal pump with a pressure transmitter */}
+      <rect
+        x={10}
+        y={TOP - 6}
+        width={96}
+        height={118}
+        rx={4}
+        style={st("#e8ebee", "#7d848b", 1.5)}
+      />
+      {[24, 46, 68, 90].map((x) => screw(x, TOP, `s${x}`))}
+      <rect x={22} y={TOP + 22} width={70} height={30} rx={2} style={st("#1d3b2a")} />
+      {silk(57, TOP + 42, "60,0 Hz", 9, "#9be7b0")}
+      {silk(57, TOP + 70, "inversor", 7.5, "#40525f")}
+      <path d={`M 106 ${TOP + 80} H 120`} style={st("none", "#59636c", 4)} />
+      <rect
+        x={120}
+        y={TOP + 56}
+        width={56}
+        height={46}
+        rx={6}
+        style={st("#3c5a78", "#22374b", 1.5)}
+      />
+      {Array.from({ length: 5 }, (_, i) => (
+        <line
+          key={i}
+          x1={124}
+          x2={172}
+          y1={TOP + 62 + i * 9}
+          y2={TOP + 62 + i * 9}
+          style={st("none", "#2b4560", 1.5)}
+        />
+      ))}
+      <rect x={176} y={TOP + 74} width={10} height={10} style={st("#9aa3ab")} />
+      <circle cx={204} cy={TOP + 80} r={20} style={st("#2d6fb0", "#1a4570", 1.5)} />
+      <rect x={196} y={TOP + 32} width={16} height={30} style={st("#9aa3ab", "#6b737a")} />
+      <rect x={196} y={TOP + 22} width={70} height={12} style={st("#9aa3ab", "#6b737a")} />
+      {/* pressure transmitter on the discharge pipe */}
+      <rect x={226} y={TOP + 2} width={22} height={20} rx={3} style={st("#c9ced3", "#6b737a")} />
+      {leg(226, TOP + 4, "pt1", "#d03a2b")}
+      {leg(248, TOP + 4, "pt2", "#222")}
+      {silk(237, TOP + 50, "PT", 7, "#40525f")}
+      {silk(150, TOP + 118, "motor", 7.5, "#40525f")}
+      {silk(204, TOP + 118, "bomba", 7.5, "#40525f")}
+    </>
+  ),
+};
+
+// --------------------------------------------------------------- transformers and lamps
+
+/** Laminated E-I core (front view) with the winding window filled by the bobbin. */
+function eiCore(x: number, y: number, w: number, h: number, key: string) {
+  return (
+    <g key={key}>
+      <rect x={x} y={y} width={w} height={h} style={st("#5f666d", "#3a4046", 1.5)} />
+      {Array.from({ length: Math.floor(h / 4) }, (_, i) => (
+        <line
+          key={i}
+          x1={x}
+          x2={x + w}
+          y1={y + 2 + i * 4}
+          y2={y + 2 + i * 4}
+          style={st("none", "#4b5157", 0.8)}
+        />
+      ))}
+    </g>
+  );
+}
+
+function coil(x: number, y: number, w: number, h: number, color: string, key: string) {
+  return (
+    <g key={key}>
+      <rect x={x} y={y} width={w} height={h} rx={3} style={st(color, "#5c3a12", 1.2)} />
+      {Array.from({ length: Math.floor(h / 5) }, (_, i) => (
+        <line
+          key={i}
+          x1={x + 2}
+          x2={x + w - 2}
+          y1={y + 3 + i * 5}
+          y2={y + 3 + i * 5}
+          style={st("none", "#8a5a24", 1)}
+        />
+      ))}
+    </g>
+  );
+}
+
+const transformer1ph: Face = {
+  terminals: topRow({ p1: 64, p2: 92, s1: 188, s2: 216 }),
+  draw: () => (
+    <>
+      {/* single-phase E-I transformer with a terminal strip on top: primary left, secondary
+          right */}
+      <rect x={46} y={TOP - 8} width={188} height={18} rx={2} style={st("#efe9dc", "#a39a86")} />
+      {[64, 92, 188, 216].map((x) => screw(x, TOP, `t${x}`))}
+      {silk(78, TOP + 30, "PRIMÁRIO", 7, "#40525f")}
+      {silk(202, TOP + 30, "SECUNDÁRIO", 7, "#40525f")}
+      {eiCore(70, TOP + 36, 140, 92, "core")}
+      {coil(104, TOP + 46, 32, 72, "#c9822f", "cp")}
+      {coil(144, TOP + 46, 32, 72, "#d99a45", "cs")}
+      <rect x={70} y={TOP + 36} width={140} height={10} style={st("#6b7279", "#3a4046")} />
+      <rect x={70} y={TOP + 118} width={140} height={10} style={st("#6b7279", "#3a4046")} />
+      {lead([120, TOP + 46], [64, TOP + 8], "#c62828", "lp1")}
+      {lead([124, TOP + 46], [92, TOP + 8], "#c62828", "lp2")}
+      {lead([156, TOP + 46], [188, TOP + 8], "#1f5fae", "ls1")}
+      {lead([160, TOP + 46], [216, TOP + 8], "#1f5fae", "ls2")}
+    </>
+  ),
+};
+
+const transformer3ph: Face = {
+  terminals: topRow({
+    H1: 18,
+    H2: 46,
+    H3: 74,
+    H0: 102,
+    X1: 178,
+    X2: 206,
+    X3: 234,
+    X0: 262,
+  }),
+  draw: () => (
+    <>
+      {/* three-limb core, one primary and one secondary coil on each limb; terminal strips on
+          top (H: primary, X: secondary) */}
+      <rect x={4} y={TOP - 8} width={112} height={18} rx={2} style={st("#efe9dc", "#a39a86")} />
+      <rect x={164} y={TOP - 8} width={112} height={18} rx={2} style={st("#efe9dc", "#a39a86")} />
+      {[18, 46, 74, 102, 178, 206, 234, 262].map((x) => screw(x, TOP, `t${x}`))}
+      {silk(60, TOP + 24, "AT (H)", 7, "#40525f")}
+      {silk(220, TOP + 24, "BT (X)", 7, "#40525f")}
+      {eiCore(36, TOP + 34, 212, 100, "core")}
+      {[60, 128, 196].map((x, i) => (
+        <g key={x}>
+          {coil(x, TOP + 44, 30, 80, "#c9822f", `p${i}`)}
+          <rect
+            x={x + 6}
+            y={TOP + 44}
+            width={18}
+            height={80}
+            rx={2}
+            style={{ ...st("#e0aa5a", "#8a5a24", 1), opacity: 0.85 }}
+          />
+          {silk(x + 15, TOP + 88, "ABC"[i]!, 9, "#5c3a12")}
+        </g>
+      ))}
+      <rect x={36} y={TOP + 34} width={212} height={10} style={st("#6b7279", "#3a4046")} />
+      <rect x={36} y={TOP + 124} width={212} height={10} style={st("#6b7279", "#3a4046")} />
+    </>
+  ),
+};
+
+const lamp: Face = {
+  terminals: topRow({ "1": 118, "2": 162 }),
+  draw: () => (
+    <>
+      {/* incandescent bulb in a screw socket (lamp holder) with two screw terminals */}
+      <rect
+        x={102}
+        y={TOP - 8}
+        width={76}
+        height={34}
+        rx={6}
+        style={st("#f2efe8", "#9d968a", 1.5)}
+      />
+      {screw(118, TOP, "s1")}
+      {screw(162, TOP, "s2")}
+      <rect x={116} y={TOP + 26} width={48} height={22} style={st("#c9ced3", "#6b737a", 1.2)} />
+      {[0, 1, 2, 3].map((i) => (
+        <line
+          key={i}
+          x1={116}
+          x2={164}
+          y1={TOP + 30 + i * 5}
+          y2={TOP + 32 + i * 5}
+          style={st("none", "#8a9097", 1.2)}
+        />
+      ))}
+      <path
+        d={`M 120 ${TOP + 48} C 92 ${TOP + 70}, 96 ${TOP + 132}, 140 ${TOP + 134} C 184 ${TOP + 132}, 188 ${TOP + 70}, 160 ${TOP + 48} Z`}
+        style={{ ...st("#fff8dc", "#b9b29c", 1.5), opacity: 0.9 }}
+      />
+      <path
+        d={`M 132 ${TOP + 52} L 132 ${TOP + 96} M 148 ${TOP + 52} L 148 ${TOP + 96}`}
+        style={st("none", "#8a8f96", 1.2)}
+      />
+      <path d={`M 132 ${TOP + 96} q 4 -6 8 0 q 4 6 8 0`} style={st("none", "#c77b1e", 1.6)} />
+    </>
+  ),
+};
+
 const FACES: Record<string, Face> = {
   heater,
   switch_manual: pushButton,
@@ -575,6 +1162,25 @@ const FACES: Record<string, Face> = {
   vfd,
   soft_starter: softStarter,
   contactor,
+  ntc,
+  ldr,
+  kty81,
+  hall_linear: hallFace("49E", "sensor Hall linear (TO-92)"),
+  hall_switch: hallFace("3144", "chave Hall (TO-92)"),
+  pressure,
+  ultrasonic,
+  dht22,
+  ds18b20,
+  bme280,
+  arduino_nano: nano,
+  arduino_mega: mega,
+  rpi_pico: pico,
+  plc,
+  pump_plant: pumpPlant,
+  transformer: transformer1ph,
+  transformer_1ph: transformer1ph,
+  transformer_3ph: transformer3ph,
+  lamp,
 };
 
 export const MOTOR_KINDS = new Set(["dc_motor", "induction_motor", "stepper_motor"]);
