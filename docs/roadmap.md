@@ -309,3 +309,11 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
   placa; o transformador monofásico passa a usar também a perda no cobre do datasheet.
 - Detalhes, pendências e limitações:
   [validacao/biblioteca-dados-reais.md](validacao/biblioteca-dados-reais.md).
+
+## Firmware compilado nas placas virtuais — primeira entrega AVR (21/11/2026)
+
+- Uno R3, Nano ATmega328P e Mega 2560: HEX/ELF executados pelo AVR8js, com GPIO bidirecional,
+  ADC, temporizadores/PWM e Serial0 acoplados ao ngspice.
+- Arquivo validado e salvo no projeto; instalação opcional do motor e retorno ao código-fonte.
+- ESP32-DevKitC, RP2040 e RP2350/Pico 2 permanecem pendentes, sem falso indicador de suporte.
+- Entrega aguardando revisão: [validacao/firmware-compilado.md](validacao/firmware-compilado.md).

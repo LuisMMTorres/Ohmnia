@@ -151,3 +151,18 @@ com SPWM, em 1/40 da portadora.
   aparecem (o controle de fase com tiristores, em detalhe, está no projeto de controlador CA).
 - O driver de motor de passo conta as bordas de STEP nos pontos da simulação: cada pulso precisa
   durar pelo menos 20 µs (o passo máximo com driver no circuito).
+
+## Carregar firmware compilado (Arduino AVR)
+
+Uno R3, Nano clássico ATmega328P e Mega 2560 aceitam `.hex` e `.elf` exportados pela Arduino IDE.
+Instale o motor com `scripts/setup-firmware.ps1` (Node.js 20+) ou
+`npm ci --ignore-scripts --prefix backend/src/circuitos/cosim/firmware_worker`.
+Na IDE, escolha a placa correta e use **Sketch → Exportar binário compilado**.
+Selecione a placa virtual no Ohmnia e use **Programação da placa virtual → Carregar firmware**.
+Simule em análise transitória; o firmware fica salvo no projeto. Para voltar ao programa
+anterior, use **Retirar firmware e usar código-fonte**. O modo firmware usa clock real de
+16 MHz, não o tempo didático por instrução do interpretador.
+
+Esta primeira entrega cobre GPIO, ADC, temporizadores/PWM e transmissão Serial0.
+ESP32, RP2040 e RP2350/Pico 2 ainda não executam firmware. Periféricos e limites estão em
+[firmware-compilado](../validacao/firmware-compilado.md).
