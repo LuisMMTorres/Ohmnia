@@ -10,6 +10,8 @@ Rule 4: each SPICE model must agree with the closed form it implements.
 * Stepper: position = steps × step angle, static load angle asin(T_L/(K I))/N (Kenjo, *Stepping
   Motors and Their Microprocessor Controls*, 2nd ed., ch. 4), :mod:`circuitos.machines.stepper`.
 * Thermocouple: NIST ITS-90 reference function, :mod:`circuitos.machines.thermocouple`.
+* 12-terminal motor: each of the four dual-voltage connections (WEG, *Guia de especificação de
+  motores elétricos*, ligações de 12 cabos) gives the 380 V wye motor's steady state.
 """
 
 from __future__ import annotations
@@ -195,3 +197,64 @@ def test_as_drv_06_thermocouple(backend, kind):
         temp = lo + 10 + (top - lo - 10) * when
         expected = (tc.emf_mv(kind, temp) - tc.emf_mv(kind, 25)) * 1e-3
         assert _at(tran, t, "v(p)", when) == pytest.approx(expected, abs=1e-6)
+
+
+# 12-terminal connections: line -> terminals tied to it, and the extra links between terminals
+_TWELVE = {
+    "delta_parallel": (220, {"a": "1 6 7 12", "b": "2 4 8 10", "c": "3 5 9 11"}, []),
+    "wye_parallel": (380, {"a": "1 7", "b": "2 8", "c": "3 9"}, ["4 5 6 10 11 12"]),
+    "delta_series": (440, {"a": "1 12", "b": "2 10", "c": "3 11"}, ["4 7", "5 8", "6 9"]),
+    "wye_series": (760, {"a": "1", "b": "2", "c": "3"}, ["4 7", "5 8", "6 9", "10 11 12"]),
+}
+_TWELVE_PINS = ("1", "2", "3", "7", "8", "9", "4", "5", "6", "10", "11", "12")
+
+
+@pytest.mark.parametrize("conn", list(_TWELVE))
+def test_as_drv_07_twelve_terminal_connections(backend, conn):
+    """AS-DRV-07: 12-terminal motor at 220 V Δ∥, 380 V Y∥, 440 V Δ and 760 V Y with 20 N·m:
+    every half-winding works at 220 V, so speed and torque are the 380 V wye motor's and each
+    half-winding carries half of its phase current (equivalent circuit, Chapman, 5th ed.,
+    ch. 6). Tolerances as AS-DRV-01: speed 0,2 %, currents 1 %. The two halves of a phase
+    share the current equally (no circulating current, below 1 % of it).
+    """
+    v_line, lines, links = _TWELVE[conn]
+    node = {}
+    for ph, terms in lines.items():
+        node.update({t: ph for t in terms.split()})
+    for i, group in enumerate(links):
+        node.update({t: f"k{i}" for t in group.split()})
+    b = Builder(conn)
+    b.add("v3ph", "V1", ["a", "b", "c", "0"], vrms=f"{v_line / math.sqrt(3):.6f}")
+    b.add("induction_motor_12", "M1", [node[p] for p in _TWELVE_PINS], tl="20")
+    tran, t = _tran(b, backend, "2")
+    ref = steady_state(MOTOR, 380, 60, 20)
+    assert _mean(tran, t, "v(m1_rpm)", 1.8, 2) == pytest.approx(ref.speed_rpm, rel=2e-3)
+    assert _mean(tran, t, "v(m1_te)", 1.8, 2) == pytest.approx(ref.torque, rel=0.01)
+    assert _mean(tran, t, "v(m1_i)", 1.8, 2) == pytest.approx(ref.i1 / 2, rel=0.01)
+    sel = t >= 1.8
+    i_circ = np.asarray(tran.vectors["v(m1_da)"].data)[sel] / (4 * 2.5 / (2 * math.pi * 60))
+    assert float(np.max(np.abs(i_circ))) < 0.01 * ref.i1
+    # line current: the phase current in wye, √3 times it in delta; series halves the turns
+    i_line = {"delta_parallel": 380 / 220, "wye_parallel": 1, "delta_series": 380 / 440,
+              "wye_series": 0.5}[conn] * ref.i1  # fmt: skip
+    sel_t = t[sel]
+    ia = np.asarray(tran.vectors["i(v_v1_a)"].data)[sel]
+    rms = math.sqrt(float(np.trapezoid(ia**2, sel_t)) / (sel_t[-1] - sel_t[0]))
+    assert rms == pytest.approx(i_line, rel=0.015)
+
+
+def test_as_drv_08_twelve_terminal_reversed_half(backend):
+    """AS-DRV-08: Δ∥ at 220 V with the half-winding 7-10 reversed (10 on L1, 7 on L2): 440 V
+    drive the loop of the two halves, 4·(R1 + jX1) = 11,7 Ω, about 38 A circulating (eficaz),
+    where the motor takes 3 to 4 A. Tolerance 3 % (the loop is the whole impedance)."""
+    node = {"1": "a", "6": "a", "10": "a", "12": "a", "2": "b", "4": "b", "7": "b", "8": "b"}
+    node |= {"3": "c", "5": "c", "9": "c", "11": "c"}
+    b = Builder("rev")
+    b.add("v3ph", "V1", ["a", "b", "c", "0"], vrms=f"{220 / math.sqrt(3):.6f}")
+    b.add("induction_motor_12", "M1", [node[p] for p in _TWELVE_PINS])
+    tran, t = _tran(b, backend, "0.5")
+    sel = t >= 0.4
+    i_circ = np.asarray(tran.vectors["v(m1_da)"].data)[sel] / (4 * 2.5 / (2 * math.pi * 60))
+    rms = math.sqrt(float(np.mean(i_circ**2)))
+    expected = 2 * 220 / (4 * math.hypot(1.5, 2.5))
+    assert rms == pytest.approx(expected, rel=0.03)
