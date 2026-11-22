@@ -114,3 +114,25 @@ def test_blank_max_step_stays_blank_when_ngspice_default_is_fine():
     b.add("resistor", "R1", ["in", "0"], value="1k")
     b.analysis("tran", tstop="100m")
     assert ".tran 100u 100m\n" in build_netlist(b.sch).text
+
+
+@pytest.mark.ngspice
+def test_bridge_with_filter_after_transformer_simulates():
+    """Regression (user report, 22/11/2026): transformer + diode bridge + filter capacitor
+    stopped with "timestep too small" because the secondary, isolated by four blocked diodes,
+    hung on 1 GΩ only. The 100 pF inter-winding capacitance keeps it defined."""
+    from circuitos.schematic.runs import SchematicPlan
+    from circuitos.simulation.backend import make_backend
+
+    b = Builder()
+    b.add("vsin", "V1", ["in", "0"], amplitude="179.6", freq="60")
+    b.add("transformer", "T1", ["in", "0", "a", "b"], lp="100m", ratio="10")
+    b.add("diode", "D1", ["a", "p"])
+    b.add("diode", "D2", ["b", "p"])
+    b.add("diode", "D3", ["0", "a"])
+    b.add("diode", "D4", ["0", "b"])
+    b.add("resistor", "R1", ["p", "0"], value="1k")
+    b.add("capacitor", "C1", ["p", "0"], value="1000u")
+    b.analysis("tran", tstop="100m")
+    plot = SchematicPlan(b.sch, {}).execute(make_backend()).plot("tran")
+    assert plot.scale

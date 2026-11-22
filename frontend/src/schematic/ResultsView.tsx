@@ -618,22 +618,24 @@ function SerialMonitor({ cosim }: { cosim: CosimSummary }) {
 
 function OpTable({ traces }: { traces: ScopeTrace[] }) {
   return (
-    <table className="params">
-      <thead>
-        <tr>
-          <th>Sinal</th>
-          <th>Valor</th>
-        </tr>
-      </thead>
-      <tbody>
-        {traces.map((t) => (
-          <tr key={t.name}>
-            <td>{t.name}</td>
-            <td className="num">{t.y[0] == null ? "—" : formatEng(t.y[0], t.unit, 5)}</td>
+    <div className="table-scroll">
+      <table className="params">
+        <thead>
+          <tr>
+            <th>Sinal</th>
+            <th>Valor</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {traces.map((t) => (
+            <tr key={t.name}>
+              <td>{t.name}</td>
+              <td className="num">{t.y[0] == null ? "—" : formatEng(t.y[0], t.unit, 5)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
 
@@ -650,41 +652,45 @@ function CursorTable({
   if (a == null && b == null) return null;
   const dx = a != null && b != null ? b - a : null;
   return (
-    <table className="params cursors">
-      <thead>
-        <tr>
-          <th>Sinal</th>
-          <th>A = {a == null ? "—" : formatEng(a, unit, 4)}</th>
-          <th>B = {b == null ? "—" : formatEng(b, unit, 4)}</th>
-          <th>
-            B − A{" "}
-            {dx != null && (
-              <span className="muted">
-                (Δx = {formatEng(dx, unit, 4)}
-                {dx !== 0 && unit === "s" ? `, 1/Δx = ${formatEng(1 / Math.abs(dx), "Hz", 4)}` : ""}
-                )
-              </span>
-            )}
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        {traces.slice(0, 16).map((t) => {
-          const va = a == null ? null : valueAt(t, a);
-          const vb = b == null ? null : valueAt(t, b);
-          return (
-            <tr key={t.name}>
-              <td>{t.name}</td>
-              <td className="num">{va == null ? "—" : formatEng(va, t.unit, 4)}</td>
-              <td className="num">{vb == null ? "—" : formatEng(vb, t.unit, 4)}</td>
-              <td className="num">
-                {va == null || vb == null ? "—" : formatEng(vb - va, t.unit, 4)}
-              </td>
-            </tr>
-          );
-        })}
-      </tbody>
-    </table>
+    <div className="table-scroll">
+      <table className="params cursors">
+        <thead>
+          <tr>
+            <th>Sinal</th>
+            <th>A = {a == null ? "—" : formatEng(a, unit, 4)}</th>
+            <th>B = {b == null ? "—" : formatEng(b, unit, 4)}</th>
+            <th>
+              B − A{" "}
+              {dx != null && (
+                <span className="muted">
+                  (Δx = {formatEng(dx, unit, 4)}
+                  {dx !== 0 && unit === "s"
+                    ? `, 1/Δx = ${formatEng(1 / Math.abs(dx), "Hz", 4)}`
+                    : ""}
+                  )
+                </span>
+              )}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {traces.slice(0, 16).map((t) => {
+            const va = a == null ? null : valueAt(t, a);
+            const vb = b == null ? null : valueAt(t, b);
+            return (
+              <tr key={t.name}>
+                <td>{t.name}</td>
+                <td className="num">{va == null ? "—" : formatEng(va, t.unit, 4)}</td>
+                <td className="num">{vb == null ? "—" : formatEng(vb, t.unit, 4)}</td>
+                <td className="num">
+                  {va == null || vb == null ? "—" : formatEng(vb - va, t.unit, 4)}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
   );
 }
 
@@ -705,38 +711,40 @@ function MeasureTable({
           ? `de ${formatEng(windowed[0], "s", 4)} a ${formatEng(windowed[1], "s", 4)} (cursores ou zoom)`
           : "no registro todo"}
       </p>
-      <table className="params">
-        <thead>
-          <tr>
-            <th>Sinal</th>
-            <th>Média</th>
-            <th>RMS</th>
-            <th>Pico</th>
-            <th>Pico a pico</th>
-            <th>Frequência</th>
-            <th>Razão cíclica</th>
-            <th>Subida</th>
-            <th>Descida</th>
-            <th>Sobressinal</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((m) => (
-            <tr key={m.vector}>
-              <td title={m.vector}>{legend(m.vector)}</td>
-              <td className="num">{q(m.mean)}</td>
-              <td className="num">{q(m.rms)}</td>
-              <td className="num">{q(m.peak)}</td>
-              <td className="num">{q(m.peak_to_peak)}</td>
-              <td className="num">{q(m.frequency)}</td>
-              <td className="num">{q(m.duty_cycle)}</td>
-              <td className="num">{q(m.rise_time)}</td>
-              <td className="num">{q(m.fall_time)}</td>
-              <td className="num">{q(m.overshoot)}</td>
+      <div className="table-scroll">
+        <table className="params">
+          <thead>
+            <tr>
+              <th>Sinal</th>
+              <th>Média</th>
+              <th>RMS</th>
+              <th>Pico</th>
+              <th>Pico a pico</th>
+              <th>Frequência</th>
+              <th>Razão cíclica</th>
+              <th>Subida</th>
+              <th>Descida</th>
+              <th>Sobressinal</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {rows.map((m) => (
+              <tr key={m.vector}>
+                <td title={m.vector}>{legend(m.vector)}</td>
+                <td className="num">{q(m.mean)}</td>
+                <td className="num">{q(m.rms)}</td>
+                <td className="num">{q(m.peak)}</td>
+                <td className="num">{q(m.peak_to_peak)}</td>
+                <td className="num">{q(m.frequency)}</td>
+                <td className="num">{q(m.duty_cycle)}</td>
+                <td className="num">{q(m.rise_time)}</td>
+                <td className="num">{q(m.fall_time)}</td>
+                <td className="num">{q(m.overshoot)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
@@ -843,26 +851,28 @@ function FftPanel({
             yUnit={out.unit}
             marks={out.harmonics.map((h) => h.frequency)}
           />
-          <table className="params">
-            <thead>
-              <tr>
-                <th>n</th>
-                <th>f</th>
-                <th>Amplitude (pico)</th>
-                <th>% da fundamental</th>
-              </tr>
-            </thead>
-            <tbody>
-              {out.harmonics.slice(0, 15).map((h) => (
-                <tr key={h.k}>
-                  <td>{h.k}</td>
-                  <td className="num">{formatEng(h.frequency, "Hz", 4)}</td>
-                  <td className="num">{formatEng(h.amplitude, out.unit, 4)}</td>
-                  <td className="num">{h.percent.toFixed(3).replace(".", ",")}</td>
+          <div className="table-scroll">
+            <table className="params">
+              <thead>
+                <tr>
+                  <th>n</th>
+                  <th>f</th>
+                  <th>Amplitude (pico)</th>
+                  <th>% da fundamental</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {out.harmonics.slice(0, 15).map((h) => (
+                  <tr key={h.k}>
+                    <td>{h.k}</td>
+                    <td className="num">{formatEng(h.frequency, "Hz", 4)}</td>
+                    <td className="num">{formatEng(h.amplitude, out.unit, 4)}</td>
+                    <td className="num">{h.percent.toFixed(3).replace(".", ",")}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </>
       )}
     </div>
@@ -1014,23 +1024,25 @@ function StatsPanel({
           />
           <details>
             <summary>Valor por execução</summary>
-            <table className="params">
-              <tbody>
-                {out.values.map((v) => (
-                  <tr key={v.run}>
-                    <td>{v.label || `#${v.run}`}</td>
-                    <td className="num">
-                      {v.value == null ? v.error : formatEng(v.value, out.unit, 5)}
-                    </td>
-                    <td className="small muted">
-                      {Object.entries(job.runs?.[v.run]?.values ?? {})
-                        .map(([k, x]) => `${k} = ${x}`)
-                        .join(", ")}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <div className="table-scroll">
+              <table className="params">
+                <tbody>
+                  {out.values.map((v) => (
+                    <tr key={v.run}>
+                      <td>{v.label || `#${v.run}`}</td>
+                      <td className="num">
+                        {v.value == null ? v.error : formatEng(v.value, out.unit, 5)}
+                      </td>
+                      <td className="small muted">
+                        {Object.entries(job.runs?.[v.run]?.values ?? {})
+                          .map(([k, x]) => `${k} = ${x}`)
+                          .join(", ")}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </details>
         </>
       )}
@@ -1061,34 +1073,36 @@ function WorstCase({ summary }: { summary: Record<string, unknown> }) {
         <b>{fmt(summary.nominal)}</b> · pior caso mínimo <b>{fmt(summary.min)}</b> · máximo{" "}
         <b>{fmt(summary.max)}</b>
       </p>
-      <table className="params">
-        <thead>
-          <tr>
-            <th>Parâmetro</th>
-            <th>Mín.</th>
-            <th>Nominal</th>
-            <th>Máx.</th>
-            <th>Medida no máx.</th>
-            <th>Efeito</th>
-            <th>Sentido no máximo</th>
-            <th>Fonte da faixa</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((r) => (
-            <tr key={r.parameter}>
-              <td>{r.parameter}</td>
-              <td className="num">{fmtP(r.low)}</td>
-              <td className="num">{fmtP(r.nominal)}</td>
-              <td className="num">{fmtP(r.high)}</td>
-              <td className="num">{fmt(r.measure_at_high)}</td>
-              <td className="num">{fmt(r.delta)}</td>
-              <td>{r.direction === "+" ? "no máximo" : "no mínimo"}</td>
-              <td className="small">{r.source}</td>
+      <div className="table-scroll">
+        <table className="params">
+          <thead>
+            <tr>
+              <th>Parâmetro</th>
+              <th>Mín.</th>
+              <th>Nominal</th>
+              <th>Máx.</th>
+              <th>Medida no máx.</th>
+              <th>Efeito</th>
+              <th>Sentido no máximo</th>
+              <th>Fonte da faixa</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {rows.map((r) => (
+              <tr key={r.parameter}>
+                <td>{r.parameter}</td>
+                <td className="num">{fmtP(r.low)}</td>
+                <td className="num">{fmtP(r.nominal)}</td>
+                <td className="num">{fmtP(r.high)}</td>
+                <td className="num">{fmt(r.measure_at_high)}</td>
+                <td className="num">{fmt(r.delta)}</td>
+                <td>{r.direction === "+" ? "no máximo" : "no mínimo"}</td>
+                <td className="small">{r.source}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

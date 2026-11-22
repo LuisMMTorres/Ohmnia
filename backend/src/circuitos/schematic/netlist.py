@@ -578,6 +578,9 @@ def _emit(comp: Component, n: list[str], ctx: _Ctx) -> list[str]:
             f"L_{ref}_s {b} {n[3]} {ls}",
             f"K_{ref} L_{ref}_p L_{ref}_s {v('k')}",
             f"R_{ref}_iso {n[1]} {n[3]} 1g",
+            # inter-winding capacitance (see transformers.pair_lines): keeps a secondary
+            # isolated by blocked diodes from hanging on 1 GΩ alone ("timestep too small")
+            f"C_{ref}_iso {n[1]} {n[3]} {transformers.C_INTERWINDING}",
         ]
     if k in ("transformer_1ph", "transformer_3ph", "autotransformer"):
         rec = ctx.record(comp)
