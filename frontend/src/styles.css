@@ -1780,3 +1780,39 @@ svg.ladder .ld-comment {
 .tran-suggestion table {
   margin: 0.4rem 0;
 }
+
+/* Result tables (values, cursors, measurements, FFT/THD harmonics, statistics, worst case,
+   suggested .tran): headers and values centred in the same column. */
+.results-view table th,
+.results-view table td,
+.results-view table td.num,
+.tran-suggestion table th,
+.tran-suggestion table td,
+.tran-suggestion table td.num {
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* results: one row per signal (show, legend name, chart) */
+.signal-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+}
+.signal-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.signal-row .legend-name {
+  width: 150px;
+  padding: 2px 6px;
+  font-size: 0.85em;
+}
+.signal-row select {
+  padding: 2px 4px;
+  font-size: 0.85em;
+}
+.scope-panel + .scope-panel {
+  margin-top: 6px;
+}

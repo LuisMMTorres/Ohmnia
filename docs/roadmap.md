@@ -328,3 +328,12 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 - Casos reais compilados nas ferramentas Arduino e testes de realimentação com ngspice.
 - I2C/SPI e sensores por protocolo no fio, recepção serial, rede e depuração continuam pendentes.
 - Entrega para revisão: [validacao/firmware-outras-placas.md](validacao/firmware-outras-placas.md).
+
+## Simulador — sugestão da transitória e gráficos (22/11/2026)
+
+- Sugestão de tempo final, passo de saída e passo máximo a partir do circuito, com "Aplicar".
+- Passo máximo em branco usa a sugestão quando o padrão do ngspice pularia sinais rápidos.
+- Fonte CA configurada em tensão eficaz; transformador com relação Np/Ns (circuitos antigos convertidos).
+- Resultados: sinais em gráficos separados com eixo de tempo comum, legendas renomeáveis e
+  tabelas centralizadas.
+- Entrega para revisão: [validacao/sugestao-transitoria.md](validacao/sugestao-transitoria.md).
