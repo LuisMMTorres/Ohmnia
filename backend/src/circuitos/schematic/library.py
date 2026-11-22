@@ -220,7 +220,8 @@ SYMBOLS: dict[str, Symbol] = {
                 ParamDef("rp", "Resistência do primário", "Ω", "10m"),
                 ParamDef("rs", "Resistência do secundário", "Ω", "10m"),
             ),
-            description="Dois indutores acoplados; pontos em p1 e s1; 1 GΩ entre p2 e s2. "
+            description="Dois indutores acoplados; pontos em p1 e s1; 1 GΩ e 100 pF "
+            "(capacitância entre enrolamentos) entre p2 e s2. "
             "Relação de espiras Np/Ns (circuitos salvos com o antigo Ns/Np são convertidos).",
             ref_prefix="T",
         ),

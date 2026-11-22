@@ -120,6 +120,9 @@ def size(
     return Winding(vp, vs_eff, a, lp, ls, rp, rs)
 
 
+C_INTERWINDING = "100p"  # typical order of a small mains transformer (didactic value)
+
+
 def pair_lines(name: str, p: tuple[str, str], s: tuple[str, str], w: Winding) -> list[str]:
     """Coupled-inductor netlist of one winding pair; dots on p[0] and s[0]."""
     a, b = f"{name}_p".lower(), f"{name}_s".lower()
@@ -129,6 +132,10 @@ def pair_lines(name: str, p: tuple[str, str], s: tuple[str, str], w: Winding) ->
         f"R_{name}_s {s[0]} {b} {w.rs:.9g}",
         f"L_{name}_s {b} {s[1]} {w.ls:.9g}",
         f"K_{name} L_{name}_p L_{name}_s {COUPLING}",
+        # inter-winding capacitance: without it a secondary isolated by diodes that are all
+        # off (bridge with a filter capacitor) hangs on 1 GΩ only and ngspice stops with
+        # "timestep too small"; 100 pF is negligible at the line frequency
+        f"C_{name}_ps {p[1]} {s[1]} {C_INTERWINDING}",
     ]
 
 
@@ -315,9 +322,10 @@ def catalogue_params(
 
 def _float_paths(ref: str, nodes: list[str]) -> list[str]:
     """1 GΩ from each coil end to ground: coils the user leaves open still have a DC path."""
-    return [
-        f"R_{ref}_g{i} {node} 0 1g"
-        for i, node in enumerate(dict.fromkeys(nd for nd in nodes if nd != "0"))
+    ends = list(dict.fromkeys(nd for nd in nodes if nd != "0"))
+    # plus 100 pF of stray capacitance, for the same reason as in pair_lines
+    return [f"R_{ref}_g{i} {node} 0 1g" for i, node in enumerate(ends)] + [
+        f"C_{ref}_g{i} {node} 0 {C_INTERWINDING}" for i, node in enumerate(ends)
     ]
 
 

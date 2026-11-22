@@ -1816,3 +1816,49 @@ svg.ladder .ld-comment {
 .scope-panel + .scope-panel {
   margin-top: 6px;
 }
+
+/* result tables fit the white panel: compact cells, header words may wrap, and a horizontal
+   scroll inside the panel (never past it) on narrow screens */
+.results-view {
+  min-width: 0;
+  max-width: 100%;
+}
+.results-view .measure-table,
+.results-view .table-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+  background: var(--panel, #fff);
+}
+.results-view table {
+  font-size: 0.88em;
+  margin-top: 6px;
+}
+.results-view table th,
+.results-view table td {
+  padding: 4px 6px;
+}
+.results-view table th {
+  white-space: normal;
+  line-height: 1.2;
+}
+.results-view .measure-table td,
+.results-view .cursors td {
+  white-space: nowrap;
+  padding: 3px 4px;
+}
+.results-view .measure-table th,
+.results-view .cursors th {
+  white-space: normal;
+  padding: 3px 4px;
+}
+.results-view .measure-table table,
+.results-view .cursors {
+  font-size: 0.8em;
+}
+.results-view .measure-table td:first-child,
+.results-view .cursors td:first-child {
+  min-width: 0;
+  max-width: 130px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
