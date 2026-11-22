@@ -25,6 +25,8 @@ export interface ScopeTrace {
   y: (number | null)[];
   color?: string;
   width?: number;
+  /** Vector the trace comes from (the legend name may be renamed). */
+  key?: string;
 }
 
 export interface Cursors {
@@ -41,6 +43,8 @@ interface Props {
   cursors: Cursors;
   onCursor: (which: "a" | "b", x: number) => void;
   onZoom?: (range: [number, number] | null) => void;
+  /** Shared x range: several scopes zoom together (null: the whole record). */
+  xRange?: [number, number] | null;
 }
 
 /** Unit as shown on screen (pint spelling → usual notation). */
@@ -70,6 +74,7 @@ export function Scope({
   cursors,
   onCursor,
   onZoom,
+  xRange,
 }: Props) {
   const el = useRef<HTMLDivElement>(null);
   const plotRef = useRef<uPlot | null>(null);
@@ -189,6 +194,26 @@ export function Scope({
   useEffect(() => {
     plotRef.current?.redraw(false);
   }, [cursors.a, cursors.b]);
+
+  // follow the zoom of the other scopes (the same time axis on every chart)
+  useEffect(() => {
+    const u = plotRef.current;
+    if (!u || xRange === undefined) return;
+    const xs = u.data[0];
+    const target = xRange ?? (xs.length ? [xs[0]!, xs[xs.length - 1]!] : null);
+    if (!target) return;
+    const min = u.scales.x?.min;
+    const max = u.scales.x?.max;
+    const eps = Math.abs(target[1] - target[0]) * 1e-9;
+    if (
+      min != null &&
+      max != null &&
+      Math.abs(min - target[0]) <= eps &&
+      Math.abs(max - target[1]) <= eps
+    )
+      return;
+    u.setScale("x", { min: target[0], max: target[1] });
+  }, [xRange, traces]);
 
   return <div ref={el} className="signal-plot scope" />;
 }

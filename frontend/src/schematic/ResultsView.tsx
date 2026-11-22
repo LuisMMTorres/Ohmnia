@@ -42,6 +42,32 @@ const MEASURE_LABEL: Record<MeasureKind, string> = {
   frequency: "frequência",
 };
 
+const LABELS_KEY = "circuitos.results.labels";
+const PANELS_KEY = "circuitos.results.panels";
+
+function loadStored<T>(key: string): Record<string, T> {
+  try {
+    const raw = localStorage.getItem(key);
+    return raw ? (JSON.parse(raw) as Record<string, T>) : {};
+  } catch {
+    return {};
+  }
+}
+
+function saveStored(key: string, value: object): void {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch {
+    /* storage unavailable: the names last for this page only */
+  }
+}
+
+function sameRange(a: [number, number] | null, b: [number, number] | null): boolean {
+  if (!a || !b) return a === b;
+  const eps = Math.abs(a[1] - a[0]) * 1e-9;
+  return Math.abs(a[0] - b[0]) <= eps && Math.abs(a[1] - b[1]) <= eps;
+}
+
 interface Props {
   job: Job;
   probeNames: string[];
@@ -81,6 +107,12 @@ export function ResultsView({ job, probeNames, onJobUpdate }: Props) {
   const [exprName, setExprName] = useState("");
   const [expr, setExpr] = useState("");
   const [figFormat, setFigFormat] = useState<"svg" | "png" | "pdf">("svg");
+  // legend names and chart of each signal, kept between runs (per browser)
+  const [labels, setLabels] = useState<Record<string, string>>(() => loadStored(LABELS_KEY));
+  const [panelOf, setPanelOf] = useState<Record<string, number>>(() => loadStored(PANELS_KEY));
+  useEffect(() => saveStored(LABELS_KEY, labels), [labels]);
+  useEffect(() => saveStored(PANELS_KEY, panelOf), [panelOf]);
+  const legend = (n: string) => labels[n]?.trim() || n;
 
   // default plot: the transient, else the first
   useEffect(() => {
@@ -174,6 +206,7 @@ export function ResultsView({ job, probeNames, onJobUpdate }: Props) {
                 ? TRACE_COLORS[ri % TRACE_COLORS.length]
                 : TRACE_COLORS[vi % TRACE_COLORS.length];
             out.push({
+              key: name,
               name: name + suffix,
               unit: v.unit,
               x,
@@ -194,7 +227,39 @@ export function ResultsView({ job, probeNames, onJobUpdate }: Props) {
     };
   }, [job.id, first, shown, selected, mode, form, viewKey]);
 
-  const traces = selected.length && loaded.key === viewKey ? loaded.traces : [];
+  const rawTraces = useMemo(
+    () => (selected.length && loaded.key === viewKey ? loaded.traces : []),
+    [selected.length, loaded, viewKey],
+  );
+  const traces = useMemo(
+    () =>
+      rawTraces.map((t) =>
+        t.key && labels[t.key]?.trim()
+          ? { ...t, name: labels[t.key]!.trim() + t.name.slice(t.key.length) }
+          : t,
+      ),
+    [rawTraces, labels],
+  );
+  // charts of the oscilloscope: signals grouped by the chart chosen for each one
+  const panels = useMemo(() => {
+    const groups = new Map<number, ScopeTrace[]>();
+    for (const t of traces) {
+      const k = mode === "scope" ? (panelOf[t.key ?? ""] ?? 0) : 0;
+      groups.set(k, [...(groups.get(k) ?? []), t]);
+    }
+    return [...groups.entries()].sort((a, b) => a[0] - b[0]);
+  }, [traces, panelOf, mode]);
+  const panelCount = Math.max(0, ...vectorNames.map((n) => panelOf[n] ?? 0)) + 1;
+  const splitByUnit = () => {
+    const units = new Map<string, number>();
+    const next: Record<string, number> = {};
+    for (const n of vectorNames) {
+      const unit = first?.vectors.find((v) => v.name === n)?.unit ?? "";
+      if (!units.has(unit)) units.set(unit, units.size);
+      next[n] = units.get(unit)!;
+    }
+    setPanelOf((p) => ({ ...p, ...next }));
+  };
   const phase = loaded.key === viewKey ? loaded.phase : [];
 
   // measurements (transient, one run)
@@ -332,20 +397,67 @@ export function ResultsView({ job, probeNames, onJobUpdate }: Props) {
               simule novamente.
             </p>
           )}
-          <div className="vectors">
+          <div className="vectors signal-list">
             {vectorNames.map((n) => (
-              <label key={n}>
+              <div key={n} className="signal-row">
+                <label title={n}>
+                  <input
+                    type="checkbox"
+                    checked={selected.includes(n)}
+                    onChange={(e) =>
+                      setSelected((s) => (e.target.checked ? [...s, n] : s.filter((x) => x !== n)))
+                    }
+                  />{" "}
+                  {n}
+                </label>
                 <input
-                  type="checkbox"
-                  checked={selected.includes(n)}
-                  onChange={(e) =>
-                    setSelected((s) => (e.target.checked ? [...s, n] : s.filter((x) => x !== n)))
-                  }
-                />{" "}
-                {n}
-              </label>
+                  className="legend-name"
+                  aria-label={`Nome na legenda de ${n}`}
+                  title="Nome na legenda (em branco: o nome original)"
+                  placeholder={`legenda: ${n}`}
+                  value={labels[n] ?? ""}
+                  onChange={(e) => setLabels((l) => ({ ...l, [n]: e.target.value }))}
+                />
+                {mode === "scope" && (
+                  <select
+                    aria-label={`Gráfico de ${n}`}
+                    value={panelOf[n] ?? 0}
+                    onChange={(e) => setPanelOf((p) => ({ ...p, [n]: Number(e.target.value) }))}
+                  >
+                    {Array.from({ length: panelCount }, (_, k) => (
+                      <option key={k} value={k}>
+                        Gráfico {k + 1}
+                      </option>
+                    ))}
+                    <option value={panelCount}>+ novo gráfico</option>
+                  </select>
+                )}
+              </div>
             ))}
           </div>
+          {mode === "scope" && vectorNames.length > 1 && (
+            <div className="row wrap small">
+              <button type="button" className="secondary small-btn" onClick={splitByUnit}>
+                Separar por grandeza (tensão, corrente, potência)
+              </button>
+              <button
+                type="button"
+                className="secondary small-btn"
+                onClick={() =>
+                  setPanelOf((p) => ({
+                    ...p,
+                    ...Object.fromEntries(vectorNames.map((n) => [n, 0])),
+                  }))
+                }
+              >
+                Tudo em um gráfico
+              </button>
+              <span className="muted">
+                Escolha o gráfico de cada sinal; o eixo do tempo, o zoom e os cursores são comuns a
+                todos.
+              </span>
+            </div>
+          )}
           {kind !== "op" && (
             <div className="row wrap expr-row">
               <input
@@ -386,16 +498,22 @@ export function ResultsView({ job, probeNames, onJobUpdate }: Props) {
               </select>
             </label>
           )}
-          <Scope
-            traces={traces}
-            xUnit={xUnit}
-            xLabel={xLabel}
-            xLog={xLog}
-            height={mode === "bode" ? 260 : 380}
-            cursors={cursors}
-            onCursor={(k, x) => setCursors((c) => ({ ...c, [k]: x }))}
-            onZoom={setZoom}
-          />
+          {panels.map(([k, group]) => (
+            <div key={k} className="scope-panel">
+              {panels.length > 1 && <div className="small muted">Gráfico {k + 1}</div>}
+              <Scope
+                traces={group}
+                xUnit={xUnit}
+                xLabel={xLabel}
+                xLog={xLog}
+                height={mode === "bode" ? 260 : panels.length > 1 ? 260 : 380}
+                cursors={cursors}
+                onCursor={(c, x) => setCursors((cur) => ({ ...cur, [c]: x }))}
+                onZoom={(r) => setZoom((z) => (sameRange(z, r) ? z : r))}
+                xRange={panels.length > 1 ? zoom : undefined}
+              />
+            </div>
+          ))}
           {mode === "bode" && phase.length > 0 && (
             <Scope
               traces={phase}
@@ -412,7 +530,9 @@ export function ResultsView({ job, probeNames, onJobUpdate }: Props) {
             cursors={cursors}
             unit={xUnit}
           />
-          {measures.length > 0 && <MeasureTable rows={measures} windowed={window_} />}
+          {measures.length > 0 && (
+            <MeasureTable rows={measures} windowed={window_} legend={legend} />
+          )}
           <div className="row wrap">
             <a
               className="button secondary"
@@ -571,9 +691,11 @@ function CursorTable({
 function MeasureTable({
   rows,
   windowed,
+  legend,
 }: {
   rows: Measurements[];
   windowed: [number, number] | null;
+  legend: (vector: string) => string;
 }) {
   return (
     <div className="measure-table">
@@ -601,7 +723,7 @@ function MeasureTable({
         <tbody>
           {rows.map((m) => (
             <tr key={m.vector}>
-              <td>{m.vector}</td>
+              <td title={m.vector}>{legend(m.vector)}</td>
               <td className="num">{q(m.mean)}</td>
               <td className="num">{q(m.rms)}</td>
               <td className="num">{q(m.peak)}</td>

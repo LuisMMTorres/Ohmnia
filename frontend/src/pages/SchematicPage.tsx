@@ -10,7 +10,9 @@ import {
   type Job,
   type NetlistOut,
   type PartOut,
+  type TranSuggestion,
 } from "../api";
+import { CalcSteps } from "../components/CalcSteps";
 import { emptyBreadboard } from "../breadboard/types";
 import { MOTOR_KINDS } from "../breadboard/DeviceFaces";
 import type { Motion } from "../breadboard/DeviceFaces";
@@ -48,6 +50,7 @@ import { PackagePreview } from "../breadboard/PackageArt";
 import { ProgramEditor } from "../cosim/ProgramEditor";
 import { FirmwareControls } from "../cosim/FirmwareControls";
 import { SimulatorPage } from "./SimulatorPage";
+import { upgradeSchematic } from "../schematic/migrate";
 import { WorkspaceSteps, type WorkspaceStep } from "../components/WorkspaceSteps";
 
 const STORAGE = "circuitos.schematic";
@@ -56,7 +59,9 @@ function loadSaved(): Schematic {
   try {
     const raw = localStorage.getItem(STORAGE);
     if (raw)
-      return pruneOrphanSupplyLabels({ ...emptySchematic(), ...(JSON.parse(raw) as Schematic) });
+      return pruneOrphanSupplyLabels(
+        upgradeSchematic({ ...emptySchematic(), ...(JSON.parse(raw) as Schematic) }),
+      );
   } catch {
     /* storage unavailable */
   }
@@ -494,7 +499,7 @@ export function SchematicWorkspace({
     try {
       const doc = JSON.parse(await file.text()) as Schematic;
       if (!Array.isArray(doc.components)) throw new Error("Arquivo sem componentes");
-      replace({ ...emptySchematic(), ...doc });
+      replace(upgradeSchematic({ ...emptySchematic(), ...doc }));
     } catch (e) {
       setError(`Arquivo inválido: ${(e as Error).message}`);
     }
@@ -1520,6 +1525,16 @@ function AnalysesPanel({
               />
             ))}
           </div>
+          {a.kind === "tran" && (
+            <TranSuggestionBox
+              sch={sch}
+              analysis={a}
+              labels={Object.fromEntries(
+                (library.analyses.tran?.params ?? []).map((d) => [d.name, d.label]),
+              )}
+              onApply={(params) => update(i, { ...a, params: { ...a.params, ...params } })}
+            />
+          )}
         </fieldset>
       ))}
       <div className="row">
@@ -1554,6 +1569,132 @@ function AnalysesPanel({
       <p className="small muted">
         Fourier/FFT, THD, Bode e medidas são calculados sobre os resultados (aba de resultados).
         Notação SPICE: 4.7k, 10u, 1meg (m = mili, meg = mega).
+      </p>
+    </div>
+  );
+}
+
+/** Suggested .tran settings computed from the circuit; "Aplicar" copies them into the fields,
+ * which stay editable. */
+function TranSuggestionBox({
+  sch,
+  analysis,
+  labels,
+  onApply,
+}: {
+  sch: Schematic;
+  analysis: Analysis;
+  labels: Record<string, string>;
+  onApply: (params: Record<string, string>) => void;
+}) {
+  const [sug, setSug] = useState<TranSuggestion | null>(null);
+  const [failure, setFailure] = useState("");
+  // only the circuit matters, not the analysis fields being typed
+  const circuitKey = useMemo(
+    () =>
+      JSON.stringify({
+        c: sch.components,
+        w: sch.wires,
+        l: sch.labels,
+      }),
+    [sch.components, sch.wires, sch.labels],
+  );
+  const latest = useRef(sch);
+  latest.current = sch;
+  useEffect(() => {
+    let alive = true;
+    const t = window.setTimeout(() => {
+      schematicApi
+        .tranSuggestion(latest.current)
+        .then((r) => {
+          if (!alive) return;
+          setSug(r);
+          setFailure("");
+        })
+        .catch((e: Error) => {
+          if (!alive) return;
+          setSug(null);
+          setFailure(e.message);
+        });
+    }, 400);
+    return () => {
+      alive = false;
+      window.clearTimeout(t);
+    };
+  }, [circuitKey]);
+  if (failure) return <p className="small muted">Sugestão indisponível: {failure}</p>;
+  if (!sug) return <p className="small muted">Calculando a sugestão para este circuito…</p>;
+  const names = ["tstop", "tstep", "tstart", "tmax", "uic"];
+  // a blank field means its default: start 0, UIC "não"
+  const DEFAULTS: Record<string, string> = { tstart: "0", uic: "não" };
+  const current = (n: string) => (analysis.params[n] ?? "").trim() || (DEFAULTS[n] ?? "");
+  const same = names.every((n) => current(n) === (sug.params[n] ?? ""));
+  const show = (n: string, v: string) =>
+    n === "uic" || !v ? v : `${v.replace(/u$/, "µ").replace(".", ",")}s`;
+  return (
+    <div className="tran-suggestion">
+      <div className="row">
+        <b>Sugestão para este circuito</b>
+        <button className="small-btn" disabled={same} onClick={() => onApply(sug.params)}>
+          {same ? "Sugestão aplicada" : "Aplicar sugestão"}
+        </button>
+      </div>
+      <table className="params">
+        <thead>
+          <tr>
+            <th>Parâmetro</th>
+            <th>Sugerido</th>
+            <th>Atual</th>
+            <th />
+          </tr>
+        </thead>
+        <tbody>
+          {names.map((n) => {
+            const proposed = sug.params[n] ?? "";
+            const now = current(n);
+            return (
+              <tr key={n}>
+                <td>{labels[n] ?? n}</td>
+                <td className="num">{proposed ? show(n, proposed) : "padrão do ngspice"}</td>
+                <td className="num">
+                  {now ? show(n, now) : n === "tstep" ? "tempo final/1000" : "padrão do ngspice"}
+                </td>
+                <td>
+                  {now !== proposed && (
+                    <button
+                      className="secondary small-btn"
+                      title="Copiar só este valor para o campo"
+                      onClick={() => onApply({ [n]: proposed })}
+                    >
+                      usar
+                    </button>
+                  )}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+      <ul className="small">
+        {sug.notes.map((n) => (
+          <li key={n}>{n}</li>
+        ))}
+      </ul>
+      {sug.warnings.length > 0 && (
+        <ul className="warnings small">
+          {sug.warnings.map((w) => (
+            <li key={w}>{w}</li>
+          ))}
+        </ul>
+      )}
+      <details>
+        <summary className="small">Como foi calculado</summary>
+        <CalcSteps steps={sug.steps} />
+      </details>
+      <p className="small muted">
+        A sugestão é um ponto de partida: os campos acima continuam editáveis. Com o passo máximo em
+        branco, o simulador já usa o valor sugerido quando o padrão do ngspice pularia os sinais
+        rápidos.
       </p>
     </div>
   );

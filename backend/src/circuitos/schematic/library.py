@@ -209,12 +209,19 @@ SYMBOLS: dict[str, Symbol] = {
             (PinDef("p1", -2, -2), PinDef("p2", -2, 2), PinDef("s1", 2, -2), PinDef("s2", 2, 2)),
             (
                 ParamDef("lp", "Indutância do primário", "H", "100m"),
-                ParamDef("n", "Relação Ns/Np", "", "1"),
+                ParamDef(
+                    "ratio",
+                    "Relação de espiras Np/Ns",
+                    "",
+                    "1",
+                    help="Np/Ns = Vp/Vs: 10 abaixa 10 vezes. Ls = Lp/(Np/Ns)²",
+                ),
                 ParamDef("k", "Acoplamento", "", "0.999"),
                 ParamDef("rp", "Resistência do primário", "Ω", "10m"),
                 ParamDef("rs", "Resistência do secundário", "Ω", "10m"),
             ),
-            description="Dois indutores acoplados; pontos em p1 e s1; 1 GΩ entre p2 e s2",
+            description="Dois indutores acoplados; pontos em p1 e s1; 1 GΩ entre p2 e s2. "
+            "Relação de espiras Np/Ns (circuitos salvos com o antigo Ns/Np são convertidos).",
             ref_prefix="T",
         ),
         # transformers sized by their nameplate (Vp, Vs, S) -------------------------------

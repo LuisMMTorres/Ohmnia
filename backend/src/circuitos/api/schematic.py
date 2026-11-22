@@ -17,12 +17,14 @@ from circuitos.cosim.firmware import engine_status
 from circuitos.cosim.firmware_image import AVR_FLASH, FIRMWARE_BOARDS, FirmwareImage, load_image
 from circuitos.reports import kicad
 from circuitos.schematic import stress
+from circuitos.schematic.drive_symbols import max_step as drive_max_step
 from circuitos.schematic.importer import import_netlist
 from circuitos.schematic.library import ANALYSES, SYMBOLS
 from circuitos.schematic.model import Schematic
-from circuitos.schematic.netlist import Netlist, SchematicError
+from circuitos.schematic.netlist import Netlist, SchematicError, connectivity
 from circuitos.schematic.parts import led_colour
 from circuitos.schematic.runs import SchematicPlan
+from circuitos.schematic.transient import suggest_tran
 from circuitos.simulation.jobs import JobQueue
 from circuitos.simulation.results import SimulationRequest
 
@@ -314,6 +316,41 @@ def netlist(request: Request, body: SchematicIn) -> NetlistOut:
         return _netlist_out(plan.nominal())
     except (SchematicError, ValueError, CircuitosError) as exc:
         raise HTTPException(422, str(exc)) from exc
+
+
+class TimeValue(BaseModel):
+    value: float
+    unit: str = "s"
+
+
+class TranSuggestionOut(BaseModel):
+    params: dict[str, str]  # editor fields, SPICE notation
+    tstop: TimeValue
+    tstep: TimeValue
+    tmax: TimeValue | None
+    notes: list[str]
+    warnings: list[str]
+    steps: list[CalcStep]
+
+
+@router.post("/tran-suggestion")
+def tran_suggestion(body: SchematicIn) -> TranSuggestionOut:
+    """Suggested transient settings (final time, output and maximum step) for the circuit."""
+    sch = body.schematic
+    try:
+        conn = connectivity(sch)
+        sug = suggest_tran(sch, conn.pin_nodes, drive_max_step(sch.components))
+    except (SchematicError, ValueError, CircuitosError) as exc:
+        raise HTTPException(422, str(exc)) from exc
+    return TranSuggestionOut(
+        params=sug.params,
+        tstop=TimeValue(value=sug.tstop),
+        tstep=TimeValue(value=sug.tstep),
+        tmax=TimeValue(value=sug.tmax) if sug.tmax is not None else None,
+        notes=sug.notes,
+        warnings=sug.warnings,
+        steps=sug.steps,
+    )
 
 
 @router.post("/kicad.net")

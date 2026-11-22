@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { configureSource, sourceSettings, spiceNumber } from "./sourceConfig";
+import {
+  configureSource,
+  peakToPeakFromRms,
+  rmsFromPeakToPeak,
+  sourceSettings,
+  spiceNumber,
+} from "./sourceConfig";
 import type { Component } from "./types";
 const source: Component = {
   id: "v1",
@@ -13,26 +19,34 @@ const source: Component = {
   params: { dc: "5" },
 };
 describe("source waveform translation", () => {
-  it("converts peak-to-peak amplitude to SPICE sine peak amplitude", () => {
+  it("converts the RMS value to the SPICE sine peak amplitude (Vp = Vrms·√2)", () => {
     const sine = configureSource(source, {
       waveform: "sine",
       frequency: 2000,
-      peakToPeak: 8,
+      rms: 127,
       offset: -1,
       duty: 50,
     });
-    expect(sine.params.amplitude).toBe("4");
+    expect(Number(sine.params.amplitude)).toBeCloseTo(127 * Math.SQRT2, 9);
+    expect(sine.params.bench_vrms).toBe("127");
     expect(sine.params.freq).toBe("2000");
     expect(sine.params.offset).toBe("-1");
     expect(sine.kind).toBe("vsin");
     expect(sine.id).toBe(source.id);
   });
   it("preserves square duty including edge times and triangular slopes", () => {
-    const s = { waveform: "square" as const, frequency: 1000, peakToPeak: 4, offset: 1, duty: 25 };
+    // square, D = 25 %: Vrms = Vpp·√(D(1−D)) → Vpp = 4 V for Vrms = √3 V
+    const s = {
+      waveform: "square" as const,
+      frequency: 1000,
+      rms: Math.sqrt(3),
+      offset: 1,
+      duty: 25,
+    };
     const square = configureSource(source, s);
     expect(Number(square.params.width) + Number(square.params.rise)).toBeCloseTo(0.00025, 12);
-    expect(square.params.v1).toBe("-1");
-    expect(square.params.v2).toBe("3");
+    expect(Number(square.params.v1)).toBeCloseTo(-1, 12);
+    expect(Number(square.params.v2)).toBeCloseTo(3, 12);
     const triangle = configureSource({ ...source, kind: "idc" }, { ...s, waveform: "triangle" });
     expect(triangle.kind).toBe("ipulse");
     expect(triangle.params.width).toBe("0");
@@ -41,6 +55,22 @@ describe("source waveform translation", () => {
     expect(sourceSettings(triangle).waveform).toBe("triangle");
     expect(() => configureSource(source, { ...s, duty: 100 })).toThrow();
     expect(() => configureSource(source, { ...s, frequency: 0 })).toThrow();
+  });
+  it("reads circuits saved with the peak-to-peak field as RMS", () => {
+    const legacy = {
+      ...source,
+      kind: "vsin",
+      params: { bench_vpp: "360", freq: "60", amplitude: "180" },
+    };
+    expect(sourceSettings(legacy).rms).toBeCloseTo(127.279, 3);
+    const again = configureSource(legacy, sourceSettings(legacy));
+    expect(Number(again.params.amplitude)).toBeCloseTo(180, 3);
+    expect(again.params.bench_vpp).toBeUndefined();
+    expect(
+      sourceSettings({ ...source, kind: "vsin", params: { amplitude: "10" } }).rms,
+    ).toBeCloseTo(7.07107, 5);
+    expect(peakToPeakFromRms("triangle", 1)).toBeCloseTo(2 * Math.sqrt(3), 12);
+    expect(rmsFromPeakToPeak("square", 2)).toBeCloseTo(1, 12);
   });
   it("reads engineering notation in legacy sources", () => {
     expect(

@@ -44,6 +44,7 @@ from circuitos.schematic.library import (
 )
 from circuitos.schematic.model import Analysis, Component, NetRef, Point, Probe, Schematic
 from circuitos.schematic.sensor_symbols import DIGITAL_SENSOR_KINDS
+from circuitos.schematic.transient import MAX_STEPS, show_time, suggest_tran
 from circuitos.schematic.values import format_value, is_expression, parse_value, try_parse
 
 GROUND_NAMES = {"0", "gnd"}
@@ -291,7 +292,40 @@ def _flag(text: str) -> bool:
     return text.strip().lower() in ("sim", "yes", "true", "1", "uic")
 
 
-def analysis_card(a: Analysis, sch: Schematic, conn: Connectivity) -> str:
+def _auto_tmax(
+    sch: Schematic,
+    conn: Connectivity,
+    tstep: str,
+    tstop: str,
+    tstart: str,
+    cap: float | None,
+    warnings: list[str] | None,
+) -> str:
+    """TMAX for a blank field: the circuit's suggestion when ngspice's own limit,
+    min(TSTEP, (TSTOP − TSTART)/50), would skip its fastest signal (a 1 kHz sine in a 100 ms run
+    gets only 10 points per period); otherwise blank, as before."""
+    step, stop, start = try_parse(tstep), try_parse(tstop), try_parse(tstart or "0")
+    if step is None or stop is None or start is None or stop <= start:
+        return ""
+    sug = suggest_tran(sch, conn.pin_nodes, cap)
+    implicit = min(step, (stop - start) / 50)
+    if sug.tmax is None or sug.tmax >= implicit:
+        return ""
+    if stop / sug.tmax > MAX_STEPS:  # too fine for this run: keep ngspice's default
+        return ""
+    text = format_value(sug.tmax, 3)
+    if warnings is not None:
+        warnings.append(
+            f"Passo máximo em branco: usado {show_time(sug.tmax)}, calculado pelo circuito "
+            f"(sem ele o ngspice usaria {show_time(implicit)} e pularia os sinais "
+            "rápidos). Veja a sugestão na aba Análises."
+        )
+    return text
+
+
+def analysis_card(
+    a: Analysis, sch: Schematic, conn: Connectivity, warnings: list[str] | None = None
+) -> str:
     p = {k: v.strip() for k, v in a.params.items() if v is not None}
     if a.kind == "op":
         return ".op"
@@ -304,6 +338,8 @@ def analysis_card(a: Analysis, sch: Schematic, conn: Connectivity) -> str:
         card = f".tran {tstep} {tstop}"
         tstart, tmax = p.get("tstart", ""), p.get("tmax", "")
         cap = drive_max_step(sch.components)
+        if not tmax:
+            tmax = _auto_tmax(sch, conn, tstep, tstop, tstart, cap, warnings)
         if cap is not None and (try_parse(tmax) or math.inf) > cap:
             tmax = format_value(cap, 4)
         if tstart or tmax:
@@ -520,12 +556,20 @@ def _emit(comp: Component, n: list[str], ctx: _Ctx) -> list[str]:
         mid = f"{ref}_rl".lower()
         return [f"R_{ref} {n[0]} {mid} {v('r')}", f"L_{ref} {mid} {n[1]} {v('l')}"]
     if k == "transformer":
-        lp, ratio = v("lp"), v("n")
-        lpv, nv = try_parse(lp), try_parse(ratio)
-        if lpv is not None and nv is not None:
-            ls = format_value(lpv * nv * nv, 9)
+        lp = v("lp")
+        # Np/Ns since 2026-11; circuits saved before keep Ns/Np in "n": Ls = Lp·(Ns/Np)²
+        legacy = (
+            not (comp.params.get("ratio") or "").strip() and (comp.params.get("n") or "").strip()
+        )
+        ratio = v("n") if legacy else v("ratio")
+        lpv, rv = try_parse(lp), try_parse(ratio)
+        if lpv is not None and rv is not None:
+            if rv <= 0:
+                raise SchematicError(f"{ref}: a relação de espiras deve ser positiva")
+            ls = format_value(lpv * rv * rv if legacy else lpv / (rv * rv), 9)
         else:
-            ls = "{" + f"({lp.strip('{}')})*({ratio.strip('{}')})**2" + "}"
+            op = "*" if legacy else "/"
+            ls = "{" + f"({lp.strip('{}')}){op}({ratio.strip('{}')})**2" + "}"
         a, b = f"{ref}_p".lower(), f"{ref}_s".lower()
         return [
             f"R_{ref}_p {n[0]} {a} {v('rp')}",
@@ -922,7 +966,7 @@ def build_netlist(
     active = [a for a in sch.analyses if a.enabled]
     if not active:
         raise SchematicError("Escolha pelo menos uma análise")
-    lines += [analysis_card(a, sch, conn) for a in active]
+    lines += [analysis_card(a, sch, conn, warnings) for a in active]
     lines.append(".end")
     return Netlist(
         text="\n".join(lines) + "\n",

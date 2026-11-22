@@ -1187,6 +1187,17 @@ export interface DamageOut {
   reviewed: boolean;
 }
 
+export interface TranSuggestion {
+  /** Editor fields in SPICE notation: tstop, tstep, tstart, tmax, uic. */
+  params: Record<string, string>;
+  tstop: { value: number; unit: string };
+  tstep: { value: number; unit: string };
+  tmax: { value: number; unit: string } | null;
+  notes: string[];
+  warnings: string[];
+  steps: CalcStep[];
+}
+
 export interface NetlistOut {
   indicators?: Record<string, IndicatorOut>;
   limits?: LimitOut[];
@@ -1279,6 +1290,11 @@ export const schematicApi = {
       body: JSON.stringify({ job_id, limits }),
     }),
   kicad: (schematic: Schematic) => postBlob("/schematic/kicad.net", { schematic }),
+  tranSuggestion: (schematic: Schematic) =>
+    request<TranSuggestion>("/schematic/tran-suggestion", {
+      method: "POST",
+      body: JSON.stringify({ schematic }),
+    }),
   importNetlist: (netlist: string) =>
     request<{ schematic: Schematic; warnings: string[] }>("/schematic/import", {
       method: "POST",

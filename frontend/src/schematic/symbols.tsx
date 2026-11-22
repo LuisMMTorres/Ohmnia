@@ -823,11 +823,15 @@ export function valueText(c: Component, sym: SymbolDef | undefined): string {
     c.params[name] ?? sym?.params.find((d) => d.name === name)?.default ?? "";
   if (c.kind in UNIT) return `${p("value")}${UNIT[c.kind]}`;
   if (c.kind === "vdc" || c.kind === "idc") return `${p("dc")}${c.kind[0] === "v" ? "V" : "A"}`;
-  if (c.kind.endsWith("sin")) return `${p("amplitude")} @ ${p("freq")}Hz`;
+  if (c.kind.endsWith("sin"))
+    return c.params.bench_vrms
+      ? `${c.params.bench_vrms}${c.kind[0] === "v" ? "V" : "A"} rms @ ${p("freq")}Hz`
+      : `${p("amplitude")} @ ${p("freq")}Hz`;
   if (c.kind.endsWith("pulse")) return `${p("v1")}→${p("v2")}, T ${p("period")}`;
   if (c.kind === "v3ph") return `${p("vrms")}V ${p("freq")}Hz`;
   if (c.kind === "rl_load") return `${p("r")}Ω + ${p("l")}H`;
-  if (c.kind === "transformer") return `1:${p("n")}`;
+  if (c.kind === "transformer")
+    return c.params.n && !c.params.ratio ? `1:${c.params.n}` : `${p("ratio")}:1`;
   if (c.kind === "transformer_1ph") return `${p("vp")}/${p("vs")}V ${p("sn")}VA`;
   if (c.kind === "transformer_1ph_4") return `2×${p("vp")}/2×${p("vs")}V ${p("sn")}VA`;
   if (c.kind === "transformer_3ph_open") return `${p("vp")}/${p("vs")}V por bobina`;

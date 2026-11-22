@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
+import { formatEng } from "../format";
 import {
   configureSource,
+  peakToPeakFromRms,
   sourceSettings,
   type SourceSettings,
   type Waveform,
@@ -97,15 +99,29 @@ export function SourceControls({
       </label>
       {settings.waveform !== "dc" && (
         <>
-          <label>
-            Amplitude pico a pico ({unit})
+          <label
+            title={
+              settings.waveform === "sine"
+                ? "Valor eficaz da senoide: o pico é Vrms·√2"
+                : "Valor eficaz da parte alternada (sem o offset)"
+            }
+          >
+            {unit === "V" ? "Tensão" : "Corrente"} eficaz, RMS ({unit})
             <input
               type="number"
               min={0}
               step="any"
-              value={settings.peakToPeak}
-              onChange={(e) => apply({ ...settings, peakToPeak: e.target.valueAsNumber })}
+              value={settings.rms}
+              onChange={(e) => apply({ ...settings, rms: e.target.valueAsNumber })}
             />
+            <span className="small muted">
+              {(() => {
+                const vpp = peakToPeakFromRms(settings.waveform, settings.rms, settings.duty);
+                return Number.isFinite(vpp)
+                  ? `pico ${formatEng(vpp / 2, unit, 4)} · pico a pico ${formatEng(vpp, unit, 4)}`
+                  : "";
+              })()}
+            </span>
           </label>
           <label>
             Frequência (Hz)
