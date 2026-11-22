@@ -161,3 +161,12 @@ def test_split_vectors_keeps_differential_names():
     from circuitos.api.results import split_vectors
 
     assert split_vectors("v(p), V(a,b),i(v1)") == ["v(p)", "v(a,b)", "i(v1)"]
+
+
+def test_tran_suggestion(client):
+    r = client.post("/api/v1/schematic/tran-suggestion", json={"schematic": rc_schematic()})
+    assert r.status_code == 200, r.text
+    out = r.json()
+    assert set(out["params"]) == {"tstop", "tstep", "tstart", "tmax", "uic"}
+    assert out["tstop"]["unit"] == "s" and out["tstop"]["value"] > 0
+    assert out["steps"] and out["notes"]

@@ -214,3 +214,16 @@ def test_zero_tran_step_is_replaced():
     b.analysis("tran", tstep="0", tstop="3m")
     text = build_netlist(b.sch, {}).text
     assert ".tran 3u 3m" in text
+
+
+def test_transformer_turns_ratio_is_np_over_ns():
+    """Ls = Lp/(Np/Ns)²: 100 mH and Np/Ns = 10 give 1 mH; old circuits saved Ns/Np in "n"."""
+    b = Builder()
+    b.add("vsin", "V1", ["p", "0"], amplitude="10", freq="60")
+    b.add("transformer", "T1", ["p", "0", "s", "0"], lp="100m", ratio="10")
+    b.add("resistor", "R1", ["s", "0"], value="1k")
+    b.analysis("tran", tstop="50m")
+    assert "L_T1_s t1_s 0 1m\n" in build_netlist(b.sch).text
+    comp = b.sch.components[1]
+    comp.params = {"lp": "100m", "n": "0.1"}  # legacy Ns/Np
+    assert "L_T1_s t1_s 0 1m\n" in build_netlist(b.sch).text
