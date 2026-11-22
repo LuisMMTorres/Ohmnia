@@ -2,6 +2,7 @@
 import type { ReactNode } from "react";
 import { BAND_COLORS, P } from "./geometry";
 import type { PackageSpec, PartView } from "./types";
+import type { Glow } from "../schematic/symbols";
 
 type Pt = [number, number];
 
@@ -15,6 +16,10 @@ interface Props {
   showLabels?: boolean;
   /** Body colour of a LED (its emitted colour). */
   color?: string;
+  /** Simulated brightness of a LED (halo around the dome). */
+  glow?: Glow;
+  /** Push-button held pressed (true), released (false); undefined for other parts. */
+  pressed?: boolean;
 }
 
 const deg = (a: Pt, b: Pt) => (Math.atan2(b[1] - a[1], b[0] - a[0]) * 180) / Math.PI;
@@ -45,7 +50,18 @@ function labelOf(view: PartView | undefined, pin: string): string {
   return /^\d+$/.test(pin) ? `${pin} ${l}` : l;
 }
 
-export function PackageArt({ pkg, legs, view, refName, selected, bad, showLabels, color }: Props) {
+export function PackageArt({
+  pkg,
+  legs,
+  view,
+  refName,
+  selected,
+  bad,
+  showLabels,
+  color,
+  glow,
+  pressed,
+}: Props) {
   const pins = pkg.pins.filter((p) => legs[p]);
   const pts = pins.map((p) => legs[p]!);
   if (!pts.length) return null;
@@ -150,7 +166,25 @@ export function PackageArt({ pkg, legs, view, refName, selected, bad, showLabels
       body = (
         <g transform={`translate(${center[0]} ${center[1]}) rotate(${angle})`}>
           <rect x={-w / 2} y={-w / 2 - 2} width={w} height={w * 0.8} rx={2} className="bb-tact" />
-          <circle cx={0} cy={-w * 0.1 - 2} r={w * 0.22} className="bb-tact-cap" />
+          <circle
+            cx={0}
+            cy={-w * 0.1 - 2}
+            r={w * (pressed ? 0.18 : 0.22)}
+            className={`bb-tact-cap${pressed ? " pressed" : ""}`}
+          />
+          {pressed !== undefined && (
+            // the whole button top is clickable: press / release it
+            <rect
+              data-actuator={refName}
+              x={-w / 2}
+              y={-w / 2 - 2}
+              width={w}
+              height={w * 0.8}
+              className="bb-actuator"
+            >
+              <title>{`${refName}: ${pressed ? "apertado — clique para soltar" : "solto — clique para apertar"}`}</title>
+            </rect>
+          )}
         </g>
       );
     } else if (pkg.body === "led") {
@@ -164,6 +198,16 @@ export function PackageArt({ pkg, legs, view, refName, selected, bad, showLabels
             d={`M ${-w / 2 - 2} -2 H ${w / 2 - 1} V -5 H ${-w / 2 - 2} Z`}
             style={{ fill, stroke: "#00000055", strokeWidth: 0.8 }}
           />
+          {glow && glow.level > 0.02 && !glow.burnt && (
+            <circle
+              cx={0}
+              cy={-10}
+              r={w * (0.7 + 0.5 * Math.min(glow.level, 1))}
+              fill={glow.color}
+              fillOpacity={0.15 + 0.6 * Math.min(glow.level, 1)}
+              className="bb-glow"
+            />
+          )}
           <path
             d={`M ${-w / 2 + 1} -5 V -10 A ${w / 2 - 1} ${w / 2 - 1} 0 0 1 ${w / 2 - 1} -10 V -5 Z`}
             style={{ fill, fillOpacity: 0.75, stroke: "#00000066", strokeWidth: 0.8 }}

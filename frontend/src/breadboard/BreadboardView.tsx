@@ -1,9 +1,15 @@
 // Breadboard view: the circuit of the schematic assembled on an 830-point breadboard.
-import { GLOW_COLORS } from "../schematic/symbols";
+import { GLOW_COLORS, type Glow } from "../schematic/symbols";
+import {
+  MANUAL_SWITCH_KINDS,
+  stateDefault,
+  switchPosition,
+  toggleSwitch,
+} from "../schematic/switches";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { MouseEvent as ReactMouseEvent } from "react";
 import { breadboardApi } from "../api";
-import type { Schematic } from "../schematic/types";
+import type { Component, Schematic, SymbolDef } from "../schematic/types";
 import {
   allHoles,
   BOARD_GAP,
@@ -95,6 +101,12 @@ interface Props {
   motion?: Record<string, Motion>;
   /** Parts that would burn in the last simulation, with the reason (tooltip). */
   burnt?: Record<string, string>;
+  /** Brightness of each LED after the last simulation. */
+  glows?: Record<string, Glow>;
+  /** A push-button was clicked: the schematic with its new position (simulate it again). */
+  onOperate?: (next: Schematic, comp: Component) => void;
+  /** Library symbols (defaults of the push-button state). */
+  library?: Record<string, SymbolDef>;
 }
 
 export function BreadboardView({
@@ -106,6 +118,9 @@ export function BreadboardView({
   initialGuide,
   motion,
   burnt,
+  glows,
+  onOperate,
+  library,
 }: Props) {
   const bb: Breadboard = schematic.breadboard ?? emptyBreadboard();
   const board = spec.board;
@@ -250,6 +265,7 @@ export function BreadboardView({
   };
 
   const onClick = (e: ReactMouseEvent<SVGSVGElement>) => {
+    if ((e.target as Element).closest("[data-actuator]")) return; // handled on mouse down
     const hole =
       (e.target as Element).closest("[data-hole]")?.getAttribute("data-hole") ??
       nearestHole(board, ...toSvg(e));
@@ -895,6 +911,11 @@ export function BreadboardView({
               );
             }
             const legs = Object.fromEntries(Object.entries(p.legs).map(([pin, h]) => [pin, xy(h)]));
+            const comp = schematic.components.find((c) => c.ref === p.ref);
+            const switchState =
+              comp && MANUAL_SWITCH_KINDS.has(comp.kind)
+                ? switchPosition(comp, stateDefault(library?.[comp.kind])) === "pressed"
+                : undefined;
             return (
               <g
                 key={p.ref}
@@ -902,6 +923,21 @@ export function BreadboardView({
                 onMouseDown={(e) => {
                   if (readOnly) return;
                   e.stopPropagation();
+                  if (
+                    comp &&
+                    switchState !== undefined &&
+                    tool.kind === "select" &&
+                    (e.target as Element).closest("[data-actuator]")
+                  ) {
+                    const t = toggleSwitch(comp, stateDefault(library?.[comp.kind]));
+                    const next = {
+                      ...schematic,
+                      components: schematic.components.map((c) => (c.id === t.id ? t : c)),
+                    };
+                    if (onOperate) onOperate(next, t);
+                    else onChange(next);
+                    return;
+                  }
                   setSel({ kind: "part", ref: p.ref });
                   if (tool.kind !== "select" || !hover) return;
                   const leg =
@@ -919,11 +955,9 @@ export function BreadboardView({
                   selected={sel?.kind === "part" && sel.ref === p.ref}
                   bad={badRefs.has(p.ref)}
                   showLabels={(sel?.kind === "part" && sel.ref === p.ref) || pkg.style === "inline"}
-                  color={
-                    GLOW_COLORS[
-                      schematic.components.find((c) => c.ref === p.ref)?.params.color ?? ""
-                    ]
-                  }
+                  color={GLOW_COLORS[comp?.params.color ?? ""]}
+                  glow={glows?.[p.ref]}
+                  pressed={switchState}
                 />
                 {burnt?.[p.ref] && <BurntMark points={Object.values(legs)} title={burnt[p.ref]!} />}
               </g>

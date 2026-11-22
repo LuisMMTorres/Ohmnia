@@ -43,6 +43,13 @@ import { BenchSupply } from "../breadboard/BenchSupply";
 import { nextRef } from "../schematic/geometry";
 import { autoWire } from "../schematic/editing";
 import { glowFrom, glowText } from "../schematic/indicators";
+import {
+  MANUAL_SWITCH_KINDS,
+  stateDefault,
+  switchPosition,
+  switchText,
+  toggleSwitch,
+} from "../schematic/switches";
 import { damageByRef } from "../schematic/damage";
 import { DamageAlert } from "../schematic/DamageAlert";
 import type { Glow } from "../schematic/symbols";
@@ -450,16 +457,24 @@ export function SchematicWorkspace({
     });
   };
   const running = job?.state === "queued" || job?.state === "running";
-  const simulate = async () => {
+  // only the last simulation updates the page (a click on a button may start a new one before
+  // the previous finished)
+  const stopWatch = useRef<(() => void) | null>(null);
+  const simulate = async (target: Schematic = sch, opts: { stay?: boolean } = {}) => {
+    stopWatch.current?.();
+    stopWatch.current = null;
+    if (job && (job.state === "queued" || job.state === "running")) void api.cancel(job.id);
     setError(null);
     setJob(null);
     try {
-      const hasScopeWiring = Object.keys(sch.bench_scope_connections ?? {}).length > 0;
-      const scopeResolved = hasScopeWiring ? await breadboardApi.resolve(sch) : resolved;
+      const hasScopeWiring = Object.keys(target.bench_scope_connections ?? {}).length > 0;
+      const scopeResolved = hasScopeWiring ? await breadboardApi.resolve(target) : resolved;
       const scopeSpec = hasScopeWiring ? (bbSpec ?? (await breadboardApi.spec())) : bbSpec;
       const circuit =
-        scopeSpec && scopeResolved ? syncScopeProbes(sch, scopeSpec.board, scopeResolved) : sch;
-      if (circuit !== sch) change(circuit);
+        scopeSpec && scopeResolved
+          ? syncScopeProbes(target, scopeSpec.board, scopeResolved)
+          : target;
+      if (circuit !== target) change(circuit);
       if (view === "protoboard") {
         const assembly = await breadboardApi.check(circuit);
         if (!assembly.ok)
@@ -474,11 +489,24 @@ export function SchematicWorkspace({
       const r = await schematicApi.simulate(circuit);
       setWarnings(r.warnings);
       setJob({ id: r.job_id, state: "queued", progress: 0, message: "na fila" });
-      activateStep("results");
-      watchJob(r.job_id, (j) => setJob(j));
+      if (!opts.stay) activateStep("results");
+      stopWatch.current = watchJob(r.job_id, (j) => setJob(j));
     } catch (e) {
       setError((e as Error).message);
     }
+  };
+  // a push-button clicked in the drawing: keep the new position and simulate again at once, so
+  // LEDs, lamps and motors follow it
+  const operate = (next: Schematic, comp: Component) => {
+    change(next);
+    const sym = symbols[comp.kind];
+    const text = `${comp.ref}: ${switchText(comp, stateDefault(sym))}`;
+    if (!next.analyses.length) {
+      setNotice(`${text}. Escolha uma análise e clique em Simular para ver o efeito.`);
+      return;
+    }
+    setNotice(`${text}. Simulando de novo…`);
+    void simulate(next, { stay: true });
   };
   const showNetlist = async () => {
     try {
@@ -875,6 +903,9 @@ export function SchematicWorkspace({
               resolved={resolved}
               motion={motion}
               burnt={burnt}
+              glows={glows}
+              onOperate={operate}
+              library={symbols}
             />
           ) : (
             <div className={`schematic-layout${libraryOpen ? " library-open" : ""}`}>
@@ -943,6 +974,7 @@ export function SchematicWorkspace({
                 glows={glows}
                 burnt={burnt}
                 onNotice={setNotice}
+                onOperate={operate}
               />
 
               <aside className="panel properties" aria-label="Propriedades">
@@ -993,6 +1025,33 @@ export function SchematicWorkspace({
                       {glowText(netlist.indicators[selectedComp.ref]!, glows[selectedComp.ref]!)}
                     </p>
                   )}
+                {selectedComp && MANUAL_SWITCH_KINDS.has(selectedComp.kind) && (
+                  <p className="small switch-status" role="status">
+                    <button
+                      type="button"
+                      className="secondary small-btn"
+                      onClick={() => {
+                        const t = toggleSwitch(
+                          selectedComp,
+                          stateDefault(symbols[selectedComp.kind]),
+                        );
+                        operate(
+                          {
+                            ...sch,
+                            components: sch.components.map((x) => (x.id === t.id ? t : x)),
+                          },
+                          t,
+                        );
+                      }}
+                    >
+                      {switchPosition(selectedComp, stateDefault(symbols[selectedComp.kind])) ===
+                      "pressed"
+                        ? "Soltar"
+                        : "Apertar"}
+                    </button>{" "}
+                    {switchText(selectedComp, stateDefault(symbols[selectedComp.kind]))}
+                  </p>
+                )}
                 {selectedComp && burnt[selectedComp.ref] && (
                   <p className="small error" role="status">
                     {burnt[selectedComp.ref]}
