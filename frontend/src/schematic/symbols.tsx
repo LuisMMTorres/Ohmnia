@@ -1,6 +1,7 @@
 /** SVG drawings of the library symbols, in local coordinates (grid units × GRID px). */
 import type { ReactNode } from "react";
 import { GRID, pinDefs } from "./geometry";
+import { switchPosition, switchText, stateDefault } from "./switches";
 import type { Component, SymbolDef } from "./types";
 
 const G = GRID;
@@ -297,6 +298,21 @@ function thyristor(triac: boolean): ReactNode[] {
     ),
   );
   return out;
+}
+
+/**
+ * Clickable area of a push-button (the actuator and the moving contact): a click there toggles
+ * the button instead of selecting it. Filled when the button is held pressed.
+ */
+function actuator(c: Component, sym: SymbolDef | undefined, top: number): ReactNode {
+  const pressed = switchPosition(c, stateDefault(sym)) === "pressed";
+  return (
+    <g key="actuator" data-actuator={c.id} className={`actuator${pressed ? " pressed" : ""}`}>
+      <title>{`${c.ref}: ${switchText(c, stateDefault(sym))}`}</title>
+      <rect x={u(-0.7)} y={u(top - 0.35)} width={u(1.4)} height={u(0.35)} rx={u(0.1)} />
+      <rect className="actuator-hit" x={u(-1.2)} y={u(top - 0.6)} width={u(2.4)} height={u(1.6)} />
+    </g>
+  );
 }
 
 /** Simulated brightness of a LED or lamp: 0 (off) … 1 (rated), above 1 overloaded. */
@@ -642,19 +658,27 @@ export function SymbolBody({
       <rect key="box" x={u(-1.2)} y={u(0.6)} width={u(2.4)} height={u(0.6)} className="thin" />,
       text(-0.6, 0.9, "+", 0.5, "pp"),
     ];
-  else if (k === "tact_switch" || k === "push_nc") {
-    // IEC 60617 push-button: contacts, the moving bar and the actuator (T)
+  else if (k === "tact_switch" || k === "push_nc" || k === "switch_manual") {
+    // IEC 60617 push-button: contacts, the moving bar and the actuator (T). The bar is drawn
+    // where the clicked state puts it: an NO button closes when pressed, an NC one opens.
     const nc = k === "push_nc";
+    const pressed = switchPosition(c, stateDefault(sym)) === "pressed";
+    const closed = nc ? !pressed : pressed;
+    const bar = closed ? 0.15 : -0.5;
+    const top = bar - 0.8;
     body = [
       line(-2, 0, -1, 0, "a"),
       line(1, 0, 2, 0, "b"),
       circle(-1, 0, 0.12, "c1"),
       circle(1, 0, 0.12, "c2"),
-      line(-1.1, nc ? 0.15 : -0.5, 1.1, nc ? 0.15 : -0.5, "bar"),
-      line(0, nc ? 0.15 : -0.5, 0, -1.3, "stem"),
-      line(-0.5, -1.3, 0.5, -1.3, "push"),
+      line(-1.1, bar, 1.1, bar, "bar"),
+      line(0, bar, 0, top, "stem"),
+      line(-0.5, top, 0.5, top, "push"),
+      actuator(c, sym, top),
     ];
-  } else if (k === "tact_switch4")
+  } else if (k === "tact_switch4") {
+    const pressed = switchPosition(c, stateDefault(sym)) === "pressed";
+    const bar = pressed ? 0 : -0.5;
     body = [
       line(-2, -1, -1, -1, "l1"),
       line(-2, 1, -1, 1, "l2"),
@@ -664,11 +688,12 @@ export function SymbolBody({
       line(1, -1, 1, 1, "j34"),
       line(-1, 0, -0.6, 0, "ca"),
       line(1, 0, 0.6, 0, "cb"),
-      line(-0.8, -0.5, 0.8, -0.5, "bar"),
-      line(0, -0.5, 0, -1.3, "stem"),
-      line(-0.5, -1.3, 0.5, -1.3, "push"),
+      line(-0.8, bar, 0.8, bar, "bar"),
+      line(0, bar, 0, bar - 0.8, "stem"),
+      line(-0.5, bar - 0.8, 0.5, bar - 0.8, "push"),
+      actuator(c, sym, bar - 0.8),
     ];
-  else if (k === "scr" || k === "triac") body = thyristor(k === "triac");
+  } else if (k === "scr" || k === "triac") body = thyristor(k === "triac");
   else if (k === "ground")
     body = [
       line(0, 0, 0, 0.6, "a"),
@@ -743,7 +768,6 @@ const SHORT: Record<string, string> = {
   relay: "RELÉ",
   dc_motor: "M",
   heater: "AQUEC.",
-  switch_manual: "BOTÃO",
   pump_plant: "INV+BOMBA",
   induction_motor: "M 3~",
   induction_motor_12: "M 3~ 12",

@@ -1666,6 +1666,25 @@ svg.ladder .ld-comment {
 .comp .glow-halo {
   filter: blur(3px);
 }
+/* push-buttons operated with a click: the actuator cap fills while the button is held */
+.comp .actuator {
+  cursor: pointer;
+}
+.comp .actuator rect {
+  stroke-width: 1.2;
+}
+.comp .actuator.pressed rect:first-child {
+  fill: #e0742a;
+  stroke: #e0742a;
+}
+.comp .actuator:hover rect:first-child {
+  stroke: #e0742a;
+}
+.comp .actuator .actuator-hit {
+  fill: transparent;
+  stroke: none;
+  pointer-events: all;
+}
 .schematic-page .toolbar .bench-actions,
 .schematic-page .toolbar .node-visibility {
   display: flex;
@@ -1703,6 +1722,23 @@ svg.ladder .ld-comment {
   fill: #20242a;
   stroke: #6b737c;
   stroke-width: 1;
+}
+.bb-tact-cap.pressed {
+  fill: #e0742a;
+  stroke: #8a3f10;
+}
+.bb-actuator {
+  fill: transparent;
+  stroke: none;
+  cursor: pointer;
+}
+.bb-actuator:hover {
+  stroke: #e0742a;
+  stroke-width: 1.5;
+}
+.bb-glow {
+  filter: blur(3px);
+  pointer-events: none;
 }
 
 /* parts that would burn in the last simulation */

@@ -12,6 +12,7 @@ import {
   simplify,
 } from "./geometry";
 import { SymbolBody, valueText, type Glow } from "./symbols";
+import { stateDefault, toggleSwitch } from "./switches";
 import { copyItems, itemsInBox, moveItems, pasteClip, type Clip, type Group } from "./editing";
 import { removeSources } from "../breadboard/instruments";
 import { MOTOR_KINDS, rotationText } from "../breadboard/DeviceFaces";
@@ -59,6 +60,8 @@ interface Props {
   burnt?: Record<string, string>;
   /** Short message for the status line (e.g. result of a paste). */
   onNotice?: (text: string) => void;
+  /** A push-button was clicked: the schematic with its new position (simulate it again). */
+  onOperate?: (next: Schematic, comp: Component) => void;
 }
 
 const ZOOM_MIN = 0.25;
@@ -81,6 +84,7 @@ export function SchematicEditor({
   glows,
   burnt,
   onNotice,
+  onOperate,
 }: Props) {
   const svgRef = useRef<SVGSVGElement>(null);
   const [view, setView] = useState({ x: -12, y: -10, scale: 1 });
@@ -457,7 +461,20 @@ export function SchematicEditor({
       }
       return;
     }
-    // select
+    // select; a click on a push-button's actuator presses or releases it
+    const act = (e.target as Element).closest?.("[data-actuator]")?.getAttribute("data-actuator");
+    const operated = act ? sch.components.find((c) => c.id === act) : undefined;
+    if (operated) {
+      const toggled = toggleSwitch(operated, stateDefault(library[operated.kind]));
+      const next = {
+        ...sch,
+        components: sch.components.map((c) => (c.id === operated.id ? toggled : c)),
+      };
+      setSelection({ kind: "component", id: operated.id });
+      if (onOperate) onOperate(next, toggled);
+      else onChange(next);
+      return;
+    }
     const lb = hitLabel(raw);
     if (lb) {
       setSelection({ kind: "label", id: lb.id });

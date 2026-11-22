@@ -97,3 +97,30 @@ def test_tact_switch4_pairs_and_press(backend):
     assert np.interp(0.5e-3, t, tran.vectors["v(a2)"].data) == pytest.approx(5.0, abs=1e-2)
     assert np.interp(0.5e-3, t, tran.vectors["v(x2)"].data) == pytest.approx(0.0, abs=1e-2)
     assert np.interp(1.8e-3, t, tran.vectors["v(x2)"].data) == pytest.approx(5.0, abs=1e-2)
+
+
+def _button_led_circuit(**sw: str) -> Builder:
+    """The user's example: a push-button drives the base of Q1, which switches LED1."""
+    b = Builder("botao, transistor e LED")
+    b.add("vdc", "V1", ["vcc", "0"], dc="10")
+    b.add("tact_switch", "SW1", ["vcc", "b"], **sw)
+    b.add("resistor", "R1", ["b", "base"], value="1k")
+    b.add("resistor", "R3", ["b", "0"], value="10k")
+    b.add("resistor", "R2", ["vcc", "anode"], value="330")
+    b.add("led", "LED1", ["anode", "col"])
+    b.add("npn", "Q1", ["col", "base", "0"])
+    return b
+
+
+@pytest.mark.parametrize(
+    ("sw", "lit"), [({}, False), ({"state": "0"}, False), ({"state": "1"}, True)]
+)
+def test_button_switches_led_through_transistor(backend, sw, lit):
+    """A released button (the default, or "0" set by a click) keeps Q1 cut off and LED1 dark for
+    the whole run; pressed ("1") saturates Q1 and LED1 carries ≈ (10 − V_F − V_CE(sat))/330 Ω."""
+    tran, _ = _tran(_button_led_circuit(**sw), backend, "100m")
+    i_led = tran.vectors["i(vlum_led1)"].data
+    if lit:
+        assert float(np.min(i_led)) > 15e-3
+    else:
+        assert float(np.max(np.abs(i_led))) < 1e-6
