@@ -20,7 +20,10 @@ def test_modules_lists_the_rectifiers(client):
     ret1 = next(m for m in body if m["id"] == "DM-RET1")
     assert ret1["defaults"]["Vsec"] == {"value": 12.0, "unit": "V"}
     assert ret1["defaults"]["P"] == {"value": 12.0, "unit": "W"}
-    assert "Vo" not in ret1["defaults"] and "Io" not in ret1["defaults"]
+    assert "Vo" not in ret1["defaults"]
+    # the load is given by its power by default; the mean current is the alternative
+    assert ret1["defaults"]["load_by"] == "potencia"
+    assert ret1["defaults"]["Io"]["unit"] == "A"
     assert ret1["spec_labels"]["Vin"] == "Tensão do primário (eficaz)"
     assert "properties" in ret1["json_schema"]
 
