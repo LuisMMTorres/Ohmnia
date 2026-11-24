@@ -1126,12 +1126,18 @@ export function BreadboardView({
           {bb.wires.map((w) => {
             const [ax, ay] = xy(w.a);
             const [bx, by] = xy(w.b);
-            // flat jumper wire, as pre-cut wires lie on a real board (the automatic assembly
-            // keeps these straight lines clear of bodies, legs and other wires)
+            // flat jumper wire, as pre-cut wires lie on a real board: a straight run, or an L
+            // bent at a right angle (along the rows from a, then down the column into b),
+            // never a diagonal; the automatic assembly keeps these runs clear of bodies, legs
+            // and other wires
             return (
               <path
                 key={w.id}
-                d={`M ${ax} ${ay} L ${bx} ${by}`}
+                d={
+                  ax === bx || ay === by
+                    ? `M ${ax} ${ay} L ${bx} ${by}`
+                    : `M ${ax} ${ay} L ${bx} ${ay} L ${bx} ${by}`
+                }
                 className={`bb-wire${sel?.kind === "wire" && sel.id === w.id ? " selected" : ""}`}
                 data-bb-item={w.id}
                 stroke={WIRE_COLORS[w.color] ?? "#2e8b3c"}
@@ -1144,11 +1150,10 @@ export function BreadboardView({
             );
           })}
           {tool.kind === "wire" && tool.from && hover && (
-            <line
-              x1={xy(tool.from)[0]}
-              y1={xy(tool.from)[1]}
-              x2={xy(hover)[0]}
-              y2={xy(hover)[1]}
+            <path
+              d={`M ${xy(tool.from)[0]} ${xy(tool.from)[1]} L ${xy(hover)[0]} ${
+                xy(tool.from)[1]
+              } L ${xy(hover)[0]} ${xy(hover)[1]}`}
               stroke={WIRE_COLORS[tool.color]}
               className="bb-wire ghost"
             />
