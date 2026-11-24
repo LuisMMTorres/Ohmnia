@@ -1,6 +1,8 @@
-"""Schematic of the active filters (DM-FIL): one row per section of the cascade.
+"""Schematic of the active filters (DM-FIL): one continuous circuit, sections in cascade.
 
-The rows follow the netlist that the module simulates: the designators and the nodes come
+The output of each section is wired straight to the input of the next one (no repeated
+input terminal); when the cascade is too wide, it continues on the next row. The drawing
+follows the netlist that the module simulates: the designators and the nodes come
 from the circuit builder (``o1``, ``o2``… are the outputs of the sections). Sections as in
 Pertence (*Amplificadores operacionais e filtros ativos*): Sallen-Key and multiple feedback
 (MFB) biquads, the state-variable (KHN) biquad with a summing amplifier, first-order RC
@@ -52,24 +54,22 @@ class _Net:
         return found if found else (f"{kind}?", "")
 
 
-def _header(svg: Canvas, y: float, sec: SectionInfo, opamps: str) -> None:
+def _header(svg: Canvas, x: float, y: float, sec: SectionInfo, opamps: str) -> None:
+    """Two lines over the section: its index, op-amps, f0 and Q; then its kind."""
     q = "" if sec.kind in ("lp1", "hp1") else f", Q = {sec.Q:.3g}".replace(".", ",")
-    svg.text(
-        10,
-        y,
-        f"Seção {sec.k}: {KIND_TEXT[sec.kind]}, f0 = {eng(sec.f0, 'Hz')}{q}  ({opamps})",
-        "start",
-        "ttl",
-    )
+    svg.text(x, y, f"Seção {sec.k} ({opamps}): f0 = {eng(sec.f0, 'Hz')}{q}", "start", "ttl")
+    svg.text(x, y + 14, KIND_TEXT[sec.kind], "start", "pn")
 
 
-def _follower(svg: Canvas, x: float, yb: float, name: str, part: str, out: str) -> float:
-    """Unity-gain follower with + at (x, yb); returns the x of the output node."""
+def _follower(svg: Canvas, x: float, yb: float, name: str, part: str) -> float:
+    """Unity-gain follower with + at (x, yb); returns the x of the output node.
+
+    The output wire runs to x + 120, where the caller ends it (terminal or next section).
+    """
     inv, _non, o = svg.opamp(x, yb + 15, name, part, flip=True)
     svg.wire(inv, (x - 12, inv[1]), (x - 12, yb + 62), (x + 80, yb + 62), (x + 80, o[1]))
     svg.wire(o, (x + 120, o[1]))
     svg.dot(x + 80, o[1])
-    svg.terminal(x + 120, o[1], out)
     return x + 80
 
 
@@ -91,7 +91,7 @@ def _sk(svg: Canvas, net: _Net, x0: float, yb: float, k: int, a: str, hp: bool, 
     else:
         svg.cap_np_v(x0 + 235, yb, yb + 80, dg, vg, left=True)
     svg.ground(x0 + 235, yb + 80)
-    xo = _follower(svg, x0 + 260, yb, f"U{u}", "", o)
+    xo = _follower(svg, x0 + 260, yb, f"U{u}", "")
     svg.dot(x0 + 120, yb)
     svg.wire((x0 + 120, yb), (x0 + 120, yb - 60))
     (svg.resistor_h if hp else svg.cap_h)(x0 + 120, xo, yb - 60, df, vf)
@@ -134,11 +134,10 @@ def _mfb(svg: Canvas, net: _Net, x0: float, yb: float, k: int, a: str, bp: bool,
     svg.dot(xo, out[1])
     svg.dot(xo, yb - 50)
     svg.wire((xo, out[1]), (xo + 40, out[1]))
-    svg.terminal(xo + 40, out[1], o)
 
 
 def _first(svg: Canvas, net: _Net, x0: float, yb: float, k: int, a: str, hp: bool, u: str) -> None:
-    x, o = f"x{k}", f"o{k}"
+    x = f"x{k}"
     if hp:
         d1, v1 = net.get("C", a, x)
         svg.cap_h(x0 + 20, x0 + 140, yb, d1, v1)
@@ -152,7 +151,7 @@ def _first(svg: Canvas, net: _Net, x0: float, yb: float, k: int, a: str, hp: boo
     svg.ground(x0 + 160, yb + 80)
     svg.wire((x0 + 140, yb), (x0 + 260, yb))
     svg.dot(x0 + 160, yb)
-    _follower(svg, x0 + 260, yb, f"U{u}", "", o)
+    _follower(svg, x0 + 260, yb, f"U{u}", "")
 
 
 def _khn(svg: Canvas, net: _Net, x0: float, yb: float, k: int, a: str, u0: int) -> None:
@@ -224,7 +223,39 @@ def _khn(svg: Canvas, net: _Net, x0: float, yb: float, k: int, a: str, u0: int) 
     svg.wire((xnd + 130, yb - 30), (xnd + 130, io[1]))
     svg.wire(io, (xnd + 170, io[1]))
     svg.dot(xnd + 130, io[1])
-    svg.terminal(xnd + 170, io[1], o)
+
+
+# Geometry of each kind, relative to its origin x0 and to the row baseline yb:
+# width up to the end of its output wire, room above and below yb, and the y offsets of
+# the input and of the output (the KHN section takes its input on the + of a summer).
+WIDTH = {"sk_lp": 380, "sk_hp": 380, "mfb_lp": 420, "mfb_bp": 420, "lp1": 380, "hp1": 380}
+ABOVE = {"khn": 165, "mfb_lp": 150, "mfb_bp": 150, "lp1": 70, "hp1": 70}
+BELOW = {"khn": 235, "mfb_lp": 120, "mfb_bp": 120, "lp1": 110, "hp1": 110}
+X0 = 30.0  # left margin of every row (the input terminal sits here)
+MAX_ROW = 1400.0  # wider cascades continue on the next row
+GAP = 20.0  # wire between two sections in the same row
+
+
+def _width(kind: str) -> float:
+    return 875.0 if kind == "khn" else WIDTH[kind]
+
+
+def _io(kind: str) -> tuple[float, float]:
+    return (15.0, 40.0) if kind == "khn" else (0.0, 15.0)
+
+
+def _rows(sections: Sequence[SectionInfo]) -> list[list[SectionInfo]]:
+    rows: list[list[SectionInfo]] = []
+    width = 0.0
+    for sec in sections:
+        w = _width(sec.kind) + GAP
+        if rows and width + w <= MAX_ROW:
+            rows[-1].append(sec)
+            width += w
+        else:
+            rows.append([sec])
+            width = X0 + w
+    return rows
 
 
 def active(
@@ -236,40 +267,53 @@ def active(
     part: str,
 ) -> str:
     net = _Net(values, nodes)
-    heights = {"khn": 400, "mfb_lp": 270, "mfb_bp": 270, "lp1": 180, "hp1": 180}
-    total = 60 + sum(heights.get(s.kind, 230) for s in sections)
-    wide = any(s.kind == "khn" for s in sections)
-    svg = Canvas(960 if wide else 600, total)
+    rows = _rows(sections)
+    above = [30 + max(ABOVE.get(s.kind, 115) for s in r) for r in rows]
+    below = [max(BELOW.get(s.kind, 115) for s in r) for r in rows]
+    width = max([X0 + sum(_width(s.kind) + GAP for s in r) for r in rows] + [600.0])
+    total = 60 + sum(above) + sum(below) + 30 * (len(rows) - 1) + 20
+    svg = Canvas(int(width) + 60, int(total))  # room for the output label
     svg.title(title)
     svg.text(10, 36, f"{description}; ampops {part} (U1 a U{_count(sections)})", "start", "pn")
-    y = 60
     a = "in"
     u = 1
-    for sec in sections:
-        n_ops = 4 if sec.kind == "khn" else 1
-        ops = f"U{u}" if n_ops == 1 else f"U{u} a U{u + n_ops - 1}"
-        _header(svg, y + 12, sec, ops)
-        if sec.kind == "khn":
-            yb = y + 165
-        elif sec.kind.startswith("mfb"):
-            yb = y + 150
-        elif sec.kind in ("lp1", "hp1"):
-            yb = y + 70
-        else:
-            yb = y + 115
-        svg.terminal(10, yb if sec.kind != "khn" else yb + 15, a)
-        if sec.kind in ("sk_lp", "sk_hp"):
-            _sk(svg, net, 10, yb, sec.k, a, sec.kind == "sk_hp", str(u))
-        elif sec.kind in ("mfb_lp", "mfb_bp"):
-            _mfb(svg, net, 10, yb, sec.k, a, sec.kind == "mfb_bp", str(u))
-        elif sec.kind in ("lp1", "hp1"):
-            _first(svg, net, 10, yb, sec.k, a, sec.kind == "hp1", str(u))
-        else:
-            _khn(svg, net, 10, yb, sec.k, a, u)
-        y += heights.get(sec.kind, 230)
-        a = f"o{sec.k}"
-        u += n_ops
-    if sections:
+    y = 60.0
+    prev: tuple[float, float] | None = None  # end of the previous section's output wire
+    for r, row in enumerate(rows):
+        yb = y + above[r]
+        x0 = X0
+        for sec in row:
+            n_ops = 4 if sec.kind == "khn" else 1
+            ops = f"U{u}" if n_ops == 1 else f"U{u} a U{u + n_ops - 1}"
+            _header(svg, x0 + 20, y + 12, sec, ops)
+            yin = yb + _io(sec.kind)[0]
+            xin = x0 + (10 if sec.kind == "khn" else 20)
+            if prev is None:  # input of the filter
+                svg.terminal(X0, yin, a, "end")
+                svg.wire((X0 + 3.5, yin), (xin, yin))
+            elif x0 == X0:  # first section of a new row: the wire comes down the left side
+                ygap = y - 15
+                svg.wire(prev, (prev[0] + 10, prev[1]), (prev[0] + 10, ygap), (X0 - 15, ygap))
+                svg.wire((X0 - 15, ygap), (X0 - 15, yin), (xin, yin))
+            else:  # next to the previous section: short jog to the input height
+                svg.wire(prev, (x0 + 5, prev[1]), (x0 + 5, yin), (xin, yin))
+            if prev is not None:  # name the node between the sections (netlist name)
+                svg.note(prev[0] - 4, prev[1] - 6, a, "end")
+            if sec.kind in ("sk_lp", "sk_hp"):
+                _sk(svg, net, x0, yb, sec.k, a, sec.kind == "sk_hp", str(u))
+            elif sec.kind in ("mfb_lp", "mfb_bp"):
+                _mfb(svg, net, x0, yb, sec.k, a, sec.kind == "mfb_bp", str(u))
+            elif sec.kind in ("lp1", "hp1"):
+                _first(svg, net, x0, yb, sec.k, a, sec.kind == "hp1", str(u))
+            else:
+                _khn(svg, net, x0, yb, sec.k, a, u)
+            prev = (x0 + _width(sec.kind), yb + _io(sec.kind)[1])
+            x0 += _width(sec.kind) + GAP
+            a = f"o{sec.k}"
+            u += n_ops
+        y = yb + below[r] + 30
+    if prev is not None:
+        svg.terminal(prev[0], prev[1], f"vo ({a})")
         svg.text(
             10, total - 8, f"Entrada: fonte Vsig no nó in; saída do filtro: {a}.", "start", "pn"
         )
