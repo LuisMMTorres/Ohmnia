@@ -54,8 +54,9 @@ from circuitos.design.engine import Analysis, Device
 from circuitos.design.opamp import REF as OPA_REF
 from circuitos.design.opamp import TRAN_OPTIONS, OpAmp, opamp_model
 from circuitos.design.plugins.zen.module import vz_of
+from circuitos.reports import drawings_opamp
+from circuitos.reports.canvas import pretty, si_values
 from circuitos.reports.common import BomRow, LabItem, passive
-from circuitos.reports.schematic import value_sheet
 
 Config = Literal[
     "comparador",
@@ -902,11 +903,17 @@ class OpnlModule:
     def schematic(self, spec: BaseModel, result: DesignResult, title: str) -> str:
         s = _spec(spec)
         sm = result.summary
-        vals = {k: format_eng(sm[k].to_pint()) for k in sm if k[0] == "R" and k[1:].isdigit()}
-        if "Rp" in sm:
-            vals["Rp"] = format_eng(sm["Rp"].to_pint())
+        names: dict[str, str] = {k: k for k in ("R1", "R2", "R3", "R4", "R5", "Rp") if k in sm}
+        v = si_values(sm, names) | {"RL": s.RL.to_pint().m_as("ohm")}
         parts = {c.designator: c.part_number for c in result.selection}
-        return value_sheet(title, ENUM_LABELS[s.config], vals, parts)
+        shape = "triangular" if s.config.startswith("schmitt") else "senoide"
+        extra = {
+            "Vin": f"{shape} {pretty(s.Vm)} pico, {pretty(s.f)}",
+            "Vref": pretty(sm["Vref_set"]) if "Vref_set" in sm else pretty(s.Vref),
+            "Vcc": pretty(s.VCC),
+            "Vin_dc": pretty(s.Vin_dc),
+        }
+        return drawings_opamp.opnl(s.config, title, v, parts, extra)
 
     def bom_extra(self, spec: BaseModel, result: DesignResult) -> list[BomRow]:
         sm = result.summary
