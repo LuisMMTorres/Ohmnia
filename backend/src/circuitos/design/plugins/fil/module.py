@@ -51,8 +51,8 @@ from circuitos.design.mna import Circuit as Mna
 from circuitos.design.opamp import REF as OPA_REF
 from circuitos.design.opamp import OpAmp, gbw_of, opamp_model
 from circuitos.design.smallsignal import corner, log_grid
+from circuitos.reports import drawings_filter
 from circuitos.reports.common import BomRow, LabItem, passive
-from circuitos.reports.schematic import Svg
 
 Real = Literal["sallen_key", "mfb", "variaveis_estado", "passivo_lc"]
 WT = BibRef(book="Williams & Taylor, Electronic Filter Design Handbook", edition="4th", chapter="2")
@@ -160,6 +160,9 @@ class Builder:
         self.s = s
         self.op = op
         self.parts: list[tuple[str, str, float]] = []  # (designator, kind R/C/L, value)
+        self.nodes: dict[str, tuple[str, str]] = {}  # designator → its two nodes
+        # (section kind, its index k, the section) in cascade order, for the drawing
+        self.layout: list[tuple[str, int, Section]] = []
         self.n_op = 0
         self.nr = 0
         self.nc = 0
@@ -170,12 +173,14 @@ class Builder:
         self.nr += 1
         self.c.R(str(self.nr), a, b, v)
         self.parts.append((f"R{self.nr}", "R", v))
+        self.nodes[f"R{self.nr}"] = (a, b)
         return v
 
     def cap(self, a: str, b: str, val: float) -> float:
         self.nc += 1
         self.c.C(str(self.nc), a, b, val)
         self.parts.append((f"C{self.nc}", "C", val))
+        self.nodes[f"C{self.nc}"] = (a, b)
         return val
 
     def ind(self, a: str, b: str, val: float) -> float:
@@ -183,6 +188,7 @@ class Builder:
         self.nl += 1
         self.c.L(str(self.nl), a, b, v)
         self.parts.append((f"L{self.nl}", "L", v))
+        self.nodes[f"L{self.nl}"] = (a, b)
         return v
 
     def snap_c(self, val: float, mode: str = "nearest") -> float:
@@ -303,16 +309,23 @@ def build_active(b: Builder, secs: list[Section]) -> str:
     for k, sec in enumerate(secs, 1):
         out = f"o{k}"
         real = b.s.realization
+        n_op = b.n_op
         if sec.order == 1:
             _first(b, sec, node, out, k)
+            kind = sec.kind
         elif sec.kind == "notch" or real == "variaveis_estado":
             _khn(b, sec, node, out, k)
+            kind = "khn"
         elif sec.kind == "lp":
             (_mfb_lp if real == "mfb" else _sk_lp)(b, sec, node, out, k)
+            kind = "mfb_lp" if real == "mfb" else "sk_lp"
         elif sec.kind == "hp":
             _sk_hp(b, sec, node, out, k)
-        else:  # band-pass section
+            kind = "sk_hp"
+        else:  # band-pass section (state variable when the MFB cannot give the gain)
             _mfb_bp(b, sec, node, out, k)
+            kind = "khn" if b.n_op - n_op > 1 else "mfb_bp"
+        b.layout.append((kind, k, sec))
         node = out
     return node
 
@@ -675,25 +688,22 @@ class FilModule:
     # ------------------------------------------------------------------ outputs
     def schematic(self, spec: BaseModel, result: DesignResult, title: str) -> str:
         s = _spec(spec)
-        sm = result.summary
-        parts = [k for k in sm if k[0] in "RCL" and k[1:].isdigit()]
-        svg = Svg(640, 120 + 18 * ((len(parts) + 3) // 4))
-        svg.title(title)
-        n = int(sm["n"].to_pint().m_as(""))
+        n, secs, _, _ = self._plan(s, CalcLog())
+        # same builder as the simulation (the op-amp model does not change the part values)
+        b, _, _ = self._build(s, secs, n, OpAmp(A0=1e5, GBW=1e6))
         desc = (
             f"{ENUM_LABELS[s.kind]} {ENUM_LABELS[s.approx]}, ordem {n}, "
             f"{ENUM_LABELS[s.realization]}"
         )
-        svg.text(10, 40, desc)
-        svg.box(60, 55, 180, 36, "entrada → seções em cascata → saída")
-        if "n_opamps" in sm:
-            svg.text(260, 77, f"{int(sm['n_opamps'].to_pint().m_as(''))} ampops")
-        for i, k in enumerate(parts):
-            x = 10 + 155 * (i % 4)
-            y = 112 + 18 * (i // 4)
-            svg.text(x, y, f"{k} = {format_eng(sm[k].to_pint())}", "start", "pn")
-        svg.text(10, 104, "Valores (a ligação de cada seção está na netlist):")
-        return svg.render(title)
+        if s.realization == "passivo_lc":
+            return drawings_filter.ladder(title, desc, b.parts, b.nodes)
+        values = {d: v for d, _, v in b.parts}
+        info = [
+            drawings_filter.SectionInfo(kind, k, sec.w0 / (2 * math.pi), sec.Q)
+            for kind, k, sec in b.layout
+        ]
+        parts = {c.designator: c.part_number for c in result.selection}
+        return drawings_filter.active(title, desc, info, values, b.nodes, parts.get("U1", ""))
 
     def bom_extra(self, spec: BaseModel, result: DesignResult) -> list[BomRow]:
         sm = result.summary
