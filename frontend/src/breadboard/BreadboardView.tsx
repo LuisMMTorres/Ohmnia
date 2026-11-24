@@ -35,6 +35,7 @@ import { supplyAmpsText } from "./instruments";
 import { deviceFace } from "./DeviceFaces";
 import type { Motion } from "./DeviceFaces";
 import { PackageArt, PackagePreview } from "./PackageArt";
+import { PartCharacteristics } from "./PartCharacteristics";
 import type {
   Breadboard,
   CheckReport,
@@ -48,6 +49,29 @@ import type {
 } from "./types";
 import { emptyBreadboard } from "./types";
 
+const SIDE_PANELS_KEY = "circuitos.breadboard.sidePanels";
+
+type SidePanels = { left: boolean; right: boolean };
+
+/** Which side panels were left open the last time (both open by default). */
+function loadSidePanels(): SidePanels {
+  try {
+    const raw = localStorage.getItem(SIDE_PANELS_KEY);
+    const v = raw ? (JSON.parse(raw) as Partial<SidePanels>) : {};
+    return { left: v.left !== false, right: v.right !== false };
+  } catch {
+    return { left: true, right: true };
+  }
+}
+
+function saveSidePanels(v: SidePanels): void {
+  try {
+    localStorage.setItem(SIDE_PANELS_KEY, JSON.stringify(v));
+  } catch {
+    /* storage unavailable: the choice lasts for this page only */
+  }
+}
+
 type Pt = [number, number];
 
 type Tool =
@@ -59,6 +83,15 @@ type Tool =
   | { kind: "wire"; from: string | null; color: WireColor };
 
 type Sel = { kind: "part"; ref: string } | { kind: "wire"; id: string } | null;
+
+interface InstrumentDrag {
+  slot: string;
+  x: number;
+  y: number;
+  dx: number;
+  dy: number;
+  moved: boolean;
+}
 
 interface Drag {
   ref: string;
@@ -144,6 +177,8 @@ export function BreadboardView({
   const [sel, setSel] = useState<Sel>(null);
   const [hover, setHover] = useState<string | null>(null);
   const [drag, setDrag] = useState<Drag | null>(null);
+  // a bench instrument being dragged: its slot, where it is now and the grab offset
+  const [instDrag, setInstDrag] = useState<InstrumentDrag | null>(null);
   const [report, setReport] = useState<CheckReport | null>(null);
   const [guide, setGuide] = useState<Step[] | null>(initialGuide ?? null);
   const [mark, setMark] = useState<string[]>([]);
@@ -151,6 +186,15 @@ export function BreadboardView({
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [wireColor, setWireColor] = useState<WireColor>("verde");
+  const [panels, setPanels] = useState<SidePanels>(loadSidePanels);
+  const infoRef = useRef<HTMLElement | null>(null);
+  const movedRef = useRef(false); // the last mouse down dragged something (not a plain click)
+  const togglePanel = (side: keyof SidePanels) =>
+    setPanels((prev) => {
+      const next = { ...prev, [side]: !prev[side] };
+      saveSidePanels(next);
+      return next;
+    });
   const [probePositive, setProbePositive] = useState("a1");
   const [probeNegative, setProbeNegative] = useState("0");
   const [probeName, setProbeName] = useState("CH1");
@@ -170,6 +214,10 @@ export function BreadboardView({
     size.boardH +
     Math.max(1, Math.ceil((instrumentCount + (schematic.bench_scope_channels ? 1 : 0)) / 3)) * 180 +
     40;
+  // instruments dragged further down stretch the drawing so they stay reachable
+  for (const [, y] of Object.values(bb.instrument_positions ?? {}))
+    size.h = Math.max(size.h, y + 200);
+  if (instDrag) size.h = Math.max(size.h, instDrag.y + 200);
 
   const update = useCallback(
     (next: Breadboard) => onChange({ ...schematic, breadboard: next }),
@@ -265,11 +313,25 @@ export function BreadboardView({
 
   const onMove = (e: ReactMouseEvent) => {
     const [x, y] = toSvg(e);
+    if (instDrag) {
+      const nx = Math.min(Math.max(x - instDrag.dx, 8), Math.max(8, size.w - 300));
+      const ny = Math.max(y - instDrag.dy, size.boardH + 20);
+      if (nx !== instDrag.x || ny !== instDrag.y)
+        setInstDrag({ ...instDrag, x: nx, y: ny, moved: true });
+      return;
+    }
     setHover(nearestHole(board, x, y));
   };
 
   const onClick = (e: ReactMouseEvent<SVGSVGElement>) => {
     if ((e.target as Element).closest("[data-actuator]")) return; // handled on mouse down
+    // a click on a part, wire or instrument selected it on mouse down: keep that selection
+    if (tool.kind === "select" && (e.target as Element).closest("[data-bb-item]")) {
+      // a plain click on a part shows its characteristics, even with that panel hidden
+      if (!movedRef.current && sel?.kind === "part" && !panels.right) togglePanel("right");
+      infoRef.current?.scrollTo({ top: 0 });
+      return;
+    }
     const hole =
       (e.target as Element).closest("[data-hole]")?.getAttribute("data-hole") ??
       nearestHole(board, ...toSvg(e));
@@ -344,6 +406,19 @@ export function BreadboardView({
   };
 
   const onUp = () => {
+    movedRef.current = !!(instDrag?.moved || (drag && hover && drag.start !== hover));
+    if (instDrag) {
+      if (instDrag.moved)
+        update({
+          ...bb,
+          instrument_positions: {
+            ...bb.instrument_positions,
+            [instDrag.slot]: [Math.round(instDrag.x), Math.round(instDrag.y)],
+          },
+        });
+      setInstDrag(null);
+      return;
+    }
     if (drag && ghost && ghostOk) {
       update({ ...bb, parts: bb.parts.map((p) => (p.ref === ghost.ref ? ghost : p)) });
     }
@@ -429,7 +504,11 @@ export function BreadboardView({
   const xy = (h: string): Pt => holeXY(board, h);
   const instruments = bb.parts.filter((p) => pkgs[p.package]?.style === "offboard");
   const instrumentAt = (ref: string): Pt => {
-    const i = slots.indexOf(slotOf(ref));
+    const slot = slotOf(ref);
+    if (instDrag?.slot === slot) return [instDrag.x, instDrag.y];
+    const at = bb.instrument_positions?.[slot];
+    if (at) return at;
+    const i = slots.indexOf(slot);
     return [20 + (i % 3) * 320, size.boardH + 24 + Math.floor(i / 3) * 180];
   };
   // terminals of the instruments: where each one sits on its front panel
@@ -538,10 +617,40 @@ export function BreadboardView({
                 : "Clique no primeiro furo do fio."
               : "Arraste as peças para mover; arraste a perna de um resistor ou diodo para dobrá-la. Del apaga, R gira.";
 
+  const layoutClass = [
+    "bb-layout",
+    readOnly ? "no-left" : "",
+    !readOnly && !panels.left ? "left-hidden" : "",
+    !panels.right ? "right-hidden" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   return (
-    <div className="bb-layout">
-      {!readOnly && (
+    <div className={layoutClass}>
+      {!readOnly && !panels.left && (
+        <aside className="panel bb-side bb-collapsed" aria-label="Peças do circuito (escondido)">
+          <button
+            className="secondary small bb-panel-toggle"
+            onClick={() => togglePanel("left")}
+            title="Mostrar ferramentas e peças"
+            aria-label="Mostrar painel de peças"
+            aria-expanded={false}
+          >
+            »<span className="bb-collapsed-label">Peças</span>
+          </button>
+        </aside>
+      )}
+      {!readOnly && panels.left && (
         <aside className="panel bb-side" aria-label="Peças do circuito">
+          <button
+            className="secondary small bb-panel-toggle bb-hide-left"
+            onClick={() => togglePanel("left")}
+            title="Esconder este painel para a protoboard ganhar espaço"
+            aria-expanded={true}
+          >
+            « Esconder
+          </button>
           <div className="tools">
             <button
               className={tool.kind === "select" ? "tool active" : "tool"}
@@ -826,10 +935,24 @@ export function BreadboardView({
               return (
                 <g
                   key={p.ref}
-                  className={`bb-instrument${sel?.kind === "part" && sel.ref === p.ref ? " selected" : ""}${badRefs.has(p.ref) ? " bad" : ""}`}
+                  className={`bb-instrument${sel?.kind === "part" && sel.ref === p.ref ? " selected" : ""}${badRefs.has(p.ref) ? " bad" : ""}${readOnly ? "" : " movable"}`}
+                  data-bb-item={p.ref}
                   onMouseDown={(e) => {
                     e.stopPropagation();
                     setSel({ kind: "part", ref: p.ref });
+                    // the terminals start a connection; the rest of the panel drags the instrument
+                    if (readOnly || tool.kind !== "select" || e.button !== 0) return;
+                    if ((e.target as Element).closest('[role="button"]')) return;
+                    const [x, y] = toSvg(e);
+                    const [ix, iy] = instrumentAt(p.ref);
+                    setInstDrag({
+                      slot: slotOf(p.ref),
+                      x: ix,
+                      y: iy,
+                      dx: x - ix,
+                      dy: y - iy,
+                      moved: false,
+                    });
                   }}
                 >
                   {(!shared || group[0] === p) && (
@@ -926,6 +1049,8 @@ export function BreadboardView({
             return (
               <g
                 key={p.ref}
+                data-bb-item={p.ref}
+                className={readOnly ? undefined : "bb-part movable"}
                 opacity={isGhosted ? 0.3 : 1}
                 onMouseDown={(e) => {
                   if (readOnly) return;
@@ -946,12 +1071,26 @@ export function BreadboardView({
                     return;
                   }
                   setSel({ kind: "part", ref: p.ref });
-                  if (tool.kind !== "select" || !hover) return;
+                  if (tool.kind !== "select" || e.button !== 0) return;
                   const leg =
-                    pkg.style === "axial"
+                    pkg.style === "axial" && hover
                       ? Object.entries(p.legs).find(([, h]) => h === hover)?.[0]
                       : undefined;
-                  setDrag({ ref: p.ref, start: hover, leg: leg ?? null });
+                  // grabbed by the body (over the channel of a chip, say): start from the
+                  // nearest leg, so the whole part moves hole by hole with the pointer
+                  const [mx, my] = toSvg(e);
+                  const start =
+                    hover ??
+                    Object.values(p.legs).reduce<string | null>((best, h) => {
+                      if (!best) return h;
+                      const [ax, ay] = xy(h);
+                      const [bx2, by2] = xy(best);
+                      return Math.hypot(ax - mx, ay - my) < Math.hypot(bx2 - mx, by2 - my)
+                        ? h
+                        : best;
+                    }, null);
+                  if (!start) return;
+                  setDrag({ ref: p.ref, start, leg: leg ?? null });
                 }}
               >
                 <PackageArt
@@ -994,6 +1133,7 @@ export function BreadboardView({
                 key={w.id}
                 d={`M ${ax} ${ay} L ${bx} ${by}`}
                 className={`bb-wire${sel?.kind === "wire" && sel.id === w.id ? " selected" : ""}`}
+                data-bb-item={w.id}
                 stroke={WIRE_COLORS[w.color] ?? "#2e8b3c"}
                 onMouseDown={(e) => {
                   if (readOnly) return;
@@ -1029,199 +1169,232 @@ export function BreadboardView({
         </svg>
       </div>
 
-      <aside className="panel bb-info" aria-label="Conferência e roteiro">
-        {error && (
-          <div className="error" role="alert">
-            {error}
-          </div>
-        )}
-        {notes.map((n) => (
-          <p key={n} className="note small">
-            {n}
-          </p>
-        ))}
-        {selPart && selView && (
-          <div className="bb-selected">
-            <h3>
-              {selPart.ref} <span className="muted small">{selView.title}</span>
-            </h3>
-            {pkgs[selPart.package] && (
-              <PackagePreview pkg={pkgs[selPart.package]!} view={selView} />
-            )}
-            <PinoutSource view={selView} />
-            {!readOnly && (
-              <fieldset className="terminal-connections">
-                <legend>Terminais do dispositivo</legend>
-                {(pkgs[selPart.package]?.pins ?? [])
-                  .filter((pin) => pin in selView.pinmap)
-                  .map((pin) => (
-                    <label key={pin}>
-                      {selView.labels[pin] ?? pin}
-                      <select
-                        aria-label={`Terminal ${selPart.ref}.${pin}`}
-                        value={selPart.legs[pin] ?? ""}
-                        onChange={(e) => {
-                          const legs = { ...selPart.legs };
-                          if (e.target.value) legs[pin] = e.target.value;
-                          else delete legs[pin];
-                          update({
-                            ...bb,
-                            parts: bb.parts.map((p) =>
-                              p.ref === selPart.ref ? { ...p, legs } : p,
-                            ),
-                          });
-                        }}
-                      >
-                        <option value="">Desconectado</option>
-                        {holes.map((h) => (
-                          <option
-                            key={h}
-                            value={h}
-                            disabled={used.has(h) && used.get(h) !== selPart.ref}
-                          >
-                            {h}
-                          </option>
-                        ))}
-                      </select>
-                    </label>
-                  ))}
-              </fieldset>
-            )}
-
-            {!readOnly && (
-              <div className="row">
-                <button className="secondary small" onClick={rotateSelected}>
-                  Girar (R)
-                </button>
-                <button className="secondary small" onClick={removeSelected}>
-                  Retirar
-                </button>
-              </div>
-            )}
-          </div>
-        )}
-        {sel?.kind === "wire" && !readOnly && (
-          <div>
-            <h3>Fio</h3>
-            <button className="secondary small" onClick={removeSelected}>
-              Apagar fio
-            </button>
-          </div>
-        )}
-        {!readOnly && !schematic.bench_scope_channels && (
-          <fieldset className="scope-probe-connections">
-            <legend>Ponteiras do osciloscópio</legend>
-            <label>
-              Nome do canal
-              <input value={probeName} onChange={(e) => setProbeName(e.target.value)} />
-            </label>
-            <label>
-              Ponteira +
-              <select value={probePositive} onChange={(e) => setProbePositive(e.target.value)}>
-                {holes.map((h) => (
-                  <option key={h}>{h}</option>
-                ))}
-              </select>
-            </label>
-            <label>
-              Referência −
-              <select value={probeNegative} onChange={(e) => setProbeNegative(e.target.value)}>
-                <option value="0">Terra do circuito (0)</option>
-                {holes.map((h) => (
-                  <option key={h}>{h}</option>
-                ))}
-              </select>
-            </label>
-            <button
-              disabled={!resolved || !probeName.trim()}
-              onClick={() => {
-                try {
-                  if (!resolved) return;
-                  const positive = netAtHole(board, bb, resolved, probePositive);
-                  const negative =
-                    probeNegative === "0" ? "0" : netAtHole(board, bb, resolved, probeNegative);
-                  const name = probeName.trim();
-                  if (schematic.probes.some((p) => p.name?.toLowerCase() === name.toLowerCase()))
-                    throw new Error("Já existe uma ponteira com esse nome.");
-                  onChange({
-                    ...schematic,
-                    probes: [
-                      ...schematic.probes,
-                      {
-                        id: `scope${Date.now()}`,
-                        name,
-                        kind: "vdiff",
-                        target: { net: positive },
-                        reference: { net: negative },
-                      },
-                    ],
-                  });
-                  setError(null);
-                } catch (e) {
-                  setError((e as Error).message);
-                }
-              }}
-            >
-              Conectar ponteira
-            </button>
-            <p className="small muted">
-              O sinal segue os fios e barramentos da montagem atual. Simule novamente após mudar a
-              ligação.
+      {!panels.right && (
+        <aside
+          className="panel bb-info bb-collapsed"
+          aria-label="Conferência e roteiro (escondido)"
+        >
+          <button
+            className="secondary small bb-panel-toggle"
+            onClick={() => togglePanel("right")}
+            title="Mostrar ponteiras e conferência"
+            aria-label="Mostrar painel de conferência"
+            aria-expanded={false}
+          >
+            «<span className="bb-collapsed-label">Conferência</span>
+          </button>
+        </aside>
+      )}
+      {panels.right && (
+        <aside ref={infoRef} className="panel bb-info" aria-label="Conferência e roteiro">
+          <button
+            className="secondary small bb-panel-toggle bb-hide-right"
+            onClick={() => togglePanel("right")}
+            title="Esconder este painel para a protoboard ganhar espaço"
+            aria-expanded={true}
+          >
+            Esconder »
+          </button>
+          {error && (
+            <div className="error" role="alert">
+              {error}
+            </div>
+          )}
+          {notes.map((n) => (
+            <p key={n} className="note small">
+              {n}
             </p>
-          </fieldset>
-        )}
-        <h3>Conferência com o esquemático</h3>
-        {!report ? (
-          <p className="small muted">
-            Monte as peças (ou use a montagem automática): a conferência roda a cada mudança.
-          </p>
-        ) : (
-          <>
-            <p className={report.ok ? "bb-ok" : "bb-fail"}>{report.summary}</p>
-            <ul className="bb-issues">
-              {report.issues.map((i, k) => (
-                <li
-                  key={k}
-                  className={`issue-${i.kind} clickable`}
-                  role="button"
-                  tabIndex={0}
-                  onClick={() => setMark(i.holes)}
-                  title="Mostrar na protoboard"
-                >
-                  <strong>{ISSUE_LABEL[i.kind]}:</strong> {i.message}
-                </li>
-              ))}
-            </ul>
-          </>
-        )}
-        {guide && (
-          <>
-            <h3>Roteiro de montagem</h3>
-            {guide
-              .filter((s) => !/^\d+\./.test(s.text))
-              .map((s) => (
-                <p key={s.text} className="small muted">
-                  {s.text}
-                </p>
-              ))}
-            <ol className="bb-guide">
-              {guide
-                .filter((s) => /^\d+\./.test(s.text))
-                .map((s, k) => (
+          ))}
+          {selPart && selView && (
+            <div className="bb-selected">
+              <h3>
+                {selPart.ref} <span className="muted small">{selView.title}</span>
+              </h3>
+              {pkgs[selPart.package] && (
+                <PackagePreview pkg={pkgs[selPart.package]!} view={selView} />
+              )}
+              <PinoutSource view={selView} />
+              <PartCharacteristics
+                comp={schematic.components.find((c) => c.ref === selPart.ref)}
+                def={(() => {
+                  const k = schematic.components.find((c) => c.ref === selPart.ref)?.kind;
+                  return k ? library?.[k] : undefined;
+                })()}
+              />
+              {!readOnly && (
+                <fieldset className="terminal-connections">
+                  <legend>Terminais do dispositivo</legend>
+                  {(pkgs[selPart.package]?.pins ?? [])
+                    .filter((pin) => pin in selView.pinmap)
+                    .map((pin) => (
+                      <label key={pin}>
+                        {selView.labels[pin] ?? pin}
+                        <select
+                          aria-label={`Terminal ${selPart.ref}.${pin}`}
+                          value={selPart.legs[pin] ?? ""}
+                          onChange={(e) => {
+                            const legs = { ...selPart.legs };
+                            if (e.target.value) legs[pin] = e.target.value;
+                            else delete legs[pin];
+                            update({
+                              ...bb,
+                              parts: bb.parts.map((p) =>
+                                p.ref === selPart.ref ? { ...p, legs } : p,
+                              ),
+                            });
+                          }}
+                        >
+                          <option value="">Desconectado</option>
+                          {holes.map((h) => (
+                            <option
+                              key={h}
+                              value={h}
+                              disabled={used.has(h) && used.get(h) !== selPart.ref}
+                            >
+                              {h}
+                            </option>
+                          ))}
+                        </select>
+                      </label>
+                    ))}
+                </fieldset>
+              )}
+
+              {!readOnly && (
+                <div className="row">
+                  <button className="secondary small" onClick={rotateSelected}>
+                    Girar (R)
+                  </button>
+                  <button className="secondary small" onClick={removeSelected}>
+                    Retirar
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+          {sel?.kind === "wire" && !readOnly && (
+            <div>
+              <h3>Fio</h3>
+              <button className="secondary small" onClick={removeSelected}>
+                Apagar fio
+              </button>
+            </div>
+          )}
+          {!readOnly && !schematic.bench_scope_channels && (
+            <fieldset className="scope-probe-connections">
+              <legend>Ponteiras do osciloscópio</legend>
+              <label>
+                Nome do canal
+                <input value={probeName} onChange={(e) => setProbeName(e.target.value)} />
+              </label>
+              <label>
+                Ponteira +
+                <select value={probePositive} onChange={(e) => setProbePositive(e.target.value)}>
+                  {holes.map((h) => (
+                    <option key={h}>{h}</option>
+                  ))}
+                </select>
+              </label>
+              <label>
+                Referência −
+                <select value={probeNegative} onChange={(e) => setProbeNegative(e.target.value)}>
+                  <option value="0">Terra do circuito (0)</option>
+                  {holes.map((h) => (
+                    <option key={h}>{h}</option>
+                  ))}
+                </select>
+              </label>
+              <button
+                disabled={!resolved || !probeName.trim()}
+                onClick={() => {
+                  try {
+                    if (!resolved) return;
+                    const positive = netAtHole(board, bb, resolved, probePositive);
+                    const negative =
+                      probeNegative === "0" ? "0" : netAtHole(board, bb, resolved, probeNegative);
+                    const name = probeName.trim();
+                    if (schematic.probes.some((p) => p.name?.toLowerCase() === name.toLowerCase()))
+                      throw new Error("Já existe uma ponteira com esse nome.");
+                    onChange({
+                      ...schematic,
+                      probes: [
+                        ...schematic.probes,
+                        {
+                          id: `scope${Date.now()}`,
+                          name,
+                          kind: "vdiff",
+                          target: { net: positive },
+                          reference: { net: negative },
+                        },
+                      ],
+                    });
+                    setError(null);
+                  } catch (e) {
+                    setError((e as Error).message);
+                  }
+                }}
+              >
+                Conectar ponteira
+              </button>
+              <p className="small muted">
+                O sinal segue os fios e barramentos da montagem atual. Simule novamente após mudar a
+                ligação.
+              </p>
+            </fieldset>
+          )}
+          <h3>Conferência com o esquemático</h3>
+          {!report ? (
+            <p className="small muted">
+              Monte as peças (ou use a montagem automática): a conferência roda a cada mudança.
+            </p>
+          ) : (
+            <>
+              <p className={report.ok ? "bb-ok" : "bb-fail"}>{report.summary}</p>
+              <ul className="bb-issues">
+                {report.issues.map((i, k) => (
                   <li
                     key={k}
-                    className="clickable"
+                    className={`issue-${i.kind} clickable`}
                     role="button"
                     tabIndex={0}
-                    onClick={() => setMark(s.holes)}
+                    onClick={() => setMark(i.holes)}
+                    title="Mostrar na protoboard"
                   >
-                    {s.text.replace(/^\d+\.\s*/, "")}
+                    <strong>{ISSUE_LABEL[i.kind]}:</strong> {i.message}
                   </li>
                 ))}
-            </ol>
-          </>
-        )}
-      </aside>
+              </ul>
+            </>
+          )}
+          {guide && (
+            <>
+              <h3>Roteiro de montagem</h3>
+              {guide
+                .filter((s) => !/^\d+\./.test(s.text))
+                .map((s) => (
+                  <p key={s.text} className="small muted">
+                    {s.text}
+                  </p>
+                ))}
+              <ol className="bb-guide">
+                {guide
+                  .filter((s) => /^\d+\./.test(s.text))
+                  .map((s, k) => (
+                    <li
+                      key={k}
+                      className="clickable"
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => setMark(s.holes)}
+                    >
+                      {s.text.replace(/^\d+\.\s*/, "")}
+                    </li>
+                  ))}
+              </ol>
+            </>
+          )}
+        </aside>
+      )}
     </div>
   );
 }

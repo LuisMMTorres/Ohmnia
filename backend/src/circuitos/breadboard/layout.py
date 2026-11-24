@@ -49,6 +49,9 @@ class Breadboard(BaseModel):
     rails_split: bool = False
     parts: list[PlacedPart] = Field(default_factory=list)
     wires: list[Jumper] = Field(default_factory=list)
+    # where the user dragged each bench instrument (slot -> top-left x, y in board units);
+    # a slot left out sits in the default grid below the board
+    instrument_positions: dict[str, tuple[float, float]] = Field(default_factory=dict)
 
     def part(self, ref: str) -> PlacedPart | None:
         for p in self.parts:
