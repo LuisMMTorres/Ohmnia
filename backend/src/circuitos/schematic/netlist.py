@@ -17,6 +17,7 @@ from __future__ import annotations
 import contextlib
 import itertools
 import math
+import re
 from collections.abc import Callable, Mapping
 from dataclasses import dataclass, field
 
@@ -890,6 +891,9 @@ def _emit(comp: Component, n: list[str], ctx: _Ctx) -> list[str]:
 # ------------------------------------------------------------------------------- netlist
 
 
+SUPPLY_KIND = re.compile(r"v(dc|sin|pulse|pwl)")
+
+
 @dataclass
 class Netlist:
     text: str
@@ -904,6 +908,10 @@ class Netlist:
     digital_sensors: list[SensorSpec] = field(default_factory=list)  # read by the boards
     indicators: dict[str, Indicator] = field(default_factory=dict)  # LEDs and lamps
     limits: list[stress.Limit] = field(default_factory=list)  # ratings checked after a run
+    # independent voltage sources -> vector of their branch current, e.g. {"V1": "i(v1)"};
+    # ngspice counts it positive from + to - inside the source, so a supply that delivers
+    # current reads negative (the bench supply display shows -i)
+    supplies: dict[str, str] = field(default_factory=dict)
 
 
 def build_netlist(
@@ -930,6 +938,7 @@ def build_netlist(
     for pname, pval in all_params.items():
         lines.append(f".param {pname}={pval}")
     elements: dict[str, str] = {}
+    kinds: dict[str, str] = {}
     limits: list[stress.Limit] = []
     t_amb = temperature if temperature is not None else try_parse(sch.temperature)
     for comp in sch.components:
@@ -959,6 +968,7 @@ def build_netlist(
         _generic_spread(comp, ctx)
         lines += _emit(comp, nodes, ctx)
         elements[comp.ref] = element_name(comp)
+        kinds[comp.ref] = comp.kind
     lines += list(ctx.models.values())
     if sch.directives.strip():
         lines += [ln for ln in sch.directives.strip().splitlines() if ln.strip()]
@@ -984,4 +994,9 @@ def build_netlist(
         digital_sensors=ctx.digital_sensors,
         indicators=ctx.indicators,
         limits=limits,
+        supplies={
+            ref: f"i({name.lower()})"
+            for ref, name in elements.items()
+            if SUPPLY_KIND.fullmatch(kinds[ref])
+        },
     )

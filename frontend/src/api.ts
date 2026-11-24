@@ -1201,6 +1201,8 @@ export interface TranSuggestion {
 export interface NetlistOut {
   indicators?: Record<string, IndicatorOut>;
   limits?: LimitOut[];
+  /** Voltage source -> vector of its branch current, e.g. {"V1": "i(v1)"}. */
+  supplies?: Record<string, string>;
   netlist: string;
   nets: Record<string, string[]>;
   probes: { name: string; expr: string; unit: string; probe_id: string | null }[];

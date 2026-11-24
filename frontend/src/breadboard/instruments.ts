@@ -124,3 +124,17 @@ export function removeSources(sch: Schematic, ids: string[]): Schematic {
       : sch.breadboard,
   };
 }
+
+/**
+ * Text of the bench supply's ammeter. ``branch`` is the simulated current of the voltage
+ * source as ngspice gives it (positive from + to − inside the source), so the current the
+ * supply delivers to the circuit is −branch. No simulation yet: dashes.
+ */
+export function supplyAmpsText(branch: number | undefined): string {
+  if (branch === undefined || !Number.isFinite(branch)) return "-.---";
+  const i = -branch;
+  const a = Math.abs(i);
+  const text = a < 10 ? a.toFixed(3) : a.toFixed(2);
+  // a supply that absorbs current (another source pushes into it) shows the minus sign
+  return `${i < 0 && Number(text) !== 0 ? "-" : ""}${text}`.replace(".", ",");
+}

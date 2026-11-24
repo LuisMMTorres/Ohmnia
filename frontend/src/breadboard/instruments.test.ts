@@ -1,5 +1,10 @@
 import { expect, it } from "vitest";
-import { addSupplyChannel, pruneOrphanSupplyLabels, removeSources } from "./instruments";
+import {
+  addSupplyChannel,
+  pruneOrphanSupplyLabels,
+  removeSources,
+  supplyAmpsText,
+} from "./instruments";
 import { emptySchematic, type Component, type Schematic } from "../schematic/types";
 import { emptyBreadboard } from "./types";
 
@@ -75,4 +80,15 @@ it("cleans old generated tags without deleting manual labels or tags of survivin
   expect(cleaned.labels.some((l) => l.id === "manual")).toBe(true);
   expect(cleaned.labels.some((l) => l.id === "manual-ground")).toBe(true);
   expect(pruneOrphanSupplyLabels(cleaned)).toBe(cleaned);
+});
+
+it("shows the current the supply delivers, from the branch current of the source", () => {
+  expect(supplyAmpsText(undefined)).toBe("-.---");
+  expect(supplyAmpsText(NaN)).toBe("-.---");
+  // ngspice: a source delivering 12,3 mA has i(v1) = −12,3 mA
+  expect(supplyAmpsText(-0.0123)).toBe("0,012");
+  expect(supplyAmpsText(-1.5)).toBe("1,500");
+  expect(supplyAmpsText(-12.345)).toBe("12,35");
+  expect(supplyAmpsText(0.25)).toBe("-0,250");
+  expect(supplyAmpsText(1e-9)).toBe("0,000");
 });
