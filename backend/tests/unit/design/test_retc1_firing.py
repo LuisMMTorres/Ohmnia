@@ -104,7 +104,7 @@ def test_angle_outside_the_window_warns(firing_catalogue):
 
 
 def test_netlist_replaces_the_ideal_gates(firing_catalogue):
-    _, res, devices = design(firing_catalogue)
+    spec, res, devices = design(firing_catalogue)
     net = MOD.build_circuit(spec, devices, res.summary).netlist
     assert "VG1" not in net and "XU1A zs vth zr CMPOC" in net
     for k in range(1, 5):
