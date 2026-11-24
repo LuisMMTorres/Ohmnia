@@ -20,7 +20,11 @@ def q(v, u):
 def design(repo, **kw):
     spec = Retc1Spec(firing=True, **kw)
     res, devices = run(
-        MOD, spec, lambda c: repo.search(category=c), repo.get, DeratingPolicy.from_preset("didatico")
+        MOD,
+        spec,
+        lambda c: repo.search(category=c),
+        repo.get,
+        DeratingPolicy.from_preset("didatico"),
     )
     return spec, res, devices
 
@@ -45,7 +49,9 @@ def test_off_by_default_keeps_the_ideal_gate_pulses(firing_catalogue):
 
 @pytest.mark.parametrize("topo,n", [("ponte", 4), ("semicontrolada", 2), ("meia_onda", 1)])
 def test_selects_real_parts_for_every_role(firing_catalogue, topo, n):
-    _, res, _ = design(firing_catalogue, topology=topo, P=q(25 if topo == "meia_onda" else 200, "W"))
+    _, res, _ = design(
+        firing_catalogue, topology=topo, P=q(25 if topo == "meia_onda" else 200, "W")
+    )
     parts = {c.designator: c.part_number for c in res.selection}
     moc = next(d for d in parts if d.startswith("U") and d != "U1")
     assert parts[moc] == "MOC3021"  # the zero-crossing MOC3041 cannot fire at α
@@ -71,7 +77,7 @@ def test_ramp_equation_gives_the_nominal_angle(firing_catalogue):
 
 
 def test_gate_and_led_sizing_follow_the_datasheets(firing_catalogue):
-    spec, res, devices = design(firing_catalogue)
+    _, res, devices = design(firing_catalogue)
     moc = next(d for k, d in devices.items() if k.startswith("U2")).record
     scr = devices["T1–T4"].record
     vm_max = val(res, "Vm") * 1.1
@@ -98,7 +104,7 @@ def test_angle_outside_the_window_warns(firing_catalogue):
 
 
 def test_netlist_replaces_the_ideal_gates(firing_catalogue):
-    spec, res, devices = design(firing_catalogue)
+    _, res, devices = design(firing_catalogue)
     net = MOD.build_circuit(spec, devices, res.summary).netlist
     assert "VG1" not in net and "XU1A zs vth zr CMPOC" in net
     for k in range(1, 5):

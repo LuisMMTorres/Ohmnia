@@ -5,6 +5,11 @@
 .sim-table td:first-child {
   white-space: normal;
 }
+/* every data column (and its heading) centered; the name column stays on the left */
+.sim-table th:not(:first-child),
+.sim-table td.num {
+  text-align: center;
+}
 .wave-picker {
   display: flex;
   flex-wrap: wrap;

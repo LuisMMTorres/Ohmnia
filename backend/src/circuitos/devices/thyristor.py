@@ -152,7 +152,7 @@ class Drive:
         if self.IG.magnitude < 0 or not self.tw.magnitude > 0:
             raise ValueError("IG não pode ser negativo e tw deve ser positivo")
         if self.tw.m_as("s") * self.f.m_as("Hz") >= 0.5:
-            raise ValueError("O pulso de porta deve durar menos de meio ciclo")
+            raise ValueError("O pulso de gate deve durar menos de meio ciclo")
 
     def pulse_signs(self, kind: Kind) -> tuple[int, int]:
         """Gate polarity of the pulse at α and at α + π (0 = no pulse)."""
@@ -325,7 +325,7 @@ def latch_current(m: ThyristorModel, drive: Drive) -> Calculated[pint.Quantity]:
     i_max = max(0.0, (vm * math.sin(peak) - m.VT0.m_as("V")) / r)
     return record(
         "i_latch",
-        "Maior corrente na carga durante o pulso de porta",
+        "Maior corrente na carga durante o pulso de gate",
         r"i_{max} = \max_{\alpha \le \omega t \le \alpha + \omega t_w}"
         r"\frac{V_m \sin\omega t - V_{T0}}{R + r_T}",
         output=Q_(i_max, "A").to("mA"),

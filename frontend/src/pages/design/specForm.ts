@@ -73,6 +73,13 @@ export function sliderStep(lo: number, hi: number): number {
 
 /** Fields that only make sense for some topologies are hidden when they do not apply. */
 export function visible(moduleId: string, key: string, spec: Record<string, unknown>): boolean {
+  // rectifiers: the load is given by its power or by its current, never both
+  if (key === "P" || key === "Io") {
+    if (moduleId === "DM-RET1" || moduleId === "DM-RETC1" || moduleId === "DM-RET3") {
+      const byCurrent = spec.load_by === "corrente";
+      return key === "Io" ? byCurrent : !byCurrent;
+    }
+  }
   if (moduleId === "DM-RET1") {
     if (key === "L_factor") return spec.filter === "LC";
     if (key === "ripple_pct" || key === "cap_series") return spec.filter !== "nenhum";

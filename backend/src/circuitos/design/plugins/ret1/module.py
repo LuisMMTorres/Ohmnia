@@ -25,6 +25,7 @@ from circuitos.design.base import (
     make_trace,
 )
 from circuitos.design.engine import Analysis, Device
+from circuitos.design.loadspec import LoadBy
 from circuitos.design.measure import scale
 
 from . import model as m
@@ -52,7 +53,9 @@ class Ret1Spec(BaseModel):
     Vin: QuantityModel = QuantityModel(value=127, unit="V")  # primary, RMS
     Vsec: QuantityModel = QuantityModel(value=12, unit="V")  # secondary, RMS (center tap: half)
     f: QuantityModel = QuantityModel(value=60, unit="Hz")
+    load_by: LoadBy = "potencia"  # which load quantity the user gives: P or the mean current
     P: QuantityModel = QuantityModel(value=12, unit="W")  # active power absorbed by the load
+    Io: QuantityModel = QuantityModel(value=1, unit="A")  # mean load current
     ripple_pct: float = Field(default=5.0, gt=0, le=50)  # peak-to-peak, % of Vo
     L_factor: float = Field(default=2.0, ge=1.0, le=20)  # L = factor · Lcrit (LC filter)
     cap_series: Literal["E3", "E6", "E12"] = "E6"
@@ -104,11 +107,15 @@ class Ret1Module:
         f = s.f.to_pint().m_as("Hz")
         w = 2 * math.pi * f
         Vsec_in = s.Vsec.to_pint().m_as("V")
-        P = s.P.to_pint().m_as("W")
+        by_current = s.load_by == "corrente"
+        target_q = s.Io.to_pint() if by_current else s.P.to_pint()
+        target = float(target_q.m_as("A") if by_current else target_q.m_as("W"))
+        target_in = {"I_o": target_q} if by_current else {"P": target_q}
+        what = "a corrente média" if by_current else "a potência"
         p = m.pulses(topo)
         ref = _ref(topo)
-        if Vsec_in <= 0 or P <= 0:
-            raise ValueError("A tensão do secundário e a potência da carga devem ser positivas")
+        if Vsec_in <= 0 or target <= 0:
+            raise ValueError(f"A tensão do secundário e {what} da carga devem ser positivas")
         Vm = log.add(
             record(
                 "Vm",
@@ -128,32 +135,50 @@ class Ret1Module:
         summary: dict[str, pint.Quantity] = {}
         C = L = None
         r_frac = s.ripple_pct / 100
-        power_latex = r"\frac{1}{2\pi}\int_0^{2\pi} v_o\,i_o\,d\theta = P"
+        power_latex = (
+            r"\frac{1}{2\pi}\int_0^{2\pi} i_o\,d\theta = I_o"
+            if by_current
+            else r"\frac{1}{2\pi}\int_0^{2\pi} v_o\,i_o\,d\theta = P"
+        )
 
-        def load_power(wv: m.Waves) -> float:
+        def load_value(wv: m.Waves) -> float:
+            """Mean current or active power of the load (both fall as R grows)."""
+            if by_current:
+                return float(np.mean(wv.i_load))
             return float(np.mean(wv.vo * wv.i_load))
 
+        def r_from(vo: float) -> float:
+            """Resistance estimate from an output voltage: V_o/I_o or V_o²/P."""
+            return vo / target if by_current else vo**2 / target
+
         def solve_r(make: Callable[[float], m.Waves], guess: float) -> float:
-            """Load resistance that draws the power P (P falls as R grows)."""
+            """Load resistance that draws the target P or I_o (both fall as R grows)."""
 
             def g(r: float) -> float:
-                return float(load_power(make(r)) - P)
+                return float(load_value(make(r)) - target)
 
             for k in (1.2, 2.0, 5.0, 50.0):
                 lo, hi = guess / k, guess * k
                 if g(lo) > 0 > g(hi):
                     return float(brentq(g, lo, hi, xtol=1e-9 * guess, rtol=1e-8))
-            raise ValueError("Não há resistência de carga que absorva essa potência")
+            raise ValueError(f"Não há resistência de carga que absorva {what} pedida")
 
         if flt == "nenhum":
-            vo_rms1 = m.rms(m.unfiltered(topo, Vm, VF, 1.0).vo)
+            vo1 = m.unfiltered(topo, Vm, VF, 1.0).vo
+            vo_1 = m.mean(vo1) if by_current else m.rms(vo1)
             R = log.add(
                 record(
                     "R",
-                    "Resistência da carga que absorve a potência pedida",
-                    r"P = \frac{V_{o,ef}^2}{R} \Rightarrow R = \frac{V_{o,ef}^2}{P}",
-                    output=Q_(vo_rms1**2 / P, "ohm"),
-                    inputs={"V_{o,ef}": Q_(vo_rms1, "V"), "P": s.P.to_pint(), **inputs_vf},
+                    f"Resistência da carga que absorve {what} pedida",
+                    r"I_o = \frac{V_o}{R} \Rightarrow R = \frac{V_o}{I_o}"
+                    if by_current
+                    else r"P = \frac{V_{o,ef}^2}{R} \Rightarrow R = \frac{V_{o,ef}^2}{P}",
+                    output=Q_(r_from(vo_1), "ohm"),
+                    inputs={
+                        ("V_o" if by_current else "V_{o,ef}"): Q_(vo_1, "V"),
+                        **target_in,
+                        **inputs_vf,
+                    },
                     assumptions=[
                         "carga resistiva",
                         "diodo como queda constante: a forma de v_o não depende de R",
@@ -170,13 +195,14 @@ class Ret1Module:
                     return m.cap_filter(topo, Vm, VF, r, c, f)
                 return m.pi_filter(topo, Vm, VF, r, ind, c, c, f)
 
-            # C depends on the load current and the load (given by its power) on C: iterate
+            # C depends on the load current and the load (given by P or I_o) on C: iterate
             # with the commercial value until both settle
             vo_est = Vm - n_vf
-            R = vo_est**2 / P
+            R = r_from(vo_est)
             cap = inductance = 0.0
             io_est = dV1 = c_req = 0.0
-            # fixed point: P·R ≈ V_o,ef² changes little with R, so R ← R·P(R)/P converges fast
+            # fixed point: P·R ≈ V_o,ef² (or I_o·R ≈ V_o) changes little with R, so
+            # R ← R·P(R)/P (or R·I(R)/I_o) converges fast
             for _ in range(80):
                 io_est = vo_est / R
                 dV1 = k1 * r_frac * vo_est
@@ -184,7 +210,7 @@ class Ret1Module:
                 cap_new = float(snap(Q_(c_req, "F"), s.cap_series, "up").m_as("F"))
                 ind_new = (1 + k1) / ((p * w) ** 2 * cap_new) if flt == "pi" else 0.0
                 wv = c1_waves(R, cap_new, ind_new)
-                ratio = load_power(wv) / P
+                ratio = load_value(wv) / target
                 done = cap_new == cap and abs(ratio - 1) <= 1e-7
                 cap, inductance, vo_est = cap_new, ind_new, m.mean(wv.vo)
                 if done:
@@ -207,8 +233,9 @@ class Ret1Module:
                     },
                     assumptions=[
                         "descarga linear do capacitor durante todo o período de ondulação",
-                        "I_o e V_o da carga que absorve a potência P com o capacitor comercial "
-                        "(iteração entre C e R)",
+                        "I_o e V_o da carga que absorve "
+                        + ("a corrente I_o" if by_current else "a potência P")
+                        + " com o capacitor comercial (iteração entre C e R)",
                     ]
                     + (
                         []
@@ -274,13 +301,13 @@ class Ret1Module:
             log.add(
                 record(
                     "R",
-                    "Resistência da carga que absorve a potência pedida (solução periódica exata "
+                    f"Resistência da carga que absorve {what} pedida (solução periódica exata "
                     "do modelo)",
                     model_latex + power_latex,
                     output=Q_(R, "ohm"),
                     inputs={
                         "V_m": Q_(Vm, "V"),
-                        "P": s.P.to_pint(),
+                        **target_in,
                         "C": Q_(cap, "F").to("uF"),
                         r"\omega": Q_(w, "rad/s"),
                         **inputs_vf,
@@ -363,9 +390,9 @@ class Ret1Module:
                 record(
                     "R_est",
                     "Resistência estimada da carga",
-                    r"R \approx \frac{V_o^2}{P}",
-                    output=Q_(vo_est**2 / P, "ohm"),
-                    inputs={"V_o": Q_(vo_est, "V"), "P": s.P.to_pint()},
+                    r"R \approx \frac{V_o}{I_o}" if by_current else r"R \approx \frac{V_o^2}{P}",
+                    output=Q_(r_from(vo_est), "ohm"),
+                    inputs={"V_o": Q_(vo_est, "V"), **target_in},
                     assumptions=["ondulação pequena diante de V_o"],
                     reference=HART_FW,
                 )
@@ -424,7 +451,7 @@ class Ret1Module:
             R = log.add(
                 record(
                     "R",
-                    "Resistência da carga que absorve a potência pedida (modelo com todas as "
+                    f"Resistência da carga que absorve {what} pedida (modelo com todas as "
                     "harmônicas)",
                     r"V_{o,h} = \frac{V_{ret,h}\,Z_h}{jh\omega L + Z_h};\quad " + power_latex,
                     output=Q_(
@@ -433,7 +460,7 @@ class Ret1Module:
                     ),
                     inputs={
                         "V_m": Q_(Vm, "V"),
-                        "P": s.P.to_pint(),
+                        **target_in,
                         "L": Q_(L, "H").to("mH"),
                         "C": Q_(C, "F").to("uF"),
                     },

@@ -129,7 +129,7 @@ export function ThyristorBench({ selector }: { selector: ReactNode }) {
     return {
       voltages: pick(["Tensão da fonte", "Tensão na carga", "Tensão no tiristor"]),
       current: pick(["Corrente"]),
-      gate: pick(["Corrente de porta"]),
+      gate: pick(["Corrente de gate"]),
     };
   }, [result]);
 
@@ -157,7 +157,7 @@ export function ThyristorBench({ selector }: { selector: ReactNode }) {
     ["Frequência (Hz)", freq, setFreq],
     ["Resistência de carga R (Ω)", r, setR],
     ["Ângulo de disparo α (°)", alpha, setAlpha],
-    ["Corrente do pulso de porta IG (mA)", ig, setIg],
+    ["Corrente do pulso de gate IG (mA)", ig, setIg],
     ["Largura do pulso tw (µs)", tw, setTw],
   ];
 
@@ -167,9 +167,9 @@ export function ThyristorBench({ selector }: { selector: ReactNode }) {
         {selector}
         <h2>Bancada: tiristores</h2>
         <p className="small muted">
-          SCR ou TRIAC com carga resistiva e pulso de porta no ângulo α. O modelo dispara quando a
-          corrente de porta atinge I<sub>GT</sub> do quadrante, trava se a corrente na carga chegar
-          a I<sub>L</sub> durante o pulso e bloqueia quando ela cai abaixo de I<sub>H</sub>; em
+          SCR ou TRIAC com carga resistiva e pulso de gate no ângulo α. O modelo dispara quando a
+          corrente de gate atinge I<sub>GT</sub> do quadrante, trava se a corrente na carga chegar a
+          I<sub>L</sub> durante o pulso e bloqueia quando ela cai abaixo de I<sub>H</sub>; em
           condução, v<sub>T</sub> = V<sub>T0</sub> + r<sub>T</sub>·i. O mesmo modelo é conferido no
           ngspice.
         </p>
@@ -204,7 +204,7 @@ export function ThyristorBench({ selector }: { selector: ReactNode }) {
         ))}
         {kind === "triac" && (
           <label>
-            Polaridade dos pulsos de porta
+            Polaridade dos pulsos de gate
             <select value={mode} onChange={(e) => setMode(e.target.value as GateMode)}>
               {GATE_MODES.map(([id, label]) => (
                 <option key={id} value={id}>
