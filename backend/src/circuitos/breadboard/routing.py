@@ -67,7 +67,8 @@ def body(pkg: Package, legs: dict[str, str], place: Place = _same) -> Rect | Non
             return Rect(x0, y0 - 0.35, x1, y0 + 0.35)
         return Rect(x0 - 0.35, y0, x0 + 0.35, y1)
     if pkg.style == "radial":
-        up, down = (1.6, 0.7) if pkg.body == "tact" else (0.8, 0.25)
+        # a tact switch is square; an electrolytic can stands taller than a LED or ceramic disc
+        up, down = {"tact": (1.6, 0.7), "electrolytic": (2.4, 0.25)}.get(pkg.body, (0.8, 0.25))
         if y0 == y1:
             return Rect(x0 - 0.45, y0 - up, x1 + 0.45, y0 + down)
         return Rect(x0 - up, y0 - 0.45, x0 + down, y1 + 0.45)

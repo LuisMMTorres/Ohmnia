@@ -1,5 +1,5 @@
 // Real-looking packages drawn on the breadboard (top view), from the leg positions.
-import type { ReactNode } from "react";
+import { useId, type ReactNode } from "react";
 import { BAND_COLORS, P } from "./geometry";
 import type { PackageSpec, PartView } from "./types";
 import type { Glow } from "../schematic/symbols";
@@ -62,6 +62,7 @@ export function PackageArt({
   glow,
   pressed,
 }: Props) {
+  const uid = useId().replace(/[^a-zA-Z0-9_-]/g, "");
   const pins = pkg.pins.filter((p) => legs[p]);
   const pts = pins.map((p) => legs[p]!);
   if (!pts.length) return null;
@@ -141,25 +142,13 @@ export function PackageArt({
     );
   } else if (pkg.style === "radial") {
     if (pkg.body === "electrolytic") {
-      const r = Math.max(len / 2 + 3, P * 0.7);
-      const minus = legs["-"];
       body = (
-        <>
-          <circle cx={center[0]} cy={center[1]} r={r} className="bb-elco" />
-          {minus && (
-            <path
-              d={`M ${center[0]} ${center[1]} L ${minus[0] + (minus[0] - center[0]) * 0.9} ${
-                minus[1] + (minus[1] - center[1]) * 0.9
-              }`}
-              className="bb-elco-stripe"
-            />
-          )}
-          {minus && (
-            <text x={minus[0]} y={minus[1] - 5} textAnchor="middle" className="bb-elco-sign">
-              −
-            </text>
-          )}
-        </>
+        <ElectrolyticCan
+          plus={legs["+"] ?? first}
+          minus={legs["-"] ?? last}
+          marking={view?.title ?? ""}
+          uid={uid}
+        />
       );
     } else if (pkg.body === "tact") {
       const w = len + P * 0.9;
@@ -321,6 +310,132 @@ export function PackageArt({
           }
           return <LegLabel key={pin} at={at} text={labelOf(view, pin)} dir={dir} />;
         })}
+    </g>
+  );
+}
+
+/**
+ * Aluminium electrolytic capacitor standing on its two legs, seen from the front as it sits on
+ * a breadboard: cylindrical sleeve with the negative stripe ("−" signs) on the side of the −
+ * leg, capacitance and rated voltage printed on the sleeve, aluminium top with the K-shaped
+ * vent, rubber seal at the base and the + leg longer (bent) than the − leg. The can is always
+ * drawn upright (or leaning left when the legs run down a column) and mirrored so the stripe
+ * stays over the − leg.
+ */
+function ElectrolyticCan({
+  plus,
+  minus,
+  marking,
+  uid,
+}: {
+  plus: Pt;
+  minus: Pt;
+  marking: string;
+  uid: string;
+}) {
+  let angle = deg(plus, minus);
+  const c = mid(plus, minus);
+  const len = Math.max(dist(plus, minus), 1);
+  // keep the can upright: if + is to the right of − (or below it), turn the frame half a turn
+  // and put the stripe on the left
+  const cos = Math.cos((angle * Math.PI) / 180);
+  const sin = Math.sin((angle * Math.PI) / 180);
+  const flip = cos < -1e-6 || (Math.abs(cos) <= 1e-6 && sin > 0);
+  if (flip) angle += 180;
+  const m = flip ? -1 : 1; // local x of the − leg is m * len / 2
+  const w = len + P * 0.75; // can diameter
+  const yb = -9; // bottom of the sleeve (rubber seal just under it); the legs show below
+  const h = 2 * P - 6; // sleeve height
+  const yt = yb - h; // top of the sleeve
+  const ry = w * 0.16; // half-height of the top ellipse (slight top-down view)
+  const xm = (m * len) / 2;
+  const xp = -xm;
+  const stripeW = w * 0.32;
+  const sx0 = m > 0 ? w / 2 - stripeW : -w / 2;
+  // depth of the sleeve's lower edge where the stripe meets the blue
+  const edge = ry * Math.sqrt(1 - ((w / 2 - stripeW) / (w / 2)) ** 2);
+  const [cap, volt] = marking.replace(/u/g, "µ").split(" ");
+  const g = `elco-${uid}`;
+  const valueX = m > 0 ? -stripeW / 2 - 3.5 : stripeW / 2 - 3.5;
+  return (
+    <g transform={`translate(${c[0]} ${c[1]}) rotate(${angle})`}>
+      <defs>
+        <linearGradient id={`${g}-body`} x1="0" x2="1" y1="0" y2="0">
+          <stop offset="0" stopColor="#0f2350" />
+          <stop offset="0.3" stopColor="#3a63b8" />
+          <stop offset="0.55" stopColor="#24478f" />
+          <stop offset="1" stopColor="#0c1c42" />
+        </linearGradient>
+        <linearGradient id={`${g}-stripe`} x1="0" x2="1" y1="0" y2="0">
+          <stop offset="0" stopColor={m > 0 ? "#b8c4dc" : "#8e9ab3"} />
+          <stop offset="1" stopColor={m > 0 ? "#8e9ab3" : "#c9d3e6"} />
+        </linearGradient>
+        <linearGradient id={`${g}-top`} x1="0" x2="1" y1="0" y2="1">
+          <stop offset="0" stopColor="#f4f6f8" />
+          <stop offset="1" stopColor="#9da3aa" />
+        </linearGradient>
+      </defs>
+      {/* legs: − straight, + longer, with the slack bent */}
+      <path d={`M ${xm} 0 V ${yb}`} className="bb-elco-leg" />
+      <path
+        d={`M ${xp} 0 V -1.5 L ${xp - m * 3} -3.5 L ${xp} -5.5 L ${xp - m * 3} -7.5 V ${yb}`}
+        className="bb-elco-leg"
+      />
+      {/* rubber seal */}
+      <ellipse cx={0} cy={yb} rx={w / 2 - 0.8} ry={ry * 0.8} className="bb-elco-seal" />
+      {/* sleeve, rounded bottom edge, and the negative stripe */}
+      <path
+        d={`M ${-w / 2} ${yt} V ${yb} A ${w / 2} ${ry} 0 0 0 ${w / 2} ${yb} V ${yt} Z`}
+        fill={`url(#${g}-body)`}
+        className="bb-elco"
+      />
+      <path
+        d={
+          m > 0
+            ? `M ${sx0} ${yt} V ${yb + edge} A ${w / 2} ${ry} 0 0 0 ${w / 2} ${yb} V ${yt} Z`
+            : `M ${-w / 2} ${yt} V ${yb} A ${w / 2} ${ry} 0 0 0 ${sx0 + stripeW} ${yb + edge} V ${yt} Z`
+        }
+        fill={`url(#${g}-stripe)`}
+        className="bb-elco-stripe"
+      />
+      {[0.25, 0.5, 0.75].map((f) => (
+        <text
+          key={f}
+          x={sx0 + stripeW / 2}
+          y={yt + h * f + 2.6}
+          textAnchor="middle"
+          className="bb-elco-sign"
+        >
+          −
+        </text>
+      ))}
+      {/* capacitance and rated voltage, printed along the sleeve */}
+      {cap && (
+        <text
+          transform={`translate(${valueX} ${(yt + yb) / 2}) rotate(-90)`}
+          textAnchor="middle"
+          className="bb-elco-text"
+        >
+          {cap}
+        </text>
+      )}
+      {volt && (
+        <text
+          transform={`translate(${valueX + 5.5} ${(yt + yb) / 2}) rotate(-90)`}
+          textAnchor="middle"
+          className="bb-elco-text"
+        >
+          {volt}
+        </text>
+      )}
+      {/* aluminium top with the K-shaped safety vent */}
+      <ellipse cx={0} cy={yt} rx={w / 2} ry={ry} fill={`url(#${g}-top)`} className="bb-elco-top" />
+      <path
+        d={`M ${-w * 0.12} ${yt - ry * 0.55} V ${yt + ry * 0.55} M ${-w * 0.12} ${yt} L ${
+          w * 0.14
+        } ${yt - ry * 0.6} M ${-w * 0.12} ${yt} L ${w * 0.14} ${yt + ry * 0.6}`}
+        className="bb-elco-vent"
+      />
     </g>
   );
 }

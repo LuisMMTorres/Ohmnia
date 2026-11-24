@@ -84,6 +84,20 @@ def test_generic_parts_are_labelled_and_marked_generic():
     assert e.origin == "sem_montagem" and not e.checkable
 
 
+def test_electrolytic_shows_value_and_rated_voltage():
+    c = Component(
+        id="1", kind="capacitor", ref="C1", x=0, y=0, params={"value": "470u", "v_rated": "25"}
+    )
+    r = resolve(c, None)
+    assert r.package == "radial-elco"
+    assert r.title == "470uF 25V"
+    assert r.pinmap == {"+": "1", "-": "2"}
+    plain = resolve(
+        Component(id="2", kind="capacitor", ref="C2", x=0, y=0, params={"value": "10u"}), None
+    )
+    assert plain.title == "10uF"
+
+
 def test_catalogue_pinout_comes_with_page_and_status():
     rec = _record("bjt/onsemi-bc546-bc548.yaml", "BC547B")
     q = resolve(Component(id="1", kind="npn", ref="Q1", x=0, y=0), rec)

@@ -1203,18 +1203,40 @@ li.clickable:hover {
   stroke: #7d8a1d;
 }
 .bb-elco {
-  fill: #2b4f9e;
-  stroke: #17306a;
+  stroke: #0a1735;
+  stroke-width: 0.7;
 }
 .bb-elco-stripe {
-  stroke: #d9e1f2;
-  stroke-width: 5;
-  opacity: 0.8;
+  stroke: none;
 }
 .bb-elco-sign {
-  font-size: 10px;
+  font-size: 8px;
   font-weight: bold;
-  fill: #fff;
+  fill: #0f2350;
+}
+.bb-elco-text {
+  font-size: 5px;
+  font-weight: 600;
+  fill: #e8eefb;
+  dominant-baseline: middle;
+}
+.bb-elco-top {
+  stroke: #6f757c;
+  stroke-width: 0.6;
+}
+.bb-elco-vent {
+  fill: none;
+  stroke: #7d838a;
+  stroke-width: 0.6;
+}
+.bb-elco-seal {
+  fill: #1c1c1c;
+}
+.bb-elco-leg {
+  fill: none;
+  stroke: #9aa0a6;
+  stroke-width: 1.6;
+  stroke-linejoin: round;
 }
 .bb-to92,
 .bb-epoxy {
