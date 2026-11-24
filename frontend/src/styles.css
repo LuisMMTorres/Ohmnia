@@ -1276,6 +1276,7 @@ li.clickable:hover {
   fill: none;
   stroke-width: 3;
   stroke-linecap: round;
+  stroke-linejoin: round;
   cursor: pointer;
 }
 .bb-wire.selected {
