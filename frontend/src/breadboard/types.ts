@@ -28,6 +28,8 @@ export interface Breadboard {
   rails_split: boolean;
   parts: PlacedPart[];
   wires: Jumper[];
+  /** Where the user dragged each bench instrument (slot -> top-left x, y); others use the grid. */
+  instrument_positions?: Record<string, [number, number]>;
 }
 
 export interface BoardSpec {
