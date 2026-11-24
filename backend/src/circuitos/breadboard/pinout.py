@@ -245,6 +245,10 @@ def _generic(comp: Component) -> Resolved:
         r.title = _value_label(comp, "value", "F")
         if farads >= 1e-6:
             r.package = "radial-elco"
+            vr = try_parse(param(comp, "v_rated"))
+            if vr is not None:
+                # printed on the can next to the capacitance, as on a real part
+                r.title = f"{r.title} {format_value(vr, 3)}V"
             r.pinmap = {"+": "1", "-": "2"}
             r.labels = {"+": "+", "-": "−"}
             r.notes.append(
