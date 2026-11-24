@@ -22,6 +22,7 @@ from circuitos.design.base import (
     make_trace,
 )
 from circuitos.design.engine import Analysis, Device
+from circuitos.design.loadspec import LoadBy
 from circuitos.design.measure import scale
 
 from . import model as m
@@ -46,7 +47,9 @@ class Retc1Spec(BaseModel):
     Vin: QuantityModel = QuantityModel(value=127, unit="V")  # primary, RMS
     Vsec: QuantityModel = QuantityModel(value=70, unit="V")  # secondary, RMS
     f: QuantityModel = QuantityModel(value=60, unit="Hz")
+    load_by: LoadBy = "potencia"  # which load quantity the user gives: P or the mean current
     P: QuantityModel = QuantityModel(value=360, unit="W")  # active power of the load at α nom
+    Io: QuantityModel = QuantityModel(value=5, unit="A")  # mean load current at α nom
     L: QuantityModel = QuantityModel(value=100, unit="mH")
     E: QuantityModel = QuantityModel(value=0, unit="V")
     alpha_nom: QuantityModel = QuantityModel(value=30, unit="deg")
@@ -138,9 +141,11 @@ class Retc1Module:
         alpha = math.radians(s.alpha_nom.to_pint().m_as("deg"))
         drop = m.forward_drop(topo, VT, VD)
         L_load, E = s.L.to_pint().m_as("H"), s.E.to_pint().m_as("V")
-        P = s.P.to_pint().m_as("W")
-        if P <= 0 or s.Vsec.to_pint().m_as("V") <= 0:
-            raise ValueError("A tensão do secundário e a potência da carga devem ser positivas")
+        by_current = s.load_by == "corrente"
+        target = s.Io.to_pint().m_as("A") if by_current else s.P.to_pint().m_as("W")
+        if target <= 0 or s.Vsec.to_pint().m_as("V") <= 0:
+            what = "a corrente" if by_current else "a potência"
+            raise ValueError(f"A tensão do secundário e {what} da carga devem ser positivas")
         Vm = log.add(
             record(
                 "Vm",
@@ -163,38 +168,52 @@ class Retc1Module:
             wr = m.waves(sol_r)
             return float(np.mean(wr.vo * wr.io))
 
-        # R of the load that absorbs P (the power falls as R grows): bracket, then refine
-        r_hi = r_lo = max(Vm * Vm / (2 * P), 1e-3)
-        g_hi = g_lo = load_power(r_hi) - P
+        def load_current(r: float) -> float:
+            sol_r = solution(r)
+            if not sol_r.fired:
+                return 0.0
+            return float(np.mean(m.waves(sol_r).io))
+
+        # P and the mean current both fall as R grows: bracket the R of the target, then refine
+        load_value = load_current if by_current else load_power
+        r_hi = r_lo = max(Vm / (2 * target) if by_current else Vm * Vm / (2 * target), 1e-3)
+        g_hi = g_lo = load_value(r_hi) - target
         for _ in range(40):
             if g_lo > 0:
                 break
             r_lo /= 2
-            g_lo = load_power(r_lo) - P
+            g_lo = load_value(r_lo) - target
         for _ in range(40):
             if g_hi < 0:
                 break
             r_hi *= 2
-            g_hi = load_power(r_hi) - P
+            g_hi = load_value(r_hi) - target
         if not (g_lo > 0 > g_hi):
+            what = "corrente" if by_current else "potência"
             raise ValueError(
-                "Não há resistência de carga que absorva essa potência com essa tensão do "
-                "secundário, esse α e essa E: aumente V_sec ou reduza a potência"
+                f"Não há resistência de carga que absorva essa {what} com essa tensão do "
+                f"secundário, esse α e essa E: aumente V_sec ou reduza a {what}"
             )
-        R = float(brentq(lambda r: load_power(r) - P, r_lo, r_hi, rtol=1e-9))
+        R = float(brentq(lambda r: load_value(r) - target, r_lo, r_hi, rtol=1e-9))
         ld = m.Load(R=R, L=L_load, E=E)
         sol = solution(R)
         wv = m.waves(sol)
         log.add(
             record(
                 "R_load",
-                "Resistência da carga que absorve a potência pedida em α nominal (modelo exato)",
+                "Resistência da carga que absorve a "
+                + ("corrente média" if by_current else "potência")
+                + " pedida em α nominal (modelo exato)",
                 r"\omega L\frac{di}{d\theta} + Ri = V_m\sin\theta - V_{quedas} - E;\quad "
-                r"\frac{1}{2\pi}\int_0^{2\pi} v_o\,i_o\,d\theta = P",
+                + (
+                    r"\frac{1}{2\pi}\int_0^{2\pi} i_o\,d\theta = I_o"
+                    if by_current
+                    else r"\frac{1}{2\pi}\int_0^{2\pi} v_o\,i_o\,d\theta = P"
+                ),
                 output=Q_(R, "ohm"),
                 inputs={
                     "V_m": Q_(Vm, "V"),
-                    "P": s.P.to_pint(),
+                    **({"I_o": s.Io.to_pint()} if by_current else {"P": s.P.to_pint()}),
                     r"\alpha_{nom}": s.alpha_nom.to_pint(),
                     "V_{quedas}": Q_(drop, "V"),
                     "L": s.L.to_pint(),
@@ -431,7 +450,7 @@ class Retc1Module:
                     inputs={"V_T": Q_(VT, "V"), "I_{T,med}": Q_(it_avg, "A")},
                     assumptions=[
                         "queda constante V_TM do datasheet (conservador)",
-                        "perdas de comutação e de porta desprezadas em 60 Hz",
+                        "perdas de comutação e de gate desprezadas em 60 Hz",
                     ],
                     reference=ref,
                 )
@@ -689,7 +708,7 @@ class Retc1Module:
             "Tensão no primário": v_pri,
             "Corrente no primário": i_pri,
             "Tensão em T1 (anodo − catodo)": v_t1,
-            "Tensão de disparo de T1 (porta)": "v(g1)",
+            "Tensão de disparo de T1 (Gate)": "v(g1)",
         }
         powers = {
             "Primário": PowerPort(voltage=v_pri, current=i_pri, ac=True),

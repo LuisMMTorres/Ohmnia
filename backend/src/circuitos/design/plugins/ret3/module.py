@@ -21,6 +21,7 @@ from circuitos.design.base import (
     make_trace,
 )
 from circuitos.design.engine import Analysis, Device
+from circuitos.design.loadspec import LoadBy
 from circuitos.design.measure import scale
 from circuitos.design.plugins.retc1.module import diode_model, scr_model
 
@@ -52,7 +53,9 @@ class Ret3Spec(BaseModel):
     f: QuantityModel = QuantityModel(value=60, unit="Hz")
     # secondary line-to-line, RMS (12 pulses: each bridge)
     Vsec: QuantityModel = QuantityModel(value=220, unit="V")
+    load_by: LoadBy = "potencia"  # which load quantity the user gives: P or the current
     P: QuantityModel = QuantityModel(value=2500, unit="W")  # load power (DC current, L ≫)
+    Io: QuantityModel = QuantityModel(value=10, unit="A")  # load current (DC, L ≫)
     E: QuantityModel = QuantityModel(value=0, unit="V")  # counter-EMF of the load
     Ls: QuantityModel = QuantityModel(value=0.5, unit="mH")  # per phase, secondary side
     alpha_nom: QuantityModel = QuantityModel(value=30, unit="deg")
@@ -67,7 +70,10 @@ class Ret3Spec(BaseModel):
             raise ValueError("α nominal deve estar entre 0° e 90° (modo retificador)")
         if self.Vsec.to_pint().m_as("V") <= 0:
             raise ValueError("A tensão do secundário deve ser positiva")
-        if self.P.to_pint().m_as("W") <= 0:
+        if self.load_by == "corrente":
+            if self.Io.to_pint().m_as("A") <= 0:
+                raise ValueError("A corrente da carga deve ser positiva")
+        elif self.P.to_pint().m_as("W") <= 0:
             raise ValueError("A potência da carga deve ser positiva")
         return self
 
@@ -157,7 +163,14 @@ class Ret3Module:
                 "Com essa tensão do secundário e esse α, a tensão média não supera E: "
                 "aumente V_sec ou reduza α"
             )
-        if kx > 1e-12:
+        if s.load_by == "corrente":
+            io_val = s.Io.to_pint().m_as("A")
+            if v0 - kx * io_val <= 0:
+                raise ValueError(
+                    "Com essa corrente a queda por comutação anula a tensão média: "
+                    "aumente V_sec, reduza L_s ou reduza a corrente"
+                )
+        elif kx > 1e-12:
             disc = v0 * v0 - 4 * kx * P
             if disc < 0:
                 raise ValueError(
@@ -169,6 +182,16 @@ class Ret3Module:
             io_val = P / v0
         Io = log.add(
             record(
+                "Io",
+                "Corrente na carga pedida (dada pelo usuário)",
+                r"I_o = I_{o,pedida}",
+                output=Q_(io_val, "A"),
+                inputs={"I_{o,pedida}": s.Io.to_pint()},
+                assumptions=["corrente de carga constante (indutância da carga grande)"],
+                reference=ref,
+            )
+            if s.load_by == "corrente"
+            else record(
                 "Io",
                 "Corrente na carga que entrega a potência pedida",
                 rf"P = V_o I_o,\quad V_o = {k_v} V_{{LL,m}}\cos\alpha - {k_x} I_o - n V_T"
@@ -192,7 +215,10 @@ class Ret3Module:
         ).m_as("A")
         Vo = v0 - kx * Io
         if Vo <= E:
-            raise ValueError("A tensão média na carga ficou menor que E: reduza a potência")
+            raise ValueError(
+                "A tensão média na carga ficou menor que E: reduza "
+                + ("a corrente" if s.load_by == "corrente" else "a potência")
+            )
         mu = m.overlap_angle(a, Io, Ls, Vll_m, f)
         log.add(
             record(

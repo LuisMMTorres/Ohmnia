@@ -124,7 +124,7 @@ def test_thyristor_bench_default_scr(client):
         "Tensão na carga",
         "Tensão no tiristor",
         "Corrente",
-        "Corrente de porta",
+        "Corrente de gate",
     }
     ids = [s["id"] for s in body["steps"]]
     assert ids == ["gate_Q1", "i_latch", "theta_off", "Vavg_ideal", "Vrms_ideal"]

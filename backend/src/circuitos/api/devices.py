@@ -891,7 +891,7 @@ def _fit_thyristor(
             steps.append(
                 record_step(
                     f"IGT_{quadrant}" if kind == "triac" else "IGT",
-                    "Corrente de disparo da porta"
+                    "Corrente de disparo do gate"
                     + (f" no quadrante {quadrant}" if kind == "triac" else ""),
                     r"I_{GT} = I_{GT,ds}",
                     value.to("mA"),
@@ -915,7 +915,7 @@ def _fit_thyristor(
             r"I_H = I_{H,ds}",
             ih.to("mA"),
             {k: c.to_pint() for k, c in p_ih.conditions.items()},
-            [how, "porta aberta"],
+            [how, "gate aberto"],
             thyristor.TIR_REF,
         )
     )
@@ -997,7 +997,7 @@ def thyristor_waveform(request: Request, body: ThyristorBenchIn) -> WaveOut:
         steps.append(
             record_step(
                 f"gate_{quadrant}",
-                f"Margem de disparo pela porta ({quadrant})",
+                f"Margem de disparo pelo gate ({quadrant})",
                 r"m_G = \frac{I_G}{I_{GT}}",
                 Q_(drive.IG.m_as("A") / igt_q.m_as("A"), "dimensionless"),
                 {"I_G": drive.IG.to("mA"), "I_{GT}": igt_q.to("mA")},
@@ -1029,7 +1029,7 @@ def thyristor_waveform(request: Request, body: ThyristorBenchIn) -> WaveOut:
             "Tensão na carga": VectorModel(values=w.v_load.tolist(), unit="V"),
             "Tensão no tiristor": VectorModel(values=w.v_t.tolist(), unit="V"),
             "Corrente": VectorModel(values=w.i.tolist(), unit="A"),
-            "Corrente de porta": VectorModel(values=w.ig.tolist(), unit="A"),
+            "Corrente de gate": VectorModel(values=w.ig.tolist(), unit="A"),
         },
         events=[{"kind": k, "t_ms": t * 1e3} for k, t in w.events],
         summary={
