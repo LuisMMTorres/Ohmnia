@@ -80,6 +80,7 @@ export function visible(moduleId: string, key: string, spec: Record<string, unkn
   }
   if (moduleId === "DM-RETC1") {
     if (key === "freewheel") return spec.topology === "meia_onda";
+    if (key === "Vcc_firing" || key === "Vsync") return spec.firing === true;
     return true;
   }
   if (moduleId === "DM-ZEN") {

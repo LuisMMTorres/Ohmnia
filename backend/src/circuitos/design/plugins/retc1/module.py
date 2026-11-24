@@ -10,10 +10,12 @@ import pint
 from pydantic import BaseModel, Field, model_validator
 from scipy.optimize import brentq
 
+from circuitos.components.models import ComponentRecord
 from circuitos.core.calc import BibRef, CalcLog, record
 from circuitos.core.units import Q_, QuantityModel, format_eng
 from circuitos.design.base import (
     Circuit,
+    DesignResult,
     DesignWarning,
     PowerPort,
     Role,
@@ -24,6 +26,7 @@ from circuitos.design.base import (
 from circuitos.design.engine import Analysis, Device
 from circuitos.design.measure import scale
 
+from . import firing
 from . import model as m
 from .model import Topology
 
@@ -53,6 +56,10 @@ class Retc1Spec(BaseModel):
     vin_tol_pct: float = Field(default=10.0, ge=0, le=30)  # mains variation for the α range
     TA: QuantityModel = QuantityModel(value=40, unit="degC")
     Rth_cs: QuantityModel = QuantityModel(value=0.5, unit="K/W")
+    # firing circuit (synchronised ramp, LM393, BC337, MOC3021): shown, sized and simulated
+    firing: bool = False
+    Vcc_firing: QuantityModel = QuantityModel(value=12, unit="V")
+    Vsync: QuantityModel = QuantityModel(value=12, unit="V")  # synchronism transformer, RMS
 
     @model_validator(mode="after")
     def _check(self) -> Retc1Spec:
@@ -61,6 +68,10 @@ class Retc1Spec(BaseModel):
             raise ValueError("α nominal deve estar entre 0° e 180°")
         if self.freewheel and self.topology != "meia_onda":
             raise ValueError("Diodo de roda livre só se aplica à meia onda")
+        if self.firing and not 5 <= self.Vcc_firing.to_pint().m_as("V") <= 30:
+            raise ValueError("A alimentação do circuito de disparo deve ficar entre 5 V e 30 V")
+        if self.firing and not 3 <= self.Vsync.to_pint().m_as("V") <= 48:
+            raise ValueError("A tensão de sincronismo deve ficar entre 3 V e 48 V (eficaz)")
         return self
 
 
@@ -87,6 +98,8 @@ class Retc1Module:
     family = "retificadores"
     title = "Retificador monofásico controlado"
     spec_schema = Retc1Spec
+    labels = firing.LABELS
+    spec_labels = firing.SPEC_LABELS
 
     def roles(self, spec: BaseModel) -> list[Role]:
         s = _spec(spec)
@@ -109,9 +122,29 @@ class Retc1Module:
                     count=1 if s.freewheel else 2,
                 )
             )
+        if s.firing:
+            roles += firing.roles(s.topology)
         return roles
 
+    def accepts(self, spec: BaseModel, role: Role, rec: ComponentRecord) -> bool:
+        return firing.accepts(role, rec) if firing.is_firing_role(role) else True
+
+    def practice_for(self, spec: BaseModel, result: DesignResult) -> dict[str, object] | None:
+        """Lab-guide practice with the firing circuit (None without it: generic guide)."""
+        s = _spec(spec)
+        if not s.firing or "fd_RG" not in result.summary:
+            return None
+        return firing.practice(s.topology, {k: q.value for k, q in result.summary.items()})
+
+    def preference(self, spec: BaseModel, role: Role, rec: ComponentRecord) -> int:
+        """Signal diodes first for the synchronism bridge (low leakage, as modelled)."""
+        if role.designator.startswith("DS"):
+            return 0 if rec.category == "diode.signal" else 1
+        return 0
+
     def required_ratings(self, role: Role) -> list[str]:
+        if firing.is_firing_role(role):
+            return firing.required_ratings(role)
         if role.category.startswith("thyristor"):
             return ["VDRM", "VRRM", "IT(RMS)"]
         return ["VRRM", "IF(AV)"]
@@ -566,6 +599,34 @@ class Retc1Module:
                 "P_out": Q_(float(np.mean(wv.vo * wv.io)), "W"),
             }
         )
+        if s.firing:
+            fd = firing.designators(topo)
+            rec = {k: devices[v].record if v in devices else None for k, v in fd.items()}
+            fd_summary, fd_stresses = firing.size(
+                topology=topo,
+                Vm=Vm,
+                tol=tol,
+                f=f,
+                alpha_deg=s.alpha_nom.to_pint().m_as("deg"),
+                alpha_min_deg=math.degrees(a_low_v) if a_low_v is not None else None,
+                alpha_max_deg=math.degrees(a_high_v) if a_high_v is not None else None,
+                E=E,
+                Vcc=s.Vcc_firing.to_pint().m_as("V"),
+                Vsync=s.Vsync.to_pint().m_as("V"),
+                parts=firing.FiringParts(
+                    scr=devices[t_des].record,
+                    comparator=rec["U1"],
+                    bjt=rec["Q1"],
+                    moc=rec["MOC"],
+                    d_sync=rec["DS"],
+                    d_gate=rec["DG"],
+                ),
+                designator_scr=t_des,
+                log=log,
+                warnings=warnings,
+            )
+            summary.update(fd_summary)
+            stresses += fd_stresses
         if sol.beta is not None:
             summary["beta"] = Q_(math.degrees(sol.beta), "deg")
         if a_high_v is not None:
@@ -671,6 +732,28 @@ class Retc1Module:
                 gate(2, ta + T / 2),
             ]
             v_sec = "v(a)-v(b)"
+        use_firing = s.firing and "fd_RG" in summary
+        if use_firing:
+            # the firing circuit replaces the ideal gate pulses and the ground-referred gates
+            lines = [ln for ln in lines if not ln.startswith(("VG", "XT"))]
+            fd = firing.designators(topo)
+            lines += firing.models(
+                VT,
+                firing.FiringParts(
+                    scr=devices[t_des].record,
+                    comparator=devices[fd["U1"]].record,
+                    bjt=devices[fd["Q1"]].record,
+                    moc=devices[fd["MOC"]].record,
+                    d_sync=devices[fd["DS"]].record,
+                    d_gate=devices[fd["DG"]].record,
+                ),
+            )
+            fds = {
+                k: float(q.to_pint().to_base_units().magnitude)
+                for k, q in summary.items()
+                if k.startswith("fd_")
+            }
+            lines += firing.netlist(topo, fds, f, math.sqrt(2) * s.Vsync.to_pint().m_as("V"))
         lines += [f"RL p x {R:.9g}", f"LL x y {L:.9g}" if L > 0 else "VLL x y 0", f"VE y 0 {E:.9g}"]
         tau_periods = (L / R) * f if L > 0 else 0
         settle = int(min(max(20, 6 * tau_periods + 5), 200))
@@ -747,6 +830,9 @@ class Retc1Module:
                 justification=_EXACT + "; a THD é sensível ao passo de tempo",
             ),
         ]
+        if use_firing:
+            probes |= firing.PROBES
+            checks += firing.checks()
         return Circuit(
             title=f"{self.id}: {TOPOLOGY_LABEL[topo]}"
             + (" com roda livre" if s.freewheel else "")

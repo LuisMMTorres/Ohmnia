@@ -52,6 +52,18 @@ parameters:
     unit: V
     kind: characteristic
     description: Alimentação (faixa)
+  IFT:
+    unit: mA
+    kind: characteristic
+    description: Corrente do LED que garante o disparo (saída TRIAC)
+  ITSM:
+    unit: A
+    kind: max_rating
+    description: Corrente de surto repetitiva de pico da saída TRIAC
+  VTM:
+    unit: V
+    kind: characteristic
+    description: Queda de pico da saída TRIAC conduzindo
   Top:
     unit: °C
     kind: thermal

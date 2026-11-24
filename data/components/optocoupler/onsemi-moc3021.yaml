@@ -56,6 +56,28 @@ parameters:
     unit: °C
     status: extraido
     source: {page: 3, location: Absolute maximum ratings - total device - storage temperature, excerpt: "TSTG Storage Temperature All -40 to 125 °C"}
+  IFT:
+    max: 15
+    unit: mA
+    conditions: {Vmain: 3 V}
+    status: extraido
+    note: Corrente do LED que garante o disparo do MOC3021M; IF recomendada entre IFT máx. e IF máx. (60 mA), nota 2 da p. 4.
+    source: {page: 4, location: Transfer characteristics - IFT LED trigger current, MOC3010M/MOC3021M, excerpt: "IFT LED Trigger Current Voltage = 3 V(2) MOC3010M MOC3021M 15 mA"}
+  ITSM:
+    max: 1
+    unit: A
+    conditions: {t_pulse: 100 us, rep_rate: 120 pps}
+    status: extraido
+    note: 'O texto extraído do PDF mostra "PW = 100 ms" porque o símbolo µ sai como "m" nessa fonte (o mesmo acontece em IR, "100 mA"); conferir a unidade da largura do pulso na revisão.'
+    source: {page: 3, location: Absolute maximum ratings - Detector - ITSM peak repetitive surge current, excerpt: "ITSM Peak Repetitive Surge Current (PW = 100 ms, 120 pps) All 1 A"}
+  VTM:
+    typ: 1.8
+    max: 3.0
+    unit: V
+    conditions: {ITM: 100 mA}
+    status: extraido
+    note: Queda de pico no fototriac conduzindo, em qualquer sentido, com IF = IFT nominal.
+    source: {page: 4, location: Transfer characteristics - VTM peak on-state voltage, excerpt: "VTM Peak On-State Voltage, Either Direction ITM = 100 mA peak, IF = Rated IFT All 1.8 3.0 V"}
 attributes:
   saida:
     value: TRIAC (chave bilateral de silício fotoativada), fase aleatória

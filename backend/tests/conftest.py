@@ -49,3 +49,33 @@ def reviewed_catalogue():
         with contextlib.suppress(Exception):
             repo.release(record.id, "teste")
     return repo
+
+
+@pytest.fixture(scope="session")
+def firing_catalogue(reviewed_catalogue):
+    """Reviewed catalogue plus the parts of the DM-RETC1 firing circuit (LM393, BC337, MOC3021,
+    the zero-crossing MOC3041 that must be refused, and the BT151-500R of the user's design),
+    released as in :func:`reviewed_catalogue`. A separate database, so other tests keep theirs."""
+    from pathlib import Path
+
+    from circuitos.components.repository import ComponentRepository, load_records_file
+
+    repo = ComponentRepository(f"sqlite:///{tempfile.mkdtemp(prefix='circuitos-fd-')}/c.db")
+    root = Path(__file__).resolve().parents[2] / "data" / "components"
+    listed = Path(__file__).with_name("fixtures") / "catalogo-revisado.txt"
+    files = [ln for ln in listed.read_text(encoding="utf-8").splitlines() if ln and ln[0] != "#"]
+    files += [
+        "comparator/ti-lm393.yaml",
+        "bjt/onsemi-bc337.yaml",
+        "optocoupler/onsemi-moc3021.yaml",
+        "optocoupler/onsemi-moc3041.yaml",
+        "thyristor/ween-bt151-500r.yaml",
+    ]
+    repo.import_records([r for f in dict.fromkeys(files) for r in load_records_file(root / f)])
+    for record in repo.search():
+        for key, param in record.parameters.items():
+            if param.status == "extraido":
+                repo.set_parameter_status(record.id, key, "revisado")
+        with contextlib.suppress(Exception):
+            repo.release(record.id, "teste")
+    return repo
