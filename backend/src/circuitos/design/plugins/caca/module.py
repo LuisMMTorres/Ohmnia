@@ -40,8 +40,9 @@ from circuitos.design.base import (
 from circuitos.design.engine import Analysis, Device
 from circuitos.design.inverter import amplitudes, thd
 from circuitos.design.plugins.retc1.module import scr_model
+from circuitos.reports import drawings_power
+from circuitos.reports.canvas import pretty
 from circuitos.reports.common import BomRow, LabItem, passive
-from circuitos.reports.schematic import value_sheet
 
 HART5 = BibRef(book="Hart, Power Electronics", edition="1st", chapter="5 (AC voltage controllers)")
 N = 2**16  # samples per source cycle
@@ -544,13 +545,15 @@ class CacaModule:
     def schematic(self, spec: BaseModel, result: DesignResult, title: str) -> str:
         s = _spec(spec)
         sm = result.summary
-        vals: dict[str, str] = {
-            k: format_eng(sm[k].to_pint()) for k in ("alpha", "Vo_rms", "Io_rms") if k in sm
-        }
+        txt = {"VS": f"{pretty(s.Vs)} eficaz, {pretty(s.f)}", "R": pretty(s.R), "L": pretty(s.L)}
+        diac = s.trigger == "diac" and s.control == "fase"
+        if diac:
+            txt.update(R_trig=pretty(s.R_trig), C_trig=pretty(s.C_trig))
+        if "alpha" in sm:
+            txt["gate"] = f"G (α = {pretty(sm['alpha']).replace(' deg', '°')})"
         parts = {c.designator: c.part_number for c in result.selection}
-        return value_sheet(
-            title, ENUM_LABELS[s.control] + " (" + ENUM_LABELS[s.trigger] + ")", vals, parts
-        )
+        note = ENUM_LABELS[s.control] + " (" + ENUM_LABELS[s.trigger] + ")"
+        return drawings_power.ac_controller(title, txt, parts, note, diac, s.L.value > 0)
 
     def bom_extra(self, spec: BaseModel, result: DesignResult) -> list[BomRow]:
         s = _spec(spec)
