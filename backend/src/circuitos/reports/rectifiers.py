@@ -9,10 +9,10 @@ from pydantic import BaseModel
 from circuitos.design.base import DesignResult
 from circuitos.design.plugins.ret1 import Ret1Spec
 from circuitos.design.plugins.ret3 import Ret3Spec
-from circuitos.design.plugins.retc1 import Retc1Spec
+from circuitos.design.plugins.retc1 import Retc1Spec, firing
 
-from . import schematic
-from .common import BomRow, LabItem, bom_csv, eng, role_rows
+from . import firing_schematic, schematic
+from .common import BomRow, LabItem, bom_csv, eng, passive, role_rows
 
 __all__ = ["LAB", "SAFETY", "BomRow", "bom", "bom_csv", "schematic_svg"]
 
@@ -57,7 +57,7 @@ def schematic_svg(spec: BaseModel, result: DesignResult, title: str) -> str:
     if isinstance(spec, Retc1Spec):
         t_role = result.roles[0]
         t_part = parts.get(t_role.designator, "")
-        d_role = result.roles[1] if len(result.roles) > 1 else None
+        d_role = next((r for r in result.roles[1:] if r.designator.startswith("D1")), None)
         d_part = parts.get(d_role.designator, "") if d_role else ""
         if spec.topology == "ponte":
             # drawing positions: leg a = D1 (a→P) and D3 (N→a); leg b = D2 (b→P) and D4 (N→b)
@@ -78,9 +78,15 @@ def schematic_svg(spec: BaseModel, result: DesignResult, title: str) -> str:
             devs = {"D1": ("scr", "T1", t_part), "DRL": ("diode", "D1", d_part)}
         load = "RLE" if spec.E.value > 0 else ("RL" if spec.L.value > 0 else "R")
         topo = "meia_onda" if spec.topology == "meia_onda" else "ponte"
-        return schematic.single_phase(
+        power = schematic.single_phase(
             topo, devs, "nenhum", load, summ, title, freewheel=spec.freewheel
         )
+        if spec.firing and "fd_RG" in result.summary:
+            scrs = list(firing.SCR_NODES[spec.topology])
+            return firing_schematic.combine(
+                power, firing_schematic.panel(spec.topology, summ, parts, scrs)
+            )
+        return power
     raise TypeError("Sem esquemático para esta especificação")
 
 
@@ -146,7 +152,54 @@ def bom(spec: BaseModel, result: DesignResult) -> list[BomRow]:
         rows.append(
             BomRow("TR1", 1, desc, "(a especificar)", "", val, f"S ≥ {_eng(va.value, 'VA')}")
         )
+    if isinstance(spec, Retc1Spec) and spec.firing and "fd_RG" in s:
+        rows += _firing_rows(spec, result)
     return rows
+
+
+def _firing_rows(spec: Retc1Spec, result: DesignResult) -> list[BomRow]:
+    """Passive parts of the firing circuit (the semiconductors come from the catalogue roles)."""
+    s = result.summary
+    n = firing.N_SCR[spec.topology]
+
+    def r(des: str, key: str, note: str = "", qty: int = 1, desc: str = "Resistor") -> BomRow:
+        return passive(des, desc, _eng(s[key].value, "Ω"), note, qty)
+
+    many = "" if n == 1 else f"1–RG{n}"
+    return [
+        BomRow(
+            "TS1",
+            1,
+            "Transformador de sincronismo (mesma rede do TR1, em fase)",
+            "(a especificar)",
+            "",
+            f"{_eng(spec.Vin.value, 'V')} / {_eng(s['fd_Vsync'].value, 'V')}",
+            "poucos VA bastam (só alimenta o divisor R1/R2)",
+        ),
+        passive(
+            "VCC",
+            "Fonte CC do circuito de disparo",
+            _eng(s["fd_Vcc"].value, "V"),
+            "referida ao terra do circuito de disparo, isolada da potência pelos MOC3021",
+        ),
+        r("R1", "fd_R1", "1/4 W"),
+        r("R2", "fd_R2", "1/4 W"),
+        r("R3", "fd_R3", "1/4 W"),
+        r("R4", "fd_R4", "1/4 W"),
+        r("Rd", "fd_Rd", "1/4 W"),
+        r("R5", "fd_R5", "1/4 W"),
+        passive("C1", "Capacitor de filme (rampa)", _eng(s["fd_C1"].value, "F"), "poliéster, 63 V"),
+        r(
+            "RV1",
+            "fd_RV1",
+            f"ajuste α: cursor em {_eng(s['fd_Vctrl'].value, 'V')} para α nominal",
+            desc="Potenciômetro linear",
+        ),
+        r("R7", "fd_R7", "1/4 W"),
+        r("RLED", "fd_RLED", f"I_F = {_eng(s['fd_IF'].value, 'A')}"),
+        r(f"RG{many}" if n > 1 else "RG1", "fd_RG", "1/2 W (pulsos curtos)", n),
+        r(f"RGK1–RGK{n}" if n > 1 else "RGK1", "fd_RGK", "1/4 W, junto à porta", n),
+    ]
 
 
 LAB: Mapping[str, list[LabItem]] = {
@@ -163,6 +216,16 @@ LAB: Mapping[str, list[LabItem]] = {
         LabItem("Ângulo de extinção β", "osciloscópio (corrente na carga)", "beta"),
         LabItem("Corrente eficaz do secundário", "alicate true RMS", "Isec"),
         LabItem("Fator de potência na entrada", "analisador de energia", "PF"),
+        # firing circuit (only when it is included: the keys exist only then)
+        LabItem("Limiar do detector de zero (R3/R4)", "multímetro em CC", "fd_Vth"),
+        LabItem("Pico da rampa em C1", "osciloscópio, terra do circuito de disparo", "fd_Vpk"),
+        LabItem("Tensão de controle no cursor de RV1", "multímetro em CC", "fd_Vctrl"),
+        LabItem(
+            "Ângulo de disparo (atraso do pulso de I_F após o zero da rede)",
+            "osciloscópio, dois canais: sincronismo e tensão em RLED",
+            "alpha_fire",
+        ),
+        LabItem("Corrente nos LEDs dos MOC3021", "osciloscópio sobre RLED (V/R)", "fd_IF"),
     ],
     "DM-RET3": [
         LabItem("Tensão média na saída", "multímetro em CC", "Vo"),

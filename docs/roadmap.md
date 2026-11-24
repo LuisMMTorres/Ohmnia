@@ -355,3 +355,11 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
   nomes da netlist e os valores do projeto.
 - Corrigida a polaridade do enrolamento de reset do forward (DM-CCI) na simulação.
 - Entrega para revisão: [validacao/esquematicos-analise-projetos.md](validacao/esquematicos-analise-projetos.md).
+
+## Retificadores controlados — circuito de disparo (24/11/2026)
+
+- Opção "Incluir circuito de disparo" no DM-RETC1: rampa sincronizada (LM393), transistor NPN e
+  optoacopladores MOC3021 disparando cada tiristor pelo anodo, dimensionados com dados do catálogo.
+- Esquemático, lista de materiais, medições e procedimento do guia de laboratório; simulação com o
+  circuito real no lugar dos pulsos ideais (AS-RET-03).
+- Entrega para revisão: [validacao/circuito-de-disparo.md](validacao/circuito-de-disparo.md).
