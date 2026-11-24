@@ -337,3 +337,13 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 - Resultados: sinais em gráficos separados com eixo de tempo comum, legendas renomeáveis e
   tabelas centralizadas.
 - Entrega para revisão: [validacao/sugestao-transitoria.md](validacao/sugestao-transitoria.md).
+
+
+## Osciloscópio — cursores de medição (23/11/2026)
+
+- Instrumento de 2/4 canais: cursores arrastáveis de tempo e amplitude, edição numérica,
+  valores A/B por canal, deltas e comparação entre canais da mesma unidade.
+- Cursores horizontais respeitam a escala, posição e acoplamento do canal de referência;
+  CC oferece apenas medições de amplitude.
+- Aquisição com mais pontos para medição, testes matemáticos e validação Chrome/ngspice.
+- Entrega para revisão: [validacao/cursores-osciloscopio.md](validacao/cursores-osciloscopio.md).

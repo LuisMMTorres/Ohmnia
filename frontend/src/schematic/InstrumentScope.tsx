@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { api, type Job, type PlotData, type PlotInfo } from "../api";
+import { ScopeMeasurements } from "./ScopeMeasurements";
 import { scopePoints } from "./scopeGeometry";
 import { formatEng } from "../format";
 
@@ -51,6 +52,8 @@ export function InstrumentScope({
   const [level, setLevel] = useState(0);
   const [slope, setSlope] = useState("rising");
   const [stopped, setStopped] = useState(false);
+  const [measuring, setMeasuring] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState<PlotData | null>(null);
   const [error, setError] = useState("");
   const autosetDone = useRef(false);
@@ -78,22 +81,21 @@ export function InstrumentScope({
       })),
     );
   }, [availableSignals, channelSignals]);
-  const names = useMemo(
-    () => [
-      ...new Set(
-        channels
-          .slice(0, count)
-          .filter((c) => c.enabled && c.signal)
-          .map((c) => c.signal),
-      ),
-    ],
-    [channels, count],
-  );
+  const namesKey = JSON.stringify([
+    ...new Set(
+      channels
+        .slice(0, count)
+        .filter((c) => c.enabled && c.signal)
+        .map((c) => c.signal),
+    ),
+  ]);
+  const names = useMemo<string[]>(() => JSON.parse(namesKey) as string[], [namesKey]);
   useEffect(() => {
-    if (stopped || !names.length) return;
+    if ((stopped && !measuring) || !names.length) return;
+    setLoading(true);
     let cancelled = false;
     api
-      .plot(job.id, plot.name, names, "real", 10000)
+      .plot(job.id, plot.name, names, "real", measuring ? 2_000_000 : 10000)
       .then((out) => {
         if (!cancelled) {
           setData(out);
@@ -106,11 +108,14 @@ export function InstrumentScope({
       })
       .catch((e: Error) => {
         if (!cancelled) setError(e.message);
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
       });
     return () => {
       cancelled = true;
     };
-  }, [job.id, plot.name, names, stopped, autoset]);
+  }, [job.id, plot.name, names, stopped, autoset, measuring]);
   const update = (i: number, changes: Partial<Channel>) =>
     setChannels((old) => old.map((c, n) => (n === i ? { ...c, ...changes } : c)));
   let windowStart = start;
@@ -177,59 +182,106 @@ export function InstrumentScope({
           Autoset
         </button>
       </div>
-      <svg
-        viewBox="0 0 1000 440"
-        className="instrument-screen"
-        role="img"
-        aria-label="Traços dos canais conectados"
+      <ScopeMeasurements
+        key={`${job.id}-${plot.name}`}
+        channels={channels.slice(0, count).flatMap((ch, i) => {
+          const values =
+            ch.enabled && names.includes(ch.signal) ? data?.traces[ch.signal]?.values : undefined;
+          return values?.length
+            ? [
+                {
+                  name: `CH${i + 1}`,
+                  signal: ch.signal,
+                  unit: signalUnit(ch.signal),
+                  color: COLORS[i]!,
+                  values,
+                  scale: ch.scale,
+                  position: ch.position,
+                  ac: ch.coupling === "AC",
+                },
+              ]
+            : [];
+        })}
+        times={tx}
+        start={windowStart}
+        timeDiv={timeDiv}
+        operatingPoint={operatingPoint}
+        onEnabledChange={setMeasuring}
       >
-        <defs>
-          <clipPath id="scope-screen-clip">
-            <rect x={70} y={25} width={880} height={360} />
-          </clipPath>
-        </defs>
-        <rect width={1000} height={440} fill="#07171b" rx={6} />
-        {Array.from({ length: 11 }, (_, i) => (
-          <line key={`x${i}`} x1={70 + i * 88} x2={70 + i * 88} y1={25} y2={385} stroke="#244049" />
-        ))}
-        {Array.from({ length: 9 }, (_, i) => (
-          <line key={`y${i}`} x1={70} x2={950} y1={25 + i * 45} y2={25 + i * 45} stroke="#244049" />
-        ))}
-        <g clipPath="url(#scope-screen-clip)">
-          {channels.slice(0, count).map((ch, i) => {
-            const values = ch.enabled ? data?.traces[ch.signal]?.values : undefined;
-            if (!values || !names.includes(ch.signal)) return null;
-            const points = scopePoints(
-              tx,
-              values,
-              ch.scale,
-              ch.position,
-              ch.coupling === "AC",
-              windowStart,
-              timeDiv,
-              operatingPoint,
-            );
-            return (
-              <polyline
-                key={i}
-                data-channel={i + 1}
-                points={points.map((p) => `${p.x},${p.y}`).join(" ")}
-                fill="none"
-                stroke={COLORS[i]}
-                strokeWidth={2}
-              />
-            );
-          })}
-        </g>
-        <text x={70} y={415} fill="#b4d6df" fontSize={14}>
-          {operatingPoint
-            ? "Ponto de operação CC · nível constante (sem aquisição temporal)"
-            : `${formatEng(timeDiv, "s")}/div · ${formatEng(windowStart, "s")} a ${formatEng(windowStart + 10 * timeDiv, "s")}`}
-        </text>
-        <text x={800} y={415} fill="#b4d6df" fontSize={14}>
-          {stopped ? "STOP" : "DADOS DA SIMULAÇÃO"}
-        </text>
-      </svg>
+        <svg
+          viewBox="0 0 1000 440"
+          className="instrument-screen"
+          role="img"
+          aria-label="Traços dos canais conectados"
+        >
+          <defs>
+            <clipPath id="scope-screen-clip">
+              <rect x={70} y={25} width={880} height={360} />
+            </clipPath>
+          </defs>
+          <rect width={1000} height={440} fill="#07171b" rx={6} />
+          {Array.from({ length: 11 }, (_, i) => (
+            <line
+              key={`x${i}`}
+              x1={70 + i * 88}
+              x2={70 + i * 88}
+              y1={25}
+              y2={385}
+              stroke="#244049"
+            />
+          ))}
+          {Array.from({ length: 9 }, (_, i) => (
+            <line
+              key={`y${i}`}
+              x1={70}
+              x2={950}
+              y1={25 + i * 45}
+              y2={25 + i * 45}
+              stroke="#244049"
+            />
+          ))}
+          <g clipPath="url(#scope-screen-clip)">
+            {channels.slice(0, count).map((ch, i) => {
+              const values = ch.enabled ? data?.traces[ch.signal]?.values : undefined;
+              if (!values || !names.includes(ch.signal)) return null;
+              const points = scopePoints(
+                tx,
+                values,
+                ch.scale,
+                ch.position,
+                ch.coupling === "AC",
+                windowStart,
+                timeDiv,
+                operatingPoint,
+              );
+              return (
+                <polyline
+                  key={i}
+                  data-channel={i + 1}
+                  points={points.map((p) => `${p.x},${p.y}`).join(" ")}
+                  fill="none"
+                  stroke={COLORS[i]}
+                  strokeWidth={2}
+                />
+              );
+            })}
+          </g>
+          <text x={70} y={415} fill="#b4d6df" fontSize={14}>
+            {operatingPoint
+              ? "Ponto de operação CC · nível constante (sem aquisição temporal)"
+              : `${formatEng(timeDiv, "s")}/div · ${formatEng(windowStart, "s")} a ${formatEng(windowStart + 10 * timeDiv, "s")}`}
+          </text>
+          <text x={800} y={415} fill="#b4d6df" fontSize={14}>
+            {stopped ? "STOP" : "DADOS DA SIMULAÇÃO"}
+          </text>
+        </svg>
+      </ScopeMeasurements>
+      {measuring && loading && <p role="status">Carregando aquisição para medição…</p>}
+      {measuring && plot.vectors.some((v) => names.includes(v.name) && v.length > 2_000_000) && (
+        <p role="status">
+          Aquisição acima de 2 milhões de pontos: as leituras usam amostras reduzidas.
+        </p>
+      )}
       <div className="scope-channel-grid">
         {channels.slice(0, count).map((ch, i) => (
           <fieldset key={i} style={{ borderColor: COLORS[i] }}>

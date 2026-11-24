@@ -115,3 +115,16 @@ O ponto de operação é exibido como uma linha horizontal de nível CC, com ide
 valor estático, sem aquisição temporal. Tempo e trigger ficam desabilitados nesse modo.
 O instrumento aceita probes de tensão e de corrente, com escala automática em V/div ou A/div.
 Sem probes disponíveis, a interface orienta a conectar uma probe e simular novamente.
+
+
+## Cursores no osciloscópio de bancada
+
+Após simular, abra **Osciloscópio de bancada → Cursores de medição**. Ative **Tempo A/B**
+ou **Amplitude A/B** e arraste as linhas tracejadas; os campos numéricos permitem posicioná-las
+com precisão. A tabela mostra os valores por canal em A e B, Δt e as diferenças de amplitude,
+inclusive entre canais da mesma unidade. Os cursores horizontais seguem o canal de referência.
+**Reposicionar cursores** traz as linhas de volta à janela visível.
+
+Em ponto de operação CC, somente a medição de amplitude é oferecida. As leituras entre amostras
+são interpoladas; aguarde o carregamento da aquisição ao ativar os cursores. Detalhes e limites:
+[cursores do osciloscópio](../validacao/cursores-osciloscopio.md).
