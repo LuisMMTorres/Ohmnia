@@ -62,6 +62,15 @@ describe("visible", () => {
     expect(visible("DM-RETC1", "freewheel", { topology: "ponte" })).toBe(false);
     expect(visible("DM-RET3", "alpha_nom", { controlled: false })).toBe(false);
   });
+
+  it("shows the load power or the load current, as chosen", () => {
+    for (const id of ["DM-RET1", "DM-RETC1", "DM-RET3"]) {
+      expect(visible(id, "P", { load_by: "potencia" })).toBe(true);
+      expect(visible(id, "Io", { load_by: "potencia" })).toBe(false);
+      expect(visible(id, "P", { load_by: "corrente" })).toBe(false);
+      expect(visible(id, "Io", { load_by: "corrente" })).toBe(true);
+    }
+  });
 });
 
 describe("resample", () => {

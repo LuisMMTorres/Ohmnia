@@ -640,7 +640,7 @@ SYMBOLS: dict[str, Symbol] = {
                 ParamDef("il", "I_L", "A", "40m"),
             ),
             catalogue=("thyristor.scr",),
-            description="Tiristor comportamental (o da bancada BD-TIR): porta referida ao catodo",
+            description="Tiristor comportamental (o da bancada BD-TIR): gate referido ao catodo",
         ),
         Symbol(
             "triac",
@@ -656,7 +656,7 @@ SYMBOLS: dict[str, Symbol] = {
                 ParamDef("il", "I_L", "A", "40m"),
             ),
             catalogue=("thyristor.triac",),
-            description="TRIAC comportamental (o da bancada BD-TIR): porta referida a MT1",
+            description="TRIAC comportamental (o da bancada BD-TIR): gate referido a MT1",
         ),
         # indicators: LEDs and incandescent lamps ------------------------------------------
         Symbol(

@@ -58,10 +58,11 @@ SPEC_LABELS: dict[str, str] = {
     "filter": "Filtro",
     "Vin": "Tensão do primário (eficaz)",
     "Vsec": "Tensão do secundário (eficaz)",
+    "load_by": "Carga dada por",
     "P": "Potência da carga",
     "f": "Frequência",
     "Vo": "Tensão média desejada",
-    "Io": "Corrente na carga",
+    "Io": "Corrente média na carga",
     "ripple_pct": "Ondulação desejada (%)",
     "L_factor": "Fator do indutor (× Lcrit)",
     "cap_series": "Série de capacitores",
@@ -79,6 +80,8 @@ SPEC_LABELS: dict[str, str] = {
 }
 
 ENUM_LABELS: dict[str, str] = {
+    "potencia": "potência",
+    "corrente": "corrente",
     "meia_onda": "meia onda",
     "center_tap": "onda completa com derivação central",
     "ponte": "onda completa em ponte",

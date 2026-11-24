@@ -53,3 +53,16 @@ transformador real.
 - O filtro π leva alguns segundos por cálculo (iteração entre C, L e R).
 
 Capturas: `/mnt/project-files/capturas/analise-projetos/`.
+
+## Carga dada por potência ou por corrente (2026-11-24)
+
+Nos retificadores DM-RET1, DM-RETC1 e DM-RET3 o campo **Carga dada por** escolhe entre a potência da carga (W) e a corrente média na carga (A); o formulário mostra só o campo escolhido.
+
+- DM-RET1 e DM-RETC1: R da carga por busca de raiz no mesmo modelo exato, com a condição (1/2π)∫i_o dθ = I_o no lugar de (1/2π)∫v_o·i_o dθ = P (a corrente média também cai quando R cresce). Sem filtro: R = V_o/I_o.
+- DM-RET3: a corrente (contínua, L ≫) entra direto no cálculo; a potência sai de V_o·I_o.
+- Teste `tests/unit/design/test_load_by_current.py`: projeta pela potência, passa a corrente média obtida e confere que R, I_o e P coincidem (todas as topologias e filtros).
+- Conferência no ngspice (DM-RETC1, ponte, 70 V, α = 30°, L = 100 mH, I_o = 8 A pedida): corrente média simulada 7,998 A.
+
+Também nesta mudança: tabelas de grandezas do ngspice com os dados centralizados em cada coluna; terminal de disparo dos tiristores e TRIACs chamado de "gate" (antes "porta").
+
+Capturas: `/mnt/project-files/capturas/corrente-da-carga/`.
