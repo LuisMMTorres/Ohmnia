@@ -13,6 +13,8 @@ from html import escape
 
 from circuitos.core.units import Q_, format_eng
 
+# clear sans-serif faces found on Windows, macOS and Linux
+FONT = "'Segoe UI', Arial, Helvetica, sans-serif"
 STROKE = "#1f2937"
 ACCENT = "#2563eb"
 
@@ -41,8 +43,10 @@ class Svg:
     def render(self, title: str) -> str:
         style = (
             f"line,polyline,path,circle.o,rect.o{{stroke:{STROKE};stroke-width:1.6;fill:none}}"
-            f".lbl{{font:11px sans-serif;fill:{STROKE}}}.pn{{font:10px sans-serif;fill:{ACCENT}}}"
-            f".ttl{{font:bold 12px sans-serif;fill:{STROKE}}}"
+            # the text must not inherit the stroke of the <g> (it smeared every letter)
+            f"text{{stroke:none;font-family:{FONT}}}"
+            f".lbl{{font-size:11px;fill:{STROKE}}}.pn{{font-size:10px;fill:{ACCENT}}}"
+            f".ttl{{font-size:12px;font-weight:600;fill:{STROKE}}}"
         )
         body = "\n".join(self.parts)
         return (
