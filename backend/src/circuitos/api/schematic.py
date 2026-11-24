@@ -169,6 +169,7 @@ class NetlistOut(BaseModel):
     steps: list[CalcStep]
     indicators: dict[str, IndicatorOut] = {}
     limits: list[LimitOut] = []
+    supplies: dict[str, str] = {}  # voltage source -> its branch current vector
 
 
 class ImportIn(BaseModel):
@@ -257,6 +258,7 @@ def _netlist_out(nl: Netlist) -> NetlistOut:
             ref: IndicatorOut(**dataclasses.asdict(ind)) for ref, ind in nl.indicators.items()
         },
         limits=[LimitOut(**dataclasses.asdict(lim)) for lim in nl.limits],
+        supplies=nl.supplies,
     )
 
 

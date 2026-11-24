@@ -288,6 +288,35 @@ export function SchematicWorkspace({
       cancelled = true;
     };
   }, [job, netlist]);
+  // bench supplies: current each voltage source delivers at the end of the last simulation
+  const [supplyCurrents, setSupplyCurrents] = useState<Record<string, number>>({});
+  useEffect(() => {
+    setSupplyCurrents({});
+    const supplies = netlist?.supplies ?? {};
+    if (!job || job.state !== "done" || !Object.keys(supplies).length) return;
+    // same plot as the LED brightness, so the display and the LEDs agree
+    const plot =
+      job.plots?.find((p) => p.kind === "tran") ?? job.plots?.find((p) => p.kind === "op");
+    if (!plot) return;
+    const names = Object.values(supplies).filter((n) => plot.vectors.some((v) => v.name === n));
+    if (!names.length) return;
+    let cancelled = false;
+    api
+      .plot(job.id, plot.name, names, "real", 2000)
+      .then((data) => {
+        if (cancelled) return;
+        const out: Record<string, number> = {};
+        for (const [ref, vec] of Object.entries(supplies)) {
+          const v = data.traces[vec]?.values;
+          if (v?.length) out[ref] = v[v.length - 1]!;
+        }
+        setSupplyCurrents(out);
+      })
+      .catch(() => setSupplyCurrents({}));
+    return () => {
+      cancelled = true;
+    };
+  }, [job, netlist]);
   // parts that would burn: ratings exceeded in the last simulation
   useEffect(() => {
     setDamage([]);
@@ -904,6 +933,7 @@ export function SchematicWorkspace({
               motion={motion}
               burnt={burnt}
               glows={glows}
+              supplyCurrents={supplyCurrents}
               onOperate={operate}
               library={symbols}
             />

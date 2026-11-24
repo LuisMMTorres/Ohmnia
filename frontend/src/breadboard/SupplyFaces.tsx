@@ -57,10 +57,13 @@ export function BenchSupplyArt({
   title,
   channels,
   readings,
+  amps = [],
 }: {
   title: string;
   channels: number;
   readings: string[];
+  /** Current delivered by each channel in the last simulation (text for the display). */
+  amps?: string[];
 }) {
   const n = channels * 2;
   const secW = (W - 16) / channels;
@@ -87,7 +90,7 @@ export function BenchSupplyArt({
               </text>
             )}
             {seg(cx - dw / 2, 30, dw, readings[c] ?? "--.--", "#ff3b30", `v${c}`)}
-            {seg(cx - dw / 2, 56, dw, "-.---", "#3ddc5c", `a${c}`)}
+            {seg(cx - dw / 2, 56, dw, amps[c] ?? "-.---", "#3ddc5c", `a${c}`)}
             <text x={cx + dw / 2 + 2} y={45} fontSize={7} style={{ fill: "#d6dade" }}>
               V
             </text>

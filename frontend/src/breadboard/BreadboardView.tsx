@@ -31,6 +31,7 @@ import { ScopeMiniature } from "./ScopeMiniature";
 import { connectScope } from "./scopeConnections";
 import { netAtHole } from "./connections";
 import { InstrumentFace } from "./InstrumentFace";
+import { supplyAmpsText } from "./instruments";
 import { deviceFace } from "./DeviceFaces";
 import type { Motion } from "./DeviceFaces";
 import { PackageArt, PackagePreview } from "./PackageArt";
@@ -103,6 +104,8 @@ interface Props {
   burnt?: Record<string, string>;
   /** Brightness of each LED after the last simulation. */
   glows?: Record<string, Glow>;
+  /** Branch current of each voltage source after the last simulation (A, ngspice sign). */
+  supplyCurrents?: Record<string, number>;
   /** A push-button was clicked: the schematic with its new position (simulate it again). */
   onOperate?: (next: Schematic, comp: Component) => void;
   /** Library symbols (defaults of the push-button state). */
@@ -119,6 +122,7 @@ export function BreadboardView({
   motion,
   burnt,
   glows,
+  supplyCurrents,
   onOperate,
   library,
 }: Props) {
@@ -847,6 +851,9 @@ export function BreadboardView({
                           ? n.toFixed(Math.abs(n) < 10 ? 2 : 1).replace(".", ",")
                           : "--,--";
                       })}
+                      amps={(shared ? group : [p]).map((q) =>
+                        supplyAmpsText(supplyCurrents?.[q.ref]),
+                      )}
                       terminals={terms.length}
                     />
                   )}

@@ -11,6 +11,7 @@ export function InstrumentFace({
   motion,
   channels = 1,
   readings = [],
+  amps = [],
   terminals = 2,
 }: {
   x: number;
@@ -21,6 +22,8 @@ export function InstrumentFace({
   /** Bench supply: number of channels drawn on one panel and the voltage of each. */
   channels?: number;
   readings?: string[];
+  /** Bench supply: current delivered by each channel (ammeter text). */
+  amps?: string[];
   terminals?: number;
 }) {
   const face = deviceFace(kind);
@@ -37,7 +40,7 @@ export function InstrumentFace({
   if (/^[vi]dc$/.test(kind))
     return (
       <g transform={`translate(${x},${y})`} className="instrument-face">
-        <BenchSupplyArt title={title} channels={channels} readings={readings} />
+        <BenchSupplyArt title={title} channels={channels} readings={readings} amps={amps} />
       </g>
     );
   if (/^[vi](sin|pulse|pwl)$/.test(kind))

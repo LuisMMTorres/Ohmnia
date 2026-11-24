@@ -165,3 +165,28 @@ def test_as_sim_06_thermal_noise_and_temperature_sweep(temp_c):
     assert plot["onoise_spectrum"].unit == "V/Hz^0.5"
     expected = math.sqrt(4 * k_b * (temp_c + 273.15) * 5e3)
     np.testing.assert_allclose(density, expected, rtol=1e-3)
+
+
+def test_as_sim_supply_current_for_the_bench_display():
+    """AS-SIM-07: the bench supply shows the current it delivers, I = V/R (Ohm's law).
+
+    The netlist names the branch current vector of each voltage source; ngspice counts it
+    from + to − inside the source, so a supply delivering I reads −I. A designator without the
+    V prefix (BAT) still maps to its element (VBAT). Tolerance 1e-6 relative.
+    """
+    from circuitos.schematic.netlist import build_netlist
+
+    b = Builder()
+    b.add("vdc", "V1", ["a", "0"], dc="10")
+    b.add("resistor", "R1", ["a", "0"], value="1k")
+    b.add("vdc", "BAT", ["b", "0"], dc="5")
+    b.add("resistor", "R2", ["b", "0"], value="250")
+    b.analysis("op")
+    b.analysis("tran", tstop="1m")
+    supplies = build_netlist(b.sch).supplies
+    assert supplies == {"V1": "i(v1)", "BAT": "i(vbat)"}
+    result = _run(b)
+    for kind in ("op", "tran"):
+        plot = result.plot(kind)
+        assert float(np.real(plot[supplies["V1"]].data[-1])) == pytest.approx(-10e-3, rel=1e-6)
+        assert float(np.real(plot[supplies["BAT"]].data[-1])) == pytest.approx(-20e-3, rel=1e-6)

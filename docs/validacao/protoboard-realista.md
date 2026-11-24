@@ -118,3 +118,26 @@ Outros ajustes:
 - IGBT, SCR e TRIAC passaram do grupo Chaves para Semicondutores na paleta do esquemático.
 
 Capturas: `/mnt/project-files/capturas/protoboard-desenhos/`.
+
+## Corrente drenada no display da fonte de bancada (2026-11-24)
+
+Antes, o display de corrente (A) da fonte de bancada mostrava sempre `-.---`, mesmo depois de
+simular. Agora ele mostra a corrente que cada canal entrega ao circuito na última simulação.
+
+- O backend informa, para cada fonte de tensão, o vetor da corrente de ramo do ngspice
+  (`supplies` na resposta de `/schematic/netlist`, por exemplo `{"V1": "i(v1)"}`).
+- O ngspice conta essa corrente de + para − por dentro da fonte; uma fonte que entrega 10 mA
+  dá `i(v1) = −10 mA`. O display mostra o sinal trocado (`0,010` A). Se a fonte absorve corrente
+  (outra fonte empurra corrente para dentro dela), aparece o sinal de menos.
+- Valor usado: último ponto da transitória (o mesmo gráfico que acende os LEDs); sem transitória,
+  o ponto de operação. Formato: três casas decimais abaixo de 10 A, duas a partir de 10 A,
+  vírgula decimal. Sem simulação, continua `-.---`.
+- Teste AS-SIM-07 (`tests/analytic_vs_sim/test_as_simulador.py`): 10 V sobre 1 kΩ dá 10 mA e
+  5 V sobre 250 Ω dá 20 mA (lei de Ohm), em `.op` e `.tran`, tolerância relativa 1e-6; também
+  confere que um designador sem o prefixo V (BAT) aponta para o elemento certo (VBAT).
+- Teste de unidade `supplyAmpsText` em `frontend/src/breadboard/instruments.test.ts`.
+
+Limitação: o display mostra um único valor (fim da simulação). Em circuitos cuja corrente varia
+no tempo (pisca-pisca, PWM), ele não faz média como um amperímetro real.
+
+Captura: `/mnt/project-files/capturas/fonte-corrente/fonte-corrente.png`.
