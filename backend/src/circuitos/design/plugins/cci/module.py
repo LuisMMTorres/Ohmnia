@@ -59,8 +59,9 @@ from circuitos.design.power import (
     switch_data,
     switch_losses,
 )
+from circuitos.reports import drawings_power
+from circuitos.reports.canvas import pretty
 from circuitos.reports.common import BomRow, LabItem, passive
-from circuitos.reports.schematic import value_sheet
 
 Topology = Literal["flyback", "forward", "pushpull", "halfbridge", "fullbridge"]
 BRIDGE = ("pushpull", "halfbridge", "fullbridge")
@@ -692,20 +693,18 @@ class CciModule:
                     pwm_source("VG", "g", D, fs),
                     f"LP in p {lmz:.9g}",
                     "VIP p d 0",
-                    f"LR r1 0 {lmz:.9g}",
+                    # reset winding N3: dotted end at ground, so when the switch opens it drives
+                    # r1 up and D3 clamps it at Vin (v_DS = 2·Vin for N3 = N1)
+                    f"LR 0 r1 {lmz:.9g}",
                     f"LS s 0 {lmz * n * n:.9g}",
                     "K1 LP LS 1",
                     "K2 LP LR 1",
                     "K3 LS LR 1",
                     "XQ d 0 g SWQ",
-                    "XDR in2 r1 DR",
-                    "VR2 in2 in 0",
+                    "XDR r1 in DR",
                     "XD1 s x DR",
                     "XD2 0 x DF",
                 ]
-                # reset winding: dotted end at ground, so it clamps at −Vin when the switch opens
-                lines = [ln if not ln.startswith("XDR") else "XDR r1 in DR" for ln in lines]
-                lines = [ln for ln in lines if not ln.startswith("VR2")]
             else:
                 lines += [
                     pwm_source("VG1", "g1", D, fs),
@@ -799,10 +798,21 @@ class CciModule:
     def schematic(self, spec: BaseModel, result: DesignResult, title: str) -> str:
         s = _spec(spec)
         sm = result.summary
-        keys = ["n", "D", "Lm", "L_o", "C_o", "T1_N1", "T1_N2", "T1_gap"]
-        vals = {k: format_eng(sm[k].to_pint()) for k in keys if k in sm}
+        txt = {k: pretty(sm[src]) for k, src in (("LO", "L_o"), ("Co", "C_o")) if src in sm}
+        txt["VIN"] = pretty(s.Vin)
+        txt["VH1"] = f"{s.Vin.value / 2:g} {s.Vin.unit}".replace(".", ",")
+        txt["RL"] = f"{s.Vo.value / s.Io.value:.4g} Ω".replace(".", ",")
+        if "T1_N1" in sm:
+            txt["T1"] = f"N1 = {int(sm['T1_N1'].value)}, N2 = {int(sm['T1_N2'].value)}"
+        elif "n" in sm:
+            txt["T1"] = f"n = {sm['n'].value:.4g}".replace(".", ",")
         parts = {c.designator: c.part_number for c in result.selection}
-        return value_sheet(title, ENUM_LABELS[s.topology], vals, parts)
+        note = ENUM_LABELS[s.topology]
+        if "D" in sm:
+            note += f", D = {sm['D'].value:.3f}".replace(".", ",")
+        if "Lm" in sm:
+            note += f", Lm = {pretty(sm['Lm'])}"
+        return drawings_power.isolated(s.topology, title, s.switch, txt, parts, note)
 
     def bom_extra(self, spec: BaseModel, result: DesignResult) -> list[BomRow]:
         sm = result.summary

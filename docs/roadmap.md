@@ -348,6 +348,14 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 - Aquisição com mais pontos para medição, testes matemáticos e validação Chrome/ngspice.
 - Entrega para revisão: [validacao/cursores-osciloscopio.md](validacao/cursores-osciloscopio.md).
 
+## Análise de Projetos — esquemáticos de todos os módulos (24/11/2026)
+
+- Os nove módulos que mostravam só "ligação completa na netlist" (DM-OPNL, DM-OSC, DM-INST,
+  DM-FIL, DM-CC, DM-CCI, DM-INV, DM-CACA e DM-CMD) passam a desenhar o circuito montado, com os
+  nomes da netlist e os valores do projeto.
+- Corrigida a polaridade do enrolamento de reset do forward (DM-CCI) na simulação.
+- Entrega para revisão: [validacao/esquematicos-analise-projetos.md](validacao/esquematicos-analise-projetos.md).
+
 ## Retificadores controlados — circuito de disparo (24/11/2026)
 
 - Opção "Incluir circuito de disparo" no DM-RETC1: rampa sincronizada (LM393), transistor NPN e

@@ -34,8 +34,9 @@ from circuitos.core.units import Q_, QuantityModel, format_eng
 from circuitos.design.base import Circuit, DesignResult, DesignWarning, Role, SimCheck, Stress
 from circuitos.design.engine import Analysis, Device
 from circuitos.design.power import HART, MOHAN, pval, ref, spice_diode, switch_data
+from circuitos.reports import drawings_power
+from circuitos.reports.canvas import pretty
 from circuitos.reports.common import BomRow, LabItem, passive
-from circuitos.reports.schematic import value_sheet
 
 AN978 = BibRef(
     book="Infineon (International Rectifier), AN-978: HV floating MOS-gate driver ICs",
@@ -670,11 +671,33 @@ class CmdModule:
         )
 
     def schematic(self, spec: BaseModel, result: DesignResult, title: str) -> str:
+        s = _spec(spec)
         sm = result.summary
-        keys = ("Rg", "C_boot", "C_s", "R_s", "R_ntc", "MCOV_min", "fuse_In_min")
-        vals: dict[str, str] = {k: format_eng(sm[k].to_pint()) for k in keys if k in sm}
+        txt = {
+            k: pretty(sm[src])
+            for k, src in (
+                ("Rg", "Rg"),
+                ("C_boot", "C_boot"),
+                ("CS", "C_s"),
+                ("RS", "R_s"),
+                ("RNTC", "R_ntc"),
+            )
+            if src in sm
+        }
+        txt.update(
+            VAC=f"{pretty(s.Vac)} eficaz",
+            CBUS=pretty(s.C_bus),
+            Vcc=pretty(s.Vcc),
+            VB=pretty(s.Vbus),
+            IO=pretty(s.Io),
+            RBL="10 MΩ",
+        )
+        if "fuse_In_min" in sm:
+            txt["F1"] = f"In ≥ {pretty(sm['fuse_In_min'])}"
+        if "MCOV_min" in sm:
+            txt["MOV"] = f"MCOV ≥ {pretty(sm['MCOV_min'])}"
         parts = {c.designator: c.part_number for c in result.selection}
-        return value_sheet(title, "comando e proteção", vals, parts)
+        return drawings_power.drive(title, s.switch, txt, parts, "Comando e proteção", s.snubber)
 
     def bom_extra(self, spec: BaseModel, result: DesignResult) -> list[BomRow]:
         s = _spec(spec)

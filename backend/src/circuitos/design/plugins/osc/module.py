@@ -56,8 +56,9 @@ from circuitos.design.mna import Circuit as Mna
 from circuitos.design.opamp import REF as OPA_REF
 from circuitos.design.opamp import TRAN_OPTIONS, OpAmp, opamp_model
 from circuitos.design.plugins.opnl.module import diode_subckt
+from circuitos.reports import drawings_opamp
+from circuitos.reports.canvas import pretty, si_values
 from circuitos.reports.common import BomRow, LabItem, passive
-from circuitos.reports.schematic import value_sheet
 
 Config = Literal[
     "wien",
@@ -983,9 +984,18 @@ class OscModule:
     def schematic(self, spec: BaseModel, result: DesignResult, title: str) -> str:
         s = _spec(spec)
         sm = result.summary
-        vals = {k: format_eng(sm[k].to_pint()) for k in sm if k[0] in "RC"}
+        same = {"Rt": "R", "Ct": "C"} if s.config == "astavel_ampop" else {}
+        if s.config in ("wien", "deslocamento_fase"):
+            ks = (1, 2) if s.config == "wien" else (1, 2, 3)
+            same = {f"{x}{k}": x for x in "RC" for k in ks}
+        elif s.config.startswith("ne555"):
+            same = {"Ct": "C"}
+        names = {k: k for k in sm if k[0] in "RC" and k not in ("R", "C")} | same
+        v = si_values(sm, names) | {"RL": s.RL.to_pint().m_as("ohm")}
         parts = {c.designator: c.part_number for c in result.selection}
-        return value_sheet(title, ENUM_LABELS[s.config], vals, parts)
+        vcc = s.VCC_tbj if s.config == "multivibrador_tbj" else s.VCC
+        extra = {"Vcc": pretty(vcc), "trigger": "pulso de disparo"}
+        return drawings_opamp.osc(s.config, title, v, parts, extra)
 
     def bom_extra(self, spec: BaseModel, result: DesignResult) -> list[BomRow]:
         sm = result.summary

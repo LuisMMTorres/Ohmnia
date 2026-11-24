@@ -38,8 +38,9 @@ from circuitos.design.engine import Analysis, Device
 from circuitos.design.mna import Circuit as Mna
 from circuitos.design.opamp import REF as OPA_REF
 from circuitos.design.opamp import OpAmp, opamp_model
+from circuitos.reports import drawings_opamp
+from circuitos.reports.canvas import pretty, si_values
 from circuitos.reports.common import BomRow, LabItem, passive
-from circuitos.reports.schematic import value_sheet
 
 Config = Literal[
     "voltimetro",
@@ -676,9 +677,33 @@ class InstModule:
     def schematic(self, spec: BaseModel, result: DesignResult, title: str) -> str:
         s = _spec(spec)
         sm = result.summary
-        vals = {k: format_eng(sm[k].to_pint()) for k in sm if k.startswith("R") and k != "RL_max"}
+        names = {k: k for k in sm if k[0] == "R" and k[1:2].isdigit()}
+        if s.config in ("amperimetro", "potencia"):
+            names[f"R{2 if s.config == 'potencia' else 1}sh"] = "R_sh"
+        if s.config == "transmissor_4_20":
+            names["Rs"] = "R_sense"
+        if s.config == "receptor_4_20":
+            names["Rrx"] = "R_rx"
+        if s.config == "ponte_wheatstone":
+            # the INA: Rf1 = Rf2 = R, R3 = R4 = R5 = R6 (difference amplifier of unit gain)
+            names = {"Rf1": "R", "Rf2": "R", "RG": "RG", "R3": "R3", "R4": "R4"}
+            names |= {"R5": "R3", "R6": "R4"}
+        v = si_values(sm, names)
+        r0 = s.R0.to_pint().m_as("ohm")
+        v |= {"Ra": r0, "Rb": r0, "Rc": r0, "Rsens": r0}
+        v |= {"RL": s.R_loop.to_pint().m_as("ohm")}
         parts = {c.designator: c.part_number for c in result.selection}
-        return value_sheet(title, ENUM_LABELS[s.config], vals, parts)
+        ramp = f"rampa {pretty(s.Vs_min)} a {pretty(s.Vs_max)}"
+        extra = {
+            "Vsig": f"rampa 0 a {pretty(s.V_max)}" if s.config == "voltimetro" else ramp,
+            "Vbus": pretty(s.V_max),
+            "Isig": "rampa 4 a 20 mA"
+            if s.config == "receptor_4_20"
+            else f"rampa 0 a {pretty(s.I_max)}",
+            "Vref": pretty(sm["V_ref_set"]) if "V_ref_set" in sm else pretty(s.V_ref),
+            "Vexc": pretty(s.V_exc),
+        }
+        return drawings_opamp.inst(s.config, title, v, parts, extra)
 
     def bom_extra(self, spec: BaseModel, result: DesignResult) -> list[BomRow]:
         sm = result.summary

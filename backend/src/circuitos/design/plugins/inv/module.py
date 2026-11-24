@@ -61,8 +61,9 @@ from circuitos.design.power import (
     pval,
     switch_data,
 )
+from circuitos.reports import drawings_power
+from circuitos.reports.canvas import pretty
 from circuitos.reports.common import BomRow, LabItem, passive
-from circuitos.reports.schematic import value_sheet
 
 Modulation = Literal["quadrada", "quase_quadrada", "spwm_bipolar", "spwm_unipolar", "spwm", "svpwm"]
 ONE_PHASE = ("quase_quadrada", "spwm_bipolar", "spwm_unipolar")
@@ -773,16 +774,16 @@ class InvModule:
     def schematic(self, spec: BaseModel, result: DesignResult, title: str) -> str:
         s = _spec(spec)
         sm = result.summary
-        vals: dict[str, str] = {
-            k: format_eng(sm[k].to_pint()) for k in ("fs", "Lf", "Cf", "V1", "I_rms") if k in sm
+        txt = {
+            k: pretty(sm[src])
+            for k, src in (("LF", "Lf"), ("CF", "Cf"), ("RD", "Rd"), ("CD", "Cd"))
+            if src in sm
         }
+        txt.update(VDC=pretty(s.Vdc), R=pretty(s.R), L=pretty(s.L))
         parts = {c.designator: c.part_number for c in result.selection}
-        return value_sheet(
-            title,
-            f"{'Monofásico' if s.phases == 1 else 'Trifásico'}, {ENUM_LABELS[s.modulation]}",
-            vals,
-            parts,
-        )
+        note = f"{'Monofásico' if s.phases == 1 else 'Trifásico'}, {ENUM_LABELS[s.modulation]}"
+        flt = s.filter and "Lf" in sm
+        return drawings_power.inverter(s.phases, title, s.switch, txt, parts, note, flt)
 
     def bom_extra(self, spec: BaseModel, result: DesignResult) -> list[BomRow]:
         s = _spec(spec)

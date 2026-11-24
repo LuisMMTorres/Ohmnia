@@ -64,8 +64,9 @@ from circuitos.design.power import (
     switch_data,
     switch_losses,
 )
+from circuitos.reports import drawings_power
+from circuitos.reports.canvas import pretty
 from circuitos.reports.common import BomRow, LabItem, passive
-from circuitos.reports.schematic import value_sheet
 
 Topology = Literal["buck", "boost", "buckboost", "cuk", "sepic", "zeta"]
 Mode = Literal["MCC", "MCD"]
@@ -1175,10 +1176,28 @@ class CcModule:
     def schematic(self, spec: BaseModel, result: DesignResult, title: str) -> str:
         s = _spec(spec)
         sm = result.summary
-        keys = ["L1", "L2", "C1", "C_o", "D", "Rc1", "Rb", "Rc2", "Rc3", "Cc1", "Cc2", "Cc3"]
-        vals = {k: format_eng(sm[k].to_pint()) for k in keys if k in sm}
+        txt = {
+            k: pretty(sm[src])
+            for k, src in (
+                ("L1", "L1"),
+                ("L2", "L2"),
+                ("C1", "C1"),
+                ("Co", "C_o"),
+                ("RL", "R_load"),
+            )
+            if src in sm
+        }
+        txt["VIN"] = pretty(s.Vin)
+        comp: dict[str, str] = {
+            k: pretty(sm[k]) for k in ("Rc1", "Rb", "Rc2", "Rc3", "Cc1", "Cc2", "Cc3") if k in sm
+        }
+        if comp:
+            comp["Vref"] = pretty(s.Vref)
         parts = {c.designator: c.part_number for c in result.selection}
-        return value_sheet(title, f"{ENUM_LABELS[s.topology]}, {ENUM_LABELS[s.mode]}", vals, parts)
+        note = f"{ENUM_LABELS[s.topology]}, {ENUM_LABELS[s.mode]}"
+        if "D" in sm:
+            note += f", D = {sm['D'].value:.3f}".replace(".", ",")
+        return drawings_power.dcdc(s.topology, title, s.switch, txt, parts, note, comp)
 
     def bom_extra(self, spec: BaseModel, result: DesignResult) -> list[BomRow]:
         sm = result.summary
