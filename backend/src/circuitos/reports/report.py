@@ -171,7 +171,11 @@ def context(
         "steps": result.steps,
         "lab": lab,
         "safety": outputs.safety(module),
-        "practice": getattr(module, "practice", None),
+        "practice": (
+            module.practice_for(spec, result)
+            if hasattr(module, "practice_for")
+            else getattr(module, "practice", None)
+        ),
         "questions": QUESTIONS.get(module_id) or outputs.questions(module),
         "alpha": _fmt(alpha),
         "status": {"ok": "ok", "atencao": "atenção", "violado": "violado"},
