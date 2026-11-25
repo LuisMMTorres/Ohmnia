@@ -46,6 +46,8 @@ didáticos, sem atribuição a peças reais de fabricante.
 ## Arquitetura
 
 Cada sessão possui seu próprio processo do ngspice, cuja biblioteca não é reentrante.
+É necessária a biblioteca compartilhada (`ngspice.dll`/`libngspice`); o executável em lote
+sozinho não oferece este modo de execução contínua.
 A API oferece criação (`POST /api/v1/bench`), avanço/controles (`POST /{id}/advance`) e
 encerramento (`DELETE /{id}`). As aquisições usam `stop when time`, `alter` e `resume`, conforme
 o [manual oficial do ngspice](https://ngspice.sourceforge.io/docs/ngspice-manual.pdf), seções
@@ -89,10 +91,22 @@ modelos não são enviados à interface.
 Teste de navegador: `frontend/e2e/interactive-bench.e2e.cjs`; usa `BASE`, `SHOTS`, `PROJECT`
 opcional e `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH`. Execute contra um servidor isolado.
 
-Resultados locais: 85 testes do frontend aprovados; nove testes específicos do backend e,
-adicionalmente, o teste de ajuste da fonte de corrente aprovados. Build, ESLint, Prettier,
-Ruff, mypy (197 arquivos de fonte) e os dois contratos de importação aprovados. O fluxo no
-Chrome passou, incluindo dois/quatro canais e cursores. Regressão geral com cobertura em
-andamento; o relatório final será acrescentado antes de liberar o PR para merge.
+Resultados locais finais (25/11/2026):
+
+- Suíte geral: **1.265 aprovados, nenhum reprovado e um teste de OCR pulado** por ausência de
+  Tesseract/tessdata configurado no ambiente de testes. Os 11.037 casos `datasheet`, com
+  downloads externos, foram desmarcados conforme o padrão do projeto.
+- Dez testes específicos da bancada/API aprovados na consolidação final, incluindo os casos
+  adicionais de pulso, PWL e fonte de corrente. A PWL é comparada ao valor analítico da rampa
+  após a alteração, não apenas à presença de oscilação.
+- **Cobertura consolidada: 94,09%**, acima do mínimo de 80%.
+- **85 testes do frontend aprovados** em 20 arquivos. Build, ESLint, Prettier, Ruff,
+  mypy (197 arquivos de fonte) e os dois contratos de importação aprovados.
+- Chrome aprovado, incluindo menu do multímetro, dois/quatro canais, cursores, sinal visível,
+  operação dos instrumentos e encerramento da sessão.
+
+A suíte geral foi executada uma vez (2 h 22 min 42 s). Houve um aviso já existente em filtro
+ideal, `log10(0)`, sem falha de teste. Após a execução, somente os testes específicos foram
+rodados para consolidar a cobertura dos ajustes finais.
 
 ![Protoboard e instrumentos em execução](bancada-interativa.png)

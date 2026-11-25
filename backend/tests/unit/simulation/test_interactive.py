@@ -98,11 +98,13 @@ def test_repeating_pwl_can_be_adjusted_without_losing_repeat():
     bench = TransientBench(prepare(sch, {}, 0.001))
     bench.advance({})
     out = bench.advance({"V1": {"points": "0 0 100u 3 200u 0"}})
-    values = [
-        v
+    points = [
+        (t, v)
         for t, v in zip(
             out["data"]["x"]["values"], out["data"]["traces"]["v(in)"]["values"], strict=True
         )
         if 0.00101 < t < 0.00109
     ]
-    assert values and max(values) > 2
+    assert points
+    for t, value in points:
+        assert value == pytest.approx(3 * (t - 0.001) / 0.0001, abs=1e-6)
