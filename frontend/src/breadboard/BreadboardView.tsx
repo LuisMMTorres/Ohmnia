@@ -926,6 +926,9 @@ export function BreadboardView({
               const [bx, by] = instrumentAt(p.ref);
               const terms = pkg.pins.filter((t) => t in (views[p.ref]?.pinmap ?? {}));
               const kind = views[p.ref]?.kind ?? "";
+              const manual = schematic.components.find(
+                (c) => c.ref === p.ref && MANUAL_SWITCH_KINDS.has(c.kind),
+              );
               // a multi-channel bench supply: one panel, the terminals of every channel side by side
               const group = instruments.filter((q) => slotOf(q.ref) === slotOf(p.ref));
               const shared = group.length > 1;
@@ -965,6 +968,30 @@ export function BreadboardView({
                           : `${p.ref} · ${views[p.ref]?.title ?? pkg.label}`
                       }
                       kind={kind}
+                      pressed={
+                        manual
+                          ? switchPosition(manual, stateDefault(library?.[manual.kind])) ===
+                            "pressed"
+                          : undefined
+                      }
+                      onOperate={
+                        manual && !readOnly
+                          ? () => {
+                              const toggled = toggleSwitch(
+                                manual,
+                                stateDefault(library?.[manual.kind]),
+                              );
+                              const next = {
+                                ...schematic,
+                                components: schematic.components.map((c) =>
+                                  c.id === toggled.id ? toggled : c,
+                                ),
+                              };
+                              if (onOperate) onOperate(next, toggled);
+                              else onChange(next);
+                            }
+                          : undefined
+                      }
                       motion={motion?.[p.ref]}
                       channels={shared ? group.length : 1}
                       readings={(shared ? group : [p]).map((q) => {

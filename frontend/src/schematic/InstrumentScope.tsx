@@ -19,6 +19,7 @@ export function InstrumentScope({
   initialChannels = 2,
   onChannelsChange,
   channelSignals,
+  liveData,
 }: {
   job: Job;
   plot: PlotInfo;
@@ -26,6 +27,7 @@ export function InstrumentScope({
   initialChannels?: 2 | 4;
   onChannelsChange?: (count: 2 | 4) => void;
   channelSignals?: (string | null)[];
+  liveData?: PlotData;
 }) {
   const operatingPoint = plot.kind === "op";
   const availableSignals = useMemo(
@@ -37,6 +39,7 @@ export function InstrumentScope({
   );
   const signalUnit = (name: string) => plot.vectors.find((v) => v.name === name)?.unit ?? "V";
   const [count, setCount] = useState<number>(initialChannels);
+  useEffect(() => setCount(initialChannels), [initialChannels]);
   const [channels, setChannels] = useState<Channel[]>(() =>
     Array.from({ length: 4 }, (_, i) => ({
       signal: channelSignals ? (channelSignals[i] ?? "") : (availableSignals[i] ?? ""),
@@ -52,10 +55,19 @@ export function InstrumentScope({
   const [level, setLevel] = useState(0);
   const [slope, setSlope] = useState("rising");
   const [stopped, setStopped] = useState(false);
+  const [autoRangeLive, setAutoRangeLive] = useState(true);
   const [measuring, setMeasuring] = useState(false);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<PlotData | null>(null);
   const [error, setError] = useState("");
+  const live = liveData !== undefined;
+  const handleMeasuring = useCallback(
+    (enabled: boolean) => {
+      setMeasuring(enabled);
+      if (enabled && live) setStopped(true);
+    },
+    [live],
+  );
   const autosetDone = useRef(false);
   const autoset = useCallback((out: PlotData) => {
     const times = out.x?.values;
@@ -91,7 +103,31 @@ export function InstrumentScope({
   ]);
   const names = useMemo<string[]>(() => JSON.parse(namesKey) as string[], [namesKey]);
   useEffect(() => {
-    if ((stopped && !measuring) || !names.length) return;
+    if (!liveData || stopped) return;
+    setData(liveData);
+    const times = liveData.x?.values ?? [];
+    if (times.length) setStart(Math.max(times[0]!, times.at(-1)! - timeDiv * 10));
+    if (!autosetDone.current && liveData.x?.values.length && Object.keys(liveData.traces).length) {
+      autosetDone.current = true;
+      autoset(liveData);
+    }
+    if (autoRangeLive)
+      setChannels((old) =>
+        old.map((ch) => {
+          const values = liveData.traces[ch.signal]?.values ?? [];
+          const center =
+            ch.coupling === "AC" && values.length
+              ? values.reduce((sum, v) => sum + v, 0) / values.length
+              : 0;
+          const peak = values.reduce((m, v) => Math.max(m, Math.abs(v - center)), 0);
+          return peak > Math.abs(ch.scale) * 3.8
+            ? { ...ch, scale: Number((peak / 3).toPrecision(2)) }
+            : ch;
+        }),
+      );
+  }, [liveData, stopped, autoset, autoRangeLive, timeDiv]);
+  useEffect(() => {
+    if (liveData || (stopped && !measuring) || !names.length) return;
     setLoading(true);
     let cancelled = false;
     api
@@ -115,10 +151,15 @@ export function InstrumentScope({
     return () => {
       cancelled = true;
     };
-  }, [job.id, plot.name, names, stopped, autoset, measuring]);
-  const update = (i: number, changes: Partial<Channel>) =>
+  }, [job.id, plot.name, names, stopped, autoset, measuring, liveData]);
+  const update = (i: number, changes: Partial<Channel>) => {
+    if (changes.scale !== undefined || changes.position !== undefined) setAutoRangeLive(false);
     setChannels((old) => old.map((c, n) => (n === i ? { ...c, ...changes } : c)));
-  let windowStart = start;
+  };
+  let windowStart =
+    liveData && !stopped
+      ? Math.max(data?.x?.values[0] ?? 0, (data?.x?.values.at(-1) ?? 0) - timeDiv * 10)
+      : start;
   const triggerSignal = channels[trigger]?.signal;
   const tx = data?.x?.values ?? [];
   const ty = triggerSignal ? data?.traces[triggerSignal]?.values : undefined;
@@ -138,6 +179,16 @@ export function InstrumentScope({
         <span>Instrumento didático · {plot.run_label || "execução atual"}</span>
       </header>
       <div className="row wrap scope-controls">
+        {liveData && (
+          <label className="inline">
+            <input
+              type="checkbox"
+              checked={autoRangeLive}
+              onChange={(e) => setAutoRangeLive(e.target.checked)}
+            />
+            Ampliar escala automaticamente
+          </label>
+        )}
         <label>
           Modelo
           <select
@@ -170,7 +221,7 @@ export function InstrumentScope({
             type="number"
             min={0}
             step="any"
-            disabled={operatingPoint}
+            disabled={operatingPoint || (live && !stopped)}
             value={start}
             onChange={(e) =>
               Number.isFinite(e.target.valueAsNumber) && setStart(e.target.valueAsNumber)
@@ -206,7 +257,7 @@ export function InstrumentScope({
         start={windowStart}
         timeDiv={timeDiv}
         operatingPoint={operatingPoint}
-        onEnabledChange={setMeasuring}
+        onEnabledChange={handleMeasuring}
       >
         <svg
           viewBox="0 0 1000 440"

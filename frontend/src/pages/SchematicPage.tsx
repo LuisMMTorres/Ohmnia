@@ -40,6 +40,8 @@ import { removeSources, pruneOrphanSupplyLabels } from "../breadboard/instrument
 import { disconnectScope, syncScopeProbes } from "../breadboard/scopeConnections";
 import { BenchScope } from "../breadboard/BenchScope";
 import { BenchSupply } from "../breadboard/BenchSupply";
+import { InteractiveBench } from "../breadboard/InteractiveBench";
+import type { PlotData } from "../api";
 import { nextRef } from "../schematic/geometry";
 import { autoWire } from "../schematic/editing";
 import { glowFrom, glowText } from "../schematic/indicators";
@@ -146,6 +148,19 @@ export function SchematicWorkspace({
   const [selection, setSelection] = useState<Selection>(null);
   const [simulatedCircuit, setSimulatedCircuit] = useState("");
   const [job, setJob] = useState<Job | null>(null);
+  const [liveActive, setLiveActive] = useState(false);
+  const [liveMeter, setLiveMeter] = useState(false);
+  const [liveData, setLiveData] = useState<PlotData | null>(null);
+  const liveSupplyCurrents = useMemo(
+    () =>
+      Object.fromEntries(
+        sch.components.flatMap((c) => {
+          const value = liveData?.traces[`i(${c.ref.toLowerCase()})`]?.values.at(-1);
+          return value === undefined ? [] : [[c.ref, value]];
+        }),
+      ),
+    [sch.components, liveData],
+  );
   const [netlist, setNetlist] = useState<NetlistOut | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [warnings, setWarnings] = useState<string[]>([]);
@@ -528,6 +543,7 @@ export function SchematicWorkspace({
   // LEDs, lamps and motors follow it
   const operate = (next: Schematic, comp: Component) => {
     change(next);
+    if (liveActive) return;
     const sym = symbols[comp.kind];
     const text = `${comp.ref}: ${switchText(comp, stateDefault(sym))}`;
     if (!next.analyses.length) {
@@ -605,10 +621,25 @@ export function SchematicWorkspace({
     selection?.kind === "label" ? sch.labels.find((l) => l.id === selection.id) : undefined;
 
   return (
-    <main className={`schematic-page workspace-mode-${activeStep} workspace-view-${view}`}>
-      <WorkspaceSteps active={activeStep} resultsAvailable={job !== null} onSelect={activateStep} />
-      {view === "protoboard" && (
+    <main
+      className={`schematic-page workspace-mode-${activeStep} workspace-view-${view}${liveActive ? " workspace-live" : ""}`}
+    >
+      <WorkspaceSteps
+        active={activeStep}
+        resultsAvailable={job !== null}
+        onSelect={(step) => {
+          if (liveActive && step !== "circuit") {
+            setNotice(
+              "Pare a bancada antes de configurar outra análise ou abrir resultados anteriores.",
+            );
+            return;
+          }
+          activateStep(step);
+        }}
+      />
+      {view === "protoboard" && !liveActive && (
         <BenchSupply
+          liveData={liveData}
           spec={bbSpec}
           schematic={sch}
           onChange={change}
@@ -617,7 +648,7 @@ export function SchematicWorkspace({
           }
         />
       )}
-      {view === "protoboard" && (
+      {view === "protoboard" && !liveActive && (
         <BenchScope
           schematic={sch}
           onChange={change}
@@ -628,6 +659,30 @@ export function SchematicWorkspace({
         />
       )}
       <div className="simulator-workbench">
+        {view === "protoboard" && (
+          <InteractiveBench
+            meter={liveMeter}
+            onMeterChange={setLiveMeter}
+            onChange={change}
+            schematic={sch}
+            spec={bbSpec}
+            resolved={resolved}
+            onActiveChange={(active) => {
+              setLiveActive(active);
+              if (active) activateStep("circuit");
+            }}
+            onSnapshot={setLiveData}
+            instruments={
+              <BenchSupply
+                liveData={liveData}
+                spec={bbSpec}
+                schematic={sch}
+                onChange={change}
+                job={null}
+              />
+            }
+          />
+        )}
         <div
           ref={circuitRef}
           className="circuit-workspace"
@@ -733,7 +788,10 @@ export function SchematicWorkspace({
                 onChange={(e) => {
                   const instrument = e.target.value;
                   if (instrument === "supply") addBenchSupply();
-                  else if (instrument === "generator") {
+                  else if (instrument === "multimeter") {
+                    setLiveMeter(true);
+                    setView("protoboard");
+                  } else if (instrument === "generator") {
                     const ref = nextRef(sch, "G");
                     const assembly = sch.breadboard ?? emptyBreadboard();
                     change({
@@ -781,10 +839,11 @@ export function SchematicWorkspace({
                 <option value="generator">Gerador de sinais</option>
                 <option value="scope2">Osciloscópio de 2 canais</option>
                 <option value="scope4">Osciloscópio de 4 canais</option>
+                <option value="multimeter">Multímetro</option>
               </select>
             </label>
             <span className="grow" />
-            <button onClick={() => void simulate()} disabled={running}>
+            <button onClick={() => void simulate()} disabled={running || liveActive}>
               {running ? "Simulando…" : "Simular"}
             </button>
             {running && job && (
@@ -933,7 +992,7 @@ export function SchematicWorkspace({
               motion={motion}
               burnt={burnt}
               glows={glows}
-              supplyCurrents={supplyCurrents}
+              supplyCurrents={liveData ? liveSupplyCurrents : supplyCurrents}
               onOperate={operate}
               library={symbols}
             />
