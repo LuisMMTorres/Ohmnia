@@ -58,6 +58,17 @@ catálogo da fixture de testes, Playwright e as variáveis `BASE`, `SHOTS` e
 
 ## Validação executada
 
+- Regressão geral com ngspice e runtimes de firmware configurados: 1.255 testes selecionados,
+  1.251 aprovados inicialmente, três falhas e um teste de OCR pulado por ausência de
+  Tesseract/tessdata. Os 11.037 casos marcados `datasheet` foram desmarcados, conforme o padrão
+  do projeto.
+- As três falhas foram reexecutadas: teste de propriedades da pontuação corrigido (aprovado),
+  teste de variantes corrigido para exigir avisos de pinagem pendente (aprovado na execução
+  específica abaixo) e calibração com `HealthCheck.too_slow` do Hypothesis (aprovada
+  isoladamente e com a mesma semente que falhou, mantendo a cobertura, sem alterar código
+  ou suprimir a verificação).
+- Cobertura consolidada: **94,03%**, acima do mínimo de 80%. A execução geral levou 48 min 22 s;
+  não foi repetida integralmente após as correções, conforme a orientação do `CLAUDE.md`.
 - Frontend: 82 testes em 19 arquivos, build, ESLint e Prettier aprovados.
 - Backend: Ruff aprovado (336 arquivos formatados), mypy sem erros nos 195 arquivos de fonte
   e dois contratos de importação preservados.
