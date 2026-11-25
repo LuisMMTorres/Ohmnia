@@ -164,6 +164,8 @@ def check(ref: Reference, bb: Breadboard) -> CheckReport:
                     )
                 )
     for refd, r in ref.parts.items():
+        if r.origin == "sem_pinagem" and bb.part(refd) is None:
+            issues.append(Issue(kind="sem_pinagem", refs=[refd], message=" ".join(r.notes)))
         if r.checkable and bb.part(refd) is None:
             text = (
                 "Falta ligar a fonte simétrica dos integrados (ALIM: +, − e 0 V)."

@@ -55,8 +55,9 @@ ligações", e a conferência deixava essa peça de fora e ainda dizia "Montagem
 2. Confira que cada perna está numa faixa com fio ou peça do mesmo nó.
 3. Teste automático: `pytest tests/unit/api/test_design_breadboard.py`. Ele monta cada módulo
    com cada opção (configuração, topologia, aproximação...) e verifica, de forma independente da
-   conferência, que cada perna está no condutor do seu nó, que nenhuma peça ficou fora e que
-   nenhum fio está na diagonal.
+   conferência, que cada perna conhecida está no condutor do seu nó, que nenhuma peça com
+   pinagem comprovada ficou fora e que nenhum fio está na diagonal. Pinagens pendentes devem
+   aparecer no relatório e impedir a mensagem de montagem conferida.
 
 ## Capturas
 
@@ -72,3 +73,10 @@ ligações", e a conferência deixava essa peça de fora e ainda dizia "Montagem
 - Nos filtros grandes (elíptico e variáveis de estado) ainda há fios retos deitados um sobre o
   outro em alguns trechos: a metade de cima da protoboard tem só 4 colunas livres para tantos nós.
 - O 1N5221B ficou com status "a verificar" (polaridade não indicada no datasheet).
+  A revisão bloqueia suas ligações automáticas e a certificação da montagem, mesmo se a
+  peça não tiver sido colocada. O roteiro pede confirmação da pinagem sem indicar polaridade
+  presumida. As outras peças continuam sendo conferidas.
+
+## Revisão antes do merge
+
+Correções e reprodução: [revisao-pr33.md](revisao-pr33.md).

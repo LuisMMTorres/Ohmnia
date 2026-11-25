@@ -9,7 +9,7 @@ from fastapi.testclient import TestClient
 
 from circuitos.api.app import app
 from circuitos.breadboard import board
-from circuitos.breadboard.check import board_nets
+from circuitos.breadboard.check import ERRORS, board_nets
 from circuitos.breadboard.layout import Breadboard
 
 
@@ -21,7 +21,9 @@ def client(reviewed_catalogue):
 
 
 def test_every_assemblable_module_passes_the_check(client):
+    from circuitos.api.breadboard import reference_for
     from circuitos.design import registry
+    from circuitos.schematic.model import Schematic
 
     available = []
     for module_id in registry.MODULES:
@@ -33,7 +35,12 @@ def test_every_assemblable_module_passes_the_check(client):
             continue
         available.append(module_id)
         report = out["assembly"]["report"]
-        assert report["ok"], (module_id, [i["message"] for i in report["issues"]])
+        ref = reference_for(client.app.state.components, Schematic.model_validate(out["schematic"]))
+        pending = {r.ref for r in ref.parts.values() if r.origin == "sem_pinagem"}
+        reported = {r for i in report["issues"] if i["kind"] == "sem_pinagem" for r in i["refs"]}
+        assert pending == reported
+        assert report["ok"] == (not pending), (module_id, report["issues"])
+        assert not any(i["kind"] in ERRORS for i in report["issues"]), (module_id, report["issues"])
         assert out["schematic"]["breadboard"]["parts"]
     print("montáveis:", available)
     assert {"DM-RET1", "DM-SSA", "DM-OPA"} <= set(available)
@@ -70,6 +77,30 @@ def test_op_amp_macromodel_becomes_one_op_amp_with_supplies(client):
 def test_module_with_ideal_switches_is_not_guessed(client):
     out = client.post("/api/v1/design/DM-PAD/breadboard", json={"spec": {}}).json()
     assert not out["available"] and "sem peça física" in out["reason"]
+
+
+@pytest.mark.parametrize("variant", ["simples", "transistor"])
+def test_zener_corners_keep_the_selected_part_and_pending_pinout(client, variant):
+    rows = client.get("/api/v1/schematic/parts", params={"kind": "zener"}).json()
+    part_id = next(r["id"] for r in rows if r["part_number"] == "1N5231B")
+    out = client.post(
+        "/api/v1/design/DM-ZEN/breadboard",
+        json={"spec": {"variant": variant}, "locks": {"DZ1": part_id}},
+    ).json()
+    assert out["available"], out
+    zeners = [c for c in out["schematic"]["components"] if c["kind"] == "zener"]
+    assert {c["ref"] for c in zeners} == {"Za", "Zb"}
+    assert all(c["part_id"] == part_id for c in zeners)
+    if variant == "transistor":
+        transistors = [c for c in out["schematic"]["components"] if c["kind"] == "npn"]
+        assert {c["ref"] for c in transistors} == {"Qa", "Qb"}
+        assert all(c["part_id"] for c in transistors)
+    report = out["assembly"]["report"]
+    assert not report["ok"]
+    assert {r for i in report["issues"] if i["kind"] == "sem_pinagem" for r in i["refs"]} == {
+        "Za",
+        "Zb",
+    }
 
 
 # ------------------------------------------------------------- every variant, every leg wired
@@ -128,17 +159,15 @@ def _unwired(ref, bb):
     for cond, nets in by_conductor.items():
         if len(nets) > 1:
             wrong.append(f"nós {sorted(nets)} em curto ({cond})")
-    for p in bb.parts:
-        r = ref.parts.get(p.ref)
-        if r is not None and r.origin == "sem_pinagem":
-            wrong.append(f"{p.ref} ({r.part_number}) sem pinagem: pernas soltas")
     return wrong
 
 
-def test_every_variant_wires_every_leg_of_every_part(client, reviewed_catalogue):
-    """Each module, with each of its choices, gives an assembly where every leg of every part is
-    on the conductor of its node (no part standing loose on the board, no part left out), and
-    every jumper is straight: the holes are chosen so the wire runs along a row or a column."""
+def test_every_variant_wires_known_legs_and_reports_pending_pinouts(client, reviewed_catalogue):
+    """Known legs share the correct conductor; pending pinouts block assembly certification.
+
+    An unverified catalogue entry must not be turned into a guessed connection merely to
+    make the integration suite pass. Other legs still undergo the independent net/short check.
+    """
     from circuitos.api.breadboard import reference_for
     from circuitos.design import registry
     from circuitos.schematic.model import Schematic
@@ -158,8 +187,13 @@ def test_every_variant_wires_every_leg_of_every_part(client, reviewed_catalogue)
             bb = Breadboard.model_validate(out["schematic"]["breadboard"])
             report = out["assembly"]["report"]
             problems = _unwired(ref, bb)
-            if not report["ok"]:
+            pending = {r.ref for r in ref.parts.values() if r.origin == "sem_pinagem"}
+            reported = {
+                r for i in report["issues"] if i["kind"] == "sem_pinagem" for r in i["refs"]
+            }
+            if pending != reported or report["ok"] != (not pending):
                 problems.append(report["summary"])
+            problems += [i["message"] for i in report["issues"] if i["kind"] in ERRORS]
             for w in bb.wires:  # every jumper along a row or a column, never diagonal
                 (xa, ya), (xb, yb) = board.xy(w.a), board.xy(w.b)
                 if xa != xb and ya != yb:

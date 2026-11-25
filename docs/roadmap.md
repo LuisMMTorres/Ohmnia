@@ -368,8 +368,12 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 
 - Pinagem transcrita dos datasheets das peças que os módulos escolhem (2N3904, BD135/137/139,
   BD140, TIP31/32, IRF540, IRF840, IRF640N, IRLZ44N, LM741, TL071, NE5532, MBR20100CT, MUR460,
-  MCR265, BT151, família 1N5221B): essas peças deixam de ficar soltas na protoboard.
+  MCR265, BT151): essas peças deixam de ficar soltas na protoboard. A família 1N5221B continua
+  com pinagem a verificar, sem ligações automáticas nem confirmação de montagem.
 - Peças que não cabem na protoboard de baixo vão para a de cima, ligadas por fios.
 - Fios sempre retos, ao longo de uma coluna de furos ou atravessando o canal numa linha.
 - A conferência deixa de dizer "confere" quando há peça sem pinagem.
 - Entrega para revisão: [validacao/protoboard-ligacoes.md](validacao/protoboard-ligacoes.md).
+- Revisão do PR #33: bloqueio de pinagens pendentes também no roteiro, preservação da peça
+  escolhida nos dois cantos do DM-ZEN e testes de regressão em
+  [validacao/revisao-pr33.md](validacao/revisao-pr33.md).

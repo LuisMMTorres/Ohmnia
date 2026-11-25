@@ -1,8 +1,8 @@
 """Automatic assembly: place every part on the breadboard and wire the nets.
 
 Deterministic and readable. Several part orders are tried (plain reading order, parts that
-share nodes kept together, and a fixed set of shuffles) and the assembly with the fewest
-jumpers wins; each one follows the same rules:
+share nodes kept together, and a fixed set of shuffles). The assembly minimizes omitted parts,
+overlapping jumpers, crossings and wire count, in that order; each follows the same rules:
 
 * rails: ground on the two negative rails (``tn``, ``bn``), the positive IC supply on ``tp`` and
   the negative one on ``bp``; without IC supplies, the node of a DC source tied to ground takes
@@ -16,7 +16,7 @@ jumpers wins; each one follows the same rules:
 * instruments and supplies off the board get one lead per terminal.
 
 The result is checked with :func:`circuitos.breadboard.check.check` by the callers and the
-tests: an automatic assembly must always pass.
+tests: known pinouts must be connected correctly; pending pinouts block certification.
 """
 
 from __future__ import annotations
@@ -144,8 +144,8 @@ def _greedy(ref: Reference, rails: dict[str, dict[str, str]], start: str | None)
 
 
 def autoplace(ref: Reference) -> tuple[Breadboard, list[str]]:
-    """Try a few part orders and keep the assembly with the fewest jumpers (all parts placed
-    first); the reading order of the plain layout breaks ties."""
+    """Minimize omitted parts, overlapping jumpers, crossings and wire count, in that order.
+    The reading order of the plain layout breaks ties."""
     rails = _rails(ref)
     two_leg = [p.ref for p in sorted(ref.parts.values(), key=lambda p: p.ref)
                if p.package and _order(p)[0] == 2]  # fmt: skip
