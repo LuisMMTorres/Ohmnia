@@ -1,0 +1,220 @@
+{
+  "schema_version": "1",
+  "title": "Bancada interativa · RC e chave",
+  "components": [
+    {
+      "id": "c1",
+      "kind": "vdc",
+      "ref": "V1",
+      "x": 20,
+      "y": 0,
+      "rot": 0,
+      "mirror": false,
+      "params": {
+        "dc": "5"
+      },
+      "part_id": null,
+      "firmware": null
+    },
+    {
+      "id": "c2",
+      "kind": "switch_manual",
+      "ref": "SW1",
+      "x": 40,
+      "y": 0,
+      "rot": 0,
+      "mirror": false,
+      "params": {
+        "state": "0"
+      },
+      "part_id": null,
+      "firmware": null
+    },
+    {
+      "id": "c3",
+      "kind": "resistor",
+      "ref": "R1",
+      "x": 60,
+      "y": 0,
+      "rot": 0,
+      "mirror": false,
+      "params": {
+        "value": "1k"
+      },
+      "part_id": null,
+      "firmware": null
+    },
+    {
+      "id": "c4",
+      "kind": "capacitor",
+      "ref": "C1",
+      "x": 80,
+      "y": 0,
+      "rot": 0,
+      "mirror": false,
+      "params": {
+        "value": "1u"
+      },
+      "part_id": null,
+      "firmware": null
+    },
+    {
+      "id": "c5",
+      "kind": "resistor",
+      "ref": "R2",
+      "x": 100,
+      "y": 0,
+      "rot": 0,
+      "mirror": false,
+      "params": {
+        "value": "10k"
+      },
+      "part_id": null,
+      "firmware": null
+    }
+  ],
+  "wires": [],
+  "labels": [
+    {
+      "id": "l0",
+      "name": "in",
+      "x": 20,
+      "y": -2
+    },
+    {
+      "id": "l1",
+      "name": "0",
+      "x": 20,
+      "y": 2
+    },
+    {
+      "id": "l2",
+      "name": "in",
+      "x": 38,
+      "y": 0
+    },
+    {
+      "id": "l3",
+      "name": "drive",
+      "x": 42,
+      "y": 0
+    },
+    {
+      "id": "l4",
+      "name": "drive",
+      "x": 58,
+      "y": 0
+    },
+    {
+      "id": "l5",
+      "name": "out",
+      "x": 62,
+      "y": 0
+    },
+    {
+      "id": "l6",
+      "name": "out",
+      "x": 78,
+      "y": 0
+    },
+    {
+      "id": "l7",
+      "name": "0",
+      "x": 82,
+      "y": 0
+    },
+    {
+      "id": "l8",
+      "name": "out",
+      "x": 98,
+      "y": 0
+    },
+    {
+      "id": "l9",
+      "name": "0",
+      "x": 102,
+      "y": 0
+    }
+  ],
+  "probes": [],
+  "analyses": [],
+  "sweep": {
+    "kind": "none",
+    "target": null,
+    "spacing": "lin",
+    "values": [],
+    "start": null,
+    "stop": null,
+    "step": null,
+    "points": null,
+    "runs": 30,
+    "seed": 1,
+    "distribution": "gauss",
+    "measure": null
+  },
+  "params": {},
+  "temperature": "27",
+  "directives": "",
+  "breadboard": {
+    "board": "830",
+    "rails_split": false,
+    "parts": [
+      {
+        "ref": "C1",
+        "package": "radial-elco",
+        "legs": {
+          "+": "2:f3",
+          "-": "2:f4"
+        }
+      },
+      {
+        "ref": "R1",
+        "package": "axial-r",
+        "legs": {
+          "2": "2:g3",
+          "1": "2:g7"
+        }
+      },
+      {
+        "ref": "R2",
+        "package": "axial-r",
+        "legs": {
+          "1": "2:h3",
+          "2": "2:bn3"
+        }
+      },
+      {
+        "ref": "SW1",
+        "package": "mod-switch_manual",
+        "legs": {
+          "1": "2:bp2",
+          "2": "2:j7"
+        }
+      },
+      {
+        "ref": "V1",
+        "package": "fonte-cc",
+        "legs": {
+          "p": "2:bp3",
+          "n": "2:bn2"
+        }
+      }
+    ],
+    "wires": [
+      {
+        "id": "w1",
+        "a": "2:j4",
+        "b": "2:bn4",
+        "color": "preto"
+      }
+    ],
+    "instrument_positions": {}
+  },
+  "bench_scope_channels": 2,
+  "bench_scope_connections": {
+    "1": {
+      "positive": "2:h3",
+      "negative": "2:bn2"
+    }
+  }
+}

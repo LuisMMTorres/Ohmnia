@@ -13,6 +13,8 @@ export function InstrumentFace({
   readings = [],
   amps = [],
   terminals = 2,
+  pressed,
+  onOperate,
 }: {
   x: number;
   y: number;
@@ -25,6 +27,8 @@ export function InstrumentFace({
   /** Bench supply: current delivered by each channel (ammeter text). */
   amps?: string[];
   terminals?: number;
+  pressed?: boolean;
+  onOperate?: () => void;
 }) {
   const face = deviceFace(kind);
   if (face)
@@ -35,6 +39,39 @@ export function InstrumentFace({
           {title.slice(0, 48)}
         </text>
         {face.draw(motion)}
+        {pressed !== undefined && (
+          <g
+            data-actuator={title.split(" · ")[0]}
+            role="button"
+            aria-label={`Operar ${title.split(" · ")[0]}`}
+            aria-pressed={pressed}
+            tabIndex={onOperate ? 0 : -1}
+            style={{ cursor: onOperate ? "pointer" : "default" }}
+            onClick={(e) => {
+              e.stopPropagation();
+              onOperate?.();
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                e.stopPropagation();
+                onOperate?.();
+              }
+            }}
+          >
+            <circle
+              cx={140}
+              cy={48}
+              r={21}
+              fill={pressed ? "#238b49" : "#b83c3c"}
+              stroke="#243a38"
+              strokeWidth={2}
+            />
+            <text x={140} y={52} textAnchor="middle" fontSize={9} fill="#fff">
+              {pressed ? "FECHADO" : "ABERTO"}
+            </text>
+          </g>
+        )}
       </g>
     );
   if (/^[vi]dc$/.test(kind))

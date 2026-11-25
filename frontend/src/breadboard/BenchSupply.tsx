@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { api, type Job } from "../api";
+import { api, type Job, type PlotData } from "../api";
 import { formatEng } from "../format";
 import { addSupplyChannel, removeSources } from "./instruments";
 import { allHoles } from "./geometry";
@@ -13,11 +13,13 @@ export function BenchSupply({
   onChange,
   job,
   spec,
+  liveData,
 }: {
   schematic: Schematic;
   onChange: (s: Schematic) => void;
   job: Job | null;
   spec: Spec | null;
+  liveData?: PlotData | null;
 }) {
   const sources = useMemo(
     () => schematic.components.filter((c) => /^[vi](dc|sin|pulse)$/.test(c.kind)),
@@ -165,8 +167,9 @@ export function BenchSupply({
             {sources
               .filter((s) => (s.params.bench_id ?? s.id) === id)
               .map((c) => {
-                const current =
-                  measured.job === job?.id
+                const current = liveData?.traces[`i(${c.ref.toLowerCase()})`]
+                  ? -liveData.traces[`i(${c.ref.toLowerCase()})`]!.values.at(-1)!
+                  : measured.job === job?.id
                     ? measured.currents[`i(${c.ref.toLowerCase()})`]
                     : undefined;
                 return (

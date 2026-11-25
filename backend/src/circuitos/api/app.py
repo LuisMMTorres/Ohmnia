@@ -22,6 +22,7 @@ from circuitos.api.catalog import router as catalog_router
 from circuitos.api.design import router as design_router
 from circuitos.api.devices import router as devices_router
 from circuitos.api.imports import router as imports_router
+from circuitos.api.interactive import router as interactive_router
 from circuitos.api.projects import router as projects_router
 from circuitos.api.results import Form, as_real, split_vectors
 from circuitos.api.results import router as results_router
@@ -43,6 +44,7 @@ from circuitos.core.errors import CircuitosError
 from circuitos.core.units import Q_, QuantityModel, VectorModel, format_eng, parse_unit
 from circuitos.datasheets.store import DatasheetStore
 from circuitos.simulation.backend import BatchNgspiceBackend, SharedNgspiceBackend
+from circuitos.simulation.interactive import BenchSessions
 from circuitos.simulation.jobs import Job, JobQueue
 from circuitos.simulation.post import measures
 from circuitos.simulation.post.decimate import minmax_decimate
@@ -56,8 +58,12 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     app.state.jobs = JobQueue(max_workers=int(os.environ.get("CIRCUITOS_SIM_WORKERS", "2")))
     app.state.components = open_repository()
     app.state.datasheets = DatasheetStore()
-    yield
-    app.state.jobs.shutdown()
+    app.state.benches = BenchSessions()
+    try:
+        yield
+    finally:
+        app.state.benches.close()
+        app.state.jobs.shutdown()
 
 
 app = FastAPI(title=APP_NAME, version=__version__, lifespan=lifespan)
@@ -67,6 +73,7 @@ app.include_router(design_router)
 app.include_router(schematic_router)
 app.include_router(breadboard_router)
 app.include_router(imports_router)
+app.include_router(interactive_router)
 app.include_router(projects_router)
 app.include_router(results_router)
 

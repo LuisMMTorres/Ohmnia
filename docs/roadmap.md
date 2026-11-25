@@ -377,3 +377,12 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 - Revisão do PR #33: bloqueio de pinagens pendentes também no roteiro, preservação da peça
   escolhida nos dois cantos do DM-ZEN e testes de regressão em
   [validacao/revisao-pr33.md](validacao/revisao-pr33.md).
+
+## Simulador — bancada interativa, etapa 1 (25/11/2026)
+
+- Sessão transitória com estado preservado entre aquisições, pausa/continuação e encerramento.
+- Chaves operáveis e ajustes de fontes/geradores durante a execução.
+- Osciloscópio de 2/4 canais com aquisição contínua e cursores sobre aquisição congelada.
+- Multímetro ideal de tensão/corrente, CC/CA eficaz e HOLD; resistência/continuidade ficam
+  para a próxima etapa. Esta etapa contínua é analógica; firmware/CLP continuam em Simular.
+- Entrega para revisão: [validacao/bancada-interativa.md](validacao/bancada-interativa.md).
