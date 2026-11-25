@@ -112,6 +112,12 @@ def _hits_rect(a: Pt, b: Pt, r: Rect) -> bool:
     shrunk = Rect(r.x0 + 0.1, r.y0 + 0.1, r.x1 - 0.1, r.y1 - 0.1)
     if shrunk.x0 >= shrunk.x1 or shrunk.y0 >= shrunk.y1:
         return False
+    lo_x, hi_x = sorted((a[0], b[0]))
+    lo_y, hi_y = sorted((a[1], b[1]))
+    if hi_x <= shrunk.x0 or lo_x >= shrunk.x1 or hi_y <= shrunk.y0 or lo_y >= shrunk.y1:
+        return False  # bounding boxes apart
+    if a[0] == b[0] or a[1] == b[1]:  # along a row or a column: the boxes overlap, so it does
+        return True
     steps = max(2, int(max(abs(b[0] - a[0]), abs(b[1] - a[1])) * 8))
     for i in range(steps + 1):
         t = i / steps
@@ -150,9 +156,21 @@ class Clearance:
         a, b = pt(a_hole, self.place), pt(b_hole, self.place)
         if any(_hits_rect(a, b, r) or r.holds(a) or r.holds(b) for r in self.bodies):
             return False
-        if any(p not in (a, b) and _near(p, a, b, 0.3) for p in self.legs):
+        x0, x1 = min(a[0], b[0]) - 0.3, max(a[0], b[0]) + 0.3
+        y0, y1 = min(a[1], b[1]) - 0.3, max(a[1], b[1]) + 0.3
+        if any(
+            x0 < p[0] < x1 and y0 < p[1] < y1 and p not in (a, b) and _near(p, a, b, 0.3)
+            for p in self.legs
+        ):
             return False
-        return not any(segments_meet((a, b), w) for w in self.wires)
+        return not any(
+            min(w[0][0], w[1][0]) < x1
+            and max(w[0][0], w[1][0]) > x0
+            and min(w[0][1], w[1][1]) < y1
+            and max(w[0][1], w[1][1]) > y0
+            and segments_meet((a, b), w)
+            for w in self.wires
+        )
 
     def add_wire(self, a_hole: str, b_hole: str) -> None:
         a, b = pt(a_hole, self.place), pt(b_hole, self.place)

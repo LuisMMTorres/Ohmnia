@@ -56,6 +56,7 @@ class _State:
     standing: set[Strip] = field(default_factory=set)  # rows with a part standing to a rail
     busy: set[Strip] = field(default_factory=set)  # rows under a transistor or IC body
     tangled: int = 0  # jumpers that could not avoid a body, a leg or another jumper
+    stacked: int = 0  # jumpers lying along another jumper (drawn one over the other)
     place: Place = field(default_factory=lambda: final)  # hole as assembled -> hole drawn
     clr: Clearance = field(init=False)
 
@@ -159,11 +160,11 @@ def autoplace(ref: Reference) -> tuple[Breadboard, list[str]]:
         rng.shuffle(mid)
         orders.append([x for x in head if _order(ref.parts[x])[0] < 2] + mid
                       + [x for x in head if _order(ref.parts[x])[0] > 2])  # fmt: skip
-    best: tuple[tuple[int, int, int], Breadboard, list[str]] | None = None
+    best: tuple[tuple[int, ...], Breadboard, list[str]] | None = None
     for order in orders:
         bb, notes, tangled = _assemble(ref, order)
         unplaced = sum("não coube" in n or "sem furo" in n for n in notes)
-        score = (unplaced, tangled, len(bb.wires))
+        score = (unplaced, *tangled, len(bb.wires))
         if best is not None and score >= best[0]:
             continue
         if order is not None and any(i.kind in ERRORS for i in check(ref, bb).issues):
@@ -178,7 +179,9 @@ def _autoplace(ref: Reference, order: list[str] | None) -> tuple[Breadboard, lis
     return bb, notes
 
 
-def _assemble(ref: Reference, order: list[str] | None) -> tuple[Breadboard, list[str], int]:
+def _assemble(
+    ref: Reference, order: list[str] | None
+) -> tuple[Breadboard, list[str], tuple[int, int]]:
     rails = _rails(ref)
     st = _State()  # lower board (board 2, drawn next to the instruments)
     placed: list[PlacedPart] = []
@@ -230,12 +233,13 @@ def _assemble(ref: Reference, order: list[str] | None) -> tuple[Breadboard, list
     placed = [p.model_copy(update={"legs": {k: final(h) for k, h in p.legs.items()}})
               for p in placed]  # fmt: skip
     wires = [w.model_copy(update={"a": final(w.a), "b": final(w.b)}) for w in wires]
-    notes, tangled = st.notes, st.tangled
+    notes, tangled = st.notes, (st.stacked, st.tangled)
     if up is not None:
         wires += _wire(up, rails, _BUS_ROW_UP) + _link(st, up, rails)
         wires = [w.model_copy(update={"id": f"w{i}"}) for i, w in enumerate(wires, 1)]
         placed = up_placed + placed
-        notes, tangled = notes + up.notes, tangled + up.tangled
+        notes = notes + up.notes
+        tangled = (tangled[0] + up.stacked, tangled[1] + up.tangled)
     return Breadboard(parts=placed, wires=wires), notes, tangled
 
 
@@ -516,6 +520,7 @@ def _wire(
     palette = iter(_PALETTE * 20)
 
     def add(a: str, b: str, color: WireColor) -> None:
+        st.stacked += _overlaps(st, a, b)
         if not st.clr.wire_clear(a, b):
             st.tangled += 1
         st.used.update((a, b))
@@ -548,10 +553,13 @@ def _wire(
                 key=lambda ab: abs(ab[0][1] - ab[1][1]) + (ab[0][0] != ab[1][0]) * 6,
             )
             found: tuple[Strip, list[tuple[str, str]]] | None = None
-            for s1, s2 in cands[:40]:
-                route = _between(st, s1, s2, net)
-                if route is not None:
-                    found = (s2, route)
+            for tier in (0, 1, 2):  # the cleanest route between any nearby pair of strips
+                for s1, s2 in cands[: (16 if tier < 2 else 1)]:
+                    route = _between(st, s1, s2, net, tier)
+                    if route is not None:
+                        found = (s2, route)
+                        break
+                if found is not None:
                     break
             if found is None:
                 s2 = cands[0][1]
@@ -598,20 +606,59 @@ def _usable(st: _State, s: Strip, net: str) -> bool:
     return len(_free_cols(st, s)) >= 2
 
 
-def _choose(st: _State, options: list[list[tuple[str, str]]]) -> list[tuple[str, str]] | None:
-    """The first option whose wires all keep clear of bodies, legs and other wires (else the
-    first one): every option is made of straight wires only."""
+def _overlaps(st: _State, a: str, b: str) -> int:
+    """Wires already on the board that this one would lie on (same line, overlapping): two
+    wires drawn one over the other look like one and hide a connection."""
+    (xa, ya), (xb, yb) = board.xy(st.place(a)), board.xy(st.place(b))
+    n = 0
+    for p, q in st.clr.wires:
+        if ya == yb == p[1] == q[1]:
+            lo, hi = sorted((xa, xb))
+            if min(hi, max(p[0], q[0])) - max(lo, min(p[0], q[0])) > 0:
+                n += 1
+        elif xa == xb == p[0] == q[0]:
+            lo, hi = sorted((ya, yb))
+            if min(hi, max(p[1], q[1])) - max(lo, min(p[1], q[1])) > 0:
+                n += 1
+    return n
+
+
+def _score(st: _State, path: list[tuple[str, str]]) -> tuple[int, int, int]:
+    """Lower is better: wires lying on other wires, wires over bodies, legs or across other
+    wires, and the number of wires."""
+    return (
+        sum(_overlaps(st, a, b) for a, b in path),
+        sum(not st.clr.wire_clear(a, b) for a, b in path),
+        len(path),
+    )
+
+
+def _choose(
+    st: _State, options: list[list[tuple[str, str]]], tier: int = 2
+) -> list[tuple[str, str]] | None:
+    """Among options made of straight wires only: the first one clear of bodies, legs and
+    other wires (tier 0); else the first one lying on no other wire, crossings allowed as a
+    real jumper lies over another (tier 1); else the one with the fewest problems (tier 2)."""
     for path in options:
         if all(st.clr.wire_clear(a, b) for a, b in path):
             return path
-    return options[0] if options else None
+    if tier == 0 or not options:
+        return None
+    for path in options:
+        if not any(_overlaps(st, a, b) for a, b in path):
+            return path
+    if tier == 1:
+        return None
+    return min(options, key=lambda path: _score(st, path))
 
 
 def _relay(st: _State, s: Strip, net: str) -> None:
     st.owner.setdefault(s, net)
 
 
-def _between(st: _State, s1: Strip, s2: Strip, net: str) -> list[tuple[str, str]] | None:
+def _between(
+    st: _State, s1: Strip, s2: Strip, net: str, tier: int = 2
+) -> list[tuple[str, str]] | None:
     """Straight wires from strip ``s1`` to strip ``s2``. The five holes of a strip are one
     conductor, so the holes are chosen to line up: the same column letter in two strips of one
     half (a wire along the column), or one row across the channel. Two halves at different
@@ -628,6 +675,26 @@ def _between(st: _State, s1: Strip, s2: Strip, net: str) -> list[tuple[str, str]
             if c in free(s2):
                 options.append([(f"{c}{s1[1]}", f"{c}{s2[1]}")])
                 relays.append([])
+        # or across the channel and along the other half (when this half's columns are taken)
+        other = "L" if s1[0] == "U" else "U"
+        m1: Strip = (other, s1[1])
+        m2: Strip = (other, s2[1])
+        if _usable(st, m1, net) and _usable(st, m2, net):
+            for c in free(m1):
+                if c not in free(m2):
+                    continue
+                x1 = next((x for x in free(m1) if x != c), None)
+                x2 = next((x for x in free(m2) if x != c), None)
+                if x1 is None or x2 is None or not free(s1) or not free(s2):
+                    continue
+                options.append(
+                    [
+                        (f"{free(s1)[0]}{s1[1]}", f"{x1}{s1[1]}"),
+                        (f"{c}{s1[1]}", f"{c}{s2[1]}"),
+                        (f"{x2}{s2[1]}", f"{free(s2)[0]}{s2[1]}"),
+                    ]
+                )
+                relays.append([m1, m2])
     elif s1[1] == s2[1]:
         for a in free(s1):
             for b in free(s2):
@@ -652,9 +719,9 @@ def _between(st: _State, s1: Strip, s2: Strip, net: str) -> list[tuple[str, str]
             (r for r in range(1, board.ROWS + 1) if r not in (s1[1], s2[1])),
             key=lambda r: (abs(r - s1[1]) + abs(r - s2[1]), r),
         )
-        for r in rows[:12]:
-            m1: Strip = (s1[0], r)
-            m2: Strip = (s2[0], r)
+        for r in rows[:16]:
+            m1 = (s1[0], r)
+            m2 = (s2[0], r)
             if not (_usable(st, m1, net) and _usable(st, m2, net)):
                 continue
             c1 = next((c for c in free(s1) if c in free(m1)), None)
@@ -671,7 +738,7 @@ def _between(st: _State, s1: Strip, s2: Strip, net: str) -> list[tuple[str, str]
                 ]
             )
             relays.append([m1, m2])
-    path = _choose(st, options)
+    path = _choose(st, options, tier)
     if path is not None:
         for m in relays[options.index(path)]:
             _relay(st, m, net)
