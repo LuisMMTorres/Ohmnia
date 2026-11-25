@@ -190,3 +190,31 @@ parameters:
 per_part: {}
 parts:
   LM741CP: {}
+pinout:
+  package: dip-8
+  pins:
+  - pin: "1"
+    name: "OFFSET NULL"
+  - pin: "2"
+    name: "INVERTING INPUT"
+    role: inn
+  - pin: "3"
+    name: "NONINVERTING INPUT"
+    role: inp
+  - pin: "4"
+    name: "V–"
+    role: vee
+  - pin: "5"
+    name: "OFFSET NULL"
+  - pin: "6"
+    name: "OUTPUT"
+    role: out
+  - pin: "7"
+    name: "V+"
+    role: vcc
+  - pin: "8"
+    name: "NC"
+  source:
+    page: 3
+    location: "5 Pin Configuration and Functions — Pin Functions (8-Pin CDIP or PDIP)"
+  status: extraido

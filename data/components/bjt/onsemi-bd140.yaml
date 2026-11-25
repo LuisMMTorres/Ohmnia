@@ -111,3 +111,20 @@ parameters:
     conditions: {IC: 500 mA, VCE: 2 V}
     status: extraido
     source: {page: 2, location: Electrical characteristics - Base-Emitter ON Voltage, excerpt: "VCE = -2 V, IC = -0.5 A  -1 V"}
+pinout:
+  package: to-126
+  pins:
+  - pin: "1"
+    name: "Emitter"
+    role: e
+  - pin: "2"
+    name: "Collector"
+    role: c
+  - pin: "3"
+    name: "Base"
+    role: b
+  source:
+    page: 1
+    location: "Desenho TO-126 ao lado das Absolute Maximum Ratings: 1 Emitter, 2 Collector, 3 Base"
+  status: extraido
+  note: "Com a face com marcação para a frente e os terminais para baixo, o pino 1 fica à esquerda."

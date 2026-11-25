@@ -74,3 +74,17 @@ parameters:
   IRM:
     {typ: 1.7, unit: A, status: extraido, conditions: {IF: 1.0 A, di_dt: 50 A/us},
      source: {page: 2, location: "Electrical characteristics — typical peak reverse recovery current"}}
+pinout:
+  package: do-201ad
+  pins:
+  - pin: "1"
+    name: "Catodo (faixa)"
+    role: k
+  - pin: "2"
+    name: "Anodo"
+    role: a
+  source:
+    page: 9
+    location: "Case 267, STYLE 1: PIN 1. CATHODE (POLARITY BAND) (p. 1: Polarity: Cathode indicated by Polarity Band)"
+  status: extraido
+  note: "Faixa pintada = catodo."

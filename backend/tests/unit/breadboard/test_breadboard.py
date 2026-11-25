@@ -101,9 +101,9 @@ def test_dual_op_amp_uses_unit_a_and_supply_pins():
 
 
 def test_part_without_pinout_is_not_guessed():
-    rec = _record("diode/onsemi-mbr20100ct.yaml", "MBR20100CTG")
+    rec = _record("thyristor/stmicroelectronics-tyn625.yaml", "TYN625")
     assert rec.pinout is None
-    d = resolve(Component(id="1", kind="diode", ref="D1", x=0, y=0), rec)
+    d = resolve(Component(id="1", kind="scr", ref="T1", x=0, y=0), rec)
     assert d.origin == "sem_pinagem" and not d.checkable and d.pinmap == {}
 
 

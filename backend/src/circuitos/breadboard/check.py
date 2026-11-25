@@ -249,10 +249,16 @@ def check(ref: Reference, bb: Breadboard) -> CheckReport:
             )
     issues += [Issue(kind="aviso", message=w) for w in ref.warnings]
     errors = sum(i.kind in ERRORS for i in issues)
-    ok = errors == 0 and bool(checked)
+    # a part without a transcribed pinout cannot be wired or checked: the assembly is not done
+    blind = sorted({r for i in issues if i.kind == "sem_pinagem" for r in i.refs})
+    ok = errors == 0 and bool(checked) and not blind
     summary = (
         f"Montagem confere com o esquemático: {len(checked)} peças, {len(legs)} pernas."
         if ok
+        else f"As {len(checked)} peças conferidas estão certas, mas {', '.join(blind)} "
+        f"{'não têm' if len(blind) > 1 else 'não tem'} pinagem transcrita do datasheet: as "
+        "pernas ficaram sem ligação. Ligue-as conforme o datasheet."
+        if errors == 0 and checked
         else f"{errors} problema(s) na montagem ({len(checked)} peças conferidas)."
         if checked
         else "Nada conferido ainda: monte as peças na protoboard."

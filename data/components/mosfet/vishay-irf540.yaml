@@ -411,3 +411,20 @@ parameters:
     source:
       page: 2
       location: Specifications (TJ = 25 °C) — gate input resistance
+pinout:
+  package: to-220
+  pins:
+  - pin: "1"
+    name: "GATE"
+    role: g
+  - pin: "2"
+    name: "DRAIN"
+    role: d
+  - pin: "3"
+    name: "SOURCE"
+    role: s
+  source:
+    page: 1
+    location: "Desenho TO-220AB: terminais G, D, S da esquerda para a direita"
+  status: extraido
+  note: "Com a face com marcação para a frente e os terminais para baixo: G, D, S da esquerda para a direita. A aba metálica é o dreno."

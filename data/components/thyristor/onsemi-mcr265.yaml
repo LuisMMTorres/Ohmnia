@@ -260,3 +260,20 @@ parts:
       source:
         page: 2
         location: Maximum ratings — peak repetitive off-state voltage, MCR265-10
+pinout:
+  package: to-220
+  pins:
+  - pin: "1"
+    name: "CATHODE"
+    role: k
+  - pin: "2"
+    name: "ANODE"
+    role: a
+  - pin: "3"
+    name: "GATE"
+    role: g
+  source:
+    page: 2
+    location: "PIN ASSIGNMENT (TO-220AB, case 221A, STYLE 3): 1 Cathode, 2 Anode, 3 Gate, 4 Anode"
+  status: extraido
+  note: "Com a face com marcação para a frente e os terminais para baixo, o pino 1 fica à esquerda. A aba metálica (4) é o anodo."

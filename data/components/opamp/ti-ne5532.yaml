@@ -170,3 +170,37 @@ parameters:
       location: Operating characteristics 5.6 - equivalent input noise voltage Vn, f = 1 kHz
       excerpt: Vn Equivalent input noise voltage f = 30Hz 8 f = 1kHz 5 nV/√Hz
 attributes: {}
+pinout:
+  package: dip-8
+  pins:
+  - pin: "1"
+    name: "OUT1"
+    role: out
+    unit: A
+  - pin: "2"
+    name: "1IN–"
+    role: inn
+    unit: A
+  - pin: "3"
+    name: "1IN+"
+    role: inp
+    unit: A
+  - pin: "4"
+    name: "VCC–"
+    role: vee
+  - pin: "5"
+    name: "2IN+"
+    unit: B
+  - pin: "6"
+    name: "2IN–"
+    unit: B
+  - pin: "7"
+    name: "2OUT"
+    unit: B
+  - pin: "8"
+    name: "VCC+"
+    role: vcc
+  source:
+    page: 2
+    location: "Pin Functions (D Package 8-Pin SOIC, P Package 8-Pin PDIP)"
+  status: extraido

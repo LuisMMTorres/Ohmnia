@@ -305,3 +305,20 @@ parameters:
       location: 9. Characteristics - commutated turn-off time
       excerpt: 'tq VDM = 335 V; Tj = 125 °C; ITM = 20 A: typ 70 µs'
 attributes: {}
+pinout:
+  package: to-220
+  pins:
+  - pin: "1"
+    name: "K (cathode)"
+    role: k
+  - pin: "2"
+    name: "A (anode)"
+    role: a
+  - pin: "3"
+    name: "G (gate)"
+    role: g
+  source:
+    page: 2
+    location: "5. Pinning information, Table 2: 1 K cathode, 2 A anode, 3 G gate, mb anode"
+  status: extraido
+  note: "Com a face com marcação para a frente e os terminais para baixo, o pino 1 fica à esquerda. A base de montagem (aba) é o anodo."

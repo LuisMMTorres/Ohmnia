@@ -163,3 +163,32 @@ parameters:
 per_part: {}
 parts:
   TL071CP: {}
+pinout:
+  package: dip-8
+  pins:
+  - pin: "1"
+    name: "NC"
+  - pin: "2"
+    name: "IN–"
+    role: inn
+  - pin: "3"
+    name: "IN+"
+    role: inp
+  - pin: "4"
+    name: "VCC–"
+    role: vee
+  - pin: "5"
+    name: "NC"
+  - pin: "6"
+    name: "OUT"
+    role: out
+  - pin: "7"
+    name: "VCC+"
+    role: vcc
+  - pin: "8"
+    name: "NC"
+  source:
+    page: 3
+    location: "Table 4-1. Pin Functions: TL071x, coluna P (PDIP)"
+  status: extraido
+  note: "Nesta revisão do datasheet, os pinos 1 e 5 do encapsulamento P (PDIP) são NC: o ajuste de offset só existe no encapsulamento PS."
