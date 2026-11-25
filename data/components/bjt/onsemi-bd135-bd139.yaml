@@ -264,3 +264,20 @@ parts:
       source:
         page: 2
         location: Electrical characteristics (TC = 25 °C) — collector-emitter sustaining voltage, BD139G
+pinout:
+  package: to-126
+  pins:
+  - pin: "1"
+    name: "EMITTER"
+    role: e
+  - pin: "2"
+    name: "COLLECTOR"
+    role: c
+  - pin: "3"
+    name: "BASE"
+    role: b
+  source:
+    page: 1
+    location: "Símbolo e TO-225 (case 77-09, STYLE 1): EMITTER 1, COLLECTOR 2,4, BASE 3"
+  status: extraido
+  note: "Encapsulamento TO-225 (equivalente ao TO-126 na protoboard): com a face com marcação para a frente e os terminais para baixo, o pino 1 fica à esquerda. A aba metálica (4) é o coletor."

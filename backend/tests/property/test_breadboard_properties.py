@@ -7,6 +7,8 @@ shows up as a failure.
 
 from __future__ import annotations
 
+from itertools import combinations
+
 from hypothesis import HealthCheck, given, settings
 from hypothesis import strategies as st
 
@@ -56,18 +58,38 @@ def test_pt_bb_automatic_assembly_always_checks(sch):
 @given(sch=circuits())
 def test_pt_bb_tidiest_never_worse_than_reading_order(sch):
     """The chosen assembly is never worse than the plain reading order: first fewer parts left
-    out, then fewer jumpers over bodies, legs or other jumpers, then fewer jumpers."""
+    out, then fewer overlapping jumpers, fewer crossings and fewer jumpers."""
     from circuitos.breadboard.autoplace import _assemble
 
     def lost(notes):  # type: ignore[no-untyped-def]
         return sum("não coube" in n or "sem furo" in n for n in notes)
 
     ref = build(sch, {})
-    plain, plain_notes, plain_tangled = _assemble(ref, None)
+    plain, plain_notes, _ = _assemble(ref, None)
     bb, notes = autoplace(ref)
     assert lost(notes) <= lost(plain_notes)
     if lost(notes) == lost(plain_notes):
-        assert (_tangles(bb), len(bb.wires)) <= (plain_tangled, len(plain.wires))
+        assert (_stacked(bb), _tangles(bb), len(bb.wires)) <= (
+            _stacked(plain),
+            _tangles(plain),
+            len(plain.wires),
+        )
+
+
+def _stacked(bb):  # type: ignore[no-untyped-def]
+    """Independently count positive-length overlaps of collinear jumpers."""
+    from circuitos.breadboard import board
+
+    segments = [(board.xy(w.a), board.xy(w.b)) for w in bb.wires]
+    total = 0
+    for (a, b), (c, d) in combinations(segments, 2):
+        for axis in (0, 1):
+            other = 1 - axis
+            if a[other] == b[other] == c[other] == d[other]:
+                low = max(min(a[axis], b[axis]), min(c[axis], d[axis]))
+                high = min(max(a[axis], b[axis]), max(c[axis], d[axis]))
+                total += low < high
+    return total
 
 
 def _tangles(bb):  # type: ignore[no-untyped-def]

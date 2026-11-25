@@ -1,8 +1,8 @@
 """Automatic assembly: place every part on the breadboard and wire the nets.
 
 Deterministic and readable. Several part orders are tried (plain reading order, parts that
-share nodes kept together, and a fixed set of shuffles) and the assembly with the fewest
-jumpers wins; each one follows the same rules:
+share nodes kept together, and a fixed set of shuffles). The assembly minimizes omitted parts,
+overlapping jumpers, crossings and wire count, in that order; each follows the same rules:
 
 * rails: ground on the two negative rails (``tn``, ``bn``), the positive IC supply on ``tp`` and
   the negative one on ``bp``; without IC supplies, the node of a DC source tied to ground takes
@@ -16,7 +16,7 @@ jumpers wins; each one follows the same rules:
 * instruments and supplies off the board get one lead per terminal.
 
 The result is checked with :func:`circuitos.breadboard.check.check` by the callers and the
-tests: an automatic assembly must always pass.
+tests: known pinouts must be connected correctly; pending pinouts block certification.
 """
 
 from __future__ import annotations
@@ -27,12 +27,12 @@ from dataclasses import dataclass, field
 from itertools import count
 
 from circuitos.breadboard import board
-from circuitos.breadboard.check import check
+from circuitos.breadboard.check import ERRORS, check
 from circuitos.breadboard.layout import Breadboard, Jumper, PlacedPart, WireColor
 from circuitos.breadboard.packages import package
 from circuitos.breadboard.pinout import Resolved
 from circuitos.breadboard.reference import ALIM, Reference, key
-from circuitos.breadboard.routing import Clearance, body
+from circuitos.breadboard.routing import Clearance, Place, body
 
 MAX_SPAN = 12
 _NEAR, _FAR = "L", "U"  # half facing the instruments, filled first
@@ -55,8 +55,13 @@ class _State:
     notes: list[str] = field(default_factory=list)
     standing: set[Strip] = field(default_factory=set)  # rows with a part standing to a rail
     busy: set[Strip] = field(default_factory=set)  # rows under a transistor or IC body
-    clr: Clearance = field(default_factory=lambda: Clearance([], set(), [], place=final))
     tangled: int = 0  # jumpers that could not avoid a body, a leg or another jumper
+    stacked: int = 0  # jumpers lying along another jumper (drawn one over the other)
+    place: Place = field(default_factory=lambda: final)  # hole as assembled -> hole drawn
+    clr: Clearance = field(init=False)
+
+    def __post_init__(self) -> None:
+        self.clr = Clearance([], set(), [], place=self.place)
 
     def free(self, s: Strip) -> list[str]:
         h, row = s
@@ -139,8 +144,8 @@ def _greedy(ref: Reference, rails: dict[str, dict[str, str]], start: str | None)
 
 
 def autoplace(ref: Reference) -> tuple[Breadboard, list[str]]:
-    """Try a few part orders and keep the assembly with the fewest jumpers (all parts placed
-    first); the reading order of the plain layout breaks ties."""
+    """Minimize omitted parts, overlapping jumpers, crossings and wire count, in that order.
+    The reading order of the plain layout breaks ties."""
     rails = _rails(ref)
     two_leg = [p.ref for p in sorted(ref.parts.values(), key=lambda p: p.ref)
                if p.package and _order(p)[0] == 2]  # fmt: skip
@@ -155,14 +160,14 @@ def autoplace(ref: Reference) -> tuple[Breadboard, list[str]]:
         rng.shuffle(mid)
         orders.append([x for x in head if _order(ref.parts[x])[0] < 2] + mid
                       + [x for x in head if _order(ref.parts[x])[0] > 2])  # fmt: skip
-    best: tuple[tuple[int, int, int], Breadboard, list[str]] | None = None
+    best: tuple[tuple[int, ...], Breadboard, list[str]] | None = None
     for order in orders:
         bb, notes, tangled = _assemble(ref, order)
         unplaced = sum("não coube" in n or "sem furo" in n for n in notes)
-        score = (unplaced, tangled, len(bb.wires))
+        score = (unplaced, *tangled, len(bb.wires))
         if best is not None and score >= best[0]:
             continue
-        if order is not None and not check(ref, bb).ok:
+        if order is not None and any(i.kind in ERRORS for i in check(ref, bb).issues):
             continue  # an alternative must never be worse than the plain layout
         best = (score, bb, notes)
     assert best is not None
@@ -174,123 +179,36 @@ def _autoplace(ref: Reference, order: list[str] | None) -> tuple[Breadboard, lis
     return bb, notes
 
 
-def _assemble(ref: Reference, order: list[str] | None) -> tuple[Breadboard, list[str], int]:
-    st = _State()
+def _assemble(
+    ref: Reference, order: list[str] | None
+) -> tuple[Breadboard, list[str], tuple[int, int]]:
     rails = _rails(ref)
+    st = _State()  # lower board (board 2, drawn next to the instruments)
     placed: list[PlacedPart] = []
+    seq = sorted((p for p in ref.parts.values() if p.package), key=_order)
+    if order is not None:
+        seq = [ref.parts[x] for x in order]
+    left = _place(st, ref, seq, rails, placed)
+    # parts that did not fit go on the upper board (board 1), joined to the lower one by wires
+    up: _State | None = None
+    up_placed: list[PlacedPart] = []
+    if left:
+        up = _State(place=_upper)
+        up.notes.append(
+            "Protoboard de baixo cheia: "
+            + ", ".join(r.ref for r in left)
+            + " vão na protoboard de cima, ligadas à de baixo por fios."
+        )
+        for r in _place(up, ref, left, rails, up_placed):
+            up.notes.append(f"{r.ref}: não coube na protoboard.")
 
+    # instruments and supplies off the board (their leads go to the lower board)
     def net_of(r: Resolved, pin: str) -> str | None:
         return ref.nets.get(key(r.ref, pin))
 
     def new_rows(h: str, width: int) -> int | None:
-        for half in (h, "L" if h == "U" else "U"):
-            r = st.nxt[half]
-            while r + width <= board.ROWS:
-                if all((half, x) not in st.owner for x in range(r, r + width + 1)):
-                    st.nxt[half] = r + width + 3  # two empty rows between parts
-                    if half != h:
-                        st.notes.append(
-                            "Metade de baixo cheia: peças seguem na metade de cima."
-                            if h == "L"
-                            else "Metade de cima cheia: peças seguem na metade de baixo."
-                        )
-                    return r if half == h else -r
-                r += 1
-        return None
+        return _new_rows(st, h, width)
 
-    seq = sorted((p for p in ref.parts.values() if p.package), key=_order)
-    if order is not None:
-        seq = [ref.parts[x] for x in order]
-    for r in seq:
-        if not (r.checkable or r.origin == "sem_pinagem"):
-            continue
-        pkg = package(r.package or "")
-        legs: dict[str, str] = {}
-        if pkg.style == "dip":
-            half_n = len(pkg.pins) // 2
-            row = max(st.nxt["U"], st.nxt["L"])
-            if row + half_n > board.ROWS:
-                st.notes.append(f"{r.ref}: não coube na protoboard.")
-                continue
-            for pin, (dr, dc) in zip(pkg.pins, pkg.leg_offsets(), strict=True):
-                col = "e" if dc < 0 else "f"
-                legs[pin] = f"{col}{row + dr}"
-            st.nxt["U"] = st.nxt["L"] = row + half_n + 2
-        elif pkg.style == "board":
-            offs = pkg.leg_offsets()
-            lo = min(dr for dr, _ in offs)
-            hi = max(dr for dr, _ in offs)
-            row = max(st.nxt["U"], st.nxt["L"]) - lo
-            if row + hi > board.ROWS:
-                st.notes.append(f"{r.ref}: não coube na protoboard.")
-                continue
-            low_col, up_col = pkg.cols
-            for pin, (dr, dc) in zip(pkg.pins, offs, strict=True):
-                legs[pin] = f"{up_col if dc < 0 else low_col}{row + dr}"
-            # the board covers the holes between its two rows: no legs or wires there
-            inner = board.COLUMNS[board.COLUMNS.index(up_col) + 1 : board.COLUMNS.index(low_col)]
-            for x in range(row + lo, row + hi + 1):
-                st.used.update(f"{c}{x}" for c in inner)
-            st.nxt["U"] = st.nxt["L"] = row + hi + 3
-        elif pkg.style == "inline":
-            offs = pkg.leg_offsets()
-            width = offs[-1][0]
-            got = new_rows(_NEAR, width)
-            if got is None:
-                st.notes.append(f"{r.ref}: não coube na protoboard.")
-                continue
-            h, row = (_NEAR, got) if got > 0 else (_FAR, -got)
-            col = "c" if h == "U" else "h"
-            for pin, (dr, _) in zip(pkg.pins, offs, strict=True):
-                legs[pin] = f"{col}{row + dr}"
-        elif pkg.style in ("axial", "radial"):
-            legs = {}
-            for cand, stand in _two_legs(
-                st,
-                r,
-                pkg.style,
-                pkg.span,
-                pkg.min_span,
-                pkg.pitch,
-                pkg.pins,
-                net_of,
-                rails,
-                new_rows,
-            ):
-                if st.clr.part_fits(body(pkg, cand, final), list(cand.values())):
-                    legs = cand
-                    if stand is not None:
-                        st.standing.add(stand)
-                    break
-            if not legs:
-                st.notes.append(f"{r.ref}: não coube na protoboard.")
-                continue
-        else:  # off the board: leads placed after the board parts
-            continue
-        joined_roles: set[str] = set()
-        for pin, h in legs.items():
-            net = net_of(r, pin)
-            role = r.pinmap.get(pin)
-            if pkg.style == "board" and role is not None and role in joined_roles:
-                # another pin of the same function (a second GND): the board itself joins
-                # them, so its strip needs no jumper
-                st.owner.setdefault(_strip_of(h), net)
-                st.used.add(h)
-                continue
-            if pkg.style == "board" and role is not None:
-                joined_roles.add(role)
-            if not h.startswith(board.RAILS):
-                st.claim(_strip_of(h), net, h)
-            else:
-                st.used.add(h)
-        placed.append(PlacedPart(ref=r.ref, package=pkg.id, legs=legs))
-        st.clr.add_part(body(pkg, legs, final), list(legs.values()))
-        if pkg.style in ("dip", "inline", "board"):
-            st.busy.update(_strip_of(h) for h in legs.values())
-        if r.origin == "sem_pinagem":
-            st.notes.append(f"{r.ref}: pinagem desconhecida, colocado sem ligações.")
-
-    # instruments and supplies off the board
     for r in sorted((p for p in ref.parts.values() if p.package), key=_order):
         if not r.checkable or package(r.package or "").style != "offboard":
             continue
@@ -315,7 +233,139 @@ def _assemble(ref: Reference, order: list[str] | None) -> tuple[Breadboard, list
     placed = [p.model_copy(update={"legs": {k: final(h) for k, h in p.legs.items()}})
               for p in placed]  # fmt: skip
     wires = [w.model_copy(update={"a": final(w.a), "b": final(w.b)}) for w in wires]
-    return Breadboard(parts=placed, wires=wires), st.notes, st.tangled
+    notes, tangled = st.notes, (st.stacked, st.tangled)
+    if up is not None:
+        wires += _wire(up, rails, _BUS_ROW_UP) + _link(st, up, rails)
+        wires = [w.model_copy(update={"id": f"w{i}"}) for i, w in enumerate(wires, 1)]
+        placed = up_placed + placed
+        notes = notes + up.notes
+        tangled = (tangled[0] + up.stacked, tangled[1] + up.tangled)
+    return Breadboard(parts=placed, wires=wires), notes, tangled
+
+
+def _place(
+    st: _State,
+    ref: Reference,
+    seq: list[Resolved],
+    rails: dict[str, dict[str, str]],
+    placed: list[PlacedPart],
+) -> list[Resolved]:
+    """Put the board parts of ``seq`` on the board of ``st``; returns those that did not fit."""
+    left: list[Resolved] = []
+
+    def net_of(r: Resolved, pin: str) -> str | None:
+        return ref.nets.get(key(r.ref, pin))
+
+    def new_rows(h: str, width: int) -> int | None:
+        return _new_rows(st, h, width)
+
+    for r in seq:
+        if not (r.checkable or r.origin == "sem_pinagem"):
+            continue
+        pkg = package(r.package or "")
+        legs: dict[str, str] = {}
+        if pkg.style == "dip":
+            half_n = len(pkg.pins) // 2
+            row = max(st.nxt["U"], st.nxt["L"])
+            if row + half_n > board.ROWS:
+                left.append(r)
+                continue
+            for pin, (dr, dc) in zip(pkg.pins, pkg.leg_offsets(), strict=True):
+                col = "e" if dc < 0 else "f"
+                legs[pin] = f"{col}{row + dr}"
+            st.nxt["U"] = st.nxt["L"] = row + half_n + 2
+        elif pkg.style == "board":
+            offs = pkg.leg_offsets()
+            lo = min(dr for dr, _ in offs)
+            hi = max(dr for dr, _ in offs)
+            row = max(st.nxt["U"], st.nxt["L"]) - lo
+            if row + hi > board.ROWS:
+                left.append(r)
+                continue
+            low_col, up_col = pkg.cols
+            for pin, (dr, dc) in zip(pkg.pins, offs, strict=True):
+                legs[pin] = f"{up_col if dc < 0 else low_col}{row + dr}"
+            # the board covers the holes between its two rows: no legs or wires there
+            inner = board.COLUMNS[board.COLUMNS.index(up_col) + 1 : board.COLUMNS.index(low_col)]
+            for x in range(row + lo, row + hi + 1):
+                st.used.update(f"{c}{x}" for c in inner)
+            st.nxt["U"] = st.nxt["L"] = row + hi + 3
+        elif pkg.style == "inline":
+            offs = pkg.leg_offsets()
+            width = offs[-1][0]
+            got = new_rows(_NEAR, width)
+            if got is None:
+                left.append(r)
+                continue
+            h, row = (_NEAR, got) if got > 0 else (_FAR, -got)
+            col = "c" if h == "U" else "h"
+            for pin, (dr, _) in zip(pkg.pins, offs, strict=True):
+                legs[pin] = f"{col}{row + dr}"
+        elif pkg.style in ("axial", "radial"):
+            legs = {}
+            for cand, stand in _two_legs(
+                st,
+                r,
+                pkg.style,
+                pkg.span,
+                pkg.min_span,
+                pkg.pitch,
+                pkg.pins,
+                net_of,
+                rails,
+                new_rows,
+            ):
+                if st.clr.part_fits(body(pkg, cand, st.place), list(cand.values())):
+                    legs = cand
+                    if stand is not None:
+                        st.standing.add(stand)
+                    break
+            if not legs:
+                left.append(r)
+                continue
+        else:  # off the board: leads placed after the board parts
+            continue
+        joined_roles: set[str] = set()
+        for pin, h in legs.items():
+            net = net_of(r, pin)
+            role = r.pinmap.get(pin)
+            if pkg.style == "board" and role is not None and role in joined_roles:
+                # another pin of the same function (a second GND): the board itself joins
+                # them, so its strip needs no jumper
+                st.owner.setdefault(_strip_of(h), net)
+                st.used.add(h)
+                continue
+            if pkg.style == "board" and role is not None:
+                joined_roles.add(role)
+            if not h.startswith(board.RAILS):
+                st.claim(_strip_of(h), net, h)
+            else:
+                st.used.add(h)
+        placed.append(PlacedPart(ref=r.ref, package=pkg.id, legs=legs))
+        st.clr.add_part(body(pkg, legs, st.place), list(legs.values()))
+        if pkg.style in ("dip", "inline", "board"):
+            st.busy.update(_strip_of(h) for h in legs.values())
+        if r.origin == "sem_pinagem":
+            st.notes.append(f"{r.ref}: pinagem desconhecida, colocado sem ligações.")
+    return left
+
+
+def _new_rows(st: _State, h: str, width: int) -> int | None:
+    """First of ``width + 1`` fresh rows, in half ``h`` or else in the other one (negative)."""
+    for half in (h, "L" if h == "U" else "U"):
+        r = st.nxt[half]
+        while r + width <= board.ROWS:
+            if all((half, x) not in st.owner for x in range(r, r + width + 1)):
+                st.nxt[half] = r + width + 3  # two empty rows between parts
+                if half != h:
+                    st.notes.append(
+                        "Metade de baixo cheia: peças seguem na metade de cima."
+                        if h == "L"
+                        else "Metade de cima cheia: peças seguem na metade de baixo."
+                    )
+                return r if half == h else -r
+            r += 1
+    return None
 
 
 # The circuit goes on the lower board, starting with its lower half: that is the side the
@@ -323,6 +373,8 @@ def _assemble(ref: Reference, order: list[str] | None) -> tuple[Breadboard, list
 # board 1 names; ``final`` moves them to board 2 at the end.
 # vertical-bus row level with each rail of the lower board (y + 22 + 1)
 _BUS_ROW = {"tp": 23, "tn": 24, "bn": 39, "bp": 40}
+# and with each rail of the upper board, which takes the parts that do not fit below (y + 1)
+_BUS_ROW_UP = {"tp": 1, "tn": 2, "bn": 17, "bp": 18}
 
 
 def final(hole: str) -> str:
@@ -330,6 +382,17 @@ def final(hole: str) -> str:
     if hole.startswith(("vp", "vn", "2:")):
         return hole
     return f"2:{hole}"
+
+
+def _straight(a: str, b: str) -> bool:
+    """A jumper drawn along a row or a column of the board (not diagonal)."""
+    (xa, ya), (xb, yb) = board.xy(a), board.xy(b)
+    return xa == xb or ya == yb
+
+
+def _upper(hole: str) -> str:
+    """Holes of the upper board keep their board 1 names."""
+    return hole
 
 
 def _vbus_col(rails: dict[str, dict[str, str]], net: str) -> str | None:
@@ -446,7 +509,9 @@ def _two_legs(
             yield {p1: f"{c}{row}", p2: f"{c}{row + d}"}, None
 
 
-def _wire(st: _State, rails: dict[str, dict[str, str]]) -> list[Jumper]:
+def _wire(
+    st: _State, rails: dict[str, dict[str, str]], bus_row: dict[str, int] = _BUS_ROW
+) -> list[Jumper]:
     """Jumpers that keep clear of bodies, legs and each other where the board allows: a strip
     goes to its rail in the same row (a short vertical wire), the strips of a node are joined
     nearest first, and the rails reach the vertical bus at the left end of the board."""
@@ -455,20 +520,12 @@ def _wire(st: _State, rails: dict[str, dict[str, str]]) -> list[Jumper]:
     palette = iter(_PALETTE * 20)
 
     def add(a: str, b: str, color: WireColor) -> None:
+        st.stacked += _overlaps(st, a, b)
         if not st.clr.wire_clear(a, b):
             st.tangled += 1
         st.used.update((a, b))
         st.clr.add_wire(a, b)
         wires.append(Jumper(id=f"w{next(ids)}", a=a, b=b, color=color))
-
-    def free_in(s: Strip) -> list[str]:
-        return [f"{c}{s[1]}" for c in _WIRE_PREF[s[0]] if f"{c}{s[1]}" not in st.used]
-
-    def best(pairs: list[tuple[str, str]]) -> tuple[str, str] | None:
-        for a, b in pairs:
-            if st.clr.wire_clear(a, b):
-                return a, b
-        return pairs[0] if pairs else None
 
     for net in sorted(st.strips, key=lambda n: (n not in rails, n)):
         strips = st.strips[net]
@@ -477,38 +534,40 @@ def _wire(st: _State, rails: dict[str, dict[str, str]]) -> list[Jumper]:
                 "preto" if net == "0" else ("vermelho" if rails[net]["U"] == "tp" else "azul")
             )
             for s in strips:
-                rail = rails[net][s[0]]
-                rows = sorted(board.RAIL_ROWS, key=lambda x: (abs(x - s[1]), x))
-                pairs = [
-                    (h, f"{rail}{r}")
-                    for r in rows
-                    if f"{rail}{r}" not in st.used
-                    for h in free_in(s)
-                ][:30]
-                got = best(pairs)
-                if got is None:
-                    st.notes.append(f"Barramento {rail} sem furo livre.")
+                path = _to_rail(st, s, rails[net][s[0]], net)
+                if path is None:
+                    st.notes.append(f"Barramento {rails[net][s[0]]} sem furo livre.")
                     continue
-                add(*got, color)
+                for a, b in path:
+                    add(a, b, color)
             continue
         colour = next(palette)
         # minimum spanning tree over the strips of the node (nearest strips first)
         joined = [strips[0]]
         rest = list(strips[1:])
         while rest:
-            # nearest pair of strips that still have a free hole each (a full strip is
-            # skipped as an end, the node is reached through another of its strips)
+            # nearest pair of strips joined by straight wires (along one column of holes, or
+            # across the channel in one row, through a spare strip when the rows differ)
             cands = sorted(
                 ((a, b) for a in joined for b in rest),
                 key=lambda ab: abs(ab[0][1] - ab[1][1]) + (ab[0][0] != ab[1][0]) * 6,
             )
-            s1, s2 = next(((a, b) for a, b in cands if free_in(a) and free_in(b)), cands[0])
-            pairs = [(a, b) for a in free_in(s1) for b in free_in(s2)]
-            got = best(pairs)
-            if got is None:
-                st.notes.append(f"Faixa da linha {s2[1]} sem furo livre.")
+            found: tuple[Strip, list[tuple[str, str]]] | None = None
+            for tier in (0, 1, 2):  # the cleanest route between any nearby pair of strips
+                for s1, s2 in cands[: (16 if tier < 2 else 1)]:
+                    route = _between(st, s1, s2, net, tier)
+                    if route is not None:
+                        found = (s2, route)
+                        break
+                if found is not None:
+                    break
+            if found is None:
+                s2 = cands[0][1]
+                st.notes.append(f"Faixa da linha {s2[1]} sem caminho reto livre.")
             else:
-                add(*got, colour)
+                s2, route = found
+                for a, b in route:
+                    add(a, b, colour)
             rest.remove(s2)
             joined.append(s2)
     # rails of one node (top and bottom of the board) are joined through the vertical bus,
@@ -524,9 +583,280 @@ def _wire(st: _State, rails: dict[str, dict[str, str]]) -> list[Jumper]:
         used_rails = {r for r in same if any(h.startswith(r) for h in st.used)}
         if rail not in used_rails or len(used_rails) < 2:
             continue
-        bus = f"{col}{_BUS_ROW[rail]}"
+        bus = f"{col}{bus_row[rail]}"
         hole = next((f"{rail}{r}" for r in board.RAIL_ROWS if f"{rail}{r}" not in st.used), None)
         if hole is None or bus in st.used:
             continue
         add(bus, hole, "preto" if net == "0" else "vermelho")
+    return wires
+
+
+def _free_cols(st: _State, s: Strip) -> list[str]:
+    """Column letters of strip ``s`` still free, nearest the wire side first."""
+    return [c for c in _WIRE_PREF[s[0]] if f"{c}{s[1]}" not in st.used]
+
+
+def _usable(st: _State, s: Strip, net: str) -> bool:
+    """A strip a wire may pass through for ``net``: on the board, not under a body, not another
+    node's, with two free holes."""
+    if not 1 <= s[1] <= board.ROWS or s in st.busy:
+        return False
+    if s in st.owner and st.owner[s] != net:
+        return False
+    return len(_free_cols(st, s)) >= 2
+
+
+def _overlaps(st: _State, a: str, b: str) -> int:
+    """Wires already on the board that this one would lie on (same line, overlapping): two
+    wires drawn one over the other look like one and hide a connection."""
+    (xa, ya), (xb, yb) = board.xy(st.place(a)), board.xy(st.place(b))
+    n = 0
+    for p, q in st.clr.wires:
+        if ya == yb == p[1] == q[1]:
+            lo, hi = sorted((xa, xb))
+            if min(hi, max(p[0], q[0])) - max(lo, min(p[0], q[0])) > 0:
+                n += 1
+        elif xa == xb == p[0] == q[0]:
+            lo, hi = sorted((ya, yb))
+            if min(hi, max(p[1], q[1])) - max(lo, min(p[1], q[1])) > 0:
+                n += 1
+    return n
+
+
+def _score(st: _State, path: list[tuple[str, str]]) -> tuple[int, int, int]:
+    """Lower is better: wires lying on other wires, wires over bodies, legs or across other
+    wires, and the number of wires."""
+    return (
+        sum(_overlaps(st, a, b) for a, b in path),
+        sum(not st.clr.wire_clear(a, b) for a, b in path),
+        len(path),
+    )
+
+
+def _choose(
+    st: _State, options: list[list[tuple[str, str]]], tier: int = 2
+) -> list[tuple[str, str]] | None:
+    """Among options made of straight wires only: the first one clear of bodies, legs and
+    other wires (tier 0); else the first one lying on no other wire, crossings allowed as a
+    real jumper lies over another (tier 1); else the one with the fewest problems (tier 2)."""
+    for path in options:
+        if all(st.clr.wire_clear(a, b) for a, b in path):
+            return path
+    if tier == 0 or not options:
+        return None
+    for path in options:
+        if not any(_overlaps(st, a, b) for a, b in path):
+            return path
+    if tier == 1:
+        return None
+    return min(options, key=lambda path: _score(st, path))
+
+
+def _relay(st: _State, s: Strip, net: str) -> None:
+    st.owner.setdefault(s, net)
+
+
+def _between(
+    st: _State, s1: Strip, s2: Strip, net: str, tier: int = 2
+) -> list[tuple[str, str]] | None:
+    """Straight wires from strip ``s1`` to strip ``s2``. The five holes of a strip are one
+    conductor, so the holes are chosen to line up: the same column letter in two strips of one
+    half (a wire along the column), or one row across the channel. Two halves at different
+    rows go through a spare strip in the row of the other end (an L of two wires), or through
+    two spare strips facing each other across the channel in a free row (three wires)."""
+
+    def free(x: Strip) -> list[str]:
+        return _free_cols(st, x)
+
+    options: list[list[tuple[str, str]]] = []
+    relays: list[list[Strip]] = []
+    if s1[0] == s2[0]:
+        for c in free(s1):
+            if c in free(s2):
+                options.append([(f"{c}{s1[1]}", f"{c}{s2[1]}")])
+                relays.append([])
+        # or across the channel and along the other half (when this half's columns are taken)
+        other = "L" if s1[0] == "U" else "U"
+        m1: Strip = (other, s1[1])
+        m2: Strip = (other, s2[1])
+        if _usable(st, m1, net) and _usable(st, m2, net):
+            for c in free(m1):
+                if c not in free(m2):
+                    continue
+                x1 = next((x for x in free(m1) if x != c), None)
+                x2 = next((x for x in free(m2) if x != c), None)
+                if x1 is None or x2 is None or not free(s1) or not free(s2):
+                    continue
+                options.append(
+                    [
+                        (f"{free(s1)[0]}{s1[1]}", f"{x1}{s1[1]}"),
+                        (f"{c}{s1[1]}", f"{c}{s2[1]}"),
+                        (f"{x2}{s2[1]}", f"{free(s2)[0]}{s2[1]}"),
+                    ]
+                )
+                relays.append([m1, m2])
+    elif s1[1] == s2[1]:
+        for a in free(s1):
+            for b in free(s2):
+                options.append([(f"{a}{s1[1]}", f"{b}{s2[1]}")])
+                relays.append([])
+    else:
+        for first, second in ((s1, s2), (s2, s1)):
+            mid: Strip = (first[0], second[1])  # same half as first, same row as second
+            if not _usable(st, mid, net):
+                continue
+            for c in free(first):
+                if c not in free(mid):
+                    continue
+                for d in free(mid):
+                    if d == c:
+                        continue
+                    for e in free(second):
+                        along = (f"{c}{first[1]}", f"{c}{mid[1]}")
+                        options.append([along, (f"{d}{mid[1]}", f"{e}{second[1]}")])
+                        relays.append([mid])
+        rows = sorted(
+            (r for r in range(1, board.ROWS + 1) if r not in (s1[1], s2[1])),
+            key=lambda r: (abs(r - s1[1]) + abs(r - s2[1]), r),
+        )
+        for r in rows[:16]:
+            m1 = (s1[0], r)
+            m2 = (s2[0], r)
+            if not (_usable(st, m1, net) and _usable(st, m2, net)):
+                continue
+            c1 = next((c for c in free(s1) if c in free(m1)), None)
+            c2 = next((c for c in free(s2) if c in free(m2)), None)
+            if c1 is None or c2 is None:
+                continue
+            x1 = next(c for c in free(m1) if c != c1)
+            x2 = next(c for c in free(m2) if c != c2)
+            options.append(
+                [
+                    (f"{c1}{s1[1]}", f"{c1}{r}"),
+                    (f"{x1}{r}", f"{x2}{r}"),
+                    (f"{c2}{r}", f"{c2}{s2[1]}"),
+                ]
+            )
+            relays.append([m1, m2])
+    path = _choose(st, options, tier)
+    if path is not None:
+        for m in relays[options.index(path)]:
+            _relay(st, m, net)
+    return path
+
+
+def _to_rail(st: _State, s: Strip, rail: str, net: str) -> list[tuple[str, str]] | None:
+    """Straight wires from strip ``s`` to ``rail``: one wire in the strip's own row when the
+    rail has a hole there, else along the strip's column to a spare strip in the nearest row
+    that has one, and from there to the rail."""
+
+    def free(x: Strip) -> list[str]:
+        return _free_cols(st, x)
+
+    options: list[list[tuple[str, str]]] = []
+    relays: list[Strip | None] = []
+    rows = sorted(board.RAIL_ROWS, key=lambda x: (abs(x - s[1]), x))
+    for r in rows:
+        hole_r = f"{rail}{r}"
+        if hole_r in st.used:
+            continue
+        if r == s[1]:
+            for c in free(s):
+                options.append([(f"{c}{s[1]}", hole_r)])
+                relays.append(None)
+            continue
+        mid: Strip = (s[0], r)
+        if not _usable(st, mid, net):
+            continue
+        for c in free(s):
+            if c not in free(mid):
+                continue
+            for d in free(mid):
+                if d != c:
+                    options.append([(f"{c}{s[1]}", f"{c}{r}"), (f"{d}{r}", hole_r)])
+                    relays.append(mid)
+    # the strip's own row first, then the nearest spare strip
+    path = _choose(st, options)
+    if path is not None:
+        mid_used = relays[options.index(path)]
+        if mid_used is not None:
+            _relay(st, mid_used, net)
+    return path
+
+
+def _link(low: _State, up: _State, rails: dict[str, dict[str, str]]) -> list[Jumper]:
+    """Wires that join the upper board to the lower one: each node with strips on both boards
+    gets one wire (from the lower half of the upper board to the upper half of the lower board,
+    the nearest pair of rows), and each rail used above is wired to the nearest rail of its node
+    below that is in use. Holes come out with their drawn names."""
+    wires: list[Jumper] = []
+
+    def free(st: _State, s: Strip) -> list[str]:
+        return [c for c in _WIRE_PREF[s[0]] if f"{c}{s[1]}" not in st.used]
+
+    def add(a: tuple[_State, str], b: tuple[_State, str], color: WireColor) -> None:
+        for st, h in (a, b):
+            st.used.add(h)
+        name = f"x{len(wires) + 1}"
+        wires.append(Jumper(id=name, a=a[0].place(a[1]), b=b[0].place(b[1]), color=color))
+
+    def straight_link(net: str, sa: Strip, sb: Strip) -> bool:
+        """Straight wires from strip ``sa`` above to ``sb`` below: one vertical wire when the
+        rows match, else through a spare strip in the row of the other end."""
+        colour = next(palette)
+        if sa[1] == sb[1]:
+            if free(up, sa) and free(low, sb):
+                add((up, f"{free(up, sa)[0]}{sa[1]}"), (low, f"{free(low, sb)[0]}{sb[1]}"), colour)
+                return True
+            return False
+        for st, mid, far in ((low, (sb[0], sa[1]), sb), (up, (sa[0], sb[1]), sa)):
+            if not _usable(st, mid, net):
+                continue
+            common = [c for c in free(st, far) if c in free(st, mid)]
+            cross = [c for c in free(st, mid) if not common or c != common[0]]
+            if not common or not cross:
+                continue
+            st.owner.setdefault(mid, net)
+            c, d = common[0], cross[0]
+            along = ((st, f"{c}{far[1]}"), (st, f"{c}{mid[1]}"))
+            if st is low:  # up sa -> low mid (vertical), low mid -> low sb (along a column)
+                add((up, f"{free(up, sa)[0]}{sa[1]}"), (low, f"{d}{mid[1]}"), colour)
+            else:  # up sa -> up mid (along a column), up mid -> low sb (vertical)
+                add((up, f"{d}{mid[1]}"), (low, f"{free(low, sb)[0]}{sb[1]}"), colour)
+            add(along[0], along[1], colour)
+            return True
+        return False
+
+    palette = iter(_PALETTE * 20)
+    for net in sorted(set(up.strips) & set(low.strips)):
+        if net in rails:
+            continue
+        pairs = sorted(
+            ((a, b) for a in up.strips[net] for b in low.strips[net]
+             if free(up, a) and free(low, b)),
+            key=lambda ab: ((ab[0][0], ab[1][0]) != ("L", "U"), abs(ab[0][1] - ab[1][1])),
+        )  # fmt: skip
+        if not any(straight_link(net, a, b) for a, b in pairs):
+            up.notes.append(f"Nó {net}: sem furo livre para ligar as duas protoboards.")
+    for net, by_half in rails.items():
+        mine = {r for r in by_half.values() if any(h.startswith(r) for h in up.used)}
+        theirs = {r for r in by_half.values() if any(h.startswith(r) for h in low.used)}
+        if not mine:
+            continue
+        theirs = theirs or set(by_half.values())
+        # nearest pair: rail y on the upper board, rail y + 22 on the lower one
+        ra, rb = min(
+            ((a, b) for a in mine for b in theirs),
+            key=lambda ab: (abs(board.Y[ab[0]] - board.Y[ab[1]] - 22), ab),
+        )
+        row = next(
+            (r for r in reversed(board.RAIL_ROWS)
+             if f"{ra}{r}" not in up.used and f"{rb}{r}" not in low.used),
+            None,
+        )  # fmt: skip
+        if row is None:
+            up.notes.append(f"Barramento {ra} sem furo livre para ligar as duas protoboards.")
+            continue
+        tone: WireColor = "vermelho" if by_half["U"] == "tp" else "azul"
+        add((up, f"{ra}{row}"), (low, f"{rb}{row}"), "preto" if net == "0" else tone)
     return wires

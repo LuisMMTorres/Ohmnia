@@ -3,6 +3,7 @@
 The repository's YAML files (``data/components``) are the reviewed, versioned source of the
 catalogue; the SQLite database is the user's working copy, where review decisions are recorded.
 Importing never discards a review unless the YAML record's ``catalog_revision`` was increased.
+A pinout transcribed later is added to a record that has none, keeping its review.
 """
 
 from __future__ import annotations
@@ -141,6 +142,10 @@ class ComponentRepository:
                 report.added.append(label)
             elif record.catalog_revision > existing.catalog_revision:
                 self.save(record)  # new catalogue revision: reviews start over
+                report.updated.append(label)
+            elif record.pinout is not None and existing.pinout is None:
+                # a pinout transcribed later: added without touching the values or their review
+                self.save(existing.model_copy(update={"pinout": record.pinout}))
                 report.updated.append(label)
             else:
                 report.unchanged.append(label)

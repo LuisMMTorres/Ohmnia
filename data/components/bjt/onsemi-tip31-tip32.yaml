@@ -558,3 +558,20 @@ parts:
     category: bjt.pnp
     notes:
     - 'PNP: tensões e correntes em módulo (o datasheet usa sinal negativo).'
+pinout:
+  package: to-220
+  pins:
+  - pin: "1"
+    name: "BASE"
+    role: b
+  - pin: "2"
+    name: "COLLECTOR"
+    role: c
+  - pin: "3"
+    name: "EMITTER"
+    role: e
+  source:
+    page: 1
+    location: "Símbolos PNP/NPN e TO-220 (case 221A, STYLE 1): BASE 1, COLLECTOR 2,4, EMITTER 3"
+  status: extraido
+  note: "Com a face com marcação para a frente e os terminais para baixo, o pino 1 fica à esquerda. A aba metálica (4) é o coletor."

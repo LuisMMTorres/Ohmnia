@@ -160,3 +160,19 @@ parameters:
       datasheet_id: onsemi-mbr20100ct-d
       page: 2
       location: Electrical (per leg) — iR, VR nominal, TC = 125 °C
+pinout:
+  package: to-220
+  pins:
+  - pin: "1"
+    name: "ANODE 1"
+    role: a
+  - pin: "2"
+    name: "CATHODE (comum)"
+    role: k
+  - pin: "3"
+    name: "ANODE 2"
+  source:
+    page: 2
+    location: "Desenho TO-220 e símbolo: PIN1 e PIN3 anodos, PIN2 catodo comum"
+  status: extraido
+  note: "Dois diodos com catodo comum (pino 2 e aba). O circuito usa um diodo (pino 1); o pino 3 fica livre. Para dividir a corrente entre os dois diodos, ligue o pino 3 ao pino 1."

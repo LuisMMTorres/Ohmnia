@@ -442,6 +442,10 @@ def design_breadboard(request: Request, module_id: str, body: DesignIn) -> Desig
     chosen = {c.designator: repo.get_or_none(c.component_id) for c in result.selection}
 
     def record_for(ref: str) -> ComponentRecord | None:
+        # DM-ZEN.build_circuit duplicates the selected devices for its two worst-case
+        # operating points. Keep their BOM identity instead of falling back to generic parts.
+        if module_id == "DM-ZEN":
+            ref = {"Za": "DZ1", "Zb": "DZ1", "Qa": "Q1", "Qb": "Q1"}.get(ref, ref)
         for designator, record in chosen.items():
             if kicad._match(ref, {designator}):
                 return record

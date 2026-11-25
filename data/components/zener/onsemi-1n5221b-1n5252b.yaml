@@ -2149,3 +2149,17 @@ parts:
       source:
         page: 2
         location: Electrical characteristics — TC (%/°C)
+pinout:
+  package: do-35
+  pins:
+  - pin: "1"
+    name: "Catodo (faixa)"
+    role: k
+  - pin: "2"
+    name: "Anodo"
+    role: a
+  source:
+    page: 1
+    location: "Desenho do encapsulamento axial (case 017AG, DO-204AH) sem indicação de polaridade"
+  status: a_verificar
+  note: "O datasheet não diz qual extremidade é o catodo. Adotada a convenção usual (faixa = catodo): confira na peça antes de montar."

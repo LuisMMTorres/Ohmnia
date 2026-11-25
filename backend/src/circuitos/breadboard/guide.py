@@ -33,6 +33,12 @@ def _part_step(ref: Reference, p: PlacedPart) -> Step:
     pkg = package(p.package)
     title = (r.title if r else "") or p.ref
     head = f"{p.ref} ({title}, {pkg.label})" if pkg.style != "offboard" else f"{p.ref} ({title})"
+    if r and r.origin == "sem_pinagem":
+        return Step(
+            text=f"{head}: pinagem a verificar; não ligue as pernas antes de confirmar "
+            "a pinagem no datasheet.",
+            refs=[p.ref],
+        )
     holes = list(p.legs.values())
     labels = r.labels if r else {}
     if pkg.style == "dip":

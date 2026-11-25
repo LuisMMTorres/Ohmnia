@@ -325,3 +325,20 @@ parameters:
     source:
       page: 2
       location: Switching characteristics — fall time
+pinout:
+  package: to-92
+  pins:
+  - pin: "1"
+    name: "EMITTER"
+    role: e
+  - pin: "2"
+    name: "BASE"
+    role: b
+  - pin: "3"
+    name: "COLLECTOR"
+    role: c
+  source:
+    page: 1
+    location: "Marking diagram (TO-92 3, case 135AN): 1: Emitter, 2: Base, 3: Collector"
+  status: extraido
+  note: "Numeração do desenho TO-92 3 (case 135AN) da p. 1: com a face plana (marcação) para a frente e os terminais para baixo, o pino 1 fica à esquerda. Atenção: o 2N3904 é E-B-C, diferente do P2N2222A (C-B-E)."

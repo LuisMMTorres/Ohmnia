@@ -329,6 +329,15 @@ def resolve(comp: Component, record: ComponentRecord | None) -> Resolved:
     r = Resolved(comp.ref, comp.kind, None, "sem_pinagem", part_number=record.part_number)
     r.title = record.part_number
     po = record.pinout
+    if po is not None and po.status == "a_verificar":
+        r.package = po.package if po.package in PACKAGES else _generic(comp).package
+        r.status = po.status
+        r.notes.append(
+            f"{record.part_number}: pinagem marcada como a verificar. "
+            "As pernas ficam sem ligação automática e fora da conferência; "
+            "confirme a pinagem no datasheet antes de montar."
+        )
+        return r
     if po is None or po.package not in PACKAGES:
         base = _generic(comp)
         r.package = base.package

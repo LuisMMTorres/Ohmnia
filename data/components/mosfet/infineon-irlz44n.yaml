@@ -413,3 +413,20 @@ parameters:
       location: Source-drain ratings - reverse recovery charge
       excerpt: Qrr 210 320 nC di/dt = 100A/µs
 attributes: {}
+pinout:
+  package: to-220
+  pins:
+  - pin: "1"
+    name: "GATE"
+    role: g
+  - pin: "2"
+    name: "DRAIN"
+    role: d
+  - pin: "3"
+    name: "SOURCE"
+    role: s
+  source:
+    page: 8
+    location: "TO-220AB Package Outline — LEAD ASSIGNMENTS (HEXFET): 1 Gate, 2 Drain, 3 Source"
+  status: extraido
+  note: "Com a face com marcação para a frente e os terminais para baixo: G, D, S da esquerda para a direita. A aba é o dreno."
