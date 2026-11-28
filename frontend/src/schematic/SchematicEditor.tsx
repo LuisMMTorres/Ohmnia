@@ -101,6 +101,7 @@ export function SchematicEditor({
   // orientation of the part about to be placed (R and M work before the click)
   const [placeRot, setPlaceRot] = useState<Component["rot"]>(0);
   const [placeMirror, setPlaceMirror] = useState(false);
+  const [panning, setPanning] = useState(false);
   const [box, setBox] = useState<{ a: [number, number]; b: [number, number] } | null>(null);
   const fitRef = useRef<() => void>(() => {});
   const drag = useRef<{
@@ -419,6 +420,7 @@ export function SchematicEditor({
         moved: false,
         client: [e.clientX, e.clientY],
       };
+      setPanning(true);
       (e.target as Element).setPointerCapture?.(e.pointerId);
       return;
     }
@@ -505,8 +507,22 @@ export function SchematicEditor({
       setSelection({ kind: "wire", id: w.id });
       return;
     }
-    // empty background: drag a rectangle to select several items (pan: middle button, Alt)
+    // empty background: a left drag moves the whole view (like the middle button);
+    // Shift + drag draws a rectangle to select several items
     setSelection(null);
+    if (!e.shiftKey) {
+      drag.current = {
+        kind: "pan",
+        start: [view.x, view.y],
+        origin: p,
+        snapshot: sch,
+        moved: false,
+        client: [e.clientX, e.clientY],
+      };
+      setPanning(true);
+      (e.target as Element).setPointerCapture?.(e.pointerId);
+      return;
+    }
     drag.current = {
       kind: "box",
       start: raw,
@@ -551,6 +567,7 @@ export function SchematicEditor({
   const onPointerUp = () => {
     const d = drag.current;
     drag.current = null;
+    setPanning(false);
     if (d?.kind === "box") {
       setBox(null);
       if (!box || Math.hypot(box.b[0] - box.a[0], box.b[1] - box.a[1]) < 0.5) return;
@@ -689,7 +706,13 @@ export function SchematicEditor({
     return marks;
   });
 
-  const cursorClass = tool.kind === "select" ? "" : tool.kind === "probe" ? " probing" : " drawing";
+  const cursorClass = panning
+    ? " panning"
+    : tool.kind === "select"
+      ? ""
+      : tool.kind === "probe"
+        ? " probing"
+        : " drawing";
 
   return (
     <div className="schematic-editor">
@@ -734,6 +757,7 @@ export function SchematicEditor({
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
+        onPointerCancel={onPointerUp}
         onWheel={onWheel}
         onContextMenu={(e) => {
           e.preventDefault();
@@ -918,7 +942,7 @@ export function SchematicEditor({
                     : "Clique no componente (corrente entra pelo pino mais próximo)"
                 : selection?.kind === "group"
                   ? `${selection.components.length} componente(s) selecionado(s): arraste para mover · Ctrl+C copia · Ctrl+D duplica · Del apaga`
-                  : "Arraste para mover · arraste o fundo: selecionar vários · R gira · M espelha · Ctrl+C/Ctrl+V copia e cola · Del apaga · W fio · roda: zoom · botão do meio ou Alt+arrastar: mover a vista"}
+                  : "Arraste a peça para movê-la · arraste o fundo: mover a vista · Shift+arrastar o fundo: selecionar vários · R gira · M espelha · Ctrl+C/Ctrl+V copia e cola · Del apaga · W fio · roda: zoom"}
         </span>
         <button type="button" className="secondary small-btn" onClick={fit}>
           Enquadrar

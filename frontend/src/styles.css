@@ -630,6 +630,9 @@ fieldset.analysis {
 .schematic-canvas.probing {
   cursor: crosshair;
 }
+.schematic-canvas.panning {
+  cursor: grabbing;
+}
 .grid-dot {
   fill: var(--border);
 }
