@@ -590,13 +590,42 @@ SYMBOLS: dict[str, Symbol] = {
             "Amplificador operacional",
             "Semicondutores",
             "X",
-            (PinDef("inn", -3, -1), PinDef("inp", -3, 1), PinDef("out", 3, 0)),
+            (
+                PinDef("inn", -3, -1),
+                PinDef("inp", -3, 1),
+                PinDef("out", 3, 0),
+                PinDef("vcc", 0, -2),
+                PinDef("vee", 0, 2),
+            ),
             (
                 ParamDef("a0", "Ganho em malha aberta", "V/V", "200k"),
                 ParamDef("gbw", "GBW", "Hz", "1meg"),
                 ParamDef("sr", "Taxa de subida", "V/s", "", optional=True),
-                ParamDef("vcc", "Alimentação +", "V", "15"),
-                ParamDef("vee", "Alimentação −", "V", "-15"),
+                ParamDef(
+                    "vcc",
+                    "Alimentação +",
+                    "V",
+                    "15",
+                    help="Tensão do pino V+ quando ele fica solto (fonte ideal implícita). "
+                    "Ligado a uma fonte, vale a tensão do circuito; este valor só fixa a "
+                    "distância da saturação ao trilho.",
+                ),
+                ParamDef(
+                    "vee",
+                    "Alimentação −",
+                    "V",
+                    "-15",
+                    help="Tensão do pino V− quando ele fica solto (fonte ideal implícita).",
+                ),
+                ParamDef(
+                    "iq",
+                    "Corrente quiescente",
+                    "A",
+                    "",
+                    optional=True,
+                    help="Corrente de V+ para V− sem carga (ampop genérico; a peça do catálogo "
+                    "usa o IQ do datasheet).",
+                ),
             ),
             catalogue=("opamp",),
             description="Macromodelo de um polo com limite de taxa de subida e saturação",
@@ -744,6 +773,17 @@ def symbol(kind: str) -> Symbol:
 def subckt_pin_names(comp: Component) -> list[str]:
     names = comp.params.get("pins", "1 2").replace(",", " ").split()
     return names or ["1"]
+
+
+# Supply pins drawn on a symbol whose voltage is also a parameter (op-amp V+ and V−). Left
+# unconnected, they take an implicit ideal supply at the parameter's voltage (circuits saved
+# before the pins existed keep working); they join a wire only at its end or corner, never in
+# the middle of a segment, so an old wire that happens to cross the new pin stays apart.
+SUPPLY_PINS: dict[str, tuple[str, ...]] = {"opamp": ("vcc", "vee")}
+
+
+def is_supply_pin(kind: str, pin: str) -> bool:
+    return pin in SUPPLY_PINS.get(kind, ())
 
 
 def pin_defs(comp: Component) -> tuple[PinDef, ...]:

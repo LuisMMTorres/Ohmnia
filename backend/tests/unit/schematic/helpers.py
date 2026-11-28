@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from circuitos.schematic.library import pin_defs, pin_positions
+from circuitos.schematic.library import is_supply_pin, pin_defs, pin_positions
 from circuitos.schematic.model import Analysis, Component, NetLabel, Schematic
 
 
@@ -23,10 +23,14 @@ class Builder:
             part_id=part_id,
         )
         pins = pin_defs(comp)
-        assert len(pins) == len(nodes), f"{kind} tem {len(pins)} pinos"
+        # trailing supply pins (op-amp V+/V−) may be left out: they stay loose (implicit supply)
+        rest = pins[len(nodes) :]
+        assert len(nodes) <= len(pins) and all(is_supply_pin(kind, p.name) for p in rest), (
+            f"{kind} tem {len(pins)} pinos"
+        )
         pos = pin_positions(comp)
         self.sch.components.append(comp)
-        for p, node in zip(pins, nodes, strict=True):
+        for p, node in zip(pins, nodes, strict=False):
             x, y = pos[p.name]
             self.sch.labels.append(NetLabel(id=f"l{len(self.sch.labels)}", name=node, x=x, y=y))
         return comp

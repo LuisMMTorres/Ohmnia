@@ -680,6 +680,13 @@ fieldset.analysis {
   font-size: 11px;
   font-family: system-ui, sans-serif;
 }
+.comp text.pin-name {
+  font-size: 9px;
+}
+.comp text.pin-num {
+  font-size: 9px;
+  fill: var(--muted, #667);
+}
 .ref-text {
   stroke: none;
   font-size: 12px;

@@ -37,7 +37,9 @@ from circuitos.schematic.cosim_symbols import (
 from circuitos.schematic.drive_symbols import max_step as drive_max_step
 from circuitos.schematic.drive_symbols import motor_fit
 from circuitos.schematic.library import (
+    SUPPLY_PINS,
     element_name,
+    is_supply_pin,
     param,
     pin_defs,
     pin_positions,
@@ -109,10 +111,15 @@ class Connectivity:
 def connectivity(sch: Schematic) -> Connectivity:
     uf = _UnionFind()
     anchors: set[Point] = set()
+    supply_points: set[Point] = set()  # op-amp V+/V−: joined at wire ends only
     pins: list[tuple[str, str, Point]] = []
     for c in sch.components:
         for name, pt in pin_positions(c).items():
             pins.append((c.ref, name, pt))
+            if is_supply_pin(c.kind, name):
+                supply_points.add(pt)
+                uf.find(pt)
+                continue
             anchors.add(pt)
             uf.find(pt)
             if c.kind == "ground":
@@ -132,6 +139,7 @@ def connectivity(sch: Schematic) -> Connectivity:
             for p in anchors:
                 if p != a and p != b and _on_segment(p, a, b):
                     uf.union(a, p)
+    anchors |= supply_points
     for name, pts in label_points.items():
         for p in pts[1:]:
             uf.union(pts[0], p)
@@ -183,9 +191,19 @@ def connectivity(sch: Schematic) -> Connectivity:
             and len(real) == 1
             and node not in labels.values()
             and kinds[real[0].split(".")[0]] not in CONTROLLER_KINDS
+            # a loose op-amp supply pin takes the implicit supply (note from the netlist)
+            and not is_supply_pin(kinds[real[0].split(".")[0]], real[0].split(".", 1)[1])
         ):
             warnings.append(f"Pino {real[0]} não está ligado a nada (nó {node}).")
     return Connectivity(pin_nodes, nets, point_nodes, labels, warnings, has_ground)
+
+
+def pin_is_loose(conn: Connectivity, ref: str, pin: str) -> bool:
+    """True when nothing else touches the pin: no other pin, wire, label or ground."""
+    node = conn.pin_nodes.get(ref, {}).get(pin)
+    if node is None:
+        return True
+    return node != "0" and node not in conn.labels.values() and len(conn.nets.get(node, ())) <= 1
 
 
 # ------------------------------------------------------------------------------- probes
@@ -419,6 +437,7 @@ class _Ctx:
     controllers: list[ControllerSpec] = field(default_factory=list)
     digital_sensors: list[SensorSpec] = field(default_factory=list)
     indicators: dict[str, Indicator] = field(default_factory=dict)
+    loose: dict[str, tuple[str, ...]] = field(default_factory=dict)  # ref -> loose supply pins
 
     def value(self, comp: Component, name: str) -> str:
         o = self.overrides.get((comp.ref, name))
@@ -801,11 +820,25 @@ def _emit(comp: Component, n: list[str], ctx: _Ctx) -> list[str]:
                 model = ctx.model(*_model_card("JG", k.upper(), vals))
         return [f"{name} {d} {g} {s} {model}"]
     if k == "opamp":
-        inn, inp, out = n
+        inn, inp, out, vp, vn = n
         rec = ctx.record(comp)
         vcc, vee = ctx.number(comp, "vcc"), ctx.number(comp, "vee")
+        supplies: list[str] = []
+        loose = [pin for pin in ("vcc", "vee") if pin in ctx.loose.get(comp.ref, ())]
+        for pin, node, volts in (("vcc", vp, vcc), ("vee", vn, vee)):
+            if pin in loose:
+                # implicit ideal supply on the loose pin (circuits drawn before the pins existed)
+                supplies.append(f"V_{comp.ref}_{pin} {node} 0 DC {volts:.9g}".lower())
+        if loose:
+            names = " e ".join("V+" if p == "vcc" else "V−" for p in loose)
+            ctx.warnings.append(
+                f"{comp.ref}: pino{'s' if len(loose) > 1 else ''} {names} sem ligação; "
+                f"usada alimentação ideal implícita ({format_value(vcc, 3)} V / "
+                f"{format_value(vee, 3)} V). Ligue V+ e V− a uma fonte no esquemático, como "
+                "na protoboard, para ver a corrente da alimentação."
+            )
         if rec is not None:
-            model = ctx.use(comp, parts.opamp(rec, ref, vcc, vee, ctx.log))
+            model = ctx.use(comp, parts.opamp(rec, ref, vcc, vee, ctx.log, supply_pins=True))
         else:
             sr_text = param(comp, "sr")
             sr = parse_value(sr_text) if sr_text else math.inf
@@ -816,9 +849,12 @@ def _emit(comp: Component, n: list[str], ctx: _Ctx) -> list[str]:
                 v_hi=vcc - 1.5,
                 v_lo=vee + 1.5,
             )
-            mname = f"OG_{parts.digest(parts.opamp_subckt('x', m))}"
-            model = ctx.model(mname, parts.opamp_subckt(mname, m))
-        return [f"{name} {inp} {inn} {out} {model}"]
+            iq_text = param(comp, "iq")
+            iq = parse_value(iq_text) if iq_text else 0.0
+            text = parts.opamp_subckt("x", m, (vcc, vee), iq)
+            mname = f"OG_{parts.digest(text)}"
+            model = ctx.model(mname, parts.opamp_subckt(mname, m, (vcc, vee), iq))
+        return [*supplies, f"{name} {inp} {inn} {out} {vp} {vn} {model}"]
     if k == "switch":
         model = param(comp, "model")
         if not model:
@@ -932,6 +968,9 @@ def build_netlist(
         raise SchematicError("O circuito não tem terra: coloque o símbolo de terra (nó 0)")
     probes, ammeters = plan_probes(sch, conn)
     ctx = _Ctx(records or {}, overrides or {}, sch)
+    for comp in sch.components:
+        pins_s = SUPPLY_PINS.get(comp.kind, ())
+        ctx.loose[comp.ref] = tuple(p for p in pins_s if pin_is_loose(conn, comp.ref, p))
     warnings = list(conn.warnings)
     lines = [f"* {sch.title}{title_suffix}", "* gerado pelo Ohmnia"]
     all_params = {**sch.params, **(params or {})}

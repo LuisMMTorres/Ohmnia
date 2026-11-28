@@ -62,6 +62,8 @@ interface Props {
   onNotice?: (text: string) => void;
   /** A push-button was clicked: the schematic with its new position (simulate it again). */
   onOperate?: (next: Schematic, comp: Component) => void;
+  /** Package pin number of each symbol pin, per designator (from the part's pinout). */
+  pinNumbers?: Record<string, Record<string, string>>;
 }
 
 const ZOOM_MIN = 0.25;
@@ -85,6 +87,7 @@ export function SchematicEditor({
   burnt,
   onNotice,
   onOperate,
+  pinNumbers,
 }: Props) {
   const svgRef = useRef<SVGSVGElement>(null);
   const [view, setView] = useState({ x: -12, y: -10, scale: 1 });
@@ -804,6 +807,8 @@ export function SchematicEditor({
               (selection?.kind === "group" && selection.components.includes(c.id));
             const pinXs = Object.values(pinPositions(c, sym)).map((q) => q[0]);
             const vertical = pinXs.length > 1 && pinXs.every((x) => x === pinXs[0]);
+            // op-amp upright: the designator goes beside the supply pin, clear of its lead
+            const besideSupply = c.kind === "opamp" && c.rot % 180 === 0;
             const isGround = c.kind === "ground";
             return (
               <g
@@ -813,7 +818,12 @@ export function SchematicEditor({
                 <g
                   transform={`translate(${c.x * GRID},${c.y * GRID}) rotate(${c.rot}) scale(${c.mirror ? -1 : 1},1)`}
                 >
-                  <SymbolBody c={c} sym={sym} glow={glows?.[c.ref]} />
+                  <SymbolBody
+                    c={c}
+                    sym={sym}
+                    glow={glows?.[c.ref]}
+                    pinNumbers={pinNumbers?.[c.ref]}
+                  />
                 </g>
                 {burnt?.[c.ref] && c.id !== "ghost" && (
                   <g className="burnt-mark" pointerEvents="none">
@@ -839,12 +849,16 @@ export function SchematicEditor({
                 {!isGround && c.id !== "ghost" && (
                   <text
                     className="ref-text"
-                    x={(c.x + (vertical ? 1.4 : 0)) * GRID}
-                    y={(c.y + (vertical ? -0.3 : -1.5)) * GRID}
-                    textAnchor={vertical ? "start" : "middle"}
+                    x={(c.x + (vertical ? 1.4 : besideSupply ? 1 : 0)) * GRID}
+                    y={(c.y + (vertical ? -0.3 : besideSupply ? -2.2 : -1.5)) * GRID}
+                    textAnchor={vertical || besideSupply ? "start" : "middle"}
                   >
                     <tspan className="ref">{c.ref}</tspan>
-                    <tspan x={(c.x + (vertical ? 1.4 : 0)) * GRID} dy={13} className="val">
+                    <tspan
+                      x={(c.x + (vertical ? 1.4 : besideSupply ? 1 : 0)) * GRID}
+                      dy={13}
+                      className="val"
+                    >
                       {valueText(c, sym)}
                     </tspan>
                   </text>

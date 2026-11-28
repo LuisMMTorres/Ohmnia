@@ -1,5 +1,5 @@
 /** Editing operations on the schematic: group moves, copy/paste and automatic wiring. */
-import { key, nextRef, onSegment, pinPositions, simplify } from "./geometry";
+import { isSupplyPin, key, nextRef, onSegment, pinPositions, simplify } from "./geometry";
 import type { Component, NetLabel, Point, Schematic, SymbolDef, Wire } from "./types";
 
 export interface Group {
@@ -179,7 +179,9 @@ export function openPins(
       !sch.labels.some((l) => l.x === q.at[0] && l.y === q.at[1]) &&
       !sch.wires.some((w) =>
         w.points.some((b, i) =>
-          i === 0 ? key(b) === key(q.at) : onSegment(q.at, w.points[i - 1]!, b),
+          i === 0 || isSupplyPin(q.comp.kind, q.pin)
+            ? key(b) === key(q.at)
+            : onSegment(q.at, w.points[i - 1]!, b),
         ),
       ),
   );
