@@ -7,6 +7,9 @@ package: PDIP-8 (P)
 lifecycle: ativo
 notes:
 - Temporizador bipolar; os limiares são 2/3 e 1/3 de VCC pelo divisor interno.
+- Tabela 5.5 com VCC = 5 V a 15 V e TA = 25 °C, salvo indicação; valores da coluna NA555, NE555, SA555.
+- Entradas CONT, RESET, THRES e TRIG não devem passar de VCC (Absolute maximum ratings, p. 4).
+- 'Proteção ESD: ±500 V HBM e ±1500 V CDM (p. 4).'
 datasheets:
 - id: ti-ne555
   manufacturer: Texas Instruments
@@ -156,6 +159,273 @@ parameters:
     source:
       page: 7
       location: Temperature coefficient of timing interval, astable, NE555
+  VCC_min:
+    min: 4.5
+    unit: V
+    status: extraido
+    source:
+      page: 4
+      location: Recommended operating conditions — supply voltage, NA555, NE555, SA555 (4,5 V a 16 V)
+  VCC_op_max:
+    max: 16
+    unit: V
+    status: extraido
+    source:
+      page: 4
+      location: Recommended operating conditions — supply voltage, NA555, NE555, SA555 (4,5 V a 16 V)
+  IO_op_max:
+    max: 200
+    unit: mA
+    status: extraido
+    source:
+      page: 4
+      location: Recommended operating conditions — output current (±200 mA)
+  TA_min:
+    min: 0
+    unit: degC
+    status: extraido
+    source:
+      page: 4
+      location: Recommended operating conditions — operating free-air temperature, NE555 (0 °C a 70 °C)
+  TA_max:
+    max: 70
+    unit: degC
+    status: extraido
+    source:
+      page: 4
+      location: Recommended operating conditions — operating free-air temperature, NE555 (0 °C a 70 °C)
+  Rth_jc:
+    max: 77.8
+    unit: K/W
+    status: extraido
+    source:
+      page: 5
+      location: Thermal information — RθJC(top), PDIP (P)
+  Rth_jb:
+    max: 61.0
+    unit: K/W
+    status: extraido
+    source:
+      page: 5
+      location: Thermal information — RθJB, PDIP (P)
+  V_thres@5V:
+    min: 2.4
+    typ: 3.3
+    max: 4.2
+    unit: V
+    conditions:
+      VCC: 5 V
+    status: extraido
+    source:
+      page: 5
+      location: THRES voltage level, VCC = 5 V, NA555, NE555, SA555
+  V_trig@5V:
+    min: 1.1
+    typ: 1.67
+    max: 2.2
+    unit: V
+    conditions:
+      VCC: 5 V
+    status: extraido
+    source:
+      page: 5
+      location: TRIG voltage level, VCC = 5 V, NA555, NE555, SA555
+  V_reset:
+    min: 0.3
+    typ: 0.7
+    max: 1
+    unit: V
+    status: extraido
+    source:
+      page: 5
+      location: RESET voltage level, TA = 25 °C
+  I_reset:
+    typ: 0.1
+    max: 0.4
+    unit: mA
+    note: Pino RESET ligado a VCC (corrente entrando no pino).
+    status: extraido
+    source:
+      page: 5
+      location: RESET current, RESET at VCC
+  I_reset@0V:
+    typ: 0.4
+    max: 1.5
+    unit: mA
+    conditions:
+      V_RESET: 0 V
+    note: Pino RESET em 0 V; o datasheet dá −0,4 / −1,5 mA (corrente saindo do pino).
+    status: extraido
+    source:
+      page: 5
+      location: RESET current, RESET at 0 V, NA555, NE555, SA555
+  V_cont:
+    min: 9
+    typ: 10
+    max: 11
+    unit: V
+    conditions:
+      VCC: 15 V
+    status: extraido
+    source:
+      page: 6
+      location: CONT voltage (open circuit), VCC = 15 V, NA555, NE555, SA555
+  V_cont@5V:
+    min: 2.6
+    typ: 3.3
+    max: 4
+    unit: V
+    conditions:
+      VCC: 5 V
+    status: extraido
+    source:
+      page: 6
+      location: CONT voltage (open circuit), VCC = 5 V, NA555, NE555, SA555
+  VOL@50mA:
+    typ: 0.4
+    max: 0.75
+    unit: V
+    conditions:
+      VCC: 15 V
+      IO: 50 mA
+    status: extraido
+    source:
+      page: 6
+      location: Low-level output voltage, VCC = 15 V, IOL = 50 mA, NA555, NE555, SA555
+  VOL@100mA:
+    typ: 2
+    max: 2.5
+    unit: V
+    conditions:
+      VCC: 15 V
+      IO: 100 mA
+    status: extraido
+    source:
+      page: 6
+      location: Low-level output voltage, VCC = 15 V, IOL = 100 mA, NA555, NE555, SA555
+  VOL@200mA:
+    typ: 2.5
+    unit: V
+    conditions:
+      VCC: 15 V
+      IO: 200 mA
+    status: extraido
+    source:
+      page: 6
+      location: Low-level output voltage, VCC = 15 V, IOL = 200 mA (só valor típico)
+  VOL@5V5mA:
+    typ: 0.1
+    max: 0.35
+    unit: V
+    conditions:
+      VCC: 5 V
+      IO: 5 mA
+    status: extraido
+    source:
+      page: 6
+      location: Low-level output voltage, VCC = 5 V, IOL = 5 mA, NA555, NE555, SA555
+  VOL@5V8mA:
+    typ: 0.15
+    max: 0.4
+    unit: V
+    conditions:
+      VCC: 5 V
+      IO: 8 mA
+    status: extraido
+    source:
+      page: 6
+      location: Low-level output voltage, VCC = 5 V, IOL = 8 mA, NA555, NE555, SA555
+  VOH@200mA:
+    typ: 12.5
+    unit: V
+    conditions:
+      VCC: 15 V
+      IO: 200 mA
+    status: extraido
+    source:
+      page: 6
+      location: High-level output voltage, VCC = 15 V, IOH = −200 mA (só valor típico)
+  VOH@5V:
+    min: 2.75
+    typ: 3.3
+    unit: V
+    conditions:
+      VCC: 5 V
+      IO: 100 mA
+    status: extraido
+    source:
+      page: 6
+      location: High-level output voltage, VCC = 5 V, IOH = −100 mA, NA555, NE555, SA555
+  ICC@5V:
+    typ: 3
+    max: 6
+    unit: mA
+    conditions:
+      VCC: 5 V
+    note: Saída em nível baixo, sem carga.
+    status: extraido
+    source:
+      page: 6
+      location: Supply current, output low, no load, VCC = 5 V, NA555, NE555, SA555
+  ICC@high:
+    typ: 9
+    max: 13
+    unit: mA
+    conditions:
+      VCC: 15 V
+    note: Saída em nível alto, sem carga.
+    status: extraido
+    source:
+      page: 6
+      location: Supply current, output high, no load, VCC = 15 V, NA555, NE555, SA555
+  ICC@high5V:
+    typ: 2
+    max: 5
+    unit: mA
+    conditions:
+      VCC: 5 V
+    note: Saída em nível alto, sem carga.
+    status: extraido
+    source:
+      page: 6
+      location: Supply current, output high, no load, VCC = 5 V, NA555, NE555, SA555
+  ks_mono:
+    typ: 0.1
+    max: 0.5
+    unit: percent/V
+    note: Monoestável da Figura 6-2 com RA = 2 kΩ a 100 kΩ e C = 0,1 µF.
+    status: extraido
+    source:
+      page: 7
+      location: Supply-voltage sensitivity of timing interval, monostable, NA555, NE555, SA555
+  ks_astable:
+    typ: 0.3
+    unit: percent/V
+    note: Astável da Figura 6-5 com RA = 1 kΩ a 100 kΩ e C = 0,1 µF.
+    status: extraido
+    source:
+      page: 7
+      location: Supply-voltage sensitivity of timing interval, astable, NA555, NE555, SA555
+  tr:
+    typ: 100
+    max: 300
+    unit: ns
+    conditions:
+      CL: 15 pF
+    status: extraido
+    source:
+      page: 7
+      location: Output-pulse rise time, CL = 15 pF, TA = 25 °C, 20 % a 80 %, NA555, NE555, SA555
+  tf:
+    typ: 100
+    max: 300
+    unit: ns
+    conditions:
+      CL: 15 pF
+    status: extraido
+    source:
+      page: 7
+      location: Output-pulse fall time, CL = 15 pF, TA = 25 °C, 80 % a 20 %, NA555, NE555, SA555
 per_part: {}
 parts:
   NE555P: {}
@@ -186,4 +456,4 @@ pinout:
     location: "Table 4-1 Pin Functions, coluna D, P, PS, PW, JG"
   status: extraido
   note: "O simulador ainda não tem símbolo de 555: pinagem para consulta."
-catalog_revision: 2
+catalog_revision: 3

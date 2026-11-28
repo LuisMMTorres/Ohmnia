@@ -6,14 +6,23 @@ optional: []
 parameters:
   VCC_max:   {unit: V, kind: max_rating, description: Alimentação máxima}
   VCC_min:   {unit: V, kind: characteristic, description: Alimentação mínima recomendada}
+  VCC_op_max: {unit: V, kind: characteristic, description: Alimentação máxima recomendada}
+  IO_op_max: {unit: A, kind: characteristic, description: Corrente de saída máxima recomendada (em módulo)}
+  TA_min:    {unit: degC, kind: characteristic, description: Temperatura ambiente mínima de operação}
+  TA_max:    {unit: degC, kind: characteristic, description: Temperatura ambiente máxima de operação}
   IO_max:    {unit: A, kind: max_rating, description: Corrente de saída máxima (em módulo)}
   Tj_max:    {unit: degC, kind: max_rating, description: Temperatura máxima de junção}
   Tstg_max:  {unit: degC, kind: max_rating, description: Temperatura máxima de armazenamento}
   Rth_ja:    {unit: K/W, kind: thermal, description: Resistência térmica junção-ambiente}
+  Rth_jc:    {unit: K/W, kind: thermal, description: Resistência térmica junção-cápsula (topo)}
+  Rth_jb:    {unit: K/W, kind: thermal, description: Resistência térmica junção-placa}
   V_thres:   {unit: V, kind: characteristic, description: Nível de THRES (limiar superior), conditions_required: [VCC]}
   V_trig:    {unit: V, kind: characteristic, description: Nível de TRIG (limiar inferior), conditions_required: [VCC]}
   I_thres:   {unit: A, kind: characteristic, description: Corrente de THRES}
   I_trig:    {unit: A, kind: characteristic, description: Corrente de TRIG}
+  V_reset:   {unit: V, kind: characteristic, description: Nível de RESET}
+  I_reset:   {unit: A, kind: characteristic, description: Corrente de RESET (em módulo)}
+  V_cont:    {unit: V, kind: characteristic, description: Tensão de CONT em aberto, conditions_required: [VCC]}
   V_disch:   {unit: V, kind: characteristic, description: Tensão do transistor de descarga ligado, conditions_required: [VCC, IO]}
   I_disch_off: {unit: A, kind: characteristic, description: Fuga do transistor de descarga desligado}
   VOL:       {unit: V, kind: characteristic, description: Tensão de saída em nível baixo, conditions_required: [VCC, IO]}
@@ -21,3 +30,7 @@ parameters:
   ICC:       {unit: A, kind: characteristic, description: Corrente de alimentação sem carga, conditions_required: [VCC]}
   tc_mono:   {unit: ppm/K, kind: characteristic, description: Coeficiente de temperatura do intervalo (monoestável)}
   tc_astable: {unit: ppm/K, kind: characteristic, description: Coeficiente de temperatura do intervalo (astável)}
+  ks_mono:   {unit: percent/V, kind: characteristic, description: Sensibilidade do intervalo à alimentação (monoestável)}
+  ks_astable: {unit: percent/V, kind: characteristic, description: Sensibilidade do intervalo à alimentação (astável)}
+  tr:        {unit: s, kind: characteristic, description: Tempo de subida da saída (20 % a 80 %)}
+  tf:        {unit: s, kind: characteristic, description: Tempo de descida da saída (80 % a 20 %)}
