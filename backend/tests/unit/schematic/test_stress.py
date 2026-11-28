@@ -52,6 +52,30 @@ def test_generic_parts_are_checked_only_with_a_rating_typed_by_the_user():
     assert {(lim.ref, lim.name) for lim in nl.limits} == {("R2", "P nominal"), ("C1", "V nominal")}
 
 
+def test_generic_inductor_with_rated_current_gets_a_sensed_rms_limit():
+    """Generic inductor: the rated current typed by the user is checked like I_rms of a
+    catalogue inductor (RMS of the second half, current sensed in series with pin 1); without
+    it, no sense source is added and nothing is checked."""
+    b = Builder("l")
+    b.add("vdc", "V1", ["a", "0"], dc="12")
+    b.add("resistor", "R1", ["a", "b"], value="10")
+    b.add("inductor", "L1", ["b", "c"], value="1m", i_rated="0.5")
+    b.add("inductor", "L2", ["c", "0"], value="1m")
+    b.analysis("tran", tstop="1m")
+    nl = build_netlist(b.sch)
+    (lim,) = nl.limits
+    assert (lim.ref, lim.quantity, lim.name, lim.measure) == ("L1", "I", "I nominal", "rms")
+    assert lim.limit == pytest.approx(0.5)
+    assert lim.current == "i(vsn_l1_1)"
+    assert "vsn_l1_1 b sn_l1_1 DC 0" in nl.text
+    assert "sn_l2" not in nl.text
+    t = np.linspace(0, 1e-3, 101)
+    (d,) = stress.evaluate(nl.limits, {"i(vsn_l1_1)": np.full_like(t, 1.2)}, t)
+    assert d.value == pytest.approx(1.2)
+    assert "corrente (valor eficaz)" in d.cause and "I nominal" in d.cause
+    assert stress.evaluate(nl.limits, {"i(vsn_l1_1)": np.full_like(t, 0.4)}, t) == []
+
+
 def test_evaluate_uses_peak_for_voltage_and_second_half_mean_for_current():
     lim_v = stress.Limit("D1", "V", "VRRM", 100, "V", "peak", v_pos="k", v_neg="a")
     lim_i = stress.Limit("D1", "I", "IF(AV)", 0.15, "A", "mean", current="i(vs)")
@@ -122,6 +146,29 @@ def test_as_resistor_power_matches_v_squared_over_r():
     (d,) = stress.evaluate(nl.limits, vecs, vecs["time"])
     assert d.value == pytest.approx(1.44, rel=5e-3)
     assert "potência" in d.cause
+
+
+@pytest.mark.ngspice
+def test_as_generic_inductor_rms_current_matches_v_over_r():
+    """AS-: 12 V, 10 Ω and 1 mH (τ = 100 µs) for 2 ms: in the second half I = V/R = 1,2 A
+    (tol. 0,5 %), above the 0,5 A typed as the rated current."""
+    from circuitos.schematic.runs import SchematicPlan
+    from circuitos.simulation.backend import SharedNgspiceBackend
+
+    if not SharedNgspiceBackend.available():
+        pytest.skip("biblioteca do ngspice ausente")
+    b = Builder("l")
+    b.add("vdc", "V1", ["a", "0"], dc="12")
+    b.add("resistor", "R1", ["a", "b"], value="10")
+    b.add("inductor", "L1", ["b", "0"], value="1m", i_rated="0.5")
+    b.analysis("tran", tstop="2m")
+    res = SchematicPlan(b.sch, {}).execute(SharedNgspiceBackend())
+    nl = build_netlist(b.sch)
+    tran = next(p for p in res.plots if p.kind == "tran")
+    vecs = {k.lower(): np.asarray(v.data) for k, v in tran.vectors.items()}
+    (d,) = stress.evaluate(nl.limits, vecs, vecs["time"])
+    assert d.value == pytest.approx(1.2, rel=5e-3)
+    assert d.name == "I nominal"
 
 
 def test_catalogue_passives_keep_the_schematic_value_and_check_single_ratings():

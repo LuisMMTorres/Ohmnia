@@ -2,8 +2,8 @@
 
 Every limit comes from the catalogue record of the part (absolute maximum ratings, with the
 datasheet and page it was read from) or from a rating the user typed on a generic part (the
-resistor's power, the capacitor's voltage). A generic part without a rating is not checked: the
-program never makes a limit up.
+resistor's power, the capacitor's voltage, the inductor's current). A generic part without a
+rating is not checked: the program never makes a limit up.
 
 What is measured, after a transient (or at the operating point):
 
@@ -301,7 +301,7 @@ def limits_for(
     ref = comp.ref
     out: list[Limit] = []
     if rec is None:
-        return _generic_limits(comp, nodes)
+        return _generic_limits(comp, nodes, sense)
     for sp in _SPECS.get(comp.kind, lambda: [])():
         if comp.kind in _SERIES_KINDS and _is_range(rec, sp.key):
             continue  # a range over the models of a series: not this part's rating
@@ -413,8 +413,10 @@ def limits_for(
     return out
 
 
-def _generic_limits(comp: Component, nodes: Mapping[str, str]) -> list[Limit]:
-    """A generic resistor or capacitor with the rating the user typed."""
+def _generic_limits(
+    comp: Component, nodes: Mapping[str, str], sense: Mapping[str, str]
+) -> list[Limit]:
+    """A generic resistor, capacitor or inductor with the rating the user typed."""
     p = comp.params
     if comp.kind == "resistor":
         pr, r = try_parse(p.get("p_rated", "") or ""), try_parse(p.get("value", "") or "")
@@ -451,12 +453,38 @@ def _generic_limits(comp: Component, nodes: Mapping[str, str]) -> list[Limit]:
                     advice=_ADVICE["Cap"],
                 )
             ]
+    if comp.kind == "inductor":
+        ir = _generic_inductor_rating(comp)
+        cur = sense.get("1")
+        if ir is not None and cur is not None:
+            # same measure as I_rms of a catalogue inductor: RMS over the second half
+            return [
+                Limit(
+                    comp.ref,
+                    "I",
+                    "I nominal",
+                    ir,
+                    "A",
+                    "rms",
+                    current=cur,
+                    source=f"{comp.ref}: corrente nominal informada no esquemático",
+                    advice=_ADVICE["Ind"],
+                )
+            ]
     return []
+
+
+def _generic_inductor_rating(comp: Component) -> float | None:
+    """Rated (RMS) current typed on a generic inductor, or None when blank or not positive."""
+    ir = try_parse(comp.params.get("i_rated", "") or "")
+    return ir if ir is not None and ir > 0 else None
 
 
 def sense_pin(comp: Component, rec: ComponentRecord | None) -> str | None:
     """Pin that gets a 0 V current sense source (only parts that are checked)."""
     if rec is None:
+        if comp.kind == "inductor" and _generic_inductor_rating(comp) is not None:
+            return SENSE_PIN["inductor"]
         return None
     return SENSE_PIN.get(comp.kind)
 
