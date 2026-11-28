@@ -1287,6 +1287,40 @@ li.clickable:hover {
   stroke-dasharray: 4 3;
   pointer-events: none;
 }
+.bb-wire.ghost.invalid {
+  stroke: #c62828 !important;
+  opacity: 0.7;
+}
+/* invisible wider stroke under each wire and instrument lead, so they are easy to click */
+.bb-wire-hit {
+  fill: none;
+  stroke: transparent;
+  stroke-width: 9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  pointer-events: stroke;
+}
+.bb-wire-item .bb-wire-hit,
+.bb-wire-item .bb-wire,
+.bb-wire-item .bb-lead-wire {
+  cursor: move;
+}
+.bb-lead-wire.selected {
+  stroke-width: 4;
+  opacity: 1;
+  filter: drop-shadow(0 0 2px #f07f12);
+}
+/* the ends of the selected wire: grab one to move it to another hole */
+.bb-wire-end {
+  fill: #fff;
+  stroke: #f07f12;
+  stroke-width: 2;
+  cursor: crosshair;
+}
+.bb-wire-end.invalid {
+  stroke: #c62828;
+  fill: #fdd;
+}
 .bb-ghost {
   opacity: 0.6;
   pointer-events: none;

@@ -48,6 +48,7 @@ import type {
   WireColor,
 } from "./types";
 import { emptyBreadboard } from "./types";
+import { moveLead, moveWire, moveWireEnd, removeWire, replaceWire } from "./wireEdit";
 
 const SIDE_PANELS_KEY = "circuitos.breadboard.sidePanels";
 
@@ -82,7 +83,16 @@ type Tool =
   | { kind: "lead"; ref: string; legs: Record<string, string> }
   | { kind: "wire"; from: string | null; color: WireColor };
 
-type Sel = { kind: "part"; ref: string } | { kind: "wire"; id: string } | null;
+type Sel =
+  | { kind: "part"; ref: string }
+  | { kind: "wire"; id: string }
+  | { kind: "lead"; ref: string; terminal: string }
+  | null;
+
+/** A wire being dragged: one end, or the whole wire (from where it was grabbed); or a lead. */
+type WireDrag =
+  | { kind: "wire"; id: string; end: "a" | "b" | "both"; x0: number; y0: number; moved: boolean }
+  | { kind: "lead"; ref: string; terminal: string; x0: number; y0: number; moved: boolean };
 
 interface InstrumentDrag {
   slot: string;
@@ -179,6 +189,9 @@ export function BreadboardView({
   const [drag, setDrag] = useState<Drag | null>(null);
   // a bench instrument being dragged: its slot, where it is now and the grab offset
   const [instDrag, setInstDrag] = useState<InstrumentDrag | null>(null);
+  // a jumper wire (or an instrument lead) being dragged, and where the pointer is now
+  const [wireDrag, setWireDrag] = useState<WireDrag | null>(null);
+  const [pointer, setPointer] = useState<Pt | null>(null);
   const [report, setReport] = useState<CheckReport | null>(null);
   const [guide, setGuide] = useState<Step[] | null>(initialGuide ?? null);
   const [mark, setMark] = useState<string[]>([]);
@@ -311,8 +324,40 @@ export function BreadboardView({
   }, [hover, tool, drag, bb.parts, board, pkgs, views]);
   const ghostOk = ghost ? free(Object.values(ghost.legs), drag ? drag.ref : null) : false;
 
+  // where the dragged wire or lead would go, and whether the holes there are free
+  const wirePreview = useMemo(() => {
+    if (!wireDrag?.moved) return null;
+    if (wireDrag.kind === "lead") {
+      if (!hover) return null;
+      return { a: null, b: hover, ok: !!moveLead(bb, wireDrag.ref, wireDrag.terminal, hover) };
+    }
+    const w = bb.wires.find((x) => x.id === wireDrag.id);
+    if (!w) return null;
+    if (wireDrag.end === "both") {
+      if (!pointer) return null;
+      const moved = moveWire(board, bb, w.id, pointer[0] - wireDrag.x0, pointer[1] - wireDrag.y0);
+      return moved ? { a: moved.a, b: moved.b, ok: true } : null;
+    }
+    if (!hover) return null;
+    const moved = moveWireEnd(bb, w.id, wireDrag.end, hover);
+    const a = wireDrag.end === "a" ? hover : w.a;
+    const b = wireDrag.end === "b" ? hover : w.b;
+    return { a, b, ok: !!moved };
+  }, [wireDrag, hover, pointer, bb, board]);
+
+  const startWireDrag = (e: ReactMouseEvent, d: WireDrag) => {
+    if (readOnly || tool.kind !== "select" || e.button !== 0) return;
+    setWireDrag(d);
+    setPointer([d.x0, d.y0]);
+  };
+
   const onMove = (e: ReactMouseEvent) => {
     const [x, y] = toSvg(e);
+    if (wireDrag) {
+      setPointer([x, y]);
+      if (!wireDrag.moved && Math.hypot(x - wireDrag.x0, y - wireDrag.y0) > 4)
+        setWireDrag({ ...wireDrag, moved: true });
+    }
     if (instDrag) {
       const nx = Math.min(Math.max(x - instDrag.dx, 8), Math.max(8, size.w - 300));
       const ny = Math.max(y - instDrag.dy, size.boardH + 20);
@@ -325,10 +370,13 @@ export function BreadboardView({
 
   const onClick = (e: ReactMouseEvent<SVGSVGElement>) => {
     if ((e.target as Element).closest("[data-actuator]")) return; // handled on mouse down
+    // the end of a drag (a wire, a lead, a part) is not a click on the board: keep the selection
+    if (tool.kind === "select" && movedRef.current) return;
     // a click on a part, wire or instrument selected it on mouse down: keep that selection
     if (tool.kind === "select" && (e.target as Element).closest("[data-bb-item]")) {
-      // a plain click on a part shows its characteristics, even with that panel hidden
-      if (!movedRef.current && sel?.kind === "part" && !panels.right) togglePanel("right");
+      // a plain click on a part or a wire shows its panel (characteristics, Apagar), even
+      // with that panel hidden
+      if (!movedRef.current && sel && !panels.right) togglePanel("right");
       infoRef.current?.scrollTo({ top: 0 });
       return;
     }
@@ -406,7 +454,25 @@ export function BreadboardView({
   };
 
   const onUp = () => {
-    movedRef.current = !!(instDrag?.moved || (drag && hover && drag.start !== hover));
+    movedRef.current = !!(
+      instDrag?.moved ||
+      wireDrag?.moved ||
+      (drag && hover && drag.start !== hover)
+    );
+    if (wireDrag) {
+      if (wireDrag.moved && wirePreview?.ok) {
+        if (wireDrag.kind === "lead") {
+          const next = moveLead(bb, wireDrag.ref, wireDrag.terminal, wirePreview.b);
+          if (next) update(next);
+        } else {
+          const w = bb.wires.find((x) => x.id === wireDrag.id);
+          if (w) update(replaceWire(bb, { ...w, a: wirePreview.a!, b: wirePreview.b }));
+        }
+      }
+      setWireDrag(null);
+      setPointer(null);
+      return;
+    }
     if (instDrag) {
       if (instDrag.moved)
         update({
@@ -437,7 +503,7 @@ export function BreadboardView({
   const removeSelected = useCallback(() => {
     if (!sel) return;
     if (sel.kind === "part") update({ ...bb, parts: bb.parts.filter((p) => p.ref !== sel.ref) });
-    else update({ ...bb, wires: bb.wires.filter((w) => w.id !== sel.id) });
+    else update(removeWire(bb, sel));
     setSel(null);
   }, [sel, bb, update]);
 
@@ -463,6 +529,7 @@ export function BreadboardView({
       if (e.key === "Escape") {
         setTool({ kind: "select" });
         setDrag(null);
+        setWireDrag(null);
       } else if (e.key === "Delete" || e.key === "Backspace") removeSelected();
       else if (e.key === "r" || e.key === "R") {
         if (tool.kind === "place") setTool({ ...tool, orient: tool.orient === "h" ? "v" : "h" });
@@ -596,6 +663,7 @@ export function BreadboardView({
   };
   const selPart = sel?.kind === "part" ? bb.parts.find((p) => p.ref === sel.ref) : undefined;
   const selView = sel?.kind === "part" ? views[sel.ref] : undefined;
+  const selWire = sel?.kind === "wire" ? bb.wires.find((w) => w.id === sel.id) : undefined;
   const leadTerms =
     tool.kind === "lead"
       ? (pkgs[views[tool.ref]?.package ?? ""]?.pins ?? []).filter(
@@ -1043,14 +1111,68 @@ export function BreadboardView({
                         >
                           <title>Clique e depois escolha o furo da protoboard</title>
                         </circle>
-                        {p.legs[t] && (
-                          <path
-                            d={`M ${tx} ${ty} V ${lane} H ${hx} V ${hy}`}
-                            className="bb-lead-wire"
-                            stroke={t === "n" || t === "-" || t === "0" ? "#222" : "#d32f2f"}
-                          />
-                        )}
-                        <circle cx={hx} cy={hy} r={3} className="bb-clip" />
+                        {p.legs[t] &&
+                          (() => {
+                            const d = `M ${tx} ${ty} V ${lane} H ${hx} V ${hy}`;
+                            const selected =
+                              sel?.kind === "lead" && sel.ref === p.ref && sel.terminal === t;
+                            const grab = (e: ReactMouseEvent) => {
+                              if (readOnly) return;
+                              e.stopPropagation();
+                              setSel({ kind: "lead", ref: p.ref, terminal: t });
+                              const [x0, y0] = toSvg(e);
+                              startWireDrag(e, {
+                                kind: "lead",
+                                ref: p.ref,
+                                terminal: t,
+                                x0,
+                                y0,
+                                moved: false,
+                              });
+                            };
+                            return (
+                              <g className={readOnly ? undefined : "bb-wire-item"}>
+                                <path d={d} className="bb-wire-hit" onMouseDown={grab}>
+                                  <title>
+                                    Cabo {p.ref}.{views[p.ref]?.labels[t] ?? t} → {p.legs[t]}:
+                                    clique para selecionar, arraste para outro furo
+                                  </title>
+                                </path>
+                                <path
+                                  d={d}
+                                  className={`bb-lead-wire${selected ? " selected" : ""}`}
+                                  stroke={t === "n" || t === "-" || t === "0" ? "#222" : "#d32f2f"}
+                                  onMouseDown={grab}
+                                />
+                              </g>
+                            );
+                          })()}
+                        <circle
+                          cx={hx}
+                          cy={hy}
+                          r={
+                            sel?.kind === "lead" && sel.ref === p.ref && sel.terminal === t ? 5 : 3
+                          }
+                          className={
+                            sel?.kind === "lead" && sel.ref === p.ref && sel.terminal === t
+                              ? "bb-clip bb-wire-end"
+                              : "bb-clip"
+                          }
+                          onMouseDown={(e) => {
+                            if (readOnly || !p.legs[t]) return;
+                            e.stopPropagation();
+                            setSel({ kind: "lead", ref: p.ref, terminal: t });
+                            const [x0, y0] = toSvg(e);
+                            startWireDrag(e, {
+                              kind: "lead",
+                              ref: p.ref,
+                              terminal: t,
+                              x0,
+                              y0,
+                              moved: false,
+                            });
+                          }}
+                        />
                         <text
                           x={lx}
                           y={ly}
@@ -1151,31 +1273,76 @@ export function BreadboardView({
             />
           )}
           {bb.wires.map((w) => {
-            const [ax, ay] = xy(w.a);
-            const [bx, by] = xy(w.b);
             // flat jumper wire, as pre-cut wires lie on a real board: a straight run, or an L
             // bent at a right angle (along the rows from a, then down the column into b),
             // never a diagonal; the automatic assembly keeps these runs clear of bodies, legs
             // and other wires
+            const d = wirePath(xy(w.a), xy(w.b));
+            const selected = sel?.kind === "wire" && sel.id === w.id;
+            const dragging = wireDrag?.kind === "wire" && wireDrag.id === w.id && wireDrag.moved;
+            const grab = (e: ReactMouseEvent, end: "a" | "b" | "both") => {
+              if (readOnly) return;
+              e.stopPropagation();
+              setSel({ kind: "wire", id: w.id });
+              const [x0, y0] = toSvg(e);
+              startWireDrag(e, { kind: "wire", id: w.id, end, x0, y0, moved: false });
+            };
             return (
-              <path
+              <g
                 key={w.id}
-                d={
-                  ax === bx || ay === by
-                    ? `M ${ax} ${ay} L ${bx} ${by}`
-                    : `M ${ax} ${ay} L ${bx} ${ay} L ${bx} ${by}`
-                }
-                className={`bb-wire${sel?.kind === "wire" && sel.id === w.id ? " selected" : ""}`}
                 data-bb-item={w.id}
-                stroke={WIRE_COLORS[w.color] ?? "#2e8b3c"}
-                onMouseDown={(e) => {
-                  if (readOnly) return;
-                  e.stopPropagation();
-                  setSel({ kind: "wire", id: w.id });
-                }}
-              />
+                className={readOnly ? undefined : "bb-wire-item"}
+                opacity={dragging ? 0.35 : 1}
+              >
+                {/* a wider, invisible stroke so the thin wire is easy to click */}
+                <path d={d} className="bb-wire-hit" onMouseDown={(e) => grab(e, "both")}>
+                  <title>
+                    Fio {w.a} → {w.b}: clique para selecionar, arraste para mover
+                  </title>
+                </path>
+                <path
+                  d={d}
+                  className={`bb-wire${selected ? " selected" : ""}`}
+                  stroke={WIRE_COLORS[w.color] ?? "#2e8b3c"}
+                  onMouseDown={(e) => grab(e, "both")}
+                />
+                {selected &&
+                  !readOnly &&
+                  (["a", "b"] as const).map((end) => {
+                    const [hx, hy] = xy(w[end]);
+                    return (
+                      <circle
+                        key={end}
+                        cx={hx}
+                        cy={hy}
+                        r={5}
+                        className="bb-wire-end"
+                        onMouseDown={(e) => grab(e, end)}
+                      >
+                        <title>Arraste esta ponta para outro furo ({w[end]})</title>
+                      </circle>
+                    );
+                  })}
+              </g>
             );
           })}
+          {wirePreview && wireDrag?.kind === "wire" && wirePreview.a && (
+            <path
+              d={wirePath(xy(wirePreview.a), xy(wirePreview.b))}
+              stroke={WIRE_COLORS[bb.wires.find((x) => x.id === wireDrag.id)?.color ?? ""]}
+              className={`bb-wire ghost${wirePreview.ok ? "" : " invalid"}`}
+            />
+          )}
+          {wirePreview && wireDrag?.kind === "lead" && (
+            <g className="bb-ghost">
+              <circle
+                cx={xy(wirePreview.b)[0]}
+                cy={xy(wirePreview.b)[1]}
+                r={5}
+                className={`bb-wire-end${wirePreview.ok ? "" : " invalid"}`}
+              />
+            </g>
+          )}
           {tool.kind === "wire" && tool.from && hover && (
             <path
               d={`M ${xy(tool.from)[0]} ${xy(tool.from)[1]} L ${xy(hover)[0]} ${
@@ -1304,12 +1471,56 @@ export function BreadboardView({
               )}
             </div>
           )}
-          {sel?.kind === "wire" && !readOnly && (
-            <div>
-              <h3>Fio</h3>
-              <button className="secondary small" onClick={removeSelected}>
-                Apagar fio
-              </button>
+          {selWire && !readOnly && (
+            <div className="bb-selected">
+              <h3>
+                Fio{" "}
+                <span className="muted small">
+                  {selWire.a} → {selWire.b}
+                </span>
+              </h3>
+              <p className="small muted">
+                Arraste o fio para levá-lo a outro lugar, ou arraste uma das pontas (bolinhas) para
+                outro furo. A conferência e a simulação passam a usar a nova ligação.
+              </p>
+              <label className="small">
+                Cor{" "}
+                <select
+                  value={selWire.color}
+                  onChange={(e) =>
+                    update(replaceWire(bb, { ...selWire, color: e.target.value as WireColor }))
+                  }
+                >
+                  {Object.keys(WIRE_COLORS).map((c) => (
+                    <option key={c} value={c}>
+                      {c}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <div className="row">
+                <button className="secondary small" onClick={removeSelected}>
+                  Apagar fio (Delete)
+                </button>
+              </div>
+            </div>
+          )}
+          {sel?.kind === "lead" && !readOnly && (
+            <div className="bb-selected">
+              <h3>
+                Cabo {sel.ref}.{views[sel.ref]?.labels[sel.terminal] ?? sel.terminal}{" "}
+                <span className="muted small">
+                  → {bb.parts.find((p) => p.ref === sel.ref)?.legs[sel.terminal] ?? "—"}
+                </span>
+              </h3>
+              <p className="small muted">
+                Arraste o cabo (ou a garra na ponta) para outro furo da protoboard.
+              </p>
+              <div className="row">
+                <button className="secondary small" onClick={removeSelected}>
+                  Desconectar cabo (Delete)
+                </button>
+              </div>
             </div>
           )}
           {!readOnly && !schematic.bench_scope_channels && (
@@ -1429,6 +1640,13 @@ export function BreadboardView({
       )}
     </div>
   );
+}
+
+/** A flat jumper: straight, or an L along the row from a and then down the column into b. */
+function wirePath([ax, ay]: Pt, [bx, by]: Pt): string {
+  return ax === bx || ay === by
+    ? `M ${ax} ${ay} L ${bx} ${by}`
+    : `M ${ax} ${ay} L ${bx} ${ay} L ${bx} ${by}`;
 }
 
 function placeHint(pkg: PackageSpec | undefined): string {
