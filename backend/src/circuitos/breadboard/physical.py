@@ -107,8 +107,11 @@ def _build(title: str, parts: list[_Part]) -> Schematic:
         pos = pin_positions(comp)
         sch.components.append(comp)
         for p in pin_defs(comp):
+            node = part.nodes.get(p.name)
+            if node is None:  # op-amp V+/V− left loose: the implicit supply of the module
+                continue
             x, y = pos[p.name]
-            sch.labels.append(NetLabel(id=f"l{len(sch.labels)}", name=part.nodes[p.name], x=x, y=y))
+            sch.labels.append(NetLabel(id=f"l{len(sch.labels)}", name=node, x=x, y=y))
     return sch
 
 
