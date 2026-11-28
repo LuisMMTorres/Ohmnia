@@ -138,6 +138,8 @@ _ADVICE: dict[str, str] = {
     "diodos de proteção.",
     "Ind": "Use um indutor com corrente nominal (e de saturação) maior ou reduza a corrente; "
     "acima de I_sat a indutância cai e o pico de corrente cresce.",
+    "Vcc": "A alimentação passa do máximo absoluto: reduza a tensão da fonte para a faixa de "
+    "operação recomendada no datasheet.",
     "Sw": "Use uma chave com corrente nominal maior ou acione a carga por relé ou transistor.",
 }
 
@@ -262,6 +264,10 @@ _SPECS: dict[str, Callable[[], list[_Spec]]] = {
     "potentiometer": lambda: [
         _Spec("V_max", "V", "peak_abs", "a", "b", advice="Res"),
     ],
+    "trimpot": lambda: [
+        _Spec("V_max", "V", "peak_abs", "a", "b", advice="Res"),
+    ],
+    "timer555": lambda: [_Spec("VCC_max", "V", "peak_abs", "VCC", "GND", advice="Vcc")],
     "switch_manual": lambda: [_Spec("I_rated", "I", "rms", current_pin="1", advice="Sw")],
     "tact_switch": lambda: [_Spec("I_rated", "I", "rms", current_pin="1", advice="Sw")],
     "push_nc": lambda: [_Spec("I_rated", "I", "rms", current_pin="1", advice="Sw")],
@@ -390,7 +396,7 @@ def limits_for(
                     reviewed=vm[2],
                 )
             )
-    if comp.kind == "potentiometer":
+    if comp.kind in ("potentiometer", "trimpot"):
         pr = _rating(rec, "P_rated", "W")
         rv = _rating(rec, "R", "ohm")
         if pr and rv and rv[0] > 0:

@@ -2025,3 +2025,52 @@ svg.ladder .ld-comment {
   white-space: normal;
   overflow-wrap: anywhere;
 }
+
+/* potentiometers and trimpots on the breadboard (PotBody) */
+.bb-pot-case {
+  stroke: #0b2347;
+  stroke-width: 0.8px;
+}
+.bb-pot-rotor {
+  stroke: #4b5563;
+  stroke-width: 0.8px;
+}
+.bb-pot-slot {
+  stroke: #374151;
+  stroke-width: 1.6px;
+  stroke-linecap: round;
+}
+.bb-pot-frame {
+  fill: #b9bec4;
+  stroke: #6b7280;
+  stroke-width: 0.8px;
+}
+.bb-pot-black {
+  fill: #2b2e33;
+}
+.bb-pot-shaft {
+  fill: #3a3d42;
+  stroke: #9ca3af;
+  stroke-width: 0.8px;
+}
+.bb-pot-bush {
+  fill: #c9ced3;
+  stroke: #6b7280;
+  stroke-width: 0.8px;
+}
+.bb-pot-knurl {
+  fill: #d8dde2;
+  stroke: #6b7280;
+  stroke-width: 1.2px;
+  stroke-dasharray: 1.2 1;
+}
+.bb-pot-text {
+  font-size: 6px;
+  fill: #f8fafc;
+}
+.bb-pot-text.dark {
+  fill: #1f2937;
+}
+.bb-pin-number {
+  font-weight: 600;
+}
