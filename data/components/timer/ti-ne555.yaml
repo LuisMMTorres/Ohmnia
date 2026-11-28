@@ -437,23 +437,31 @@ pinout:
   pins:
   - pin: "1"
     name: "GND"
+    role: GND
   - pin: "2"
     name: "TRIG"
+    role: TRIG
   - pin: "3"
     name: "OUT"
+    role: OUT
   - pin: "4"
     name: "RESET"
+    role: RESET
   - pin: "5"
     name: "CONT"
+    role: CONT
   - pin: "6"
     name: "THRES"
+    role: THRES
   - pin: "7"
     name: "DISCH"
+    role: DISCH
   - pin: "8"
     name: "VCC"
+    role: VCC
   source:
     page: 3
     location: "Table 4-1 Pin Functions, coluna D, P, PS, PW, JG"
   status: extraido
-  note: "O simulador ainda não tem símbolo de 555: pinagem para consulta."
-catalog_revision: 3
+  note: "Papéis (role) = pinos do símbolo Temporizador 555 do simulador (2026-11-28)."
+catalog_revision: 4

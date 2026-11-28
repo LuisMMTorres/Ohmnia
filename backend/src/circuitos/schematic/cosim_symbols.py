@@ -25,6 +25,10 @@ from circuitos.schematic.symbols_base import ParamDef, PinDef, Symbol
 
 Value = Callable[[str], str]  # parameter name -> text (with overrides applied)
 
+# real parts drawn on the breadboard for a generic potentiometer or trimpot (catalogue records)
+POT_REFERENCE = "Bourns PTV09A-4020F-B103"
+TRIMPOT_REFERENCE = "Bourns 3386P-1-103LF"
+
 
 def _stim(name: str, label: str, unit: str, default: str, help_: str = "") -> ParamDef:
     return ParamDef(
@@ -412,15 +416,32 @@ COSIM_SYMBOLS: list[Symbol] = [
     Symbol(
         "potentiometer",
         "Potenciômetro",
-        "Sensores",
+        "Passivos",
         "X",
         (PinDef("a", -2, 0), PinDef("b", 2, 0), PinDef("w", 0, 2)),
         (
             ParamDef("r", "Resistência total", "Ω", "10k"),
             _stim("pos", "Posição do cursor (0 a 1)", "", "0.5"),
         ),
-        description="Cursor (w) entre a (posição 0) e b (posição 1).",
+        description="Cursor (w) entre a (posição 0, terminal 1, anti-horário) e b (posição 1, "
+        "terminal 3, horário). Sem peça do catálogo, a protoboard desenha a peça de referência "
+        f"{POT_REFERENCE}.",
         ref_prefix="P",
+    ),
+    Symbol(
+        "trimpot",
+        "Trimpot",
+        "Passivos",
+        "X",
+        (PinDef("a", -2, 0), PinDef("b", 2, 0), PinDef("w", 0, 2)),
+        (
+            ParamDef("r", "Resistência total", "Ω", "10k"),
+            _stim("pos", "Posição do cursor (0 a 1)", "", "0.5"),
+        ),
+        description="Potenciômetro de ajuste (trimpot), regulado com chave de fenda. Cursor (w) "
+        "entre a (posição 0, terminal 1, anti-horário) e b (posição 1, terminal 3, horário). Sem "
+        f"peça do catálogo, a protoboard desenha a peça de referência {TRIMPOT_REFERENCE}.",
+        ref_prefix="RV",
     ),
     Symbol(
         "relay",
@@ -612,6 +633,11 @@ from circuitos.schematic.sensor_symbols import (  # noqa: E402
 
 COSIM_SYMBOLS += SENSOR_SYMBOLS
 
+# integrated circuits other than op-amps (555 timer), 2026-11-28
+from circuitos.schematic.ic_symbols import IC_CATALOGUE, IC_KINDS, IC_SYMBOLS, emit_ic, ic_value  # noqa: E402
+
+COSIM_SYMBOLS += IC_SYMBOLS
+
 # Catalogue parts for the co-simulation symbols: symbol parameter <- (record symbol, unit).
 # A real part placed with the symbol takes these values from its record (rule 1: the values
 # come from the datasheet, with page); parameters without a value keep the symbol default.
@@ -626,6 +652,7 @@ CATALOGUE_PARAMS: dict[str, tuple[tuple[str, ...], dict[str, tuple[str, str]]]] 
         {"sens": ("sensitivity", "V/A"), "rip": ("R_primary", "ohm"), "bw": ("bandwidth", "Hz")},
     ),
     "potentiometer": (("resistor.variable",), {"r": ("R", "ohm")}),
+    "trimpot": (("resistor.variable",), {"r": ("R", "ohm")}),
     "relay": (
         ("relay.electromechanical",),
         {"vnom": ("V_coil", "V"), "rcoil": ("R_coil", "ohm")},
@@ -653,6 +680,7 @@ CATALOGUE_PARAMS: dict[str, tuple[tuple[str, ...], dict[str, tuple[str, str]]]] 
     "plc": (("plc",), {}),
     **DRIVE_CATALOGUE,
     **SENSOR_CATALOGUE,
+    **IC_CATALOGUE,
 }
 COSIM_SYMBOLS[:] = [
     dataclasses.replace(sym, catalogue=CATALOGUE_PARAMS[sym.kind][0])
@@ -684,6 +712,8 @@ def catalogue_value(kind: str, record: ComponentRecord, fallback: Value) -> Valu
         special = special_value(kind, record, name) if kind in SENSOR_KINDS else None
         if special is None and kind in DRIVE_KINDS:
             special = drive_value(kind, record, name)
+        if special is None and kind in IC_KINDS:
+            special = ic_value(kind, record, name)
         if special is not None:
             return special
         if kind == "stepper_motor" and name == "km":
@@ -713,6 +743,23 @@ def catalogue_value(kind: str, record: ComponentRecord, fallback: Value) -> Valu
 
 
 COSIM_KINDS = {s.kind for s in COSIM_SYMBOLS}
+
+
+def is_trimpot(record: ComponentRecord) -> bool:
+    """Trimming potentiometer (screwdriver adjust), from the type transcribed from its datasheet."""
+    tipo = record.attributes.get("tipo")
+    return tipo is not None and "trimpot" in str(tipo.value).lower()
+
+
+def symbol_takes(kind: str, record: ComponentRecord) -> bool:
+    """Whether the part is offered with the symbol: trimpots and panel potentiometers apart."""
+    if kind == "trimpot":
+        return is_trimpot(record)
+    if kind == "potentiometer":
+        return not is_trimpot(record)
+    return True
+
+
 CONTROLLER_KINDS = {
     "arduino_uno",
     "arduino_nano",
@@ -804,7 +851,7 @@ def emit_device(comp: Component, n: dict[str, str], v: Value) -> list[str]:
             f"E{x}_out {n['OUT']} {n['GND']} {flt} 0 1",
             f"R{x}_q {n['VCC']} {n['GND']} 500",  # about 10 mA supply current at 5 V
         ]
-    if k == "potentiometer":
+    if k in ("potentiometer", "trimpot"):
         p = f"min(max({stimulus(v('pos'))}, 0.001), 0.999)"
         r = v("r")
         return [
@@ -886,4 +933,6 @@ def emit_device(comp: Component, n: dict[str, str], v: Value) -> list[str]:
         return emit_drive(comp, n, v, stimulus)
     if k in SENSOR_KINDS:
         return emit_sensor(comp, n, v, stimulus)
+    if k in IC_KINDS:
+        return emit_ic(comp, n, v)
     raise ValueError(f"tipo {k} sem modelo")

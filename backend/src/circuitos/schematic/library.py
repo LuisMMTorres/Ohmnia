@@ -8,6 +8,7 @@ them by the model built from its datasheet (:mod:`circuitos.schematic.parts`).
 
 from __future__ import annotations
 
+import dataclasses
 import math
 
 from circuitos.schematic.model import Component, Point
@@ -895,3 +896,7 @@ ANALYSES: dict[str, tuple[str, tuple[ParamDef, ...]]] = {
 from circuitos.schematic.cosim_symbols import COSIM_SYMBOLS  # noqa: E402
 
 SYMBOLS.update({s.kind: s for s in COSIM_SYMBOLS})
+
+# The op-amp is listed with the other integrated circuits (the 555 timer) in the editor's
+# library; kept here so that the op-amp symbol itself stays untouched.
+SYMBOLS["opamp"] = dataclasses.replace(SYMBOLS["opamp"], group="Circuitos integrados")

@@ -22,6 +22,7 @@ from typing import Literal
 
 from circuitos.breadboard.packages import PACKAGES, package
 from circuitos.components.models import ComponentRecord, DatasheetRef, SourceRef
+from circuitos.schematic.cosim_symbols import POT_REFERENCE, TRIMPOT_REFERENCE
 from circuitos.schematic.library import param, symbol
 from circuitos.schematic.model import Component
 from circuitos.schematic.values import format_value, try_parse
@@ -175,11 +176,30 @@ def _generic(comp: Component) -> Resolved:
         r.title = "LM35"
         r.notes.append(GENERIC_NOTE)
         return r
-    if kind == "potentiometer":
-        r.package = "pot-3"
+    if kind in ("potentiometer", "trimpot"):
+        # drawn as a real reference part (rule 1: its pinout is the one of that datasheet)
+        pot = kind == "potentiometer"
+        r.package = "pot-9mm" if pot else "trimpot-3386p"
         r.pinmap = {"1": "a", "2": "w", "3": "b"}
-        r.labels = {"1": "A", "2": "W", "3": "B"}
-        r.title = "Potenciômetro"
+        r.labels = {"1": "CCW", "2": "WIPER", "3": "CW"}
+        r.title = f"{_value_label(comp, 'r', 'Ω')}"
+        ref = POT_REFERENCE if pot else TRIMPOT_REFERENCE
+        r.notes.append(
+            f"Peça genérica desenhada como a de referência {ref}: pino 1 = anti-horário (CCW, "
+            "posição 0), 2 = cursor, 3 = horário (CW). Escolha a peça do catálogo para usar a "
+            "sua."
+        )
+        return r
+    if kind == "timer555":
+        r.package = "dip-8"
+        names = ("GND", "TRIG", "OUT", "RESET", "CONT", "THRES", "DISCH", "VCC")
+        r.labels = {str(i + 1): name for i, name in enumerate(names)}
+        r.pinmap = dict(r.labels)
+        r.title = "555"
+        r.notes.append(
+            "Pinagem do 555 em DIP-8, igual em todos os fabricantes (TI NE555, SLFS022K, "
+            "tabela 4-1); escolha o NE555P do catálogo para conferir com o datasheet."
+        )
         return r
     if kind in _BOARDS:
         pkg = package(_BOARDS[kind])

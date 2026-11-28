@@ -2,6 +2,7 @@
 part_number: PDB181-K420K-503B
 category: resistor.variable
 schema_version: '1.0'
+catalog_revision: 2
 manufacturer: Bourns
 family: PDB18
 package: PDB181-K, pinos PC verticais, eixo metálico estriado 25 mm, sem detente
@@ -11,6 +12,7 @@ notes:
 datasheets:
 - id: ds1
   manufacturer: Bourns
+  url: https://www.bourns.com/docs/Product-Datasheets/pdb18.pdf
   document_number: K2540
   revision: 05/26R
   sha256: 19697d1dc7271301b6884bca870e0c6a3e778673df2c8703a61d342c1d10972d
@@ -63,3 +65,24 @@ attributes:
     value: Potenciômetro rotativo 17 mm, elemento de carbono, seção simples
     status: extraido
     source: {page: 1, location: Features / How To Order, excerpt: "17 mm Rotary Potentiometer; Carbon element"}
+
+# Pinagem para a protoboard, transcrita da mesma folha de dados (2026-11-28). status extraido:
+# falta a sua revisão.
+pinout:
+  package: pot-17mm
+  pins:
+  - pin: "1"
+    name: "CCW"
+    role: a
+  - pin: "2"
+    name: "WIPER"
+    role: w
+  - pin: "3"
+    name: "CW"
+    role: b
+  source:
+    datasheet_id: ds1
+    page: 1
+    location: "PDB181-K, pinos 1, 2, 3 e SCHEMATIC (eixo mostrado na posição CCW)"
+  status: extraido
+  note: "Pino 1 do lado do eixo no fim do giro anti-horário (SHAFT SHOWN IN CCW POSITION)."

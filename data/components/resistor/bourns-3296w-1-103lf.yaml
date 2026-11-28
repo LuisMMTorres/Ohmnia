@@ -2,6 +2,7 @@
 part_number: 3296W-1-103LF
 category: resistor.variable
 schema_version: '1.0'
+catalog_revision: 2
 manufacturer: Bourns
 family: '3296'
 package: 3296W (trimpot quadrado 3/8")
@@ -12,6 +13,7 @@ notes:
 datasheets:
 - id: ds1
   manufacturer: Bourns
+  url: https://www.bourns.com/docs/Product-Datasheets/3296.pdf
   sha256: 8492a5d67ee2785d4716ec3131b8fa6f9aaef9fa9e9eff65999b1d1a50d9baef
 review:
   status: rascunho
@@ -54,3 +56,24 @@ attributes:
     value: Trimpot multivoltas, cermet, selado, 25 voltas nominais
     status: extraido
     source: {page: 1, location: Features / Electrical Characteristics - Effective Travel, excerpt: "Multiturn / Cermet / Industrial / Sealed; Effective Travel 25 turns nom."}
+
+# Pinagem para a protoboard, transcrita da mesma folha de dados (2026-11-28). status extraido:
+# falta a sua revisão.
+pinout:
+  package: trimpot-3296w
+  pins:
+  - pin: "1"
+    name: "CCW"
+    role: a
+  - pin: "2"
+    name: "WIPER"
+    role: w
+  - pin: "3"
+    name: "CW"
+    role: b
+  source:
+    datasheet_id: ds1
+    page: 1
+    location: "Product Dimensions 3296W e diagrama CCW 1 / 2 WIPER / 3 CW"
+  status: extraido
+  note: "Posição 0 do cursor no simulador = pino 1 (fim do giro anti-horário)."

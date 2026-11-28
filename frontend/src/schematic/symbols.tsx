@@ -46,6 +46,38 @@ function zigzag(x0: number, x1: number): ReactNode {
   return poly(pts, "z");
 }
 
+/**
+ * Potentiometer and trimpot (IEEE 315 / IEC 60617 forms with the zigzag resistor of the
+ * editor): the wiper w comes from below and touches the resistor at its middle. The
+ * potentiometer's wiper ends in an arrowhead (adjustable contact, operated by the user); the
+ * trimpot's ends in a short bar across it (pre-set adjustment, set with a tool). Terminals 1
+ * (a, counter-clockwise end) and 3 (b, clockwise end) are numbered as on the real parts.
+ */
+function variableResistor(preset: boolean): ReactNode[] {
+  const tip = 0.42; // just under the zigzag (amplitude 0.35)
+  return [
+    line(-2, 0, -1.2, 0, "a"),
+    zigzag(-1.2, 1.2),
+    line(1.2, 0, 2, 0, "b"),
+    preset ? line(0, 2, 0, tip, "w") : line(0, 2, 0, tip + 0.45, "w"),
+    preset
+      ? line(-0.45, tip, 0.45, tip, "bar")
+      : poly(
+          [
+            [-0.3, tip + 0.5],
+            [0, tip],
+            [0.3, tip + 0.5],
+            [-0.3, tip + 0.5],
+          ],
+          "head",
+          true,
+        ),
+    text(-1.75, 0.55, "1", 0.45, "n1"),
+    text(1.75, 0.55, "3", 0.45, "n3"),
+    text(0.4, 1.6, "2", 0.45, "n2"),
+  ];
+}
+
 function coil(x0: number, x1: number, vertical = false, offset = 0): ReactNode {
   const n = 4;
   const w = (x1 - x0) / n;
@@ -422,6 +454,7 @@ export function SymbolBody({
   let body: ReactNode[] = [];
   if (k === "resistor")
     body = [line(-2, 0, -1.2, 0, "a"), zigzag(-1.2, 1.2), line(1.2, 0, 2, 0, "b")];
+  else if (k === "potentiometer" || k === "trimpot") body = variableResistor(k === "trimpot");
   else if (k === "capacitor")
     body = [
       line(-2, 0, -0.25, 0, "a"),
@@ -796,7 +829,7 @@ export function SymbolBody({
 }
 
 // Controllers, sensors and actuators (Fase 11): a box with its pins named and a short title.
-const MODULE_GROUPS = new Set(["Controladores", "Sensores", "Atuadores"]);
+const MODULE_GROUPS = new Set(["Controladores", "Sensores", "Atuadores", "Circuitos integrados"]);
 const SHORT: Record<string, string> = {
   arduino_uno: "Arduino Uno",
   esp32_devkitc: "ESP32",
@@ -806,7 +839,7 @@ const SHORT: Record<string, string> = {
   tx420: "4-20 mA",
   tx420_rtd: "TT RTD",
   acs712: "ACS712",
-  potentiometer: "POT",
+  timer555: "555",
   relay: "RELÉ",
   dc_motor: "M",
   heater: "AQUEC.",
@@ -906,6 +939,7 @@ export function valueText(c: Component, sym: SymbolDef | undefined): string {
     return `${p("conn_p")}${p("conn_s").toLowerCase()}`;
   }
   if (c.kind === "zener") return `${p("vz")}V`;
+  if (c.kind === "potentiometer" || c.kind === "trimpot") return `${p("r")}Ω`;
   if (c.kind === "lamp") return `${p("vn")}V ${p("pn")}W`;
   if (c.kind === "led") return `${p("color")} ${p("vf")}V`;
   if (c.kind === "bsource") return p("expr");

@@ -1,0 +1,85 @@
+# Fonte: Bourns, 3362 - 1/4" Square Trimpot Trimming Potentiometer (datasheet), baixado de
+# bourns.com em 2026-11-28.
+part_number: 3362P-1-103LF
+category: resistor.variable
+schema_version: '1.0'
+manufacturer: Bourns
+family: '3362'
+package: 3362P (trimpot quadrado 1/4", ajuste por cima)
+lifecycle: desconhecido
+notes:
+- Código 103 = 10 000 ohm (Standard Resistance Table, p. 2). Demais valores são da série 3362.
+- Potência 0,5 W a 70 °C e 0 W a 125 °C (derating), máx. 300 V.
+- Ângulo de ajuste 240° nominal (elétrico); ângulo mecânico 270° nominal (p. 2).
+datasheets:
+- id: ds1
+  manufacturer: Bourns
+  url: https://www.bourns.com/docs/Product-Datasheets/3362.pdf
+  sha256: 6f357bcbeddd27c62f6e98db13596aaf7fe2c4315554fde5e0cc4061a51f0de3
+review:
+  status: rascunho
+  created_by: Claude (transcrição assistida)
+parameters:
+  R:
+    typ: 10000
+    unit: ohm
+    status: extraido
+    source: {page: 2, location: Standard Resistance Table (código 103), excerpt: "10,000 103"}
+  tol:
+    max: 10
+    unit: '%'
+    status: extraido
+    source: {page: 1, location: Electrical Characteristics - Resistance Tolerance, excerpt: "±10 % std."}
+  P_rated:
+    max: 0.5
+    unit: W
+    status: extraido
+    conditions: {TA: 70 °C}
+    source: {page: 1, location: Environmental Characteristics - Power Rating, excerpt: "70 °C ... 0.50 watt"}
+  V_max:
+    max: 300
+    unit: V
+    status: extraido
+    source: {page: 1, location: Environmental Characteristics - Power Rating (300 volts max.), excerpt: "Power Rating (300 volts max.)"}
+  rotation:
+    typ: 240
+    unit: deg
+    status: extraido
+    source: {page: 1, location: Electrical Characteristics - Adjustment Angle, excerpt: "Adjustment Angle 240 ° nom."}
+  life:
+    min: 200
+    unit: '1'
+    status: extraido
+    source: {page: 1, location: Environmental Characteristics - Rotational Life, excerpt: "Rotational Life 200 cycles"}
+  Top:
+    min: -55
+    max: 125
+    unit: °C
+    status: extraido
+    source: {page: 1, location: Environmental Characteristics - Temperature Range, excerpt: "-55 °C to +125 °C"}
+attributes:
+  tipo:
+    value: Trimpot de volta única, cermet, selado (ajuste por cima, modelo P)
+    status: extraido
+    source: {page: 1, location: Features, excerpt: "Single-Turn / Cermet / Industrial / Sealed"}
+
+# Pinagem para a protoboard, transcrita da mesma folha de dados (2026-11-28). status extraido:
+# falta a sua revisão.
+pinout:
+  package: trimpot-3362p
+  pins:
+  - pin: "1"
+    name: "CCW"
+    role: a
+  - pin: "2"
+    name: "WIPER"
+    role: w
+  - pin: "3"
+    name: "CW"
+    role: b
+  source:
+    datasheet_id: ds1
+    page: 1
+    location: "Product Dimensions 3362P e diagrama CCW 1 / 2 WIPER / 3 CW"
+  status: extraido
+  note: "Posição 0 do cursor no simulador = pino 1 (fim do giro anti-horário)."
