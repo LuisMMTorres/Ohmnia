@@ -13,8 +13,9 @@ Nenhum limite é inventado (regra 1):
   Se o valor ainda está como rascunho no catálogo, o alerta avisa "valor do catálogo ainda não
   revisado".
 - **Peça genérica**: só é verificada quando você informa o limite. O resistor tem o campo
-  **Potência nominal** (ex.: 0.25 para 1/4 W). O capacitor tem o campo **Tensão nominal**. Em
-  branco, não há verificação.
+  **Potência nominal** (ex.: 0.25 para 1/4 W). O capacitor tem o campo **Tensão nominal**. O
+  indutor tem o campo **Corrente nominal** (corrente eficaz máxima, como o I_rms dos indutores do
+  catálogo). Em branco, não há verificação.
 - **LED e lâmpada**: continuam usando IF máx. e Pn. O LED do catálogo também verifica a tensão
   reversa (VR).
 
@@ -34,13 +35,14 @@ Nenhum limite é inventado (regra 1):
 | Chaves e relé | corrente nominal do contato (eficaz) |
 | Resistor genérico | potência nominal informada |
 | Capacitor genérico | tensão nominal informada |
+| Indutor genérico | corrente nominal informada (eficaz) |
 
 ## Como cada grandeza é medida
 
 - **Tensão**: pico da tensão de bloqueio no sentido em que o datasheet a define (ex.: VRRM =
   v(K) − v(A)). Nos limites simétricos (VGS, VID) usa-se o módulo.
 - **Corrente contínua** (IF(AV), IC, ID): valor médio da **segunda metade** da simulação, para a
-  partida não contar. IT(RMS) e corrente de contato: valor eficaz da segunda metade. Picos
+  partida não contar. IT(RMS), corrente de contato e corrente nominal do indutor: valor eficaz da segunda metade. Picos
   repetitivos ou de surto (IFSM, ICM, IDM, ITSM): pico em toda a simulação.
 - **Corrente**: medida por uma fonte de 0 V em série com um pino (anodo, coletor, dreno...),
   que não altera o circuito.
@@ -55,10 +57,12 @@ Nenhum limite é inventado (regra 1):
 |-------|---------------|
 | `tests/unit/schematic/test_stress.py::test_catalogue_diode_gets_its_ratings_with_their_page` | 1N4148 (Vishay 81857 rev. 1.6, p. 1) traz VRRM 100 V, IF(AV) 150 mA, IFSM 2 A, Ptot 440 mW e Tj, com a página. A corrente é medida no anodo. |
 | `...::test_generic_parts_are_checked_only_with_a_rating_typed_by_the_user` | Resistor e capacitor genéricos só são verificados com o limite informado. |
+| `...::test_generic_inductor_with_rated_current_gets_a_sensed_rms_limit` | Indutor genérico com corrente nominal ganha a fonte de 0 V no pino 1 e o limite eficaz; sem ela, nada é acrescentado. |
 | `...::test_evaluate_uses_peak_for_voltage_and_second_half_mean_for_current` | Pico para tensão, média da segunda metade para corrente (a partida não conta). |
 | `...::test_junction_temperature_is_ambient_plus_power_times_rth` | Tj = Ta + P·Rθja. |
 | `...::test_as_diode_without_enough_resistance_burns` (AS-, ngspice) | 5 V num 1N4148 com 10 Ω: corrente média = (5 − VK)/10 ± 2 %, acima de IF(AV). Com 1 kΩ nada é acusado. |
 | `...::test_as_resistor_power_matches_v_squared_over_r` (AS-, ngspice) | 12 V em 100 Ω de 1/4 W: P = 1,44 W ± 0,5 %, acima do nominal. |
+| `...::test_as_generic_inductor_rms_current_matches_v_over_r` (AS-, ngspice) | 12 V, 10 Ω e 1 mH por 2 ms: corrente eficaz da segunda metade = V/R = 1,2 A ± 0,5 %, acima da corrente nominal de 0,5 A. |
 | `frontend/src/schematic/damage.test.ts` | Agrupamento por peça na caixa de alerta, inclusive LEDs que queimam. |
 
 Capturas: `/mnt/project-files/capturas/queima-componentes/`.
@@ -68,7 +72,10 @@ Capturas: `/mnt/project-files/capturas/queima-componentes/`.
 - A temperatura não considera dissipador nem a capacidade térmica: é o regime ao ar livre.
 - Ptot é comparado como publicado, que costuma ser a 25 °C (ambiente ou cápsula). A redução com
   a temperatura (derating) não é aplicada; o teste de Tj cobre o aquecimento ao ar livre.
-- Peças genéricas sem limite informado (indutor, transistores genéricos) não são verificadas.
+- Peças genéricas sem limite informado (indutor sem corrente nominal, transistores genéricos)
+  não são verificadas.
 - Fontes, motores, transformadores e placas (Arduino, ESP32, CLP) ainda não são verificados.
 - O modelo do LED é de queda constante: ligado direto numa fonte ideal, a corrente fica
   limitada só pela fonte (o alerta mostra "mais de 1 kA").
+- A corrente nominal do indutor genérico só verifica aquecimento (valor eficaz). A saturação do
+  núcleo não é modelada: a indutância continua constante acima de qualquer corrente.

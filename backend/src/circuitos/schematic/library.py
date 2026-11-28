@@ -182,6 +182,15 @@ SYMBOLS: dict[str, Symbol] = {
                 ParamDef("value", "Indutância", "H", "1m"),
                 ParamDef("ic", "Corrente inicial", "A", "", optional=True),
                 _tol("10"),
+                ParamDef(
+                    "i_rated",
+                    "Corrente nominal",
+                    "A",
+                    "",
+                    optional=True,
+                    help="Corrente eficaz máxima do indutor (aquecimento do enrolamento). "
+                    "Em branco, a corrente não é verificada.",
+                ),
             ),
             tolerance="value",
             catalogue=("inductor.fixed",),
