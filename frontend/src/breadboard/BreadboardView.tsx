@@ -694,6 +694,62 @@ export function BreadboardView({
     .filter(Boolean)
     .join(" ");
 
+  // jumper wires, drawn under the parts (as on a real board, a wire runs under a body)
+  const renderWire = (w: (typeof bb.wires)[number]) => {
+    // flat jumper wire, as pre-cut wires lie on a real board: a straight run, or an L
+    // bent at a right angle (along the rows from a, then down the column into b),
+    // never a diagonal; the automatic assembly keeps these runs clear of bodies, legs
+    // and other wires
+    const d = wirePath(xy(w.a), xy(w.b));
+    const selected = sel?.kind === "wire" && sel.id === w.id;
+    const dragging = wireDrag?.kind === "wire" && wireDrag.id === w.id && wireDrag.moved;
+    const grab = (e: ReactMouseEvent, end: "a" | "b" | "both") => {
+      if (readOnly) return;
+      e.stopPropagation();
+      setSel({ kind: "wire", id: w.id });
+      const [x0, y0] = toSvg(e);
+      startWireDrag(e, { kind: "wire", id: w.id, end, x0, y0, moved: false });
+    };
+    return (
+      <g
+        key={w.id}
+        data-bb-item={w.id}
+        className={readOnly ? undefined : "bb-wire-item"}
+        opacity={dragging ? 0.35 : 1}
+      >
+        {/* a wider, invisible stroke so the thin wire is easy to click */}
+        <path d={d} className="bb-wire-hit" onMouseDown={(e) => grab(e, "both")}>
+          <title>
+            Fio {w.a} → {w.b}: clique para selecionar, arraste para mover
+          </title>
+        </path>
+        <path
+          d={d}
+          className={`bb-wire${selected ? " selected" : ""}`}
+          stroke={WIRE_COLORS[w.color] ?? "#2e8b3c"}
+          onMouseDown={(e) => grab(e, "both")}
+        />
+        {selected &&
+          !readOnly &&
+          (["a", "b"] as const).map((end) => {
+            const [hx, hy] = xy(w[end]);
+            return (
+              <circle
+                key={end}
+                cx={hx}
+                cy={hy}
+                r={5}
+                className="bb-wire-end"
+                onMouseDown={(e) => grab(e, end)}
+              >
+                <title>Arraste esta ponta para outro furo ({w[end]})</title>
+              </circle>
+            );
+          })}
+      </g>
+    );
+  };
+
   return (
     <div className={layoutClass}>
       {!readOnly && !panels.left && (
@@ -986,6 +1042,8 @@ export function BreadboardView({
             return <circle key={`m${h}`} cx={x} cy={y} r={7} className="bb-mark" />;
           })}
 
+          {bb.wires.filter((w) => !(sel?.kind === "wire" && sel.id === w.id)).map(renderWire)}
+
           {bb.parts.map((p) => {
             const pkg = pkgs[p.package];
             if (!pkg) return null;
@@ -1250,6 +1308,7 @@ export function BreadboardView({
                   selected={sel?.kind === "part" && sel.ref === p.ref}
                   bad={badRefs.has(p.ref)}
                   showLabels={(sel?.kind === "part" && sel.ref === p.ref) || pkg.style === "inline"}
+                  numbersOnly
                   color={GLOW_COLORS[comp?.params.color ?? ""]}
                   glow={glows?.[p.ref]}
                   pressed={switchState}
@@ -1272,60 +1331,8 @@ export function BreadboardView({
               }}
             />
           )}
-          {bb.wires.map((w) => {
-            // flat jumper wire, as pre-cut wires lie on a real board: a straight run, or an L
-            // bent at a right angle (along the rows from a, then down the column into b),
-            // never a diagonal; the automatic assembly keeps these runs clear of bodies, legs
-            // and other wires
-            const d = wirePath(xy(w.a), xy(w.b));
-            const selected = sel?.kind === "wire" && sel.id === w.id;
-            const dragging = wireDrag?.kind === "wire" && wireDrag.id === w.id && wireDrag.moved;
-            const grab = (e: ReactMouseEvent, end: "a" | "b" | "both") => {
-              if (readOnly) return;
-              e.stopPropagation();
-              setSel({ kind: "wire", id: w.id });
-              const [x0, y0] = toSvg(e);
-              startWireDrag(e, { kind: "wire", id: w.id, end, x0, y0, moved: false });
-            };
-            return (
-              <g
-                key={w.id}
-                data-bb-item={w.id}
-                className={readOnly ? undefined : "bb-wire-item"}
-                opacity={dragging ? 0.35 : 1}
-              >
-                {/* a wider, invisible stroke so the thin wire is easy to click */}
-                <path d={d} className="bb-wire-hit" onMouseDown={(e) => grab(e, "both")}>
-                  <title>
-                    Fio {w.a} → {w.b}: clique para selecionar, arraste para mover
-                  </title>
-                </path>
-                <path
-                  d={d}
-                  className={`bb-wire${selected ? " selected" : ""}`}
-                  stroke={WIRE_COLORS[w.color] ?? "#2e8b3c"}
-                  onMouseDown={(e) => grab(e, "both")}
-                />
-                {selected &&
-                  !readOnly &&
-                  (["a", "b"] as const).map((end) => {
-                    const [hx, hy] = xy(w[end]);
-                    return (
-                      <circle
-                        key={end}
-                        cx={hx}
-                        cy={hy}
-                        r={5}
-                        className="bb-wire-end"
-                        onMouseDown={(e) => grab(e, end)}
-                      >
-                        <title>Arraste esta ponta para outro furo ({w[end]})</title>
-                      </circle>
-                    );
-                  })}
-              </g>
-            );
-          })}
+          {/* the selected wire stays on top, so that its ends can be dragged */}
+          {bb.wires.filter((w) => sel?.kind === "wire" && sel.id === w.id).map(renderWire)}
           {wirePreview && wireDrag?.kind === "wire" && wirePreview.a && (
             <path
               d={wirePath(xy(wirePreview.a), xy(wirePreview.b))}
