@@ -56,6 +56,41 @@ def test_lock_forces_the_part(client):
     assert sel["locked"]
 
 
+def test_options_list_the_whole_family_with_their_fit(client):
+    body = client.post("/api/v1/design/DM-OSC", json={"spec": {}}).json()
+    diodes = body["options"]["D1"]  # a signal diode position
+    cats = {o["category"] for o in diodes}
+    assert {"diode.signal", "diode.rectifier"} <= cats, "every diode of the catalogue is listed"
+    assert all(o["fit"] != "incompativel" for o in diodes)
+    pa = client.post("/api/v1/design/DM-PA", json={"spec": {}}).json()
+    npn = pa["options"]["Q1"]
+    assert {o["category"] for o in npn} == {"bjt.npn", "bjt.pnp"}
+    assert all((o["fit"] == "incompativel") == (o["category"] == "bjt.pnp") for o in npn)
+    # recommended first, in the order of the automatic choice; then by fit
+    rec = [o["part_number"] for o in npn if o["recommended"]]
+    assert rec and [o["part_number"] for o in npn[: len(rec)]] == rec
+    assert rec == pa["result"]["candidates"]["Q1"][: len(rec)]
+    order = ["atende", "margem_menor", "nao_atende", "sem_dados", "incompativel"]
+    rest = [order.index(o["fit"]) for o in npn[len(rec) :]]
+    assert rest == sorted(rest)
+
+
+def test_lock_accepts_another_type_of_diode_but_not_another_polarity(client):
+    body = client.post("/api/v1/design/DM-OSC", json={"spec": {}}).json()
+    rect = next(o for o in body["options"]["D1"] if o["category"] == "diode.rectifier")
+    locked = client.post(
+        "/api/v1/design/DM-OSC", json={"spec": {}, "locks": {"D1": rect["id"]}}
+    ).json()
+    sel = next(c for c in locked["result"]["selection"] if c["designator"] == "D1")
+    assert sel["component_id"] == rect["id"] and sel["locked"]
+    # the locked position still shows the recommended parts
+    assert any(o["recommended"] for o in locked["options"]["D1"])
+    pa = client.post("/api/v1/design/DM-PA", json={"spec": {}}).json()
+    pnp = next(o for o in pa["options"]["Q1"] if o["category"] == "bjt.pnp")
+    r = client.post("/api/v1/design/DM-PA", json={"spec": {}, "locks": {"Q1": pnp["id"]}})
+    assert r.status_code == 422 and "não serve" in r.json()["detail"]
+
+
 def test_invalid_spec_is_422_with_message(client):
     r = client.post(
         "/api/v1/design/DM-RET1", json={"spec": {"topology": "meia_onda", "filter": "LC"}}

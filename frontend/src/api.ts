@@ -952,11 +952,18 @@ export interface DesignResult {
   bode_f?: Vector | null;
   bode?: Record<string, Vector>;
 }
+/** How a catalogue part meets the calculated stresses of a circuit position. */
+export type PartFit = "atende" | "margem_menor" | "nao_atende" | "sem_dados" | "incompativel";
 export interface CandidateOut {
   id: string;
   part_number: string;
   manufacturer: string;
   released: boolean;
+  category?: string;
+  fit?: PartFit;
+  reason?: string | null;
+  /** Ranked as adequate by the automatic choice (released and within the margins). */
+  recommended?: boolean;
 }
 export interface DesignOut {
   result: DesignResult;

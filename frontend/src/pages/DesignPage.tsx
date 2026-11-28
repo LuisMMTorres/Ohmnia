@@ -29,6 +29,7 @@ import {
   visible,
 } from "./design/specForm";
 import { CircuitView, SimResults, Waves } from "./design/DesignAnalysis";
+import { PartSelect } from "./design/PartSelect";
 
 type Tab =
   | "resultados"
@@ -601,20 +602,13 @@ function Components({
                 <td>{role.designator}</td>
                 <td>{role.description}</td>
                 <td>
-                  <select
-                    aria-label={`Componente de ${role.designator}`}
+                  <PartSelect
+                    ariaLabel={`Componente de ${role.designator}`}
+                    options={opts}
                     value={locks[role.designator] ?? ""}
-                    onChange={(e) => onLock(role.designator, e.target.value)}
-                  >
-                    <option value="">
-                      automático{chosen && !chosen.locked ? `: ${chosen.part_number}` : ""}
-                    </option>
-                    {opts.map((o) => (
-                      <option key={o.id} value={o.id}>
-                        {o.part_number} ({o.manufacturer}){o.released ? "" : " · não revisado"}
-                      </option>
-                    ))}
-                  </select>
+                    onChange={(id) => onLock(role.designator, id)}
+                    autoLabel={`automático${chosen && !chosen.locked ? `: ${chosen.part_number}` : ""}`}
+                  />
                   {chosen && !chosen.released && (
                     <span className="badge a_verificar">não revisado</span>
                   )}

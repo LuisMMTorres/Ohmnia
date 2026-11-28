@@ -36,6 +36,7 @@ from circuitos.reports import bom, kicad, outputs, pdf, report
 from circuitos.reports.sections import SimWaves
 from circuitos.schematic.model import Schematic
 from circuitos.selection.derating import DeratingPolicy
+from circuitos.selection.select import FitStatus, assess, family_of
 
 router = APIRouter(prefix="/api/v1/design")
 
@@ -68,13 +69,21 @@ class CandidateOut(BaseModel):
     part_number: str
     manufacturer: str
     released: bool
+    category: str = ""
+    # how the part meets the calculated stresses of the position (same margins as the
+    # automatic choice); "incompativel" parts (other polarity or device kind) cannot be locked
+    fit: FitStatus = "atende"
+    reason: str | None = None
+    # among the released parts the automatic choice ranked as adequate (best first)
+    recommended: bool = False
 
 
 class DesignOut(BaseModel):
     result: DesignResult
     circuit: Circuit
     netlist: str
-    options: dict[str, list[CandidateOut]]  # designator → every catalogue part of the category
+    # designator → every catalogue part of the family, recommended first, each with its fit
+    options: dict[str, list[CandidateOut]]
 
 
 class SimTrace(BaseModel):
@@ -160,23 +169,69 @@ def _design(
 
 @router.post("/{module_id}")
 def design(request: Request, module_id: str, body: DesignIn) -> DesignOut:
-    _, _, result, _, circuit = _design(request, module_id, body)
-    repo = _repo(request)
-    options = {
-        r.designator: [
-            CandidateOut(
-                id=c.id,
-                part_number=c.part_number,
-                manufacturer=c.manufacturer,
-                released=c.selectable,
-            )
-            for c in repo.search(category=r.category)
-        ]
-        for r in result.roles
-    }
+    module, spec, result, _, circuit = _design(request, module_id, body)
+    options = _options(_repo(request), module, spec, result, body.policy)
     return DesignOut(
         result=result, circuit=circuit, netlist=netlist_with_analysis(circuit), options=options
     )
+
+
+_FIT_ORDER = {"atende": 0, "margem_menor": 1, "nao_atende": 2, "sem_dados": 3, "incompativel": 4}
+
+
+def _options(
+    repo: ComponentRepository,
+    module: TopologyModule,
+    spec: BaseModel,
+    result: DesignResult,
+    policy_name: Literal["didatico", "industrial"],
+) -> dict[str, list[CandidateOut]]:
+    """Every catalogue part of each position's family, so the user can lock any of them.
+
+    The parts the automatic choice ranked come first, in its order; then the others by how
+    they meet the calculated stresses. Unreleased parts are listed too (rule 5 only keeps them
+    out of the automatic choice).
+    """
+    policy = DeratingPolicy.from_preset(policy_name)
+    accepts = getattr(module, "accepts", None)
+    out: dict[str, list[CandidateOut]] = {}
+    for role in result.roles:
+        stresses = [s for s in result.stresses if s.designator == role.designator]
+        required = module.required_ratings(role)
+        ranked = result.candidates.get(role.designator, [])
+        items: list[CandidateOut] = []
+        for c in repo.search(category=family_of(role.category)):
+            fit = assess(
+                c,
+                role.category,
+                stresses,
+                policy,
+                required,
+                accepted=accepts is None or bool(accepts(spec, role, c)),
+            )
+            items.append(
+                CandidateOut(
+                    id=c.id,
+                    part_number=c.part_number,
+                    manufacturer=c.manufacturer,
+                    released=c.selectable,
+                    category=c.category,
+                    fit=fit.status,
+                    reason=fit.reason,
+                    recommended=c.part_number in ranked and c.selectable,
+                )
+            )
+        items.sort(
+            key=lambda o: (
+                not o.recommended,
+                ranked.index(o.part_number) if o.recommended else 0,
+                _FIT_ORDER[o.fit],
+                not o.released,
+                o.part_number,
+            )
+        )
+        out[role.designator] = items
+    return out
 
 
 def _simulate(

@@ -386,3 +386,10 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
 - Multímetro ideal de tensão/corrente, CC/CA eficaz e HOLD; resistência/continuidade ficam
   para a próxima etapa. Esta etapa contínua é analógica; firmware/CLP continuam em Simular.
 - Entrega para revisão: [validacao/bancada-interativa.md](validacao/bancada-interativa.md).
+
+## Análise de Projetos — qualquer componente da família (28/11/2026)
+
+- A lista de cada posição traz toda a família do catálogo, com os recomendados no topo e as demais
+  agrupadas por atendimento às especificações (com o motivo); tipos que o circuito não aceita
+  (outra polaridade, outro dispositivo) aparecem desabilitados.
+- Entrega para revisão: [validacao/familia-completa-analise-projetos.md](validacao/familia-completa-analise-projetos.md).
