@@ -24,7 +24,7 @@ from circuitos.core.calc import CalcLog, CalcStep, record
 from circuitos.core.errors import CircuitosError
 from circuitos.core.units import Q_, QuantityModel, format_eng, parse_unit
 from circuitos.selection.derating import DeratingPolicy
-from circuitos.selection.select import check, rank
+from circuitos.selection.select import check, fits_position, rank
 from circuitos.thermal import heatsink as hs
 from circuitos.thermal.steady import junction_temperature, required_heatsink
 
@@ -161,9 +161,10 @@ def run(
         if role.designator not in locks:
             continue
         rec = lookup(locks[role.designator])
-        if not rec.category.startswith(role.category.split(".", 1)[0]):
+        if not fits_position(role.category, rec.category):
             raise CircuitosError(
-                f"{rec.part_number} ({rec.category}) não serve para {role.designator}"
+                f"{rec.part_number} ({rec.category}) não serve para {role.designator} "
+                f"({role.category})"
             )
         chosen[role.designator] = rec
         choices[role.designator] = _choice(role, rec, locked=True)
@@ -254,6 +255,16 @@ def run(
                 reselect = True
         if not reselect:
             break
+    # A locked position still lists what the automatic choice would rank, so the user can
+    # compare the part held by hand with the recommended ones.
+    accepts = getattr(module, "accepts", None)
+    for role in roles:
+        if role.designator in locks:
+            pool = [
+                r for r in catalogue(role.category) if accepts is None or accepts(spec, role, r)
+            ]
+            ranked = rank(pool, basis[role.designator], policy, module.required_ratings(role))
+            candidates[role.designator] = [r.record.part_number for r in ranked[:10]]
     warnings = lock_warnings + select_warnings
     # Optional last step of a module that needs the catalogue beyond the selected roles
     # (custom magnetics designed on catalogue cores): it may add steps, summary values,
@@ -272,6 +283,18 @@ def run(
             continue
         role_margins = check(part, _role_stresses(analysis.stresses, role), policy)
         margins += role_margins
+        missing = [
+            k for k in module.required_ratings(role) if k not in {m.parameter for m in role_margins}
+        ]
+        if role.designator in locks and missing:
+            warnings.append(
+                DesignWarning(
+                    code="sem_dados_margem",
+                    message=f"{role.designator}: o datasheet de {part.part_number} não traz "
+                    f"{', '.join(missing)}; essas margens não foram conferidas.",
+                    parts=[str(part.id)],
+                )
+            )
         if any(m.status == "violado" for m in role_margins):
             warnings.append(
                 DesignWarning(

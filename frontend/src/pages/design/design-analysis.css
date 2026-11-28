@@ -90,3 +90,25 @@ button.link {
   cursor: pointer;
   font-size: inherit;
 }
+/* part picker of a circuit position: the whole family, grouped by fit */
+.part-select {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+}
+.part-select select {
+  max-width: 100%;
+}
+.part-select .badge {
+  white-space: normal;
+}
+.badge.fit-margem_menor,
+.badge.fit-sem_dados {
+  color: #8a5a00;
+  border-color: #c08a1e;
+}
+.badge.fit-nao_atende {
+  color: var(--error-text);
+  border-color: var(--error-text);
+}

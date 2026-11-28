@@ -15,6 +15,7 @@ import { COLORS, SignalPlot, type Trace } from "../../components/SignalPlot";
 import { formatEng } from "../../format";
 import { matchElement, probeText, sameProbe } from "./circuitMatch";
 import { resample, resampleLog, tracePeriod } from "./specForm";
+import { PartSelect } from "./PartSelect";
 import "./design-analysis.css";
 
 function fmt(q: Quantity | null | undefined, digits = 4): string {
@@ -627,15 +628,8 @@ function ElementPanel({
       )}
       {el.role && (
         <label>
-          Modelo (componente do catálogo de {el.role})
-          <select value={lock} onChange={(e) => onLock(e.target.value)}>
-            <option value="">automático</option>
-            {options.map((o) => (
-              <option key={o.id} value={o.id}>
-                {o.part_number} ({o.manufacturer}){o.released ? "" : " · não revisado"}
-              </option>
-            ))}
-          </select>
+          Modelo (qualquer componente da família no catálogo)
+          <PartSelect options={options} value={lock} onChange={onLock} />
         </label>
       )}
       {el.edit === "none" && !el.role && (

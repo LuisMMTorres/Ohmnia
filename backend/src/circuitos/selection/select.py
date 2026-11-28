@@ -9,6 +9,7 @@ from __future__ import annotations
 import math
 from collections.abc import Iterable, Sequence
 from dataclasses import dataclass
+from typing import Literal
 
 from circuitos.components.models import ComponentRecord, Parameter
 from circuitos.core.units import Q_, QuantityModel, parse_unit
@@ -108,3 +109,70 @@ def rank(
         ranked.append(Ranked(record=record, checks=checks, score=score))
     ranked.sort(key=lambda r: (r.score, r.record.part_number))
     return ranked
+
+
+# ---------------------------------------------------------------- whole family for manual choice
+
+FitStatus = Literal["atende", "margem_menor", "nao_atende", "sem_dados", "incompativel"]
+
+# Families whose subtypes take each other's place in a circuit position: a fast, Schottky or
+# signal diode where a rectifier was asked for. In the other families the subtype is the
+# polarity or the kind of device (NPN/PNP, N/P channel, SCR/TRIAC/DIAC), which the circuit
+# drawn for the position cannot take.
+INTERCHANGEABLE_FAMILIES = frozenset({"diode"})
+
+
+def family_of(category: str) -> str:
+    """Top level of a catalogue category: "diode.signal" → "diode"."""
+    return category.split(".", 1)[0]
+
+
+def fits_position(role_category: str, part_category: str) -> bool:
+    """Whether a part of ``part_category`` can be placed where ``role_category`` is asked."""
+    if part_category == role_category or part_category.startswith(f"{role_category}."):
+        return True
+    fam = family_of(role_category)
+    if family_of(part_category) != fam or fam not in INTERCHANGEABLE_FAMILIES:
+        return False
+    # a Zener position works by its breakdown voltage: only a Zener serves there
+    return role_category != "diode.zener"
+
+
+@dataclass(frozen=True)
+class Fit:
+    """How a catalogue part of the family meets one circuit position (manual choice)."""
+
+    status: FitStatus
+    reason: str | None = None
+
+
+def assess(
+    record: ComponentRecord,
+    role_category: str,
+    stresses: Sequence[Stress],
+    policy: DeratingPolicy,
+    required_keys: Sequence[str],
+    *,
+    accepted: bool = True,
+) -> Fit:
+    """Fit of a part the user may lock by hand, with the same margins as ``rank``.
+
+    ``accepted`` is the module's own choice criterion (supply voltage of an op-amp, Darlington
+    or not, data its model needs); a part outside it is shown as not meeting the design.
+    """
+    if not fits_position(role_category, record.category):
+        return Fit("incompativel", f"tipo {record.category}; a posição pede {role_category}")
+    checks = check(record, stresses, policy)
+    have = {c.parameter for c in checks}
+    violated = [c.parameter for c in checks if c.status == "violado"]
+    if violated:
+        return Fit("nao_atende", "não suporta o esforço calculado: " + ", ".join(violated))
+    missing = [k for k in required_keys if k not in have]
+    if missing:
+        return Fit("sem_dados", "datasheet sem " + ", ".join(missing) + " para conferir")
+    if not accepted:
+        return Fit("nao_atende", "fora dos critérios de escolha deste projeto")
+    low = [c.parameter for c in checks if c.status == "atencao"]
+    if low:
+        return Fit("margem_menor", "abaixo do fator de projeto em " + ", ".join(low))
+    return Fit("atende")
