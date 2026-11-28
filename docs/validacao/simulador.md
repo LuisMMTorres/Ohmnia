@@ -126,6 +126,26 @@ Capturas de tela em `capturas/fase7/` (13 imagens, uma por etapa).
   erro no eixo logarítmico. O modo de visualização agora é derivado da análise atual.
 - O espectro de ruído vinha sem unidade. Agora é V/√Hz e o eixo mostra nV/√Hz.
 
+## Pinos de alimentação do ampop (V+ e V−)
+
+O símbolo do ampop ganhou os pinos **V+** (em cima) e **V−** (embaixo), os mesmos que precisam ser
+ligados na protoboard. Cada pino mostra o nome (IN−, IN+, OUT, V+, V−) e, quando a peça tem
+pinagem (transcrita do datasheet ou o DIP-8 genérico da protoboard), o número do pino
+(ex.: LM741: 2, 3, 6, 7 e 4).
+
+- **Pinos ligados**: a saturação acompanha a tensão de cada pino (a mesma distância do trilho do
+  modelo) e as fontes fornecem a corrente de saída (V+ quando a saída fornece corrente, V− quando
+  absorve) mais a corrente quiescente (IQ típico do datasheet; no ampop genérico, o parâmetro
+  opcional "Corrente quiescente"). A protoboard confere esses pinos pelos nós do esquemático.
+- **Pinos soltos** (circuitos salvos antes desta mudança): continua a fonte ideal implícita com os
+  parâmetros "Alimentação +" e "Alimentação −", e a simulação avisa que os pinos estão sem ligação.
+- Os pinos V+ e V− só se ligam a um fio que **termina** neles (ou faz canto neles); um fio antigo que
+  apenas passa por cima do ponto não é ligado por acidente.
+- Testes: `tests/unit/schematic/test_opamp_supply_pins.py` e
+  `test_opamp_supply_pins_draw_the_datasheet_quiescent_current` em `test_parts.py`.
+- Limitação: a distância da saturação ao trilho vem do datasheet (ou 1,5 V no genérico) e não muda
+  com a tensão de alimentação real; o PSRR não entra no modelo do simulador livre.
+
 ## Limitações conhecidas
 
 - **Sobressinal pela medida do osciloscópio:** os níveis alto e baixo vêm do histograma do sinal,

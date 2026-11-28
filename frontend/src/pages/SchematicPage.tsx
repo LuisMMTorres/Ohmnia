@@ -250,6 +250,17 @@ export function SchematicWorkspace({
   }, [activeStep]);
   const bbSpec = useBreadboardSpec();
   const { resolved } = useResolved(sch);
+  // package pin number of each symbol pin (the op-amp symbol prints them, as on the breadboard)
+  const pinNumbers = useMemo(() => {
+    const out: Record<string, Record<string, string>> = {};
+    for (const p of resolved?.parts ?? []) {
+      if (p.kind !== "opamp" || (p.origin !== "datasheet" && p.origin !== "generico")) continue;
+      const byPin: Record<string, string> = {};
+      for (const [pkgPin, role] of Object.entries(p.pinmap)) byPin[role] = pkgPin;
+      out[p.ref] = byPin;
+    }
+    return out;
+  }, [resolved]);
   const fileRef = useRef<HTMLInputElement>(null);
   const [cosimExamples, setCosimExamples] = useState<
     { name: string; description: string; schematic: Schematic }[]
@@ -1064,6 +1075,7 @@ export function SchematicWorkspace({
                 burnt={burnt}
                 onNotice={setNotice}
                 onOperate={operate}
+                pinNumbers={pinNumbers}
               />
 
               <aside className="panel properties" aria-label="Propriedades">
