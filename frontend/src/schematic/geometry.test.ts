@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { junctions, nextRef, pinPositions, route, simplify, transform } from "./geometry";
 import { emptySchematic, type SymbolDef } from "./types";
+import { openPins } from "./editing";
 
 const R: SymbolDef = {
   kind: "resistor",
@@ -105,5 +106,49 @@ describe("geometry", () => {
       },
     ];
     expect(nextRef(sch, "R")).toBe("R2");
+  });
+});
+
+const OPAMP: SymbolDef = {
+  ...R,
+  kind: "opamp",
+  prefix: "X",
+  pins: [
+    { name: "inn", dx: -3, dy: -1 },
+    { name: "inp", dx: -3, dy: 1 },
+    { name: "out", dx: 3, dy: 0 },
+    { name: "vcc", dx: 0, dy: -2 },
+    { name: "vee", dx: 0, dy: 2 },
+  ],
+};
+
+describe("op-amp supply pins", () => {
+  const u = {
+    id: "u",
+    kind: "opamp",
+    ref: "U1",
+    x: 0,
+    y: 0,
+    rot: 0 as const,
+    mirror: false,
+    params: {},
+    part_id: null,
+  };
+  it("a wire crossing V+ in the middle of a segment does not join it (no dot, pin open)", () => {
+    const sch = {
+      ...emptySchematic(),
+      components: [u],
+      wires: [{ id: "w", points: [[-3, -2] as [number, number], [3, -2] as [number, number]] }],
+    };
+    expect(junctions(sch, { opamp: OPAMP })).toEqual([]);
+    expect(openPins(sch, { opamp: OPAMP }).map((p) => p.pin)).toContain("vcc");
+  });
+  it("a wire ending on V+ joins it", () => {
+    const sch = {
+      ...emptySchematic(),
+      components: [u],
+      wires: [{ id: "w", points: [[0, -2] as [number, number], [0, -5] as [number, number]] }],
+    };
+    expect(openPins(sch, { opamp: OPAMP }).map((p) => p.pin)).not.toContain("vcc");
   });
 });

@@ -27,6 +27,13 @@ export function pinDefs(c: Component, sym: SymbolDef | undefined): PinDef[] {
   ];
 }
 
+/** Supply pins drawn on a symbol whose voltage is also a parameter (op-amp V+ and V−), as
+ * SUPPLY_PINS in the backend library: loose, they take an implicit ideal supply; they join a
+ * wire only at its end or corner, never in the middle of a segment. */
+export const SUPPLY_PINS: Record<string, string[]> = { opamp: ["vcc", "vee"] };
+
+export const isSupplyPin = (kind: string, pin: string) => SUPPLY_PINS[kind]?.includes(pin) ?? false;
+
 export function pinPositions(c: Component, sym: SymbolDef | undefined): Record<string, Point> {
   const out: Record<string, Point> = {};
   for (const p of pinDefs(c, sym)) {
@@ -83,9 +90,9 @@ export function junctions(sch: Schematic, lib: Record<string, SymbolDef>): Point
   const bump = (p: Point, n = 1) => count.set(key(p), (count.get(key(p)) ?? 0) + n);
   const anchors: Point[] = [];
   for (const c of sch.components) {
-    for (const p of Object.values(pinPositions(c, lib[c.kind]))) {
+    for (const [name, p] of Object.entries(pinPositions(c, lib[c.kind]))) {
       bump(p);
-      anchors.push(p);
+      if (!isSupplyPin(c.kind, name)) anchors.push(p);
     }
   }
   for (const w of sch.wires) {

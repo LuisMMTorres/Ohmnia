@@ -2,8 +2,10 @@
 
 Legs are keyed ``"Q1:3"`` (designator and package pin). A leg's net is the schematic node of the
 symbol pin it carries. Supply pins of integrated circuits (V+, V-) are not drawn in the schematic
-symbol: their voltage is a parameter (``vcc``, ``vee``). They join implicit supply nets, fed by
-an implicit bench supply ``ALIM`` (``+``, ``-``, ``0``) that the assembly must include.
+symbol of older circuits: their voltage is a parameter (``vcc``, ``vee``). They join implicit
+supply nets, fed by an implicit bench supply ``ALIM`` (``+``, ``-``, ``0``) that the assembly must
+include. The op-amp symbol now has V+ and V− pins: when they are wired in the schematic, the legs
+take the schematic nodes like any other pin, and no implicit supply is added for them.
 """
 
 from __future__ import annotations
@@ -13,8 +15,9 @@ from dataclasses import dataclass, field
 
 from circuitos.breadboard.pinout import Resolved, resolve
 from circuitos.components.models import ComponentRecord
+from circuitos.schematic.library import is_supply_pin
 from circuitos.schematic.model import Schematic
-from circuitos.schematic.netlist import connectivity
+from circuitos.schematic.netlist import connectivity, pin_is_loose
 
 ALIM = "ALIM"
 
@@ -65,7 +68,8 @@ def build(sch: Schematic, records: Mapping[str, ComponentRecord | None]) -> Refe
         if r.package is None:
             continue
         for pin, role in r.pinmap.items():
-            if role in ("vcc", "vee"):
+            wired = is_supply_pin(comp.kind, role) and not pin_is_loose(conn, comp.ref, role)
+            if role in ("vcc", "vee") and not wired:
                 v = r.supplies.get(role, 0.0)
                 if v == 0:
                     nets[key(comp.ref, pin)] = "0"
