@@ -17,6 +17,7 @@ from circuitos.components.models import ComponentRecord, Parameter
 from circuitos.core.calc import CalcLog
 from circuitos.core.units import Q_, parse_unit
 from circuitos.design import devmodels
+from circuitos.design.devmodels import quantity
 from circuitos.design.opamp import OpAmp, opamp_model
 from circuitos.devices import igbt as igbt_dev
 from circuitos.devices import thyristor
@@ -239,16 +240,44 @@ def jfet(rec: ComponentRecord, ref: str, log: CalcLog, p_channel: bool = False) 
     return PartModel(name, m.spice(name, p_channel), review_warning(rec, ref) + w)
 
 
-def opamp_subckt(name: str, m: OpAmp) -> str:
-    """Macromodel of the design modules (slew-rate limit and output clamp) as a subcircuit."""
-    lines = [f".subckt {name} inp inn out", *m.nonlinear_lines("o", "inp", "inn", "out"), ".ends"]
-    return "\n".join(lines)
+def opamp_subckt(
+    name: str, m: OpAmp, rails: tuple[float, float] | None = None, iq: float = 0.0
+) -> str:
+    """Macromodel of the design modules (slew-rate limit and output clamp) as a subcircuit.
+
+    With ``rails`` = (V+, V−) the volts the model ``m`` was built for, the subcircuit has the
+    supply pins ``vp vn``: the swing keeps the same distance from each pin's voltage and the
+    output and quiescent currents are drawn from them (schematic symbol with V+ and V−).
+    """
+    if rails is None:
+        body = m.nonlinear_lines("o", "inp", "inn", "out")
+        return "\n".join([f".subckt {name} inp inn out", *body, ".ends"])
+    vcc, vee = rails
+    drop_hi = vcc - m.v_hi if math.isfinite(m.v_hi) else -1e6
+    drop_lo = m.v_lo - vee if math.isfinite(m.v_lo) else -1e6
+    body = m.nonlinear_lines("o", "inp", "inn", "out", ("vp", "vn", drop_hi, drop_lo), iq)
+    return "\n".join([f".subckt {name} inp inn out vp vn", *body, ".ends"])
 
 
-def opamp(rec: ComponentRecord, ref: str, vcc: float, vee: float, log: CalcLog) -> PartModel:
+def opamp_iq(rec: ComponentRecord) -> float:
+    """Quiescent supply current per amplifier (typical, else maximum) in A; 0 when absent."""
+    q = quantity(rec, "IQ", ("typ", "max"))
+    return 0.0 if q is None else float(q.m_as("A"))
+
+
+def opamp(
+    rec: ComponentRecord,
+    ref: str,
+    vcc: float,
+    vee: float,
+    log: CalcLog,
+    supply_pins: bool = False,
+) -> PartModel:
     m, w = opamp_model(rec, vcc, vee, log, ref)
-    name = f"OA_{digest(rec.part_number + opamp_subckt('x', m))}"
-    return PartModel(name, opamp_subckt(name, m), review_warning(rec, ref) + w)
+    rails, iq = ((vcc, vee), opamp_iq(rec)) if supply_pins else (None, 0.0)
+    text = opamp_subckt("x", m, rails, iq)
+    name = f"OA_{digest(rec.part_number + text)}"
+    return PartModel(name, opamp_subckt(name, m, rails, iq), review_warning(rec, ref) + w)
 
 
 def thyristor_subckt(

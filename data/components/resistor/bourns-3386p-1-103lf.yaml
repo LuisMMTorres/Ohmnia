@@ -2,6 +2,7 @@
 part_number: 3386P-1-103LF
 category: resistor.variable
 schema_version: '1.0'
+catalog_revision: 2
 manufacturer: Bourns
 family: '3386'
 package: 3386P (trimpot quadrado 3/8", ajuste por cima)
@@ -12,6 +13,7 @@ notes:
 datasheets:
 - id: ds1
   manufacturer: Bourns
+  url: https://www.bourns.com/docs/Product-Datasheets/3386.pdf
   sha256: 2b4a3fb768cfe410a96275377ef45214ec33dc0873d91d44d31e6119e8ea06bb
 review:
   status: rascunho
@@ -59,3 +61,24 @@ attributes:
     value: Trimpot de volta única, cermet, selado (ajuste por cima, modelo P)
     status: extraido
     source: {page: 1, location: Features, excerpt: "Single Turn / Cermet / Industrial / Sealed"}
+
+# Pinagem para a protoboard, transcrita da mesma folha de dados (2026-11-28). status extraido:
+# falta a sua revisão.
+pinout:
+  package: trimpot-3386p
+  pins:
+  - pin: "1"
+    name: "CCW"
+    role: a
+  - pin: "2"
+    name: "WIPER"
+    role: w
+  - pin: "3"
+    name: "CW"
+    role: b
+  source:
+    datasheet_id: ds1
+    page: 2
+    location: "Product Dimensions 3386P e diagrama CCW 1 / 2 WIPER / 3 CW"
+  status: extraido
+  note: "Posição 0 do cursor no simulador = pino 1 (fim do giro anti-horário)."

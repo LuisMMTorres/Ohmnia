@@ -17,6 +17,7 @@ from circuitos.cosim.firmware import engine_status
 from circuitos.cosim.firmware_image import AVR_FLASH, FIRMWARE_BOARDS, FirmwareImage, load_image
 from circuitos.reports import kicad
 from circuitos.schematic import stress
+from circuitos.schematic.cosim_symbols import symbol_takes
 from circuitos.schematic.drive_symbols import max_step as drive_max_step
 from circuitos.schematic.importer import import_netlist
 from circuitos.schematic.library import ANALYSES, SYMBOLS
@@ -295,6 +296,8 @@ def parts(request: Request, kind: str, text: str | None = None) -> list[PartOut]
     out: list[PartOut] = []
     for cat in sym.catalogue:
         for r in repo.search(category=cat, text=text):
+            if not symbol_takes(kind, r):
+                continue
             summary, colour = _part_summary(r)
             out.append(
                 PartOut(

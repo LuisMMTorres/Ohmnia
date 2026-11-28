@@ -393,3 +393,14 @@ Legenda: ✅ concluído · 🔄 em andamento · 👀 aguardando revisão do usu�
   agrupadas por atendimento às especificações (com o motivo); tipos que o circuito não aceita
   (outra polaridade, outro dispositivo) aparecem desabilitados.
 - Entrega para revisão: [validacao/familia-completa-analise-projetos.md](validacao/familia-completa-analise-projetos.md).
+
+## Biblioteca do esquemático — 555, potenciômetros e trimpots (28/11/2026)
+
+- Menu **Circuitos integrados** (ampop e o novo **Temporizador 555**, modelo comportamental do
+  TI NE555 SLFS022K); todos os menus da biblioteca começam fechados.
+- Potenciômetro e novo **Trimpot** no menu Passivos, logo após o resistor, com símbolo de
+  resistor com seta (potenciômetro) e com barra de ajuste (trimpot).
+- Peças reais com pinagem transcrita: Bourns 3386P, 3362P (novo), 3296W, PTV09A e PDB181; o
+  genérico é desenhado como a peça de referência (PTV09A e 3386P).
+- Desenho realista na protoboard e nomes dos pinos dos CIs escritos na perpendicular.
+- Entrega para revisão: [validacao/biblioteca-555-potenciometros.md](validacao/biblioteca-555-potenciometros.md).

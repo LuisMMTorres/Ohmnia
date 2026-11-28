@@ -191,3 +191,21 @@ def test_generic_p_jfet_is_depletion():
     b.analysis("op")
     op = SchematicPlan(b.sch).execute(make_backend()).plot("op")
     assert (op["v(dj)"].data[0] + 15) / 100 == pytest.approx(4e-3, rel=1e-3)
+
+
+@pytest.mark.ngspice
+def test_opamp_supply_pins_draw_the_datasheet_quiescent_current(parts):
+    """LM741C with V+ and V− wired to ±15 V and no load: each supply delivers the catalogue IQ
+    (typical; TI SNOSC25D, p. 6) plus the output current."""
+    p = parts["LM741CP"]
+    b = Builder("741 alimentado pelos pinos")
+    b.add("vdc", "VP", ["vp", "0"], dc="15")
+    b.add("vdc", "VN", ["vn", "0"], dc="-15")
+    b.add("opamp", "U1", ["0", "0", "o", "vp", "vn"], part_id=str(p.id))
+    b.add("resistor", "RL", ["o", "0"], value="1meg")
+    b.analysis("op")
+    op = SchematicPlan(b.sch, records(p)).execute(make_backend()).plot("op")
+    iq = p.parameters["IQ"].typ * 1e-3
+    io = op["v(o)"].data[0] / 1e6
+    assert -op["i(vp)"].data[0] == pytest.approx(iq + max(io, 0), rel=1e-3)
+    assert op["i(vn)"].data[0] == pytest.approx(iq + max(-io, 0), rel=1e-3)

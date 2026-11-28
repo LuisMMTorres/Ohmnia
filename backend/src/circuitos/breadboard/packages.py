@@ -384,13 +384,72 @@ PACKAGES: dict[str, Package] = {
             body="pot",
             note="Cursor no terminal do meio.",
         ),
+        # potentiometers and trimpots of real parts (dimensions from the Bourns datasheets)
+        Package(
+            "pot-9mm",
+            "Potenciômetro rotativo de 9 mm (Bourns PTV09A, terminais na horizontal)",
+            "inline",
+            ("1", "2", "3"),
+            pitch=2,
+            body="pot-9mm",
+            note="Terminais 1, 2 (cursor) e 3 a 5,0 mm (Bourns PTV09, p. 2), dobrados para "
+            "dois furos (5,08 mm); as duas abas de fixação ficam fora da protoboard.",
+        ),
+        Package(
+            "pot-17mm",
+            "Potenciômetro rotativo de 17 mm (Bourns PDB181-K, pinos verticais)",
+            "inline",
+            ("1", "2", "3"),
+            pitch=2,
+            body="pot-17mm",
+            note="Terminais 1, 2 (cursor) e 3 a 5,0 mm (Bourns PDB18, p. 1), dobrados para dois "
+            "furos (5,08 mm); as abas de fixação ficam fora da protoboard.",
+        ),
+        Package(
+            "trimpot-3386p",
+            'Trimpot quadrado de 3/8" com ajuste por cima (Bourns 3386P)',
+            "inline",
+            ("1", "2", "3"),
+            pitch=1,
+            body="trimpot-3386",
+            note="Pinos 1 e 3 a 5,08 mm e o 2 (cursor) deslocado 2,54 mm, em triângulo (Bourns "
+            "3386, p. 2): ocupam três fileiras seguidas da protoboard.",
+        ),
+        Package(
+            "trimpot-3362p",
+            'Trimpot quadrado de 1/4" com ajuste por cima (Bourns 3362P)',
+            "inline",
+            ("1", "2", "3"),
+            pitch=1,
+            body="trimpot-3362",
+            note="Pinos 1, 2 (cursor) e 3 a 2,54 mm, o do meio deslocado (Bourns 3362, p. 1): "
+            "ocupam três fileiras seguidas da protoboard.",
+        ),
+        Package(
+            "trimpot-3296w",
+            'Trimpot multivoltas de 3/8" com ajuste por cima (Bourns 3296W)',
+            "inline",
+            ("1", "2", "3"),
+            pitch=1,
+            body="trimpot-3296",
+            note="Pinos 1, 2 (cursor) e 3 em linha a 2,54 mm (Bourns 3296, p. 1); ajuste pelo "
+            "parafuso de latão (25 voltas).",
+        ),
     )
 }
 # Fase 11: boards, PLC, modules and plants stay off the board, wired by their terminals
 from circuitos.schematic.cosim_symbols import COSIM_SYMBOLS  # noqa: E402
 
 for _s in COSIM_SYMBOLS:
-    if _s.kind not in ("lm35", "potentiometer", "tact_switch", "tact_switch4", "push_nc"):
+    if _s.kind not in (
+        "lm35",
+        "potentiometer",
+        "trimpot",
+        "timer555",
+        "tact_switch",
+        "tact_switch4",
+        "push_nc",
+    ):
         PACKAGES[f"mod-{_s.kind}"] = _offboard(
             f"mod-{_s.kind}", _s.label, tuple(pin.name for pin in _s.pins), "module",
             "Fora da placa: ligue cada terminal por fio ao furo indicado.",

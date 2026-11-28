@@ -46,6 +46,38 @@ function zigzag(x0: number, x1: number): ReactNode {
   return poly(pts, "z");
 }
 
+/**
+ * Potentiometer and trimpot (IEEE 315 / IEC 60617 forms with the zigzag resistor of the
+ * editor): the wiper w comes from below and touches the resistor at its middle. The
+ * potentiometer's wiper ends in an arrowhead (adjustable contact, operated by the user); the
+ * trimpot's ends in a short bar across it (pre-set adjustment, set with a tool). Terminals 1
+ * (a, counter-clockwise end) and 3 (b, clockwise end) are numbered as on the real parts.
+ */
+function variableResistor(preset: boolean): ReactNode[] {
+  const tip = 0.42; // just under the zigzag (amplitude 0.35)
+  return [
+    line(-2, 0, -1.2, 0, "a"),
+    zigzag(-1.2, 1.2),
+    line(1.2, 0, 2, 0, "b"),
+    preset ? line(0, 2, 0, tip, "w") : line(0, 2, 0, tip + 0.45, "w"),
+    preset
+      ? line(-0.45, tip, 0.45, tip, "bar")
+      : poly(
+          [
+            [-0.3, tip + 0.5],
+            [0, tip],
+            [0.3, tip + 0.5],
+            [-0.3, tip + 0.5],
+          ],
+          "head",
+          true,
+        ),
+    text(-1.75, 0.55, "1", 0.45, "n1"),
+    text(1.75, 0.55, "3", 0.45, "n3"),
+    text(0.4, 1.6, "2", 0.45, "n2"),
+  ];
+}
+
 function coil(x0: number, x1: number, vertical = false, offset = 0): ReactNode {
   const n = 4;
   const w = (x1 - x0) / n;
@@ -351,19 +383,78 @@ function glowHalo(cx: number, glow: Glow | undefined, r: number): ReactNode[] {
   ];
 }
 
+/** Small pin text: the pin name inside the body or its number next to the pin end. */
+function pinText(
+  x: number,
+  y: number,
+  t: string | undefined,
+  key: string,
+  kind: "pin-name" | "pin-num",
+): ReactNode {
+  if (!t) return null;
+  return (
+    <text
+      key={key}
+      x={u(x)}
+      y={u(y)}
+      textAnchor="middle"
+      dominantBaseline="central"
+      className={`sym-text ${kind}`}
+    >
+      {t}
+    </text>
+  );
+}
+
+/** Op-amp: inputs, output and the V+ / V− supply pins, each with its name and, when the part
+ * has a pinout (datasheet or the generic DIP-8 of the breadboard), its pin number. */
+function opampBody(numbers: Record<string, string> | undefined): ReactNode[] {
+  const n = numbers ?? {};
+  return [
+    poly(
+      [
+        [-2, -2],
+        [-2, 2],
+        [2, 0],
+        [-2, -2],
+      ],
+      "t",
+    ),
+    line(-3, -1, -2, -1, "n"),
+    line(-3, 1, -2, 1, "p"),
+    line(2, 0, 3, 0, "o"),
+    line(0, -1, 0, -2, "vp"),
+    line(0, 1, 0, 2, "vn"),
+    pinText(-1.25, -1, "IN−", "mn", "pin-name"),
+    pinText(-1.25, 1, "IN+", "mp", "pin-name"),
+    pinText(0.8, 0, "OUT", "mo", "pin-name"),
+    pinText(-0.4, -0.55, "V+", "mvp", "pin-name"),
+    pinText(-0.4, 0.55, "V−", "mvn", "pin-name"),
+    pinText(-2.5, -1.4, n.inn, "nn", "pin-num"),
+    pinText(-2.5, 0.6, n.inp, "np", "pin-num"),
+    pinText(2.5, -0.4, n.out, "no", "pin-num"),
+    pinText(0.4, -1.6, n.vcc, "nvp", "pin-num"),
+    pinText(0.4, 1.6, n.vee, "nvn", "pin-num"),
+  ];
+}
+
 export function SymbolBody({
   c,
   sym,
   glow,
+  pinNumbers,
 }: {
   c: Component;
   sym: SymbolDef | undefined;
   glow?: Glow;
+  /** Symbol pin -> package pin number of the chosen part (op-amp). */
+  pinNumbers?: Record<string, string>;
 }) {
   const k = c.kind;
   let body: ReactNode[] = [];
   if (k === "resistor")
     body = [line(-2, 0, -1.2, 0, "a"), zigzag(-1.2, 1.2), line(1.2, 0, 2, 0, "b")];
+  else if (k === "potentiometer" || k === "trimpot") body = variableResistor(k === "trimpot");
   else if (k === "capacitor")
     body = [
       line(-2, 0, -0.25, 0, "a"),
@@ -629,23 +720,7 @@ export function SymbolBody({
   } else if (k === "npn" || k === "pnp") body = bjt(k === "pnp");
   else if (k === "igbt") body = bjt(false, true);
   else if (["nmos", "pmos", "njf", "pjf"].includes(k)) body = fet(k);
-  else if (k === "opamp")
-    body = [
-      poly(
-        [
-          [-2, -2],
-          [-2, 2],
-          [2, 0],
-          [-2, -2],
-        ],
-        "t",
-      ),
-      line(-3, -1, -2, -1, "n"),
-      line(-3, 1, -2, 1, "p"),
-      line(2, 0, 3, 0, "o"),
-      text(-1.5, -1, "−", 0.8, "mn"),
-      text(-1.5, 1, "+", 0.8, "mp"),
-    ];
+  else if (k === "opamp") body = opampBody(pinNumbers);
   else if (k === "switch")
     body = [
       line(-2, 0, -1, 0, "a"),
@@ -754,7 +829,7 @@ export function SymbolBody({
 }
 
 // Controllers, sensors and actuators (Fase 11): a box with its pins named and a short title.
-const MODULE_GROUPS = new Set(["Controladores", "Sensores", "Atuadores"]);
+const MODULE_GROUPS = new Set(["Controladores", "Sensores", "Atuadores", "Circuitos integrados"]);
 const SHORT: Record<string, string> = {
   arduino_uno: "Arduino Uno",
   esp32_devkitc: "ESP32",
@@ -764,7 +839,7 @@ const SHORT: Record<string, string> = {
   tx420: "4-20 mA",
   tx420_rtd: "TT RTD",
   acs712: "ACS712",
-  potentiometer: "POT",
+  timer555: "555",
   relay: "RELÉ",
   dc_motor: "M",
   heater: "AQUEC.",
@@ -864,6 +939,7 @@ export function valueText(c: Component, sym: SymbolDef | undefined): string {
     return `${p("conn_p")}${p("conn_s").toLowerCase()}`;
   }
   if (c.kind === "zener") return `${p("vz")}V`;
+  if (c.kind === "potentiometer" || c.kind === "trimpot") return `${p("r")}Ω`;
   if (c.kind === "lamp") return `${p("vn")}V ${p("pn")}W`;
   if (c.kind === "led") return `${p("color")} ${p("vf")}V`;
   if (c.kind === "bsource") return p("expr");

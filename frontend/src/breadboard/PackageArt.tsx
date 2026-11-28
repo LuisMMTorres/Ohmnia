@@ -14,6 +14,8 @@ interface Props {
   selected?: boolean;
   bad?: boolean;
   showLabels?: boolean;
+  /** On the board: only the pin numbers; the names are in the part's panel when clicked. */
+  numbersOnly?: boolean;
   /** Body colour of a LED (its emitted colour). */
   color?: string;
   /** Simulated brightness of a LED (halo around the dome). */
@@ -30,7 +32,7 @@ function Leg({ at }: { at: Pt }) {
   return <circle cx={at[0]} cy={at[1]} r={2.6} className="bb-leg" />;
 }
 
-/** Text label of a leg ("1 C"), placed away from the body along `dir` (unit vector). */
+/** Short labels ("1 C", "K", "+") sit in one line next to the leg. */
 function LegLabel({ at, text, dir }: { at: Pt; text: string; dir: Pt }) {
   return (
     <text
@@ -44,10 +46,51 @@ function LegLabel({ at, text, dir }: { at: Pt; text: string; dir: Pt }) {
   );
 }
 
+/**
+ * Pin number next to the leg and the pin name written outwards, perpendicular to the row of
+ * legs (as on a datasheet pinout): long names ("2IN−", "THRES") of legs 0.1" apart no longer
+ * run into each other.
+ */
+function PinNameLabel({ at, pin, name, dir }: { at: Pt; pin: string; name: string; dir: Pt }) {
+  let a = (Math.atan2(dir[1], dir[0]) * 180) / Math.PI;
+  // keep the text upright: names pointing left or up are turned half a turn, anchored at the end
+  const flip = a > 90 || a <= -90;
+  if (flip) a += 180;
+  const x = at[0] + dir[0] * 15;
+  const y = at[1] + dir[1] * 15;
+  return (
+    <g className="bb-pin-label">
+      <text
+        x={at[0] + dir[0] * 8.5}
+        y={at[1] + dir[1] * 8.5}
+        textAnchor="middle"
+        dominantBaseline="central"
+        className="bb-leg-label bb-pin-number"
+      >
+        {pin}
+      </text>
+      <text
+        transform={`translate(${x} ${y}) rotate(${a})`}
+        textAnchor={flip ? "end" : "start"}
+        dominantBaseline="central"
+        className="bb-leg-label"
+      >
+        {name}
+      </text>
+    </g>
+  );
+}
+
 function labelOf(view: PartView | undefined, pin: string): string {
   const l = view?.labels[pin];
   if (!l || l === pin) return pin;
   return /^\d+$/.test(pin) ? `${pin} ${l}` : l;
+}
+
+/** Name of a numbered leg written perpendicular to the row of legs (two characters or more). */
+export function longPinName(view: PartView | undefined, pin: string): string | null {
+  const l = view?.labels[pin];
+  return l && l !== pin && /^\d+$/.test(pin) && l.length >= 2 ? l : null;
 }
 
 export function PackageArt({
@@ -58,6 +101,7 @@ export function PackageArt({
   selected,
   bad,
   showLabels,
+  numbersOnly,
   color,
   glow,
   pressed,
@@ -221,6 +265,18 @@ export function PackageArt({
         </g>
       );
     }
+  } else if (
+    pkg.style === "inline" &&
+    (pkg.body.startsWith("pot") || pkg.body.startsWith("trimpot"))
+  ) {
+    // millimetres to pixels at this drawing's scale (the preview spreads the legs further)
+    const span = (pkg.pins.length - 1) * pkg.pitch * P;
+    const mm = ((span > 0 ? len / span : 1) * P) / 2.54;
+    body = (
+      <g transform={`translate(${center[0]} ${center[1]}) rotate(${angle})`}>
+        <PotBody kind={pkg.body} mm={mm} marking={view?.title ?? ""} uid={uid} />
+      </g>
+    );
   } else if (pkg.style === "inline") {
     const w = len + P * 0.9;
     let inner: ReactNode;
@@ -308,7 +364,18 @@ export function PackageArt({
             const inLower = pkg.pins.indexOf(pin) < pkg.pins.length / 2;
             dir = [0, inLower ? 1 : -1];
           }
-          return <LegLabel key={pin} at={at} text={labelOf(view, pin)} dir={dir} />;
+          if (numbersOnly)
+            return /^\d+$/.test(pin) ? (
+              <LegLabel key={pin} at={at} text={pin} dir={dir} />
+            ) : (
+              <LegLabel key={pin} at={at} text={labelOf(view, pin)} dir={dir} />
+            );
+          const name = longPinName(view, pin);
+          return name ? (
+            <PinNameLabel key={pin} at={at} pin={pin} name={name} dir={dir} />
+          ) : (
+            <LegLabel key={pin} at={at} text={labelOf(view, pin)} dir={dir} />
+          );
         })}
     </g>
   );
@@ -445,7 +512,8 @@ export function PackagePreview({ pkg, view }: { pkg: PackageSpec; view?: PartVie
   const legs: Record<string, Pt> = {};
   const ox = 30;
   const twoRows = pkg.style === "dip" || pkg.style === "board";
-  const oy = pkg.style === "board" ? 150 : twoRows ? 70 : 40;
+  const pot = pkg.body.startsWith("pot") || pkg.body.startsWith("trimpot");
+  const oy = pkg.style === "board" ? 150 : twoRows ? 92 : pot ? 104 : 40;
   const minDr = Math.min(0, ...pkg.offsets.map(([dr]) => dr));
   const step = pkg.style === "board" ? P : P * 1.6;
   const gap = pkg.style === "board" ? 7 * P : 3 * P;
@@ -454,7 +522,8 @@ export function PackagePreview({ pkg, view }: { pkg: PackageSpec; view?: PartVie
     legs[pin] = [ox + (dr - minDr) * step, oy + (twoRows && dc < 0 ? -gap : 0)];
   });
   const w = Math.max(...Object.values(legs).map((p) => p[0])) + 30;
-  const h = pkg.style === "board" ? 200 : twoRows ? 100 : 66;
+  // names written outwards from the legs need about 45 px beyond each row
+  const h = pkg.style === "board" ? 200 : twoRows ? 140 : pot ? 160 : 66;
   if (pkg.style === "offboard") return null;
   return (
     <svg
@@ -654,5 +723,138 @@ function BoardBody({ pkg, legs }: { pkg: PackageSpec; legs: Record<string, Pt> }
         1
       </text>
     </g>
+  );
+}
+
+/**
+ * Potentiometers and trimpots seen from above as they stand on the breadboard, sized from the
+ * Bourns drawings (legs at y = 0, the body behind them):
+ *
+ * * ``trimpot-3386``: blue 9.53 mm square body, white rotor with the screwdriver slot;
+ * * ``trimpot-3362``: blue 6.6 mm square body, rotor with a cross slot;
+ * * ``trimpot-3296``: blue 9.53 × 4.83 mm multiturn body with the brass adjusting screw;
+ * * ``pot-9mm``: PTV09A, 10 mm metal frame with the 6 mm insulated shaft (flat side);
+ * * ``pot-17mm``: PDB181, 17 mm round metal case with the knurled 6 mm shaft;
+ * * ``pot``: older generic drawing, as the 9 mm one.
+ */
+function PotBody({
+  kind,
+  mm,
+  marking,
+  uid,
+}: {
+  kind: string;
+  mm: number;
+  marking: string;
+  uid: string;
+}) {
+  const g = `pot-${uid}`;
+  const print = marking.replace(/\s/g, "").slice(0, 8);
+  if (kind.startsWith("trimpot")) {
+    const multi = kind === "trimpot-3296";
+    const small = kind === "trimpot-3362";
+    const w = (small ? 6.6 : 9.53) * mm;
+    const h = (multi ? 4.83 : small ? 6.99 : 9.53) * mm;
+    const y0 = -h + 1.2 * mm;
+    const r = (small ? 2.3 : 3.0) * mm;
+    const cx = multi ? w / 2 - 1.6 * mm : 0;
+    const cy = multi ? y0 + h / 2 : y0 + h * 0.52;
+    return (
+      <>
+        <defs>
+          <linearGradient id={`${g}-blue`} x1="0" x2="1" y1="0" y2="1">
+            <stop offset="0" stopColor="#3f7fd6" />
+            <stop offset="1" stopColor="#1d4f9c" />
+          </linearGradient>
+          <radialGradient id={`${g}-brass`}>
+            <stop offset="0" stopColor="#f6dc8a" />
+            <stop offset="1" stopColor="#b8862b" />
+          </radialGradient>
+        </defs>
+        <rect
+          x={-w / 2}
+          y={y0}
+          width={w}
+          height={h}
+          rx={0.6 * mm}
+          fill={`url(#${g}-blue)`}
+          className="bb-pot-case"
+        />
+        <circle
+          cx={cx}
+          cy={cy}
+          r={r}
+          fill={multi ? `url(#${g}-brass)` : "#f1f1ee"}
+          className="bb-pot-rotor"
+        />
+        <line x1={cx - r * 0.7} y1={cy} x2={cx + r * 0.7} y2={cy} className="bb-pot-slot" />
+        {small && (
+          <line x1={cx} y1={cy - r * 0.7} x2={cx} y2={cy + r * 0.7} className="bb-pot-slot" />
+        )}
+        {!small && (
+          <text
+            x={multi ? -w / 2 + 1 * mm : 0}
+            y={multi ? cy + 1.1 * mm : y0 + 1.3 * mm}
+            textAnchor={multi ? "start" : "middle"}
+            className="bb-pot-text"
+          >
+            {print}
+          </text>
+        )}
+      </>
+    );
+  }
+  if (kind === "pot-17mm") {
+    const R = 8.5 * mm;
+    const cy = -R - 0.6 * mm;
+    return (
+      <>
+        <defs>
+          <radialGradient id={`${g}-case`} cx="0.4" cy="0.35">
+            <stop offset="0" stopColor="#e9ecef" />
+            <stop offset="1" stopColor="#8d949b" />
+          </radialGradient>
+        </defs>
+        <rect x={-6 * mm} y={cy} width={12 * mm} height={-cy} className="bb-pot-frame" />
+        <circle cx={0} cy={cy} r={R} fill={`url(#${g}-case)`} className="bb-pot-case" />
+        <circle cx={0} cy={cy} r={3.6 * mm} className="bb-pot-bush" />
+        <circle cx={0} cy={cy} r={3 * mm} className="bb-pot-knurl" />
+        <line x1={0} y1={cy - 2.6 * mm} x2={0} y2={cy - 0.6 * mm} className="bb-pot-slot" />
+        <text x={0} y={cy + R - 1.4 * mm} textAnchor="middle" className="bb-pot-text dark">
+          {print}
+        </text>
+      </>
+    );
+  }
+  // PTV09A (and the older generic drawing): 10 mm frame, 6 mm shaft with its flat side
+  const w = 10 * mm;
+  const y0 = -11 * mm;
+  return (
+    <>
+      <rect
+        x={-w / 2}
+        y={y0}
+        width={w}
+        height={-y0 - 0.6 * mm}
+        rx={0.8 * mm}
+        className="bb-pot-frame"
+      />
+      <rect
+        x={-w / 2 + 0.8 * mm}
+        y={y0 + 0.8 * mm}
+        width={w - 1.6 * mm}
+        height={-y0 - 2.2 * mm}
+        rx={0.6 * mm}
+        className="bb-pot-black"
+      />
+      <path
+        d={`M ${-3 * mm} ${y0 + 5.5 * mm} A ${3 * mm} ${3 * mm} 0 1 1 ${3 * mm} ${y0 + 5.5 * mm} Z`}
+        className="bb-pot-shaft"
+        transform={`rotate(-90 0 ${y0 + 5.5 * mm})`}
+      />
+      <text x={0} y={-1.6 * mm} textAnchor="middle" className="bb-pot-text">
+        {print}
+      </text>
+    </>
   );
 }

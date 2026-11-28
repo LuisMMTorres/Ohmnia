@@ -55,6 +55,17 @@ def pt(hole: str, place: Place = _same) -> Pt:
     return float(x), float(y)
 
 
+# drawn size of potentiometers and trimpots (Bourns drawings), as in PotBody of PackageArt.tsx
+_POT_MM: dict[str, tuple[float, float]] = {
+    "trimpot-3386": (9.53, 8.4),
+    "trimpot-3362": (6.6, 5.8),
+    "trimpot-3296": (9.53, 3.7),
+    "pot-9mm": (10.0, 10.5),
+    "pot-17mm": (17.0, 17.6),
+    "pot": (10.0, 10.5),
+}
+
+
 def body(pkg: Package, legs: dict[str, str], place: Place = _same) -> Rect | None:
     """Rectangle covered by the drawing of a part on the board (``None`` off the board)."""
     if pkg.style == "offboard" or not legs:
@@ -72,6 +83,11 @@ def body(pkg: Package, legs: dict[str, str], place: Place = _same) -> Rect | Non
         if y0 == y1:
             return Rect(x0 - 0.45, y0 - up, x1 + 0.45, y0 + down)
         return Rect(x0 - up, y0 - 0.45, x0 + down, y1 + 0.45)
+    if pkg.style == "inline" and pkg.body in _POT_MM:
+        # potentiometers and trimpots: body (width × depth, mm) behind the row of legs
+        w, d = (v / 2.54 for v in _POT_MM[pkg.body])
+        cx, half = (x0 + x1) / 2, max(w / 2, (x1 - x0) / 2 + 0.45)
+        return Rect(cx - half, y0 - d, cx + half, y0 + 0.25)
     if pkg.style == "inline":
         up = 1.4 if pkg.body in ("to220", "to247") else 1.0
         return Rect(x0 - 0.45, y0 - up, x1 + 0.45, y0 + 0.25)

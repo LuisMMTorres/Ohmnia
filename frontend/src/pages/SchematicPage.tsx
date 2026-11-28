@@ -56,6 +56,7 @@ import { damageByRef } from "../schematic/damage";
 import { DamageAlert } from "../schematic/DamageAlert";
 import type { Glow } from "../schematic/symbols";
 import { PackagePreview } from "../breadboard/PackageArt";
+import { sortPalette } from "../schematic/palette";
 import { ProgramEditor } from "../cosim/ProgramEditor";
 import { FirmwareControls } from "../cosim/FirmwareControls";
 import { SimulatorPage } from "./SimulatorPage";
@@ -250,6 +251,17 @@ export function SchematicWorkspace({
   }, [activeStep]);
   const bbSpec = useBreadboardSpec();
   const { resolved } = useResolved(sch);
+  // package pin number of each symbol pin (the op-amp symbol prints them, as on the breadboard)
+  const pinNumbers = useMemo(() => {
+    const out: Record<string, Record<string, string>> = {};
+    for (const p of resolved?.parts ?? []) {
+      if (p.kind !== "opamp" || (p.origin !== "datasheet" && p.origin !== "generico")) continue;
+      const byPin: Record<string, string> = {};
+      for (const [pkgPin, role] of Object.entries(p.pinmap)) byPin[role] = pkgPin;
+      out[p.ref] = byPin;
+    }
+    return out;
+  }, [resolved]);
   const fileRef = useRef<HTMLInputElement>(null);
   const [cosimExamples, setCosimExamples] = useState<
     { name: string; description: string; schematic: Schematic }[]
@@ -1007,37 +1019,38 @@ export function SchematicWorkspace({
                 <h3>Biblioteca de componentes</h3>
                 <p className="small muted">Escolha um símbolo e posicione-o no circuito.</p>
                 {groups.map((g) => (
-                  <details key={g} open>
+                  // every group starts closed: open only the one you need
+                  <details key={g}>
                     <summary>{g}</summary>
-                    {library.symbols
-                      .filter(
+                    {sortPalette(
+                      library.symbols.filter(
                         (s) =>
                           s.group === g &&
                           !HIDDEN_KINDS.has(s.kind) &&
                           (!/^[vi](dc|sin|pulse|pwl)$/.test(s.kind) || /[vi]dc/.test(s.kind)),
-                      )
-                      .map((s) => (
-                        <button
-                          key={s.kind}
-                          className={
-                            tool.kind === "place" && tool.symbol === s.kind
-                              ? "palette-item active"
-                              : "palette-item"
-                          }
-                          title={s.description || s.label}
-                          onClick={() => setTool({ kind: "place", symbol: s.kind })}
-                        >
-                          {s.kind === "vdc"
-                            ? "Fonte de tensão (CC/CA)"
-                            : s.kind === "idc"
-                              ? "Fonte de corrente (CC/CA)"
-                              : s.kind === "led"
-                                ? "LED genérico"
-                                : s.kind === "lamp"
-                                  ? "Lâmpada genérica"
-                                  : s.label}
-                        </button>
-                      ))}
+                      ),
+                    ).map((s) => (
+                      <button
+                        key={s.kind}
+                        className={
+                          tool.kind === "place" && tool.symbol === s.kind
+                            ? "palette-item active"
+                            : "palette-item"
+                        }
+                        title={s.description || s.label}
+                        onClick={() => setTool({ kind: "place", symbol: s.kind })}
+                      >
+                        {s.kind === "vdc"
+                          ? "Fonte de tensão (CC/CA)"
+                          : s.kind === "idc"
+                            ? "Fonte de corrente (CC/CA)"
+                            : s.kind === "led"
+                              ? "LED genérico"
+                              : s.kind === "lamp"
+                                ? "Lâmpada genérica"
+                                : s.label}
+                      </button>
+                    ))}
                     {g === "LEDs e lâmpadas" && (
                       <IndicatorPalette
                         parts={indicatorParts}
@@ -1064,6 +1077,7 @@ export function SchematicWorkspace({
                 burnt={burnt}
                 onNotice={setNotice}
                 onOperate={operate}
+                pinNumbers={pinNumbers}
               />
 
               <aside className="panel properties" aria-label="Propriedades">

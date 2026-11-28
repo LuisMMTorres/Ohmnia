@@ -109,13 +109,32 @@ class OpAmp:
         c.C(f"{p}1", n1, "0", C_POLE)
         c.E(f"{p}o", out, "0", n1, "0", 1.0)
 
-    def nonlinear_lines(self, p: str, inp: str, inn: str, out: str) -> list[str]:
-        """Netlist of the macromodel with slew-rate limit and output clamp (transient)."""
+    def nonlinear_lines(
+        self,
+        p: str,
+        inp: str,
+        inn: str,
+        out: str,
+        supply: tuple[str, str, float, float] | None = None,
+        iq: float = 0.0,
+    ) -> list[str]:
+        """Netlist of the macromodel with slew-rate limit and output clamp (transient).
+
+        ``supply`` = (V+ node, V− node, drop from V+, drop from V−) makes the output swing follow
+        the supply pins (clamp at v(V+) − drop and v(V−) + drop) and draws the supply currents
+        from those pins: the output current from V+ when sourcing and into V− when sinking, plus
+        the quiescent current ``iq`` from V+ to V−. Without it the clamp is at ``v_hi``/``v_lo``
+        and the output stage returns its current to ground (design modules, unchanged).
+        """
         gm = self.A0 / self.r_pole
         # the current into the pole capacitor limited to SR·C: dv/dt ≤ SR
         il = self.SR * C_POLE if math.isfinite(self.SR) else 1e30
-        hi = self.v_hi if math.isfinite(self.v_hi) else 1e6
-        lo = self.v_lo if math.isfinite(self.v_lo) else -1e6
+        hi = f"{self.v_hi:.9g}" if math.isfinite(self.v_hi) else "1e6"
+        lo = f"{self.v_lo:.9g}" if math.isfinite(self.v_lo) else "-1e6"
+        if supply is not None:
+            vp, vn, drop_hi, drop_lo = supply
+            hi = f"v({vp})-({drop_hi:.9g})"
+            lo = f"v({vn})+({drop_lo:.9g})"
         lines = []
         if math.isfinite(self.Rin):
             lines.append(f"R{p}in {inp} {inn} {self.Rin:.9g}")
@@ -139,9 +158,24 @@ class OpAmp:
             f"R{p}1 {n1} 0 {self.r_pole:.9g}",
             f"C{p}1 {n1} 0 {C_POLE:.9g}",
             # stiff clamp of the internal node at the output swing (overshoot il/CLAMP_G)
-            f"B{p}c {n1} 0 I={CLAMP_G:.9g}*(max(v({n1})-({hi:.9g}),0)+min(v({n1})-({lo:.9g}),0))",
-            f"E{p}o {out} 0 {n1} 0 1",
+            f"B{p}c {n1} 0 I={CLAMP_G:.9g}*(max(v({n1})-({hi}),0)+min(v({n1})-({lo}),0))",
         ]
+        if supply is None:
+            lines.append(f"E{p}o {out} 0 {n1} 0 1")
+            return lines
+        vp, vn = supply[0], supply[1]
+        oe, sense = f"{p}oe", f"V{p}io"
+        lines += [
+            f"E{p}o {oe} 0 {n1} 0 1",
+            # 0 V source: the output current (positive when the output sources current)
+            f"{sense} {oe} {out} DC 0",
+            # the output stage takes that current from V+ (sourcing) or returns it to V−
+            # (sinking); the ground return of E{p}o is cancelled, so the supplies deliver it
+            f"B{p}sp {vp} 0 I=max(i({sense}),0)",
+            f"B{p}sn 0 {vn} I=max(-i({sense}),0)",
+        ]
+        if iq > 0:
+            lines.append(f"I{p}q {vp} {vn} DC {iq:.9g}")
         return lines
 
 

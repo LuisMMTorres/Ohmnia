@@ -2,6 +2,7 @@
 part_number: PTV09A-4020F-B103
 category: resistor.variable
 schema_version: '1.0'
+catalog_revision: 2
 manufacturer: Bourns
 family: PTV09
 package: PTV09A, 9 mm, sem bucha horizontal (terminal 4), eixo isolado plano 20 mm, sem detente
@@ -11,6 +12,7 @@ notes:
 datasheets:
 - id: ds1
   manufacturer: Bourns
+  url: https://www.bourns.com/docs/Product-Datasheets/ptv09.pdf
   sha256: 411cdb6a62e61f9c5bc2df76ed64ee21d7bcfbee035c1ba36beff08c43f28558
 review:
   status: rascunho
@@ -61,3 +63,24 @@ attributes:
     value: Rotativo 9 mm, elemento de carbono, eixo isolado
     status: extraido
     source: {page: 1, location: Features, excerpt: "Carbon element, Insulated shaft"}
+
+# Pinagem para a protoboard, transcrita da mesma folha de dados (2026-11-28). status extraido:
+# falta a sua revisão.
+pinout:
+  package: pot-9mm
+  pins:
+  - pin: "1"
+    name: "CCW"
+    role: a
+  - pin: "2"
+    name: "WIPER"
+    role: w
+  - pin: "3"
+    name: "CW"
+    role: b
+  source:
+    datasheet_id: ds1
+    page: 2
+    location: "Product Dimensions PTV09A-4 (5,0 mm entre terminais, FULL CCW POSITION); Schematic 1-2-3 na p. 1"
+  status: extraido
+  note: "Pino 1 do lado do eixo no fim do giro anti-horário (FULL CCW POSITION)."
