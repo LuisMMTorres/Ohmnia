@@ -14,6 +14,8 @@ interface Props {
   selected?: boolean;
   bad?: boolean;
   showLabels?: boolean;
+  /** On the board: only the pin numbers; the names are in the part's panel when clicked. */
+  numbersOnly?: boolean;
   /** Body colour of a LED (its emitted colour). */
   color?: string;
   /** Simulated brightness of a LED (halo around the dome). */
@@ -99,6 +101,7 @@ export function PackageArt({
   selected,
   bad,
   showLabels,
+  numbersOnly,
   color,
   glow,
   pressed,
@@ -361,6 +364,12 @@ export function PackageArt({
             const inLower = pkg.pins.indexOf(pin) < pkg.pins.length / 2;
             dir = [0, inLower ? 1 : -1];
           }
+          if (numbersOnly)
+            return /^\d+$/.test(pin) ? (
+              <LegLabel key={pin} at={at} text={pin} dir={dir} />
+            ) : (
+              <LegLabel key={pin} at={at} text={labelOf(view, pin)} dir={dir} />
+            );
           const name = longPinName(view, pin);
           return name ? (
             <PinNameLabel key={pin} at={at} pin={pin} name={name} dir={dir} />
